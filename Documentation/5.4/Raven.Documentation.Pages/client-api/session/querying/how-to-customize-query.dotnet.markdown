@@ -5,12 +5,11 @@
 {NOTE: }
 
 * Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query).   
-  Can be set for both dynamic-query and for index-query.
+  Can be set for both **dynamic** and **index** queries.
 
 * Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API.
 
-* Note:  
-  A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
+* A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
 
 * Customization methods available:
@@ -38,7 +37,7 @@
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -51,13 +50,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_1_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
 
 {NOTE/}
 
@@ -69,7 +68,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_2_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -82,13 +81,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_2_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
 
 {NOTE/}
 
@@ -102,7 +101,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -115,13 +114,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_3_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description                                                                                                                                                                                  |
 |------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
+| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
 
 {NOTE/}
 
@@ -137,7 +136,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -150,7 +149,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_4_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -168,7 +167,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_5_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -181,7 +180,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_5_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -208,7 +207,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_6_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -229,7 +228,7 @@ In the above example:
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_6_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -262,7 +261,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_7_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -275,13 +274,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_7_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description                                                                                              |
 |------------| ------------- |-------------------------------------------------------------------------------------------------|
-| __seed__   | `string` | Order the search results randomly using this seed.<br>Useful when executing repeated random queries. |
+| **seed**   | `string` | Order the search results randomly using this seed.<br>Useful when executing repeated random queries. |
 
 {NOTE/}
 
@@ -297,7 +296,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_9_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -310,13 +309,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_9_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description |
 |------------| ------------- | ----- |
-| __timings__ | `QueryTimings` | An out param that will be filled with the timings results |
+| **timings** | `QueryTimings` | An out param that will be filled with the timings results |
 
 {NOTE/}
 
@@ -339,7 +338,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
@@ -352,13 +351,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE customize_8_5@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | Type | Description |
 |------------| ------------- |-----------|
-| __waitTimeout__ | `TimeSpan?` | Time to wait for non-stale results. <br>Default is 15 seconds. |
+| **waitTimeout** | `TimeSpan?` | Time to wait for non-stale results. <br>Default is 15 seconds. |
 
 {NOTE/}
 
@@ -366,7 +365,7 @@ __Syntax__
 
 {PANEL: Methods return value}
 
-All above customization methods return the following:
+All of the above customization methods return the following:
 
 | `Query` return value         | |
 |-----------------------------| ----- |

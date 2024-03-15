@@ -4,26 +4,25 @@
 
 {NOTE: }
 
-* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query).   
-  Can be set for both dynamic-query and for index-query.
+* Use `customize()` to set the following customization options on a specific [query](../../../client-api/session/querying/how-to-query).   
+  Can be set for both **dynamic** and **index** queries.
 
-* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API.
+* Each such customization can also be implemented via the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) API.
 
-* Note:  
-  A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
+* A query can also be customized on the Store or Session level by subscribing to `on_before_query`.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
 
 * Customization methods available:
 
-  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
-  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
-  - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
-  - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
-  - [Projection](../../../client-api/session/querying/how-to-customize-query#projection)
-  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-  - [Timings](../../../client-api/session/querying/how-to-customize-query#timings)
-  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query#before_query_executed)
+  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query#after_query_executed)
+  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query#after_stream_executed)
+  - [no_caching](../../../client-api/session/querying/how-to-customize-query#no_caching)
+  - [no_tracking](../../../client-api/session/querying/how-to-customize-query#no_tracking)
+  - [projection](../../../client-api/session/querying/how-to-customize-query#projection)
+  - [random_ordering](../../../client-api/session/querying/how-to-customize-query#random_ordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query#wait_for_non_stale_results)
 
 * [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
 
@@ -32,13 +31,13 @@
 
 ---
 
-{PANEL: BeforeQueryExecuted}
+{PANEL: `before_query_executed`}
 
-* Use `BeforeQueryExecuted` to customize the query just before it is executed.
+* Use `before_query_executed` to customize the query just before it is executed.
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_1_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -49,25 +48,25 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_1_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: AfterQueryExecuted}
+{PANEL: `after_query_executed`}
 
-* Use `AfterQueryExecuted` to access the raw query result after it is executed.
+* Use `after_query_executed` to access the raw query result after it is executed.
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_2_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -78,49 +77,49 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_2_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: AfterStreamExecuted}
+{PANEL: `after_stream_executed`}
 
-* Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
+* Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
 
 * Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_3_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description                                                                                                                                                                                  |
 |------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __action__ | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
+| **action** | `Callable[[dict], None])` | An _action_ method that recieves a single stream query result.<br>The stream result is passed in the `dict` param. |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: NoCaching}
+{PANEL: `no_caching`}
 
 * By default, query results are cached. 
 
-* You can use the `NoCaching` customization to disable query caching.
+* You can use the `no_caching` customization method to disable query caching.
 
 * Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_4_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -131,7 +130,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_4_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
@@ -139,17 +138,17 @@ __Syntax__
 
 {PANEL/}
 
-{PANEL: NoTracking}
+{PANEL: `no_tracking`}
 
 * By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
-* You can use the `NoTracking` customization to disable entity tracking.  
+* You can use the `no_tracking` customization to disable entity tracking.  
 
 * See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_5_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -160,7 +159,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_5_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
@@ -168,26 +167,27 @@ __Syntax__
 
 {PANEL/}
 
-{PANEL: Projection}
+{PANEL: `projection`}
 
-* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
-  (projecting means the query returns only specific document fields instead of the full document)  
-  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+  {NOTE: }
+  Projecting means the query returns only specific document fields instead of the full document.  
+  {NOTE/}
 
-* If the index does Not store those fields then the fields' values will be retrieved from the documents.
+* If these fields are not stored in the index, the field values will be retrieved from the documents.  
 
-* Use the `Projection` method to customize and modify this behavior.
+* Use the `projection` method to customize and modify this behavior.  
 
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
-  
-  * [Project index query results](../../../indexes/querying/projections)
-  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+    * [Project index query results](../../../indexes/querying/projections)
+    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_6_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -197,16 +197,18 @@ __Example__
 
 In the above example:  
 
-  * Field _'FullName'_ is stored in the index (see index definition in the rightmost tab).  
-    However, the server will try to fetch the value from the document since the default behavior was modified to `FromDocumentOrThrow`.  
-  * An exception will be thrown since an _'Employee'_ document does not contain the property _'FullName'_.  
+  * The _'full_name'_ field is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FROM_DOCUMENT_OR_THROW`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the _'full_name'_ property.  
     (based on the Northwind sample data).  
 
 {NOTE/}
 
+
+<!--
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_6_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
@@ -228,18 +230,19 @@ __Syntax__
   An exception is thrown if the document does not contain the requested field.  
 
 {NOTE/}
+-->
 
 {PANEL/}
 
-{PANEL: RandomOrdering}
+{PANEL: `random_ordering`}
 
-* Use `RandomOrdering` to order the query results randomly.  
+* Use `random_ordering` to order the query results randomly.  
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
+* Learn [here](../../../client-api/session/querying/sort-query-results) about additional ordering options.  
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_7_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -250,21 +253,21 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_7_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description                                                                                              |
 |------------| ------------- |-------------------------------------------------------------------------------------------------|
-| __seed__   | `string` | Order the search results randomly using this seed.<br>Useful when executing repeated random queries. |
+| **seed**   | `str` | Order the search results randomly using this seed.<br>Useful when executing repeated random queries. |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: Timings}
+{PANEL: `timings`}
 
-* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+* Use `timings` to get detailed stats of the time spent by the server on each part of the query.
 
 * The timing statistics will be included in the query results.
 
@@ -272,7 +275,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_9_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -283,36 +286,36 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_9_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description |
 |------------| ------------- | ----- |
-| __timings__ | `QueryTimings` | An out param that will be filled with the timings results |
+| **timings** | `QueryTimings` | An out param that will be filled with the timings results |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: WaitForNonStaleResults}
+{PANEL: `wait_for_non_stale_results`}
 
-* All queries in RavenDB provide results using an index, even when you don't specify one.  
+* All RavenDB queries provide results using an index, even when an index is not specified.  
   See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
-* Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
+* If `wait_for_non_stale_results` is used, the query will wait for non-stale results from the index.  
 
-* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+* A `TimeoutException` will be thrown if the query is unable to return non-stale results within the specified  
   (or default) timeout.
  
 * Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
-  Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
+  Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
 
 * Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:python:Query customize_8_1@ClientApi\Session\Querying\HowToCustomize.py /}
@@ -323,29 +326,25 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:python customize_8_5@ClientApi\Session\Querying\HowToCustomize.py /}
 
 | Parameters | Type | Description |
 |------------| ------------- |-----------|
-| __waitTimeout__ | `TimeSpan?` | Time to wait for non-stale results. <br>Default is 15 seconds. |
+| **wait_timeout** | `timedelta` | Time to wait for non-stale results.<br>Default: 15 seconds |
 
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: Methods return value}
+{PANEL: `Methods return value`}
 
-All above customization methods return the following:
+All of the above customization methods return the following:
 
-| `Query` return value         | |
-|-----------------------------| ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-| `DocumentQuery` return value      | |
-|---------------------------------| ----- |
-| IQueryBase | Returns self for easier method chaining. |
+| `document_query` return value | |
+|-------------------------------| ----- |
+| `DocumentQuery[_T]` | Returns self for easier method chaining |
 
 {PANEL/}
 

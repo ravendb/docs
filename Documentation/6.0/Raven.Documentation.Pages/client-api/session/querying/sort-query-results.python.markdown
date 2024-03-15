@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
+* When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
 
     * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting) is involved in the query.  
@@ -16,8 +16,8 @@
 
 * Multiple sorting actions can be chained.
 
-* This article provides examples of sorting query results when making a __dynamic-query__.  
-  For sorting results when querying a __static-index__ see [sort index query results](../../../indexes/querying/sorting).
+* This article provides examples of sorting query results when making a **dynamic-query**.  
+  For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting).
 
 * In this page:
     * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value)
@@ -60,12 +60,12 @@ order by UnitsInStock as long
 
 {INFO: }
 
-__Ordering Type__:
+**Ordering Type**:
 
-* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.  
 
-* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
+* E.g. in the above example, ordering by `x => x.units_in_stock` will result in `OrderingType.LONG`  
   because that property data type is an integer.
 
 * Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type) below.
@@ -81,7 +81,7 @@ __Ordering Type__:
 
 * The higher the score value the better the match.  
 
-* Use `OrderByScore` or `OrderByScoreDescending` to order by this score.
+* Use `order_by_score` or `order_by_score_descending` to order the query results by this score.
 
 {CODE-TABS}
 {CODE-TAB:python:Query sort_4@ClientApi\Session\Querying\SortQueryResults.py /}
@@ -100,23 +100,23 @@ order by score()
 
 The score details can be retrieved by either:
 
-* __Request to include explanations__:  
+* **Request to include explanations**:  
   You can get the score details and see how it was calculated by requesting to include explanations in the query.
   Currently, this is only available when using Lucene as the underlying indexing engine.  
   Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
 
-* __Get score from metadata__:    
+* **Get score from metadata**:    
 
     * The score is available in the `@index-score` metadata property within each result.  
       Note the following difference between the underlying indexing engines:
 
-      * When using __Lucene__:  
+      * When using **Lucene**:  
           This metadata property is always available in the results.  
           Read more about Lucene scoring [here](https://lucene.apache.org/core/3_3_0/scoring.html).
 
-      * When using __Corax__:  
+      * When using **Corax**:  
           In order to enhance performance, this metadata property is Not included in the results by default.  
-          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to _true_.  
+          To get this metadata property you must set the [Indexing.Corax.IncludeDocumentScore](../../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore) configuration value to `True`  
           Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
 
 {INFO/}
@@ -152,7 +152,7 @@ order by random()
 
 {PANEL: Order by count (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Count` aggregation operation used in the query.
+* The results of a [group_by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `count` aggregation operation used in the query.
 
 {CODE-TABS}
 {CODE-TAB:python:Query sort_10@ClientApi\Session\Querying\SortQueryResults.py /}
@@ -168,7 +168,7 @@ select key() as "Category", count()
 
 {PANEL: Order by sum (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Sum` aggregation operation used in the query.
+* The results of a [group_by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `sum` aggregation operation used in the query.
 
 {CODE-TABS}
 {CODE-TAB:python:Query sort_13@ClientApi\Session\Querying\SortQueryResults.py /}
@@ -184,23 +184,23 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 {PANEL: Force ordering type}
 
-* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
 
-* A different ordering can be forced by passing the ordering type explicitly to `OrderBy` or `OrderByDescending`.
+* A different ordering can be forced by passing the ordering type explicitly to `order_by` or `order_by_descending`.
 
 * The following ordering types are available:
 
-    * `OrderingType.Long`
-    * `OrderingType.Double`
-    * `OrderingType.AlphaNumeric`
-    * `OrderingType.String` (lexicographic ordering)
+    * `OrderingType.LONG`
+    * `OrderingType.DOUBLE`
+    * `OrderingType.ALPHA_NUMERIC`
+    * `OrderingType.STRING` (lexicographic ordering)
 
 * When using RQL directly, if no ordering type is specified, then the server defaults to lexicographic ordering.
 
 {NOTE: }
 
-__Using alphanumeric ordering example__:
+**Using alphanumeric ordering example**:
 
 * When ordering mixed-character strings by the default lexicographical ordering  
   then comparison is done character by character based on the Unicode values.  
@@ -217,8 +217,6 @@ order by QuantityPerUnit as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE sort_16_results@ClientApi\Session\Querying\SortQueryResults.cs /}
-
 {NOTE/}
 
 {PANEL/}
@@ -230,7 +228,7 @@ order by QuantityPerUnit as alphanumeric
 
 * There is no limit on the number of sorting actions that can be chained.
   
-* This is achieved by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+* This is achieved by using the `then_by` (`then_by_descending`) and `then_by_score` (`then_by_score_descending`) methods.
 
 {CODE-TABS}
 {CODE-TAB:python:Query sort_19@ClientApi\Session\Querying\SortQueryResults.py /}
@@ -273,10 +271,8 @@ order by custom(UnitsInStock, "MySorter")
 
 | Parameter      | Type                          | Description                                                                                                                                                                |
 |----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __path__       | `string`                      | The name of the field to sort by                                                                                                                                           |
-| __path__       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
-| __ordering__   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br>`OrderingType.Long`<br>`OrderingType.Double`<br>`OrderingType.AlphaNumeric`<br>`OrderingType.String` (default) |
-| __sorterName__ | `string`                      | The name of your custom sorter class                                                                                                                                       |
+| **field**       | `str`                      | The name of the field to sort by                                                                                                                                           |
+| **sorter_name_or_ordering_type**       | `Union[str, OrderingType]` | The custom sorter class name<br>**-or-**<br>The results sorting ordering type<br>Can be:<br>`OrderingType.LONG`<br>`OrderingType.DOUBLE`<br>`OrderingType.ALPHA_NUMERIC`<br>`OrderingType.STRING` (default) |
 
 {PANEL/}
 

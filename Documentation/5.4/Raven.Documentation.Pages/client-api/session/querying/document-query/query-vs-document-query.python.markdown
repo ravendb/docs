@@ -1,13 +1,18 @@
-# Query vs DocumentQuery
+# query vs document_query
 
 ---
 
 {NOTE: }
 
-* Queries in RavenDB can be written using `Query`, `DocumentQuery`, `RawQuery`, or directly with [RQL](../../../../client-api/session/querying/what-is-rql).  
+* RavenDB Queries can be executed using `query`, `document_query`, `raw_query`, or directly via [RQL](../../../../client-api/session/querying/what-is-rql).  
   Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
 
-* The main differences between `Query` and `DocumentQuery` are outlined in this article.
+* In the Python client API, `query` methods and their equivalent `document_query` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  Therefore the Python documentation often provides `query` usage samples without adding 
+  `document_query` examples as well.  
 
 * In this page:
   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
@@ -20,47 +25,36 @@
 
 {PANEL: API support}
 
-__Query__:
+**Query**:
 
-* The `Query` API supports LINQ, the essential data access solution in .NET.
+* The API exposed by the _query_ method is a wrapper of _document_query_ and is built on top of it.
 
-* The API exposed by the _Query_ method is a wrapper of _DocumentQuery_ and is built on top of it.
-
-* When using _Query_, the query is translated into a _DocumentQuery_ object,  
+* When using _query_, the query is translated into a _document_query_ object,  
   which then builds into an RQL that is sent to the server.
 
-* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
+* The available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).
 
 ---
 
-__DocumentQuery__:
+**document_query**:
 
-* `DocumentQuery` does Not support LINQ.
- 
-* It exposes a lower-level API that provides more flexibility and control when building a query.
+* When using _document_query_, the query is translated into an RQL that is sent to the server.
 
-* When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
-
-* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
+* The available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
 
 ---
 
 {NOTE: }
-
-__Note__:
-
-`Query` and `DocumentQuery` can be converted to one another.  
-This enables you to take advantage of all available API methods & extensions.  
-See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query).
-
+`query` and `document_query` can be converted to one another.  
+See [Convert between document_query and query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query).
 {NOTE/}
 
 {PANEL/}
 
 {PANEL: Immutability}
 
-* `Query` is __immutable__ while `DocumentQuery` is __mutable__.  
-  You might get different results if you try to *reuse* a query.
+* `query` is **immutable** while `document_query` is **mutable**.  
+  You may get different results if you try to *reuse* a query.
 
 ---
 
@@ -78,7 +72,7 @@ See [Convert between DocumentQuery and Query](../../../../client-api/session/que
 
 ---
 
-* A similar usage with `DocumentQuery`:
+* A similar usage with `document_query`:
 
     {CODE:python mutable_query@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.py /}
 
@@ -93,16 +87,15 @@ See [Convert between DocumentQuery and Query](../../../../client-api/session/que
     `eyeDocumentuery: from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
 
     All created Lucene queries are the same query (actually the same instance).  
-    This is an important hint to be aware of if you are going to reuse `DocumentQuery`.
+    This is an important hint to be aware of if you are going to reuse `document_query`.
 
 {PANEL/}
 
 {PANEL: Default Query Operator}
 
-* Starting from version 4.0, both `Query` and `DocumentQuery` use `AND` as the default operator.  
-  (Previously, `Query` used `AND` and `DocumentQuery` used `OR`).
+* Both `query` and `document_query` use `AND` as the default operator.  
 
-* This behavior can be modified by calling `UsingDefaultOperator`:
+* The operator can be replaced by calling `using_default_operator`:
         
 {CODE:python default_operator@ClientApi\Session\Querying\DocumentQuery\QueryVsDocumentQuery.py /}
 

@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* When making a query, the server will return the results __sorted__ only if explicitly requested by the query.  
+* When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
   
     * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting) is involved in the query.  
@@ -16,8 +16,8 @@
 
 * Multiple sorting actions can be chained.
 
-* This article provides examples of sorting query results when making a __dynamic-query__.  
-  For sorting results when querying a __static-index__ see [sort index query results](../../../indexes/querying/sorting).
+* This article provides examples of sorting query results when making a **dynamic-query**.  
+  For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting).
 
 * In this page:
     * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value) 
@@ -62,7 +62,7 @@ order by UnitsInStock as long
 
 {INFO: }
 
-__Ordering Type__:
+**Ordering Type**:
 
 * By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.  
@@ -104,12 +104,12 @@ order by score()
 
 The score details can be retrieved by either:  
  
-  * __Request to include explanations__:  
+  * **Request to include explanations**:  
     You can get the score details and see how it was calculated by requesting to include explanations in the query. 
     Currently, this is only available when using Lucene as the underlying indexing engine.  
     Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
    
-  * __Get score from metadata__:  
+  * **Get score from metadata**:  
     The score is available in the `@index-score` metadata property within each result.  
     The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
 
@@ -202,7 +202,7 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 {NOTE: }
 
-__Using alphanumeric ordering example__:
+**Using alphanumeric ordering example**:
 
 * When ordering mixed-character strings by the default lexicographical ordering  
   then comparison is done character by character based on the Unicode values.  
@@ -279,10 +279,10 @@ order by custom(UnitsInStock, "MySorter")
 
 | Parameter      | Type                          | Description                                                                                                                                                                |
 |----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __path__       | `string`                      | The name of the field to sort by                                                                                                                                           |
-| __path__       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
-| __ordering__   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br>`OrderingType.Long`<br>`OrderingType.Double`<br>`OrderingType.AlphaNumeric`<br>`OrderingType.String` (default) |
-| __sorterName__ | `string`                      | The name of your custom sorter class                                                                                                                                       |
+| **path**       | `string`                      | The name of the field to sort by                                                                                                                                           |
+| **path**       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
+| **ordering**   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br>`OrderingType.Long`<br>`OrderingType.Double`<br>`OrderingType.AlphaNumeric`<br>`OrderingType.String` (default) |
+| **sorterName** | `string`                      | The name of your custom sorter class                                                                                                                                       |
 
 {PANEL/}
 

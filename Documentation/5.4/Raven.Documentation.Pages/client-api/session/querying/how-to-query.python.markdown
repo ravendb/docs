@@ -16,21 +16,21 @@
 
 ---
 
-* All queries in RavenDB use an __index__ to provide results, even when you don't specify one.  
+* All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
-* Queries that do Not specify which index to use are called __Dynamic Queries__.  
+* Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
   For examples showing how to query an index see [querying an index](../../../indexes/querying/query-index).
 
 ---
 
-* The entities returned by the query are 'loaded' and __tracked__ by the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work).  
+* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work).  
   Entities will Not be tracked when:  
     * Query returns a [projection](../../../client-api/session/querying/how-to-project-query-results)  
     * Tracking is [disabled](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)  
 
-* Query results are __cached__ by default. To disable query caching see [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).
+* Query results are **cached** by default. To disable query caching see [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../server/configuration/database-configuration#databases.querytimeoutinsec).
 
@@ -52,7 +52,7 @@
 
 * Queries always use an index to provide fast results regardless of the size of your data.  
 
-* When a query reaches a RavenDB instance, the instance calls its __query optimizer__ to analyze the query  
+* When a query reaches a RavenDB instance, the instance calls its **query optimizer** to analyze the query  
   and determine which index should be used to retrieve the requested data.
  
 * Indexes allow to provide query results without scanning the entire dataset each and every time.  
@@ -60,7 +60,7 @@
 
 {INFO: }
 
-We differentiate between the following __3 query scenarios__:  
+We differentiate between the following **3 query scenarios**:  
 
   * Index query  
   * Dynamic query  
@@ -73,12 +73,12 @@ For each scenario, a different index type will be used.
 {NOTE: }
 
 <a id="indexQuery" /> 
-__1. Query an existing index__:
+**1. Query an existing index**:
 
-*  __Query type__: Index query  
-   __Index used__: Static-index  
+*  **Query type**: Index query  
+   **Index used**: Static-index  
 
-* You can specify which __STATIC-index__ the query will use.
+* You can specify which **STATIC-index** the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
   when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../studio/database/indexes/indexes-overview#auto-indexes--vs--static-indexes).  
@@ -92,13 +92,13 @@ __1. Query an existing index__:
 {NOTE: }
 
 <a id="dynamicQuery" /> 
-__2. Query a collection - with filtering__:  
+**2. Query a collection - with filtering**:  
 
-*  __Query type__: Dynamic Query  
-   __Index used__: Auto-index  
+*  **Query type**: Dynamic Query  
+   **Index used**: Auto-index  
 
 * When querying a collection without specifying an index and with some filtering condition  
-  (other than just the document ID) the query-optimizer will analyze the query to see if an __AUTO-index__  
+  (other than just the document ID) the query-optimizer will analyze the query to see if an **AUTO-index**  
   that can answer the query already exists, i.e. an auto-index on the collection queried with index-fields that match those queried.  
 
 * If such auto-index (Not a static one...) is found, it will be used to fetch the results.  
@@ -132,17 +132,17 @@ __2. Query a collection - with filtering__:
 {NOTE: }
 
 <a id="collectionQuery" /> 
-__3. Query a collection - query full collection | query by ID__:  
+**3. Query a collection - query full collection | query by ID**:  
  
-* __Query type__: Full collection Query  
-  __Index used__: The raw collection (internal storage indexes)  
+* **Query type**: Full collection Query  
+  **Index used**: The raw collection (internal storage indexes)  
 
 * Full collection query:
 
   * When querying a collection without specifying an index and with no filtering condition,  
     then all documents from the specified collection are returned.
 
-  * RavenDB uses the raw collection documents in its __internal storage indexes__ as the source for this query.  
+  * RavenDB uses the raw collection documents in its **internal storage indexes** as the source for this query.  
     No auto-index is created.
    
   * Example RQL: &nbsp; `from Employees`
@@ -165,14 +165,14 @@ __3. Query a collection - query full collection | query by ID__:
 
 * The simplest way to issue a query is using session's `query` method.  
 
-* The following examples show __dynamic queries__ that do not specify which index to use.  
+* The following examples show **dynamic queries** that do not specify which index to use.  
   Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
 
 * Querying can be enhanced using these [extension methods](../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
  
 {NOTE: }
 
-__Query collection - no filtering__ 
+**Query collection - no filtering** 
 
 {CODE-TABS}
 {CODE-TAB:python:Method-syntax query_1_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -189,7 +189,7 @@ from "Employees"
 
 {NOTE: }
 
-__Query collection - by ID__
+**Query collection - by ID**
 
 {CODE-TABS}
 {CODE-TAB:python:Method-syntax query_2_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -206,7 +206,7 @@ from "Employees" where id() == "employees/1-A"
 
 {NOTE: }
 
-__Query collection - with filtering__ 
+**Query collection - with filtering** 
 
 {CODE-TABS}
 {CODE-TAB:python:Method-syntax query_3_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -225,7 +225,7 @@ from "Employees" where FirstName == "Robert"
 
 {NOTE: }
 
-__Query collection - with paging__ 
+**Query collection - with paging** 
 
 {CODE-TABS}
 {CODE-TAB:python:Method-syntax query_4_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -251,7 +251,7 @@ from "Products" limit 5, 10 // skip 5, take 10
    * [What is a document query](../../../client-api/session/querying/document-query/what-is-document-query)
    * [query -vs- document_query](../../../client-api/session/querying/document-query/query-vs-document-query)
 
-__Example__:
+**Example**:
 
 {CODE-TABS}
 {CODE-TAB:python:document_query query_5_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -274,7 +274,7 @@ from "Employees" where FirstName = "Robert"
 
 * The session also gives you a way to express the query directly in RQL using the `raw_query` method.
 
-__Example__:
+**Example**:
 
 {CODE-TABS}
 {CODE-TAB:python:RawQuery query_6_1@ClientApi\Session\Querying\HowToQuery.py /}
@@ -316,12 +316,12 @@ Available custom methods for session's [query](../../../client-api/session/query
 
 | Parameter | Type | Description |
 |--------------------|--------|------------------------------------------|
-| __object_type__ | `Type[_T]` | Queried entities type |
-| __collection_name__ | `str` | Queried collection name |
-| __query__ | `str` | RQL query string |
-| __index_name__ | `str` | Queried index name |
-| __index_type__ | `Type[_TIndex]` | Queried index type |
-| __is_map_reduce__ | `bool` | Is a map-reduce index queried |
+| **object_type** | `Type[_T]` | Queried entities type |
+| **collection_name** | `str` | Queried collection name |
+| **query** | `str` | RQL query string |
+| **index_name** | `str` | Queried index name |
+| **index_type** | `Type[_TIndex]` | Queried index type |
+| **is_map_reduce** | `bool` | Is a map-reduce index queried |
 
 | Return Value | |
 | - | - |

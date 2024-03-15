@@ -6,14 +6,14 @@
 
 * The following options are available to __count query results__:
 
-    * [count](../../../client-api/session/querying/how-to-count-query-results#count)
+    * [`count`](../../../client-api/session/querying/how-to-count-query-results#count)
     * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
 
 {NOTE/}
 
 ---
 
-{PANEL: count}
+{PANEL: `count`}
 
 Count query results using the `count` method.  
 

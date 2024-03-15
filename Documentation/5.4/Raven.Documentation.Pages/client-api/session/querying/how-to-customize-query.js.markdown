@@ -9,8 +9,7 @@
 
 * These methods can be used for both a dynamic-query and an index-query.
 
-* Note:  
-  A [query](../../../client-api/session/querying/how-to-query) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+* A [query](../../../client-api/session/querying/how-to-query) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events).
 
 * Customization methods available:
