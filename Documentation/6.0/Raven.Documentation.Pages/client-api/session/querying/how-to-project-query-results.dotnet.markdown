@@ -100,7 +100,7 @@
 
 * You can specify what fields from the document you want to retrieve and even provide a complex expression.
 
-### Example I - Projecting individual fields of the document:
+### Example - Projecting individual fields of the document:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -111,7 +111,7 @@ select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Projecting arrays and objects:
+### Example - Projecting arrays and objects:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -130,7 +130,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projection with expression:
+### Example - Projection with expression:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -143,7 +143,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with calculations:
+### Example - Projection with calculations:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -160,7 +160,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projecting using functions:
+### Example - Projecting using functions:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -174,7 +174,7 @@ from "Employees" as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VI - Projecting using a loaded document:
+### Example - Projecting using a loaded document:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -189,7 +189,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection with dates:
+### Example - Projection with dates:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -204,7 +204,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with raw JavaScript code:
+### Example - Projection with raw JavaScript code:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -218,7 +218,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with metadata:
+### Example - Projection with metadata:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
