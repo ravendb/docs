@@ -14,9 +14,9 @@
   * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
 
   * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
-      * [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
-      * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
-      * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
+      * [select_fields_query_data](../../../client-api/session/querying/how-to-project-query-results#select_fields_query_data)  
+      * [raw_query with `select`](../../../client-api/session/querying/how-to-project-query-results#raw_query-with-select)  
+      * [select_fields](../../../client-api/session/querying/how-to-project-query-results#select_fields)  
 
   * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
 
@@ -62,7 +62,7 @@
 
 * On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
-* Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
+* Any modification made to a projection entity will not modify the corresponding document on the server when `save_changes` is called.
 
 ### Projections are the final stage in the query pipeline:
 
@@ -75,14 +75,14 @@
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a single projection request can be made per Query (and DocumentQuery).  
+* Only a single projection request can be made per query.  
   Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
   However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations) 
-  inside the projection.
+* inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
@@ -92,30 +92,29 @@
 
 {PANEL/}
 
+
 ## Projection Methods
 
-{PANEL: Select}
+{PANEL: select_fields_query_data}
 
-* The most common way to perform a query with a projection is to use the `Select` method.  
+* The most common way to perform a query with a projection is to use the `select_fields_query_data` method.  
 
 * You can specify what fields from the document you want to retrieve and even provide a complex expression.
 
-### Example I - Projecting individual fields of the document:
+### Example - Projecting individual fields of the document:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_1_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies"
 select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Projecting arrays and objects:
+### Example - Projecting arrays and objects:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Using simple expression:
 from "Orders"
@@ -130,11 +129,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projection with expression:
+### Example - Projection with expression:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_3_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e
 select {
@@ -143,11 +141,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with calculations:
+### Example - Projection with calculations:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_4_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" as x
 select {
@@ -160,40 +157,16 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projecting using functions:
+{PANEL/}
+
+{PANEL: raw_query with `select`}
+
+Data can be projected by sending the server raw RQL with the `select` keyword using the `raw_query` method.  
+
+### Example - Projection with dates:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-declare function output(e) {
-    var format = p => p.FirstName + " " + p.LastName;
-    return { FullName: format(e) };
-}
-from "Employees" as e select output(e)
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Example VI - Projecting using a loaded document:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_6_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "Orders" as o
-load o.Company as c
-select {
-	CompanyName: c.Name,
-	ShippedAt: o.ShippedAt
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Example VII - Projection with dates:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_7_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select { 
@@ -204,11 +177,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with raw JavaScript code:
+### Example - Projection with raw JavaScript code:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select {
@@ -218,11 +190,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with metadata:
+### Example - Projection with metadata:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_9_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select {
@@ -234,59 +205,12 @@ select {
 
 {PANEL/}
 
-{PANEL: ProjectInto}
+{PANEL: select_fields}
 
-* Instead of `Select`, you can use `ProjectInto` to project all public fields from a generic type.
- 
-* The results will be projected into objects of the specified projection class.
+The projected fields can also be specified using the `select_fields` method.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_10@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Query_async projections_10_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "Companies"
-select Name, Phone, Fax
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-{PANEL/}
-
-{PANEL: SelectFields}
-
-The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
-It has two overloads:
-
-{CODE-BLOCK: csharp}
-// 1) Select fields to project by the projection class type
-IDocumentQuery<TProjection> SelectFields<TProjection>();
-
-// 2) Select specific fields to project
-IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
-{CODE-BLOCK/}
-
-### Using projection class type:
-
-The projection class fields are the fields that you want to project from the document class.
-
-{CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery projections_11@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery_async projections_11_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "Companies"
-select Name, Phone, Fax
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
-### Using specific fields:
-
-The fields specified are the fields that you want to project from the projection class.
-
-{CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery_async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Projection_class projections_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:python:DocumentQuery projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies"
 select Name, Phone
@@ -297,17 +221,13 @@ select Name, Phone
 
 {PANEL: Single projection per query}
 
-* As of RavenDB v6.0, only a single projection request can be made per Query (and DocumentQuery).
+* As of RavenDB v6.0, only a single projection request can be made per query.
 
-* Attempting multiple projection executions in the same query will result in an exception.
+* Attempting multiple projection executions in the same query, e.g. by calling 
+  `select_fields_query_data` multiple times or by calling `select_fields_query_data` 
+  and then `select_fields`, will result in an exception.  
 
-    * Query:  
-      Multiple `Select` calls or a combination of `ProjectInto` with a `Select` call will result in an exception.
-   
-    * DocumentQuery:  
-      Multiple `SelectFields` calls will result in an exception.
-
-{CODE projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE:python projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
 
 {PANEL/}
 
