@@ -47,14 +47,14 @@
 
 {PANEL: Order by field value}
 
-* Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
+* Use `order_by` or `order_by_descending` to order the results by the specified document-field.  
 
 {CODE-TABS}
 {CODE-TAB:python:Query sort_1@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
-order by UnitsInStock as long
+where units_in_stock > 10
+order by units_in_stock  as long
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -87,7 +87,7 @@ order by UnitsInStock as long
 {CODE-TAB:python:Query sort_4@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock < 5 or Discontinued == true
+where units_in_stock < 5 or Discontinued == true
 order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -114,7 +114,7 @@ The score details can be retrieved by either:
 
 {PANEL: Order by random}
 
-* Use `RandomOrdering` to randomize the order of the query results.
+* Use `random_ordering` to randomize the order of the query results.
 
 * An optional seed parameter can be passed.
 
@@ -122,7 +122,7 @@ The score details can be retrieved by either:
 {CODE-TAB:python:Query sort_7@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
+where units_in_stock > 10
 order by random()
 // order by random(someSeed)
 {CODE-TAB-BLOCK/}
@@ -202,7 +202,7 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 {CODE-TAB:python:Query sort_16@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by quantity_per_unit as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -225,8 +225,8 @@ order by QuantityPerUnit as alphanumeric
 {CODE-TAB:python:Query sort_19@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
-order by UnitsInStock as long desc, score(), Name
+where units_in_stock > 10
+order by units_in_stock as long desc, score(), Name
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -247,7 +247,7 @@ order by UnitsInStock as long desc, score(), Name
 {CODE-TAB:python:Query sort_22@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
+where units_in_stock > 10
 order by custom(UnitsInStock, "MySorter")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

@@ -18,7 +18,7 @@
 
 * In this page:
   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
-  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query#immutability)
+  * [Mutability](../../../../client-api/session/querying/document-query/query-vs-document-query#mutability)
   * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
 
 {NOTE/}
@@ -27,31 +27,16 @@
 
 {PANEL: API support}
 
-**Query**:
-
-* The API exposed by the _query_ method is a wrapper of _document_query_ and is built on top of it.
-
-* When using _query_, the query is translated into a _document_query_ object,  
-  which then builds into an RQL that is sent to the server.
-
-* The available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).
-
----
-
-**document_query**:
-
-* When using _document_query_, the query is translated into an RQL that is sent to the server.
-
-* The available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
+* `query` and `document_query` queries are translated to RQL and sent to the server.  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).  
+* Available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).  
 
 {PANEL/}
 
-{PANEL: Immutability}
+{PANEL: Mutability}
 
-* `query` is **immutable** while `document_query` is **mutable**.  
+* All Python queries (`query` and `document_query`) are **mutable**.  
   You may get different results if you try to *reuse* a query.
-
----
 
 * The usage of the `Query` method in the following example:
 
@@ -59,11 +44,11 @@
 
     will result with the following Lucene-syntax queries:
 
-    `query: from Users where startsWith(Name, 'A')`
+    `query: from Users where startsWith(name, 'A')`
 
-    `ageQuery: from Users where startsWith(Name, 'A') and Age > 21`
+    `ageQuery: from Users where startsWith(name, 'A') and age > 21`
 
-    `eyeQuery: from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+    `eyeQuery: from Users where startsWith(name, 'A') and eye_color = 'blue'`
 
 ---
 
@@ -73,13 +58,13 @@
 
     will result with the following Lucene queries:
 
-    `documentQuery: from Users where startsWith(Name, 'A')`  
+    `documentQuery: from Users where startsWith(name, 'A')`  
     (before creating `ageDocumentQuery`)
 
-    `ageDocumentQuery: from Users where startsWith(Name, 'A') and Age > 21`  
+    `ageDocumentQuery: from Users where startsWith(name, 'A') and age > 21`  
     (before creating `eyeDocumentQuery`)
 
-    `eyeDocumentuery: from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+    `eyeDocumentuery: from Users where startsWith(name, 'A') and age > 21 and eye_color = 'blue'`
 
     All created Lucene queries are the same query (actually the same instance).  
     This is an important hint to be aware of if you are going to reuse `document_query`.
@@ -88,7 +73,7 @@
 
 {PANEL: Default Query Operator}
 
-* Both `query` and `document_query` use `AND` as the default operator.  
+* Queries` use `AND` as the default operator.  
 
 * The operator can be replaced by calling `using_default_operator`:
         

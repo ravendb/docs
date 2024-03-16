@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Detailed **query statistics** can be retrieved for every executed query using the `Statistics` method.  
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.  
   
 * Stats such as query duration, number of results, index name used in the query, and more,  
   are returned in the `QueryStatistics` object.
@@ -34,7 +34,7 @@ from "Employees" where FirstName == "Anne"
 
 | Parameter | Type              | Description                |
 |-----------|-------------------|----------------------------|
-| **stats_callback** | `Callable[[QueryStatistics], None]` | An 'out' param for the query statistics |
+| **stats_callback** | `Callable[[QueryStatistics], None]` | An _action_ that will be called with query statistics object|
 
 | Property             | Type             | Description      |
 |----------------------|------------------|------------------|

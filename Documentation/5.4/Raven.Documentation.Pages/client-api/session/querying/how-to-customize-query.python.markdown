@@ -4,12 +4,11 @@
 
 {NOTE: }
 
-* Use `customize()` to set the following customization options on a specific [query](../../../client-api/session/querying/how-to-query).   
-  Can be set for both **dynamic** and **index** queries.
+* Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query).  
 
-* Each such customization can also be implemented via the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) API.
+* The customization methods can be set for both **dynamic** and **index** queries.  
 
-* A query can also be customized on the Store or Session level by subscribing to `on_before_query`.  
+* A query can also be customized on the Store or Session level by by calling `add_before_query`.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
 
 * Customization methods available:
@@ -177,7 +176,7 @@
 
 * If these fields are not stored in the index, the field values will be retrieved from the documents.  
 
-* Use the `projection` method to customize and modify this behavior.  
+* Use the `select_fields` method to customize and modify this behavior.  
 
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
@@ -267,9 +266,12 @@ In the above example:
 
 {PANEL: `timings`}
 
-* Use `timings` to get detailed stats of the time spent by the server on each part of the query.
+* When executing a query, you can retrieve query statistics that include the time spent by the server on each part of the query.  
 
-* The timing statistics will be included in the query results.
+* To do this, define a callback function that takes `QueryTimings` as an argument and applies whatever 
+  logic you want to apply.  
+
+* Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
 
 * Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
 
@@ -292,7 +294,7 @@ In the above example:
 
 | Parameters | Type | Description |
 |------------| ------------- | ----- |
-| **timings** | `QueryTimings` | An out param that will be filled with the timings results |
+| **timings_callback** | `Callable[[QueryTimings], None]` | An _action_ that will be called with the timings results |
 
 {NOTE/}
 
