@@ -3,7 +3,9 @@
 
 {NOTE: }
 
-* __Static indexes__:   
+* Indexing attachments allows you to query for documents based on their attachments' details and content.
+
+* __Static indexes__:  
   Both attachments' details and content can be indexed within a static-index definition.
 
 * __Auto-indexes__:  
@@ -29,8 +31,9 @@ __The index__:
 ---
 
 * To index attachments' details, call `attachmentsFor()` within the index definition.  
-  `attachmentsFor()` provides access to the __name__, __size__, __hash__, and __content-type__ of each attachment a document has.
-   These details can then be used when defining the index-fields.
+
+* `attachmentsFor()` provides access to the __name__, __size__, __hash__, and __content-type__ of each attachment a document has.
+  These details can then be used when defining the index-fields.
 
 * To index attachments' content, see the examples below. 
 

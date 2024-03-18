@@ -4,7 +4,7 @@
 {NOTE: }
 
 * __Static indexes__:   
-  Both attachments' details and content can be within inside a static-index definition.
+  Both attachments' details and content can be indexed within a static-index definition.
 
 * __Auto-indexes__:  
   Auto-indexing attachments via dynamic queries is not available at this time.
