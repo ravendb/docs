@@ -97,7 +97,7 @@
 
 {PANEL: select_fields_query_data}
 
-* The most common way to perform a query with a projection is to use the `select_fields_query_data` method.  
+* The most common way to perform a query with a projection is to use the `select_fields` or `select_fields_query_data` method.  
 
 * You can specify what fields from the document you want to retrieve and even provide a complex expression.
 

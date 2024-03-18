@@ -34,10 +34,10 @@ single or multiple facets for the query using a straightforward and fluent API.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | ***ranges** | `RangeBuilder` | A list of aggregated ranges |
-| **field_name** | `str` | Points to the index field that should be used for operation (`byRanges`, `byField`) or to document field that should be used for aggregation (`sumOn`, `minOn`, `maxOn`, `averageOn`) |
+| **field_name** | `str` | Points to the index field that should be used for operation (`by_ranges`, `by_field`) or to document field that should be used for aggregation (`sum_on`, `min_on`, `max_on`, `average_on`) |
 | **display_name** | `str` | If set, results of a facet will be returned under this name |
 | **options** | `FacetOptions` | Non-default options that should be used for operation |
-| **path** | `str` | Points to the index field that should be used for operation (`byRanges`, `byField`) or to document field that should be used for aggregation (`sumOn`, `minOn`, `maxOn`, `averageOn`) |
+| **path** | `str` | Points to the index field that should be used for operation (`by_ranges`, `by_field`) or to document field that should be used for aggregation (`sum_on`, `min_on`, `max_on`, `average_on`) |
 
 ### Options
 
