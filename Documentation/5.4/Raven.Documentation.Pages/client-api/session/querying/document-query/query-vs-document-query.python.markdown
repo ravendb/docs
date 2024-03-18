@@ -73,7 +73,7 @@
 
 {PANEL: Default Query Operator}
 
-* Queries` use `AND` as the default operator.  
+* Queries use `AND` as the default operator.  
 
 * The operator can be replaced by calling `using_default_operator`:
         

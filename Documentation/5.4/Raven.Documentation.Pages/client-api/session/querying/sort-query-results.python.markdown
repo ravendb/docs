@@ -147,9 +147,9 @@ order by random()
 {CODE-TAB:python:Query sort_10@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-group by Category
+group by category
 order by count() as long
-select key() as "Category", count()
+select key() as "category", count()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -163,9 +163,9 @@ select key() as "Category", count()
 {CODE-TAB:python:Query sort_13@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-group by Category
+group by category
 order by Sum as long
-select key() as 'Category', sum(UnitsInStock) as Sum
+select key() as 'category', sum(UnitsInStock) as Sum
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

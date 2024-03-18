@@ -8,7 +8,7 @@
 
 * The customization methods can be set for both **dynamic** and **index** queries.  
 
-* A query can also be customized on the Store or Session level by by calling `add_before_query`.  
+* A query can be customized on the Store or Session level by calling various methods from the rich API.  
   Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
 
 * Customization methods available:
