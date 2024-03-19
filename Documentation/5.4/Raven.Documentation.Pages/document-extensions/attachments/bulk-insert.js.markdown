@@ -24,6 +24,10 @@
   Pass it the attachment's name, content, and type (optional).  
   The `store` function can be called repeatedly as necessary.
 
+* Note:  
+  If an attachment with the specified name already exists on the document,  
+  the bulk insert operation will overwrite it.
+
 {PANEL/}
 
 {PANEL: Usage example}
