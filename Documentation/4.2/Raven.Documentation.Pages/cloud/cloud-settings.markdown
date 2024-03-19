@@ -19,11 +19,11 @@
 
 ---
 
-
 {PANEL: Setting Cloud Configurations via Studio}
 
 If you want to change configurations for cloud instances, they must be set in Studio. 
 
+* [Database Configurations](../studio/database/settings/database-settings)
 * [Indexing Configurations](../studio/database/indexes/create-map-index#configuration)
 
 To learn how to access the RavenDB Cloud Studio interface, see the [Studio section in the Cloud Overview](../cloud/cloud-overview#ravendb-studio---graphic-user-interface) article.
@@ -34,18 +34,23 @@ To learn how to access the RavenDB Cloud Studio interface, see the [Studio secti
 
 ### Max Batch Size
 
-* Indexing is done in batches so that we can calibrate the number of documents that an index processes 
-  in accordance with available system resources.  
-   * e.g. An index that processes 1,000,000 documents might exhaust memory and other system resources 
-     if the index is set to process them all in one batch.  
-     Instead, the index can be set to process the documents in batches of 10,000. 
-* If an index processes a collection in multiple batches, it will continue processing each new batch where the previous batch stopped.  
-* To prevent exhausting system resources, you can adjust the `Indexing.MapBatchSize` configuration setting.  
+When heavy-duty indexing is done on a large dataset, there are ways to prevent exhausting memory and other system resources. 
+
+* Indexing is done in batches so that we can calibrate the number of documents that are processed per batch
+  in accordance with available system resources. 
+  Additionally, batching creates pauses which free resources so that RavenDB can quickly serve its clients 
+  before it continues building the index.
+   * e.g. Processing 1,000,000 documents might exhaust memory and other system resources 
+     if the configuration is set to process them all in one batch.  
+     Instead, the index can be set to process the documents in batches of 10,000 to save system resources for other tasks. 
+* If RavenDB is indexing documents in multiple batches, it will continue processing each new batch where the previous batch stopped.  
+* To calibrate your indexing batch size, you can adjust the `Indexing.MapBatchSize` configuration setting.  
 
 The factors to consider when adjusting the max indexing batch size:
 
 * [Size of documents](https://ravendb.net/articles/dealing-with-large-documents-100-mb#:~:text=RavenDB%20can%20handle%20large%20documents,isn't%20a%20practical%20one.)
-* [IOPS](../cloud/cloud-settings#changing-the-iops-number) - Input/Output Operations Per Second
+* [The Complexity of calculations](../studio/database/indexes/indexing-performance#common-indexing-issues) that static indexes do.
+* [IOPS](../cloud/cloud-scaling#change-storage) - Input/Output Operations Per Second
 
 ---
 
@@ -66,7 +71,6 @@ Explanation of the configuration value:
 In this example, 4,096 is larger than 1024, so the maximum batch size will be 4,096 documents.
 {NOTE/}
 
-
 ---
 
 #### Overriding the Default Setting
@@ -76,25 +80,9 @@ Change [cloud configurations in Studio](../studio/database/indexes/create-map-in
 **Type**: `int`  
 **MinValue**: `128`  
 **Configuration Key**: `Indexing.MapBatchSize`  
-**Value**: Set your preferred maximum number of documents per batch.  
-
----
-
-#### Changing the cloud instance IOPS number 
-
-(IOPS - Input/Output Operations Per Second - can be adjusted according to your needs.)
-
-  !["Find IOPS Number"](images\configuration-see-iops.png "Find IOPS Number")
-
-   1. **Products**  
-      In the Cloud Portal, click the Products tab.
-   2. **IOPS**  
-      Your current IOPS number is written here.  
-   3. **Change Storage**  
-      It can be adjusted by clicking "Change Storage". 
+**Value**: Set your preferred maximum number of documents per batch.   
 
 {PANEL/}
-
 
 ##Related Articles
   

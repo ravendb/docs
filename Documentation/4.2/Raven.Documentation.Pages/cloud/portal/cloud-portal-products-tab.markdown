@@ -35,7 +35,7 @@ D. [Summary](../../cloud/portal/cloud-portal-products-tab#d.-new-product-summary
 ####A. New Product: Plan
 Use the Plan page to choose your product's cloud **Provider**, **Region** and **Tier**.  
 
-!["Plan Provider Region & Tier"](images\provider-region-tier-selection.png "Figure 2 - Plan Provider Region & Tier")
+!["Figure 2 - Plan Provider Region & Tier"](images\provider-region-tier-selection.png "Figure 2 - Plan Provider Region & Tier")
 
   
 
@@ -125,16 +125,11 @@ You can view your configuration and change your product's instance type and stor
 ---
 
 * **Change Instance Type**  
-  Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.  
-  
-
-
+  Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.
 
 !["Figure 12 - Manage Product: Scale"](images\portal-product-details-edit-tier.png "Figure 12 - Manage Product: Change Tier")
 
-  You can upscale or downscale only within the current product tier. The development-tier DEV30 configuration,
-  for example, can upscale to Dev50, but not to the production-tier PB10 configuration.  
-  Your databases and data will be automatically migrated into your new configuration.  
+  More details can be found [here](../cloud-scaling#change-instance-type).
 
 ---
 
@@ -142,9 +137,8 @@ You can view your configuration and change your product's instance type and stor
   Use this slider to modify your product's storage.  
 
 !["Figure 13 - Manage Product: Storage"](images\portal-product-details-edit-storage.png "Figure 13 - Manage Product: Change Storage")
-  
-  You can allocate more disk space to your cluster (but not reduce it), and you can select Premium disks and the 
-  number of IOPS reserved for them.  
+
+  More details can be found [here](../cloud-scaling#change-storage).
 
 ---
 
