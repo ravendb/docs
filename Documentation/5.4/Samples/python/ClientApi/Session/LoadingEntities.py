@@ -4,12 +4,12 @@ from ravendb import IncludeBuilder, LoaderWithInclude, ConditionalLoadResult
 from ravendb.infrastructure.entities import User
 from ravendb.infrastructure.orders import Employee, Product, Supplier
 
-from examples_base import ExamplesBase
+from examples_base import ExampleBase
 
 _T = TypeVar("_T")
 
 
-class LoadingEntities(ExamplesBase):
+class LoadingEntities(ExampleBase):
     def setUp(self):
         super().setUp()
         with self.embedded_server.get_document_store("LoadingEntitiesXY").open_session() as session:
@@ -23,17 +23,25 @@ class LoadingEntities(ExamplesBase):
             key_or_keys: Union[List[str], str],
             object_type: Optional[Type[_T]] = None,
             includes: Callable[[IncludeBuilder], None] = None,
-        ) -> Union[Dict[str, _T], _T]:
-            ...
+        ) -> Union[Dict[str, _T], _T]: ...
 
         # endregion
         # region loading_entities_2_0
-        def include(self, path: str) -> LoaderWithInclude:
-            ...
+        def include(self, path: str) -> LoaderWithInclude: ...
 
         # endregion
 
-        # region loading_entities_4_0_1
+        # region loading_entities_3_0
+        def load(
+            self,
+            key_or_keys: Union[List[str], str],  # <- List of ids
+            object_type: Optional[Type[_T]] = None,
+            includes: Callable[[IncludeBuilder], None] = None,
+        ) -> Union[Dict[str, _T], _T]: ...
+
+        # endregion
+
+        # region load_starting_with
         def load_starting_with(
             self,
             id_prefix: str,
@@ -43,36 +51,33 @@ class LoadingEntities(ExamplesBase):
             page_size: Optional[int] = None,
             exclude: Optional[str] = None,
             start_after: Optional[str] = None,
-        ) -> List[_T]:
-            ...
+        ) -> List[_T]: ...
         # endregion
 
-        # region loading_entities_4_0_2
+        # region load_starting_with_into_stream
         def load_starting_with_into_stream(
             self,
             id_prefix: str,
-            output: bytes,
             matches: str = None,
             start: int = 0,
             page_size: int = 25,
             exclude: str = None,
             start_after: str = None,
-        ):
-            ...
+        ) -> bytes: ...
         # endregion
 
     # region loading_entities_5_0
-    # unsupported, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
+    # waiting for merge, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
     # endregion
     # region loading_entities_6_0
-    def is_loaded(self, key: str) -> bool:
-        ...
+    def is_loaded(self, key: str) -> bool: ...
 
     # endregion
 
     # region loading_entities_7_0
-    def conditional_load(self, key: str, change_vector: str, object_type: Type[_T] = None) -> ConditionalLoadResult[_T]:
-        ...
+    def conditional_load(
+        self, key: str, change_vector: str, object_type: Optional[Type[_T]] = None
+    ) -> ConditionalLoadResult[_T]: ...
 
     # endregion
 
@@ -90,10 +95,10 @@ class LoadingEntities(ExamplesBase):
 
                 # loading 'products/1'
                 # including document found in 'supplier' property
-                products_by_key = session.include("supplier").load(Product, "products/1")
+                products_by_key = session.include("supplier").load("products/1", Product)
                 product = products_by_key["products/1"]
 
-                supplier = session.load(product.supplier)  # this will not initiate an additional server call
+                supplier = session.load(product.supplier)  # this will not make server call
 
                 # endregion
 
@@ -102,7 +107,7 @@ class LoadingEntities(ExamplesBase):
 
                 # loading 'products/1'
                 # including document found in 'Supplier' property
-                products_by_key = session.include("Supplier").load(Product, "products/1")
+                products_by_key = session.include("Supplier").load("products/1", Product)
                 product = products_by_key["products/1"]
 
                 supplier = session.load(product.supplier, Supplier)
@@ -132,10 +137,8 @@ class LoadingEntities(ExamplesBase):
                 # endregion
                 ...
             with store.open_session() as session:
-                session.advanced.load_starting_with_into_stream = lambda x, y: None
                 # region loading_entities_5_2
-                stream_bytes = bytes(b"My loaded documents will go here -> ")
-                session.advanced.load_starting_with_into_stream("employees/", stream_bytes)
+                results_bytes = session.advanced.load_starting_with_into_stream("employees/")
                 # endregion
 
             with store.open_session() as session:
