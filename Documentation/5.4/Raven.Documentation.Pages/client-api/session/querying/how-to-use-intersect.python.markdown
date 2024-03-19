@@ -1,6 +1,7 @@
 # Using Intersect
 
-To return only documents that match **all** provided sub-queries, use the `Intersect` extension which enables RavenDB to perform server-side intersection queries.
+To return only documents that match **all** provided sub-queries, use the `intersect` method 
+which enables RavenDB to perform server-side intersection queries.
 
 ## Syntax
 
