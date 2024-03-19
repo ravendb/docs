@@ -3,6 +3,8 @@
 
 {NOTE: }
 
+* Indexing attachments allows you to query for documents based on their attachments' details and content.
+
 * __Static indexes__:   
   Both attachments' details and content can be indexed within a static-index definition.
 
