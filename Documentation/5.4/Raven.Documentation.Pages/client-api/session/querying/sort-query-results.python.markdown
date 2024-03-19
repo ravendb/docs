@@ -47,16 +47,14 @@
 
 {PANEL: Order by field value}
 
-* Use `OrderBy` or `OrderByDescending` to order the results by the specified document-field.
+* Use `order_by` or `order_by_descending` to order the results by the specified document-field.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_1@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_2@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_3@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_1@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
-order by UnitsInStock as long
+where units_in_stock > 10
+order by units_in_stock  as long
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -64,10 +62,10 @@ order by UnitsInStock as long
 
 **Ordering Type**:
 
-* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.  
 
-* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
+* E.g. in the above example, ordering by `x => x.units_in_stock` will result in `OrderingType.LONG`  
   because that property data type is an integer.
 
 * Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type) below.
@@ -83,15 +81,13 @@ order by UnitsInStock as long
 
 * The higher the score value the better the match.  
 
-* Use `OrderByScore` or `OrderByScoreDescending` to order the query results by this score.
+* Use `order_by_score` or `order_by_score_descending` to order the query results by this score.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_4@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_5@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_6@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_4@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock < 5 or Discontinued == true
+where units_in_stock < 5 or Discontinued == true
 order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -111,27 +107,22 @@ The score details can be retrieved by either:
    
   * **Get score from metadata**:  
     The score is available in the `@index-score` metadata property within each result.  
-    The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
-
-    {CODE:csharp get_score_from_metadata@ClientApi\Session\Querying\SortQueryResults.cs /}
-
+    
 {INFO/}
 
 {PANEL/}
 
 {PANEL: Order by random}
 
-* Use `RandomOrdering` to randomize the order of the query results.
+* Use `random_ordering` to randomize the order of the query results.
 
 * An optional seed parameter can be passed.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_7@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_8@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_9@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_7@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
+where units_in_stock > 10
 order by random()
 // order by random(someSeed)
 {CODE-TAB-BLOCK/}
@@ -150,17 +141,15 @@ order by random()
 
 {PANEL: Order by count (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Count` aggregation operation used in the query.
+* The results of a [group_by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `count` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_10@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_11@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_12@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_10@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-group by Category
+group by category
 order by count() as long
-select key() as "Category", count()
+select key() as "category", count()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -168,17 +157,15 @@ select key() as "Category", count()
 
 {PANEL: Order by sum (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Sum` aggregation operation used in the query.
+* The results of a [group_by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `sum` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_13@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_14@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_15@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_13@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-group by Category
+group by category
 order by Sum as long
-select key() as 'Category', sum(UnitsInStock) as Sum
+select key() as 'category', sum(UnitsInStock) as Sum
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -186,17 +173,17 @@ select key() as 'Category', sum(UnitsInStock) as Sum
 
 {PANEL: Force ordering type}
 
-* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
 
-* A different ordering can be forced by passing the ordering type explicitly to `OrderBy` or `OrderByDescending`.
+* A different ordering can be forced by passing the ordering type explicitly to `order_by` or `order_by_descending`.
 
 * The following ordering types are available:
 
-    * `OrderingType.Long`
-    * `OrderingType.Double`
-    * `OrderingType.AlphaNumeric`
-    * `OrderingType.String` (lexicographic ordering)
+    * `OrderingType.LONG`
+    * `OrderingType.DOUBLE`
+    * `OrderingType.ALPHA_NUMERIC`
+    * `OrderingType.STRING` (lexicographic ordering)
 
 * When using RQL directly, if no ordering type is specified, then the server defaults to lexicographic ordering.
 
@@ -212,12 +199,10 @@ select key() as 'Category', sum(UnitsInStock) as Sum
   where "Abc10" will result after "Abc9".
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_16@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_17@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_18@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_16@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-order by QuantityPerUnit as alphanumeric
+order by quantity_per_unit as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -234,16 +219,14 @@ order by QuantityPerUnit as alphanumeric
 
 * There is no limit on the number of sorting actions that can be chained.
   
-* This is achieved by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+* This is achieved by using the `then_by` (`then_by_descending`) and `then_by_score` (`then_by_score_descending`) methods.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_19@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_20@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_21@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_19@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
-order by UnitsInStock as long desc, score(), Name
+where units_in_stock > 10
+order by units_in_stock as long desc, score(), Name
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -261,12 +244,10 @@ order by UnitsInStock as long desc, score(), Name
 * Once the custom sorter is deployed, you can sort the query results with it.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query sort_22@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:Query_async sort_23@ClientApi\Session\Querying\SortQueryResults.cs /}
-{CODE-TAB:csharp:DocumentQuery sort_24@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE-TAB:python:Query sort_22@ClientApi\Session\Querying\SortQueryResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where UnitsInStock > 10
+where units_in_stock > 10
 order by custom(UnitsInStock, "MySorter")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -275,14 +256,12 @@ order by custom(UnitsInStock, "MySorter")
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Session\Querying\SortQueryResults.cs /}
+{CODE:python syntax@ClientApi\Session\Querying\SortQueryResults.py /}
 
 | Parameter      | Type                          | Description                                                                                                                                                                |
 |----------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **path**       | `string`                      | The name of the field to sort by                                                                                                                                           |
-| **path**       | `Expression<Func<T, object>>` | A lambda expression to the field by which to sort                                                                                                                          |
-| **ordering**   | `QueryStatistics`             | The ordering type that will be used to sort the results:<br>`OrderingType.Long`<br>`OrderingType.Double`<br>`OrderingType.AlphaNumeric`<br>`OrderingType.String` (default) |
-| **sorterName** | `string`                      | The name of your custom sorter class                                                                                                                                       |
+| **field**       | `str`                      | The name of the field to sort by                                                                                                                                           |
+| **sorter_name_or_ordering_type**       | `Union[str, OrderingType]` | The custom sorter class name<br>**-or-**<br>The results sorting ordering type<br>Can be:<br>`OrderingType.LONG`<br>`OrderingType.DOUBLE`<br>`OrderingType.ALPHA_NUMERIC`<br>`OrderingType.STRING` (default) |
 
 {PANEL/}
 
