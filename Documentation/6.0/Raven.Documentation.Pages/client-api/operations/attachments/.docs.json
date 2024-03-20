@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "put-attachment.markdown",
+        "Name": "Put Attachment",
+        "DiscussionId": "002a2d15-8425-4a9a-a16a-78dd64c09aeb",
+        "Mappings": []
+    },
+    {
+        "Path": "get-attachment.markdown",
+        "Name": "Get Attachment",
+        "DiscussionId": "4d71988a-3bb8-47e8-bbe3-57a93780a1ae",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-attachment.markdown",
+        "Name": "Delete Attachment",
+        "DiscussionId": "8ac4e36a-3e75-4a16-8cf3-e0dd08a225f6",
+        "Mappings": []
+    }
+]
