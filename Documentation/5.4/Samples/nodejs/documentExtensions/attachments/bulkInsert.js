@@ -27,10 +27,11 @@ async function bulkInsertAttachments() {
                 const attachmentsBulkInsert = bulkInsert.attachmentsFor(users[i].id);
                 
                 // Call 'store' to attach the byte array to the bulkInsert instance
+                // The data stored in bulkInsert will be streamed to the server in batches 
                 await attachmentsBulkInsert.store("attachmentName", byteArray);
             }
         } finally {
-            // Persist the data - call finish
+            // Call finish to send all remaining data to the server
             await bulkInsert.finish();
         }
         //endregion

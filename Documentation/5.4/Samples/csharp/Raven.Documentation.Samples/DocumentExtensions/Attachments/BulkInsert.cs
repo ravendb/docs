@@ -91,10 +91,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         string userId = users[i].Id;
                         
-                        // Call AttachmentsFor, pass the document ID for which to attach the file
+                        // Call 'AttachmentsFor', pass the document ID for which to attach the file
                         var attachmentsBulkInsert = bulkInsert.AttachmentsFor(userId);
 
-                        // Call Store to add the file stream to the BulkInsert instance
+                        // Call 'Store' to add the file to the BulkInsert instance
+                        // The data stored in bulkInsert will be streamed to the server in batches 
                         attachmentsBulkInsert.Store("AttachmentName", stream);
                     }
                 }
