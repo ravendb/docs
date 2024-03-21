@@ -51,5 +51,11 @@
         "Name": "Settings",
         "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
         "Mappings": []
+    },
+    {
+        "Path": "cloud-support.markdown",
+        "Name": "Support",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
     }
 ]
