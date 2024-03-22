@@ -9,7 +9,7 @@
 * To find the documents that are missing the newly added fields you can either:  
     * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-(dynamic-query))  
     * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
-    * [Query by RQL in Studio](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-by-rql-in-studio)  
+    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -19,16 +19,14 @@
 
 {PANEL: Query the collection (dynamic query)}
 
-* You can make a dynamic query on a collection to find which documents are missing the specified field.
+To run a dynamic query over a collection and find which documents are missing a specified field,  
+use the `not` and `whereExists` extension methods, accessible from the [query](../../../client-api/session/querying/how-to-query) API, 
+as shown below.  
 
-* Use extension methods `not` & `whereExists` that are accessible from the [query](../../../client-api/session/querying/how-to-query) API.
+This will either create a new auto-index or add the queried field to an existing auto-index.  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicQuery).  
 
-* This will either create a new auto-index or add the queried field to an existing auto-index.  
-  Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicQuery).
-
-{NOTE: }
-
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:nodejs:DocumentQuery whereNotExists_1@client-api\session\Querying\filterByNonExistingField.js /}
@@ -39,25 +37,19 @@ where true and not exists("freight")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Query a static index}
 
-* You can search for documents with missing fields by querying a static index.  
+Documents with missing fields can be searched by querying a static index.  
 
-* The index definition must have the following document-fields indexed:
+The index definition must contain the following document fields indexed:
 
-    1. The field that is suspected to be __missing in some documents__.  
-  
-    2. A document-field that __exists in all documents__ in the collection,  
-       (i.e. the _id_ field, or any other field that is common to all).  
-       Indexing such a field is mandatory so that all documents in the collection will be indexed.
+* A document field that **exists** in **all** documents of the queried collection, e.g. the _Id_ field.  
+  Indexing this field will ensure that all the documents of this collection are indexed.
+* A document field that is suspected to be **missing** from some documents of the queried collection.  
 
-{NOTE: }
-
-__Example__
+**Example**
 
 {CODE:nodejs the_index@client-api\session\Querying\filterByNonExistingField.js /}
 
@@ -70,41 +62,38 @@ where true and not exists("freight")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
 {PANEL/}
 
-{PANEL: Query by RQL in Studio}
+{PANEL: Use Studio to Run an RQL Query}
 
-* You can query for documents with missing fields in the Studio's [Query view](../../../studio/database/queries/query-view).
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view).  
 
 * Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
+  {CODE-BLOCK:sql}
+from "Orders"    
+where exists("Company") and not exists("Freight")
+{CODE-BLOCK/}
 
-    {CODE-BLOCK:sql}
-from "orders"    
-where exists("company") and not exists("freight")
-    {CODE-BLOCK/}
+* In the `where` clause:  
+  First search for a field that **exists** in **all** documents of the queried collection, e.g. the _Id_ field.  
+  Then search for a field that **may be missing** from some documents of the queried collection.  
 
-* In the `where` clause,  
-  first search for a field that __exists__ in every document in the collection,  
-  and then search for the field that __may not exist__ in some of document.
+    ![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "Query for documents that are missing the specified field")
 
-![List Documents Without a Specified Field](images/non-existing-field-studio-rql.png "Query for documents that are missing the specified field")
-
-1. **Indexes**  
-   Click to see the Indexes menu.
-2. **Query**  
-   Select to open the Query view.
-3. **Query editor**  
-   Write the RQL query.
-4. **Run Query**  
-   Click or press ctrl+enter to run the query.
-5. **Index used**  
-   This is the name of the auto-index created to serve this query.  
-   You can click it to see the available Studio options for this index.  
-6. **Results**  
-   This is the list of documents that do not contain the specified 'Freight' field.  
-   (Field "Freight" was explicitly removed from these Northwind documents for this example.)
+    1. **Indexes**  
+       Click to see the Indexes menu.
+    2. **Query**  
+       Select to open the Query view.
+    3. **Query editor**  
+       Write the RQL query.
+    4. **Run Query**  
+       Click to run the query.
+    5. **Index used**  
+       The name of the auto-index created to serve this query.  
+       You can click it to see the available Studio options for this index.  
+    6. **Results**  
+       This is the list of documents that do not contain the specified 'Freight' field.  
+       (the "Freight" Field was removed from these Northwind documents for this example.)
 
 {PANEL/}
 

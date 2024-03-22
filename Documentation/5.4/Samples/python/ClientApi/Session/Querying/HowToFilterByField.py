@@ -11,7 +11,8 @@ _T = TypeVar("_T")
 class Foo:
     # region whereExists_syntax
     def where_exists(self, field_name: str) -> DocumentQuery[_T]: ...
-
+    def where_equals(self, field_name: str) -> DocumentQuery[_T]: ...
+    # endregion
 
 class HowToFilterByField(ExampleBase):
     def setUp(self):

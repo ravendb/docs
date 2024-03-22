@@ -4,12 +4,13 @@
 
 {NOTE: }
 
-* Query execution can be deferred.  
-  You can __define a query as lazy__ and execute it later when query results are actually needed.
+* Query execution can be deferred: the query can be defined as **Lazy**, and executed 
+  at a later time, when its results are actually needed.  
 
-* This article contains lazy queries examples.  
-  __Prior to this article__, please refer to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily)  for general knowledge about  
-  RavenDB's lazy behavior, and other request types that can be executed lazily within a session.
+* This article contains examples for lazy queries. Prior to reading it, please refer 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily) 
+  for general knowledge about RavenDB's lazy behavior and other request types that can be 
+  executed lazily within a session.
 
 * In this page:
     * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)

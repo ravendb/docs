@@ -1,10 +1,12 @@
-from typing import Optional, Callable, Dict
+from typing import Optional, Callable, Dict, List, TypeVar
 
 from ravendb import Facet, RangeFacet, Lazy, SuggestionResult, AbstractIndexCreationTask
 from ravendb.documents.queries.facets.misc import FacetResult
 from ravendb.infrastructure.orders import Product
 
 from examples_base import ExampleBase, Employee
+
+_T = TypeVar("_T")
 
 
 class HowToPerformQueriesLazily(ExampleBase):
@@ -80,6 +82,12 @@ class HowToPerformQueriesLazily(ExampleBase):
 
 
 class Foo:
+    # region syntax_1
+    # Lazy query
+    def lazily(self, on_eval: Callable[[List[_T]], None] = None) -> Lazy[List[_T]]: ...
+
+    # endregion
+
     # region syntax_2
     # Lazy count query
     def count_lazily(self) -> Lazy[int]: ...
