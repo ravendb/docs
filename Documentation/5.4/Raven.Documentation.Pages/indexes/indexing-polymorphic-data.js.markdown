@@ -56,7 +56,7 @@ However, what if we need to query across ALL animal collections?
 
 ---
 
-Writing a Multi-map index enables getting results from all collections the index was defined for.
+Writing a [Multi-map index](../indexes/multi-map-indexes) enables getting results from all collections the index was defined for.
 
 {CODE-TABS}
 {CODE-TAB:nodejs:MultiMap_Index index_3@indexes\indexingPolymorphicData.js /}
@@ -108,7 +108,7 @@ where name == "Mitzy"
 This option involves customizing the collection name that is assigned to documents created from  
 subclasses of the _Animal_ class.
 
-This is done by setting the `findCollectionName` convention on the document store.
+This is done by setting the [findCollectionName](../client-api/configuration/conventions#findcollectionname) convention on the document store.
 
 {CODE:nodejs define_convention@indexes\indexingPolymorphicData.js /}
 
