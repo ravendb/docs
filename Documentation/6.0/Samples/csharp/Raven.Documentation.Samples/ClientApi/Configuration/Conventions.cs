@@ -386,4 +386,11 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         public TimeSpan WaitForReplicationAfterSaveChangesTimeout { get; set; }
         #endregion
     }
+
+    internal class MyHttpClient : HttpClient
+    {
+        public MyHttpClient(HttpMessageHandler handler) : base(handler)
+        {
+        }
+    }
 }
