@@ -11,6 +11,7 @@ using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 {
@@ -22,7 +23,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
             void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
 
             void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
-
             #endregion
 
             #region patch_generic_interface_set_value
@@ -34,10 +34,23 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
             #region patch_generic_interface_array_modification_lambda
             void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> fieldPath,
-                Expression<Func<JavaScriptArray<U>, object>> arrayMofificationLambda);
+                Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
 
             void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
-                Expression<Func<JavaScriptArray<U>, object>> arrayMofificationLambda);
+                Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
+            #endregion
+
+            #region add_or_patch_generic
+            void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU value);
+            #endregion
+
+            #region add_or_patch_array_generic
+            void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, List<TU>>> path, 
+                Expression<Func<JavaScriptArray<TU>, object>> arrayAdder);
+            #endregion
+
+            #region add_or_increment_generic
+            void AddOrIncrement<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU valToAdd);
             #endregion
 
             #region patch_non_generic_interface_in_session
@@ -103,9 +116,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #endregion
 
                 #region patch_firstName_and_lastName_generic
-                // change FirstName to Robert and LastName to Carter in single request
-                // note that in this case, we create single request, but two seperate batch operations
-                // in order to achieve atomicity, please use the non generic APIs
+                // Modify FirstName to Robert and LastName to Carter in single request
+                // ===================================================================
+                
+                // The two Patch operations below are sent via 'SaveChanges()' which complete transactionally,
+                // as this call generates a single HTTP request to the database.
+                // Either both will succeed or both will be rolled back since they are applied within the same transaction.
+                // However, on the server side, the two Patch operations are still executed separately.
+                // To achieve atomicity at the level of a single server-side operation, use 'Defer' or the operations syntax.
+                
                 session.Advanced.Patch<Employee, string>("employees/1", x => x.FirstName, "Robert");
                 session.Advanced.Patch<Employee, string>("employees/1", x => x.LastName, "Carter");
 
@@ -113,16 +132,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #endregion
 
                 #region pathc_firstName_and_lastName_non_generic_session
-                // change FirstName to Robert and LastName to Carter in single request
-                // note that here we do maintain the atomicity of the operation
+                // Change FirstName to Robert and LastName to Carter in single request
+                // Note that here we do maintain the atomicity of the operation
                 session.Advanced.Defer(new PatchCommandData(
                     id: "employees/1",
                     changeVector: null,
                     patch: new PatchRequest
                     {
                         Script = @"
-                                this.FirstName = args.UserName.FirstName
-                                this.LastName = args.UserName.LastName",
+                                this.FirstName = args.UserName.FirstName;
+                                this.LastName = args.UserName.LastName;",
                         Values =
                         {
                             {
@@ -140,16 +159,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #endregion
 
                 #region pathc_firstName_and_lastName_store
-                // change FirstName to Robert and LastName to Carter in single request
-                // note that here we do maintain the atomicity of the operation
+                // Change FirstName to Robert and LastName to Carter in single request
+                // Note that here we do maintain the atomicity of the operation
                 store.Operations.Send(new PatchOperation(
                     id: "employees/1",
                     changeVector: null,
                     patch: new PatchRequest
                     {
                         Script = @"
-                                this.FirstName = args.UserName.FirstName
-                                this.LastName = args.UserName.LastName",
+                                this.FirstName = args.UserName.FirstName;
+                                this.LastName = args.UserName.LastName;",
                         Values =
                         {
                             {
@@ -176,7 +195,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"this.UnitsInStock += args.UnitsToAdd",
+                        Script = @"this.UnitsInStock += args.UnitsToAdd;",
                         Values =
                         {
                             {"UnitsToAdd", 10}
@@ -194,7 +213,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"this.UnitsInStock += args.UnitsToAdd",
+                        Script = @"this.UnitsInStock += args.UnitsToAdd;",
                         Values =
                         {
                             {"UnitsToAdd", 10}
@@ -210,7 +229,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"delete this.Age"
+                        Script = @"delete this.Age;"
                     },
                     patchIfMissing: null));
                 session.SaveChanges();
@@ -223,21 +242,21 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"delete this.Age"
+                        Script = @"delete this.Age;"
                     },
                     patchIfMissing: null));
                 #endregion
 
                 #region rename_property_age_non_generic_session
-                // rename FirstName to First
+                // rename FirstName to Name
                 session.Advanced.Defer(new PatchCommandData(
                     id: "employees/1",
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @" var firstName = this[args.Rename.Old];
+                        Script = @"var firstName = this[args.Rename.Old];
                                 delete this[args.Rename.Old];
-                                this[args.Rename.New] = firstName",
+                                this[args.Rename.New] = firstName;",
                         Values =
                         {
                             {
@@ -261,9 +280,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @" var firstName = this[args.Rename.Old];
+                        Script = @"var firstName = this[args.Rename.Old];
                                 delete this[args.Rename.Old];
-                                this[args.Rename.New] = firstName",
+                                this[args.Rename.New] = firstName;",
                         Values =
                         {
                             {
@@ -298,7 +317,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.push(args.Comment)",
+                        Script = "this.Comments.push(args.Comment);",
                         Values =
                         {
                             {
@@ -323,7 +342,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.push(args.Comment)",
+                        Script = "this.Comments.push(args.Comment);",
                         Values =
                         {
                             {
@@ -346,7 +365,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(1, 0, args.Comment)",
+                        Script = "this.Comments.splice(1, 0, args.Comment);",
                         Values =
                         {
                             {
@@ -369,7 +388,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(1, 0, args.Comment)",
+                        Script = "this.Comments.splice(1, 0, args.Comment);",
                         Values =
                         {
                             {
@@ -391,7 +410,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(3, 1, args.Comment)",
+                        Script = "this.Comments.splice(3, 1, args.Comment);",
                         Values =
                         {
                             {
@@ -415,7 +434,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = "this.Comments.splice(3, 1, args.Comment)",
+                        Script = "this.Comments.splice(3, 1, args.Comment);",
                         Values =
                         {
                             {
@@ -438,10 +457,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     patch: new PatchRequest
                     {
                         Script = @"this.Comments = this.Comments.filter(comment=>
-                                comment.Content.includes(args.TitleToRemove));",
+                                 !comment.Content.includes(args.Text));",
                         Values =
                         {
-                            {"TitleToRemove", "wrong"}
+                            {"Text", "wrong"}
                         }
                     },
                     patchIfMissing: null));
@@ -466,10 +485,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     patch: new PatchRequest
                     {
                         Script = @"this.Comments = this.Comments.filter(comment=>
-                                comment.Content.includes(args.TitleToRemove));",
+                                 !comment.Content.includes(args.Text));",
                         Values =
                         {
-                            {"TitleToRemove", "wrong"}
+                            {"Text", "wrong"}
                         }
                     },
                     patchIfMissing: null));
@@ -516,7 +535,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     .Send(new PatchByQueryOperation(@"from Orders as o
                                                       update
                                                       {
-                                                          o.Freight += 10;
+                                                          o.Freight +=10;
                                                       }"));
                 // Wait for the operation to be complete on the server side.
                 // Not waiting for completion will not harm the patch process and it will continue running to completion.
@@ -782,6 +801,85 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
             {
                 using (var session = store.OpenSession())
                 {
+                    var id = "users/1-A";
+                    #region Add_Or_Patch_Sample
+                    // While running AddOrPatch specify <entity type, field type>
+                    session.Advanced.AddOrPatch<User, DateTime>(
+
+                    // Specify document id and entity on which the operation should be performed.
+                        id,
+                        new User
+                        {
+                            FirstName = "John",
+                            LastName = "Doe",
+                            LastLogin = DateTime.Now
+                        },
+                        // The path to the field and value to set.
+                        x => x.LastLogin, new DateTime(2021, 9, 12));
+
+                    session.SaveChanges();
+                    #endregion
+                }
+            }
+
+            using (var store = new DocumentStore())
+            using (var session = store.OpenSession())
+            {   
+                var id = "users/1-A";
+                #region Add_Or_Patch_Array_Sample
+                // While running AddOrPatch specify <entity type, field type>
+                session.Advanced.AddOrPatch<User, DateTime>(
+
+                    // Specify document id and entity on which the operation should be performed.
+                    id,
+                    new User
+                    {
+                        FirstName = "John",
+                        LastName = "Doe",
+                        LoginTimes =
+                        new List<DateTime>
+                        {
+                                DateTime.UtcNow
+                        }
+                    },
+                    // The path to the field
+                    x => x.LoginTimes,
+                    // Modifies the array
+                    u => u.Add(new DateTime(1993, 09, 12), new DateTime(2000, 01, 01)));
+
+                session.SaveChanges();
+                #endregion
+            }
+
+
+            using (var store = new DocumentStore())
+            using (var session = store.OpenSession())
+            { 
+                var id = "users/1-A";
+
+            #region Add_Or_Increment_Sample
+            // While running AddOrIncrement specify <entity type, field type>
+            session.Advanced.AddOrIncrement<User, int>(
+
+                    // Specify document id and entity on which the operation should be performed.
+                    id,
+                    new User
+                    {
+                        FirstName = "John",
+                        LastName = "Doe",
+                        LoginCount = 1
+
+                    // The path to the field and value to be added.
+                    }, x => x.LoginCount, 1);
+
+                session.SaveChanges();
+            #endregion
+        }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
                     {
                         #region increment_counter_by_document_reference_generic_session
                         var order = session.Load<Order>("orders/1-A");
@@ -794,7 +892,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     session.Advanced.Defer(new PatchCommandData("orders/1-A", null,
                         new PatchRequest
                         {
-                            Script = "incrementCounter(this.Company, args.name, args.val);",
+                            Script = "incrementCounter(this, args.name, args.val);",
                             Values =
                             {
                                 { "name", "Likes" },
@@ -848,7 +946,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #region increment_counter_by_document_id_store
                 store.Operations.Send(new PatchOperation("orders/1-A", null, new PatchRequest
                 {
-                    Script = "incrementCounter(this.Company, args.name, args.val);",
+                    Script = "incrementCounter(this, args.name, args.val);",
                     Values =
                     {
                         { "name", "Likes" },

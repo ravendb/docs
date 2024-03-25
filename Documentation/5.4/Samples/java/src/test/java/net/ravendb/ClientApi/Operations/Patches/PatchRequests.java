@@ -115,9 +115,15 @@ public class PatchRequests {
 
             try (IDocumentSession session = store.openSession()) {
                 //region patch_firstName_and_lastName_generic
-                // change firstName to Robert and lastName to Carter in single request
-                // note that in this case, we create single request, but two separate batch operations
-                // in order to achieve atomicity, please use the non generic APIs
+                // Modify FirstName to Robert and LastName to Carter in single request
+                // ===================================================================
+                
+                // The two Patch operations below are sent via 'saveChanges()' which complete transactionally,
+                // as this call generates a single HTTP request to the database.
+                // Either both will succeed or both will be rolled back since they are applied within the same transaction.
+                // However, on the server side, the two Patch operations are still executed separately.
+                // To achieve atomicity at the level of a single server-side operation, use 'defer' or the operations syntax.
+                
                 session.advanced().patch("employees/1", "FirstName", "Robert");
                 session.advanced().patch("employees/1", "LastName", "Carter");
 
@@ -127,8 +133,8 @@ public class PatchRequests {
 
             try (IDocumentSession session = store.openSession()) {
                 //region pathc_firstName_and_lastName_non_generic_session
-                // change firstName to Robert and lastName to Carter in single request
-                // note that here we do maintain the atomicity of the operation
+                // Change firstName to Robert and lastName to Carter in single request
+                // Note that here we do maintain the atomicity of the operation
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("this.FirstName = args.firstName;" +
                     "this.LastName = args.lastName");
@@ -145,8 +151,8 @@ public class PatchRequests {
 
             {
                 //region pathc_firstName_and_lastName_store
-                // change FirstName to Robert and LastName to Carter in single request
-                // note that here we do maintain the atomicity of the operation
+                // Change FirstName to Robert and LastName to Carter in single request
+                // Note that here we do maintain the atomicity of the operation
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("this.FirstName = args.firstName; " +
                     "this.LastName = args.lastName");
@@ -212,7 +218,7 @@ public class PatchRequests {
 
             try (IDocumentSession session = store.openSession()) {
                 //region rename_property_age_non_generic_session
-                // rename firstName to First
+                // rename FirstName to Name
 
                 Map<String, Object> value = new HashMap<>();
                 value.put("old", "FirstName");
@@ -355,8 +361,8 @@ public class PatchRequests {
                 //filter out all comments of a blogpost which contains the word "wrong" in their contents
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("this.comments = this.comments.filter(comment " +
-                    "=> comment.content.includes(args.titleToRemove));");
-                patchRequest.setValues(Collections.singletonMap("titleToRemove", "wrong"));
+                    "=> !comment.content.includes(args.text));");
+                patchRequest.setValues(Collections.singletonMap("text", "wrong"));
 
                 session.advanced().defer(
                     new PatchCommandData("blogposts/1", null, patchRequest, null));
@@ -369,8 +375,8 @@ public class PatchRequests {
                 // filter out all comments of a blogpost which contains the word "wrong" in their contents
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("this.comments = this.comments.filter(comment " +
-                    "=> comment.content.includes(args.titleToRemove));");
-                patchRequest.setValues(Collections.singletonMap("titleToRemove", "wrong"));
+                    "=> !comment.content.includes(args.text));");
+                patchRequest.setValues(Collections.singletonMap("text", "wrong"));
 
                 store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
                 //endregion
@@ -605,7 +611,7 @@ public class PatchRequests {
                 scriptValues.put("val", 20);
 
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("incrementCounter(this.Company, args.name, args.val);");
+                patchRequest.setScript("incrementCounter(this, args.name, args.val);");
                 patchRequest.setValues(scriptValues);
 
                 new PatchCommandData("orders/1-A", null, patchRequest, null);
@@ -650,7 +656,7 @@ public class PatchRequests {
             scriptValues.put("val", -1);
 
             PatchRequest patchRequest = new PatchRequest();
-            patchRequest.setScript("incrementCounter(this.Company, args.name, args.val);");
+            patchRequest.setScript("incrementCounter(this, args.name, args.val);");
             patchRequest.setValues(scriptValues);
 
             PatchOperation patchOperation = new PatchOperation("orders/1-A", null, patchRequest);
