@@ -173,11 +173,12 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 | Parameter      | Type                                         | Description  |
 |----------------|----------------------------------------------|--------------|
-| **suggestion_or_builder** (Union) | `SuggestionBase`<br>-or-<br>`Callable[[SuggestionBuilder[_T]], None]` | Suggestion instance<br>-or-<br>Suggestion builder |
+| **suggestion_or_builder**<br>(Union) | `SuggestionBase`| **Suggestion instance**<br>Pass `suggest_using` a `SuggestionBase` instance with the term or terms (`SuggestionWithTerm` or `SuggestionWithTerms`) it will generate suggestions by. |
+| | `Callable[[SuggestionBuilder[_T]], None]` | **Suggestion builder**<br>Use `suggest_using`'s fluent API to pass it a method that takes `SuggestionBuilder` as a parameter and generate a suggestion definition that matches your needs.   |
 
 | Return type    | Description  |
 |----------------|--------------|
-| `SuggestionDocumentQuery[_T]` | Retrieved suggestions |
+| `SuggestionDocumentQuery[_T]` | The generated suggestions query, that can now be executed using `execute()` or further altered.<br>When `execute()` is called, it will return the suggestions in a `Dict[str, SuggestionResult]` dictionary. |
 
 
 **Builder operations**:

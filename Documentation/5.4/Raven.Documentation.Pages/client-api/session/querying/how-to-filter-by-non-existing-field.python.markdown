@@ -20,8 +20,8 @@
 {PANEL: Query the collection (dynamic query)}
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not_` and `where_exists` extension methods, accessible from the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) API, 
-as shown below.  
+use the `not_` and `where_exists` methods, accessible from the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) 
+API, as demonstrated below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
 Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicQuery).  

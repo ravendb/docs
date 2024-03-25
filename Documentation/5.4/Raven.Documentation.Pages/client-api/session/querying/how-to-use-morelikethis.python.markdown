@@ -1,6 +1,6 @@
 # Using MoreLikeThis
 
-`more_like_this` is available through query extension methods, and will return similar documents according 
+`more_like_this` is available through query methods, and will return similar documents according 
 to the provided criteria and options.
 
 ## Syntax

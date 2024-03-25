@@ -6,24 +6,41 @@
 
 * To search for documents that contain a specific field by the field **name** or **path**, 
   use the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) 
-  `where_exists` or `where_equals` extension method.  
-
-* Documents that do not comprise the specified field will be excluded from the query results.  
+  `where_exists` method.  
+  Documents that do not contain the specified field will be excluded from the query results.  
 
 * In this page:  
-  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name)  
-  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-path)  
-  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)
+   * [Filter by Field Name or Path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name-or-path)  
+   * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)  
+   * [Examples](../../../client-api/session/querying/how-to-filter-by-field#examples)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Filter by field name }
+{PANEL: Filter by Field Name or Path}
 
-To search for documents that contain a specific field by the field **name**, pass the name to `where_exists`.
+To search for documents that contain a specific field by the field's **name** or **path**, 
+pass the name or the path to `where_exists` as demonstrated below.  
 
-{CODE-TABS}
+---
+
+### Syntax 
+
+{CODE:python whereExists_syntax@ClientApi\Session\Querying\HowToFilterByField.py /}
+
+| Parameters           | Type        | Description                               |
+|----------------------|-------------|-------------------------------------------|
+| **field_name**       | `str`       | Field Name or Path to filter documents by |
+
+---
+
+### Examples
+
+Pass `where_exists` a string containing the field name or path.  
+
+* **Pass a Field Name**:
+   {CODE-TABS}
 {CODE-TAB:python:Query whereExists_1@ClientApi\Session\Querying\HowToFilterByField.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Only documents that contain the 'FirstName' field will be returned
@@ -33,13 +50,8 @@ where exists("FirstName")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: Filter by field path }
-
-To search for documents that contain a specific field by the field **path**, pass the path to `where_equals`.
-
-{CODE-TABS}
+* **Pass a Field Path**:
+   {CODE-TABS}
 {CODE-TAB:python:Query whereExists_2@ClientApi\Session\Querying\HowToFilterByField.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Only documents that contain the 'Latitude' property in the specified path will be returned
@@ -48,17 +60,6 @@ from Employees
 where exists("Address.Location.Latitude")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{PANEL/}
-
-{PANEL: Syntax}
-
-{CODE:python whereExists_syntax@ClientApi\Session\Querying\HowToFilterByField.py /}
-
-| Parameters           | Type        | Description                                                           |
-|----------------------|-------------|-----------------------------------------|
-| **field_name**       | `str`       | Name of the document field to filter by |
-| **field_path**       | `str`       | Path of the document field to filter by |
 
 {PANEL/}
 
