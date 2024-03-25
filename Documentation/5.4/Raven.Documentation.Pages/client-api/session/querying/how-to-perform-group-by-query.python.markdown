@@ -4,12 +4,13 @@
 
 {NOTE: }
 
-* RavenDB's query optimizer supports dynamic grouping by query and automatically creates 
-  auto map-reduce indexes.  
+* To run a dynamic query that aggregates data, use the `group_by()` method.  
 
-* To run a dynamic query that aggregates data use the `group_by()` method.  
+* Data can be grouped by a single or by multiple fields, and further aggregated 
+  by **sum**, **type**, or **count**.  
 
-* Data can be grouped by a single or by multiple fields and further aggregated by sum, type, or count.  
+* RavenDB's query optimizer supports dynamic grouping by query, by automatically 
+  creating auto map-reduce indexes.  
 
 * In This Page:  
    * [Group By a Single Field](../../../client-api/session/querying/how-to-perform-group-by-query#group-by-a-single-field)  
