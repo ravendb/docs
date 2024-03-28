@@ -2,13 +2,13 @@
 
 {NOTE: }
 
-Use the Support tab to contact *RavenDB*'s support personnel.
+Use the Support tab to contact our *RavenDB Cloud* support team.
 
 * In this page:  
   * [The Support Tab](../../cloud/portal/cloud-portal-support-tab#the-support-tab)  
      * [Submit a General Support request](../../cloud/portal/cloud-portal-support-tab#submit-a-general-support-request)  
      * [Submit a Product-Related Support request](../../cloud/portal/cloud-portal-support-tab#submit-a-product-related-support-request)
-     * [Request enabling the Cloud Support](../../cloud/portal/cloud-portal-support-tab#request-enabling-the-cloud-support)
+     * [Request to enable the Cloud Support option](../../cloud/portal/cloud-portal-support-tab#request-to-enable-the-cloud-support-option)
 {NOTE/}
 
 ---
@@ -25,9 +25,9 @@ The root selection is between submitting a support request regarding a **general
 
 !["Figure 2 - Support General Message"](images\portal-support-general-question-cloud-support.png "Figure 2 - Support General Message")
 
-   **1**. Choose to raise a general question.  
-   **2**. Choose the issue's severity: *Minor*, *Normal*, or *Critical*.  
-   **3**. Choose the response type: *Standard* or *Immediate*.  
+   **1**. Select to raise a general question.  
+   **2**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
+   **3**. Select the response type: *Standard* or *Immediate*.  
    **4**. Enter your question.  
    **5**. Submit your support request.
 
@@ -39,11 +39,11 @@ You can read more about the *Severity* and *Response* types in the [Support](../
 
 !["Figure 3 - Support Product-Related Message"](images\portal-support-instance-related-question-cloud-support.png "Figure 3 - Support Product-Related Message")
 
-   **1**. Choose to raise a Product-related question.  
-   **2**. Choose the product you relate to.  
-   **3**. Choose the issue's severity: *Minor*, *Normal*, or *Critical*.  
-   **4**. Choose the response type: *Standard* or *Immediate*.  
-   **5**. Choose the issue category.  
+   **1**. Select to raise a Product-related question.  
+   **2**. Select the product you relate to.  
+   **3**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
+   **4**. Select the response type: *Standard* or *Immediate*.  
+   **5**. Select the issue category.  
    **6**. Enter your question.  
    **7**. Submit your support request.
 
@@ -51,18 +51,18 @@ You can read more about the *Severity* and *Response* types in the [Support](../
 
 ---
 
-### Request enabling the Cloud Support
+### Request to enable the Cloud Support option
 
-!["Figure 4 - Request enabling the Cloud Support"](images\portal-support-request-cloud-support-on-free-support.png "Figure 4 - Request enabling the Cloud Support")
+!["Figure 4 - Request to enable the Cloud Support option"](images\portal-support-request-cloud-support-on-free-support.png "Figure 4 - Request to enable the Cloud Support option")
 
 To request the **Cloud Support option**, please click the *Request Cloud Support Activation* button. 
-This will send a support request to the *RavenDB Cloud team*. 
+This will send a support request to our *RavenDB Cloud* support team. 
 After verification, the support team will add the support option to your account, which 
 will be confirmed in a separate email.
 
 {INFO: }
-*Cloud Support Activation* email sends a request to enable **Cloud Support option** period of **12 months**.
-If you want to change the period, please send a *support request* via the *Support form*.
+The *Cloud Support Activation* email requests the enabling of the **Cloud Support option** for a period of **12 months**. 
+If you want to change this period, please send a *support request* via the *Support form*.
 {INFO/}
 
 You can read more about available *support options* in the [Support](../../cloud/cloud-support#available-support-options) page.
