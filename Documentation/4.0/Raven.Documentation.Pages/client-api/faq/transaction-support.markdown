@@ -13,7 +13,6 @@
      * [Cluster-wide transactions](../../client-api/faq/transaction-support#cluster-wide-transactions)
   * [ACID for document operations](../../client-api/faq/transaction-support#acid-for-document-operations)
   * [BASE for query operations](../../client-api/faq/transaction-support#base-for-query-operations)
-  * [Consistency and isolation with the usage of Client API Session](../../client-api/faq/transaction-support#consistency-and-isolation-with-the-usage-of-client-api-session)
 
 {NOTE/}  
 
