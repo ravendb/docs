@@ -59,7 +59,6 @@ async function patchRequests() {
         session.advanced.patch("employees/1-A", "LastName", "Carter");
         
         await session.saveChanges();
-        
         //endregion
     }
     {
