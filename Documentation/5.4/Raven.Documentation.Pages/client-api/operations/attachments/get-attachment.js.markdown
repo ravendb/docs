@@ -24,12 +24,12 @@
 
 {CODE:nodejs syntax_1@client-api\operations\attachments\getAttachment.js /}
 
-| Parameter        | Type             | Description                                                                       |
-|------------------|------------------|-----------------------------------------------------------------------------------|
-| __documentId__   | `string`         | Document ID that contains the attachment                                          |
-| __name__         | `string`         | Name of attachment to get                                                         |
-| __type__         | `AttachmentType` | __"Document"__ or __"Revision"__                                                  |
-| __changeVector__ | `string`         | ChangeVector of attachment,<br>used for concurrency checks (`null` to skip check) |
+| Parameter        | Type     | Description                                                                                                                                                                                               |
+|------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __documentId__   | `string` | Document ID that contains the attachment.                                                                                                                                                                 |
+| __name__         | `string` | Name of attachment to get.                                                                                                                                                                                |
+| __type__         | `string` | Specify whether getting an attachment from a document or from a revision.<br>(`"Document"` or `"Revision"`).                                                                                              |
+| __changeVector__ | `string` | The ChangeVector of the document or the revision to which the attachment belongs.<br>Mandatory when getting an attachment from a revision.<br>Used for concurrency checks (use `null` to skip the check). |
 
 | Return Value of `store.operations.send(getAttachmentOp)`  |                                         |
 |-----------------------------------------------------------|-----------------------------------------|
