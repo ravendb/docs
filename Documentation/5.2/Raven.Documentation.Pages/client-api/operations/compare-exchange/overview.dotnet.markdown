@@ -29,18 +29,14 @@
 Compare Exchange items are key/value pairs where the key servers a unique value across your database.
 
 * Each compare-exchange item contains: 
-  * **A key** - A unique string across the cluster.  
-  * **A value** - Can be numbers, strings, arrays, or objects.  
-    Any value that can be represented as JSON is valid.
-  * **Metadata** - Data that is associated with the item's value.  
-    Can be numbers, strings, arrays, or objects.  
-    Any value that can be represented as JSON is valid.  
-     * Similar to [Document Expiration](../../../server/extensions/expiration), 
-	   the metadata can be used to set the Compare Exchange item expiration.  
-       Set `@expires` field to schedule expiration.  
-       e.g. `{ "@expires": "2021-02-26T13:09:37.4040256Z" }`
-  * **Raft index** - A version number that is modified on each change.  
-    Any change to the value or metadata changes the Raft index.  
+  * **A key** - A unique string identifier in the database scope.
+  * **A value** - Can be any object (a number, string, array, or any valid JSON object). 
+  * **Metadata** - Data that is associated with the compare-exchange item.
+    Must be a valid JSON object.
+     * For example, the metadata can be used to set expiration time for the compare-exchange item.  
+       Learn more in [compare-exchange expiration](../../../client-api/operations/compare-exchange/compare-exchange-expiration).  
+  * **Raft index** - The compare-exchange item's version.  
+    Any change to the value or metadata will increase this number.  
 
 * Creating and modifying a compare-exchange item is an atomic, thread-safe [compare-and-swap](https://en.wikipedia.org/wiki/Compare-and-swap) interlocked 
   compare-exchange operation.
