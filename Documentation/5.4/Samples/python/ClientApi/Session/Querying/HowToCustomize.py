@@ -23,6 +23,8 @@ class HowToCustomize(ExampleBase):
 
         with self.embedded_server.get_document_store("CustomizeQuery") as store:
             with store.open_session() as session:
+                self.add_employees(session)
+                session.save_changes()
                 # region customize_1_1
 
                 def __before_query_executed_callback(query: IndexQuery):
@@ -179,7 +181,11 @@ class HowToCustomize(ExampleBase):
                     session.query_index_type(Employees_ByFullName, Employees_ByFullName.IndexEntry)
                     # Pass the requested projection behavior to the 'select_fields' method
                     # and specify the field that will be returned to the projection
-                    .select_fields(Employee, "full_name", projection_behavior=ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
+                    .select_fields(
+                        Employees_ByFullName.IndexEntry,
+                        "full_name",
+                        projection_behavior=ProjectionBehavior.FROM_INDEX_OR_THROW,
+                    )
                 )
                 # endregion
 
@@ -189,25 +195,22 @@ class HowToCustomize(ExampleBase):
                     session.advanced.document_query("Employees/ByFullName", object_type=Employee)
                     # Pass the requested projection behavior to the 'select_fields' method
                     # and specify the field that will be returned to the projection
-                    .select_fields(Employee, "full_name", projection_behavior=ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
+                    .select_fields(
+                        Employees_ByFullName.IndexEntry,
+                        "full_name",
+                        projection_behavior=ProjectionBehavior.FROM_DOCUMENT_OR_THROW,
+                    )
                 )
                 # endregion
 
             with store.open_session() as session:
-                try:
-                    # region customize_6_4
-                    results = list(
-                        session.advanced
-                        # Define an RQL query that returns a projection
-                        .raw_query("from index 'Employees/ByFullName' select full_name", Employee)
-                        # Pass the requested projection behavior to the 'projection' method
-                        # WARNING: Not implemented yet!
-                        # https://issues.hibernatingrhinos.com/issue/RDBC-817/Implement-query.projection
-                        .projection(ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
-                    )
-                    # endregion
-                except NotImplementedError as e:
-                    pass
+                # region customize_6_4
+                results = list(
+                    session.advanced.raw_query(
+                        "from index 'Employees/ByFullName' select full_name", Employees_ByFullName.IndexEntry
+                    ).projection(ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
+                )
+                # endregion
 
             with store.open_session() as session:
                 # region customize_7_1
@@ -330,10 +333,6 @@ class IFoo:
     # endregion
 
     # region customize_6_5
-
-    # WARNING: Not implemented yet!
-    # https://issues.hibernatingrhinos.com/issue/RDBC-817/Implement-query.projection
-
     def projection(self, projection_behavior: ProjectionBehavior) -> DocumentQuery[_T]: ...
 
     class ProjectionBehavior(Enum):
@@ -371,7 +370,7 @@ class Employees_ByFullName(AbstractIndexCreationTask):
         super().__init__()
         self.map = (
             "docs.Employees.Select(employee => new { "
-            "    full_name = (employee.first_name + ' ') + employee.last_name"
+            "    full_name = (employee.first_name + ' ' + employee.last_name)"
             "})"
         )
         self._store("full_name", FieldStorage.YES)

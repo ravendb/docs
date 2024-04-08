@@ -61,7 +61,11 @@ class ProductsInfo:
 
     @classmethod
     def from_json(cls, json_dict: Dict[str, Any]) -> ProductsInfo:
-        return cls(json_dict["count"], json_dict["products"], json_dict["quantity"] if "quantity" in json_dict else 0)
+        return cls(
+            json_dict["count"],
+            json_dict["products"] if "products" in json_dict else [],
+            json_dict["quantity"] if "quantity" in json_dict else 0,
+        )
 
 
 class HowToPerformGroupByQuery(ExampleBase):
@@ -198,5 +202,27 @@ class HowToPerformGroupByQuery(ExampleBase):
                     .select_key("lines[].quantity", "quantities")
                     .select_count()
                     .of_type(ProductsInfo)
+                )
+                # endregion
+
+            with store.open_session() as session:
+                # region order_by_count
+                results = list(
+                    session.query(object_type=Order)
+                    .group_by("employee")
+                    .select_key("key()", "employee")
+                    .select_count()
+                    .order_by("count")
+                )
+                # endregion
+
+            with store.open_session() as session:
+                # region order_by_sum
+                results = list(
+                    session.query(object_type=Order)
+                    .group_by("employee")
+                    .select_key("key()", "employee")
+                    .select_sum(GroupByField("freight", "sum"))
+                    .order_by("sum")
                 )
                 # endregion
