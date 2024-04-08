@@ -26,7 +26,7 @@
       * [Add or increment](../../../client-api/operations/patching/single-document#add-or-increment)  
       * [Add or patch](../../../client-api/operations/patching/single-document#add-or-patch)
       * [Add item to array](../../../client-api/operations/patching/single-document#add-item-to-array)
-      * [Add or patch to an existing array](../../../client-api/operations/patching/single-document#add-or-patch-to-an-existing-array)  
+      * [Add or patch an existing array](../../../client-api/operations/patching/single-document#add-or-patch-an-existing-array)  
       * [Insert item into specific position in array](../../../client-api/operations/patching/single-document#insert-item-into-specific-position-in-array)  
       * [Modify item in specific position in array](../../../client-api/operations/patching/single-document#modify-item-in-specific-position-in-array)  
       * [Remove items from array](../../../client-api/operations/patching/single-document#remove-items-from-array)  
@@ -156,8 +156,10 @@ Patching can be performed using either of the following interfaces (detailed syn
 * If document exists + has the specified field =>
     * A numeric field will be __incremented__ by the specified value.
     * A string field will be __concatenated__ with the specified value.
+    * The entity passed is disregarded.
 * If document exists + does Not contain the specified field =>
     * The field will be __added__ to the document with the specified value.
+    * The entity passed is disregarded.
 * If document does Not exist =>
     * A new document will be __created__ from the provided entity.
     * The value to increment by is disregarded.
@@ -178,8 +180,10 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 * If document exists + has the specified field =>
     * The field will be __patched__, the specified value will replace the existing value.
+    * The entity passed is disregarded.
 * If document exists + does Not contain the specified field =>
     * The field will be __added__ to the document with the specified value.
+    * The entity passed is disregarded.
 * If document does Not exist =>
     * A new document will be __created__ from the provided entity.
     * The value to patch by is disregarded.
@@ -215,7 +219,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 {NOTE/}
 {NOTE: }
 
-<a id="add-or-patch-to-an-existing-array" /> __Add or patch to an existing array__:  
+<a id="add-or-patch-an-existing-array" /> __Add or patch an existing array__:  
 
 ---
 
@@ -223,8 +227,10 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 * If document exists + has the specified array field =>
     * The specified values will be __added__ to the existing array values.
+    * The entity passed is disregarded.
 * If document exists + does Not contain the specified array field =>
     * The array field is Not added to the document, no patching is done.
+    * The entity passed is disregarded.
 * If document does Not exist =>
     * A new document will be __created__ from the provided entity.
     * The value to patch by is disregarded.

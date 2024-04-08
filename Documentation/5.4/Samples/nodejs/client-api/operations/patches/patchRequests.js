@@ -144,6 +144,7 @@ async function patchRequests() {
     //////////////////////////////////////////////////////////////////////////
     {
         //region add_or_increment
+        // An entity that will be used in case the specified document is not found:
         const newUser = new User();
         newUser.firstName = "John";
         newUser.lastName = "Doe";
@@ -157,7 +158,7 @@ async function patchRequests() {
             newUser,
             // The field that should be incremented
             "loginCount",
-            // The value to increment by
+            // Increment the specified field by this value
             2);
         
         await session.saveChanges();
@@ -165,6 +166,7 @@ async function patchRequests() {
     }
     {
         //region add_or_patch
+        // An entity that will be used in case the specified document is not found:
         const newUser = new User();
         newUser.firstName = "John";
         newUser.lastName = "Doe";
@@ -178,7 +180,7 @@ async function patchRequests() {
             newUser,
             // The field that should be patched
             "lastLogin",
-            // Set the current date and time as the new value
+            // Set the current date and time as the new value for the specified field
             new Date());
 
         await session.saveChanges();        
@@ -186,6 +188,7 @@ async function patchRequests() {
     }
     {
         //region add_or_patch_array
+        // An entity that will be used in case the specified document is not found:
         const newUser = new User();
         newUser.firstName = "John";
         newUser.lastName = "Doe";
@@ -197,9 +200,9 @@ async function patchRequests() {
             // Specify an entity,
             // if the specified document is Not found, a new document will be created from this entity
             newUser,
-            // The field that should be patched
+            // The array field that should be patched
             "loginTimes",
-            // Add values to the list
+            // Add values to the list of the specified array field
             a => a.push(new Date(2024, 2, 2), new Date(2024, 3, 3)));
         
         await session.saveChanges();
