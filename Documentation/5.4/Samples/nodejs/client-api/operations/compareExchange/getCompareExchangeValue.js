@@ -53,9 +53,12 @@ async function getCompareExchangeValue() {
         const item = await documentStore.operations.send(getCmpXchgOp);
 
         // Access the value of the retrieved item
-        const employee = item.value;
-        const employeeRole = employee.role;
-        const employeeSales = employee.numberOfSales;
+        const employeeResult = item.value;
+        const employeeClass = employeeResult.constructor;   // Employee
+
+        const employeeRole = employeeResult.role;           // Salesperson
+        const employeeDep = employeeResult.department;      // Sales
+        const employeeSales = employeeResult.numberOfSales; // 12345
 
         // Access the version number of the retrieved item
         const version = item.index;
