@@ -42,7 +42,7 @@ class AttachmentResult {
 // The AttachmentDetails object:
 // =============================
 {
-    // Change vector of attachment
+    // Change vector of the document that contains the attachment
     changeVector; // string
 
     // ID of the document that contains the attachment
