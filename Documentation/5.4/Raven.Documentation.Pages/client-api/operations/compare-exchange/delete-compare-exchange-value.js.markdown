@@ -38,11 +38,11 @@
 
 {CODE:nodejs syntax_2@client-api\operations\compareExchange\deleteCompareExchange.js /}
 
-| Return Value   |         |                                                                                                                                                                                                 |
-|----------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __successful__ | boolean | * `true` if the delete operation was successfully completed<br/> * `true` if _key_ doesn't exist<br/> * `false` if the delete operation failed                                                  |  
-| __value__      | object  | * The value that was deleted upon a successful delete<br/>* `null` if _key_ doesn't exist<br/>* The currently existing value on the server if delete operation failed                           |  
-| __index__      | number  | * The next available version number upon success<br/>* The next available version number if _key_ doesn't exist<br/>* The currently existing index on the server if the delete operation failed |  
+| Return Value   |         |                                                                                                                                                                                                                             |
+|----------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __successful__ | boolean | <ul><li>`true` if the delete operation was successfully completed.</li><li>`true` if _key_ doesn't exist.</li><li>`false` if the delete operation has failed,<br/>e.g. when the index version doesn't match.</li><ul>       |  
+| __value__      | object  | <ul><li>The value that was deleted upon a successful delete.</li><li>`null` if _key_ doesn't exist.</li><li>The currently existing _value_ on the server if the delete operation has failed.</li><ul>                       |  
+| __index__      | number  | <ul><li>The next available version number upon success.</li><li>The next available version number if _key_ doesn't exist.</li><li>The currently existing _index_ on the server if the delete operation has failed.</li><ul> |  
 
 {PANEL/}
 

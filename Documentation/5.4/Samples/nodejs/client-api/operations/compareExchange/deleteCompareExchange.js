@@ -6,9 +6,9 @@ const documentStore = new DocumentStore();
 async function deleteCompareExchange() {
     {
         //region delete_1
-        // Saving a new compare-exchange item
-        const putCmpXchgOp = new PutCompareExchangeValueOperation("johnDoe@gmail.com", "John Doe", 0);
-        const itemResult = await documentStore.operations.send(putCmpXchgOp);
+        // Get an existing compare-exchange item
+        const getCmpXchgOp = new GetCompareExchangeValueOperation("johnDoe@gmail.com");
+        const itemResult = await documentStore.operations.send(getCmpXchgOp);
         
         // Keep the item's version
         const versionOfItem = itemResult.index; 
@@ -20,7 +20,7 @@ async function deleteCompareExchange() {
         // * The item's KEY
         // * The item's INDEX (its version)
         //   The compare-exchange item will only be deleted if this number 
-        //   is equal to the one stored on the server when operation is executed.
+        //   is equal to the one stored on the server when the delete operation is executed.
         const deleteCmpXchgOp = new DeleteCompareExchangeValueOperation("johnDoe@gmail.com", versionOfItem);
 
         // Execute the operation by passing it to operations.send
