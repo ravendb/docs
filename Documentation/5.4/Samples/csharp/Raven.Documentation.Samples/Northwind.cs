@@ -6,6 +6,7 @@ namespace Raven.Documentation.Samples
     namespace Orders
     {
         #region northwind
+        
         public class Company
         {
             public string Id { get; set; }
@@ -132,5 +133,15 @@ namespace Raven.Documentation.Samples
             public string Phone { get; set; }
         }
         #endregion
+
+        public class User
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<DateTime> LoginTimes { get; set; }
+            public DateTime LastLogin { get; set; }
+            public int LoginCount { get; set; }
+            public string Supplies { get; set; }
+        }
     }
 }
