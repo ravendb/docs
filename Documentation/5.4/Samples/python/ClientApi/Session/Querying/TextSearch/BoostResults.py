@@ -1,6 +1,12 @@
+from typing import TypeVar
+
+from ravendb import DocumentQuery
 from ravendb.primitives import constants
 
 from examples_base import ExampleBase, Employee, Company
+
+
+_T = TypeVar("_T")
 
 
 class BoostResults(ExampleBase):
@@ -80,3 +86,9 @@ class BoostResults(ExampleBase):
             # Score is available in the '@index-score' metadata property
             score = metadata[constants.Documents.Metadata.INDEX_SCORE]
             # endregion
+
+    class Foo:
+        # region syntax
+        def boost(self, boost: float) -> DocumentQuery[_T]: ...
+
+        # endregion

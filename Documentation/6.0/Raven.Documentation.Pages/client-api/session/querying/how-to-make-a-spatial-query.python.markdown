@@ -5,20 +5,20 @@
 {NOTE: }
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
-  You have two options:
+  You can use either _Dynamic spatial query_ or _Spatial index query_.  
   
-    * __Dynamic spatial query__  
-      Either make a dynamic spatial query on a collection ( __described in this article__ ).  
-      An auto-index will be created by the server.
+    * **Dynamic spatial query**  
+      Make a dynamic spatial query on a collection (described below).  
+      An auto-index will be created by the server.  
 
-    * __Spatial index query__  
-      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)),  
-      and then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).
+    * **Spatial index query**  
+       - Index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)).  
+       - And then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).  
 
 * To perform a spatial search,  
-  use the `Spatial` method which provides a wide range of spatial functionalities.
+  use the `spatial` method, which provides a wide range of spatial functionalities.
 
-* When making a dynamic spatial query from the Studio,  
+* When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../studio/database/queries/spatial-queries-map-view).
 
 ---
@@ -30,11 +30,16 @@
       * [Circle](../../../client-api/session/querying/how-to-make-a-spatial-query#circle)
       * [Polygon](../../../client-api/session/querying/how-to-make-a-spatial-query#polygon)    
   * [Spatial sorting](../../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting)
-      * [Order by distance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
-      * [Order by distance desc](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
-      * [Rounded distance](../../../client-api/session/querying/how-to-make-a-spatial-query#roundedDistance)
-      * [Get resulting distance](../../../client-api/session/querying/how-to-make-a-spatial-query#getResultingDistance)
+      * [Order by distance](../../../client-api/session/querying/how-to-make-a-spatial-query#order-by-distance)
+      * [Order by distance descending](../../../client-api/session/querying/how-to-make-a-spatial-query#order-by-distance-descending)
+      * [Sort results by rounded distance](../../../client-api/session/querying/how-to-make-a-spatial-query#sort-results-by-rounded-distance)
+      * [Get resulting distance](../../../client-api/session/querying/how-to-make-a-spatial-query#get-resulting-distance)
   * [Spatial API](../../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api)
+      * [`spatial`](../../../client-api/session/querying/how-to-make-a-spatial-query#section)
+      * [`DynamicSpatialField`](../../../client-api/session/querying/how-to-make-a-spatial-query#section-1)
+      * [`SpatialCriteria`](../../../client-api/session/querying/how-to-make-a-spatial-query#section-2)
+      * [`order_by_distance`, `order_by_distance_wkt`](../../../client-api/session/querying/how-to-make-a-spatial-query#section-3)
+      * [`order_by_distance_descending`, `order_by_distance_descending_wkt`](../../../client-api/session/querying/how-to-make-a-spatial-query#section-4)
 
 {NOTE/}
 
@@ -42,7 +47,7 @@
 
 {PANEL: Search by radius}
 
-Use the `WithinRadius` method to search for all documents containing spatial data that is located  
+Use the `within_radius` method to search for all documents containing spatial data that is located  
 within the specified distance from the given center point.
 
 {CODE-TABS}
@@ -64,16 +69,16 @@ where spatial.within(
 
 {PANEL: Search by shape}
 
-* Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
+* Use the `relates_to_shape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
 
-* The shape is specified as either a __circle__ or a __polygon__ in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
+* The shape is specified as either a **circle** or a **polygon** in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
 
-* The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
+* The relation to the shape can be one of: `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS`.
 
-{NOTE: }
+---
 
-<a id="circle" /> __Circle__:
+#### Circle
 
 {CODE-TABS}
 {CODE-TAB:python:Query spatial_2@ClientApi\Session\Querying\MakeSpatialQuery.py /}
@@ -90,11 +95,9 @@ where spatial.within(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-<a id="polygon" /> __Polygon__:
+#### Polygon
 
 {CODE-TABS}
 {CODE-TAB:python:Query spatial_3@ClientApi\Session\Querying\MakeSpatialQuery.py /}
@@ -117,9 +120,7 @@ where spatial.within(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{INFO:  }
-
-<a id="polygonRules" /> __Polygon rules__:
+{INFO: Polygon rules}
 
 * The polygon's coordinates must be provided in counterclockwise order.
 
@@ -129,20 +130,18 @@ where spatial.within(
 
 {INFO/}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Spatial sorting}
 
-* Use `OrderByDistance` or `OrderByDistanceDescending` to sort the results by distance from a given point.
+* Use `order_by_distance` or `order_by_distance_descending` to sort the results by distance from a given point.
 
-* By default, distance in RavenDB measured in **kilometers**.  
+* By default, distance is measured by RavenDB in **kilometers**.  
   The distance can be rounded to a specific range.  
 
-{NOTE: }
+---
 
-<a id="orderByDistance" /> __Order by distance__:
+#### Order by distance
 
 {CODE-TABS}
 {CODE-TAB:python:Query spatial_4@ClientApi\Session\Querying\MakeSpatialQuery.py /}
@@ -165,11 +164,9 @@ order by spatial.distance(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-<a id="orderByDistanceDesc" /> __Order by distance descending__:
+#### Order by distance descending
 
 {CODE-TABS}
 {CODE-TAB:python:Query spatial_5@ClientApi\Session\Querying\MakeSpatialQuery.py /}
@@ -185,11 +182,9 @@ order by spatial.distance(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-<a id="roundedDistance" /> __Sort results by rounded distance__:
+#### Sort results by rounded distance
 
 {CODE-TABS}
 {CODE-TAB:python:Query spatial_6@ClientApi\Session\Querying\MakeSpatialQuery.py /}
@@ -207,99 +202,79 @@ order by spatial.distance(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
+#### Get resulting distance
 
-<a id="getResultingDistance" /> __Get resulting distance__:
-
-* The distance is available in the `@spatial` metadata property within each result.  
- 
+* The distance is available in the `@spatial` metadata property within each result.
 * Note the following difference between the underlying search engines:
-
-    * When using __Lucene__:  
+    * When using **Lucene**:  
       This metadata property is always available in the results.
-
-    * When using __Corax__:  
+    * When using **Corax**:  
       In order to enhance performance, this property is not included in the results by default.  
       To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.  
       Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
 
 {CODE:python spatial_4_getDistance@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Spatial API}
 
----
-
-{INFO: }
-#### Spatial
-{INFO/}
+#### `spatial`
 
 {CODE:python spatial_7@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
 | Parameters    | Type                                                                                       | Description                                                                                                                |
 |---------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| __path__      | `Expression<Func<T, object>>`                                                              | Path to spatial field in an index<br>(when querying an index)                                                              | 
-| __fieldName__ | `string`                                                                                   | Path to spatial field in an index<br>(when querying an index)                                                              |
-| __field__     | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br>or<br>`DynamicSpatialField` | Factory or field that points to a document field<br>(when making a dynamic query).<br>Either `PointField` or `WktField`. |
-| __clause__    | `Func<SpatialCriteriaFactory, SpatialCriteria>`                                            | Spatial criteria that will be executed on a given spatial field                                                            |
+| **field_name_or_field** | `Union[str, DynamicSpatialField]` | `Str` - Path to spatial field in an index (when querying an index)<br><br>**-or-**<br><br>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
+| **clause**    | `Callable[[SpatialCriteriaFactory], SpatialCriteria]` | Spatial criteria that will be executed on a given spatial field |
 
 ---
 
-{INFO: }
-#### DynamicSpatialFieldFactory
-{INFO/}
+#### `DynamicSpatialField`
 
 {CODE:python spatial_8@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
-| Parameters                                         | Type                          | Description                                                                  |
-|----------------------------------------------------|-------------------------------|------------------------------------------------------------------------------|
-| __latitudePath__ / __longitudePath__ / __wktPath__ | `Expression<Func<T, object>>` | Path to the field in a document containing either longitude, latitude or WKT |
+| Parameters    | Type  | Description                                               |
+|---------------|-------|-----------------------------------------------------------|
+| **latitude**  | `str` | Path to a document point field that contains the latitude |
+| **longitude** | `str` | Path to a document point field that contains the longitude |
+| **wkt** | `str` | Path to a document wkt field that contains the WKT string |
 
 ---
 
-{INFO: }
-#### SpatialCriteriaFactory
-{INFO/}
+#### `SpatialCriteria`
 
 {CODE:python spatial_9@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
-| Parameter                                 | Type              | Description                                                                                                                         |
-|-------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| __shapeWkt__                              | `string`          | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria                  |
-| __relation__                              | `SpatialRelation` | Relation of the shape to the spatial data in the document/index.<br>Can be `Within`, `Contains`, `Disjoint`, `Intersects`.          |
-| __distErrorPercent__                      | `double`          | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
-| __radius__ / __latitude__ / __longitude__ | `double`          | Used to define a radius of a circle                                                                                                 |
-| __radiusUnits__ / __units__               | `SpatialUnits`    | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br>By default, distances are measured in kilometers. |
+| Parameter     | Type  | Description        |
+|---------------|-------|--------------------|
+| **shape_wkt** | `str` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria |
+| **relation** | `SpatialRelation` | Relation of the shape to the spatial data in the document/index.<br>Can be `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS` |
+| **units** / **radius_units** | `SpatialUnits` | Determines if circle or shape should be calculated in `KILOMETERS` or `MILES`.<br>By default, distances are measured in kilometers. |
+| **dist_error_percent** (Optional) | `float` | Maximum distance error tolerance in percents.<br>**Default: 0.025** |
+| **radius** / **latitude** / **longitude** | `float` | Used to define a radius of a circle |
 
 ---
 
-{INFO: }
-#### OrderByDistance
-{INFO/}
+#### `order_by_distance`, `order_by_distance_wkt`
 
 {CODE:python spatial_10@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
 ---
 
-{INFO: }
-#### OrderByDistanceDescending
-{INFO/}
+#### `order_by_distance_descending`, `order_by_distance_descending_wkt`
 
 {CODE:python spatial_11@ClientApi\Session\Querying\MakeSpatialQuery.py /}
 
 | Parameter                    | Type                                                                                       | Description                                                                                                                                                                                                                                                      |
 |------------------------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __path__                     | `Expression<Func<T, object>>`                                                              | Path to spatial field in index<br>(when querying an index)                                                                                                                                                                                                       |
-| __fieldName__                | `string`                                                                                   | Path to spatial field in index<br>(when querying an index)                                                                                                                                                                                                       |
-| __field__                    | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br>or<br>`DynamicSpatialField`  | Factory or field that points to a document field<br>(when making a dynamic query).<br>Either `PointField` or `WktField`.                                                                                                                                         |
-| __shapeWkt__                 | `string`                                                                                   | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.            |
-| __latitude__ / __longitude__ | `double`                                                                                   | Used to define a point from which distance will be measured                                                                                                                                                                                                      |
-| __roundFactor__              | `double`                                                                                   | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. |
+| **field_or_field_name** | `Union[str, DynamicSpatialField]` |  `Str` - Path to spatial field in an index (when querying an index)<br><br>**-or-**<br><br>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
+| **latitude** | `float` | The latitude of the point from which the distance is measured |
+| **longitude** | `float` | The longitude of the point from which the distance is measured |
+| **round_factor** (Optional) | `float` | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. | |
+| **shape_wkt** | `str` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria |
 
 {PANEL/}
 

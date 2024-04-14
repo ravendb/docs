@@ -38,7 +38,7 @@ class EndsWith(ExampleBase):
                     session.query(object_type=Product)
                     # Negate next statement
                     .not_()
-                    # Call 'where_ends_with' on the field
+                    # Call 'where_starts_with' on the field
                     # Pass the prefix to search by
                     .where_ends_with("Name", "Lager")
                 )

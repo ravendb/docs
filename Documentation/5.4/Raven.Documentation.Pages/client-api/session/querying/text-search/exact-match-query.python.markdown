@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-* By default, when making a query that filters by strings, the string comparisons are __case-insensitive__.
+* By default, when querying strings the string comparisons are **case-insensitive**.
 
-* Use the `exact` parameter to perform a search that is __case-sensitive__.
+* Use the `where_equals` method `exact` parameter to perform a search that is **case-sensitive**.
 
-* When making a dynamic query with an exact match,  
-  the auto-index created by the server indexes the text of the document field  
-  using the [default exact analyzer](../../../../indexes/using-analyzers#ravendb) where the casing of the original text is not changed.
+* When making a dynamic query with an exact match, the auto-index created by the server indexes 
+  the text of the document field using the [default exact analyzer](../../../../indexes/using-analyzers#ravendb) 
+  where the casing of the original text is unchanged.
 
 * In this page:
     * [Query with exact match](../../../../client-api/session/querying/text-search/exact-match-query#query-with-exact-match)
@@ -63,6 +63,22 @@ where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 {CODE-TABS/}
 
 {NOTE/}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:python syntax@ClientApi\Session\Querying\TextSearch\ExactMatch.py /}
+
+| Parameter     | Type                       | Description                                                  |
+|---------------|----------------------------|--------------------------------------------------------------|
+| **field_name** | `str` | Search-field name |
+| **value_or_method** | `Union[object, MethodCall]` | `object` to match with <br>-or-<br>`MethodCall` with match condition |
+| **exact** (optional) | `bool` | `False` - search is case-insensitive<br>`True` - search is case-sensitive |
+
+| Return Type | Description |
+| ------------- | ----- |
+| `DocumentQuery[_T]` | `where_equals` query results |
 
 {PANEL/}
 

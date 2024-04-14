@@ -8,7 +8,7 @@
 
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
-* __Note__:  
+* **Note**:  
   This postfix search causes the server to perform a full index scan.  
   Instead, consider using a static index that indexes the field in reverse order  
   and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
@@ -65,9 +65,9 @@ where exists(Name) and not endsWith(Name, "Lager")
 
 | Parameter     | Type    | Description                                                               |
 |---------------|---------|---------------------------------------------------------------------------|
-| __fieldName__ | string  | The field name in which to search                                         |
-| __value__     | string  | The __postfix__ string to search by                                       |
-| __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+| **fieldName** | string  | The field name in which to search                                         |
+| **value**     | string  | The **postfix** string to search by                                       |
+| **exact**     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
 
 
 {PANEL/}

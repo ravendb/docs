@@ -5,20 +5,20 @@
 {NOTE: }
 
 * Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
-  You have two options:
+  You can use either _Dynamic spatial query_ or _Spatial index query_.  
   
-    * __Dynamic spatial query__  
-      Either make a dynamic spatial query on a collection ( __described in this article__ ).  
-      An auto-index will be created by the server.
+    * **Dynamic spatial query**  
+      Make a dynamic spatial query on a collection (described below).  
+      An auto-index will be created by the server.  
 
-    * __Spatial index query__  
-      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)),  
-      and then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).
+    * **Spatial index query**  
+       - Index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)).  
+       - And then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).  
 
 * To perform a spatial search,  
-  use the `spatial` method which provides a wide range of spatial functionalities.
+  use the `spatial` method, which provides a wide range of spatial functionalities.
 
-* When making a dynamic spatial query from the Studio,  
+* When making a dynamic spatial query from Studio,  
   results are also displayed on the global map. See [spatial queries map view](../../../studio/database/queries/spatial-queries-map-view).
 
 ---

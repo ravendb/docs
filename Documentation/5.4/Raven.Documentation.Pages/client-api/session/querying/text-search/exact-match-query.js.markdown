@@ -4,9 +4,9 @@
 
 {NOTE: }
 
-* By default, when making a query that filters by strings, the string comparisons are __case-insensitive__.
+* By default, when making a query that filters by strings, the string comparisons are **case-insensitive**.
 
-* Use the `exact` parameter to perform a search that is __case-sensitive__.
+* Use the `exact` parameter to perform a search that is **case-sensitive**.
 
 * When making a dynamic query with an exact match,  
   the auto-index created by the server indexes the text of the document field  
@@ -72,9 +72,9 @@ where exact(Lines.ProductName == "Teatime Chocolate Biscuits")
 
 | Parameter     | Type    | Description                                                               |
 |---------------|---------|---------------------------------------------------------------------------|
-| __fieldName__ | string  | Name of field in which to search                                          |
-| __value__     | any     | The value searched for                                                    |
-| __exact__     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
+| **fieldName** | string  | Name of field in which to search                                          |
+| **value**     | any     | The value searched for                                                    |
+| **exact**     | boolean | `false` - search is case-insensitive<br>`true` - search is case-sensitive |
 
 {PANEL/}
 

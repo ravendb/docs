@@ -12,17 +12,17 @@
 
 * Boosting can be achieved in the following ways:  
 
-    * __At query time__:  
+    * **At query time**:  
       Apply a boost factor to searched terms at query time - as described in this article.
 
-    * __Via index definition__:  
-      Apply a boost factor in your index definition - see this [boosting](../../../../indexes/boosting) article in under indexes.
+    * **Via index definition**:  
+      Apply a boost factor in your index definition - see this [boosting](../../../../indexes/boosting) indexing article.
 
-* The automatic ordering of the results by the score is now configurable.  
-  Learn more in section [automatic score-based ordering](../../../../indexes/boosting#automatic-score-based-ordering).
+* The automatic ordering of the results by the score is configurable.  
+  Learn more here: [automatic score-based ordering](../../../../indexes/boosting#automatic-score-based-ordering)  
 
 * The calculated score details of the results can be retrieved if needed.  
-  Learn more in section [get resulting score](../../../../client-api/session/querying/sort-query-results#get-resulting-score).
+  Learn more here: [get resulting score](../../../../client-api/session/querying/sort-query-results#get-resulting-score)  
 
 * In this page:
 
@@ -35,10 +35,8 @@
 
 {PANEL: Boost results - when making a full-text search}
 
-* When making a full-text search with the `Search()` method then boosting can be applied  
-  to both `Query` and `DocumentQuery`.
-
-{NOTE: }
+To apply boosting while running a full-text search, use the 
+`boost()` method to prioritize the preceding `search()` results.  
 
 {CODE-TABS}
 {CODE-TAB:python:Query boost_1@ClientApi\Session\Querying\TextSearch\BoostResults.py /}
@@ -48,19 +46,15 @@ search(Notes, "English") or boost(search(Notes, "Italian"), 10)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Boost results - when querying with where clause}
 
-* When querying with `Where` clauses (using an OR condition in between) then boosting can be applied  
-  only with `DocuemtQuery`.
-
-{NOTE: }
+`boost()` can be used to give different priorities to the results 
+returned by different `where` clauses.  
 
 {CODE-TABS}
-{CODE-TAB:python:DocumentQuery boost_4@ClientApi\Session\Querying\TextSearch\BoostResults.py /}
+{CODE-TAB:python:Query boost_4@ClientApi\Session\Querying\TextSearch\BoostResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies" where
 boost(startsWith(Name, "O"), 10) or
@@ -68,8 +62,6 @@ boost(startsWith(Name, "P"), 50) or
 boost(endsWith(Name, "OP"), 90)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 

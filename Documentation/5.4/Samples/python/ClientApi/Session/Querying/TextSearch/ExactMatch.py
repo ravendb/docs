@@ -1,6 +1,10 @@
-from ravendb import WhereParams
+from typing import Union, TypeVar
+
+from ravendb import WhereParams, DocumentQuery, MethodCall
 
 from examples_base import ExampleBase, Employee, Order
+
+_T = TypeVar("_T")
 
 
 class ExactMatch(ExampleBase):
@@ -36,3 +40,11 @@ class ExactMatch(ExampleBase):
                     )
                 )
                 # endregion
+
+    class Foo:
+        # region syntax
+        def where_equals(
+            self, field_name: str, value_or_method: Union[object, MethodCall], exact: Optional[bool] = None
+        ) -> DocumentQuery[_T]: ...
+
+        # endregion

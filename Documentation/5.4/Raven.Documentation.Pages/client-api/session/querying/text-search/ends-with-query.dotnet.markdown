@@ -8,7 +8,7 @@
 
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
-* __Note__:  
+* **Note**:  
   This postfix search causes the server to perform a full index scan.  
   Instead, consider using a static index that indexes the field in reverse order  
   and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
