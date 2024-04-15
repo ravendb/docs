@@ -44,6 +44,10 @@ Similar to _toList()_, _count()_ triggers query execution on the server-side.
 {CODE-TABS}
 {CODE-TAB:java:Query distinct_2_1@Indexes\Querying\Distinct.java /}
 {CODE-TAB-BLOCK:sql:RQL}
+// This RQL is intended for use when issuing a Raw Query from the client API.
+// Running directly from the Studio will not display the number of results.
+// ========================================================================
+
 from "Orders"
 select distinct ShipTo.Country
 limit 0, 0
@@ -73,7 +77,7 @@ Query the index:
 {CODE-TABS}
 {CODE-TAB:java:Query distinct_3_2@Indexes\Querying\Distinct.java /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index "Employees/ByCountry"
+from index "Orders/ByShipToCountry"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

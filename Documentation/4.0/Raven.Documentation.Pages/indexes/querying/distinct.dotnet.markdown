@@ -48,6 +48,10 @@ Similar to _ToList()_, _Count()_ triggers query execution on the server-side.
 {CODE-TAB:csharp:Query_async distinct_2_1_async@Indexes\Querying\Distinct.cs /}
 {CODE-TAB:csharp:DocumentQuery distinct_2_2@Indexes\Querying\Distinct.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
+// This RQL is intended for use when issuing a Raw Query from the client API.
+// Running directly from the Studio will not display the number of results.
+// ========================================================================
+
 from "Orders"
 select distinct ShipTo.Country
 limit 0, 0
@@ -79,7 +83,7 @@ Query the index:
 {CODE-TAB:csharp:Query_async distinct_3_1_async@Indexes\Querying\Distinct.cs /}
 {CODE-TAB:csharp:DocumentQuery distinct_3_2@Indexes\Querying\Distinct.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index "Employees/ByCountry"
+from index "Orders/ByShipToCountry"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

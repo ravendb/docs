@@ -4,16 +4,16 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region index
-class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
+class Orders_ByShipToCountry extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
         super();
 
-        // The map phase indexes the country listed in each employee document
+        // The map phase indexes the country listed in each order document
         // countryCount is assigned with 1, which will be aggregated in the reduce phase
-        this.map("Employees", employee => {
+        this.map("Orders", order => {
             return {
-                country: employee.Address.Country,
+                country: order.ShipTo.Country,
                 countryCount: 1
             }
         });
@@ -34,23 +34,35 @@ class Order { }
 async function distinct() {
         {
             //region distinct_1_1
-            // Results will contain a sorted list of countries w/o duplicates
+            // Get a sorted list without duplicates:
+            // =====================================
+            
             const countries = await session
                 .query(Order)
                 .orderBy("ShipTo.Country")
                 .selectFields("ShipTo.Country")
+                 // Call 'distinct' to remove duplicates from results
+                 // Items wil be compared based on field 'Country' that is specified in the above 'selectFields' 
                 .distinct()
                 .all();
+
+            // Running this on the Northwind sample data
+            // will result in a sorted list of 21 countries w/o duplicates.
             //endregion
         }
         {
             //region distinct_2_1
-            // Results will contain the number of unique countries
+            // Count the number of unique countries:
+            // =====================================
+            
             const numberOfCountries = await session
                 .query(Order)
                 .selectFields("ShipTo.Country")
                 .distinct()
                 .count();
+
+            // Running this on the Northwind sample data,
+            // will result in 21, which is the number of unique countries.
             //endregion
         }
         {
@@ -58,10 +70,11 @@ async function distinct() {
             // Query the map - reduce index defined above
             const session = documentStore.openSession();
             const queryResult = await session
-                .query({ indexName: "Employees/ByCountry" })
+                .query({ indexName: "Orders/ByShipToCountry" })
                 .all();
 
-            // The number of resulting items in the query result represents the number of unique countries.
+            // The resulting list contains all index-entry items where each entry represents a country. 
+            // The size of the list corresponds to the number of unique countries.
             const numberOfUniqueCountries = queryResult.length;
             //endregion
         } 
