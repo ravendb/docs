@@ -12,8 +12,8 @@
       An auto-index will be created by the server.  
 
     * **Spatial index query**  
-       - Index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)).  
-       - And then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).  
+      Index your documents' spatial data in a static-index (see [indexing spatial data](../../../indexes/indexing-spatial-data)) 
+      and then make a spatial query on this index (see [query a spatial index](../../../indexes/querying/spatial)).  
 
 * To perform a spatial search,  
   use the `spatial` method, which provides a wide range of spatial functionalities.
