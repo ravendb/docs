@@ -28,6 +28,13 @@ class IncludeExplanations(ExampleBase):
         # Get explanations from the dict of a resulting Explanations object - document ids' are keys
         # endregion
 
+        # region syntax_3
+        class ExplanationOptions:
+            def __init__(self, group_key: str = None):
+                self.group_key = group_key
+
+        # endregion
+
     def test_explain(self):
         with self.embedded_server.get_document_store("Explain") as store:
             with store.open_session() as session:
@@ -53,5 +60,5 @@ class IncludeExplanations(ExampleBase):
 
                 # Get the score details for a specific document from the results
                 # Get explanations from the resulting Explanations object
-                score_details = explanations_results[results[0].Id]
+                score_details = explanations_results.explanations[results[0].Id]
                 # endregion

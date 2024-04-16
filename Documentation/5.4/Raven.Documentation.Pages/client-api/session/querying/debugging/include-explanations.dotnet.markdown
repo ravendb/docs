@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-* When making a query, each document in the query results is assigned a __score__.  
+* When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
   to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
-* __To get the score details__ and see how it was calculated,  
+* **To get the score details** and see how it was calculated,  
   you can use `IncludeExplanations` when querying with a [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query). 
 
 * In this page:
@@ -37,9 +37,9 @@ include explanations()
 
 {PANEL: View explanations}
 
-* The detailed explanations can be viewed from the __Query view__ in the Studio.  
+* The detailed explanations can be viewed from the **Query view** in Studio.  
 
-* Running a query with `include explanations()` will show an additional __Explanations Tab__.
+* Running a query with `include explanations()` will show an additional **Explanations Tab**.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
@@ -55,7 +55,7 @@ include explanations()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __explanations__ | `Explanations` | An _out_ param that will be filled with the explanations results |
+| **explanations** | `Explanations` | An _out_ param that will be filled with the explanations results |
 
 | `Explanations` | |
 | - | - |

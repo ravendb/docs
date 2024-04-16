@@ -1,4 +1,4 @@
-from typing import Optional, Callable, TypeVar
+from typing import Optional, Callable, TypeVar, Dict
 
 from ravendb import QueryTimings, DocumentQuery
 
@@ -10,6 +10,14 @@ _T = TypeVar("_T")
 class Foo:
     # region syntax
     def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
+
+    # endregion
+
+    # region syntax_2
+    class QueryTimings:
+        def __init__(self, duration_in_ms: int = None, timings: Dict[str, QueryTimings] = None):
+            self.duration_in_ms = duration_in_ms
+            self.timings = timings or {}
 
     # endregion
 

@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-* When making a query, each document in the query results is assigned a __score__.  
+* When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
   to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
-* Use `includeExplanations` in your query __to get the score details__ and see how it was calculated.  
+* Use `includeExplanations` in your query **to get the score details** and see how it was calculated.  
 
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
@@ -35,8 +35,8 @@ include explanations()
 
 {PANEL: View explanations}
 
-* The detailed explanations can be viewed from the __Query view__ in the Studio.  
-* Running a query with `include explanations()` will show an additional __Explanations Tab__.
+* The detailed explanations can be viewed from the **Query view** in Studio.  
+* Running a query with `include explanations()` will show an additional **Explanations Tab**.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
@@ -52,9 +52,9 @@ include explanations()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __explanationsCallback__ | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
+| **explanationsCallback** | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
 
-<small> __The Explanations object__: </small>
+<small> **The Explanations object**: </small>
 {CODE:nodejs syntax_2@client-api\session\Querying\Debugging\includeExplanations.js /}
 
 {PANEL/}

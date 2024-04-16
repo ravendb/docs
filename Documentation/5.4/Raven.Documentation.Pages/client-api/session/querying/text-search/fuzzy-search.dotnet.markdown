@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* A __fuzzy search__ retrieves documents containing terms that closely match a given term instead of exact matches, 
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, 
   assisting in finding relevant results when the search term is misspelled or has minor variations.
 
 * Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) or RQL.

@@ -4,30 +4,28 @@
 
 {NOTE: }
 
-* This article is about making a full-text search with a __dynamic query__.
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching).  
 
-* For making a full-text search using a static-index see [full-text search with index](../../../../indexes/querying/searching).
+* Use the `Search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
 
----
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
 
-* Use method `Search()` to query for documents that contain the specified term(s)  
-  within the text of the specified document field(s).
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching), where the used 
+  analyzer is configurable.  
 
-* You can provide a __boost__ value to each search in order to prioritize results.  
+{INFO: }
+
+* A **boost** value can be set for each search to prioritize results. 
   Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).
   
-* In addition to retrieving matching documents, in order to enhance user experience,  
-  you can request to get text fragments that __highlight__ the searched terms in the results.  
-  Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
-
----
-
-* When making a full-text search with a dynamic query, the __auto-index__ created by the server  
-  breaks down the text of the document field in which you search using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
-  All terms generated will be lower-cased so search will be __case-insensitive__.  
-
-* To have more control over how terms are tokenized, perform a full-text search using a [static-index](../../../../indexes/querying/searching),  
-  where you can configure which analyzer to use.  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
+{INFO/}
 
 ---
 

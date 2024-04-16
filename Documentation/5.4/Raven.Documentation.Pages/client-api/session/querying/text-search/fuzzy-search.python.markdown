@@ -4,12 +4,10 @@
 
 {NOTE: }
 
-* A __fuzzy search__ retrieves documents containing terms that closely match a given term instead of exact matches, 
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, 
   assisting in finding relevant results when the search term is misspelled or has minor variations.
 
-* Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) or RQL.
-
-* Use the `Fuzzy` method when querying with `WhereEquals`.
+* Use the `fuzzy` method when querying with `where_equals`.
 
 * In this page:
     * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
@@ -36,8 +34,12 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 {CODE:python syntax@ClientApi\Session\Querying\TextSearch\FuzzySearch.py /}
 
 | Parameter   | Type      | Description                                                                                                       |
-|-------------|-----------|-------------------------------------------------------------------------------------------------------------------|
-| **fuzzy**   | `decimal` | A value between `0.0` and `1.0`.<br>With a value closer to `1.0`, terms with a higher similarity will be matched. |
+|-------------|-----------|------------------|
+| **fuzzy** | `float` | A value between `0.0` and `1.0`.<br>With a value closer to `1.0`, terms with a higher similarity are matched. |
+
+| Return Type         | Description   |
+|---------------------|---------------|
+| `DocumentQuery[_T]` | Query results |
 
 {PANEL/}
 

@@ -5,12 +5,12 @@
 
 * When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
   in addition to retrieving documents that contain the searched terms in the results,  
-  you can also request to get a __list of text fragments that highlight the searched terms__.
+  you can also request to get a **list of text fragments that highlight the searched terms**.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
-* This article shows highlighting search results when making a __dynamic-query__.  
-  For highlighting search results when querying a __static-index__ see [highlight index search results](../../../../indexes/querying/highlighting).
+* This article shows highlighting search results when making a **dynamic-query**.  
+  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting).
 
 ---
 
@@ -74,7 +74,7 @@ include highlight(Notes, 35, 4)
   - <span style="border-left: 10px solid turquoise">&nbsp;</span>turquoise,
   - <span style="border-left: 10px solid powderblue">&nbsp;</span>powderblue
 
-* The html tags that wrap the highlighted terms can be __customized__ to any other tags.  
+* The html tags that wrap the highlighted terms can be **customized** to any other tags.  
   See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
 
 {NOTE/}
@@ -87,14 +87,14 @@ include highlight(Notes, 35, 4)
 
 ![Figure 1. Fragments results](images/fragmentsResults.png "View highlighted fragments in the Query View")
 
-1. __Auto-Index__  
+1. **Auto-Index**  
    This is the auto-index that was created by the server to serve the dynamic-query.  
 
-2. __Results tab__  
-   The results tab contains the resulting __documents__ that match the provided RQL query.
+2. **Results tab**  
+   The results tab contains the resulting **documents** that match the provided RQL query.
 
-3. __Highlight tab__  
-   The highlight tab shows the resulting __fragments__ that were included in the query result.
+3. **Highlight tab**  
+   The highlight tab shows the resulting **fragments** that were included in the query result.
 
 {NOTE/}
 
@@ -102,7 +102,7 @@ include highlight(Notes, 35, 4)
 
 {PANEL: Highlight - customize tags}
 
-* The html tags that wrap the highlighted terms can be __customized__ to any other tags.
+* The html tags that wrap the highlighted terms can be **customized** to any other tags.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query highlight_4@ClientApi\Session\Querying\TextSearch\HighlightQueryResults.cs /}
@@ -147,41 +147,41 @@ include highlight(Notes, 35, 2)
 
 | Parameter          | Type                          | Description                                                                               |
 |--------------------|-------------------------------|-------------------------------------------------------------------------------------------|
-| __fieldName__      | string                        | Name of the field that contains the searched terms to highlight.                          |
-| __path__           | `Expression<Func<T, object>>` | Path to the field that contains the searched terms to highlight.                          |
-| __fragmentLength__ | int                           | Maximum length of a text fragment. Must be `>= 18`.                                       |
-| __fragmentCount__  | int                           | Maximum number of text fragments that will be returned.                                   |
-| __options__        | `HighlightingOptions`         | Customizing options.                                                                      |
-| __highlightings__  | `Highlightings`               | An 'out' param that will contain the highlighted text fragments for each returned result. |
+| **fieldName**      | string                        | Name of the field that contains the searched terms to highlight.                          |
+| **path**           | `Expression<Func<T, object>>` | Path to the field that contains the searched terms to highlight.                          |
+| **fragmentLength** | int                           | Maximum length of a text fragment. Must be `>= 18`.                                       |
+| **fragmentCount**  | int                           | Maximum number of text fragments that will be returned.                                   |
+| **options**        | `HighlightingOptions`         | Customizing options.                                                                      |
+| **highlightings**  | `Highlightings`               | An 'out' param that will contain the highlighted text fragments for each returned result. |
 
 <br>
 
-__Highlighting options__:
+**Highlighting options**:
 
 {CODE syntax_2@ClientApi\Session\Querying\TextSearch\HighlightQueryResults.cs /}
 
 | Option       | Type      | Description                                                                                                                                                                                                                                                                                                      |
 |--------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __GroupKey__ | string    | Grouping key for the results.<br>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
-| __PreTags__  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                               |
-| __PostTags__ | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                              |
+| **GroupKey** | string    | Grouping key for the results.<br>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br>If `null` results are grouped by document ID (default).<br>Note: Highlighting is Not available for dynamic aggregation queries. |
+| **PreTags**  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                               |
+| **PostTags** | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                              |
 
 <br>
 
-__Highlightings object__:
+**Highlightings object**:
 
 {CODE syntax_3@ClientApi\Session\Querying\TextSearch\HighlightQueryResults.cs /}
 
 | Property          | Type                 | Description                                                      |
 |-------------------|----------------------|------------------------------------------------------------------|
-| __FieldName__     | string               | Name of the field that contains the searched terms to highlight. |
-| __ResultIndents__ | `IEumerable<string>` | The resulting keys (document IDs, or the map-reduce keys)        |
+| **FieldName**     | string               | Name of the field that contains the searched terms to highlight. |
+| **ResultIndents** | `IEumerable<string>` | The resulting keys (document IDs, or the map-reduce keys).        |
 
 {CODE syntax_4@ClientApi\Session\Querying\TextSearch\HighlightQueryResults.cs /}
 
 | Method           | Description                                                                                           |
 |------------------|-------------------------------------------------------------------------------------------------------|
-| __GetFragments__ | Returns the list of the highlighted text fragments for the passed document ID, or the map-reduce key |
+| **GetFragments** | Returns the list of the highlighted text fragments for the passed document ID, or the map-reduce key. |
 
 {PANEL/}
 

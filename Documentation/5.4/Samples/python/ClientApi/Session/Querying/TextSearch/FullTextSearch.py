@@ -50,7 +50,7 @@ class FullTextSearch(ExampleBase):
             # ==================================
             with store.open_session() as session:
                 # region fts_7
-                # todo reeb: skip - not implemented to provide a list here
+                # todo: skip - not implemented to provide a list here
                 employees = list(
                     session.query(object_type=Employee)
                     # * Pass terms in IEnumerable<string>.

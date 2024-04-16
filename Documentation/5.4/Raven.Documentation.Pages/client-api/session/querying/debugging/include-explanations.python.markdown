@@ -4,14 +4,14 @@
 
 {NOTE: }
 
-* When making a query, each document in the query results is assigned a __score__.  
+* When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
   to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
-* __To get the score details__ and see how it was calculated,  
-  you can use `IncludeExplanations` when querying with a [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query). 
+* **To get the score details** and see how it was calculated,  
+  you can use `include_explanations` when querying with a [document_query](../../../../client-api/session/querying/document-query/what-is-document-query). 
 
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
@@ -36,9 +36,9 @@ include explanations()
 
 {PANEL: View explanations}
 
-* The detailed explanations can be viewed from the __Query view__ in the Studio.  
+* The detailed explanations can be viewed from the **Query view** in Studio.  
 
-* Running a query with `include explanations()` will show an additional __Explanations Tab__.
+* Running a query with `include_explanations` will show an additional **Explanations Tab**.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
@@ -54,10 +54,11 @@ include explanations()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| __explanations__ | `Explanations` | An _out_ param that will be filled with the explanations results |
+| **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
+| **options** (Optional) | `ExplanationOptions` | Can be a `group_key` string |
 
 | `Explanations` | |
 | - | - |
-| `string[] GetExplanations(string docId)` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
+| `Dict[str, List[str]]` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
 
 {PANEL/}
