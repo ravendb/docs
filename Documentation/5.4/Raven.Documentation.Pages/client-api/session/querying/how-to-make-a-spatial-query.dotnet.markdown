@@ -230,12 +230,12 @@ The distance is available in the `@spatial` metadata property within each result
 
 {CODE spatial_7@ClientApi\Session\Querying\MakeSpatialQuery.cs /}
 
-| Parameters    | Type                                                                                       | Description                                                                                                                |
-|---------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| **path**      | `Expression<Func<T, object>>`                                                              | Path to spatial field in an index<br>(when querying an index)                                                              | 
-| **fieldName** | `string`                                                                                   | Path to spatial field in an index<br>(when querying an index)                                                              |
+| Parameters    | Type                                                                                      | Description                                                                                                              |
+|---------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| **path**      | `Expression<Func<T, object>>`                                                             | Path to spatial field in an index<br>(when querying an index)                                                            |
+| **fieldName** | `string`                                                                                  | Path to spatial field in an index<br>(when querying an index)                                                            |
 | **field**     | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>`<br>or<br>`DynamicSpatialField` | Factory or field that points to a document field<br>(when making a dynamic query).<br>Either `PointField` or `WktField`. |
-| **clause**    | `Func<SpatialCriteriaFactory, SpatialCriteria>`                                            | Spatial criteria that will be executed on a given spatial field                                                            |
+| **clause**    | `Func<SpatialCriteriaFactory, SpatialCriteria>`                                           | Spatial criteria that will be executed on a given spatial field                                                          |
 
 ---
 

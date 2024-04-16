@@ -221,7 +221,7 @@ The distance is available in the `@spatial` metadata property within each result
 | Parameters    | Type                                                                                       | Description                                                                                                                |
 |---------------|--------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | **field_name_or_field** | `Union[str, DynamicSpatialField]` | `Str` - Path to spatial field in an index (when querying an index)<br><br>**-or-**<br><br>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
-| **clause**    | `Callable[[SpatialCriteriaFactory], SpatialCriteria]` | Spatial criteria that will be executed on a given spatial field |
+| **clause**    | `Callable[[SpatialCriteriaFactory], SpatialCriteria]` | Callback taking leverage of SpatialCriteriaFactory that comes as an argument, allowing to build SpatialCriteria. |
 
 ---
 
@@ -266,7 +266,7 @@ The distance is available in the `@spatial` metadata property within each result
 | **field_or_field_name** | `Union[str, DynamicSpatialField]` |  `Str` - Path to spatial field in an index (when querying an index)<br><br>**-or-**<br><br>`DynamicSpatialField` - Object that contains the document's spatial fields, either `PointField` or `WktField`(when making a dynamic query). |
 | **latitude** | `float` | The latitude of the point from which the distance is measured |
 | **longitude** | `float` | The longitude of the point from which the distance is measured |
-| **round_factor** (Optional) | `float` | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. | |
+| **round_factor** (Optional) | `float` | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. |
 | **shape_wkt** | `str` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria |
 
 {PANEL/}
