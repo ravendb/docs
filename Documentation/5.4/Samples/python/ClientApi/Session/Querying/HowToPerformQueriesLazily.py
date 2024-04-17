@@ -2,9 +2,8 @@ from typing import Optional, Callable, Dict, List, TypeVar
 
 from ravendb import Facet, RangeFacet, Lazy, SuggestionResult, AbstractIndexCreationTask
 from ravendb.documents.queries.facets.misc import FacetResult
-from ravendb.infrastructure.orders import Product
 
-from examples_base import ExampleBase, Employee
+from examples_base import ExampleBase, Employee, Category, Product
 
 _T = TypeVar("_T")
 
@@ -12,9 +11,17 @@ _T = TypeVar("_T")
 class HowToPerformQueriesLazily(ExampleBase):
     def setUp(self):
         super().setUp()
+        with self.embedded_server.get_document_store("QueriesLazily") as store:
+            with store.open_session() as session:
+                self.add_employees(session)
+                self.add_companies(session)
+                self.add_products(session)
+                self.add_orders(session)
+                self.add_categories(session)
+                Products_ByCategoryAndPrice().execute(store)
 
     def test_how_to_perform_queries_lazily(self):
-        with self.embedded_server.get_document_store() as store:
+        with self.embedded_server.get_document_store("QueriesLazily") as store:
             with store.open_session() as session:
                 # region lazy_1
                 # Define a lazy query
@@ -48,7 +55,7 @@ class HowToPerformQueriesLazily(ExampleBase):
 
             # region the_facets
             # The facets definition used in the facets query
-            facet = Facet(field_name="category_name")
+            facet = Facet(field_name="CategoryName")
             facet.display_field_name = "Product Category"
 
             range_facet = RangeFacet()
@@ -69,7 +76,7 @@ class HowToPerformQueriesLazily(ExampleBase):
                 lazy_facets = (
                     session.query_index_type(
                         Products_ByCategoryAndPrice, Products_ByCategoryAndPrice.IndexEntry
-                    ).aggregate_by(*facets_definition)
+                    ).aggregate_by_facets(facets_definition)
                     # Add a call to 'execute_lazy'
                     .execute_lazy()
                 )
@@ -77,7 +84,7 @@ class HowToPerformQueriesLazily(ExampleBase):
                 facets = lazy_facets.value  # Query is executed here
 
                 category_results = facets["Product Category"]
-                price_results = facet["Price per Unit"]
+                price_results = facets["Price per Unit"]
                 # endregion
 
 
@@ -116,7 +123,7 @@ class Products_ByCategoryAndPrice(AbstractIndexCreationTask):
         super().__init__()
         self.map = (
             "from p in docs.Products select new {"
-            "category_name = load(p.category).name, price_per_unit = p.price_per_unit"
+            'CategoryName = LoadDocument(p.Category, "Categories").Name, PricePerUnit = p.PricePerUnit'
             "}"
         )
 

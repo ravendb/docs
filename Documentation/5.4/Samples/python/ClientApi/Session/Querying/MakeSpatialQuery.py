@@ -4,19 +4,50 @@ from ravendb import PointField, SpatialCriteriaFactory, SpatialCriteria, Dynamic
 from ravendb.documents.indexes.spatial.configuration import SpatialRelation, SpatialUnits
 from ravendb.primitives import constants
 
-from examples_base import ExampleBase, Employee, Company
+from examples_base import ExampleBase
 
 _T = TypeVar("_T")
+
+
+class Address:
+    def __init__(self, location):
+        self.Location = location
+
+
+class Location:
+    def __init__(self, lat, lng):
+        self.Latitude = lat
+        self.Longitude = lng
+
+
+class Employee:
+    def __init__(self, address, lastname: str = None):
+        self.Address = address
+        self.LastName = lastname
+
+
+class Company:
+    def __init__(self, address):
+        self.Address = address
 
 
 class MakeSpatialQuery(ExampleBase):
     def setUp(self):
         super().setUp()
+        with self.embedded_server.get_document_store("SpatialSamples") as store:
+            with store.open_session() as session:
+                session.store(Employee(Address(Location(47.623475, -122.3060097)), "Joe"))
+                session.store(Employee(Address(Location(47.623474, -122.3060097)), "Moe"))
+                session.store(Employee(Address(Location(47.623470, -122.3060092)), "Foe"))
+
+                session.store(Company(Address(Location(47.623475, -122.3060097))))
+                session.store(Company(Address(Location(47.623474, -122.3060097))))
+                session.store(Company(Address(Location(47.623470, -122.3060092))))
+                session.save_changes()
 
     def test_sample(self):
         with self.embedded_server.get_document_store("SpatialSamples") as store:
             with store.open_session() as session:
-                self.add_companies(session)
                 # region spatial_1
                 # This query will return all matching employee entities
                 # that are located within 20 kilometers radius
@@ -174,6 +205,8 @@ class MakeSpatialQuery(ExampleBase):
                     # todo reeb: skip this example for now, we'll get back to it later on
                     # A secondary sort can be applied
                 )
+
+                pass
 
         class Foo:
             # region spatial_7
