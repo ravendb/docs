@@ -54,7 +54,7 @@ include explanations()
 
 | Parameters | Data type | Description |
 | - | - | - |
-| **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
+| **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
 | **options** (Optional) | `ExplanationOptions` | Can be a `group_key` string |
 
 | `Explanations` | |

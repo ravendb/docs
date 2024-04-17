@@ -54,7 +54,7 @@ include timings()
 
 | Parameter   | Type           | Description   |
 |-------------|----------------|---------------|
-| **timings_callback** | `Callable[[QueryTimings], None]` | An _out_ param that will be filled with the timings results |
+| **timings_callback** | `Callable[[QueryTimings], None]` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
 
 {CODE:python syntax_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
 

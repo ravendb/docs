@@ -142,7 +142,7 @@ include highlight(Notes, 35, 2)
 | **field_name** | `str` | Name of the field that contains the searched terms to highlight |
 | **fragment_length** | `int` | Maximum length of a text fragment<br>Must be `>= 18` |
 | **fragment_count** | `int` | Maximum number of text fragments that will be returned |
-| **highlightings_callback** | `Callable[[Highlightings], None]` | An 'out' param that will contain the highlighted text fragments for each returned result |
+| **highlightings_callback** | `Callable[[Highlightings], None]` | A callback function to retrieve the highlighted text fragments for each returned result |
 | **options** (Optional) | `HighlightingOptions ` | Customizing options |
 
 <br>

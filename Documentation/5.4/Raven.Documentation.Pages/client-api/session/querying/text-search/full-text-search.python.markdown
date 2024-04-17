@@ -298,11 +298,11 @@ search(Notes, "*mark*")
 |-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **field_name** | `str` | Name of the searched field. |
 | **search_terms** | `str` | A string containing the term or terms (separated by spaces) to search for. |
-| **operator** | `SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br>**Can be**: `SearchOperator.OR` or `SearchOperator.AND`<br>**Default**: `SearchOperation.Or` |
+| **operator** | `SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br>**Can be**: `SearchOperator.OR` or `SearchOperator.AND`<br>**Default**: `SearchOperation.OR` |
 
 | Return Type         | Description   |
-|---------------------|---------------|
-| `DocumentQuery[_T]` | Query results |
+| ------------------- | ------------- |
+| `DocumentQuery[_T]` | The same object used for the query |
 
 {PANEL/}
 

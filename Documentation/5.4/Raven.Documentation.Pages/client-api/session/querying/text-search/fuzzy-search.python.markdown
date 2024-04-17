@@ -37,9 +37,9 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 |-------------|-----------|------------------|
 | **fuzzy** | `float` | A value between `0.0` and `1.0`.<br>With a value closer to `1.0`, terms with a higher similarity are matched. |
 
-| Return Type         | Description   |
-|---------------------|---------------|
-| `DocumentQuery[_T]` | Query results |
+| Return Type | Description |
+| ----------- | ----------- |
+| `DocumentQuery[_T]` | The same object used for the query |
 
 {PANEL/}
 
