@@ -27,13 +27,12 @@
 
 {CODE:nodejs syntax@client-api\session\HowTo\getCountersFor.js /}
 
-
-| Parameters | | |
-| - | - | - |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
 | **entity** | T | The entity for which counter names will be returned. |
 
-| Return Value | |
-| - | - |
+| Return Type | Description |
+| ----------- | ----------- |
 | `string[]` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br>An exception is thrown if the entity is not tracked by the session. |
 
 {PANEL/}

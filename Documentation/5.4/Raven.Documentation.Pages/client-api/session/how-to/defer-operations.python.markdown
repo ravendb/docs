@@ -4,11 +4,12 @@
 
 {NOTE: }
 
-* `Defer` allows you to register server commands via the session.
+* The `defer` method allows you to register server commands via the session.
 
-* All the deferred requests will be stored in the session and sent to the server in a single batch when SaveChanges is called,
-  along with any other changes/operations made on the session.  
-  Thus, all deferred commands are __executed as part of the session's SaveChanges transaction__.
+* All the deferred requests will be stored in the session and sent to the server 
+  in a single batch when `save_changes` is called, along with any other changes/operations 
+  made on the session.  
+  Thus, all deferred commands are **executed as part of the session's `save_changes` transaction**.
 
 * In this page:   
     * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
@@ -50,9 +51,8 @@ The following commands implement the `ICommandData` interface and can be deferre
 {CODE:python syntax@ClientApi\Session\HowTo\Defer.py /}
 
 | Parameter | Type | Description |
-| - |-|-|
-| **command** | A command that implements the `ICommandData` interface | The command to be executed |
-| **commands** | `ICommandData[]` | Array of commands to be executed |
+| --------- | ---- | ----------- |
+| **\*commands** | `CommandData` | An array of commands to be executed |
 
 {PANEL/}
 

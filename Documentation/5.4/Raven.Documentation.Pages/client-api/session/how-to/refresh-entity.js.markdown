@@ -1,14 +1,15 @@
 # Session: How to Refresh an Entity
 
-To update an entity with the latest changes from the server, use the `refresh()` method from `advanced` session operations.
+To update an entity with the latest changes from the server, use the `refresh()` method 
+from `advanced` session operations.
 
 ## Syntax
 
 {CODE:nodejs refresh_1@client-api\session\howTo\refresh.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | object | Instance of an entity that will be refreshed |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity that will be refreshed |
 
 ## Example
 

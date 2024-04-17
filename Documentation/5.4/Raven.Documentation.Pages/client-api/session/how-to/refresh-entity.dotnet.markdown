@@ -1,13 +1,14 @@
 # Session: How to Refresh an Entity
 
-To update an entity with the latest changes from the server, use the `Refresh` method from `Advanced` session operations.
+To update an entity with the latest changes from the server, use the `Refresh` method 
+from `Advanced` session operations.
 
 ## Syntax
 
 {CODE refresh_1@ClientApi\Session\HowTo\Refresh.cs /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
 | **entity** | T | Instance of an entity that will be refreshed |
 
 ## Example

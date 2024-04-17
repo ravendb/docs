@@ -8,12 +8,12 @@ Last modified date is stored within the metadata in session and is available for
 
 {CODE:nodejs get_last_modified_1@client-api\session\howTo\getLastModified.js /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
 | **instance** | object | Instance of an entity for which the last modified date will be returned. |
 
-| Return Value | |
-| ------------- | ----- |
+| Return Type | Description |
+| ----------- | ----------- |
 | Date | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
 
 

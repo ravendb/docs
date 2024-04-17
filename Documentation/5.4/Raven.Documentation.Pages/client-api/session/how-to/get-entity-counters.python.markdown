@@ -4,11 +4,13 @@
 
 {NOTE: }
 
-* When a document is loaded to the session,  
-  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
+* When a document is loaded to the session, the loaded entity will include 
+  various metadata details such as ID, current change-vector, etc.
 
-* If the document has __Counters__, the document metadata will also contain its counter names.  
-  The counter names are available for each entity using the `GetCountersFor()` method from the `Advanced` session operations.
+* If the document has **Counters**, the document metadata will also contain 
+  its counter names.  
+  The counter names are available for each entity using the `get_counters_for()` 
+  method from the `advanced` session operations.
 
 * In this page:
     * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
@@ -28,13 +30,13 @@
 {CODE:python syntax@ClientApi\Session\HowTo\GetCountersFor.py /}
 
 
-| Parameters | | |
-| - | - | - |
-| **instance** | T | Instance of an entity for which counter names will be returned. |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity for which counter names will be returned. |
 
-| Return Value | |
-| - | - |
-| `List<string>` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br>An exception is thrown if the `instance` is not tracked by the session. |
+| Return Type | Description |
+| ----------- | ----------- |
+| `List[str]` | Returns the counter names for the specified entity, or `None` if the entity has no counters.<br>An exception is thrown if the `object` is not tracked by the session. |
 
 {PANEL/}
 

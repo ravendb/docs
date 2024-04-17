@@ -1,6 +1,8 @@
 # Session: How to Evict Single Entity from a Session
 
-We can clear all session operations and stop tracking of all entities by the using [clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes there is need to only to do a cleanup only for one entity. For this purpose `evict` was introduced.
+We can clear all session operations and stop tracking of all entities using the 
+[clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes 
+there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Syntax
 

@@ -112,7 +112,12 @@
 {PANEL: Multiple lazy requests }
 
 {NOTE: }
+
 <a id="implicit" /> __Execute all requests - implicitly__
+
+Accessing the value of ANY of the lazy instances will trigger
+the execution of ALL pending lazy requests held up by the session, 
+in a SINGLE server call.  
 
 {CODE:nodejs lazy_ExecuteAll_Implicit@client-api\Session\HowTo\lazy.js /}
 
@@ -120,6 +125,9 @@
 
 {NOTE: }
 <a id="explicit" /> __Execute all requests - explicitly__
+
+Explicitly calling `executeAllPendingLazyOperations` will execute 
+ALL pending lazy requests held up by the session, in a SINGLE server call.  
 
 {CODE:nodejs lazy_ExecuteAll_Explicit@client-api\Session\HowTo\lazy.js /}
 

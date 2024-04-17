@@ -28,12 +28,12 @@
 {CODE syntax@ClientApi\Session\HowTo\GetCountersFor.cs /}
 
 
-| Parameters | | |
-| - | - | - |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
 | **instance** | T | Instance of an entity for which counter names will be returned. |
 
-| Return Value | |
-| - | - |
+| Return Type | Description |
+| ----------- | ----------- |
 | `List<string>` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br>An exception is thrown if the `instance` is not tracked by the session. |
 
 {PANEL/}

@@ -1,21 +1,22 @@
 # Session: How to Get Entity Last Modified 
 
-When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+When a document is downloaded from the server it contains various metadata details, 
+including the last modified date of the document.  
 
-Last modified date is stored within the metadata in session and is available for each entity using the `GetLastModifiedFor` method from the `Advanced` session operations.
+Last modified date is stored within the session metadata and is available for each 
+entity using the `get_last_modified_for` method from the `advanced` session operations.
 
 ## Syntax
 
 {CODE:python get_last_modified_1@ClientApi\Session\HowTo\GetLastModified.py /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which the last modified date will be returned. |
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity for which the last modified date will be returned. |
 
-| Return Value | |
-| ------------- | ----- |
-| DateTime? | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
-
+| Return Type | Description |
+| ----------- | ----------- |
+| `datetime` | Returns the last modified date for an entity. Throws an exception if the `object` is not tracked by the session. |
 
 ## Example
 
