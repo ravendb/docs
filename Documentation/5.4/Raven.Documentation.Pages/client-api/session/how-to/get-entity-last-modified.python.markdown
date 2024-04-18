@@ -16,7 +16,7 @@ entity using the `get_last_modified_for` method from the `advanced` session oper
 
 | Return Type | Description |
 | ----------- | ----------- |
-| `datetime` | Returns the last modified date for an entity. Throws an exception if the `object` is not tracked by the session. |
+| `datetime` | Returns the last modified date for an entity. Throws an exception if the entity is not tracked by the session. |
 
 ## Example
 

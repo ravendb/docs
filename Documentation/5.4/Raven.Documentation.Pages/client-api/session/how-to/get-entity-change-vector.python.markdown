@@ -17,7 +17,7 @@
 
 | Return Type | Description |
 | ----------- | ----------- |
-| `str` | Returns the current change-vector for an entity. Throws an exception if the `instance` is not tracked by the session. |
+| `str` | Returns the current change-vector for an entity. Throws an exception if the entity is not tracked by the session. |
 
 ## Example
 

@@ -36,7 +36,7 @@
 
 | Return Type | Description |
 | ----------- | ----------- |
-| `List[str]` | Returns the counter names for the specified entity, or `None` if the entity has no counters.<br>An exception is thrown if the `object` is not tracked by the session. |
+| `List[str]` | Returns the counter names for the specified entity, or `None` if the entity has no counters.<br>An exception is thrown if the entity is not tracked by the session. |
 
 {PANEL/}
 

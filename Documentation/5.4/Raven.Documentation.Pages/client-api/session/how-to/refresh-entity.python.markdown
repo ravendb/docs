@@ -8,7 +8,7 @@ To update an entity with the latest changes from the server, use the `refresh` m
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| **entity** | `object` | Instance of an entity that will be refreshed |
+| **entity** | `object` | An entity that will be refreshed |
 
 ## Example
 
