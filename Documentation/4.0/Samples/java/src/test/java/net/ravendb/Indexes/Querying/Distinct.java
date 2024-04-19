@@ -10,14 +10,14 @@ import java.util.List;
 public class Distinct {
 
     //region distinct_3_1
-    public static class Employees_ByCountry extends AbstractIndexCreationTask {
+    public static class Orders_ByShipToCountry extends AbstractIndexCreationTask {
 
-    public Employees_ByCountry() {
+    public Orders_ByShipToCountry() {
 
-        // The map phase indexes the country listed in each employee document
+        // The map phase indexes the country listed in each order document
         // CountryCount is assigned with 1, which will be aggregated in the reduce phase
-        map = "docs.Employees.Select(employee => new { " +
-              "    Country = employee.Address.Country, " +
+        map = "docs.Orders.Select(order => new { " +
+              "    Country = order.ShipTo.Country, " +
               "    CountryCount = 1 " +
               "})";
 
@@ -59,24 +59,36 @@ public class Distinct {
         try (IDocumentStore store = new DocumentStore()) {
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_1_1
-                // returns sorted list of countries w/o duplicates
+                // Get a sorted list without duplicates:
+                // =====================================
+                
                 List<String> countries = session
                     .query(Order.class)
                     .orderBy("ShipTo.Country")
                     .selectFields(String.class, "ShipTo.Country")
+                     // Call 'distinct' to remove duplicates from results
+                     // Items wil be compared based on field 'Country' that is specified in the above 'selectFields' 
                     .distinct()
                     .toList();
+                    
+                // Running this on the Northwind sample data
+                // will result in a sorted list of 21 countries w/o duplicates.
                 //endregion
             }
 
             try (IDocumentSession session = store.openSession()) {
                 //region distinct_2_1
-                // results will contain the number of unique countries
+                // Count the number of unique countries:
+                // =====================================
+                
                 int numberOfCountries = session
                     .query(Order.class)
                     .selectFields(String.class, "ShipTo.Country")
                     .distinct()
                     .count();
+                    
+                // Running this on the Northwind sample data,
+                // will result in 21, which is the number of unique countries.
                 //endregion
             }
 
@@ -84,11 +96,13 @@ public class Distinct {
                 //region distinct_3_2
                 // Query the map-reduce index defined above
                 try (IDocumentSession session = DocumentStoreHolder.store.openSession()) {
-                    Employees_ByCountry.Result queryResult = session.query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
-                        .whereEquals("Country", country)
-                        .firstOrDefault();
+                    Orders_ByShipToCountry.Result queryResult = session
+                        .query(Orders_ByShipToCountry.Result.class, Orders_ByShipToCountry.class)
+                        .toList();
 
-                    int numberOfEmployeesFromCountry = queryResult != null ? queryResult.getCountryCount() : 0;
+                    // The resulting list contains all index-entry items where each entry represents a country. 
+                    // The size of the list corresponds to the number of unique countries.
+                    int numberOfUniqueCountries = queryResult.length;
                 }
                 //endregion
             }
