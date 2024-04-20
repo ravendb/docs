@@ -8,9 +8,9 @@
   a basic score is calculated for each document in the results by the underlying engine.
 
 * Providing a boost value to some fields allows you to prioritize the resulting documents.  
-  The boost value is integrated with the basic score, making the document rank higher.
+  The boost value is integrated with the basic score, making the document rank higher.  
 
-* Boosting can be achieved in the following ways:
+* Boosting can be achieved in the following ways:  
 
     * **At query time**:  
       Apply a boost factor to searched terms at query time - as described in this article.
@@ -35,27 +35,26 @@
 
 {PANEL: Boost results - when making a full-text search}
 
-{NOTE: }
+To apply boosting while running a full-text search, use the 
+`boost()` method to prioritize the preceding `search()` results.  
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query boost_1@client-api\session\querying\textSearch\boostResults.js /}
+{CODE-TAB:python:Query boost_1@ClientApi\Session\Querying\TextSearch\BoostResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" where
 search(Notes, "English") or boost(search(Notes, "Italian"), 10)
-{"p0":"English","p1":"Italian"}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 
 {PANEL: Boost results - when querying with where clause}
 
-{NOTE: }
+`boost()` can be used to give different priorities to the results 
+returned by different `where` clauses.  
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query boost_2@client-api\session\querying\textSearch\boostResults.js /}
+{CODE-TAB:python:Query boost_4@ClientApi\Session\Querying\TextSearch\BoostResults.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Companies" where
 boost(startsWith(Name, "O"), 10) or
@@ -63,8 +62,6 @@ boost(startsWith(Name, "P"), 50) or
 boost(endsWith(Name, "OP"), 90)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 

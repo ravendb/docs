@@ -67,13 +67,13 @@ where spatial.within(
 * Use the `relatesToShape` method to search for all documents containing spatial data that is located  
   in the specified relation to the given shape.
 
-* The shape is specified as either a __circle__ or a __polygon__ in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
+* The shape is specified as either a **circle** or a **polygon** in a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format.
 
 * The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
 
 {NOTE: }
 
-<a id="circle" /> __Circle__:
+<a id="circle" /> **Circle**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query spatial_2@client-api\session\querying\makeSpatialQuery.js /}
@@ -94,7 +94,7 @@ where spatial.within(
 
 {NOTE: }
 
-<a id="polygon" /> __Polygon__:
+<a id="polygon" /> **Polygon**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query spatial_3@client-api\session\querying\makeSpatialQuery.js /}
@@ -119,7 +119,7 @@ where spatial.within(
 
 {INFO:  }
 
-<a id="polygonRules" /> __Polygon rules__:
+<a id="polygonRules" /> **Polygon rules**:
 
 * The polygon's coordinates must be provided in counterclockwise order.
 
@@ -137,12 +137,12 @@ where spatial.within(
 
 * Use `orderByDistance` or `orderByDistanceDescending` to sort the results by distance from a given point.
 
-* By default, distance in RavenDB measured in **kilometers**.  
+* By default, distance is measured by RavenDB in **kilometers**.  
   The distance can be rounded to a specific range.  
 
 {NOTE: }
 
-<a id="orderByDistance" /> __Order by distance__:
+<a id="orderByDistance" /> **Order by distance**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query spatial_4@client-api\session\querying\makeSpatialQuery.js /}
@@ -169,10 +169,10 @@ order by spatial.distance(
 
 {NOTE: }
 
-<a id="orderByDistanceDesc" /> __Order by distance descending__:
+<a id="orderByDistanceDesc" /> **Order by distance descending**:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query spatial_5@client-api\session\querying\makeSpatialQuery.js /}
+{CODE-TAB:nodejs:Query spatial_5@client-api\session\querying\MakeSpatialQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Return all employee entities sorted by their distance from a specified point.
 // The farthest results will be listed first.
@@ -189,7 +189,7 @@ order by spatial.distance(
 
 {NOTE: }
 
-<a id="roundedDistance" /> __Sort results by rounded distance__:
+<a id="roundedDistance" /> **Sort results by rounded distance**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query spatial_6@client-api\session\querying\makeSpatialQuery.js /}
@@ -211,19 +211,9 @@ order by spatial.distance(
 
 {NOTE: }
 
-<a id="getResultingDistance" /> __Get resulting distance__:
+<a id="getResultingDistance" /> **Get resulting distance**:
 
 * The distance is available in the `@spatial` metadata property within each result.
-
-* Note the following difference between the underlying search engines:
-
-    * When using __Lucene__:  
-      This metadata property is always available in the results.
-
-    * When using __Corax__:  
-      In order to enhance performance, this property is not included in the results by default.  
-      To get this metadata property you must set the [Indexing.Corax.IncludeSpatialDistance](../../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance) configuration value to _true_.  
-      Learn about the available methods for setting an indexing configuration key in this [indexing-configuration](../../../server/configuration/indexing-configuration) article.
 
 {CODE:nodejs spatial_4_getDistance@client-api\session\querying\makeSpatialQuery.js /}
 
@@ -243,9 +233,9 @@ order by spatial.distance(
 
 | Parameters    | Type                                           | Description                                                                                                                |
 |---------------|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| __fieldName__ | `string`                                       | Path to spatial field in an index<br>(when querying an index).                                                             |
-| __field__     | `DynamicSpatialField`                          | Object that contains the document's spatial fields,<br>either `PointField` or `WktField`<br>(when making a dynamic query). |
-| __clause__    | `(SpatialCriteriaFactory) => SpatialCrieteria` | Spatial criteria that will be executed on a given spatial field.                                                           |
+| **fieldName** | `string`                                       | Path to spatial field in an index<br>(when querying an index).                                                             |
+| **field**     | `DynamicSpatialField`                          | Object that contains the document's spatial fields,<br>either `PointField` or `WktField`<br>(when making a dynamic query). |
+| **clause**    | `(SpatialCriteriaFactory) => SpatialCrieteria` | Spatial criteria that will be executed on a given spatial field.                                                           |
 
 ---
 
@@ -257,9 +247,9 @@ order by spatial.distance(
 
 | Parameters    | Type     | Description                                             |
 |---------------|----------|---------------------------------------------------------|
-| __latitude__  | `string` | Path to the document field that contains the latitude   |
-| __longitude__ | `string` | Path to the document field that contains the longitude  |
-| __wktPath__   | `string` | Path to the document field that contains the WKT string |
+| **latitude**  | `string` | Path to the document field that contains the latitude   |
+| **longitude** | `string` | Path to the document field that contains the longitude  |
+| **wktPath**   | `string` | Path to the document field that contains the WKT string |
 
 ---
 
@@ -271,11 +261,11 @@ order by spatial.distance(
 
 | Parameter                                 | Type     | Description                                                                                                                         |
 |-------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
-| __shapeWkt__                              | `string` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria                  |
-| __relation__                              | `string` | Relation of the shape to the spatial data in the document/index.<br>Can be `Within`, `Contains`, `Disjoint`, `Intersects`.          |
-| __distErrorPercent__                      | `number` | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
-| __radius__ / __latitude__ / __longitude__ | `number` | Used to define a radius of a circle                                                                                                 |
-| __radiusUnits__ / __units__               | `string` | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br>By default, distances are measured in kilometers. |
+| **shapeWkt**                              | `string` | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape used in query criteria                  |
+| **relation**                              | `string` | Relation of the shape to the spatial data in the document/index.<br>Can be `Within`, `Contains`, `Disjoint`, `Intersects`.          |
+| **distErrorPercent**                      | `number` | Maximum distance error tolerance in percents. Default: 0.025                                                                        |
+| **radius** / **latitude** / **longitude** | `number` | Used to define a radius of a circle                                                                                                 |
+| **radiusUnits** / **units**               | `string` | Determines if circle or shape should be calculated in `Kilometers` or `Miles`.<br>By default, distances are measured in kilometers. |
 
 ---
 
@@ -295,11 +285,11 @@ order by spatial.distance(
 
 | Parameter                    | Type                  | Description                                                                                                                                                                                                                                                      |
 |------------------------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldName__                | `string`              | Path to spatial field in index<br>(when querying an index).                                                                                                                                                                                                      |
-| __field__                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br>either `PointField` or `WktField`<br>(when making a dynamic query).                                                                                                                                       |
-| __shapeWkt__                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.            |
-| __latitude__ / __longitude__ | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                                      |
-| __roundFactor__              | `number`              | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. |
+| **fieldName**                | `string`              | Path to spatial field in index<br>(when querying an index).                                                                                                                                                                                                      |
+| **field**                    | `DynamicSpatialField` | Object that contains the document's spatial fields,<br>either `PointField` or `WktField`<br>(when making a dynamic query).                                                                                                                                       |
+| **shapeWkt**                 | `string`              | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry)-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference.            |
+| **latitude** / **longitude** | `number`              | Used to define a point from which distance will be measured                                                                                                                                                                                                      |
+| **roundFactor**              | `number`              | A distance interval in kilometers.<br>The distance from the point is rounded up to the nearest interval.<br>The results within the same interval can be sorted by a secondary order.<br>If no other order was specified, then by ascending order of document Id. |
 
 {PANEL/}
 
