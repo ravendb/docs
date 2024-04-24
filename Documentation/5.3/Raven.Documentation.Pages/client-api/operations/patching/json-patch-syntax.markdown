@@ -23,7 +23,7 @@
    * [JSON Patches](../../../client-api/operations/patching/json-patch-syntax#json-patches)
    * [Running JSON Patches](../../../client-api/operations/patching/json-patch-syntax#running-json-patches)  
    * [Patch Operations](../../../client-api/operations/patching/json-patch-syntax#patch-operations)  
-      * [Add Document Property](../../../client-api/operations/patching/json-patch-syntax#add-document-property)  
+      * [Add Document Property](../../../client-api/operations/patching/json-patch-syntax#add-operation)  
       * [Remove Document Property](../../../client-api/operations/patching/json-patch-syntax#remove-document-property)  
       * [Replace Document Property Contents](../../../client-api/operations/patching/json-patch-syntax#replace-document-property-contents)  
       * [Copy Document Property Contents to Another Property](../../../client-api/operations/patching/json-patch-syntax#copy-document-property-contents-to-another-property)  
