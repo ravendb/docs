@@ -4,15 +4,13 @@
 
 {NOTE: }
 
-* By default, each session tracks the changes made to all entities it has either stored, loaded, or queried for.  
+* By default, each session tracks the changes made in all the entities it has ever stored, loaded, or queried for.  
   All changes are then persisted when `SaveChanges` is called.
 
-* Entity changes can be ignored for the `SaveChanges` by disabling entity tracking.  
-
-* Tracking can be disabled by any of the following:
-    * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
+* To ignore entity changes when calling `SaveChanges`, **disable entity tracking** by any of the following:
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
     * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
 {NOTE/}
 

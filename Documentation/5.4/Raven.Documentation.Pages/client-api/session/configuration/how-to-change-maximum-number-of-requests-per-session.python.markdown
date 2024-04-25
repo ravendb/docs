@@ -11,20 +11,20 @@ Nevertheless, if needed, this number can be changed for a single session or for 
 
 ## Single session
 
-To change the maximum number of requests in a single session, modify the `maxNumberOfRequestsPerSession` 
-field value using the `advanced` session operations.
+To change the maximum number of requests for a **single** session, modify the value 
+of the `session` `_max_number_of_requests_per_session` property.
 
-{CODE:java max_requests_1@ClientApi\Session\Configuration\MaxRequests.java /}
+{CODE:python max_requests_1@ClientApi\Session\Configuration\MaxRequests.py /}
 
 ## All sessions
 
 To change the maximum number of requests for **all** sessions (on a particular store), 
-the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
+change the value of the DocumentStore `conventions` `max_number_of_requests_per_session ` property.
 
-{CODE:java max_requests_2@ClientApi\Session\Configuration\MaxRequests.java /}
+{CODE:python max_requests_2@ClientApi\Session\Configuration\MaxRequests.py /}
 
-{INFO: Injecting maxNumberOfRequestsPerSession from the Server}
-The maximum number of requests for all sessions can also be configured via injected client 
+{INFO: Injecting `max_number_of_requests_per_session ` from the Server}
+The maximum number of requests for all sessions can also be configured by via injected client 
 configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
 {INFO/}
 

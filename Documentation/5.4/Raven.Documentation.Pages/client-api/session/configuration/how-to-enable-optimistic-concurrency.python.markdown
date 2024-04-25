@@ -16,7 +16,7 @@
   the current transaction) when trying to save a document that has been modified on the server side after the client 
   loaded and modified it.
 
-* The `ConcurrencyException` that might be thrown upon the `SaveChanges` call needs to be handled by the caller. 
+* The `ConcurrencyException` that might be thrown upon the `save_changes` call needs to be handled by the caller. 
   The operation can be retried (the document needs to be reloaded since it got changed meanwhile) or handle the error 
   in a way that is suitable in a given scenario.
 
@@ -28,8 +28,8 @@
 
 {WARNING: }
 
-* Note that the `UseOptimisticConcurrency` setting only applies to documents that have been modified by the current session. 
-  E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `SaveChanges`, 
+* Note that the `use_optimistic_concurrency` setting only applies to documents that have been modified by the current session. 
+  E.g., if you load documents `users/1-A` and `users/2-A` in a session, make modifications only to `users/1-A`, and then call `save_changes`, 
   the operation will succeed regardless of the optimistic concurrency setting, even if `users/2-A` has been changed by another process in the meantime.
 
 * However, if you modify both documents and attempt to save changes with optimistic concurrency enabled, an exception will be raised 
@@ -51,12 +51,12 @@ A detailed description of transactions and concurrency control in RavenDB is ava
 
 {PANEL: Enable for specific session}
 
-{CODE optimistic_concurrency_1@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+{CODE:python optimistic_concurrency_1@ClientApi\Session\Configuration\OptimisticConcurrency.py /}
 
 {WARNING: }
 
 * Enabling optimistic concurrency in a session will ensure that changes made to a document will only be persisted 
-  if the version of the document sent in the `SaveChanges()` call matches its version from the time it was initially read (loaded from the server).
+  if the version of the document sent in the `save_changes` call matches its version from the time it was initially read (loaded from the server).
  
 * Note that it's necessary to enable optimistic concurrency for ALL sessions that modify the documents for which you want to guarantee that no writes will be silently discarded.
   If optimistic concurrency is enabled in some sessions but not in others, and they modify the same documents, the risk of the lost update anomaly still exists.
@@ -67,22 +67,22 @@ A detailed description of transactions and concurrency control in RavenDB is ava
 
 {PANEL: Enable globally}
 
-* Optimistic concurrency can also be _enabled_ for all sessions that are opened under a document store.
+* Optimistic concurrency can also be enabled for all sessions that are opened under a document store.
 
-* Use the [store.Conventions.UseOptimisticConcurrency](../../../client-api/configuration/conventions#useoptimisticconcurrency) convention to enable globally.
+* Use the [store.conventions.use_optimistic_concurrency](../../../client-api/configuration/conventions#useoptimisticconcurrency) convention to enable globally.
 
-{CODE optimistic_concurrency_2@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+{CODE:python optimistic_concurrency_2@ClientApi\Session\Configuration\OptimisticConcurrency.py /}
 
 {PANEL/}
 
 {PANEL: Disable for specific document (when enabled on session)}
 
-* Optimistic concurrency can be _disabled when **storing** a specific document,  
+* Optimistic concurrency can be _disabled_ when **storing** a specific document,  
   even when it is _enabled_ for an entire session (or globally).
 
-* This is done by passing `null` as a change vector value to the [Store](../../../client-api/session/storing-entities) method.
+* This is done by passing `None` as a change vector value to the [store](../../../client-api/session/storing-entities) method.
 
-{CODE optimistic_concurrency_3@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+{CODE:python optimistic_concurrency_3@ClientApi\Session\Configuration\OptimisticConcurrency.py /}
 
 {PANEL/}
 
@@ -91,15 +91,15 @@ A detailed description of transactions and concurrency control in RavenDB is ava
 * Optimistic concurrency can be _enabled_ when **storing** a specific document,  
   even when it is _disabled_ for an entire session (or globally).
 
-* This is done by passing `string.Empty` as the change vector value to the [Store](../../../client-api/session/storing-entities) method.  
+* This is done by passing an empty `str` as the change vector value to the [store](../../../client-api/session/storing-entities) method.  
   Setting the change vector to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already exist.
   A `ConcurrencyException` will be thrown if the document already exists. 
 
-* If you do not provide a change vector or if the change vector is `null`, optimistic concurrency will be disabled.  
+* If you do not provide a change vector or if the change vector is `None`, optimistic concurrency will be disabled.  
 
-* Setting optimistic concurrency for a specific document overrides the `UseOptimisticConcurrency` property from the `Advanced` session operations.
+* Setting optimistic concurrency for a specific document overrides the `use_optimistic_concurrency` property from the `advanced` session operations.
 
-{CODE optimistic_concurrency_4@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+{CODE:python optimistic_concurrency_4@ClientApi\Session\Configuration\OptimisticConcurrency.py /}
 
 {PANEL/}
 

@@ -3,11 +3,12 @@
 
 {NOTE: }
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) made to all entities that it has either loaded, stored, or queried for,  
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made in all the entities it has either loaded, stored, or queried for,  
   and persists to the server only what is needed when `saveChanges()` is called.
 
-* This article describes how to check for changes made to all tracked entities within the __session__.  
-  To check for changes on a specific __entity__, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+* This article describes how to check for changes made to all tracked entities within the **session**.  
+  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
 
 * In this page:
     * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
@@ -62,12 +63,12 @@
 
 | `DocumentsChanges`  | Type    | Description                                                                                                                                                                                      |
 |---------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __fieldOldValue__   | object  | Previous field value                                                                                                                                                                             |
-| __fieldNewValue__   | object  | Current field value                                                                                                                                                                              |
-| __change__          | string  | Type of change that occurred. Can be: <br>`"DocumentDeleted"`, `"DocumentAdded"`,`"FieldChanged"`, `"NewField"`, `"RemovedField"`, `"ArrayValueChanged"`, `"ArrayValueAdded"`, `"ArrayValueRemoved"` |
-| __fieldName__       | string  | Name of field on which the change occurred                                                                                                                                                       |
-| __fieldPath__       | string  | Path of field on which the change occurred                                                                                                                                                       |
-| __fieldFullName__   | string  | Path + Name of field on which the change occurred                                                                                                                                                |
+| **fieldOldValue**   | object  | Previous field value                                                                                                                                                                             |
+| **fieldNewValue**   | object  | Current field value                                                                                                                                                                              |
+| **change**          | string  | Type of change that occurred. Can be: <br>`"DocumentDeleted"`, `"DocumentAdded"`,`"FieldChanged"`, `"NewField"`, `"RemovedField"`, `"ArrayValueChanged"`, `"ArrayValueAdded"`, `"ArrayValueRemoved"` |
+| **fieldName**       | string  | Name of field on which the change occurred                                                                                                                                                       |
+| **fieldPath**       | string  | Path of field on which the change occurred                                                                                                                                                       |
+| **fieldFullName**   | string  | Path + Name of field on which the change occurred                                                                                                                                                |
 
 {PANEL/}
 

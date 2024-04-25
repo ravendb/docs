@@ -7,7 +7,7 @@
 * By default, each session tracks changes to all entities it has either stored, loaded, or queried for.  
   All changes are then persisted when `SaveChanges` is called.  
 
-* __Tracking can be disabled__ by any of the following:  
+* **Tracking can be disabled** by any of the following:  
     * [Disable tracking a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
     * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
     * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
@@ -23,14 +23,14 @@
   * Any changes made to this entity will be ignored for `SaveChanges`.  
   * Performing another `Load` for this entity will Not generate another call to the server.
   
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_tracking_1@ClientApi\Session\Configuration\DisableTracking.cs /}
 {CODE-TAB:csharp:Async disable_tracking_1_async@ClientApi\Session\Configuration\DisableTracking.cs /}
 {CODE-TABS/}
 
-__Syntax__
+**Syntax**
 
 {CODE syntax_1@ClientApi\Session\Configuration\DisableTracking.cs /}
 
@@ -73,11 +73,11 @@ __Syntax__
   by configuring the `ShouldIgnoreEntityChanges` convention method on the document store.
 * This customization rule will apply to all sessions opened for this document store.
 
-__Example__
+**Example**
 
 {CODE:csharp disable_tracking_4@ClientApi\Session\Configuration\DisableTracking.cs /}
 
-__Syntax__
+**Syntax**
 
 {CODE syntax_2@ClientApi\Session\Configuration\DisableTracking.cs /}
 

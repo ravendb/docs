@@ -1,24 +1,25 @@
 # Session: How to Ignore Entity Changes
 
 To indicate that an entity should be ignored when tracking changes, 
-use the `advanced` session `ignoreChangesFor` method.  
+use the `advanced` session `ignore_changes_for` method.  
 
-Using `Load` again to retrieve this entity will not initiate a server call.  
+Using `load` again to retrieve this entity will not initiate a server call.  
 
 The entity will still take part in the session, but be ignored when `save_changes` is called.  
 
+See more here: [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking)
+
 ## Syntax
 
-{CODE:java ignore_changes_1@ClientApi\Session\HowTo\IgnoreChanges.java /}
+{CODE:python ignore_changes_1@ClientApi\Session\HowTo\IgnoreChanges.py /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **entity** | Object | Instance of entity for which changes will be ignored. |
-
+| Parameter | Type | Description |
+| - | - | - |
+| **entity** | `object` | The instance of an entity for which changes will be ignored. |
 
 ## Example
 
-{CODE:java ignore_changes_2@ClientApi\Session\HowTo\IgnoreChanges.java /}
+{CODE:python ignore_changes_2@ClientApi\Session\HowTo\IgnoreChanges.py /}
 
 ## Related Articles
 

@@ -5,9 +5,9 @@
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
   made in all the entities it has either loaded, stored, or queried for,  
-  and persists to the server only what is needed when `SaveChanges()` is called.
+  and persists to the server only what is needed when `save_changes` is called.
 
-* This article describes how to check for changes made to all tracked entities within the **session**.  
+* This article describes how to check for changes made in all tracked entities within the **session**.  
   To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
  
 * In this page:
@@ -21,19 +21,19 @@
 
 {PANEL: Check for session changes }
 
-* The session's advanced property `HasChanges` indicates whether any entities were added, modified, or deleted within the session.
+* The advanced session `has_changes` property indicates whether any entities were added, modified, or deleted within the session.
 
-* Note: The _HasChanges_ property is cleared after calling `SaveChanges()`.
+* Note: The `has_changes` property is cleared (reset to `False`) after calling `save_changes`.
 
 ---
 
-{CODE changes_1@ClientApi\Session\HowTo\SessionChanges.cs /}
+{CODE:python changes_1@ClientApi\Session\HowTo\SessionChanges.py /}
 
 {PANEL/}
 
 {PANEL: Get session changes }
 
-* Use the session's advanced method `WhatChanged()` to get all changes made to all the entities tracked by the session.
+* Use the session's advanced method `what_changed` to get all changes made to all the entities tracked by the session.
 
 * For each entity that was modified, the details will include:  
   * The name and path of the changed field   
@@ -44,24 +44,24 @@
 
 ##### Example I
 
-{CODE changes_2@ClientApi\Session\HowTo\SessionChanges.cs /}
+{CODE:python changes_2@ClientApi\Session\HowTo\SessionChanges.py /}
 
 ##### Example II
 
-{CODE changes_3@ClientApi\Session\HowTo\SessionChanges.cs /}
+{CODE:python changes_3@ClientApi\Session\HowTo\SessionChanges.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax_1@ClientApi\Session\HowTo\SessionChanges.cs /}
-{CODE syntax_2@ClientApi\Session\HowTo\SessionChanges.cs /}
+{CODE:python syntax_1@ClientApi\Session\HowTo\SessionChanges.py /}
+{CODE:python syntax_2@ClientApi\Session\HowTo\SessionChanges.py /}
 
-| ReturnValue                               |                                                       |
-|-------------------------------------------|-------------------------------------------------------|
-| `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID |
+| ReturnValue                         |                                                       |
+|-------------------------------------|-------------------------------------------------------|
+| `Dict[str, List[DocumentsChanges]]` | Dictionary containing list of changes per document ID |
 
-{CODE syntax_3@ClientApi\Session\HowTo\SessionChanges.cs /}
+{CODE:python syntax_3@ClientApi\Session\HowTo\SessionChanges.py /}
 
 {PANEL/}
 
