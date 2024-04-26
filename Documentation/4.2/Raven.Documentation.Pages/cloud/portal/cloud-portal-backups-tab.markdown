@@ -25,7 +25,7 @@ The Backups tab lists your products, their databases and their backup files.
 [Overview](../../cloud/cloud-overview)  
   
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
-[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
 [The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
 

@@ -105,7 +105,7 @@ See for example the price differences between the production basic-grade configu
 * Production Basic 20:  
   ![PB30](images/pricing-001-PB30.png "PB30")  
   
-You will also be able to find your products' costs in the [billing tab](../cloud/portal/cloud-portal-billing-tab).  
+You will also be able to find your products' costs in the [Billing & Costs tab](../cloud/portal/cloud-portal-billing-tab).  
 
 ---
 
@@ -155,7 +155,7 @@ Approach our Support personnel to use wire transfer or purchase order.
 
 {PANEL: Billing}
 
-Your Portal's [Billing tab](../cloud/portal/cloud-portal-billing-tab) summarizes your 
+Your Portal's [Billing & Costs tab](../cloud/portal/cloud-portal-billing-tab) summarizes your 
 outstanding charges and past invoices. Additional data you can see there includes Daily cost, Total 
 cost, and the expected charge at the end of this month.  
 

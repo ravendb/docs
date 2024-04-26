@@ -29,7 +29,7 @@ Use your portal's Account tab to control the details we'll include in your invoi
 
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
-[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
   
 **Links**  

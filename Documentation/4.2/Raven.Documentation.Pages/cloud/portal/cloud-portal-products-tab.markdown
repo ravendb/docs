@@ -197,7 +197,7 @@ You can restart your product nodes, deploy additional tools and terminate your p
 [Overview](../../cloud/cloud-overview)  
   
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
-[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
 [The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
   

@@ -77,7 +77,7 @@ You can read more about available *support options* in the [Support](../../cloud
 
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
-[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
   
 **Links**  
