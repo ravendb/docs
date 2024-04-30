@@ -1,10 +1,10 @@
 from ravendb import SessionOptions, TransactionMode, GetCompareExchangeValuesOperation
 from ravendb.infrastructure.entities import User
 
-from examples_base import ExamplesBase
+from examples_base import ExampleBase
 
 
-class LoadingEntities(ExamplesBase):
+class LoadingEntities(ExampleBase):
     def setUp(self):
         super().setUp()
 

@@ -82,10 +82,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
         }
     }
 
-    public class T
-    {
-    }
-
     public class Foo
     {
         #region syntax_2
