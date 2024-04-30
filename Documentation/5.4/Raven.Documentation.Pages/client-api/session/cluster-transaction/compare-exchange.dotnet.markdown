@@ -8,7 +8,7 @@
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
 
 * When working with compare-exchange items from the session,  
-  the session __must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
 
 * In this page:
     * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
@@ -21,7 +21,7 @@
 {PANEL: Create compare-exchange}
 
 {NOTE: }
-__Example__
+#### Example
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync new_compare_exchange_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
@@ -29,12 +29,12 @@ __Example__
 {CODE-TABS/}
 
 * `SaveChanges()` throws a `ConcurrencyException` if the key already exists.
-* An `InvalidOperationException` exception is thrown if the session was Not opened as __cluster-wide__.
+* An `InvalidOperationException` exception is thrown if the session was Not opened as **cluster-wide**.
 
 {NOTE/}
 
 {NOTE: }
-__Syntax__
+#### Syntax
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync methods_3_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
@@ -52,7 +52,7 @@ __Syntax__
 {NOTE/}
 
 {NOTE: }
-__The CompareExchangeValue__
+#### The CompareExchangeValue
 
 | Parameters   | Type     | Description                                                        |
 |--------------|----------|--------------------------------------------------------------------|
@@ -66,7 +66,7 @@ __The CompareExchangeValue__
 {PANEL: Get compare-exchange}
 
 {NOTE: }
-__Get single value__
+#### Get single value
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync methods_1_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
@@ -84,7 +84,7 @@ __Get single value__
 {NOTE/}
 
 {NOTE: }
-__Get multiple values__
+#### Get multiple values
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync methods_2_sync@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}
@@ -101,7 +101,7 @@ __Get multiple values__
 {NOTE/}
 
 {NOTE: }
-__Get compare-exchange lazily__
+#### Get compare-exchange lazily
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync methods_sync_lazy_1@ClientApi\Session\ClusterTransaction\CompareExchange.cs /}

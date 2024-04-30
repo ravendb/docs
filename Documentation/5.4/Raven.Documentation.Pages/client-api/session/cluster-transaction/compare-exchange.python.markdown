@@ -8,7 +8,7 @@
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
 
 * When working with compare-exchange items from the session,  
-  the session **must** be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction).
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
 
 * In this page:
     * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
@@ -21,17 +21,17 @@
 {PANEL: Create compare-exchange}
 
 {NOTE: }
-__Example__
+#### Example
 
 {CODE:python new_compare_exchange_sync@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 
 * `save_changes()` throws a `ConcurrencyException` if the key already exists.
-* A `RuntimeError` exception is thrown if the session was Not opened as __cluster-wide__.
+* A `RuntimeError` exception is thrown if the session was Not opened as **cluster-wide**.
 
 {NOTE/}
 
 {NOTE: }
-__Syntax__
+#### Syntax
 
 {CODE:python methods_3_sync@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 
@@ -46,7 +46,7 @@ __Syntax__
 {NOTE/}
 
 {NOTE: }
-__The CompareExchangeValue__
+#### The CompareExchangeValue
 
 | Parameters   | Type     | Description                                                         |
 |--------------|----------|---------------------------------------------------------------------|
@@ -60,7 +60,7 @@ __The CompareExchangeValue__
 {PANEL: Get compare-exchange}
 
 {NOTE: }
-__Get single value__
+#### Get single value
 
 {CODE:python methods_1_sync@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 
@@ -75,7 +75,7 @@ __Get single value__
 {NOTE/}
 
 {NOTE: }
-__Get multiple values__
+#### Get multiple values
 
 {CODE:python methods_2_sync@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 
@@ -89,7 +89,7 @@ __Get multiple values__
 {NOTE/}
 
 {NOTE: }
-__Get compare-exchange lazily__
+#### Get compare-exchange lazily
 
 {CODE:python methods_sync_lazy_1@ClientApi\Session\ClusterTransaction\CompareExchange.py /}
 

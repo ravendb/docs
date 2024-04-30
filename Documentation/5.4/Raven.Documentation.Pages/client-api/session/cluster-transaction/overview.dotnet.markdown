@@ -4,11 +4,12 @@
 
 {NOTE: }
 
-* A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support)).  
+* A session represents a single [business transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html) 
+  (not to be confused with an [ACID transaction](../../../client-api/faq/transaction-support)).  
  
 * When opening a session, the session's mode can be set to either:  
-    * __Single-Node__ - transaction is executed on a specific node and then replicated
-    * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
+    * **Single-Node** - transaction is executed on a specific node and then replicated
+    * **Cluster-Wide** - transaction is registered for execution on all nodes in an atomic fashion
 
 * In this page:  
     * [Open a cluster transaction](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)
@@ -20,7 +21,7 @@
 
 {PANEL: Open a cluster transaction}
 
-* To work with a cluster transaction open a __cluster-wide session__,  
+* To work with a cluster transaction open a **cluster-wide session**,  
   by explicitly setting the `TransactionMode` to `TransactionMode.ClusterWide`.
 
 {CODE-TABS}
@@ -39,21 +40,21 @@
 #### Cluster-Wide
 ---
 
-* Cluster-wide transactions are __fully ACID__ transactions across all the database-group nodes.  
+* Cluster-wide transactions are **fully ACID** transactions across all the database-group nodes.  
   Implemented by the Raft algorithm, the cluster must first reach a consensus.  
   Once the majority of the nodes have approved the transaction,  
   the transaction is registered for execution in the transaction queue of all nodes in an atomic fashion.  
 
 ---
 
-* The transaction will either __succeed on all nodes or be rolled-back__.
+* The transaction will either **succeed on all nodes or be rolled-back**.
     * The transaction is considered successful only when successfully registered on all the database-group nodes.
       Once executed on all nodes, the data is consistent and available on all nodes.  
     * A failure to register the transaction on any node will cause the transaction to roll-back on all nodes and changes will Not be applied.
 
 ---
 
-* The only __actions available__ are:
+* The only **actions available** are:
     * PUT / DELETE a document
     * PUT / DELETE a compare-exchange item
 
@@ -67,16 +68,16 @@
 
 ---
 
-* Cluster-wide transactions are __conflict-free__.
+* Cluster-wide transactions are **conflict-free**.
 
 ---
 
-* The cluster-wide transaction is considered __more expensive and less performant__  
+* The cluster-wide transaction is considered **more expensive and less performant**  
   since a cluster consensus is required prior to execution.  
 
 ---
 
-* __Prefer a cluster-wide transaction when__:
+* **Prefer a cluster-wide transaction when**:
     * Prioritizing consistency over performance & availability
     * When you would rather fail if a successful operation on all nodes cannot be ensured
 
@@ -87,27 +88,27 @@
 ---
 
 * A single-node transaction is considered successful once executed successfully on the node the client is communicating with.
-  The data is __immediately available__ on that node, and it will be __eventually-consistent__ across all the other database nodes when the replication process takes place soon after.
+  The data is **immediately available** on that node, and it will be **eventually-consistent** across all the other database nodes when the replication process takes place soon after.
 
 ---
 
-* __Any action is available__ except for PUT / DELETE a compare-exchange item.  
+* **Any action is available** except for PUT / DELETE a compare-exchange item.  
   No Atomic-Guards are created by the server.
 
 ---
 
-* __Conflicts__ may occur when two concurrent transactions modify the same document on different nodes at the same time.
+* **Conflicts** may occur when two concurrent transactions modify the same document on different nodes at the same time.
   They are resolved according to the defined conflict settings, either by using the latest version (default) or by following a conflict resolution script.  
   Revisions are created for the conflicting documents so that any document can be recovered.
 
 ---
 
-* The single-node transaction is considered __faster and less expensive__,  
+* The single-node transaction is considered **faster and less expensive**,  
   as no cluster consensus is required for its execution.
 
 ---
 
-* __Prefer a single-node transaction when__:  
+* **Prefer a single-node transaction when**:  
     * Prioritizing performance & availability over consistency
     * When immediate data persistence is crucial
     * When you must ensure data is written even when other nodes are not reachable at the moment

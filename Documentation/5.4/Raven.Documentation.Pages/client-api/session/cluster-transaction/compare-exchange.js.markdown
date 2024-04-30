@@ -8,31 +8,31 @@
   Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
 
 * When working with compare-exchange items from the session,  
-  the session __must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
 
 * In this page:
     * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
     * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
     * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
-      {NOTE/}
+{NOTE/}
 
 ---
 
 {PANEL: Create compare-exchange}
 
 {NOTE: }
-__Example__
+#### Example
 
 {CODE:nodejs create_compare_exchange_example@client-api\session\ClusterTransaction\CompareExchange.js /}
 
 * An `InvalidOperationException` exception is thrown when:
-  * The session was Not opened as __cluster-wide__.
+  * The session was Not opened as **cluster-wide**.
   * The key already exists in the database.
 
 {NOTE/}
 
 {NOTE: }
-__Syntax__
+#### Syntax
 
 {CODE:nodejs create_compare_exchange@client-api\session\ClusterTransaction\CompareExchange.js /}
 
@@ -47,7 +47,7 @@ __Syntax__
 {NOTE/}
 
 {NOTE: }
-__The compare exchange object returned__
+#### The compare exchange object returned
 
 | Parameters   | Type     | Description                                                        |
 |--------------|----------|--------------------------------------------------------------------|
@@ -61,7 +61,7 @@ __The compare exchange object returned__
 {PANEL: Get compare-exchange}
 
 {NOTE: }
-__Get single value__
+#### Get single value
 
 {CODE:nodejs get_compare_exchange_1@client-api\session\ClusterTransaction\CompareExchange.js /}
 
@@ -78,7 +78,7 @@ __Get single value__
 {NOTE/}
 
 {NOTE: }
-__Get multiple values__
+#### Get multiple values
 
 {CODE:nodejs get_compare_exchange_2@client-api\session\ClusterTransaction\CompareExchange.js /}
 
@@ -92,7 +92,7 @@ __Get multiple values__
 {NOTE/}
 
 {NOTE: }
-__Get compare-exchange lazily__
+#### Get compare-exchange lazily
 
 {CODE:nodejs get_compare_exchange_3@client-api\session\ClusterTransaction\CompareExchange.js /}
 

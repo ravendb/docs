@@ -1,8 +1,8 @@
 from ravendb import SessionOptions, TransactionMode
-from examples_base import ExamplesBase
+from examples_base import ExampleBase
 
 
-class HowToQuery(ExamplesBase):
+class HowToQuery(ExampleBase):
     def setUp(self):
         super().setUp()
 
@@ -11,7 +11,7 @@ class HowToQuery(ExamplesBase):
             # region open_cluster_session_sync
             with store.open_session(
                 session_options=SessionOptions(
-                    transaction_mode=TransactionMode.CLUSTER_WIDE  # Set mode to cluster-wide
+                    transaction_mode=TransactionMode.CLUSTER_WIDE  # Set mode to be cluster-wide
                     # Session will be single-node when either:
                     #   * Mode is not specified
                     #   * Explicitly set TransactionMode.SINGLE_NODE

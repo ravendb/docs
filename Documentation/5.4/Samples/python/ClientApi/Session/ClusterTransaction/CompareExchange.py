@@ -1,8 +1,8 @@
 from ravendb import SessionOptions, TransactionMode
-from examples_base import ExamplesBase
+from examples_base import ExampleBase
 
 
-class HowToQuery(ExamplesBase):
+class HowToQuery(ExampleBase):
     class DNS:
         def __init__(self, ip_address: str = None):
             ip_address = ip_address
@@ -38,7 +38,7 @@ class HowToQuery(ExamplesBase):
                 # endregion
 
                 # region methods_2_sync
-                session.advanced.cluster_transaction.get_compare_exchange_values(keys, str)
+                session.advanced.cluster_transaction.get_compare_exchange_values(keys)
                 # endregion
 
                 # region methods_3_sync
