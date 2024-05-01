@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Raven.Client.Documents;
 using Xunit;
@@ -638,7 +638,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRates")
                         .Get(DateTime.MinValue, DateTime.MaxValue);
                     #endregion
-
                 }
 
                 // Get time series HeartRates's time points data
