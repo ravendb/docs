@@ -18,9 +18,9 @@
 
 **Flow**:  
 
-* Open a new session.
-* Load an entity to the session either using [session.Load](../../../../client-api/session/loading-entities#load) 
-  or by querying for the document via [session.Query](../../../../client-api/session/querying/how-to-query).  
+* Open a session.
+* Load an entity to the session either using [session.Load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.Query](../../../../../client-api/session/querying/how-to-query).  
   In both cases, the resulting entity will be tracked by the session.
 * Call `Advanced.GetTimeSeriesFor`, pass the tracked entity.
 

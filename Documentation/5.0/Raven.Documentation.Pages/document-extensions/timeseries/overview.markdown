@@ -55,7 +55,9 @@ handled by time series.
   and analyzed to secure the vehicles and improve the service.  
 * _Daily changes in stock prices_ can be used to build investment plans.  
 
-## RavenDB's Time Series Implementation  
+---
+
+#### RavenDB's Time Series Implementation  
 
 Time series functionality is fully integrated into RavenDB's 
 distributed environment and document model.  
@@ -64,8 +66,8 @@ distributed environment and document model.
 
 #### Distributed Time Series
 
-Distributed clients and nodes can modify time series concurrently; the 
-modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
+Distributed clients and nodes can modify time series concurrently;  
+the modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
 
 ---
 
@@ -96,37 +98,31 @@ Notable time series features include -
 
 * **Highly-Efficient Storage Management**  
   Time series data is [compressed](../../document-extensions/timeseries/design#compression) 
-  and [segmented](../../document-extensions/timeseries/overview#time-series-segments) 
-  to minimize storage usage and transmission time.  
+  and [segmented](../../document-extensions/timeseries/overview#time-series-segments) to minimize storage usage and transmission time.  
 * **A Thorough Set of API Methods**  
-  The [time series API](../../document-extensions/timeseries/client-api/overview)**  
-  includes a variety of `session methods` and `store operations`.  
+  The [time series API](../../document-extensions/timeseries/client-api/overview) includes a variety of `session methods` and `store operations`.  
 * **Full GUI Support**  
-  Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series).  
-* **Time Series Querying and Aggregation**  
-    * [High-performance common queries](../../document-extensions/timeseries/overview#common-queries-performance)  
-      The results of a set of common queries are prepared in advance in time series segments' 
-      headers, so the response to querying for a series **minimum value**, for example, is 
-      returned nearly instantly.  
-    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax)  
-      Flexible queries and aggregations can be executed using LINQ expressions and raw RQL 
-      over time series **timestamps**, **tags** and **values**.  
+  Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series).
 * **Time Series Indexing**  
   Time series can be [indexed](../../document-extensions/timeseries/indexing).  
-* [Rollup and Retention Policies](../../document-extensions/timeseries/rollup-and-retention)  
-   * **Rollup Policies**  
-     You can set time series rollup policies to aggregate large series into 
-     smaller sets by your definitions.  
-   * **Retention Policies**  
-     You can set time series retention policies to automatically remove 
-     time series entries that have reached their expiration date/time.  
-* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
-  You can include (pre-fetch) time series data while loading documents.  
-  Included data is held by the client's session, and is delivered to the 
-  user with no additional server calls.  
+* **Time Series Querying and Aggregation**  
+    * [High-performance common queries](../../document-extensions/timeseries/overview#common-queries-performance)  
+      The results of a set of common queries are prepared in advance in time series segments' headers,   
+      so the response to querying for a series minimum value, for example, is returned nearly instantly.  
+    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax)  
+      Flexible queries and aggregations can be executed using LINQ expressions and raw RQL over  
+      time series **timestamps**, **values**, and **tags**.  
+* **Including Time Series**  
+  You can [include (pre-fetch) time series data](../../document-extensions/timeseries/client-api/session/include/overview) when loading or querying for documents.  
+  Included data is held by the client's session, and is delivered to the user with no additional server calls.
 * **Patching**  
-  You can patch time series data to your documents.  
-  (visit the [API documentation](../../document-extensions/timeseries/client-api/overview) to learn more).  
+  You can patch time series data into your documents.  
+  Learn more in [Patching time series](../../document-extensions/timeseries/client-api/session/patch).
+* **Rollup and Retention Policies**
+    * [Rollup Policies](../../document-extensions/timeseries/rollup-and-retention)  
+      You can set time series rollup policies to aggregate large series into smaller sets by your definitions.
+    * [Retention Policies](../../document-extensions/timeseries/rollup-and-retention)  
+      You can set time series retention policies to automatically remove time series entries that have reached their expiration date/time.
 
 {PANEL/}
 

@@ -18,9 +18,9 @@
 
 **Flow**:  
 
-* Open a new session.
-* Load an entity to the session either using [session.load](../../../../client-api/session/loading-entities#load) 
-  or by querying for the document via [session.query](../../../../client-api/session/querying/how-to-query).  
+* Open a session.
+* Load an entity to the session either using [session.load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.query](../../../../../client-api/session/querying/how-to-query).  
   In both cases, the resulting entity will be tracked by the session.
 * Call `advanced.getTimeSeriesFor`, pass the tracked entity.
 
