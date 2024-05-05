@@ -140,6 +140,9 @@ async function appendTimeSeries() {
 }
 
 //region syntax_1
+// Available overloads:
+// ====================
+
 append(timestamp, value);
 append(timestamp, value, tag);
 //endregion
