@@ -60,6 +60,7 @@ In this example, we query for a document and get its "Heartrate" time series dat
 {NOTE: }
 
 * Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
  
 * Since each time series entry contains multiple StockPrice values,  
   we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values) 
