@@ -9,14 +9,16 @@
 
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
-* By default, the session will track the retrieved time series data. See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
-
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+  
 * When getting the time series entries,  
-  you can also [include](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents) 
-  the series' **parent document** and/or **documents referred to by the entry tag**.
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
 
 * Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
-  (or queried for) with the time series included beforehand.  Learn more in: [Including time series](client-api/session/include/overview).
+  (or queried for) with the time series included beforehand.  
+  Learn more in: [Including time series](client-api/session/include/overview).
 
 * In this page:  
   * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)

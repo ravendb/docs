@@ -9,18 +9,23 @@
 
 * The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
 
-* By default, the session will track the retrieved time series data. See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
 
 * When getting the time series entries,  
-  you can also [include](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
-  the series' **parent document** and/or **documents referred to by the entry tag**.
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
 
 * Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
-  (or queried for) with the time series included beforehand.  Learn more in: [Including time series](client-api/session/include/overview).
+  (or queried for) with the time series included beforehand.  
+  Learn more in [Including time series](client-api/session/include/overview).
 
 * In this page:  
   * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
   * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
+      * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+      * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+      * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
   * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
 
@@ -44,6 +49,10 @@
 
 {NOTE: }
 
+<a id="get-all-entries" /> __Get all entries__:
+
+---
+
 In this example, we retrieve all entries of the "Heartrate" time series.  
 The ID of the parent document is explicitly specified.  
 
@@ -52,12 +61,20 @@ The ID of the parent document is explicitly specified.
 {NOTE/}
 {NOTE: }
 
+<a id="get-range-of-entries" /> __Get range of entries__:
+
+---
+
 In this example, we query for a document and get a range of entries from its "Heartrate" time series.
 
 {CODE:nodejs get_Entries_2@documentExtensions\timeSeries\client-api\getEntries.js /}
 
 {NOTE/}
 {NOTE: }
+
+<a id="get-entries-with-multiple-values" /> __Get entries with multiple values__:
+
+---
 
 * Here, we check if a stock's closing price is rising consecutively over three days.  
   This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
