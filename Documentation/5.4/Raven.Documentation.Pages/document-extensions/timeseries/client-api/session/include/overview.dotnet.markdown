@@ -4,11 +4,9 @@
 
 {NOTE: }
 
-{NOTE: }
-
 * When retrieving documents that contain time series, you can request to _include_ their time series data.
 
-* The included data is held by the client's session, so it can be handed to the user instantly when requested without issuing an additional request to the server.
+* The included time series data is held by the client's session, so it can be handed to the user instantly when requested without issuing an additional request to the server.
 
 * Time series data can be _included_ when -
     * [Loading a document using `session.Load`](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load)

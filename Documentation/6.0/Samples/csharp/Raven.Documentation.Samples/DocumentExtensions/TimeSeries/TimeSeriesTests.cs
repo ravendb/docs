@@ -554,20 +554,18 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #endregion
 
                 #region timeseries_region_Query-Document-And-Include-TimeSeries
-                // Query for a document and include a whole time-series
                 using (var session = store.OpenSession())
                 {
-                    var baseline = DateTime.Today;
-
-                    IRavenQueryable<User> query = session.Query<User>()
+                    // Query for a document and include a whole time-series
+                    User user = session.Query<User>()
                         .Where(u => u.Name == "John")
-                        .Include(includeBuilder => includeBuilder.IncludeTimeSeries(
-                            "HeartRates", DateTime.MinValue, DateTime.MaxValue));
+                        .Include(includeBuilder => includeBuilder.IncludeTimeSeries("HeartRates"))
+                        .FirstOrDefault();
 
-                    var result = query.ToList();
-
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRates")
-                        .Get(DateTime.MinValue, DateTime.MaxValue);
+                    // The following call to 'Get' will Not trigger a server request,  
+                    // the entries will be retrieved from the session's cache.  
+                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRates")
+                        .Get();
                 }
                 #endregion
 
