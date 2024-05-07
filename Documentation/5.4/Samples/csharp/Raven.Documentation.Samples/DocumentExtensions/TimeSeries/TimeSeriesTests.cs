@@ -539,16 +539,20 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
                 #region timeseries_region_Load-Document-And-Include-TimeSeries
-                // Load a document and Include a specified range of a time-series
                 using (var session = store.OpenSession())
                 {
                     var baseline = DateTime.Today;
 
-                    User user = session.Load<User>("users/1-A", includeBuilder =>
-                        includeBuilder.IncludeTimeSeries("HeartRates",
-                        baseline.AddMinutes(3), baseline.AddMinutes(8)));
+                    // Load a document
+                    User user = session.Load<User>("users/john", includeBuilder =>
+                        // Call 'IncludeTimeSeries' to include time series entries, pass:
+                        // * The time series name
+                        // * Start and end timestamps indicating the range of entries to include
+                        includeBuilder.IncludeTimeSeries("HeartRates", baseline.AddMinutes(3), baseline.AddMinutes(8)));
 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor("users/1-A", "HeartRates")
+                    // The following call to 'Get' will Not trigger a server request,  
+                    // the entries will be retrieved from the session's cache.  
+                    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor("users/john", "HeartRates")
                         .Get(baseline.AddMinutes(3), baseline.AddMinutes(8));
                 }
                 #endregion
