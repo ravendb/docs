@@ -574,29 +574,34 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #endregion
 
                 #region timeseries_region_Raw-Query-Document-And-Include-TimeSeries
-                // Include a Time Series in a Raw Query
                 using (var session = store.OpenSession())
                 {
-                    var baseline = DateTime.Today;
+                    var baseTime = DateTime.Today;
 
-                    var start = baseline;
-                    var end = baseline.AddHours(1);
+                    var from = baseTime;
+                    var to = baseTime.AddMinutes(5);
 
+                    // Define the Raw Query:
                     IRawDocumentQuery<User> query = session.Advanced.RawQuery<User>
-                              ("from Users include timeseries('HeartRates', $start, $end)")
-                        .AddParameter("start", start)
-                        .AddParameter("end", end);
+                             // Use 'include timeseries' in the RQL
+                            ("from Users include timeseries('HeartRates', $from, $to)")
+                             // Pass optional parameters
+                            .AddParameter("from", from)
+                            .AddParameter("to", to);
 
-                    var result = query.ToList();
+                    // Execute the query:
+                    // For each document in the query results,
+                    // the time series entries will be 'loaded' to the session along with the document
+                    var users = query.ToList();
 
-                    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(result[0], "HeartRates")
-                        .Get(start, end);
+                    // The following call to 'Get' will Not trigger a server request,
+                    // the entries will be retrieved from the session's cache.
+                    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor(users[0], "HeartRates")
+                        .Get(from, to);
                 }
                 #endregion
-
             }
         }
-
 
         [Fact]
         public void AppendWithIEnumerable()

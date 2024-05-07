@@ -19,8 +19,8 @@
 
 {PANEL: Include time series when making a query}
 
-In this example, we retrieve a document using `session.query`   
-and _include_ its time series entries from time series "HeartRates".  
+In this example, we retrieve a document using `session.query`  
+and _include_ entries from the document's "HeartRates" time series.
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query include_1@documentExtensions\timeSeries\client-api\includeWithQuery.js /}
