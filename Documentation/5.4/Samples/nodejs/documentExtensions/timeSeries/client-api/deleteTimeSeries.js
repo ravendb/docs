@@ -65,6 +65,8 @@ async function deleteTimeSeries() {
 
 //region syntax
 // Available overloads:
+// ====================
+
 delete();          // Delete all entries
 deleteAt(at);      // Delete a specific entry
 delete(from, to);  // Delete a range of enties

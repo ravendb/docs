@@ -42,7 +42,7 @@ __Flow__:
 * Open a session.
 * Create an instance of `TimeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/loading-entities),
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
       e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../client-api/session/loading-entities#load).
     * Specify the time series name.
 * Call `TimeSeriesFor.Append` and pass it the time series entry details.

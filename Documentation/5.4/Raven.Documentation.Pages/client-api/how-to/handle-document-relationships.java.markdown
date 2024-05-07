@@ -112,8 +112,10 @@ and subsequent requests to load them are served directly from the session cache,
 
 {NOTE Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side. /}
 
-{INFO: Streaming query results does not support the includes feature. Learn more in 
-[How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results). /}
+{INFO: }
+Streaming query results does not support the includes feature.  
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).  
+{INFO/}
 
 ### One to many includes
 
@@ -269,4 +271,4 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ### Querying
 
-- [Basics](../../indexes/querying/basics)
+- [Querying an Index](../../indexes/querying/query-index)
