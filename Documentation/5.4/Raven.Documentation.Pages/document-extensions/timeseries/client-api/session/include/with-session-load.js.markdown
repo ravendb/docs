@@ -1,4 +1,4 @@
-﻿# Include Time Series with&nbsp;`Load`
+﻿# Include Time Series with&nbsp;`load`
 ---
 
 {NOTE: }

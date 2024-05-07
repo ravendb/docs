@@ -37,7 +37,7 @@ and include a selected range of entries from time series "HeartRates".
 | **id**       | `string`                     | Document ID    |
 | **includes** | `Action<IIncludeBuilder<T>>` | Include Object |
 
-**`includes`** builder methods:
+**`Include`** builder methods:
 
 {CODE IncludeTimeSeries-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
