@@ -4,77 +4,79 @@
 
 {NOTE: }
 
-* Statistics about your database and collections can be retrieved.
+* Statistics can be retrieved for the database and for collections.  
 
-* By default, you get stats for the database defined in your Document Store.   
-  To get database and collection stats for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).  
 
 * In this page:
-    * [Get collection stats](../../../client-api/operations/maintenance/get-stats#get-collection-stats)
-    * [Get detailed collection stats](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
-    * [Get database stats](../../../client-api/operations/maintenance/get-stats#get-database-stats)
-    * [Get detailed database stats](../../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)
-    * [Get stats for another database](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database)
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats#get-statistics-for-another-database)
 {NOTE/}
 
 ---
 
-{PANEL: Get collection stats}
-{NOTE: }
-Use `GetCollectionStatisticsOperation` to get __collection stats__.
+{PANEL: Get collection statistics}
+
+To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
 {CODE:nodejs stats_1@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
-{NOTE: }
-Collection stats results:
+
+---
+
+Statistics are returned in the `CollectionStatistics` object.
 {CODE:nodejs stats_1_results@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
+
 {PANEL/}
 
-{PANEL: Get detailed collection stats}
-{NOTE: }
-Use `GetDetailedCollectionStatisticsOperation` to get __detailed collection stats__.
-{CODE:nodejs stats_2@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
-{NOTE: }
-Detailed collection stats results:
+{PANEL: Get detailed collection statistics}
+
+To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
 {CODE:nodejs stats_2_results@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
+
+---
+
+Statistics are returned in the `DetailedCollectionStatistics` object.
+{CODE:python stats_2_results@ClientApi\Operations\Maintenance\GetStats.py /}
+
 {PANEL/}
 
-{PANEL: Get database stats}
-{NOTE: }
-Use `GetStatisticsOperation` to get __database stats__.
+{PANEL: Get database statistics}
+
+To get **database statistics**, use `GetStatisticsOperation`:  
 {CODE:nodejs stats_3@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
-{NOTE: }
-Database stats results:
+
+---
+
+Statistics are returned in the `DatabaseStatistics` object.
 {CODE:nodejs stats_3_results@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
+
 {PANEL/}
 
-{PANEL: Get detailed database stats}
-{NOTE: }
-Use `GetDetailedStatisticsOperation` to get __detailed database stats__.
+{PANEL: Get detailed database statistics}
+
+To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
 {CODE:nodejs stats_4@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
-{NOTE: }
-Detailed database stats results:
+
+---
+
+Statistics are returned in the `DetailedDatabaseStatistics` object.
 {CODE:nodejs stats_4_results@client-api\Operations\Maintenance\getStats.js /}
-{NOTE/}
+
 {PANEL/}
 
-{PANEL: Get stats for another database}
-{NOTE: }
+{PANEL: Get statistics for another database}
 
-* By default, you get stats for the database defined in your Document Store.
-* Use `forDatabase` to get database & collection stats for another database.
-* 'forDatabase' can be used with __any__ of the above stats options.
- 
+* By default, you get statistics for the database defined in your Document Store.  
+* Use `forDatabase` to get database and collection statistics for another database.  
+* `forDatabase` can be used with **any** of the above statistics options.
+
 {CODE:nodejs stats_5@client-api\Operations\Maintenance\getStats.js /}
 
 * Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
 
-{NOTE/}
 {PANEL/}
 
 ## Related Articles

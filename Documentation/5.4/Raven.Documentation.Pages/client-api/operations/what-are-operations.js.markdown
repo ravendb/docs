@@ -7,10 +7,10 @@
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)**
   and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
-  They in turn are built on top of the lower-level __Operations__ and __RavenCommands__ API.
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
 
-* __RavenDB provides access to this lower-level API__, so that instead of using the higher session API,  
-  you can generate requests directly to the server by executing operations on the DocumentStore.
+* **RavenDB provides direct access to this lower-level API**, allowing direct delivery of requests 
+  to the server via document store operations instead of using the higher-level session API.  
 
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  

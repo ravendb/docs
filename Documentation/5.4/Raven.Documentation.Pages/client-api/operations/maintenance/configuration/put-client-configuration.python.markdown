@@ -80,21 +80,21 @@ The following client configuration options are available:
 
 {PANEL: Put client configuration (for database)}
 
-{CODE put_config_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.cs /}
+{CODE:python put_config_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.py /}
 
-{CODE put_config_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.cs /}
+{CODE:python put_config_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.cs /}
+{CODE:python syntax_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.py /}
 
 | Parameter         | Type                  | Description                                                            |
 |-------------------|-----------------------|------------------------------------------------------------------------|
-| **configuration** | `ClientConfiguration` | Client configuration that will be set on the server (for the database) |
+| **config** | `ClientConfiguration` | Client configuration that will be set on the server (for the database) |
 
-{CODE syntax_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.cs /}
+{CODE:python syntax_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.py /}
 
 {PANEL/}
 

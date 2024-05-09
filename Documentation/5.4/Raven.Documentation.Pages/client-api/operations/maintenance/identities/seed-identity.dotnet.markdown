@@ -11,8 +11,8 @@
 * Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-valure)
-  * [Force a smaller identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-smaller-identity-value)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-lower-identity-value)
   * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
 
 {NOTE/}
@@ -31,9 +31,9 @@ You can replace the latest identity value on the server with a new, **higher** n
 
 {PANEL/}
 
-{PANEL: Force a smaller identity value }
+{PANEL: Force a lower identity value }
 
-* You can set the latest identity value to a number that is **smaller** than the current latest value.
+* You can set the latest identity value to a number that is **lower** than the current latest value.
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
@@ -48,11 +48,11 @@ You can replace the latest identity value on the server with a new, **higher** n
 
 {CODE syntax@ClientApi\Operations\Maintenance\Identities\SeedIdentity.cs /}
 
-| Parameter       | Type   | Description                                                                                                                               |
-|-----------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**        | string | The collection name for which to seed the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
-| **value**       | long   | The number to set as the latest identity value.                                                                                           |
-| **forceUpdate** | bool   | `true` - force a new value that is smaller than the latest.<br>`false` - only a higher value can be set.                                  |
+| Parameter       | Type     | Description                                                                                                                               |
+|-----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**        | `string` | The collection name for which to seed the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
+| **value**       | `long`   | The number to set as the latest identity value.                                                                                           |
+| **forceUpdate** | `bool`   | `true` - force a new value that is lower than the latest.<br>`false` - only a higher value can be set.                                  |
 
 {PANEL/}
 

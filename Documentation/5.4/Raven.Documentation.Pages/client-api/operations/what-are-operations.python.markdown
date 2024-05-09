@@ -5,12 +5,12 @@
 {NOTE: }
 
 * The RavenDB Client API is built with the notion of layers.  
-  At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)**
-  and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
+  At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store)**
+  and the **[session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
   They in turn are built on top of the lower-level **Operations** and **Commands** API.
 
 * **RavenDB provides direct access to this lower-level API**, allowing direct delivery of requests 
-  to the server via document store operations instead of using the higher-level Session API.  
+  to the server via document store operations instead of using the higher-level session API.  
 
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
@@ -38,7 +38,8 @@
 
 * The operations are executed on the DocumentStore and are Not part of the session transaction.
 
-* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../client-api/operations/patching/single-document#array-manipulation))
+* There are some client tasks, such as patching documents, that can be carried out either via the Session 
+  ([session.advanced.patch()](../../client-api/operations/patching/single-document#array-manipulation))
   or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
 
 {PANEL/}
@@ -51,10 +52,10 @@
   The DocumentStore `OperationExecutor` sends the request and processes the results.
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  However, server-maintenance operations can be executed on a specific node by using the [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  However, server-maintenance operations can be executed on a specific node by using the [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 * **Target database**:  
   By default, operations work on the default database defined in the DocumentStore.  
-  However, common operations & maintenance operations can operate on a different database by using the [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+  However, common operations & maintenance operations can operate on a different database by using the [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
 * **Transaction scope**:  
   Operations execute as a single-node transaction.  
   If needed, data will then replicate to the other nodes in the database-group.  
@@ -68,28 +69,22 @@
 
 * All common operations implement the `IOperation` interface.  
   The operation is executed within the **database scope**.  
-  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
   See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
 
 * To execute a common operation request,  
-  use the `Send` method on the `Operations` property in the DocumentStore.
+  use the `send` method on the `operations` property in the DocumentStore.
 
 #### Example:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync operations_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async operations_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python operations_ex@ClientApi\Operations\WhatAreOperations.py /}
 
 ##### Syntax:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync operations_send@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async operations_send_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python operations_send@ClientApi\Operations\WhatAreOperations.py /}
 
 {NOTE: }
 
@@ -135,28 +130,22 @@
 
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
   The operation is executed within the **database scope**.  
-  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
   See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
  
 * To execute a maintenance operation request,  
-  use the `Send` method on the `Maintenance` property in the DocumentStore.
+  use the `send` method on the `maintenance` property in the DocumentStore.
 
 #### Example:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync maintenance_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async maintenance_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python maintenance_ex@ClientApi\Operations\WhatAreOperations.py /}
 
 ##### Syntax:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync maintenance_send@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async maintenance_send_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python maintenance_send@ClientApi\Operations\WhatAreOperations.py /}
 
 {NOTE: }
 
@@ -275,27 +264,21 @@
 
 * All server-maintenance operations implement the `IServerOperation` interface.  
   The operation is executed within the **server scope**.   
-  Use [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+  Use [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#server-list).
 
 * To execute a server-maintenance operation request,  
-  use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
+  use the `send` method on the `maintenance.server` property in the DocumentStore.
 
 #### Example:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync server_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async server_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python server_ex@ClientApi\Operations\WhatAreOperations.py /}
 
 ##### Syntax:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync server_send@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async server_send_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
+{CODE:python server_send@ClientApi\Operations\WhatAreOperations.py /}
 
 {NOTE: }
 
@@ -375,58 +358,6 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
 
 {NOTE/}
-{PANEL/}
-
-{PANEL: Manage lengthy operations}
-
-* Some operations that run in the server background may take a long time to complete.  
-
-* For Operations that implement an interface with type `OperationIdResult`,  
-  executing the operation via the `Send` method will return an `Operation` object,  
-  which can be **awaited for completion** or **aborted (killed)**.  
-
----
-
-#### Wait for completion:
-
-{CODE-TABS}
-{CODE-TAB:csharp:With_Timeout wait_timeout_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:With_Timout_async wait_timeout_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:With_CancellationToken wait_token_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:With_CancellationToken_async wait_token_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
-
-##### Syntax:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync waitForCompletion_syntax@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async waitForCompletion_syntax_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
-
-| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
-|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **timeout** | `TimeSpan`          | <ul><li> **When timespan is specified** - <br>The server will throw a `TimeoutException` if operation has Not completed within the specified time frame.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
-| **token**   | `CancellationToken` | <ul><li> **When cancellation token is specified** - <br>The server will throw a `TimeoutException` if operation has Not completed at cancellation time.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li></ul>                                                                                      |
-
-| Return type        |                               |
-|--------------------|-------------------------------|
-| `IOperationResult` | The operation result content. |
-
-#### Kill operation:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Kill kill_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Kill_async kill_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
-
-##### Syntax:
-
-{CODE kill_syntax@ClientApi\Operations\WhatAreOperations.cs /}
-
-| Parameter   | Type                | Description                                                          |
-|-------------|---------------------|----------------------------------------------------------------------|
-| **token**   | `CancellationToken` | Provide a cancellation token if needed to abort the KillAsync method |
-
 {PANEL/}
 
 ## Related articles

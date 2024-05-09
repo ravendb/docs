@@ -23,9 +23,7 @@
 
 {PANEL: Delete by dynamic query}
 
-{NOTE: }
-
-**Delete all documents in collection**:
+#### Delete all documents in a collection:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.cs /}
@@ -35,11 +33,9 @@ from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-**Delete with filtering**:  
+#### Delete with filtering:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
@@ -48,8 +44,6 @@ from "Orders"
 from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 
@@ -62,17 +56,13 @@ from "Orders" where Freight > 30
 
 ---
 
-{NOTE: }
-
-**A sample Map-index**:
+#### A sample Map-index:
 
 {CODE the_index@ClientApi\Operations\Common\DeleteByQuery.cs /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-**Delete documents via an index query**:
+#### Delete documents via an index query:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DeleteOperation delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.cs /}
@@ -84,11 +74,9 @@ from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-**Delete with options**:
+#### Delete with options:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DeleteOperation delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.cs /}
@@ -99,8 +87,6 @@ from index "Products/ByPrice" where Price > 10
 {CODE-TABS/}
 
 * Specifying `QueryOperationOptions` is also supported by the other overload methods, see the Syntax section below.
-
-{NOTE/}
 
 {PANEL/}
 

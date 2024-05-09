@@ -4,13 +4,14 @@
 
 {NOTE: }
 
-* Upon document creation, providing a collection name with a pipe symbol (`|`)  
-  will cause the server to generate an ID for the new document called an __identity__.
+* Upon document creation, providing a collection name with a pipe symbol (`|`) 
+  will cause the server to generate an ID for the new document called an **identity**.  
+  E.g. `companies|`
  
 * The identity document ID is unique across the entire cluster within the database scope.  
-  It is composed  of the collection name provided and an integer value that is continuously incremented.
+  It is composed of the provided collection name and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view) view.
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 

@@ -31,16 +31,13 @@
 
 {PANEL: Get identities operation }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TAB:csharp:Async get_identities_async@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TABS/}
+{CODE:python get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.py /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.py /}
 
 {PANEL/}
 

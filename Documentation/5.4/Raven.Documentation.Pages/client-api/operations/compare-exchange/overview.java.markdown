@@ -96,7 +96,7 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 
 * Use compare exchange for a shared resource reservation.  
 
-* The code also checks for clients who never release resources (i.e. due to failure) by using timeout.  
+* The code also checks for clients which never release resources (i.e. due to failure) by using timeout.  
 
 {CODE:java shared_resource@Server\CompareExchange.java /}
 {PANEL/}

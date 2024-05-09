@@ -21,31 +21,32 @@
 
 {PANEL: Set a higher identity value }
 
-You can replace the latest identity value on the server with a new, __higher__ number. 
+You can replace the latest identity value on the server with a new, **higher** number. 
+ 
 
-{CODE:nodejs seed_identity_1@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:python seed_identity_1@ClientApi\Operations\Maintenance\Identities\SeedIdentity.py /}
 
 {PANEL/}
 
 {PANEL: Force a lower identity value }
 
-* You can set the latest identity value to a number that is __lower__ than the current latest value.
+* You can set the latest identity value to a number that is **lower** than the current latest value.
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
-{CODE:nodejs seed_identity_2@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:python seed_identity_2@ClientApi\Operations\Maintenance\Identities\SeedIdentity.py /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE:nodejs syntax@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Identities\SeedIdentity.py /}
 
-| Parameter       | Type      | Description                                                                                                                               |
-|-----------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| __name__        | `string`  | The collection name for which to seed the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
-| __value__       | `number`  | The number to set as the latest identity value.                                                                                           |
-| __forceUpdate__ | `boolean` | `true` - force a new value that is lower than the latest.<br>`false` - only a higher value can be set.                                  |
+| Parameter        | Type   | Description                                                                                                                               |
+|------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**         | `str`  | The collection name for which to seed the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
+| **value**        | `long` | The number to set as the latest identity value.                                                                                           |
+| **force_update** | `bool` | `True` - force a new value that is lower than the latest.<br>`False` - only a higher value can be set.                                  |
 
 {PANEL/}
 
@@ -53,6 +54,7 @@ You can replace the latest identity value on the server with a new, __higher__ n
 
 ### Document Identifiers
 
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
 - [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
 - [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
 

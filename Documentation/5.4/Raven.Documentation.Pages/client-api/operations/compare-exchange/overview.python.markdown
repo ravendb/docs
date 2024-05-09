@@ -97,7 +97,7 @@ The scope is within the database group on a single cluster.
 Compare-exchange items are not externally replicated to other databases.  
 To establish uniqueness without using compare-exchange see [Example III](../../../client-api/operations/compare-exchange/overview#example-iii---ensuring-unique-values-without-using-compare-exchange).
 
-{CODE email@Server\CompareExchange.cs /}  
+{CODE:python email@Server\CompareExchange.py /}  
 
 **Implications**:
 
@@ -105,13 +105,12 @@ To establish uniqueness without using compare-exchange see [Example III](../../.
 
 * This compare-exchange item was [created as an operation](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
   rather than with a [cluster-wide session](../../../client-api/session/cluster-transaction/overview).  
-  Thus, if `session.SaveChanges` fails, then the email reservation is _not_ rolled back automatically.  
+  Thus, if `session.save_changes` fails, then the email reservation is _not_ rolled back automatically.  
   It is your responsibility to do so.  
 
 * The compare-exchange value that was saved can be accessed in a query using `CmpXchg`:  
     {CODE-TABS}
-    {CODE-TAB:csharp:Query-LINQ query_cmpxchg@Server\CompareExchange.cs /}  
-    {CODE-TAB:csharp:Document-Query document_query_cmpxchg@Server\CompareExchange.cs /}  
+    {CODE-TAB:python:Query query_cmpxchg@Server\CompareExchange.py /}  
     {CODE-TAB-BLOCK:sql:RQL}
     from Users as s where id() == cmpxchg("emails/ayende@ayende.com")  
     {CODE-TAB-BLOCK/}
@@ -125,7 +124,7 @@ The scope is within the database group on a single cluster.
 
 The code also checks for clients which never release resources (i.e. due to failure) by using timeout.  
 
-{CODE shared_resource@Server\CompareExchange.cs /}
+{CODE:python shared_resource@Server\CompareExchange.py /}
 
 {PANEL/}
 
@@ -142,10 +141,10 @@ The reference documents will replicate to the destination database,
 as opposed to compare-exchange items, which are not externally replicated.
 
 {NOTE: }
-Sessions which process fields that must be unique should be set to [TransactionMode.ClusterWide](../../../client-api/session/cluster-transaction/overview).  
+Sessions which process fields that must be unique should be set to [TransactionMode.CLUSTER_WIDE](../../../client-api/session/cluster-transaction/overview).  
 {NOTE/}
 
-{CODE create_uniqueness_control_documents@Server\CompareExchange.cs /}
+{CODE:python create_uniqueness_control_documents@Server\CompareExchange.py /}
 {PANEL/}
 
 ## Related Articles
@@ -173,8 +172,8 @@ Sessions which process fields that must be unique should be set to [TransactionM
 
 ### Code Walkthrough
 
-- [Create CmpXchg Item](https://demo.ravendb.net/demos/csharp/compare-exchange/create-compare-exchange)  
-- [Index CmpXchg Values](https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange)  
+- [Create CmpXchg Item](https://demo.ravendb.net/demos/python/compare-exchange/create-compare-exchange)  
+- [Index CmpXchg Values](https://demo.ravendb.net/demos/python/compare-exchange/index-compare-exchange)  
 
 ---
 
