@@ -54,27 +54,21 @@
 * Note: When enabling an index from the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync enable_1@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
-{CODE-TAB:csharp:Async enable_1_async@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
-{CODE-TABS/}
+{CODE:python enable_1@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
 {NOTE/}
 {NOTE: }
 
 <a id="enable-index---cluster-wide" /> **Enable index - cluster wide**:  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync enable_2@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
-{CODE-TAB:csharp:Async enable_2_async@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
-{CODE-TABS/}
+{CODE:python enable_2@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
 {NOTE/}
 {NOTE: }
 
 <a id="syntax" /> **Syntax**: 
 
-{CODE:csharp syntax@ClientApi\Operations\Maintenance\Indexes\EnableIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
 | Parameters | Type | Description |
 | - | - | - |

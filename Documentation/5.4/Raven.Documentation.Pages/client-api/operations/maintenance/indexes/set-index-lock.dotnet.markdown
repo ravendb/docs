@@ -5,15 +5,15 @@
 {NOTE: }
 
 * The lock mode controls the behavior of index modifications.  
-  Use `SetIndexesLockOperation` to modify the __lock mode__ for a single index or multiple indexes.
+  Use `SetIndexesLockOperation` to modify the **lock mode** for a single index or multiple indexes.
 
-* __Indexes scope__:  
+* **Indexes scope**:  
   The lock mode can be set only for static-indexes, not for auto-indexes.
 
-* __Nodes scope__:  
+* **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+* Setting the lock mode can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in Studio.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 * In this page:
@@ -29,17 +29,17 @@
 
 {PANEL: Lock modes}
 
-* __Unlocked__ - when lock mode is set to `Unlock`:  
+* **Unlocked** - when lock mode is set to `Unlock`:  
   * Any change to the index definition will be applied.  
   * If the new index definition differs from the one stored on the server,  
     the index will be updated and the data will be re-indexed using the new index definition.  
  
-* __Locked (ignore)__ - when lock mode is set to `LockedIgnore`:  
+* **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
   * Index definition changes will Not be applied.  
   * Modifying the index definition will return successfully and no error will be raised,  
     however, no change will be made to the index definition on the server.
  
-* __Locked (error)__ - when lock mode is set to `LockedError`:  
+* **Locked (error)** - when lock mode is set to `LockedError`:  
   * Index definitions changes will Not be applied.  
   * An exception will be thrown upon trying to modify the index.  
 
@@ -63,7 +63,7 @@ Consider the following scenario:
   2. Modify the index definition on the server (from Studio, or from another application),  
      and then set this index lock mode to `LockedIgnore`.  
   3. A side-by-side replacement index is created on the server.  
-     It will index your dataset according to the __new__ definition.  
+     It will index your dataset according to the **new** definition.  
   4. At this point, if any instance of your original application is started,  
      the code that defines and deploys the index upon startup will have no effect  
      since the index is 'locked'.  
@@ -95,9 +95,9 @@ Consider the following scenario:
 
 | Parameters | Type | Description |
 |- | - | - |
-| __indexName__ | string | Index name for which to set lock mode |
-| __mode__ | `IndexLockMode` | Lock mode to set |
-| __parameters__ | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
+| **indexName** | string | Index name for which to set lock mode |
+| **mode** | `IndexLockMode` | Lock mode to set |
+| **parameters** | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
 
 {CODE syntax_2@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
 

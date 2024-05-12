@@ -24,25 +24,19 @@
 
 {PANEL: Delete errors from all indexes}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync delete_errors_all@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TAB:csharp:Async delete_errors_all_async@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TABS/}
+{CODE:python delete_errors_all@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.py /}
 
 {PANEL/}
 
 {PANEL: Delete errors from specific indexes}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync delete_errors_specific@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TAB:csharp:Async delete_errors_specific_async@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TABS/}
+{CODE:python delete_errors_specific@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.py /}
 
 | Parameters | Type | Description |
 | - | - | - |

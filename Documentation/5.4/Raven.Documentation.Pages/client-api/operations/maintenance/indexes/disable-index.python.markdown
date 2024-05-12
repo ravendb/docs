@@ -77,27 +77,21 @@
 
 ---
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync disable_1@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
-{CODE-TAB:csharp:Async disable_1_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
-{CODE-TABS/}
+{CODE:python disable_1@ClientApi\Operations\Maintenance\Indexes\DisableIndex.py /}
 
 {NOTE/}
 {NOTE: }
 
 <a id="disable-index---cluster-wide" /> **Disable index - cluster wide**:  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync disable_2@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
-{CODE-TAB:csharp:Async disable_2_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
-{CODE-TABS/}
+{CODE:python disable_2@ClientApi\Operations\Maintenance\Indexes\DisableIndex.py /}
 
 {NOTE/}
 {NOTE: }
 
 <a id="syntax" /> **Syntax**:  
 
-{CODE:csharp syntax@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\DisableIndex.py /}
 
 | Parameter       | Type   | Description                                                                                                              |
 |-----------------|--------|--------------------------------------------------------------------------------------------------------------------------|

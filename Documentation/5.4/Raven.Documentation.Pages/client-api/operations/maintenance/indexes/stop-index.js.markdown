@@ -49,7 +49,7 @@
 
 * To resume the index from the client - see [resume index](../../../../client-api/operations/maintenance/indexes/start-index).
 
-* To resume the index from the Studio - go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+* To resume the index from Studio - go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
 
 * Pausing the index is **Not a persistent operation**.  
   This means the paused index will resume upon either of the following:

@@ -70,16 +70,13 @@
 
 {PANEL: Pause index example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync pause_index@ClientApi\Operations\Maintenance\Indexes\PauseIndex.cs /}
-{CODE-TAB:csharp:Async pause_index_async@ClientApi\Operations\Maintenance\Indexes\PauseIndex.cs /}
-{CODE-TABS/}
+{CODE:python pause_index@ClientApi\Operations\Maintenance\Indexes\PauseIndex.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\PauseIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\PauseIndex.py /}
 
 | Parameters | Type | Description |
 | - | - | - |

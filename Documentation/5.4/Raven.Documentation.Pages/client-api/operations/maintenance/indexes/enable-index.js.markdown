@@ -29,7 +29,7 @@
     * Cluster wide - on all database-group nodes.
 
 * **From Studio**:  
-  To enable the index from the Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
 
 * **Reset index**:  
   [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will enable the index back on the local node where the reset action was performed.

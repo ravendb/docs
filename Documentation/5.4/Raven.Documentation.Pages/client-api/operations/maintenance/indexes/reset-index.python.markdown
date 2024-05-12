@@ -31,16 +31,13 @@
 
 {PANEL: Reset index}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync reset@ClientApi\Operations\Maintenance\Indexes\ResetIndex.cs /}
-{CODE-TAB:csharp:Async reset_async@ClientApi\Operations\Maintenance\Indexes\ResetIndex.cs /}
-{CODE-TABS/}
+{CODE:python reset@ClientApi\Operations\Maintenance\Indexes\ResetIndex.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\ResetIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\ResetIndex.py /}
 
 | Parameters | | |
 | - | - | - |

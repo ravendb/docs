@@ -73,27 +73,13 @@ Consider the following scenario:
 
 {PANEL: Set lock mode - single index}
 
-{CODE:nodejs set_lock_single@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:python set_lock_single@ClientApi\Operations\Maintenance\Indexes\SetLockMode.py /}
 
 {PANEL/}
 
 {PANEL: Set lock mode - multiple indexes}
 
-{CODE:nodejs set_lock_multiple@client-api\operations\maintenance\indexes\setLockMode.js /}
-
-{PANEL/}
-
-{PANEL: Syntax}
-
-{CODE:nodejs syntax_1@client-api\operations\maintenance\indexes\setLockMode.js /}
-
-| Parameters | Type | Description |
-|- | - | - |
-| **indexName** | string | Index name for which to set lock mode |
-| **mode** | `"Unlock"` /<br> `"LockedIgnore"` /<br> `"LockedError"` | Lock mode to set |
-| **parameters** | parameters object | List of indexes + lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
-
-{CODE:nodejs syntax_2@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:python set_lock_multiple@ClientApi\Operations\Maintenance\Indexes\SetLockMode.py /}
 
 {PANEL/}
 

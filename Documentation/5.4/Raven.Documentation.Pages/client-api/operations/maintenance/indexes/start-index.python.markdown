@@ -23,16 +23,13 @@
 
 {PANEL: Resume index example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync resume_index@ClientApi\Operations\Maintenance\Indexes\ResumeIndex.cs /}
-{CODE-TAB:csharp:Async resume_index_async@ClientApi\Operations\Maintenance\Indexes\ResumeIndex.cs /}
-{CODE-TABS/}
+{CODE:python resume_index@ClientApi\Operations\Maintenance\Indexes\ResumeIndex.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\ResumeIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\ResumeIndex.py /}
 
 | Parameters | Type | Description |
 | - | - |-|

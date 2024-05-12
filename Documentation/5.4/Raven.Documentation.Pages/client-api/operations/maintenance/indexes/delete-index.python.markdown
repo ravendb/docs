@@ -18,16 +18,13 @@
 
 {PANEL: Delete index example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync delete_index@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.cs /}
-{CODE-TAB:csharp:Async delete_index_async@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.cs /}
-{CODE-TABS/}
+{CODE:python delete_index@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.py /}
 
 | Parameters    | Type | Description |
 |- | - | - |

@@ -6,7 +6,7 @@
 
 * You can **disable a specific index** by either of the following:  
     * From the Client API - using `DisableIndexOperation`  
-    * From the Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+    * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
     * Via the file system  
 
 * To learn how to enable a disabled index see article [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
@@ -36,17 +36,17 @@
 
 ---
 
-* The index can be disabled either:
-    * On a single node, or
-    * Cluster wide - on all database-group nodes.
+* The index can be disabled either:  
+    * On a single node, or  
+    * Cluster wide - on all database-group nodes.  
 
-* When disabling the index from the **Client API** on a single node:  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
+* When disabling the index from the **client API** on a single node:  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from the **Studio** (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)),  
-  The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.
+* When disabling an index from **Studio** (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+  The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system),  
+* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
   The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
 
 {NOTE/}

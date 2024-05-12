@@ -52,9 +52,8 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 {NOTE/}
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-index-Sync put_1@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
-{CODE-TAB:csharp:LINQ-index-Async put_1_async@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
-{CODE-TAB:csharp:JavaScript-index put_1_JS@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
+{CODE-TAB:python:Index put_1@ClientApi\Operations\Maintenance\Indexes\Put.py /}
+{CODE-TAB:python:JavaScript-index put_1_JS@ClientApi\Operations\Maintenance\Indexes\Put.py /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -72,16 +71,13 @@ Using `PutIndexesOperation` with an IndexDefinition created from an **IndexDefin
 
 {NOTE/}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync put_2@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
-{CODE-TAB:csharp:Async put_2_async@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
-{CODE-TABS/}
+{CODE:python put_2@ClientApi\Operations\Maintenance\Indexes\Put.py /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\Put.py /}
 
 | Parameters | Type | Description |
 | - |- | - |

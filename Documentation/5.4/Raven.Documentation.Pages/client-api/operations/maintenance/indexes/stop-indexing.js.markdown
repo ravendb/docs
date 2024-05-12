@@ -56,7 +56,7 @@
 * To resume indexing for all indexes from the client:  
   See [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing).
 
-* To resume indexing for all indexes from the Studio:  
+* To resume indexing for all indexes from Studio:  
   Go to the [database list view](../../../../studio/database/databases-list-view#more-actions).  
 
 * Pausing indexing is **Not a persistent operation**.  
