@@ -19,9 +19,8 @@
 ---
 
 {PANEL: Ways to deploy indexes - short summary }
-{NOTE: }
 
-**Static index**:
+#### Static index:
 
 There are a few ways to deploy a static-index from the Client API:  
 
@@ -30,25 +29,19 @@ There are a few ways to deploy a static-index from the Client API:
   * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
   * Learn more in [static indexes](../../../../indexes/creating-and-deploying#static-indexes)
 
-{NOTE/}
-{NOTE: }
-
-**Auto index**:  
+#### Auto index:  
 
   * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
   * Learn more in [auto indexes](../../../../indexes/creating-and-deploying#auto-indexes)
 
-{NOTE/}  
 {PANEL/}
 
 {PANEL: Put indexes operation with IndexDefinition }
-{NOTE: }
 
 Using `PutIndexesOperation` with **IndexDefinition** allows the following:  
 
   * Choosing any name for the index
   * Setting low-level properties available in _IndexDefinition_
-{NOTE/}
 
 {CODE-TABS}
 {CODE-TAB:nodejs:LINQ-index put_1@client-api\operations\maintenance\indexes\put.js /}
@@ -67,32 +60,32 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 
 <a id="indexDefinition" />
 
-| `IndexDefinition` | | |
+| `IndexDefinition` parameter | Type | Description |
 | - | - | - |
-| name | string | Name of the index, a unique identifier |
-| maps | Set&lt;string&gt; | All the map functions for the index |
-| reduce | string | The index reduce function |
-| deploymentMode | object | Deployment mode<br>(Parallel, Rolling) |
-| state | object | State of index<br>(Normal, Disabled, Idle, Error) |
-| priority | object | Priority of index<br>(Low, Normal, High) |
-| lockMode | object | Lock mode of index<br>(Unlock, LockedIgnore, LockedError) |
-| fields | Record&lt;string, object&gt; | _IndexFieldOptions_ per index field |
-| additionalSources | Record&lt;string, string&gt; | Additional code files to be compiled with this index |
-| additionalAssemblies | object[] | Additional assemblies that are referenced |
-| configuration | object | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this Record&lt;string, string&gt; |
-| outputReduceToCollection | string | A collection name for saving the reduce results as documents |
-| reduceOutputIndex | number | This number will be part of the reduce results documents IDs |
-| patternForOutputReduceToCollectionReferences | string | Pattern for documents IDs which reference IDs of reduce results documents |
-| patternReferencesCollectionName | string | A collection name for the reference documents created based on provided pattern |
+| name | `string` | Name of the index, a unique identifier |
+| maps | `Set<string>` | All the map functions for the index |
+| reduce | `string` | The index reduce function |
+| deploymentMode | `object` | Deployment mode<br>(Parallel, Rolling) |
+| state | `object` | State of index<br>(Normal, Disabled, Idle, Error) |
+| priority | `object` | Priority of index<br>(Low, Normal, High) |
+| lockMode | `object` | Lock mode of index<br>(Unlock, LockedIgnore, LockedError) |
+| fields | `Record<string, object>` | _IndexFieldOptions_ per index field |
+| additionalSources | `Record<string, string>` | Additional code files to be compiled with this index |
+| additionalAssemblies | `object[]` | Additional assemblies that are referenced |
+| configuration | `object` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this Record&lt;string, string&gt; |
+| outputReduceToCollection | `string` | A collection name for saving the reduce results as documents |
+| reduceOutputIndex | `number` | This number will be part of the reduce results documents IDs |
+| patternForOutputReduceToCollectionReferences | `string` | Pattern for documents IDs which reference IDs of reduce results documents |
+| patternReferencesCollectionName | `string` | A collection name for the reference documents created based on provided pattern |
 
-| Return value of `store.maintenance.send(putIndexesOp)` | |
+| `store.maintenance.send(putIndexesOp)` return value| Description |
 | - | - |
 | `object[]` | operation result per index |
 
-| Operation result per index | | |
+| Operation result per index | Type | Description |
 | - | - | - |
-| index | string | Name of the index that was added |
-| raftCommandIndex | long | Index of raft command that was executed |
+| index | `string` | Name of the index that was added |
+| raftCommandIndex | `long` | Index of raft command that was executed |
 
 {PANEL/}
 

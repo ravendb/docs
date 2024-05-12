@@ -13,8 +13,9 @@
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in Studio.  
+* Setting the lock mode can also be done the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
+
 
 * In this page:
     * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)

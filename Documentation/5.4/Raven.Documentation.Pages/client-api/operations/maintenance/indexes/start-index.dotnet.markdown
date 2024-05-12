@@ -4,13 +4,13 @@
 
 {NOTE: }
 
-* After an index has been paused with [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
   use `StartIndexOperation` to **resume the index**.  
 
 * When resuming the index from the **client**:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming the index from the **Studio** (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
@@ -36,7 +36,7 @@
 
 | Parameters | Type | Description |
 | - | - |-|
-| **indexName** | string | Name of an index to resume |
+| **indexName** | `string` | Name of an index to resume |
 
 {PANEL/}
 

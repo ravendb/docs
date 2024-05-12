@@ -3,14 +3,16 @@
 
 {NOTE: }
 
-* After indexing has been paused with [pause indexing operation](../../../../client-api/operations/maintenance/indexes/stop-indexing),  
+* After indexing has been paused using [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing),  
   use `StartIndexingOperation` to **resume indexing** for ALL indexes in the database.  
-  (Calling 'StartIndexOperation' on a single index will have no effect).
+  {INFO: }
+  Calling `StartIndexingOperation` on a single index will have no effect.
+  {INFO/}
 
 * When resuming indexing from the **client**:  
   Indexing is resumed on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When resuming indexing from the **Studio** (from the [database list view](../../../../studio/database/databases-list-view#more-actions)):  
+* When resuming indexing from the **Studio** [database list](../../../../studio/database/databases-list-view#more-actions) view:  
   Indexing is resumed on the local node the browser is opened on, even if it is Not the preferred node.  
 
 * In this page:

@@ -35,7 +35,7 @@
 
 * The delete frequency is configurable, the default value is 60 secs.  
 
-* The Expiration feature can be turned on and off using the **Studio**, see [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration).  
+* The Expiration feature can be turned on and off using **Studio**, see [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration).  
 
 * The Expiration feature can also be configured using the **Client**:
 

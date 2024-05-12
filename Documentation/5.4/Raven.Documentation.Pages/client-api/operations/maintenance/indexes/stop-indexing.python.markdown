@@ -5,7 +5,7 @@
 
 * Use `StopIndexingOperation` to **pause indexing** for ALL indexes in the database.  
 
-* To pause only a specific index use the [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
+* To pause only a specific index use the [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index).  
  
 * In this page:
   * [Overview](../../../../client-api/operations/maintenance/indexes/stop-indexing#overview)
@@ -18,53 +18,46 @@
 
 {PANEL: Overview}
 
-{NOTE: }
-
-**On which node indexing is paused**:
+#### Which node is indexing paused for?
 
 * When pausing indexing from the **client**:  
   Indexing will be paused on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When pausing indexing from the **Studio** (from the [database list view](../../../../studio/database/databases-list-view#more-actions)):  
+* When pausing indexing from the **Studio** [database list](../../../../studio/database/databases-list-view#more-actions) view:  
   Indexing will be paused on the local node the browser is opened on, even if it is Not the preferred node.
 
-{NOTE/}
+---
 
-{NOTE: }
+#### What happens when indexing is paused for a node?
 
- **When indexing is paused on a node**:
+* No indexing takes place on a node that indexing is paused for.  
+  New data **is** indexed on database-group nodes that indexing is not paused for.
+
+* All indexes, including paused ones, can be queried, 
+  but results may be stale when querying nodes that indexing has been paused for.
  
-* No indexing will take place on the node where indexing has paused.  
-  New data will be indexed on other database-group nodes where indexing is not paused.
+* New indexes **can** be created for the database.  
+  However, the new indexes will also be paused on any node that indexing is paused for,  
+  until indexing is resumed for that node.  
 
-* You can query any index,  
-  but results may be stale when querying the node where indexing has paused.
- 
-* New indexes can be created in the database,  
-  however, they will also be in a 'pause' state on the node where you paused indexing,  
-  until indexing is resumed on the node.  
+* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index) indexes 
+  or editing index definitions, re-indexing on a node that indexing has been paused for will 
+  only be triggered when indexing is resumed on that node.
 
-* When [resetting](../../../../client-api/operations/maintenance/indexes/reset-index) indexes, or editing index definitions, then re-indexing on the node  
-  where indexing has paused will only be triggered when indexing is resumed on the node.
+---
 
-{NOTE/}
+#### Resuming indexing:
 
-{NOTE: }
+* Learn to resume indexing for all indexes by a client, here: [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing)  
 
-**How to resume indexing**:
-
-* To resume indexing for all indexes from the client - see [resume indexing](../../../../client-api/operations/maintenance/indexes/start-indexing).  
-
-* To resume indexing for all indexes from Studio - go to the [database list view](../../../../studio/database/databases-list-view#more-actions).  
+* Learn to resume indexing for all indexes via **Studio**, here: [database list view](../../../../studio/database/databases-list-view#more-actions)  
 
 * Pausing indexing is **Not a persistent operation**.  
   This means that all paused indexes will resume upon either of the following:
     * The server is restarted.
-    * The database is re-loaded (by disabling and then enabling the database state).  
-      Toggling the database state can be done from [database list view](../../../../studio/database/databases-list-view#database-actions) in Studio,  
-      or from the client by sending the [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state).
-
-{NOTE/}
+    * The database is re-loaded (by disabling and then enabling it).  
+      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state) by the client.
 
 {PANEL/}
 

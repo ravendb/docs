@@ -14,12 +14,12 @@
 * **Nodes scope**:  
   * When resetting an index from the **client**:  
     The index is reset only on the preferred node only, and Not on all the database-group nodes.  
-  * When resetting an index from the **Studio** (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
     The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* If index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) or [paused](../../../../client-api/operations/maintenance/indexes/stop-index) 
-  then resetting the index will put it back to the **normal** running state  
-  on the local node where action was performed.
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
 
 * In this page:
     * [Reset index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
@@ -39,9 +39,9 @@
 
 {CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\ResetIndex.py /}
 
-| Parameters | | |
+| Parameters | Type | Description |
 | - | - | - |
-| **indexName** | string | Name of an index to reset |
+| **index_name** | `str` | Name of an index to reset |
 
 {PANEL/}
 

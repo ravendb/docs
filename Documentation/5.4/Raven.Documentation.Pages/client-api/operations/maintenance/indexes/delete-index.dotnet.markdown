@@ -31,7 +31,7 @@
 
 | Parameters    | Type | Description |
 |- | - | - |
-| **indexName** | string | Name of index to delete |
+| **indexName** | `string` | Name of index to delete |
 
 {PANEL/}
 

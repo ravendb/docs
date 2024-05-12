@@ -9,13 +9,13 @@
   * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
   * Via the file system
 
-* To learn how to enable a disabled index see article [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
+* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
 
 * In this page:
 
     * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-      * [On which node the index is disabled](../../../../client-api/operations/maintenance/indexes/disable-index#on-which-node-the-index-is-disabled) 
-      * [When index is disabled](../../../../client-api/operations/maintenance/indexes/disable-index#when-index-is-disabled) 
+      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
+      * [When is the index disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#when-is-the-index-disabled) 
   
     * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
         * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
@@ -30,11 +30,7 @@
 
 {PANEL: Overview}
 
-{NOTE: }
-
-<a id="on-which-node-the-index-is-disabled" /> **On which node the index is disabled**:
-
----
+#### Which node is the index disabled on?
 
 * The index can be disabled either:  
     * On a single node, or  
@@ -43,18 +39,15 @@
 * When disabling the index from the **client API** on a single node:  
   The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from **Studio** (from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)):  
+* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
   The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
 * When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
   The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
 
-{NOTE/}
-{NOTE: }
-
-<a id="when-index-is-disabled" /> **When index is disabled**:  
-
 ---
+
+#### When is the index disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
   However, new data will be indexed by the index on other database-group nodes where it is not disabled.
@@ -66,45 +59,37 @@
   * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state) the database.  
   * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Disable index from the Client API}
 
-{NOTE: }
-
-<a id="disable-index---single-node" /> **Disable index - single node**:
-
----
+#### Disable index - single node:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_1@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_1_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="disable-index---cluster-wide" /> **Disable index - cluster wide**:  
+#### Disable index - cluster wide:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync disable_2@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TAB:csharp:Async disable_2_async@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="syntax" /> **Syntax**:  
+#### Syntax:  
 
 {CODE:csharp syntax@ClientApi\Operations\Maintenance\Indexes\DisableIndex.cs /}
 
-| Parameter       | Type   | Description                                                                                                              |
-|-----------------|--------|--------------------------------------------------------------------------------------------------------------------------|
-| **indexName**   | string | Name of index to disable                                                                                                 |
-| **clusterWide** | bool   | `true` - Disable index on all database-group nodes<br>`false` - Disable index only on a single node (the preferred node) |
+| Parameter       | Type     | Description                                                                                                              |
+|-----------------|----------|--------------------------------------------------------------------------------------------------------------------------|
+| **indexName**   | `string` | Name of index to disable                                                                                                 |
+| **clusterWide** | `bool`   | `true` - Disable index on all database-group nodes<br>`false` - Disable index only on a single node (the preferred node) |
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Disable index manually via the file system}

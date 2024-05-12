@@ -6,7 +6,7 @@
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index see article [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
+* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
 
 * In this page:
     * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index)
@@ -23,59 +23,55 @@
 
 * **From the Client API**:  
   Use `EnableIndexOperation` to enable the index from the Client API.  
-  The index can be enabled either:  
-    * On a single node, or  
-    * Cluster wide - on all database-group nodes.  
+  The index can be enabled:  
+    * On a single node.  
+    * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
   To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will enable the index back on the local node where the reset action was performed.
+  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will re-enable the index 
+  locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
-  Modifying the index definition will also enable back the normal operation of the index.
+  Modifying the index definition will also re-enable the normal operation of the index.
 
-* An index that was disabled via the file system can also be enabled by either option from above  
-  after removing the [disable.marker](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system) file. 
-  Learn more in [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system).
+* The above methods can also be used to enable an index that was 
+  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system), 
+  after removing the `disable.marker` file.  
   
 {PANEL/}
 
 {PANEL: Enable index from the Client API}
 
-{NOTE: }
-
-<a id="enable-index---single-node" /> **Enable index - single node**:  
+#### Enable index - single node:  
 
 * With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
   The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
 
-* Note: When enabling an index from the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
 {CODE:python enable_1@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="enable-index---cluster-wide" /> **Enable index - cluster wide**:  
+#### Enable index - cluster wide:  
 
 {CODE:python enable_2@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="syntax" /> **Syntax**: 
+#### Syntax: 
 
 {CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\EnableIndex.py /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexName** | string | Name of index to enable |
-| **clusterWide** | bool | `true` - Enable index on all database-group nodes<br>`false` - Enable index only on a single node (the preferred node) |
+| **index_name** | `str` | Name of index to enable |
+| **cluster_wide** | `bool` | `True` - Enable index on all database-group nodes<br>`False` - Enable index only on a single node (the preferred node) |
 
-{NOTE/}
 {PANEL/}
 
 ## Related Articles
