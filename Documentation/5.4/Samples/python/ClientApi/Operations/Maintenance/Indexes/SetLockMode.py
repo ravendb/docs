@@ -1,5 +1,8 @@
+from enum import Enum
+
 from ravendb import SetIndexesLockOperation
 from ravendb.documents.indexes.definitions import IndexLockMode
+from ravendb.documents.operations.definitions import VoidMaintenanceOperation
 
 from examples_base import ExampleBase
 
@@ -34,3 +37,22 @@ class SetLockMode(ExampleBase):
             # Lock mode is now set to 'LockedError' on both indexes
             # Any modifications done now to either index will throw
             # endregion
+
+
+class Foo:
+    # region syntax_1
+    class SetIndexesLockOperation(VoidMaintenanceOperation):
+        def __init__(self, mode: IndexLockMode, *index_names: str): ...
+
+    # endregion
+
+    # region syntax_2
+    class IndexLockMode(Enum):
+        UNLOCK = "Unlock"
+        LOCKED_IGNORE = "LockedIgnore"
+        LOCKED_ERROR = "LockedError"
+
+        def __str__(self):
+            return self.value
+
+    # endregion

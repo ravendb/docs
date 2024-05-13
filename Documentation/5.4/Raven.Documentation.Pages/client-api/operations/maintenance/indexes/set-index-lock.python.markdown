@@ -83,6 +83,20 @@ Consider the following scenario:
 
 {PANEL/}
 
+{PANEL: Syntax}
+
+{CODE:python syntax_1@ClientApi\Operations\Maintenance\Indexes\SetLockMode.py /}
+
+| Parameters | Type | Description |
+|- | - | - |
+| **mode** | `IndexLockMode` | Lock mode to set |
+| **\*index_names** | `str` | Index names to set lock mode for |
+
+{CODE:python syntax_2@ClientApi\Operations\Maintenance\Indexes\SetLockMode.py /}
+
+{PANEL/}
+
+
 ## Related Articles
 
 ### Indexes
