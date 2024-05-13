@@ -15,7 +15,7 @@
 
     * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
       * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
-      * [When is the index disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#when-is-the-index-disabled) 
+      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#what-happens-when-the-index-is-disabled) 
   
     * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
         * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
@@ -47,7 +47,7 @@
 
 ---
 
-#### When is the index disabled?  
+#### What happens when the index is disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
   However, new data will be indexed by the index on other database-group nodes where it is not disabled.
