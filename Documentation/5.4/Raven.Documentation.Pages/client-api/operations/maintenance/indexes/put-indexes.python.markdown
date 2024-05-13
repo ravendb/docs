@@ -76,15 +76,15 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 | `IndexDefinition` parameter| Type | Description |
 | - |- | - |
 | **name** | `str` | Name of the index, a unique identifier |
-| **maps** | `HashSet[str]` | All the map functions for the index |
+| **maps** | `Set[str]` | All the map functions for the index |
 | **reduce** | `str` | The index reduce function |
 | **deployment_mode** | `IndexDeploymentMode` | Deployment mode<br>(PARALLEL, ROLLING) |
 | **state** | `IndexState` | State of index<br>(NORMAL, DISABLED, IDLE, ERROR) |
 | **priority** | `IndexPriority` | Priority of index<br>(LOW, NORMAL, HIGH) |
 | **lock_mode** | `IndexLockMode` | Lock mode of index<br>(UNLOCK, LOCKED_IGNORE, LOCKED_ERROR) |
-| **fields** | `Dictionary[str, IndexFieldOptions]` | _IndexFieldOptions_ per index field |
-| **additional_sources** | `Dictionary[str, str]` | Additional code files to be compiled with this index |
-| **additional_assemblies** | `HashSet[AdditionalAssembly]` | Additional assemblies that are referenced |
+| **fields** | `Dict[str, IndexFieldOptions]` | _IndexFieldOptions_ per index field |
+| **additional_sources** | `Dict[str, str]` | Additional code files to be compiled with this index |
+| **additional_assemblies** | `Set[AdditionalAssembly]` | Additional assemblies that are referenced |
 | **configuration** | `IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this dictionary |
 | **output_reduce_to_collection** | `str` | A collection name for saving the reduce results as documents |
 | **reduce_output_index** | `int` | This number will be part of the reduce results documents IDs |
@@ -92,11 +92,11 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 | **pattern_references_collection_name** | `str` | A collection name for the reference documents created based on provided pattern |
 
 | `store.maintenance.send(put_indexes_op)` return value | Description |
-| - |- |
-| `PutIndexResult[]` | List of _PutIndexResult_ per index |
+| - | - |
+| `List[PutIndexResult]` | List of _PutIndexResult_ per index |
 
 | `PutIndexResult` parameter | Type | Description |
-| - |- | - |
+| - | - | - |
 | **index** | `str` | Name of the index that was added |
 | **raft_command_index** | `int` | Index of raft command that was executed |
 
