@@ -67,12 +67,14 @@
 * You can further customize and fine-tune which entities will not be tracked  
   by configuring the `should_ignore_entity_changes` convention method on the document store.
 * This customization rule will apply to all sessions opened for this document store.
+* Implement rules under your [ShouldIgnoreEntityChanges](../../../client-api/session/configuration/how-to-disable-tracking#syntax) subclass.  
+  Apply the class's `check` method to control the ignore flow.
 
-**Example**
+#### Example:
 
 {CODE:python disable_tracking_4@ClientApi\Session\Configuration\DisableTracking.py /}
 
-**Syntax**
+#### Syntax:
 
 {CODE:python syntax_2@ClientApi\Session\Configuration\DisableTracking.py /}
 
