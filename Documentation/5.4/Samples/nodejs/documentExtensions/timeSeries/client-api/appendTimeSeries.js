@@ -46,7 +46,8 @@ async function appendTimeSeries() {
         
         // Results:
         // ========
-        // The document will contain a time series named "HeartRates" with 10 entries.
+        // * The document will contain a time series named "HeartRates" with 10 entries.
+        // * The entries' timestamps are saved on the server in UTC.
         //endregion
 
         //region append_2
@@ -75,8 +76,9 @@ async function appendTimeSeries() {
 
         // Results:
         // ========
-        // The document will contain a time series called "StockPrices" with 3 entries.
-        // Each entry will have 5 values.
+        // * The document will contain a time series called "StockPrices" with 3 entries.
+        // * Each entry will have 5 values.
+        // * The entries' timestamps are saved on the server in UTC.
         //endregion
 
         //region append_3
@@ -133,8 +135,9 @@ async function appendTimeSeries() {
 
         // Results:
         // ========
-        // The document will contain a time series called "StockPrices" with 3 entries.
-        // Each entry will have 5 named values.
+        // * The document will contain a time series called "StockPrices" with 3 entries.
+        // * Each entry will have 5 named values.
+        // * The entries' timestamps are saved on the server in UTC.
         //endregion
     }
 }
