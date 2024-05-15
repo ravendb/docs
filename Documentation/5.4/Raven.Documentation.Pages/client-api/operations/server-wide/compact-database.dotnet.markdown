@@ -4,8 +4,9 @@
 
 {NOTE: }
 
-* The compaction operation **removes empty gaps on disk** that still occupy space after deletes.  
-  You can choose what should be compacted: documents and/or selected indexes.  
+* Use The `CompactDatabaseOperation` compaction operation to **removes empty gaps on disk** 
+  that still occupy space after deletes.  
+  You can choose whether to compact _documents_ and/or _selected indexes_.  
 
 * **During compaction the database will be offline**.  
   The operation is a executed asynchronously as a background operation and can be awaited.  
@@ -14,8 +15,10 @@
   To compact all database-group nodes, the command must be sent to each node separately.  
 
 * **Target node**:  
-  By default, the operation will be executed on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  The operation can be executed on a specific node by using the [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  By default, the operation will be executed on the server node that is defined by the 
+  [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  The operation can be executed on a specific node by using the 
+  [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
@@ -39,7 +42,7 @@
 
 #### Compact documents:
 
-The following example will compact only documents for the specified database.  
+The following example will compact only **documents** for the specified database.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync compact_0@ClientApi\Operations\Server\Compact.cs /}

@@ -8,7 +8,7 @@
 
 * The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
 
-* To clear index errors see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
 
 * In this page:
     * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
@@ -43,11 +43,11 @@
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexNames** | `string[]` | List of index names for which to get errors |
+| **indexNames** | `string[]` | List of index names to get errors for |
 
-| Return value of `store.Maintenance.Send(getIndexErrorsOp)`| Description |
+| Return value of<br>`store.Maintenance.Send(getIndexErrorsOp)`| Description |
 | - | - |
-| `IndexErrors[]` |  List of `IndexErrors` class.<br>An exception is thrown if any of the specified indexes do not exist. |
+| `IndexErrors[]` | List of `IndexErrors` classes - see definition below.<br>An exception is thrown if any of the specified indexes doesn't exist. |
 
 {CODE syntax_2@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.cs /}
 

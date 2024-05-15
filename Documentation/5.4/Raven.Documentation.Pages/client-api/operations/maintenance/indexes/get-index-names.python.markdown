@@ -16,25 +16,22 @@
 
 {PANEL: Get index names example}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_index_names@ClientApi\Operations\Maintenance\Indexes\GetIndexNames.cs /}
-{CODE-TAB:csharp:Async get_index_names_async@ClientApi\Operations\Maintenance\Indexes\GetIndexNames.cs /}
-{CODE-TABS/}
+{CODE:python get_index_names@ClientApi\Operations\Maintenance\Indexes\GetIndexNames.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE get_index_names_syntax@ClientApi\Operations\Maintenance\Indexes\GetIndexNames.cs /}
+{CODE:python get_index_names_syntax@ClientApi\Operations\Maintenance\Indexes\GetIndexNames.py /}
 
 | Parameters | Type | Description |
 | - |- | - |
 | **start** | `int` | Number of index names to skip |
-| **pageSize** | `int`   | Number of index names to retrieve |
+| **page_size** | `int`   | Number of index names to retrieve |
 
-| Return Value of<br>`store.Maintenance.Send(getIndexNamesOp)` | Description |
+| Return Value of<br>`store.maintenance.send(GetIndexNamesOperation)` | Description |
 | - | - |
-| `string[]` | A list of index names.<br>Alphabetically ordered. |
+| `str[]` | A list of index names.<br> Alphabetically ordered. |
 
 {PANEL/}
 

@@ -34,35 +34,34 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 | Priority value | Indexing thread priority<br> at OS level | |
 | - | - | - |
-| **Low** | Lowest | <ul><li>Having the `Lowest` priority at the OS level, indexes will run only when there's a capacity for them, when the system is not occupied with higher-priority tasks.</li><li>Requests to the database will complete faster.<br>Use when querying the server is more important to you than indexing.</li></ul> |
-| **Normal** (default) | Below normal | <ul><li>Requests to the database are still preferred over the indexing process.</li><li>The indexing thread priority at the OS level is `Below normal`<br>while Requests processes have a `Normal` priority.</li></ul> |
-| **High** | Normal | <ul><li>Requests and Indexing will have the same priority at the OS level.</li></ul> |
+| **LOW** | Lowest | <ul><li>Having the `Lowest` priority at the OS level, indexes will run only when there's a capacity for them, when the system is not occupied with higher-priority tasks.</li><li>Requests to the database will complete faster.<br>Use when querying the server is more important to you than indexing.</li></ul> |
+| **NORMAL** (default) | Below normal | <ul><li>Requests to the database are still preferred over the indexing process.</li><li>The indexing thread priority at the OS level is `Below normal`<br>while Requests processes have a `Normal` priority.</li></ul> |
+| **HIGH** | Normal | <ul><li>Requests and Indexing will have the same priority at the OS level.</li></ul> |
 
 {PANEL/}
 
 {PANEL: Set priority - single index}
 
-{CODE:nodejs set_priority_single@client-api\Operations\Maintenance\Indexes\setPriority.js /}
+{CODE:python set_priority_single@ClientApi\Operations\Maintenance\Indexes\SetPriority.py /}
 
 {PANEL/}
 
 {PANEL: Set priority - multiple indexes}
 
-{CODE:nodejs set_priority_multiple@client-api\Operations\Maintenance\Indexes\setPriority.js /}
+{CODE:python set_priority_multiple@ClientApi\Operations\Maintenance\Indexes\SetPriority.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\Operations\Maintenance\Indexes\setPriority.js /}
+{CODE:python syntax_1@ClientApi\Operations\Maintenance\Indexes\SetPriority.py /}
 
-| Parameters | Type | Description |
+| Parameters | | |
 | - | - | - |
-| **indexName** | `string` | Index name for which to change priority |
-| **priority** | `"Low"` /<br> `"Normal"` /<br> `"High"` | Priority to set |
-| **parameters** | parameters object | List of indexes + Priority to set.<br>An exception is thrown if any of the specified indexes doesn't exist. |
+| **\*index_names** | `str` | Index name for which to change priority |
+| **priority** | `IndexingPriority` | Priority to set |
 
-{CODE:nodejs syntax_2@client-api\Operations\Maintenance\Indexes\setPriority.js /}
+{CODE:python syntax_2@ClientApi\Operations\Maintenance\Indexes\SetPriority.py /}
 
 {PANEL/}
 

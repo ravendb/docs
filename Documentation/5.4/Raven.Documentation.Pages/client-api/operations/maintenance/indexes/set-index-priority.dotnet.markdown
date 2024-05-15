@@ -8,7 +8,7 @@
   By default, RavenDB prioritizes processing requests over indexing,  
   so indexing threads start with a lower priority than request-processing threads.  
 
-* Use `SetIndexesPriorityOperation` to increase or lower the index thread priority.  
+* Use `SetIndexesPriorityOperation` to raise or lower the index thread priority.  
 
 * **Indexes scope**:  
   Index priority can be set for both static and auto indexes.  
@@ -66,7 +66,7 @@ Setting the priority will affect the indexing thread priority at the operating s
 | - | - | - |
 | **indexName** | `string` | Index name for which to change priority |
 | **priority** | `IndexingPriority` | Priority to set |
-| **parameters** | `SetIndexesPriorityOperation.Parameters` | List of indexes + Priority to set.<br>An exception is thrown if any of the specified indexes do not exist. |
+| **parameters** | `SetIndexesPriorityOperation.Parameters` | List of indexes + Priority to set.<br>An exception is thrown if any of the specified indexes doesn't exist. |
 
 {CODE syntax_2@ClientApi\Operations\Maintenance\Indexes\SetPriority.cs /}
 

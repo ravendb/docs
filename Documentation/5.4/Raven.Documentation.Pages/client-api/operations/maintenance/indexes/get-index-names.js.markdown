@@ -29,9 +29,9 @@
 | **start** | `number` | Number of index names to skip |
 | **pageSize** | `number` | Number of index names to retrieve |
 
-| Return Value of `store.maintenance.send(getIndexNamesOp)` | Description |
+| Return Value of<br>`store.maintenance.send(getIndexNamesOp)` | Description |
 | - | - |
-| `string[]` | A list of index names alphabetically ordered |
+| `string[]` | A list of index names.<br>Alphabetically ordered. |
 
 {PANEL/}
 

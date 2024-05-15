@@ -21,32 +21,33 @@
 
 {PANEL: Get errors for all indexes}
 
-{CODE:nodejs get_errors_all@client-api\Operations\Maintenance\Indexes\getIndexErrors.js /}
+{CODE:python get_errors_all@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.py /}
 
 {PANEL/}
 
 {PANEL: Get errors for specific indexes}
 
-{CODE:nodejs get_errors_specific@client-api\Operations\Maintenance\Indexes\getIndexErrors.js /}
+{CODE:python get_errors_specific@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\Operations\Maintenance\Indexes\getIndexErrors.js /}
+{CODE:python syntax_1@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.py /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexNames** | `string[]` | List of index names to get errors for |
+| **index_names** | `str` | List of index names to get errors for |
 
-| Return value of<br>`store.maintenance.send(getIndexErrorsOp)`| Description |
+| Return value of<br>`store.maintenance.send(GetIndexErrorsOperation)` | Description |
 | - | - |
-| `object[]` | List of 'index errors' objects - see definition below.<br>An exception is thrown if any of the specified indexes doesn't exist. |
+| `List[IndexErrors]` | List of `IndexErrors` classes - see definition below.<br>An exception is thrown if any of the specified indexes doesn't exist. |
 
-{NOTE: }
-{CODE:nodejs syntax_2@client-api\Operations\Maintenance\Indexes\getIndexErrors.js /}
-{CODE:nodejs syntax_3@client-api\Operations\Maintenance\Indexes\getIndexErrors.js /}
-{NOTE/}
+
+
+{CODE:python syntax_2@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.py /}
+
+{CODE:python syntax_3@ClientApi\Operations\Maintenance\Indexes\GetIndexErrors.py /}
 
 {PANEL/}
 

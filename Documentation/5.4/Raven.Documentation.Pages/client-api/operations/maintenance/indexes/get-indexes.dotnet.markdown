@@ -14,14 +14,14 @@
 * To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
 
 * In this page:
-    * [Get indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Get indexes example}
+{PANEL: Get Indexes example}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync get_indexes@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}
@@ -41,7 +41,7 @@
 
 | Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
 | - | - |
-| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition), <br> ordered alphabetically by index name. |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) classes,<br> ordered alphabetically by index name. |
 
 {PANEL/}
 

@@ -5,9 +5,9 @@
 {NOTE: }
 
 * **When deploying an index**:  
-  * If the new index definition is **different** than the current index definition on the server,  
+  * If the new index definition is **different** from the current index definition on the server,  
     the current index will be overwritten and data will be re-indexed according to the new index definition.
-  * If the new index definition is the **same** as the one on the server,  
+  * If the new index definition is the **same** as the one currently deployed on the server,  
     it will not be overwritten and re-indexing will not occur upon deploying the index.
 
 * **Prior to deploying an index:**,  
@@ -42,7 +42,7 @@
 
 | Return Value | Description |
 | - | - |
-| `true` | When the index **does not exist** on the server<br>or - <br>When the index definition **is different** than the one deployed on the server  |
+| `true` | When the index **does not exist** on the server<br>or -<br>When the index definition **is different** from the one deployed on the server  |
 | `false` | When the index definition is **the same** as the one deployed on the server |
 
 {PANEL/}

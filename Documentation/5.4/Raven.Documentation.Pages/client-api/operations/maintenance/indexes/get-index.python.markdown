@@ -4,12 +4,12 @@
 
 {NOTE: }
 
-* Use `GetIndexOperation` to retrieve the **index definition** from the database.
+* Use `GetIndexOperation` to retrieve an index definition from the database.
 
 * The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
   However, the index definition returned is taken from the database record,  
   which is common to all the database-group nodes.  
-  i.e., an index state change done only on a local node is not reflected.  
+  i.e., an index state change done only on a local node is not reflected.
 
 * To get the index state on the local node use `GetIndexStatisticsOperation`.
 
@@ -23,19 +23,19 @@
 
 {PANEL: Get Index example}
 
-{CODE:nodejs get_index@client-api\Operations\Maintenance\Indexes\getIndex.js /}
+{CODE:python get_index@ClientApi\Operations\Maintenance\Indexes\GetIndex.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs get_index_syntax@client-api\Operations\Maintenance\Indexes\getIndex.js /}
+{CODE:python get_index_syntax@ClientApi\Operations\Maintenance\Indexes\GetIndex.py /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexName** | `string` | Name of index to get |
+| **index_name** | `str` | Name of index to get |
 
-| Return value of `store.maintenance.send(getIndexOp)` | Description |
+| Return value of `store.maintenance.send(GetIndexOperation)` | Description |
 |- | - |
 | `IndexDefinition` | An instance of class [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) |
 

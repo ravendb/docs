@@ -14,14 +14,14 @@
 * To get the index state on the local node use `GetIndexStatisticsOperation`.
 
 * In this page:
-    * [Get index example](../../../../client-api/operations/maintenance/indexes/get-index#get-index-example)
+    * [Get Index example](../../../../client-api/operations/maintenance/indexes/get-index#get-index-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Get index example}
+{PANEL: Get Index example}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync get_index@ClientApi\Operations\Maintenance\Indexes\GetIndex.cs /}

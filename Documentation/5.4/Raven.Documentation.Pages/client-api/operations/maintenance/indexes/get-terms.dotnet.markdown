@@ -7,14 +7,14 @@
 * Use `GetTermsOperation` to retrieve the **terms of an index-field**.  
 
 * In this page:
-    * [Get index terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-index-terms-example)
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Get index terms example}
+{PANEL: Get Terms example}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync get_index_terms@ClientApi\Operations\Maintenance\Indexes\GetIndexTerms.cs /}

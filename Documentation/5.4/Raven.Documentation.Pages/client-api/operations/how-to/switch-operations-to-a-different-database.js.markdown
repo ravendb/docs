@@ -7,20 +7,22 @@
 * By default, all operations work on the default database defined in the [document store](../../../client-api/creating-document-store).
 
 * **To operate on a different database**, use the `forDatabase` method.  
-  (An exception is thrown if that database doesn't exist on the server).
+  If the requested database doesn't exist on the server, an exception will be thrown.
 
 * In this page:
-    * [Common operations - forDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operations---fordatabase)
-    * [Maintenance operations - forDatabase](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operations---fordatabase)
+    * [Common operation: `operations.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.fordatabase)
+    * [Maintenance operation: `maintenance.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.fordatabase)
 {NOTE/}
 
 ---
 
-{PANEL: Common operations - forDatabase}
+{PANEL: Common operation: `operations.forDatabase`}
 
 * For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
 
 {CODE:nodejs for_database_1@client-api\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
+
+---
 
 **Syntax**:
 
@@ -36,11 +38,13 @@
 
 {PANEL/}
 
-{PANEL: Maintenance operations - forDatabase}
+{PANEL: Maintenance operation: `maintenance.forDatabase`}
 
 * For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
 
 {CODE:nodejs for_database_2@client-api\Operations\HowTo\switchOperationsToDifferentDatabase.js /}
+
+---
 
 **Syntax**:
 

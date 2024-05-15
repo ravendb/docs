@@ -52,7 +52,7 @@
 
 | Object returned by send operation has: | Type | Description |
 | - | - | - |
-| raftCommandIndex | `number` | Index of raft command that was executed |
+| raftCommandIndex | `number` | Index of the raft command that was executed |
 | name | `string` | Database name |
 | topology | `DatabaseTopology` | The database topology |
 | nodesAddedTo | `string[]` | New nodes added to the cluster topology.<br>Will be 0 for this operation. |

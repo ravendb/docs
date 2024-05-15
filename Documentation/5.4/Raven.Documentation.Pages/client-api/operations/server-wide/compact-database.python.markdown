@@ -9,7 +9,8 @@
   You can choose whether to compact _documents_ and/or _selected indexes_.  
 
 * **During compaction the database will be offline**.  
-  The operation is a executed asynchronously as a background operation and can be awaited.  
+  The operation is a executed asynchronously as a background operation and can be waited for 
+  using `wait_for_completion`.  
 
 * The operation will **compact the database on one node**.  
   To compact all database-group nodes, the command must be sent to each node separately.  
@@ -17,8 +18,6 @@
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the 
   [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  The operation can be executed on a specific node by using the 
-  [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
@@ -29,7 +28,6 @@
       * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
       * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
       * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
-      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database#compact-on-other-nodes)  
   * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
   * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
   * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)  
@@ -40,56 +38,38 @@
 
 {PANEL: Examples}
 
-{NOTE: }
+#### Compact documents:
 
-#### Compact documents
+The following example will compact only **documents** for the specified database.  
 
-* The following example will compact only **documents** for the specified database.  
+{CODE:python compact_0@ClientApi\Operations\Server\Compact.py /}
 
-{CODE:nodejs compact_0@client-api\Operations\Server\compact.js /}
+---
 
-{NOTE/}
+#### Compact specific indexes:
 
-{NOTE: }
+The following example will compact only specific indexes.
 
-#### Compact specific indexes
+{CODE:python compact_1@ClientApi\Operations\Server\Compact.py /}
 
-* The following example will compact only specific indexes.
+---
 
-{CODE:nodejs compact_1@client-api\Operations\Server\compact.js /}
+#### Compact all indexes:
 
-{NOTE/}
+The following example will compact all indexes and documents.  
 
-{NOTE: }
+{CODE:python compact_2@ClientApi\Operations\Server\Compact.py /}
 
-#### Compact all indexes
-
-* The following example will compact all indexes and documents.  
-
-{CODE:nodejs compact_2@client-api\Operations\Server\compact.js /}
-
-{NOTE/}
-
-{NOTE: }
-
-#### Compact on other nodes
-
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
-  `forNode` is used to execute the operation on a specific node.   
-
-{CODE:nodejs compact_3@client-api\Operations\Server\compact.js /}
- 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Compaction triggers compression}
 
 * When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
-    * **New** documents that are created and saved.
-    * **Existing** documents that are modified and saved.
+  * **New** documents that are created and saved.  
+  * **Existing** documents that are modified and saved.  
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation to **compress existing documents without having to modify and save** them.  
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation 
+  to **compress existing documents without having to modify and save** them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
 * Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
@@ -106,22 +86,7 @@
 
 {PANEL/}
 
-{PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\Operations\Server\compact.js /}
-
-| Parameters | Type | Description |
-| - | - | - |
-| **compactSettings** | `object` | Settings for the compact operation.<br>See object fields below. |
-
-| compactSettings field | Type | Description |
-| - | - | - |
-| **databaseName** | `string` | Name of database to compact. Mandatory param. |
-| **documents** | `boolean` | Indicates if documents should be compacted. Optional param. |
-| **indexes** | `string[]` | List of index names to compact. Optional param. |
-| | | **Note**: Either _Documents_ or _Indexes_ (or both) must be specified |
-
-{PANEL/}
 
 ## Related Articles
 

@@ -24,22 +24,22 @@
 
 {PANEL: Check if index has changed}
 
-{CODE:nodejs index_has_changed@client-api\Operations\Maintenance\Indexes\indexHasChanged.js /}
+{CODE:python index_has_changed@ClientApi\Operations\Maintenance\Indexes\IndexHasChanged.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\Operations\Maintenance\Indexes\indexHasChanged.js /}
+{CODE:python syntax@ClientApi\Operations\Maintenance\Indexes\IndexHasChanged.py /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) | The index definition to check |
+| **index** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexDefinition) | The index definition to check |
 
 | Return Value | Description |
 | - | - |
-| `true` | When the index **does not exist** on the server<br>or -<br>When the index definition **is different** from the one deployed on the server  |
-| `false` | When the index definition is **the same** as the one deployed on the server |
+| `True` | When the index **does not exist** on the server<br>or -<br>When the index definition **is different** from the one deployed on the server  |
+| `False` | When the index definition is **the same** as the one deployed on the server |
 
 {PANEL/}
 

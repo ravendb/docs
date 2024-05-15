@@ -28,10 +28,7 @@
 * Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
 * The node added will be a random node from the existing cluster nodes.   
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync add_1@ClientApi\Operations\Server\AddDatabaseNode.cs /}
-{CODE-TAB:csharp:Async add_1_async@ClientApi\Operations\Server\AddDatabaseNode.cs /}
-{CODE-TABS/}
+{CODE:python add_1@ClientApi\Operations\Server\AddDatabaseNode.py /}
 
 {PANEL/}
 
@@ -40,28 +37,25 @@
 * You can specify the node tag to add.  
 * This node must already exist in the cluster topology.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync add_2@ClientApi\Operations\Server\AddDatabaseNode.cs /}
-{CODE-TAB:csharp:Async add_2_async@ClientApi\Operations\Server\AddDatabaseNode.cs /}
-{CODE-TABS/}
+{CODE:python add_2@ClientApi\Operations\Server\AddDatabaseNode.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Server\AddDatabaseNode.cs /}
+{CODE:python syntax@ClientApi\Operations\Server\AddDatabaseNode.py /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **databaseName** | `string` | Name of a database for which to add the node. |
-| **nodeTag** | `string` | Tag of node to add.<br>Default: a random node from the existing cluster topology will be added. |
+| **database_name** | `str` | Name of a database for which to add the node. |
+| **node_tag** | `str` | Tag of node to add.<br>Default: a random node from the existing cluster topology will be added. |
 
 | Object returned by Send operation:<br>`DatabasePutResult` | Type | Description |
 | - | - | - |
-| RaftCommandIndex | `long` | Index of the raft command that was executed |
-| Name | `string` | Database name |
-| Topology | `DatabaseTopology` | The database topology |
-| NodesAddedTo | `List<string>` | New nodes added to the cluster topology.<br>Will be 0 for this operation. |
+| raft_command_index | `int` | Index of the raft command that was executed |
+| name | `str` | Database name |
+| topology | `DatabaseTopology` | The database topology |
+| nodes_added_to | `list<str>` | New nodes added to the cluster topology.<br>Will be 0 for this operation. |
 
 {PANEL/}
 

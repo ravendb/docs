@@ -7,14 +7,14 @@
 * Use `GetTermsOperation` to retrieve the **terms of an index-field**.
 
 * In this page:
-    * [Get index terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-index-terms-example)
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
     * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Get index terms example}
+{PANEL: Get Terms example}
 
 {CODE:nodejs get_index_terms@client-api\Operations\Maintenance\Indexes\getIndexTerms.js /}
 
