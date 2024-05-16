@@ -1,8 +1,8 @@
-# Delete Document Command
+# Commands: Delete Document
 
 {NOTE: }
 
-* Use the `DeleteDocumentCommand` to remove a document from the database.
+* Use `DeleteDocumentCommand` to remove a document from the database.
 
 * In this page:
 
@@ -23,10 +23,10 @@
 
 {CODE:nodejs syntax@client-api\commands\documents\delete.js /}
 
-| Parameter        | Type   | Description                                                             |
-|------------------|--------|-------------------------------------------------------------------------|
-| __id__           | string | ID of a document to be deleted                                          |
-| __changeVector__ | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| Parameter        | Type     | Description                                                             |
+|------------------|----------|-------------------------------------------------------------------------|
+| **id**           | `string` | ID of a document to be deleted                                          |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
 
 {PANEL/}
 

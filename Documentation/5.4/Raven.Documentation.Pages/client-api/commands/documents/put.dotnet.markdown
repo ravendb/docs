@@ -1,30 +1,36 @@
-# Commands: Documents: Put
+# Commands: Put Document
 ---
 
 {NOTE: }
-**Put** is used to insert or update a document in a database.
 
-In this page:
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
 
-* [Syntax](../../../client-api/commands/documents/put#syntax)
-* [Example](../../../client-api/commands/documents/put#example)
+* In this page:
+
+   * [Example](../../../client-api/commands/documents/put#example)
+   * [Syntax](../../../client-api/commands/documents/put#syntax)
 
 {NOTE/}
 
-## Syntax
+---
+
+{PANEL: Example}
+
+{CODE put_sample@ClientApi\Commands\Documents\Put.cs /}
+
+{PANEL/}
+
+{PANEL: Syntax}
 
 {CODE put_interface@ClientApi\Commands\Documents\Put.cs /}
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **conventions** | DocumentConventions | Document conventions |
-| **id** | string | Unique ID under which document will be stored |
-| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | BlittableJsonReaderObject | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
+| **id** | `string` | Unique ID under which document will be stored |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document** | `BlittableJsonReaderObject` | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
 
-## Example
-
-{CODE put_sample@ClientApi\Commands\Documents\Put.cs /}
+{PANEL/}
 
 ## Related Articles
 

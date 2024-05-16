@@ -8,8 +8,8 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | String | ID of a document to be deleted |
-| **changeVector** | String | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+| **id** | `String` | ID of a document to be deleted |
+| **changeVector** | `String` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
 
 ## Example
 

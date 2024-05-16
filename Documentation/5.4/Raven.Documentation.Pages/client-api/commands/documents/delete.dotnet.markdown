@@ -1,19 +1,35 @@
-# Commands: Documents: Delete
+# Commands: Delete Document
 
-**Delete** is used to remove a document from a database.
+{NOTE: }
 
-## Syntax
+* Use `DeleteDocumentCommand` to remove a document from the database.
+
+* In this page:
+
+    * [Example](../../../client-api/commands/documents/delete#example)
+    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+
+{NOTE/}
+
+---
+
+{PANEL: Example}
+
+{CODE delete_sample@ClientApi\Commands\Documents\Delete.cs /}
+
+{PANEL/}
+
+
+{PANEL: Syntax}
 
 {CODE delete_interface@ClientApi\Commands\Documents\Delete.cs /}
 
-| Parameters       |        |                                                                          |
-|------------------|--------|--------------------------------------------------------------------------|
-| **id**           | string | ID of a document to be deleted                                           |
-| **changeVector** | string | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **id**           | `string` | ID of a document to be deleted |
+| **changeVector** | `string` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
 
-## Example
-
-{CODE delete_sample@ClientApi\Commands\Documents\Delete.cs /}
+{PANEL/}
 
 ## Related Articles
 

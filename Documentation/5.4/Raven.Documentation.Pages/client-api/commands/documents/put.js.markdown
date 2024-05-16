@@ -1,9 +1,9 @@
-# Put Document Command
+# Commands: Put Document
 ---
 
 {NOTE: }
 
-* Use the `PutDocumentCommand` to insert or update a document in the database.
+* Use `PutDocumentCommand` to insert a document to the database or update an existing document.
 
 * In this page:
 
@@ -24,11 +24,11 @@
 
 {CODE:nodejs syntax_1@client-api\commands\documents\put.js /}
 
-| Parameter        | Type   | Description                                                             |
-|------------------|--------|-------------------------------------------------------------------------|
-| __id__           | string | Unique ID under which document will be stored                           |
-| __changeVector__ | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| __document__     | object | The document to store.                                                  |
+| Parameter        | Type     | Description                                                             |
+|------------------|----------|-------------------------------------------------------------------------|
+| **id**           | `string` | Unique ID under which document will be stored                           |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **document**     | `object` | The document to store.                                                  |
 
 {CODE:nodejs syntax_2@client-api\commands\documents\put.js /}
 
