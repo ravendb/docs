@@ -87,7 +87,7 @@ class LoadBalance(ExampleBase):
             # The session's context string is Not set on the server
             # You still need to set it on the client:
             # * either as a convention on the document store
-            # * or pass it to 'SetContext' method on the session
+            # * or pass it to the 'context' method on the session
 
             # Configuration will be in effect when Disabled is set to false
             configuration_to_save.disabled = False
@@ -120,7 +120,7 @@ class LoadBalance(ExampleBase):
             # The session's context string is Not set on the server
             # You still need to set it on the client:
             # * either as a convention on the document store
-            # * or pass it to 'SetContext' method on the session
+            # * or pass it to the 'context' method on the session
 
             # Configuration will be in effect when Disabled is set to false
             configuration_to_save.disabled = False
