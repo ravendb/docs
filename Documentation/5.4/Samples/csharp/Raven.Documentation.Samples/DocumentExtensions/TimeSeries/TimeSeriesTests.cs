@@ -1136,10 +1136,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     List<double> values = new List<double>();
                     List<DateTime> timeStamps = new List<DateTime>();
 
-                    for (var cnt = 0; cnt < 100; cnt++)
+                    for (var i = 0; i < 100; i++)
                     {
                         values.Add(68 + Math.Round(19 * new Random().NextDouble()));
-                        timeStamps.Add(baseline.AddSeconds(cnt));
+                        timeStamps.Add(baseline.AddSeconds(i));
                     }
 
                     session.Advanced.Defer(new PatchCommandData("users/1-A", null,
@@ -1175,7 +1175,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         {
                             Script = @"timeseries(this, $timeseries)
                                      .delete(
-                                        $from, 
+                                        $from,
                                         $to
                                       );",
                             Values =
@@ -1185,14 +1185,12 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 { "to", baseline.AddSeconds(49) }
                             }
                         }, null));
+                    
                     session.SaveChanges();
                     #endregion
-
                 }
             }
         }
-
-
 
         // Patching:multiple time-series entries Using session.Advanced.Defer
         [Fact]

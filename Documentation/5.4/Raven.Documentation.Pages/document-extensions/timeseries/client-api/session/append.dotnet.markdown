@@ -17,10 +17,11 @@
     * __Modify an existing time series entry__:  
       Use _Append_ to update the data of an existing entry with the specified timestamp.
 
-* Each call to `Append` handles a single [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
+* Each call to `Append` handles a __single__ [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
 
-* To append multiple entries in a single transaction,  
-  call `Append` as many times as needed before calling `session.SaveChanges`.
+* To append __multiple__ entries in a single transaction:  
+  * Call `Append` as many times as needed before calling `session.SaveChanges`, or -
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
 
 ---
 
