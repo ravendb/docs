@@ -99,8 +99,8 @@
 |------------|------|-------------|
 | **startsWith** | `string` | prefix for which documents should be returned |
 | **startAfter** | `string` | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
-| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
-| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
+| **matches** | `string` | pipe ('&#124;') separated values for which document IDs (after `startsWith`) should be matched ('?' any single character, '*' any characters) |
+| **exclude** | `string` | pipe ('&#124;') separated values for which document IDs (after `startsWith`) should **not** be matched ('?' any single character, '*' any characters) |
 | **start** | `int` | number of documents that should be skipped |
 | **pageSize** | `int` | maximum number of documents that will be retrieved |
 | **metadataOnly** | `bool` | specifies whether or not only document metadata should be returned |
