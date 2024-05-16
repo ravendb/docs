@@ -394,7 +394,10 @@ Learn more in [dynamic group by queries](../../../client-api/session/querying/ho
 
 The keyword `include` has been introduced to support:
 
-- [including related documents](../../../client-api/how-to/handle-document-relationships#includes) or counters in the query response
+- [including related documents](../../../client-api/how-to/handle-document-relationships#includes) in the query response
+- [including counters](../../../document-extensions/counters/counters-and-other-features#including-counters),
+  [time series](../../../document-extensions/timeseries/client-api/session/include/with-raw-queries),
+  or [revisions](../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-raw-query) in the query response
 - [including compare-exchange items](../../../client-api/operations/compare-exchange/include-compare-exchange#include-cmpxchg-items-when-querying) in the query response
 - [highlighting](../../../client-api/session/querying/text-search/highlight-query-results) results
 - [get query timings](../../../client-api/session/querying/debugging/query-timings)

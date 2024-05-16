@@ -3,7 +3,7 @@ import assert from "assert";
 
 const documentStore = new DocumentStore();
 
-async function includeWithQuery() {
+async function includeWithRawQuery() {
 
     const session = documentStore.openSession();
     await session.store(new User("John"), "users/john");
@@ -22,23 +22,31 @@ async function includeWithQuery() {
 
     await session.saveChanges();
 
-    {        
+    {
         //region include_1
-        // Query for a document and include a whole time-series
-        const user = await session.query({ collection: "users" })
-            .whereEquals("name", "John")
-             // Call 'includeTimeSeries' to include the time series entries in the response
-             // Pass the time series name
-             // (find more include builder overloads under the Syntax section)
-            .include(includeBuilder => includeBuilder.includeTimeSeries("HeartRates"))
-            .first();
+        const baseTime = new Date();
+        const from = baseTime;
+        const to = new Date(baseTime.getTime() + 60_000 * 5);
+        
+        // Define the Raw Query:
+        const rawQuery = session.advanced
+             // Use 'include timeseries' in the RQL
+            .rawQuery("from users include timeseries('HeartRates', $from, $to)")
+             // Pass optional parameters
+            .addParameter("from", from)
+            .addParameter("to", to);
+
+        // Execute the query:
+        // For each document in the query results,
+        // the time series entries will be 'loaded' to the session along with the document
+        const userDocuments = await rawQuery.all();
 
         const numberOfRequests1 = session.advanced.numberOfRequests;
 
         // The following call to 'get' will Not trigger a server request,
         // the entries will be retrieved from the session's cache.
-        const entries = await session.timeSeriesFor(user, "HeartRates")
-            .get();
+        const entries = await session.timeSeriesFor(userDocuments[0], "HeartRates")
+            .get(from, to);
 
         const entryValue = entries[0].value;
 
@@ -49,8 +57,7 @@ async function includeWithQuery() {
 }
 
 //region syntax
-includeTimeSeries(name);
-includeTimeSeries(name, from, to);
+rawQuery(query, documentType?);
 //endregion
 
 class User {
