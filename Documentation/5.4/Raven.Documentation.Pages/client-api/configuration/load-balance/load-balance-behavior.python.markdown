@@ -96,7 +96,7 @@
   only 'enables the feature' and sets the seed.
 
 * For the feature to be in effect, you still need to define the context string itself:  
-  * either per session, call `session.advanced.session_info.set_context`  
+  * either per session, call `session.advanced.session_info.context`  
   * or, on the document store, set a default value for - `load_balancer_per_session_context_selector`  
 
 {NOTE/}

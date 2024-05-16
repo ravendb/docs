@@ -62,8 +62,8 @@ class LoadBalance(ExampleBase):
         # region LoadBalance_3
         # Open a session that will use a UNIQUE context string:
         with document_store.open_session() as session:
-            # Call set_context, pass a unique context string for this session
-            session.advanced.session_info.set_context = "SomeOtherContext"
+            # Call context, pass a unique context string for this session
+            session.advanced.session_info.context = "SomeOtherContext"
 
             # For all Read & Write requests made in this session,
             # node to access is calculated from the unique string & the seed defined on the store
