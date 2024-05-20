@@ -18,7 +18,7 @@
 
 * Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
-  Learn more in: [Including time series](client-api/session/include/overview).
+  Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview).
 
 * In this page:  
   * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
