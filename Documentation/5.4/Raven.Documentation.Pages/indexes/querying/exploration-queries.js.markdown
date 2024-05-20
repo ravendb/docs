@@ -138,11 +138,7 @@ filter_limit 100
 
 {PANEL: Usage examples}
 
-{NOTE: }
-
-<a id="with-collection-queries" /> __With collection queries__:
-
----
+#### With collection queries:
 
 Use `filter` with a full-collection query to scan and filter the entire collection.
 
@@ -163,13 +159,9 @@ It is recommended to set a `filter_limit` to restrict the number of filtered rec
 
 {WARNING/}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="with-queries-that-use-an-index" /> __With queries that use an index__:
-
 ---
+
+#### With queries that use an index:
 
 Use `filter` after a `whereEquals` clause to filter the results retrieved by the query.  
 
@@ -183,13 +175,9 @@ filter Address.Country == "Germany"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="with-projections" /> __With projections__:
-
 ---
+
+#### With projections:
 
 The filtered results can be projected using `selectFields`, like those of any other query.  
 
@@ -203,13 +191,9 @@ select Name, Address.City, Address.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="with-user-defined-javascript-functions-" /> __With user-defined JavaScript functions (`declare`)__:
-
 ---
+
+#### With user-defined JavaScript functions (`declare`):
 
 When using RQL, you can define a JavaScript function using the [declare](../../client-api/session/querying/what-is-rql#declare) keyword.  
 This function can then be used as part of your `filter` condition to further customize the results.  
@@ -234,8 +218,6 @@ filter filterByTitlePrefix(employee, "Sales")
 filter_limit 10
 {CODE-BLOCK/}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Syntax}
@@ -244,8 +226,8 @@ filter_limit 10
 
 | Parameter     | Type                | Description                                                                                                               |
 |---------------|---------------------|---------------------------------------------------------------------------------------------------------------------------|
-| __builder__   | `(factory) => void` | The filtering method                                                                                                      |
-| __limit__     | `number`            | The number of records from the query results that `filter` should scan.<br>Default: all retrieved records. |
+| **builder**   | `(factory) => void` | The filtering method                                                                                                      |
+| **limit**     | `number`            | The number of records from the query results that `filter` should scan.<br>Default: all retrieved records. |
       
 {PANEL/}
 

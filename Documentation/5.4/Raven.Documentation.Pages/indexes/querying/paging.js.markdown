@@ -8,21 +8,18 @@
   This method enables processing query results one page at a time.
 
 * **Default page size**:  
-
-    * Querying **Lucene** indexes:  
-      If the client's query definition does Not explicitly specify the page size, the server will default to `int.MaxValue` (2,147,483,647).
-      In such case, all results will be returned in a single server call.
-  
-    * Querying **Corax** indexes:  
-      The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
-      To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
+  If the client's query definition does Not explicitly specify the page size, the server will default to `2,147,483,647` (equivalent to  `int.MaxValue` in C#).  
+  In such case, all results will be returned in a single server call.
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
   See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
 
-* In this page:
+* **Paging policy**:  
+  To prevent executing queries that do not specify a page size, you can set the `throwIfQueryPageSizeIsNotSet` convention,
+  which can be useful during development or testing phases.
+
+* In this page:  
 
     * [No-paging example](../../indexes/querying/paging#no---paging-example)
     * [Paging examples](../../indexes/querying/paging#paging-examples)
@@ -36,10 +33,8 @@
 {PANEL: No-paging example}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_0_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_0_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_0_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:nodejs:Query paging_0@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
@@ -53,10 +48,8 @@ where UnitsInStock > 10
 #### Retrieve a specific page:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_1_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_1_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_1_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:nodejs:Query paging_1@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
@@ -69,10 +62,8 @@ limit 20, 10 // skip 20, take 10
 #### Page through all results:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_2_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_2_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_2_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:nodejs:Query paging_2@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
@@ -116,54 +107,49 @@ This practice has several benefits:
 
 {PANEL: Paging through tampered results}
 
-* The `QueryStatistics` object contains the `TotalResults` property,  
+* The `QueryStatistics` object contains the `totalResults` property,  
   which represents the total number of matching documents found in the query results.
 
-* The `QueryStatistics` object also contains the `SkippedResults` property.  
+* The `QueryStatistics` object also contains the `skippedResults` property.  
   Whenever this property is greater than **0**, that implies the server has skipped that number of results from the index.
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [Distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections) with [distinct](../../indexes/querying/distinct).
 
     2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
 
 * In those cases:
 
-    * The `SkippedResults` property from the stats object will hold the count of skipped (duplicate) results.
+    * The `skippedResults` property from the stats object will hold the count of skipped (duplicate) results.
 
-    * The `TotalResults` property will be invalidated -  
+    * The `totalResults` property will be invalidated -  
       it will Not deduct the number of skipped results from the total number of results.
 
 * In order to do proper paging in those scenarios:  
-  include the `SkippedResults` value when specifying the number of documents to skip for each page using:  
-  `(currentPage * pageSize) + SkippedResults`.
+  include the `skippedResults` value when specifying the number of documents to skip for each page using:  
+  `(currentPage * pageSize) + skippedResults`.
 
 ## Examples
 
 #### A projection query with Distinct:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_3_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_3_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_3_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Projected_class projected_class@Indexes\Querying\Paging.cs /}
+{CODE-TAB:nodejs:Query paging_3@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_0@Indexes\Querying\paging.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
 select distinct Category, Supplier
-limit 0, 10  // First loop will skip 0, take 10, etc.  
+limit 0, 10  // First loop will skip 0, take 10, etc.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 #### Querying a Fanout index:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_4_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_4_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_4_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:nodejs:Query paging_4@Indexes\Querying\paging.js /}
+{CODE-TAB:nodejs:Index index_1@Indexes\Querying\paging.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Orders/ByProductName"
 limit 0, 50  // First loop will skip 0, take 50, etc.

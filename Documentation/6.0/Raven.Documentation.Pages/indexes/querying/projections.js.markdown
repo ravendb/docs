@@ -3,18 +3,16 @@
 
 {NOTE: }
 
-* This article provides examples of projecting query results when querying a __static-index__.
+* This article provides examples of projecting query results when querying a **static-index**.
 
-* __Prior to this article__, please refer to [Project query results - Overview](../../client-api/session/querying/how-to-project-query-results)  
-  for general knowledge about Projections and dynamic-queries examples.
+* Prior to reading this article, it is recommended to take a look at the 
+  [query results projection Overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:
-
-    * [SelectFields](../../indexes/querying/projections#selectfields)
-
-    * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
-  
-    * [ofType](../../indexes/querying/projections#oftype)
+   * [SelectFields](../../indexes/querying/projections#selectfields)
+   * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
+   * [ofType](../../indexes/querying/projections#oftype)
 
 {NOTE/}
 
@@ -24,7 +22,7 @@
 
 {NOTE: }
 
-__Example I - Projecting individual fields of the document__:
+**Example I - Projecting individual fields of the document**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1@indexes\querying\projections.js /}
@@ -45,7 +43,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 {NOTE: }
 
-__Example II - Projecting stored fields__:
+**Example II - Projecting stored fields**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1_stored@indexes\querying\projections.js /}
@@ -64,7 +62,7 @@ select FirstName, LastName
 
 {NOTE: }
 
-__Example III - Projecting arrays and objects__:
+**Example III - Projecting arrays and objects**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_2@indexes\querying\projections.js /}
@@ -89,7 +87,7 @@ select {
 
 {NOTE: }
 
-__Example IV - Projection with expression__:
+**Example IV - Projection with expression**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_3@indexes\querying\projections.js /}
@@ -106,7 +104,7 @@ select {
 
 {NOTE: }
 
-__Example V - Projection with calculations__:
+**Example V - Projection with calculations**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_4@indexes\querying\projections.js /}
@@ -127,7 +125,7 @@ select {
 
 {NOTE: }
 
-__Example VI - Projecting using functions__:
+**Example VI - Projecting using functions**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_5@indexes\querying\projections.js /}
@@ -147,7 +145,7 @@ select output(e)
 
 {NOTE: }
 
-__Example VII - Projecting using a loaded document__:
+**Example VII - Projecting using a loaded document**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_6@indexes\querying\projections.js /}
@@ -166,7 +164,7 @@ select {
 
 {NOTE: }
 
-__Example VIII - Projection with dates__:
+**Example VIII - Projection with dates**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_7@indexes\querying\projections.js /}
@@ -185,7 +183,7 @@ select {
 
 {NOTE: }
 
-__Example IX - Projection with metadata__:
+**Example IX - Projection with metadata**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_8@indexes\querying\projections.js /}
@@ -204,18 +202,18 @@ select {
 
 {PANEL: Projection behavior with a static-index}
 
-* __By default__, when querying a static-index and projecting query results,  
+* **By default**, when querying a static-index and projecting query results,  
   the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
-* This behavior can be modified by setting the __projection behavior__.
+* This behavior can be modified by setting the **projection behavior**.
 
 * Note: Storing fields in the index can increase query performance when projecting,  
   but this comes at the expense of the disk space used by the index.
 
 {NOTE: }
 
-__Example__:
+**Example**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_9@indexes\querying\projections.js /}
@@ -237,7 +235,7 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 
 {NOTE: }
 
-__Projection behavior options__:
+**Projection behavior options**:
 
 * `"Default"`  
   Retrieve values from the stored index fields when available.  

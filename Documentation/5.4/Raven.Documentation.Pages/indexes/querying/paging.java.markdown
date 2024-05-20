@@ -8,19 +8,16 @@
   This method enables processing query results one page at a time.
 
 * **Default page size**:  
-
-    * Querying **Lucene** indexes:  
-      If the client's query definition does Not explicitly specify the page size, the server will default to `int.MaxValue` (2,147,483,647).
-      In such case, all results will be returned in a single server call.
-  
-    * Querying **Corax** indexes:  
-      The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
-      To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
+  If the client's query definition does Not explicitly specify the page size, the server will default to `int.MaxValue` (2,147,483,647).
+  In such case, all results will be returned in a single server call.
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
   See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+
+* **Paging policy**:  
+  To prevent executing queries that do not specify a page size, you can set the [ThrowIfQueryPageSizeIsNotSet](../../client-api/configuration/querying#throwifquerypagesizeisnotset) convention,
+  which can be useful during development or testing phases.
 
 * In this page:
 
@@ -35,11 +32,11 @@
 
 {PANEL: No-paging example}
 
+The queries below will return all the results available.
+
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_0_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_0_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_0_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:java:Query paging_0_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
@@ -50,13 +47,13 @@ where UnitsInStock > 10
 
 {PANEL: Paging examples}
 
-#### Retrieve a specific page:
+#### Basic paging:
+
+Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this, we need to issue following query:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_1_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_1_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_1_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:java:Query paging_2_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
@@ -66,25 +63,21 @@ limit 20, 10 // skip 20, take 10
 
 ---
 
-#### Page through all results:
+#### Find total results count when paging:
+
+While paging, you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_2_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_2_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_2_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
+{CODE-TAB:java:Query paging_3_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
-limit 0, 10 // First loop will skip 0, take 10
-
-// The next loops in the code will each generate the above RQL with an increased 'skip' value:
-// limit 10, 10
-// limit 20, 10
-// limit 30, 10
-// ...
+limit 20, 10 // skip 20, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
 
 {PANEL/}
 
@@ -144,28 +137,25 @@ This practice has several benefits:
 #### A projection query with Distinct:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_3_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_3_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_3_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_0@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Projected_class projected_class@Indexes\Querying\Paging.cs /}
+{CODE-TAB:java:Query paging_4_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_0_4@Indexes\Querying\Paging.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByUnitsInStock"
 where UnitsInStock > 10
-select distinct Category, Supplier
-limit 0, 10  // First loop will skip 0, take 10, etc.  
+select distinct *
+limit 0, 10  // First loop will skip 0, take 10, etc.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+---
 
 #### Querying a Fanout index:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query paging_4_1@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Query_async paging_4_2@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:DocumentQuery paging_4_3@Indexes\Querying\Paging.cs /}
-{CODE-TAB:csharp:Index index_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:java:Query paging_6_1@Indexes\Querying\Paging.java /}
+{CODE-TAB:java:Index paging_6_0@Indexes\Querying\Paging.java /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index "Orders/ByProductName"
+from index "Order/ByOrderLines/ProductName"
 limit 0, 50  // First loop will skip 0, take 50, etc.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -174,15 +164,12 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
 
 ## Related Articles
 
-### Querying
-
-- [Query overview](../../client-api/session/querying/how-to-query)
-- [Stream query results](../../client-api/session/querying/how-to-stream-query-results)
-- [Get query statistics](../../client-api/session/querying/how-to-get-query-statistics)
-
 ### Indexes
 
-- [Indexing basics](../../indexes/indexing-basics)
-- [Query an index](../../indexes/querying/query-index)
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../../indexes/querying/query-index)
 - [Filtering](../../indexes/querying/filtering)
-- [Sorting](../../indexes/querying/sorting)  
+- [Sorting](../../indexes/querying/sorting)
