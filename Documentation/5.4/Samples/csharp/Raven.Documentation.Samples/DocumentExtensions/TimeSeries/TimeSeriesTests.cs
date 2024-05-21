@@ -797,54 +797,129 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             }
         }
 
-
         [Fact]
         public void UseTimeSeriesBatchOperation()
         {
-            const string documentId = "users/john";
-
             using (var store = getDocumentStore())
             {
-                using (var session = store.OpenSession())
-                {
-                    session.Store(new User(), documentId);
-                    session.SaveChanges();
-                }
-
                 #region timeseries_region_Append-Using-TimeSeriesBatchOperation
-                var baseline = DateTime.Today;
+                var baseTime = DateTime.Today;
 
-                var timeSeriesExerciseHeartRate = new TimeSeriesOperation
+                // Define the Append operations:
+                // =============================
+                var appendOp1 = new TimeSeriesOperation.AppendOperation
                 {
-                    Name = "RoutineHeartRate"
+                    Timestamp = baseTime.AddMinutes(1), Values = new[] {79d}, Tag = "watches/fitbit"
                 };
 
-                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(1), Values = new[] { 79d } });
-                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(2), Values = new[] { 82d } });
-                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(3), Values = new[] { 80d } });
-                timeSeriesExerciseHeartRate.Append(new TimeSeriesOperation.AppendOperation { Tag = "watches/fitbit", Timestamp = baseline.AddMinutes(4), Values = new[] { 78d } });
+                var appendOp2 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(2), Values = new[] {82d}, Tag = "watches/fitbit"
+                };
+                
+                var appendOp3 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(3), Values = new[] {80d}, Tag = "watches/fitbit" 
+                };
+                
+                var appendOp4 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(4), Values = new[] {78d}, Tag = "watches/fitbit" 
+                };
+                
+                // Define 'TimeSeriesOperation' and add the Append operations:
+                // ===========================================================
+                var timeSeriesOp = new TimeSeriesOperation
+                {
+                    Name = "HeartRates"
+                };
+                
+                timeSeriesOp.Append(appendOp1);
+                timeSeriesOp.Append(appendOp2);
+                timeSeriesOp.Append(appendOp3);
+                timeSeriesOp.Append(appendOp4);
 
-                var timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesExerciseHeartRate);
-
-                store.Operations.Send(timeSeriesBatch);
+                
+                // Define 'TimeSeriesBatchOperation' and execute:
+                // ==============================================
+                var timeSeriesBatchOp = new TimeSeriesBatchOperation("users/john", timeSeriesOp);
+                store.Operations.Send(timeSeriesBatchOp);
                 #endregion
-
-
+            }
+            
+            using (var store = getDocumentStore())
+            {
                 #region timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation
-                var removeEntries = new TimeSeriesOperation
+                var baseTime = DateTime.Today;
+
+                var deleteOp = new TimeSeriesOperation.DeleteOperation
                 {
-                    Name = "RoutineHeartRate"
+                    From = baseTime.AddMinutes(2), To = baseTime.AddMinutes(3)
+                };
+                
+                var timeSeriesOp = new TimeSeriesOperation
+                {
+                    Name = "HeartRates"
                 };
 
-                removeEntries.Delete(new TimeSeriesOperation.DeleteOperation { From = baseline.AddMinutes(2), To = baseline.AddMinutes(3) });
+                timeSeriesOp.Delete(deleteOp);
 
-                var removeEntriesBatch = new TimeSeriesBatchOperation(documentId, removeEntries);
+                var timeSeriesBatchOp = new TimeSeriesBatchOperation("users/john", timeSeriesOp);
+                
+                store.Operations.Send(timeSeriesBatchOp);
+                #endregion
+            }
+            
+            using (var store = getDocumentStore())
+            {
+                #region timeseries_region-Append-and-Delete-TimeSeriesBatchOperation
+                var baseTime = DateTime.Today;
 
-                store.Operations.Send(removeEntriesBatch);
+                // Define some Append operations:
+                var appendOp1 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(1), Values = new[] {79d}, Tag = "watches/fitbit"
+                };
+
+                var appendOp2 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(2), Values = new[] {82d}, Tag = "watches/fitbit"
+                };
+                
+                var appendOp3 = new TimeSeriesOperation.AppendOperation
+                {
+                    Timestamp = baseTime.AddMinutes(3), Values = new[] {80d}, Tag = "watches/fitbit" 
+                };
+                
+                // Define a Delete operation:
+                var deleteOp = new TimeSeriesOperation.DeleteOperation
+                {
+                    From = baseTime.AddMinutes(2), To = baseTime.AddMinutes(3)
+                };
+                
+                var timeSeriesOp = new TimeSeriesOperation
+                {
+                    Name = "HeartRates"
+                };
+                
+                // Add the Append & Delete operations to the list of actions
+                // Note: the Delete action will be executed BEFORE all the Append actions
+                //       even though it is added last  
+                timeSeriesOp.Append(appendOp1);
+                timeSeriesOp.Append(appendOp2);
+                timeSeriesOp.Append(appendOp3);
+                timeSeriesOp.Delete(deleteOp);
+
+                var timeSeriesBatchOp = new TimeSeriesBatchOperation("users/john", timeSeriesOp);
+                
+                store.Operations.Send(timeSeriesBatchOp);
+                
+                // Results:
+                // All 3 entries that were appended will exist and are not deleted.
+                // This is because the Delete action occurs first, before all Append actions.
                 #endregion
             }
         }
-
 
         // bulk insert
         // Use BulkInsert.TimeSeriesBulkInsert.Append with doubles

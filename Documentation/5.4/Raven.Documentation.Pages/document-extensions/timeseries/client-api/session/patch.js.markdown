@@ -4,12 +4,12 @@
 
 {NOTE: }
 
-* Patching time series entries (append or delete entries) can be performed via the Session  
+* Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
   using [session.advanced.defer](../../../../client-api/operations/patching/single-document#session-api-using-defer), as described below.
   * You can handle a single document at a time.
   * The patching action is defined by the provided [JavaScript script](../../../../document-extensions/timeseries/client-api/javascript-support).
   
-* Patching time series entries can also be done directly on the Store via _Operations_,  
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
   where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch).
 
 * In this page:
