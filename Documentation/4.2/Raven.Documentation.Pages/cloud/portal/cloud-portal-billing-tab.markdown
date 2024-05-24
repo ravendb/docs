@@ -13,11 +13,11 @@ Use your account's Billing & Costs tab to view your present costs, past invoices
 
 {PANEL: The Billing & Costs Tab}
 
-!["Billing & Costs Tab"](images\portal-billing-tab.png "Billing & Costs Tab")  
+!["Billing & Costs Tab"](images\portal-billing-tab.png "Billing & Costs Tab")
 
 The Billing & Costs tab will show your existing resources and their costs as well as past billing events.
 
-!["List of costs"](images\portal-billing-costs.png "List of costs")  
+!["List of costs"](images\portal-billing-costs.png "List of costs")
 
 * **Costs**  
   Sums up your current expenses over your products.  
@@ -26,7 +26,9 @@ The Billing & Costs tab will show your existing resources and their costs as wel
 * **Contracts**  
   Shows what remains of services you pre-paid for, e.g. the 10 months left of a yearly contract you've started two months ago.  
 * **Pay Now**  
-  The `Pay Now` button is designed to facilitate immediate payment of outstanding costs accrued from previous billing cycles. This feature is especially useful for ensuring timely payments and maintaining up-to-date account status.
+  The `Pay Now` button is designed to facilitate immediate payment of outstanding costs accrued from previous billing
+  cycles. This feature is especially useful for ensuring timely payments and maintaining up-to-date account status.
+  It can be used when automatic charge fails due to reasons like expired cards or insufficient funds.
 
 {PANEL/}
 
