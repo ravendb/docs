@@ -119,8 +119,26 @@ We therefore recommend that you generate your certificates off-cloud and import 
 
 {PANEL: Enable MFA}
 
-To enable Multi-Factor Authentication either visit the [enable-authenticator](https://cloud.ravendb.net/portal/profile/enable-authenticator) page
-or open your RavenDB Cloud [Profile](https://cloud.ravendb.net/portal/profile) page and click the **Add authenticator app** button.
+Multi-Factor Authentication (MFA) enhances account security by requiring multiple forms of verification.
+MFA significantly reduces the risk of unauthorized access, even if email account credentials are compromised.
+
+Components of Multi-Factor Authentication:
+
+* Authenticator Application: This involves using a mobile app to generate one-time codes for login verification. These
+  codes are time-sensitive and provide an additional layer of security beyond passwords.
+* Recovery Codes: Recovery codes are pre-generated, single-use codes that users can use to access their accounts if they
+  lose access to their primary authentication methods. It's crucial to store these codes securely in case they are
+  needed for account recovery.
+* Recovery Phone Number: Adding a recovery phone number provides an additional method for account recovery. In case of
+  access issues. Support request needs to be made in order to use this method.
+
+By utilizing these components of MFA, users can significantly enhance the security of their accounts and mitigate the
+risk of unauthorized access.
+
+To enable Multi-Factor Authentication either visit
+the [enable-authenticator](https://cloud.ravendb.net/portal/profile/enable-authenticator) page
+or open your RavenDB Cloud [Profile](https://cloud.ravendb.net/portal/profile) page and click the **Add authenticator
+app** button.
 !["Add authenticator app"](images\mfa-001-add-authenticator.png "Add authenticator app")
 
 This will take you to the configuration page.
