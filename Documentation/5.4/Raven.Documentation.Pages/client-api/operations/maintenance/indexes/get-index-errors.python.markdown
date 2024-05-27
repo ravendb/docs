@@ -37,7 +37,7 @@
 
 | Parameters | Type | Description |
 | - | - | - |
-| **index_names** | `str` | List of index names to get errors for |
+| **\*index_names** | `str` | List of index names to get errors for |
 
 | Return value of<br>`store.maintenance.send(GetIndexErrorsOperation)` | Description |
 | - | - |

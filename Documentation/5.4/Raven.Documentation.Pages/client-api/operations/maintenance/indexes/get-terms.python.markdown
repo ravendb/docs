@@ -28,8 +28,8 @@
 | - | - | - |
 | **index_name** | `str` | Name of an index to get terms for |
 | **field** | `str` | Name of index-field to get terms for |
-| **from_value** | `str` (optional) | The starting term from which to return results.<br>This term is not included in the results.<br>`null` - start from first term. |
-| **page_size** | `int` | Number of terms to get.<br>`null` - return all terms.  |
+| **from_value** | `str` (optional) | The starting term from which to return results.<br>This term is not included in the results.<br>`None` - start from first term. |
+| **page_size** | `int` | Number of terms to get.<br>`None` - return all terms.  |
 
 | Return value of `store.maintenance.send(GetTermsOperation)` | Description |
 | - |- |
