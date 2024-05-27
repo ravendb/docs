@@ -16,19 +16,19 @@
 
 {PANEL: Example}
 
-{CODE put_sample@ClientApi\Commands\Documents\Put.cs /}
+{CODE:python put_sample@ClientApi\Commands\Documents\Put.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE put_interface@ClientApi\Commands\Documents\Put.cs /}
+{CODE:python put_interface@ClientApi\Commands\Documents\Put.py /}
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **id** | `string` | Unique ID under which document will be stored |
-| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **document** | `BlittableJsonReaderObject` | The document to store. You may use `session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`. |
+| **key** | `str` | Unique ID under which document will be stored |
+| **change_vector** | `str` (optional) | Entity changeVector, used for concurrency checks (`None` to skip check) |
+| **document** | `dict` | The document to store |
 
 {PANEL/}
 

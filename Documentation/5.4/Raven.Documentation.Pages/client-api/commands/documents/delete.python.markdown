@@ -15,19 +15,19 @@
 
 {PANEL: Example}
 
-{CODE delete_sample@ClientApi\Commands\Documents\Delete.cs /}
+{CODE:python delete_sample@ClientApi\Commands\Documents\Delete.py /}
 
 {PANEL/}
 
 
 {PANEL: Syntax}
 
-{CODE delete_interface@ClientApi\Commands\Documents\Delete.cs /}
+{CODE:python delete_interface@ClientApi\Commands\Documents\Delete.py /}
 
 | Parameters | Type | Description |
 |------------|------|-------------|
-| **id**           | `string` | ID of a document to be deleted |
-| **changeVector** | `string` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+| **key**           | `str` | ID of a document to be deleted |
+| **change_vector** | `str` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
 
 {PANEL/}
 
