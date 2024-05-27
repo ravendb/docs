@@ -19,9 +19,10 @@
 
 * Each call to `Append` handles a __single__ [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
 
-* To append __multiple__ entries in a single transaction:  
-  * Call `Append` as many times as needed before calling `session.SaveChanges`, or -
-  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
+* To append __multiple__ entries in a single transaction you can:  
+  * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).
+  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete). 
 
 ---
 
