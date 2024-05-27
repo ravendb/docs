@@ -204,11 +204,11 @@ update  {
 
 {CODE:nodejs syntax_2@client-api\operations\patches\setBasedPatchRequests.js /}
 
-| Parameter         | Type         | Description                                                |
-|-------------------|--------------|------------------------------------------------------------|
-| __queryToUpdate__ | `string`     | The query & patch definition.                              | 
-| __queryToUpdate__ | `IndexQuery` | Object that allows adding parameters to the query & patch. | 
-| __options__       | `object`     | Options for the _PatchByQueryOperation_.                   |
+| Parameter         | Type         | Description                                                                                                                                                                               |
+|-------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __queryToUpdate__ | `string`     | The query & patch definition.<br>The RQL query starts as any other RQL query with a "from" statement.<br>It continues with an "update" clause that contains the Javascript patching code. | 
+| __queryToUpdate__ | `IndexQuery` | Object containing the query & the patching string,<br>with the option to use parameters.                                                                                                  | 
+| __options__       | `object`     | Options for the _PatchByQueryOperation_.                                                                                                                                                  |
 
 
 {CODE:nodejs syntax_3@client-api\operations\patches\setBasedPatchRequests.js /}

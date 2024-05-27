@@ -1167,11 +1167,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             }
                         }, null));
                     session.SaveChanges();
-
                 }
             }
         }
-
 
         // patching a document a single time-series entry
         // using PatchOperation
@@ -1192,24 +1190,31 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
                 #region TS_region-Operation_Patch-Append-Single-TS-Entry
-                var baseline = DateTime.Today;
-
-                store.Operations.Send(new PatchOperation("users/1-A", null,
-                    new PatchRequest
+                var baseTime = DateTime.UtcNow;
+                
+                var patchRequest = new PatchRequest
+                {
+                    // Define the patch request using JavaScript:
+                    Script = "timeseries(this, $timeseries).append($timestamp, $values, $tag);",
+                    
+                    // Provide values for the parameters in the script:
+                    Values =
                     {
-                        Script = "timeseries(this, $timeseries).append($timestamp, $values, $tag);",
-                        Values =
-                        {
-                            { "timeseries", "HeartRates" },
-                            { "timestamp", baseline.AddMinutes(1) },
-                            { "values", 59d },
-                            { "tag", "watches/fitbit" }
-                        }
-                    }));
+                        { "timeseries", "HeartRates" },
+                        { "timestamp", baseTime.AddMinutes(1) },
+                        { "values", 59d },
+                        { "tag", "watches/fitbit" }
+                    }
+                };
+
+                // Define the patch operation;
+                var patchOp = new PatchOperation("users/john", null, patchRequest);
+                
+                // Execute the operation:
+                store.Operations.Send(patchOp);
                 #endregion
             }
         }
-
 
         // Patching: Append and Remove multiple time-series entries
         // Using session.Advanced.Defer
@@ -1377,59 +1382,56 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region TS_region-Operation_Patch-Append-100-TS-Entries
-                    var baseline = DateTime.Today;
+                    var baseTime = DateTime.UtcNow;
 
                     // Create arrays of timestamps and random values to patch
-                    List<double> values = new List<double>();
-                    List<DateTime> timeStamps = new List<DateTime>();
+                    var values = new List<double>();
+                    var timeStamps = new List<DateTime>();
 
-                    for (var cnt = 0; cnt < 100; cnt++)
+                    for (var i = 0; i < 100; i++)
                     {
                         values.Add(68 + Math.Round(19 * new Random().NextDouble()));
-                        timeStamps.Add(baseline.AddSeconds(cnt));
+                        timeStamps.Add(baseTime.AddMinutes(i));
                     }
 
-                    store.Operations.Send(new PatchOperation("users/1-A", null,
-                        new PatchRequest
+                    var patchRequest = new PatchRequest
+                    {
+                        Script = @"var i = 0;
+                                   for (i = 0; i < $values.length; i++) {
+                                       timeseries(id(this), $timeseries).append (
+                                           $timeStamps[i],
+                                           $values[i],
+                                           $tag);
+                                   }",
+                        Values =
                         {
-                            Script = @"var i = 0; 
-                            for (i = 0; i < $values.length; i++) 
-                            {timeseries(id(this), $timeseries)
-                            .append (
-                                      new Date($timeStamps[i]), 
-                                      $values[i], 
-                                      $tag);
-                            }",
-                            Values =
-                            {
-                                { "timeseries", "HeartRates" },
-                                { "timeStamps", timeStamps},
-                                { "values", values },
-                                { "tag", "watches/fitbit" }
-                            }
+                            { "timeseries", "HeartRates" },
+                            { "timeStamps", timeStamps },
+                            { "values", values },
+                            { "tag", "watches/fitbit" }
+                        }
+                    };
 
-                        }));
+                    var patchOp = new PatchOperation("users/john", null, patchRequest);
+                    store.Operations.Send(patchOp);
                     #endregion
 
                     #region TS_region-Operation_Patch-Delete-50-TS-Entries
-                    store.Operations.Send(new PatchOperation("users/1-A", null,
+                    store.Operations.Send(new PatchOperation("users/john", null,
                         new PatchRequest
                         {
                             Script = "timeseries(this, $timeseries).delete($from, $to);",
                             Values =
                             {
                                 { "timeseries", "HeartRates" },
-                                { "from", baseline.AddSeconds(0) },
-                                { "to", baseline.AddSeconds(49) }
+                                { "from", baseTime },
+                                { "to", baseTime.AddMinutes(49) }
                             }
                         }));
                     #endregion
-
                 }
             }
         }
-
-
 
         //Query Time-Series Using Raw RQL
         [Fact]
@@ -2221,21 +2223,30 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var baseline = DateTime.Today;
 
                 #region TS_region-PatchByQueryOperation-Append-To-Multiple-Docs
-                PatchByQueryOperation appendRestHeartRateOperation = new PatchByQueryOperation(new IndexQuery
+                var indexQuery = new IndexQuery
                 {
-                    Query = @"from Users as u update
-                                {
-                                    timeseries(u, $name).append($time, $values, $tag)
-                                }",
+                    // Define the query and the patching action that follows the 'update' keyword:
+                    Query = @"from Users as u
+                              update
+                              {
+                                  timeseries(u, $name).append($time, $values, $tag)
+                              }",
+                    
+                    // Provide values for the parameters in the script:
                     QueryParameters = new Parameters
-                            {
-                                { "name", "RestHeartRate" },
-                                { "time", baseline.AddMinutes(1) },
-                                { "values", new[]{59d} },
-                                { "tag", "watches/fitbit1" }
-                            }
-                });
-                store.Operations.Send(appendRestHeartRateOperation);
+                    {
+                        { "name", "HeartRates" },
+                        { "time", baseline.AddMinutes(1) },
+                        { "values", new[] {59d} },
+                        { "tag", "watches/fitbit" }
+                    }
+                };
+                
+                // Define the patch operation:
+                var patchByQueryOp = new PatchByQueryOperation(indexQuery);
+                
+                // Execute the operation:
+                store.Operations.Send(patchByQueryOp);
                 #endregion
 
                 // Append time series to multiple documents
@@ -2311,23 +2322,26 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var result = store.Operations.Send(getExerciseHeartRateOperation).WaitForCompletion();
 
                 #region TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs
-                PatchByQueryOperation deleteOperation = new PatchByQueryOperation(new IndexQuery
+                PatchByQueryOperation deleteByQueryOp = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u
-                              where u.age < 30
+                              where u.Age < 30
                               update
                               {
                                   timeseries(u, $name).delete($from, $to)
                               }",
+                    
                     QueryParameters = new Parameters
-                            {
-                                { "name", "HeartRates" },
-                                { "from", DateTime.MinValue },
-                                { "to", DateTime.MaxValue }
-                            }
+                    {
+                        { "name", "HeartRates" },
+                        { "from", DateTime.MinValue },
+                        { "to", DateTime.MaxValue }
+                    }
                 });
                 
-                store.Operations.Send(deleteOperation);
+                // Execute the operation: 
+                // Time series "HeartRates" will be deleted for all users with age < 30
+                store.Operations.Send(deleteByQueryOp);
                 #endregion
             }
         }
@@ -2403,38 +2417,38 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 PatchByQueryOperation patchNumOfUniqueTags = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"
-		                declare function foo(doc){
-			                var entries = timeseries(doc, $name).get($from, $to);
-			                var differentTags = [];
-			                for (var i = 0; i < entries.length; i++)
-			                {
-				                var e = entries[i];
-				                if (e.Tag !== null)
-				                {
-					                if (!differentTags.includes(e.Tag))
-					                {
-						                differentTags.push(e.Tag);
-					                }
-				                }
-			                }
-			                doc.NumberOfUniqueTagsInTS = differentTags.length;
-			                return doc;
-		                }
+                        declare function patchDocumentField(doc) {
+                            var differentTags = [];
+                            var entries = timeseries(doc, $name).get($from, $to);
 
-		                from Users as u
-		                update
-		                {
-			                put(id(u), foo(u))
-		                }",
+                            for (var i = 0; i < entries.length; i++) {
+                                var e = entries[i];
+
+                                if (e.Tag !== null) {
+                                    if (!differentTags.includes(e.Tag)) {
+                                        differentTags.push(e.Tag);
+                                    }
+                                }
+                            }
+
+                            doc.NumberOfUniqueTagsInTS = differentTags.length;
+                            return doc;
+                        }
+
+                        from Users as u
+                        update {
+                            put(id(u), patchDocumentField(u))
+                        }",
 
                     QueryParameters = new Parameters
                     {
-                        { "name", "ExerciseHeartRate" },
+                        { "name", "HeartRates" },
                         { "from", DateTime.MinValue },
                         { "to", DateTime.MaxValue }
                     }
                 });
 
+                // Execute the operation and Wait for completion:
                 var result = store.Operations.Send(patchNumOfUniqueTags).WaitForCompletion();
                 #endregion
 
@@ -2453,8 +2467,8 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 { "to", DateTime.MaxValue }
                             }
                 });
+                
                 store.Operations.Send(removeOperation);
-
             }
         }
 
@@ -2976,13 +2990,13 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             }
 
             #region PatchRequest-definition
-            private class PatchRequest
+            public class PatchRequest
             {
-                // Patching script
+                // The patching script     
                 public string Script { get; set; }
-                // Values that can be used by the patching script
+                
+                // Values for the parameters used by the patching script
                 public Dictionary<string, object> Values { get; set; }
-                //...
             }
             #endregion
 
@@ -3064,8 +3078,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             private class PatchOperation
             {
                 #region PatchOperation-Definition
-                public PatchOperation(string id, string changeVector,
-                    PatchRequest patch, PatchRequest patchIfMissing = null,
+                public PatchOperation(
+                        string id,
+                        string changeVector,
+                        PatchRequest patch,
+                        PatchRequest patchIfMissing = null,
                         bool skipPatchIfChangeVectorMismatch = false)
                 #endregion
                 { }
@@ -3073,10 +3090,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
             private class PatchByQueryOperation
             {
-                #region PatchByQueryOperation-Definition
-                public PatchByQueryOperation(IndexQuery queryToUpdate,
-                    QueryOperationOptions options = null)
-                #endregion
+                #region PatchByQueryOperation-Definition-1
+                public PatchByQueryOperation(string queryToUpdate)
+                    #endregion
+                { }
+                
+                #region PatchByQueryOperation-Definition-2
+                public PatchByQueryOperation(IndexQuery queryToUpdate, QueryOperationOptions options = null)
+                    #endregion
                 { }
             }
 
