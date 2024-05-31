@@ -42,7 +42,7 @@
 * Execute the `PatchOperation` operation by calling `store.Operations.Send`
 
 * NOTE:  
-  * The server treats timestamps passed in the patch request script as **UTC**, no conversion is applied.
+  * The server treats timestamps passed in the patch request script as **UTC**, no conversion is applied by the client to local time.
   * No exception is thrown if the specified document does not exist.
 
 ---
