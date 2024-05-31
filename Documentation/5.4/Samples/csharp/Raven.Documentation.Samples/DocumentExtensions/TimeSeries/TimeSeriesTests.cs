@@ -928,47 +928,83 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 // Create a document
                 using (var session = store.OpenSession())
                 {
-                    var user = new User
-                    {
-                        Name = "John"
-                    };
-                    session.Store(user);
+                    var user1 = new User { Name = "John" };
+                    session.Store(user1, "users/john");
+                    
+                    var user2 = new User { Name = "Jane" };
+                    session.Store(user2, "users/jane");
                     session.SaveChanges();
                 }
-
-                // Query for a document with the Name property "John" and append it a time point
+                
                 using (var session = store.OpenSession())
                 {
-                    var baseline = DateTime.Today;
-
-                    IRavenQueryable<User> query = session.Query<User>()
-                        .Where(u => u.Name == "John");
-
-                    var result = query.ToList();
-                    string documentId = result[0].Id;
-
-                    #region timeseries_region_Use-BulkInsert-To-Append-2-Entries
-                    // Use BulkInsert to append 2 time-series entries
+                    #region timeseries_region_Use-BulkInsert-To-Append-single-entry
+                    var baseTime = DateTime.Today;
+                    
+                    // Create a BulkInsertOperation instance
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
+                        // Create a TimeSeriesBulkInsert instance
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               // Call 'TimeSeriesFor', pass it:
+                               // * The document ID
+                               // * The time series name
+                               bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
                         {
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(2), 61d, "watches/fitbit");
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(3), 62d, "watches/apple-watch");
+                            // Call 'Append' to add an entry, pass it:
+                            // * The entry's Timestamp 
+                            // * The entry's Value or Values 
+                            // * The entry's Tag (optional) 
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(1), 61d, "watches/fitbit");
                         }
                     }
                     #endregion
 
                     #region timeseries_region_Use-BulkInsert-To-Append-100-Entries
-                    // Use BulkInsert to append 100 time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
                         {
-                            for (int minute = 0; minute < 100; minute++)
+                            Random rand = new Random();
+                            
+                            for (int i = 0; i < 100; i++)
                             {
-                                timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), new double[] { 80d }, "watches/fitbit");
+                                double randomValue = rand.Next(60, 91); 
+                                timeSeriesBulkInsert.Append(baseTime.AddMinutes(i), randomValue, "watches/fitbit");
                             }
+                        }
+                    }
+                    
+                    // All added entries will be sent to the server in a single batch when the bulkInsert object
+                    // is disposed of at the end of the using block.
+                    #endregion
+                    
+                    #region timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries
+                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
+                    {
+                        // Append first time series
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
+                        {
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(1), 61d, "watches/fitbit");
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(2), 62d, "watches/fitbit");
+                        }
+                        
+                        // Append another time series
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               bulkInsert.TimeSeriesFor("users/john", "ExerciseHeartRates"))
+                        {
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(3), 81d, "watches/apple-watch");
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(4), 82d, "watches/apple-watch");
+                        }
+                        
+                        // Append time series in another document
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               bulkInsert.TimeSeriesFor("users/jane", "HeartRates"))
+                        {
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(1), 59d, "watches/fitbit");
+                            timeSeriesBulkInsert.Append(baseTime.AddMinutes(2), 60d, "watches/fitbit");
                         }
                     }
                     #endregion
@@ -990,62 +1026,45 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         Name = "John"
                     };
-                    session.Store(user);
+                    session.Store(user, "users/john");
                     session.SaveChanges();
                 }
-
-                // Query for a document with the Name property "John" and append it a time point
+                
                 using (var session = store.OpenSession())
                 {
                     var baseline = DateTime.Today;
 
-                    IRavenQueryable<User> query = session.Query<User>()
-                        .Where(u => u.Name == "John");
-
-                    var result = query.ToList();
-                    string documentId = result[0].Id;
-
                     #region BulkInsert-overload-2-Two-HeartRate-Sets
-                    // Use BulkInsert to append 2 sets of time series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-
-                        ICollection<double> ExerciseHeartRate = new List<double>
-                        { 89d, 82d, 85d };
-
-                        ICollection<double> RestingHeartRate = new List<double>
-                        {59d, 63d, 61d, 64d, 64d, 65d };
-
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert =
+                               bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
                         {
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(2), ExerciseHeartRate, "watches/fitbit");
-                            timeSeriesBulkInsert.Append(baseline.AddMinutes(3), RestingHeartRate, "watches/apple-watch");
+                            var exerciseHeartRates = new List<double> { 89d, 82d, 85d };
+                            timeSeriesBulkInsert.Append(baseline.AddMinutes(1), exerciseHeartRates, "watches/fitbit");
+                            
+                            var restingHeartRates = new List<double> { 59d, 63d, 61d, 64d, 65d };
+                            timeSeriesBulkInsert.Append(baseline.AddMinutes(2), restingHeartRates, "watches/apple-watch");
                         }
                     }
                     #endregion
 
-                    ICollection<double> values = new List<double>
-                        {59d, 63d, 71d, 69d, 64, 65d };
+                    ICollection<double> values = new List<double> { 59d, 63d, 71d, 69d, 64d, 65d };
 
                     // Use BulkInsert to append 100 multi-values time-series entries
                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                     {
-                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor(documentId, "HeartRates"))
+                        using (TimeSeriesBulkInsert timeSeriesBulkInsert = bulkInsert.TimeSeriesFor("users/john", "HeartRates"))
                         {
-                            for (int minute = 0; minute < 100; minute++)
+                            for (int i = 0; i < 100; i++)
                             {
-                                timeSeriesBulkInsert.Append(baseline.AddMinutes(minute), values, "watches/fitbit");
+                                timeSeriesBulkInsert.Append(baseline.AddMinutes(i), values, "watches/fitbit");
                             }
                         }
                     }
-
                 }
             }
         }
-
-
-
-
 
         // patching
         [Fact]
@@ -3036,15 +3055,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             private class TimeSeriesBulkInsert
             {
                 #region Append-Operation-Definition-1
-                // Each appended entry has a single value.
+                // Append a single value
                 public void Append(DateTime timestamp, double value, string tag = null)
                 #endregion
                 { }
 
                 #region Append-Operation-Definition-2
-                // Each appended entry has multiple values.
-                public void Append(DateTime timestamp,
-                    ICollection<double> values, string tag = null)
+                // Append multiple values
+                public void Append(DateTime timestamp, ICollection<double> values, string tag = null)
                 #endregion
                 { }
             }
