@@ -26,28 +26,29 @@ The root selection is between submitting a support request regarding a **general
 !["Figure 2 - Support General Message"](images\portal-support-general-question-cloud-support.png "Figure 2 - Support General Message")
 
    **1**. Select to raise a general question.  
-   **2**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
-   **3**. Select the response type: *Standard* or *Immediate*.  
+   **2**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **3**. Enter your support request title.  
    **4**. Enter your question.  
    **5**. Submit your support request.
 
-You can read more about the *Severity* and *Response* types in the [Support](../../cloud/cloud-support#severity-and-response-types) page.
+You can read more about the *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
 
 ---
 
 ### Submit a Product-Related Support Request  
 
 !["Figure 3 - Support Product-Related Message"](images\portal-support-instance-related-question-cloud-support.png "Figure 3 - Support Product-Related Message")
-
+    
    **1**. Select to raise a Product-related question.  
    **2**. Select the product you relate to.  
-   **3**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
-   **4**. Select the response type: *Standard* or *Immediate*.  
-   **5**. Select the issue category.  
-   **6**. Enter your question.  
-   **7**. Submit your support request.
+   **3**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **4**. Select the issue category.  
+   **5**. Select the option associated with the instance restart action.  
+   **6**. Enter your support request title.  
+   **7**. Enter your question.  
+   **8**. Submit your support request.
 
-You can read more about the *Severity* and *Response* types in the [Support](../../cloud/cloud-support#severity-and-response-types) page.
+You can read more about the *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
 
 ---
 
@@ -63,6 +64,10 @@ will be confirmed in a separate email.
 {INFO: }
 The *Cloud Support Activation* email requests the enabling of the **Cloud Support option** for a period of **12 months**. 
 If you want to change this period, please send a *support request* via the *Support form*.
+{INFO/}
+
+{INFO: }
+Cloud Support activation takes up to **3 working days**.
 {INFO/}
 
 You can read more about available *support options* in the [Support](../../cloud/cloud-support#available-support-options) page.

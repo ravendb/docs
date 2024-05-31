@@ -9,7 +9,7 @@ and get your product-specific feedback and suggestions.
 
 * In this page:
     * [Available support options](../cloud/cloud-support#available-support-options)
-    * [Severity and response types](../cloud/cloud-support#severity-and-response-types)
+    * [Response time types](../cloud/cloud-support#response-time-types)
 
 {NOTE/}
 
@@ -45,34 +45,23 @@ For a full support options comparison please check the [Pricing](https://cloud.r
 
 {PANEL/}
 
-{PANEL: Severity and response types}
+{PANEL: Response time types}
 
-The *RavenDB Cloud* support form offers three types of **Severity** and two types of **Response**.
+The *RavenDB Cloud* support form offers three types of **Response time**.
 
 {WARNING: }
 Please make sure you understand what each of the options stands for, so your request would get the correct priority and be routed to the right team.
 {WARNING/}
 
-| **Severity** | **Description**                                                                                                                                                                                                                        |
-|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Minor        | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                     |
-| Normal       | The error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround. |
-| Critical     | Due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the workaround is cumbersome to use, or the Customer data is lost or destroyed.             |
+| **Response**      | **Description**                                                                                                                                                                                                                                                              |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Standard          | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                                                           |
+| Next business day | Reply within a next business day. The error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround.     |
+| Within 2 hours    | Your query will be responded to within two hours. Due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the workaround is cumbersome to use, or the Customer data is lost or destroyed. |
 
 {INFO: }
-**Critical severity** is available only to customers with the **Cloud Support option**.
-{INFO/}
-
----
-
-| **Response** | **Description**                                   |
-|--------------|---------------------------------------------------|
-| Standard     | Reply within a day.                               |
-| Immediate    | Your query will be responded to within two hours. |
-
-{INFO: }
-**Immediate Response** is only available for Customers with the **Cloud Support option**.  
-**Immediate Response** is not available for **Free tier** instances.
+**Within 2 hours** response time is only available for Customers with the **Cloud Support option**.  
+**Within 2 hours** response time is only available for **Production tier** instances.
 {INFO/}
 
 {PANEL/}
