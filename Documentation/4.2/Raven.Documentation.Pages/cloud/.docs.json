@@ -57,5 +57,11 @@
         "Name": "Support",
         "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
         "Mappings": []
+    },
+    {
+        "Path": "cloud-microsoft-azure-marketplace.markdown",
+        "Name": "Microsoft Azure Marketplace",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
     }
 ]
