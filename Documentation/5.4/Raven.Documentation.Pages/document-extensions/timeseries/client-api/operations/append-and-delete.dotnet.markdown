@@ -24,21 +24,25 @@
 
 {PANEL: Usage}
 
+**Flow**:
+
 * Prepare the Append and Delete operations:
     * Create an instance of `TimeSeriesOperation.AppendOperation` to define an Append action.
     * Create an instance of ` TimeSeriesOperation.DeleteOperation` fo define a Delete action.
-
 * Create an instance of `TimeSeriesOperation` and pass it the the time series name.
     * Call `TimeSeriesOperation.Append` to add the Append operation.
     * Call `TimeSeriesOperation.Delete` to add the Delete operation.
-
 * Create a `TimeSeriesBatchOperation` instance and pass it:  
    * The document ID
    * The `TimeSeriesOperation` object
-
 * Execute the `TimeSeriesBatchOperation` operation by calling `store.Operations.Send`
-   * All the added Append and Delete operations will be executed in a single-node transaction.
-   * Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch).
+
+**Note**:
+
+* All the added Append and Delete operations will be executed in a single-node transaction.
+* Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch).
+* Appending entries to a time series that doesn't yet exist yet will create the time series.
+* An exception will be thrown if the specified document does Not exist.
 
 {PANEL/}
 
