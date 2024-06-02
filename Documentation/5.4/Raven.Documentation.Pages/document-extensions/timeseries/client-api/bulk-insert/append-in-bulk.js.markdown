@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
+* `bulkInsert` is RavenDB's high-performance data insertion operation.  
 
 * The `bulkInsert.timeSeriesFor` interface provides similar functionality to the [session.timeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append),  
   but without the overhead associated with the _Session_, resulting in significantly improved performance.
