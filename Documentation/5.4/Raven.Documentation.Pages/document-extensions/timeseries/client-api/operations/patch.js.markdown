@@ -43,6 +43,7 @@
 
 * NOTE:
     * The server treats timestamps passed in the patch request script as **UTC**, no conversion is applied by the client to local time.
+    * Appending entries to a time series that doesn't yet exist yet will create the time series.
     * No exception is thrown if the specified document does not exist.
 
 ---
