@@ -1282,26 +1282,26 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     {
                         Name = "John"
                     };
-                    session.Store(user);
+                    session.Store(user, "users/john");
                     session.SaveChanges();
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    var baseline = DateTime.Today;
+                    #region TS_region-Session_Patch-Append-TS-Entries
+                    var baseline = DateTime.UtcNow;
 
                     // Create arrays of timestamps and random values to patch
-                    List<double> values = new List<double>();
-                    List<DateTime> timeStamps = new List<DateTime>();
+                    var values = new List<double>();
+                    var timeStamps = new List<DateTime>();
 
-                    for (var cnt = 0; cnt < 100; cnt++)
+                    for (var i = 0; i < 100; i++)
                     {
                         values.Add(68 + Math.Round(19 * new Random().NextDouble()));
-                        timeStamps.Add(baseline.AddSeconds(cnt));
+                        timeStamps.Add(baseline.AddMinutes(i));
                     }
 
-                    #region TS_region-Session_Patch-Append-TS-Entries
-                    session.Advanced.Defer(new PatchCommandData("users/1-A", null,
+                    session.Advanced.Defer(new PatchCommandData("users/john", null,
                         new PatchRequest
                         {
                             Script = @"
@@ -1310,15 +1310,15 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 {
                                     timeseries(id(this), $timeseries)
                                     .append (
-                                      new Date($timeStamps[i]), 
-                                      $values[i], 
-                                      $tag);
+                                        new Date($timeStamps[i]), 
+                                        $values[i], 
+                                        $tag);
                                 }",
 
                             Values =
                             {
                                 { "timeseries", "HeartRates" },
-                                { "timeStamps", timeStamps},
+                                { "timeStamps", timeStamps },
                                 { "values", values },
                                 { "tag", "watches/fitbit" }
                             }
@@ -1326,12 +1326,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     session.SaveChanges();
                     #endregion
-
                 }
             }
         }
-
-
 
         // Patching: Append and Remove multiple time-series entries
         // Using PatchOperation
@@ -2287,14 +2284,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 var result = store.Operations.Send(getExerciseHeartRateOperation).WaitForCompletion();
 
                 #region TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs
-                // Delete time-series from all users
                 PatchByQueryOperation deleteOperation = new PatchByQueryOperation(new IndexQuery
                 {
                     Query = @"from Users as u
-                                update
-                                {
-                                    timeseries(u, $name).delete($from, $to)
-                                }",
+                              where u.age < 30
+                              update
+                              {
+                                  timeseries(u, $name).delete($from, $to)
+                              }",
                     QueryParameters = new Parameters
                             {
                                 { "name", "HeartRates" },
@@ -2302,12 +2299,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                                 { "to", DateTime.MaxValue }
                             }
                 });
+                
                 store.Operations.Send(deleteOperation);
                 #endregion
             }
         }
-
-
 
         // patching a document a single time-series entry
         // using PatchByQueryOperation
