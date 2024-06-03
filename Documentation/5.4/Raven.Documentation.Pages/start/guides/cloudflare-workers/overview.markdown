@@ -14,6 +14,8 @@
   This guide assumes you are familiar with Node.js development techniques 
   and the basics of Cloudflare Workers.  
   {INFO/}
+* Watch our tutorial video [below](../../../start/guides/cloudflare-workers/overview#tutorial-video) 
+  or [on YouTube](https://www.youtube.com/watch?v=qMJfgQicjwk&t=1s).  
 
 * In this page: 
     * [Before We Get Started](../../../start/guides/cloudflare-workers/overview#before-we-get-started)  
@@ -22,6 +24,7 @@
     * [Connecting to an Authenticated RavenDB Cluster](../../../start/guides/cloudflare-workers/overview#connecting-to-an-authenticated-ravendb-cluster)  
     * [Deploying to Production](../../../start/guides/cloudflare-workers/overview#deploying-to-production)  
     * [Using RavenDB in the Worker](../../../start/guides/cloudflare-workers/overview#using-ravendb-in-the-worker)  
+    * [Tutorial Video](../../../start/guides/cloudflare-workers/overview#tutorial-video)  
 
 {NOTE/}
 
@@ -304,6 +307,13 @@ router.get("/users/:id", async (request: IRequest, env: Env) => {
     return new Response(JSON.stringify({ user }), { status: 200 });
 });
 {CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL: Tutorial Video}
+
+Watch our _Using Cloudflare Workers with RavenDB_ tutorial:  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qMJfgQicjwk?si=Fxk7alyTQ9bDcf5O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 {PANEL/}
 

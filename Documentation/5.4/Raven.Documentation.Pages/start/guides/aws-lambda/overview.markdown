@@ -10,6 +10,9 @@
 * In this guide, you will learn how to deploy a .NET C# Lambda Handler Function using the 
   [RavenDB AWS Lambda C# template][template] that is connected to your RavenDB database.  
 
+* Watch our tutorial video [below](../../../start/guides/aws-lambda/overview#tutorial-video) 
+  or [on YouTube](https://www.youtube.com/watch?v=T2r9sqrTrYE).  
+
 * In this page:  
    * [Before We Get Started](../../../start/guides/aws-lambda/overview#before-we-get-started)  
    * [Create a Local Lambda Function](../../../start/guides/aws-lambda/overview#create-a-local-lambda-function)  
@@ -18,6 +21,8 @@
    * [Configuring Production Connection to RavenDB](../../../start/guides/aws-lambda/overview#configuring-production-connection-to-ravendb)  
    * [Verify the Connection Works](../../../start/guides/aws-lambda/overview#verify-the-connection-works)  
    * [Using RavenDB in the Lambda Function](../../../start/guides/aws-lambda/overview#using-ravendb-in-the-lambda-function)  
+   * [Next Steps](../../../start/guides/aws-lambda/overview#next-steps)  
+   * [Tutorial Video](../../../start/guides/aws-lambda/overview#tutorial-video)  
 
 {NOTE/}
 
@@ -505,6 +510,13 @@ public class Functions
 * For more robust certificate handling, [configure AWS Secrets Manager support][docs-lambda-secrets]  
 * Learn more about [deployment considerations](deployment) for RavenDB and AWS Lambda  
 * Learn more about [using the RavenDB .NET client SDK][ravendb-dotnet]  
+
+{PANEL/}
+
+{PANEL: Tutorial Video}
+
+Watch our _How To Use AWS Lambda with RavenDB .NET_ tutorial:  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/T2r9sqrTrYE?si=mLHnncOBhcSbcJh5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 {PANEL/}
 

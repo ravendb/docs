@@ -16,6 +16,9 @@
   basics of Azure Function apps.
   {INFO/}
 
+* Watch our tutorial video [below](../../../start/guides/azure-functions/overview#tutorial-video) 
+  or [on YouTube](https://www.youtube.com/watch?v=1vnpfsD3bSE&t=4s).  
+
 * In this page: 
     * [Before We Get Started](../../../start/guides/azure-functions/overview#before-we-get-started)  
     * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview#create-a-local-azure-function-app)  
@@ -24,6 +27,7 @@
     * [Deploying to Azure](../../../start/guides/azure-functions/overview#deploying-to-azure)  
     * [Verify the Connection Works](../../../start/guides/azure-functions/overview#verify-the-connection-works)  
     * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview#using-ravendb-in-the-azure-functions-app)  
+    * [Tutorial Video](../../../start/guides/azure-functions/overview#tutorial-video)  
 
 {NOTE/}
 
@@ -293,6 +297,13 @@ You can also inject an `IDocumentStore` to get a reference to the current store 
 {CODE HttpTrigger2@Start\Guides\azureFunctions.cs /}  
 
 Learn more about using the RavenDB .NET client SDK [here][ravendb-dotnet].
+
+{PANEL/}
+
+{PANEL: Tutorial Video}
+
+Watch our _Using Azure Functions with RavenDB .NET_ tutorial:  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1vnpfsD3bSE?si=X6hyNiwfzEH5wR8w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 {PANEL/}
 

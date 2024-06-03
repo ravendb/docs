@@ -16,6 +16,9 @@
   and the basics of Azure Function apps.
   {INFO/}
 
+* Watch our tutorial video [below](../../../start/guides/azure-functions/overview#tutorial-video) 
+  or [on YouTube](https://www.youtube.com/watch?v=TJdJ3TJK-Sg).  
+
 * In this page: 
     * [Before We Get Started](../../../start/guides/azure-functions/overview#before-we-get-started)  
     * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview#create-a-local-azure-function-app)  
@@ -24,6 +27,7 @@
     * [Deploying to Azure](../../../start/guides/azure-functions/overview#deploying-to-azure)  
     * [Verify the Connection Works](../../../start/guides/azure-functions/overview#verify-the-connection-works)  
     * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview#using-ravendb-in-the-azure-functions-app)  
+    * [Tutorial Video](../../../start/guides/azure-functions/overview#tutorial-video)  
 
 {NOTE/}
 
@@ -284,6 +288,13 @@ const httpTrigger = async function (
 {CODE-BLOCK/}
 
 Learn more about using the RavenDB Node.js client SDK [here][ravendb-nodejs].  
+
+{PANEL/}
+
+{PANEL: Tutorial Video}
+
+Watch our _Using Azure Functions with RavenDB Node.js_ tutorial:  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TJdJ3TJK-Sg?si=m1cSrn2k7EF6z6bW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 {PANEL/}
 
