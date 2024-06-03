@@ -1289,7 +1289,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region TS_region-Session_Patch-Append-TS-Entries
-                    var baseline = DateTime.UtcNow;
+                    var baseTime = DateTime.UtcNow;
 
                     // Create arrays of timestamps and random values to patch
                     var values = new List<double>();
@@ -1298,7 +1298,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     for (var i = 0; i < 100; i++)
                     {
                         values.Add(68 + Math.Round(19 * new Random().NextDouble()));
-                        timeStamps.Add(baseline.AddMinutes(i));
+                        timeStamps.Add(baseTime.AddMinutes(i));
                     }
 
                     session.Advanced.Defer(new PatchCommandData("users/john", null,
