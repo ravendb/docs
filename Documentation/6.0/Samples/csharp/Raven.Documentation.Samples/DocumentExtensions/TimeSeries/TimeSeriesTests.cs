@@ -976,9 +976,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             }
                         }
                     }
-                    
-                    // All added entries will be sent to the server in a single batch when the bulkInsert object
-                    // is disposed of at the end of the using block.
                     #endregion
                     
                     #region timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries
