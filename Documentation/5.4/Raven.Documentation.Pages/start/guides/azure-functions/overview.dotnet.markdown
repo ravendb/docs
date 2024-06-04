@@ -17,7 +17,7 @@
   {INFO/}
 
 * Watch our tutorial video [below](../../../start/guides/azure-functions/overview#tutorial-video) 
-  or [on YouTube](https://www.youtube.com/watch?v=1vnpfsD3bSE&t=4s).  
+  or [on YouTube](https://www.youtube.com/watch?v=1vnpfsD3bSE&).  
 
 * In this page: 
     * [Before We Get Started](../../../start/guides/azure-functions/overview#before-we-get-started)  
