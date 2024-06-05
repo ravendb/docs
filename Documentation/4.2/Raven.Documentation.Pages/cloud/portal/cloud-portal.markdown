@@ -17,8 +17,8 @@ takes you to your account's Portal, which gives you access to all the different 
   Use this tab to view and restore [mandatory database backups](../../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) 
   that your instances have created for you.  
 
-* **[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)**  
-  Use the billing tab to view your billing history and expected payments.  
+* **[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)**  
+  Use the Billing & Costs tab to view your billing history and expected payments.  
 
 * **[The Support Tab](../../cloud/portal/cloud-portal-support-tab)**  
   Use this tab to contact Support regarding [general issues](../../cloud/portal/cloud-portal-support-tab#submit-a-general-support-call), 
@@ -33,7 +33,7 @@ takes you to your account's Portal, which gives you access to all the different 
   
 [The Products tab](../../cloud/portal/cloud-portal-products-tab)  
 [The Backups Tab](../../cloud/portal/cloud-portal-backups-tab)  
-[The Billing Tab](../../cloud/portal/cloud-portal-billing-tab)  
+[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)  
 [The Support Tab](../../cloud/portal/cloud-portal-support-tab)  
 [The Account Tab](../../cloud/portal/cloud-portal-account-tab)  
   
