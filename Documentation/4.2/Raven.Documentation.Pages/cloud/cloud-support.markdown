@@ -53,15 +53,15 @@ The *RavenDB Cloud* support form offers three types of **Response time**.
 Please make sure you understand what each of the options stands for, so your request would get the correct priority and be routed to the right team.
 {WARNING/}
 
-| **Response**      | **Description**                                                                                                                                                                                                                                                              |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Standard          | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                                                           |
-| Next business day | Reply within a next business day. The error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround.     |
-| Within 2 hours    | Your query will be responded to within two hours. Due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the workaround is cumbersome to use, or the Customer data is lost or destroyed. |
+| **Response**      | **Description**                                                                                                                                                                                                                                                                       |
+|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Standard          | Non-critical errors, general questions, requests for enhancements to the Software.                                                                                                                                                                                                    |
+| Next business day | Reply within a next business day. Use when the error is not critical - no data has been lost, and the system has not failed. The error has been identified and does not prevent normal operation, or the situation may be temporarily circumvented using an available workaround.     |
+| Within 2 hours    | Your query will be responded to within two hours. Use when due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the workaround is cumbersome to use, or the Customer data is lost or destroyed. |
 
 {INFO: }
-**Within 2 hours** response time is only available for Customers with the **Cloud Support option**.  
-**Within 2 hours** response time is only available for **Production tier** instances.
+**Within 2 hours** response time is only available for Customers with the **Cloud Support** support option.  
+**Within 2 hours** response time is only available for **Production tier** related issues.
 {INFO/}
 
 {PANEL/}

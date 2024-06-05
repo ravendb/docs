@@ -67,7 +67,7 @@ If you want to change this period, please send a *support request* via the *Supp
 {INFO/}
 
 {INFO: }
-Cloud Support activation takes up to **3 working days**.
+Cloud Support activation takes up to **3 business days**.
 {INFO/}
 
 You can read more about available *support options* in the [Support](../../cloud/cloud-support#available-support-options) page.
