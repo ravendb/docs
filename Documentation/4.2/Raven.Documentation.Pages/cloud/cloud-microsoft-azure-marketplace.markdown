@@ -18,10 +18,10 @@ Access to *RavenDB Cloud* services is available through the *Microsoft Azure Mar
 
 If you want to pay for *RavenDB Cloud* services using a credit card associated with your *Microsoft Azure* account, without re-entering the card in *RavenDB Cloud*, you can subscribe to [RavenDB Cloud offer](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/hibernatingrhinos.ravendb-cloud-payg?tab=Overview) on the *Microsoft Azure Marketplace*.
 
-The *Microsoft Azure Cloud Accounts* created by this integration have a few differences compared to the regular *Cloud Accounts*:
+*Microsoft Azure Cloud Account* created this way has a few differences in comparison to the regular *Cloud Account*:
 
-- Monthly invoices are issued by *Microsoft Azure*, not by our standard billing system.
-- *Microsoft Azure Cloud Accounts* are permitted to provision only *Azure* products. Regular Cloud Accounts can also provision *AWS* and *GCP* products.
+- Monthly invoices are issued by *Microsoft Azure*, not by *RavenDB Cloud*.
+- *Microsoft Azure Cloud Account* offering is limited to *Azure* products.
 - Billing and contact information are fully managed by *Microsoft Azure*. Changing the parameters is not possible via Cloud Portal.
 - The service cost includes a *3% Azure Marketplace* commission.
 
@@ -56,12 +56,12 @@ Provide the necessary information required to subscribe to the offer:
 3.  **Name**  
     Provide a name for the subscription. 
 
-4.  **Recurring billing**  
+4.  **Recurring billing**  *
     When recurring billing is on, your subscription will renew at the end of the billing term.
 
 {DANGER: }
 If **recurring billing** option is **off**, your subscription **won't be renewed at the end of the billing term**.
-This means your subscription, account and related Cloud products **will be permanently lost** at the end of the billing term.
+This means your subscription, account along with its Cloud products and data they held, **will be permanently lost** at the end of the billing term.
 **We highly recommend not changing this option**.
 {DANGER/}
 
@@ -102,13 +102,13 @@ Provide the necessary information required to end the registration process:
     Provide an Account Type for the account.
 
 3.  **T&C and privacy policy**  
-    Accept Terms & Conditions and our privacy policy.
+    Accept Terms & Conditions and the privacy policy.
 
 After providing the information, please click **Sign up**.
 
 ---
 
-Once you have done this, your account is ready to use. To sign in to the account, click **Continue to sign in**.
+Your account is now ready to use. To sign in to the account, click **Continue to sign in**.
 
 !["Figure 7 - RavenDB Cloud Azure Marketplace Landing Page - successfully registration"](images\cloud-ravendb-azure-marketplace-landing-page-thank-you.png "Figure 7 - RavenDB Cloud Azure Marketplace Landing Page - successfully registration")
 
