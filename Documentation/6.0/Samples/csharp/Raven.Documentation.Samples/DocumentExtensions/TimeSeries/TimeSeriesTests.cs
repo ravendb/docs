@@ -764,33 +764,41 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.SaveChanges();
                 }
 
-                const string documentId = "employees/1-A";
-
                 #region timeseries_region_Get-Single-Time-Series
-                // Get all values of a single time-series
-                TimeSeriesRangeResult singleTimeSeriesDetails = store.Operations.Send(
-                    new GetTimeSeriesOperation(documentId, "HeartRates", DateTime.MinValue, DateTime.MaxValue));
+                // Define the get operation
+                var getTimeSeriesOp = new GetTimeSeriesOperation(
+                    "employees/1-A", // The document ID
+                    "HeartRates", // The time series name
+                    DateTime.MinValue, // Entries range start
+                    DateTime.MaxValue); // Entries range end
+                
+                // Execute the operation by passing it to 'Operations.Send'
+                TimeSeriesRangeResult timeSeriesEntries = store.Operations.Send(getTimeSeriesOp);
+
+                // Access entries
+                var firstEntryReturned = timeSeriesEntries.Entries[0];
                 #endregion
 
                 #region timeseries_region_Get-Multiple-Time-Series
-                // Get value ranges from two time-series using GetMultipleTimeSeriesOperation
-                TimeSeriesDetails multipleTimesSeriesDetails = store.Operations.Send(
-                        new GetMultipleTimeSeriesOperation(documentId, new List<TimeSeriesRange>
-                            {
-                                new TimeSeriesRange
-                                {
-                                    Name = "ExerciseHeartRate",
-                                    From = baseTime.AddHours(1),
-                                    To = baseTime.AddHours(10)
-                                },
-
-                                new TimeSeriesRange
-                                {
-                                    Name = "RestHeartRate",
-                                    From = baseTime.AddHours(11),
-                                    To = baseTime.AddHours(20)
-                                }
-                            }));
+                // Define the get operation
+                var getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation("employees/1-A",
+                    new List<TimeSeriesRange>
+                    {
+                        new TimeSeriesRange
+                        {
+                            Name = "ExerciseHeartRates", From = baseTime.AddHours(1), To = baseTime.AddHours(10)
+                        },
+                        new TimeSeriesRange
+                        {
+                            Name = "RestHeartRates", From = baseTime.AddHours(11), To = baseTime.AddHours(20)
+                        }
+                    });
+                    
+                // Execute the operation by passing it to 'Operations.Send'
+                TimeSeriesDetails timesSeriesEntries = store.Operations.Send(getMultipleTimeSeriesOp);
+                
+                // Access entries
+                var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries[0];
                 #endregion
             }
         }
@@ -2989,8 +2997,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             public class GetTimeSeriesOperation
             {
                 #region GetTimeSeriesOperation-Definition
-                public GetTimeSeriesOperation(string docId, string timeseries, DateTime? @from = null,
-                    DateTime? to = null, int start = 0, int pageSize = int.MaxValue)
+                public GetTimeSeriesOperation(
+                    string docId, 
+                    string timeseries,
+                    DateTime? from = null,
+                    DateTime? to = null,
+                    int start = 0,
+                    int pageSize = int.MaxValue,
+                    bool returnFullResults = false)
                 #endregion
                 { }
             }
@@ -2998,19 +3012,31 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             #region TimeSeriesRangeResult-class
             public class TimeSeriesRangeResult
             {
-                public DateTime From, To;
+                // Timestamp of first entry returned
+                public DateTime From;
+                
+                // Timestamp of last entry returned
+                public DateTime To;
+                
+                // The resulting entries
+                // Will be empty if requesting an entries range that does Not exist
                 public TimeSeriesEntry[] Entries;
+                
+                // The number of entries returned
+                // Will be undefined if not all entries of this time series were returned
                 public long? TotalResults;
-
-                //..
             }
             #endregion
 
             public class GetMultipleTimeSeriesOperation
             {
                 #region GetMultipleTimeSeriesOperation-Definition
-                public GetMultipleTimeSeriesOperation(string docId,
-                    IEnumerable<TimeSeriesRange> ranges, int start = 0, int pageSize = int.MaxValue)
+                public GetMultipleTimeSeriesOperation(
+                        string docId,
+                        IEnumerable<TimeSeriesRange> ranges,
+                        int start = 0,
+                        int pageSize = int.MaxValue,
+                        bool returnFullResults = false)
                 #endregion
                 { }
             }
@@ -3018,15 +3044,19 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             #region TimeSeriesRange-class
             public class TimeSeriesRange
             {
-                public string Name;
-                public DateTime From, To;
+                public string Name;   // Name of time series
+                public DateTime From; // Get time series entries starting from this timestamp (inclusive).
+                public DateTime To;   // Get time series entries ending at this timestamp (inclusive).
             }
             #endregion
 
             #region TimeSeriesDetails-class
             public class TimeSeriesDetails
             {
+                // The document ID
                 public string Id { get; set; }
+                
+                // Dictionary of time series name to the time series results 
                 public Dictionary<string, List<TimeSeriesRangeResult>> Values { get; set; }
             }
             #endregion
