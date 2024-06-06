@@ -108,7 +108,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.SaveChanges();
                 }
                 #endregion
-
             }
         }
 
@@ -117,14 +116,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         {
             using (var store = getDocumentStore())
             {
-
                 store.TimeSeries.Register<User, HeartRate>();
-                store.TimeSeries.Register<User, StockPrice>();
                 #region timeseries_region_Named-Values-Register
-                store.TimeSeries.Register<User, RoutePoint>();
+                // Register the StockPrice class type on the server
+                store.TimeSeries.Register<Company, StockPrice>();
                 #endregion
+                store.TimeSeries.Register<User, RoutePoint>();
 
-                var baseline = DateTime.Today;
+                var baseTime = DateTime.Today;
 
                 // Append entries
                 using (var session = store.OpenSession())
@@ -134,7 +133,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #region timeseries_region_Append-Named-Values-1
                     // Append coordinates
                     session.TimeSeriesFor<RoutePoint>("users/john")
-                        .Append(baseline.AddHours(1), new RoutePoint
+                        .Append(baseTime.AddHours(1), new RoutePoint
                         {
                             Latitude = 40.712776,
                             Longitude = -74.005974
@@ -142,21 +141,21 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     #endregion
 
                     session.TimeSeriesFor<RoutePoint>("users/john")
-                        .Append(baseline.AddHours(2), new RoutePoint
+                        .Append(baseTime.AddHours(2), new RoutePoint
                         {
                             Latitude = 40.712781,
                             Longitude = -74.005979
                         }, "devices/Navigator");
 
                     session.TimeSeriesFor<RoutePoint>("users/john")
-                        .Append(baseline.AddHours(3), new RoutePoint
+                        .Append(baseTime.AddHours(3), new RoutePoint
                         {
                             Latitude = 40.712789,
                             Longitude = -74.005987
                         }, "devices/Navigator");
 
                     session.TimeSeriesFor<RoutePoint>("users/john")
-                        .Append(baseline.AddHours(4), new RoutePoint
+                        .Append(baseTime.AddHours(4), new RoutePoint
                         {
                             Latitude = 40.712792,
                             Longitude = -74.006002
@@ -186,7 +185,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     // Append a HeartRate entry
                     session.TimeSeriesFor("users/john", "HeartRates")
-                        .Append(baseline.AddMinutes(1), 70d, "watches/fitbit");
+                        .Append(baseTime.AddMinutes(1), 70d, "watches/fitbit");
 
                     session.SaveChanges();
                 }
@@ -213,8 +212,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     session.Store(new User { Name = "John" }, "users/john");
 
+                    // Call 'Append' with the custom StockPrice class
                     session.TimeSeriesFor<StockPrice>("users/john")
-                    .Append(baseline.AddDays(1), new StockPrice
+                    .Append(baseTime.AddDays(1), new StockPrice
                     {
                         Open = 52,
                         Close = 54,
@@ -224,7 +224,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("users/john")
-                    .Append(baseline.AddDays(2), new StockPrice
+                    .Append(baseTime.AddDays(2), new StockPrice
                     {
                         Open = 54,
                         Close = 55,
@@ -234,7 +234,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("users/john")
-                    .Append(baseline.AddDays(3), new StockPrice
+                    .Append(baseTime.AddDays(3), new StockPrice
                     {
                         Open = 55,
                         Close = 57,
@@ -253,15 +253,15 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     session.Store(new User { Name = "John" }, "users/john");
 
                     session.TimeSeriesFor("users/john", "StockPrices")
-                    .Append(baseline.AddDays(1),
+                    .Append(baseTime.AddDays(1),
                         new[] { 52, 54, 63.5, 51.4, 9824 }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor("users/john", "StockPrices")
-                    .Append(baseline.AddDays(2),
+                    .Append(baseTime.AddDays(2),
                         new[] { 54, 55, 61.5, 49.4, 8400 }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor("users/john", "StockPrices")
-                    .Append(baseline.AddDays(3),
+                    .Append(baseTime.AddDays(3),
                         new[] { 55, 57, 65.5, 50, 9020 }, "companies/kitchenAppliances");
 
                     session.SaveChanges();
@@ -279,7 +279,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(1), new StockPrice
+                    .Append(baseTime.AddDays(1), new StockPrice
                     {
                         Open = 52,
                         Close = 54,
@@ -289,7 +289,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(2), new StockPrice
+                    .Append(baseTime.AddDays(2), new StockPrice
                     {
                         Open = 54,
                         Close = 55,
@@ -299,7 +299,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     }, "companies/kitchenAppliances");
 
                     session.TimeSeriesFor<StockPrice>("companies/kitchenAppliances")
-                    .Append(baseline.AddDays(3), new StockPrice
+                    .Append(baseTime.AddDays(3), new StockPrice
                     {
                         Open = 55,
                         Close = 57,
@@ -312,13 +312,13 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 }
 
                 #region timeseries_region_Named-Values-Query
-                // Named Values Query
                 using (var session = store.OpenSession())
                 {
                     var query =
                         session.Query<Company>()
                             .Where(c => c.Address.City == "New York")
-                            .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseline, baseline.AddDays(3))
+                             // Use the StockPrice type in the time series query
+                            .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseTime, baseTime.AddDays(3))
                                 .Where(ts => ts.Tag == "companies/kitchenAppliances")
                                 .ToList());
 
@@ -337,7 +337,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 {
                     var query = session.Query<Company>()
                         .Where(c => c.Address.City == "New York")
-                        .Select(q => RavenQuery.TimeSeries(q, "StockPrices", baseline, baseline.AddDays(3))
+                        .Select(q => RavenQuery.TimeSeries(q, "StockPrices", baseTime, baseTime.AddDays(3))
                             .Where(ts => ts.Tag == "companies/kitchenAppliances")
                             .ToList());
 
@@ -388,9 +388,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #region timeseries_region_Get-Named-Values
                 goingUp = false;
 
-                // Use Get with a Named type
                 using (var session = store.OpenSession())
                 {
+                    // Call 'Get' with the custom StockPrice class type
                     TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
                         .Get();
 
@@ -435,9 +435,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     session.TimeSeriesFor("users/john", "HeartRates")
-                        .Delete(baseline.AddMinutes(1));
+                        .Delete(baseTime.AddMinutes(1));
 
-                    session.TimeSeriesFor<StockPrice>("users/john").Delete(baseline.AddDays(1), baseline.AddDays(2));
+                    session.TimeSeriesFor<StockPrice>("users/john").Delete(baseTime.AddDays(1), baseTime.AddDays(2));
 
                     session.SaveChanges();
                 }
@@ -2776,7 +2776,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         }
 
         #region Custom-Data-Type-1
-        private struct StockPrice
+        public class StockPrice
         {
             [TimeSeriesValue(0)] public double Open;
             [TimeSeriesValue(1)] public double Close;
@@ -2787,8 +2787,10 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
         #endregion
 
         #region Custom-Data-Type-2
-        private struct RoutePoint
+        public class RoutePoint
         {
+            // The Latitude and Longitude properties will contain the time series entry values.
+            // The names for these values will be "Latitude" and "Longitude" respectively.
             [TimeSeriesValue(0)] public double Latitude;
             [TimeSeriesValue(1)] public double Longitude;
         }

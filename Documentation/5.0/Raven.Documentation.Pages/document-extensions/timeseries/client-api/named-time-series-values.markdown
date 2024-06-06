@@ -4,6 +4,7 @@
 
 * Define time series types and name their values, so various time series methods (like `Append` and `Get`) 
   would be able to address the values by their names, and help you create a clearer code.  
+
 * Register your time series types with the [database record](../../../studio/database/settings/database-record), 
   so the Studio would be able to present your time series values by their names.  
 
