@@ -14,8 +14,8 @@ public class Certificate {
 
         //region client_cert
         // load certificate
-        KeyStore clientStore = KeyStore.getInstance("PKCS12");
-        clientStore.load(new FileInputStream("c:\\ravendb\\client-cert.pfx"), "passwordToPfx".toCharArray());
+        // pem file should contain both public and private key
+        KeyStore clientStore = CertificateUtils.createKeystore("c:\\ravendb\\app.client.certificate.pem");
 
         try (DocumentStore store = new DocumentStore())  {
             store.setCertificate(clientStore);
