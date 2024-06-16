@@ -17,11 +17,11 @@
         * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying#query-usage)
         * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying#query-examples)  
         * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying#query-syntax)
-    * [DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying#document-query)
+    * [DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying#documentquery)
         * [DocumentQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-usage)
         * [DocumentQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-examples)
-        * [DocumentQuery Syntax](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-examples)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#raw-query)
+        * [DocumentQuery Syntax](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-syntax)
+    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#rawquery)
         * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-usage)
         * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-examples)
         * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-syntax)
@@ -101,11 +101,34 @@ The aggregated results are retrieved as `List<TimeSeriesAggregationResult>`.
 
 ### Query syntax
 
-`session.Query` Definition:
+* The `session.Query` syntax is available [here](../../../../client-api/session/querying/how-to-query#syntax).
 
-{CODE Query-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+* To define a time series query use `RavenQuery.TimeSeries` within the query `Select` clause.
 
-Learn more about `session.Query` [here](../../../../client-api/session/querying/how-to-query#session.query).
+* `RavenQuery.TimeSeries` overloads:
+
+    {CODE RavenQuery-TimeSeries-Definition-Without-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+    {CODE RavenQuery-TimeSeries-Definition-With-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+
+    | Parameter            | Type       | Description                             |
+    |----------------------|------------|-----------------------------------------|
+    | **documentInstance** | `object`   | Document Instance                       |
+    | **name**             | `string`   | Time Series Name                        |
+    | **from** (optional)  | `DateTime` | Range Start<br> Default: `DateTime.Min` |
+    | **to** (optional)    | `DateTime` | Range End<br> Default: `DateTime.Max`   |
+
+* `RavenQuery.TimeSeries` can be extended with the following time series methods:
+
+    {CODE-BLOCK:csharp}
+Offset(TimeSpan offset);
+Scale(double value);
+FromLast(Action<ITimePeriodBuilder> timePeriod);
+FromFirst(Action<ITimePeriodBuilder> timePeriod);
+LoadByTag<TEntity>();
+GroupBy(string s);
+GroupBy(Action<ITimePeriodBuilder> timePeriod);
+Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
+    {CODE-BLOCK/}
 
 {PANEL/}
 
@@ -133,11 +156,13 @@ Learn more about `session.Query` [here](../../../../client-api/session/querying/
 
 {NOTE: }
 A _DocumentQuery_ using only the `From()` method.  
+The query returns all entries from the 'HeartRates' time series.
 {CODE TS_DocQuery_1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 {NOTE/}
 
 {NOTE: }
 A _DocumentQuery_ using `Between()`.  
+The query returns only entries from the specified time range.
 {CODE TS_DocQuery_2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 {NOTE/}
 

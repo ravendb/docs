@@ -16,7 +16,7 @@
         * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying#query-usage)
         * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying#query-examples)  
         * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying#query-syntax)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#raw-query)
+    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#rawquery)
         * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-usage)
         * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-examples)
         * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-syntax)
