@@ -60,7 +60,7 @@ so they require very little client computation resources.
     E.g. -
 
     {CODE-TABS}
-    {CODE-TAB:nodejs:Query overview_1@documentExtensions\timeSeries\client-api\queryOverview.js /}
+    {CODE-TAB:nodejs:Query overview_1@documentExtensions\timeSeries\querying\queryOverview.js /}
     {CODE-TAB-BLOCK:sql:RQL}
 from "employees" as e
 where HiredAt > "1994-01-01"
@@ -97,7 +97,7 @@ select timeseries (
 #### Example:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query overview_2@documentExtensions\timeSeries\client-api\queryOverview.js /}
+{CODE-TAB:nodejs:Query overview_2@documentExtensions\timeSeries\querying\queryOverview.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "users" 
 select timeseries(
@@ -196,7 +196,7 @@ select timeseries(
 * The custom function returns a flat set of values rather than a nested array, to ease the projection of retrieved values.
  
 {CODE-TABS}
-{CODE-TAB:nodejs:Query overview_3@documentExtensions\timeSeries\client-api\queryOverview.js /}
+{CODE-TAB:nodejs:Query overview_3@documentExtensions\timeSeries\querying\queryOverview.js /}
 {CODE-TAB-BLOCK:javascript:RQL}
 // The time series function:
 // =========================
