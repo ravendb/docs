@@ -38,10 +38,10 @@
 * In this example, we specify a 10-minute range from which to retrieve "HeartRates" entries for UK employees.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query choose_range_1@documentExtensions\timeSeries\client-api\queryRange.js /}
-{CODE-TAB:nodejs:Query_using_params choose_range_2@documentExtensions\timeSeries\client-api\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery choose_range_3@documentExtensions\timeSeries\client-api\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery_using_params choose_range_4@documentExtensions\timeSeries\client-api\queryRange.js /}
+{CODE-TAB:nodejs:Query choose_range_1@documentExtensions\timeSeries\querying\queryRange.js /}
+{CODE-TAB:nodejs:Query_using_params choose_range_2@documentExtensions\timeSeries\querying\queryRange.js /}
+{CODE-TAB:nodejs:RawQuery choose_range_3@documentExtensions\timeSeries\querying\queryRange.js /}
+{CODE-TAB:nodejs:RawQuery_using_params choose_range_4@documentExtensions\timeSeries\querying\queryRange.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 // RQL:
 from "employees" as employee
@@ -82,8 +82,8 @@ select timeseries(
 * In this example, we select only the entries in the last 30 minutes of time series "HeartRates".
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query choose_range_5@documentExtensions\timeSeries\client-api\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery choose_range_6@documentExtensions\timeSeries\client-api\queryRange.js /}
+{CODE-TAB:nodejs:Query choose_range_5@documentExtensions\timeSeries\querying\queryRange.js /}
+{CODE-TAB:nodejs:RawQuery choose_range_6@documentExtensions\timeSeries\querying\queryRange.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select timeseries(
