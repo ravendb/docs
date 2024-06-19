@@ -3,21 +3,22 @@
 
 {NOTE: }
 
-* When querying with some filtering conditions,  
-  a basic score is calculated for each document in the results by the underlying engine.
+* When querying with some filtering conditions, a basic **score** is 
+  calculated by the underlying engine for each document in the results.  
 
-* Providing a __boost value__ to some fields allows you to prioritize the resulting documents.  
-  The boost value is integrated with the basic score, making the document rank higher.  
-  Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
+* Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
+  The boos value is integrated with the basic score, increasing the document rank.  
+
+* The automatic ordering of results by their score is [configurable](../indexes/boosting#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
-    * __At query time__:  
-      Apply a boost factor to searched terms at query time - see article [Boost search results](../client-api/session/querying/text-search/boost-search-results).
+    * **At query time**:  
+      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results)).  
 
-    * __Via index definition__:  
-      Apply a boost factor in your index definition - as described in this article.
-
+    * **Via index definition**:  
+      By applying a boost factor in the index definition, as described in this article.  
+ 
 * In this page:
     * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
     * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
@@ -30,7 +31,7 @@
 
 {PANEL: Assign a boost factor to an index-field}
 
-Applying a boost value to an index-field allows you to prioritize matching documents based on an index-field.
+Applying a boost value to an index-field allows prioritization of matching documents based on an index-field.
 
 ---
 
@@ -58,7 +59,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 
 {PANEL: Assign a boost factor to the index-entry}
 
-Applying a boost value to the whole index-entry allows you to prioritize matching documents by content from the document.
+Applying a boost value to the whole index-entry allows prioritization of matching documents by content from the document.
 
 ---
 
@@ -85,28 +86,30 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 
 {PANEL: Automatic score-based ordering}
 
-* By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
-  the results will be automatically ordered by the score.
+* By default, whenever boosting is applied, either via dynamic querying or when querying an index 
+  that has a boosting factor in its definition, the results will be automatically ordered by the score.  
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
-  configuration key.
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
+  configuration key.  
 
-* Refer to section [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) to learn how to retrieve the calculated score of each result.
+* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) 
+  section to learn how to retrieve the calculated score of each result.  
 
 {PANEL/}
 
 {PANEL: Corax vs Lucene: boosting differences}
 
-* __Boosting features available:__  
+* **Boosting features available:**  
 
-  * When using __Corax__ as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
-    Applying a boost factor to an index-field is Not supported.  
+  * When using **Corax** as the underlying indexing engine, a boost factor can only be assigned 
+    to the [index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
+    Applying a boost factor to an _index-field_ is Not supported.  
   
-  * When using __Lucene__, you can assign a boost factor to both the index-field and the whole index-entry.  
+  * When using **Lucene**, a boost factor can be assigned to both the index-field and the whole index-entry.  
 
-* __Algorithm used__:  
-  Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).   
-  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.
+* **Algorithm used**:  
+  Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
+  Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
 
 {PANEL/}
 

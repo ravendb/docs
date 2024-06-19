@@ -3,24 +3,25 @@
 
 {NOTE: }
 
-* Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) 
-  or any common data between types.  
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
 
-* Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes).  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap--addmapforall)
-  * [Indexing polymorphic data](../indexes/multi-map-indexes#indexing-polymorphic-data)
+  * [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap-&-addmapforall)
   * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
 
 {NOTE/}
 
-## AddMap & AddMapForAll
+{PANEL: AddMap & AddMapForAll}
 
-`AddMap` method is used to map fields from a single collection e.g. `Dogs`.  
+The `AddMap` method is used to map fields from a single collection, e.g. `Dogs`.  
 `AddMapForAll` gives you the ability to specify what fields will be indexed from a base class.  
 
-Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from the class `Animal`:
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Dog multi_map_1@Indexes/MultiMap.cs /}
@@ -29,7 +30,7 @@ Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from
 {CODE-TAB:csharp:IAnimal multi_map_6@Indexes/MultiMap.cs /}
 {CODE-TABS/}
 
-Now we can define our index using `AddMap` or `AddMapForAll` in the following way:
+We can define our index using `AddMap` or `AddMapForAll` and query it as follows:
 
 {CODE-TABS}
 {CODE-TAB:csharp:AddMap multi_map_4@Indexes/MultiMap.cs /}
@@ -46,24 +47,28 @@ where Name = 'Mitzy'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing polymorphic data
+{PANEL/}
 
-Please read more in our dedicated article on indexing polymorphic data. This article can be found [here](../indexes/indexing-polymorphic-data).
-
-## Searching across multiple collections
+{PANEL: Searching across multiple collections}
 
 Another great usage of Multi-Map indexes is smart-search.  
-To search for products, companies, or employees by their name, you need to define the following index:
 
+To search for products, companies, or employees by their name, you need to define the following index:
 {CODE multi_map_1_0@Indexes\MultiMap.cs /}
 
 and query it using:
-
 {CODE multi_map_1_1@Indexes\MultiMap.cs /}
 
-## Remarks
+{PANEL/}
 
-{INFO Remember that all map functions **must** output objects with **identical** shape (field names have to match). /}
+{PANEL: Remarks}
+
+{INFO: }
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+{INFO/}
+
+{PANEL/}
 
 ## Related Articles
 
