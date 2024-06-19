@@ -66,7 +66,7 @@ _secondary_ aggregation by the [time series `tag`](../../../document-extensions/
 * **First()** - values of the first series entry  
 * **Last()** - values of the last series entry  
 * **Count()** - overall number of values in series entries  
-* **Percentile(<number between 0 and 1.0>)** - the value that divides the other 
+* **Percentile(<number between 1 and 100>)** - the value that divides the other 
 values in the series by the given ratio.  
 * **Slope()** - the difference in value divided by the difference in time between 
 the first and last entries.  
