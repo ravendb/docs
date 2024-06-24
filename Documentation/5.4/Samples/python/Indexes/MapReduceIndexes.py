@@ -1,6 +1,7 @@
 import datetime
 
 from ravendb import AbstractIndexCreationTask
+from ravendb.documents.indexes.abstract_index_creation_tasks import AbstractMultiMapIndexCreationTask
 
 from examples_base import ExampleBase
 
@@ -182,3 +183,75 @@ class MapReduceIndexes(ExampleBase):
                 # region map_reduce_2_1
                 results = list(session.query_index_type(Product_Sales, Product_Sales.Result))
                 # endregion
+
+                # region multi-map-reduce-index-query
+                # Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
+                commerce_details = list(
+                    session.query_index_type(Cities_Details, Cities_Details.IndexEntry)
+                    .where_greater_than("companies", 5)
+                    .order_by("city")
+                )
+                # endregion
+
+
+# region multi_map_reduce_LINQ
+class Cities_Details(AbstractMultiMapIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, city: str = None, companies: int = None, employees: int = None, suppliers: int = None):
+            self.city = city
+            self.companies = companies
+            self.employees = employees
+            self.suppliers = suppliers
+
+    def __init__(self):
+        super().__init__()
+        self._add_map(
+            """
+        from e in docs.Employees
+        select new {
+            city = e.Address.City,
+            companies = 0,
+            supplier = 0,
+            employees = 1
+        }
+        """
+        )
+
+        self._add_map(
+            """
+                from c in docs.Companies
+                select new {
+                    city = e.Address.City,
+                    companies = 1,
+                    supplier = 0,
+                    employees = 0
+                }
+                """
+        )
+
+        self._add_map(
+            """
+                from s in docs.Suppliers
+                select new {
+                    city = e.Address.City,
+                    companies = 0,
+                    supplier = 1,
+                    employees = 0
+                }
+                """
+        )
+
+        self.reduce = """
+        from result in results
+        group result by result.city
+        into g
+        select new {
+            city = g.Key,
+            companies = g.Sum(x => x.companies),
+            suppliers = g.Sum(x => x.suppliers),
+            employees = g.Sum(x => x.employees)
+        }
+        """
+
+
+# endregion

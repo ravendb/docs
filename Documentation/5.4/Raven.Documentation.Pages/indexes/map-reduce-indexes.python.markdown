@@ -22,6 +22,7 @@
 
 * In this page: 
    * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)
+   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
    * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)
    * [Remarks](../indexes/map-reduce-indexes#remarks)  
 
@@ -97,6 +98,27 @@ And run the query:
 from 'Product/Sales'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Creating Multi-Map-Reduce Indexes}
+
+A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
+
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), 
+or with API as shown below.  
+
+In the following code sample, we want the number of companies, suppliers, and employees per city.  
+We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
+We then define the reduce phase.  
+{CODE:python multi_map_reduce_LINQ@Indexes\MapReduceIndexes.py /}
+
+A query on the index:
+{CODE:python multi-map-reduce-index-query@Indexes\MapReduceIndexes.py /}
+
+{NOTE: }
+You can see this sample described in detail in [Inside RavenDB - Multi-Map-Reduce Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/11-mapreduce-and-aggregations-in-ravendb#multimapreduce-indexes).
+{NOTE/}
 
 {PANEL/}
 
