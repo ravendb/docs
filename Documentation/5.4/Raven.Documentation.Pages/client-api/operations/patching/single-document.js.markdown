@@ -499,13 +499,13 @@ Learn more about Counters in this [Counters Overview](../../../document-extensio
 
 {CODE:nodejs operations_syntax@client-api\operations\patches\patchRequests.js /}
 
-| Constructor                         | Type           | Description                                                                                                                                 |
-|-------------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| __id__                              | `string`       | ID of document to be patched.                                                                                                               |
-| __changeVector__                    | `string`       | Change vector of the document to be patched.<br>Used to verify that the document was not changed before the patch is executed. Can be null. |
-| __patch__                           | `PatchRequest` | Patch request to be performed on the document.                                                                                              |
-| __patchIfMissing__                  | `PatchRequest` | Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. Can be null.       |
-| __skipPatchIfChangeVectorMismatch__ | `boolean`      | An exception is thrown if:<br>this param is `false` + `changeVector` has value + document with that ID and change vector was not found.     |
+| Constructor                         | Type           | Description                                                                                                                                                                                                                                                                          |
+|-------------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __id__                              | `string`       | ID of the document to be patched.                                                                                                                                                                                                                                                    |
+| __changeVector__                    | `string`       | Change vector of the document to be patched.<br>Used to verify that the document was not modified before the patch is executed. Can be null.                                                                                                                                         |
+| __patch__                           | `PatchRequest` | Patch request to perform on the document.                                                                                                                                                                                                                                            |
+| __patchIfMissing__                  | `PatchRequest` | Patch request to perform if the specified document is not found.<br>Will run only if no `changeVector` was passed.<br>Can be null.                                                                                                                                                   |
+| __skipPatchIfChangeVectorMismatch__ | `boolean`      | `true` - do not patch if the document has been modified.<br>`false` (Default) - execute the patch even if document has been modified.<br><br>An exception is thrown if:<br>this param is `false` + `changeVector` has value + document with that ID and change vector was not found. |
 
 ---
 

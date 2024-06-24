@@ -36,10 +36,11 @@ In this page:
 
 {CODE patchBeQueryOperationCtor2@Common.cs /}
 
-| Parameter | | |
-| ------------- | ------------- | ----- |
-| **queryToUpdate** | `string` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the Javascript patch code
-| **options** | `QueryOperationOptions` | Options defining how the operation will be performed and various constraints on how it is performed
+| Parameter         | Type                    | Description                                                                                                                                                                               |
+|-------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **queryToUpdate** | `string`                | The query & patch definition.<br>The RQL query starts as any other RQL query with a "from" statement.<br>It continues with an "update" clause that contains the Javascript patching code. |
+| **queryToUpdate** | `IndexQuery`            | Object containing the query & the patching string,<br>with the option to use parameters.                                                                                                  |
+| **options**       | `QueryOperationOptions` | Options defining how the operation will be performed and various constraints on how it is performed.<br>Default: `null`                                                                   |
 
 {PANEL/}
 

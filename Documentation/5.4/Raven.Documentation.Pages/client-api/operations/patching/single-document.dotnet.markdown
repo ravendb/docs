@@ -185,7 +185,9 @@ The patch request will be sent to the server only when calling `SaveChanges`, th
 `Session.Advanced.Defer`
 {CODE patch_non_generic_interface_in_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-{INFO: PatchCommandData}
+{INFO: }
+
+#### PatchCommandData
 
 | Constructor        | Type           | Description                                                                                                                              |
 |--------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -196,15 +198,17 @@ The patch request will be sent to the server only when calling `SaveChanges`, th
 
 {INFO/}
 
-{INFO: PatchRequest}
+{INFO: }
+
+#### PatchRequest
 
 We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. 
 Parameters can be accessed in the script through the `args` object and passed using PatchRequest's "Values" parameter.
 
-| Members    | Type                         | Description                                                                                                                                                                  |
-|------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Script** | `string`                     | JavaScript code to be run.                                                                                                                                                   |
-| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatenation. |
+| Property   | Type                         | Description                                                                                                                                                                        |
+|------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Script** | `string`                     | The patching script, written in JavaScript.                                                                                                                                        |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script.<br>The parameters can be accessed using the '$' prefix.<br>Parameter starting with a '$' will be used as is, without further concatenation. |
 
 {INFO/}
 
@@ -221,13 +225,13 @@ An operations interface that exposes the full functionality and allows performin
 
 {INFO: PatchOperation}
 
-| Constructor| Type | Description |
-|--------|:-----|-------------|
-| **id** | `string` | ID of the document to be patched. |
-| **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
-| **patch** | `PatchRequest` | Patch request to be performed on the document. |
-| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |
-| **skipPatchIfChangeVectorMismatch** | `bool` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw an exception. |
+| Constructor                         | Type           | Description                                                                                                                                                                                                                                                                          |
+|-------------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**                              | `string`       | ID of the document to be patched.                                                                                                                                                                                                                                                    |
+| **changeVector**                    | `string`       | Change vector of the document to be patched.<br>Used to verify that the document was not modified before the patch reached it.<br>Can be `null`.                                                                                                                                     |
+| **patch**                           | `PatchRequest` | Patch request to perform on the document.                                                                                                                                                                                                                                            |
+| **patchIfMissing**                  | `PatchRequest` | Patch request to perform if the specified document is not found.<br>Will run only if no `changeVector` was passed.<br>Can be `null`.                                                                                                                                                 |
+| **skipPatchIfChangeVectorMismatch** | `bool`         | `true` - do not patch if the document has been modified.<br>`false` (Default) - execute the patch even if document has been modified.<br><br>An exception is thrown if:<br>this param is `false` + `changeVector` has value + document with that ID and change vector was not found. |
 
 {INFO/}
 
