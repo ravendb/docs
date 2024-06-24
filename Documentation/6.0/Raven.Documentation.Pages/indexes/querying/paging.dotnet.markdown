@@ -1,30 +1,30 @@
-# Page Query Results
+# Paging Query Results
 ---
 
 {NOTE: }
 
-* __Paging__:  
+* **Paging**:  
   Paging is the process of fetching a subset (a page) of results from a dataset, rather than retrieving the entire results at once.
   This method enables processing query results one page at a time.
 
-* __Default page size__:  
+* **Default page size**:  
 
-    * Querying __Lucene__ indexes:  
+    * Querying **Lucene** indexes:  
       If the client's query definition does Not explicitly specify the page size, the server will default to `int.MaxValue` (2,147,483,647).
       In such case, all results will be returned in a single server call.
   
-    * Querying __Corax__ indexes:  
+    * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
       Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
 
-* __Performance__:  
+* **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
   See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
 
 * In this page:
 
-    * [No paging example](../../indexes/querying/paging#no-paging-example)
+    * [No-paging example](../../indexes/querying/paging#no---paging-example)
     * [Paging examples](../../indexes/querying/paging#paging-examples)
     * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
     * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
@@ -33,7 +33,7 @@
 
 ---
 
-{PANEL: No paging example}
+{PANEL: No-paging example}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_0_1@Indexes\Querying\Paging.cs /}
@@ -50,11 +50,7 @@ where UnitsInStock > 10
 
 {PANEL: Paging examples}
 
-{NOTE: }
-
-__Retrieve a specific page__:
-
----
+#### Retrieve a specific page:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_1_1@Indexes\Querying\Paging.cs /}
@@ -68,13 +64,9 @@ limit 20, 10 // skip 20, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Page through all results__:
-
 ---
+
+#### Page through all results:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_2_1@Indexes\Querying\Paging.cs /}
@@ -94,14 +86,11 @@ limit 0, 10 // First loop will skip 0, take 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Paging and performance}
 
----
-
-__Better performance__:
+#### Better performance:
 
 It is recommended to explicitly set a page size when making a query that is expected to generate a significant number of results.
 This practice has several benefits:
@@ -113,9 +102,9 @@ This practice has several benefits:
 
 ---
 
-__Performance hints__:
+#### Performance hints:
 
-* By default, if the number of returned results exceeds __2048__, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
+* By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
 * This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
 
@@ -131,7 +120,7 @@ __Performance hints__:
   which represents the total number of matching documents found in the query results.
 
 * The `QueryStatistics` object also contains the `SkippedResults` property.  
-  Whenever this property is greater than __0__, that implies the server has skipped that number of results from the index.
+  Whenever this property is greater than **0**, that implies the server has skipped that number of results from the index.
 
 * The server will skip duplicate results internally in the following two scenarios:
 
@@ -150,13 +139,9 @@ __Performance hints__:
   include the `SkippedResults` value when specifying the number of documents to skip for each page using:  
   `(currentPage * pageSize) + SkippedResults`.
 
-* See the following examples:
+## Examples
 
-{NOTE: }
-
-__A projection query with Distinct__:
-
----
+#### A projection query with Distinct:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_3_1@Indexes\Querying\Paging.cs /}
@@ -172,13 +157,7 @@ limit 0, 10  // First loop will skip 0, take 10, etc.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Querying a Fanout index__:
-
----
+#### Querying a Fanout index:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_4_1@Indexes\Querying\Paging.cs /}
@@ -191,7 +170,6 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 ## Related Articles

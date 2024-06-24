@@ -160,7 +160,7 @@ filter_limit 500 // limit the number of filter records
 
 {PANEL: Usage examples}
 
-### With collection queries
+#### With collection queries
 
 Use `filter` with a collection query to scan and filter the entire collection.  
 {CODE-TABS}
@@ -176,7 +176,7 @@ Set a `filter_limit` to restrict the number of filtered records.
 
 ---
 
-### With queries that use an index
+#### With queries that use an index
 
 Use `filter` after a `where` clause to filter the results retrieved by an index query.  
 {CODE-TABS}
@@ -187,7 +187,7 @@ Use `filter` after a `where` clause to filter the results retrieved by an index 
 
 ---
 
-### With projections
+#### With projections
 
 The filtered results can be projected using `select`, like those of any other query.  
 {CODE-TABS}
@@ -198,7 +198,7 @@ The filtered results can be projected using `select`, like those of any other qu
 
 ---
 
-### With user-defined JavaScript functions (`declare`)
+#### With user-defined JavaScript functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
 [declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
@@ -223,6 +223,8 @@ filter_limit 100
 {CODE-BLOCK/}
 
 {PANEL/}
+
+## Related Articles
 
 ### Querying
 

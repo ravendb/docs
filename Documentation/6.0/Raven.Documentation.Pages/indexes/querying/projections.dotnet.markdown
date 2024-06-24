@@ -3,20 +3,18 @@
 
 {NOTE: }
 
-* This article provides examples of projecting query results when querying a __static-index__.
+* This article provides examples of projecting query results when querying a **static-index**.
 
-* __Prior to this article__, please refer to [Project query results - Overview](../../client-api/session/querying/how-to-project-query-results)  
-  for general knowledge about Projections and dynamic-queries examples.  
+* Prior to reading this article, it is recommended to take a look at the 
+  [query results projection Overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:  
-
     * [Projection Methods](../../indexes/querying/projections#select):  
-        * [Select](../../indexes/querying/projections#select)  
-        * [ProjectInto](../../indexes/querying/projections#projectinto)  
-        * [SelectFields](../../indexes/querying/projections#selectfields)  
-        
+      * [Select](../../indexes/querying/projections#select)  
+      * [ProjectInto](../../indexes/querying/projections#projectinto)  
+      * [SelectFields](../../indexes/querying/projections#selectfields)  
     * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)  
-  
     * [OfType](../../indexes/querying/projections#oftype)  
 
 {NOTE/}
@@ -27,7 +25,7 @@
 
 {NOTE: }
 
-__Example I - Projecting individual fields of the document__:
+**Example I - Projecting individual fields of the document**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1@Indexes\Querying\Projections.cs /}
@@ -40,14 +38,14 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-* __Type of projection fields__:  
+* **Type of projection fields**:  
 
   * In the above example, the fields to return by the projection that are specified in the `Select` method  
     (`x.FirstName` & `x.LastName`) are recognized by the compiler as fields of the `IndexEntry` class.
   
   * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections#oftype) that uses `OfType`.  
 
-* __Source of projection fields__:  
+* **Source of projection fields**:  
 
   * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
     resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
@@ -58,7 +56,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 {NOTE: }
 
-__Example II - Projecting stored fields__:
+**Example II - Projecting stored fields**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
@@ -78,7 +76,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 {NOTE: }
 
-__Example III - Projecting arrays and objects__:
+**Example III - Projecting arrays and objects**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_2@Indexes\Querying\Projections.cs /}
@@ -104,7 +102,7 @@ select {
 
 {NOTE: }
 
-__Example IV - Projection with expression__:
+**Example IV - Projection with expression**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_3@Indexes\Querying\Projections.cs /}
@@ -123,7 +121,7 @@ select
 
 {NOTE: }
 
-__Example V - Projection with calculations__:
+**Example V - Projection with calculations**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@Indexes\Querying\Projections.cs /}
@@ -145,7 +143,7 @@ select {
 
 {NOTE: }
 
-__Example VI - Projecting using functions__:
+**Example VI - Projecting using functions**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
@@ -165,7 +163,7 @@ select output(e)
 
 {NOTE: }
 
-__Example VII - Projecting using a loaded document__:
+**Example VII - Projecting using a loaded document**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
@@ -185,7 +183,7 @@ select {
 
 {NOTE: }
 
-__Example VIII - Projection with dates__:
+**Example VIII - Projection with dates**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
@@ -205,7 +203,7 @@ select {
 
 {NOTE: }
 
-__Example IX - Projection with raw JavaScript code__:
+**Example IX - Projection with raw JavaScript code**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}
@@ -224,7 +222,7 @@ select {
 
 {NOTE: }
 
-__Example X - Projection with metadata__:
+**Example X - Projection with metadata**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
@@ -280,7 +278,7 @@ IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
 
 {NOTE: }
 
-__Using projection class type__:
+**Using projection class type**:
 
 * The projection class fields are the fields that you want to project from the 'IndexEntry' class.
 
@@ -299,7 +297,7 @@ select ProductName, PricePerUnit, UnitsInStock
 
 {NOTE: }
 
-__Using specific fields__:
+**Using specific fields**:
 
 * The fields specified are the fields that you want to project from the projection class.
 
@@ -320,18 +318,18 @@ select ProductName, PricePerUnit
 
 {PANEL: Projection behavior with a static-index}
 
-* __By default__, when querying a static-index and projecting query results,  
+* **By default**, when querying a static-index and projecting query results,  
   the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
-* This behavior can be modified by setting the __projection behavior__.
+* This behavior can be modified by setting the **projection behavior**.
 
 * Note: Storing fields in the index can increase query performance when projecting,  
   but this comes at the expense of the disk space used by the index.
 
 {NOTE: }
 
-__Example__:
+**Example**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_13_1@Indexes\Querying\Projections.cs /}
@@ -355,7 +353,7 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 
 {NOTE: }
 
-__Syntax for projection behavior__:
+**Syntax for projection behavior**:
 
 {CODE:csharp projection_behavior syntax@Indexes\Querying\Projections.cs /}
 
@@ -386,9 +384,9 @@ __Syntax for projection behavior__:
 
 {PANEL: OfType}
 
-* When making a projection query, converting the shape of the matching documents to the requested projection is done on the __server-side__.
+* When making a projection query, converting the shape of the matching documents to the requested projection is done on the **server-side**.
 
-* On the other hand, `OfType` is a __client-side__  type conversion that is only used to map the resulting objects to the provided type.
+* On the other hand, `OfType` is a **client-side**  type conversion that is only used to map the resulting objects to the provided type.
 
 * We differentiate between the following cases:  
   * Using _OfType_ with projection queries - resulting objects are Not tracked by the session  
@@ -396,7 +394,7 @@ __Syntax for projection behavior__:
 
 {NOTE: }
 
-__Using OfType with projection queries__:
+**Using OfType with projection queries**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_15@Indexes\Querying\Projections.cs /}
@@ -412,7 +410,7 @@ where ContactTitle == "owner"
 
 {NOTE: }
 
-__Using OfType with non-projection queries__:
+**Using OfType with non-projection queries**:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_14@Indexes\Querying\Projections.cs /}
