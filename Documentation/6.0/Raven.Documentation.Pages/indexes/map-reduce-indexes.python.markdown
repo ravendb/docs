@@ -106,7 +106,7 @@ from 'Product/Sales'
 
 In addition to storing the aggregation results in the index, the map-reduce index can also output 
 those reduce results as documents to a specified collection. In order to create these documents, 
-called _"artificial",_ you need to define the target collection using the `OutputReduceToCollection` 
+called _"artificial",_ you need to define the target collection using the `output_reduce_to_collection` 
 property in the index definition.  
 
 Writing map-reduce outputs into documents allows you to define additional indexes on top of them 
@@ -202,9 +202,9 @@ The map-reduce output documents are configured with these properties of
 
 | Parameters | Type | Description |
 | - | - | - |
-| **_output_reduce_to_collection** | `str` | Collection name for the output documents. |
-| **_pattern_references_collection_name** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
-| **_pattern_for_output_reduce_to_collection_references** | `str` / `Expression[Func[TReduceResult, str]]` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
+| **\_output_reduce_to_collection** | `str` | Collection name for the output documents. |
+| **\_pattern_references_collection_name** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
+| **\_pattern_for_output_reduce_to_collection_references** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
 
 ---
 
