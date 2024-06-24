@@ -45,7 +45,7 @@ However, what if we need to query across ALL animal collections?
 
 ## Multi-Map Indexes
 
-The easiest way to do this is by writing a multi-map index like this one:
+The easiest way to do this is by writing a multi-map index such as:
 
 {CODE-TABS}
 {CODE-TAB:csharp:MultiMap multi_map_1@Indexes\IndexingPolymorphicData.cs /}

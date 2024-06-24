@@ -34,8 +34,8 @@
 * The examples in this article are based on the following **Classes** and **Sample Data**:
 
      {CODE-TABS}
-     {CODE-TAB:nodejs:Class online_shop_class@Indexes\indexingNestedData.js /}
-     {CODE-TAB:nodejs:Sample_data sample_data@Indexes\indexingNestedData.js /}
+     {CODE-TAB:python:Class online_shop_class@Indexes\IndexingNestedData.py /}
+     {CODE-TAB:python:Sample_data sample_data@Indexes\IndexingNestedData.py /}
      {CODE-TABS/}
 
 {PANEL/}
@@ -43,9 +43,7 @@
 {PANEL: Simple index - Single index-entry per document}
 
 * <a id="theIndex" /> **The index**:
-  {CODE:nodejs simple_index@Indexes\indexingNestedData.js /}
-
----
+  {CODE:python simple_index@Indexes\IndexingNestedData.py /}
 
 * <a id="theIndexEntries" /> **The index-entries**:
 
@@ -65,26 +63,25 @@
 * <a id="queryingTheIndex" /> **Querying the index**:
 
      {CODE-TABS}
-     {CODE-TAB:nodejs:Query simple_index_query_1@Indexes\indexingNestedData.js /}
+     {CODE-TAB:python:Query simple_index_query_1@Indexes\IndexingNestedData.py /}
      {CODE-TAB-BLOCK:sql:RQL}
      from index "Shops/ByTShirt/Simple"
-where colors == "red"
+where Colors == "red"
      {CODE-TAB-BLOCK/}
      {CODE-TABS/}
 
-     {CODE:nodejs results_1@Indexes\indexingNestedData.js /}
+     {CODE:python results_1@Indexes\IndexingNestedData.py /}
 
 * <a id="whenToUse" /> **When to use**:
 
-     * This type of index structure is effective for retrieving documents when filtering the query by any of the inner nested values that were indexed.
+   * This type of index structure is effective for retrieving documents when filtering the query by any of the inner nested values that were indexed.
 
-     * However, due to the way the index-entries are generated, this index **cannot** provide results for a query searching for documents that contain 
-       specific sub-objects which satisfy some `AND` condition.  
-       For example:  
+   * However, due to the way the index-entries are generated, this index **cannot** provide results for a query searching for documents that contain 
+     specific sub-objects which satisfy some `and_also` condition.   
+     For example:   
+     {CODE:python results_2@Indexes\IndexingNestedData.py /}
 
-         {CODE:nodejs results_2@Indexes\indexingNestedData.js /}
-
-     * To address this, you must use a **Fanout index** - as described below.
+   * To address this, you must use a **Fanout index** - as described below.
 
 {PANEL/}
 
@@ -100,20 +97,23 @@ where colors == "red"
 
 * <a id="fanoutMapIndex" /> **Fanout index - Map index example**:
 
-     {CODE:nodejs fanout_index_1@Indexes\indexingNestedData.js /}
+     {CODE-TABS}
+     {CODE-TAB:python:LINQ_index fanout_index_1@Indexes\IndexingNestedData.py /}
+     {CODE-TAB:python:JavaScript_index fanout_index_js@Indexes\IndexingNestedData.py /}
+     {CODE-TABS/}
 
      {CODE-TABS}
-     {CODE-TAB:nodejs:Query fanout_index_query_1@Indexes\indexingNestedData.js /}
+     {CODE-TAB:python:Query fanout_index_query_1@Indexes\IndexingNestedData.py /}
      {CODE-TAB-BLOCK:sql:RQL}
      from index "Shops/ByTShirt/Fanout" 
-where color == "red" and size == "M"
+where Color == "red" and Size == "M"
      {CODE-TAB-BLOCK/}
      {CODE-TABS/}
 
-     {CODE:nodejs results_3@Indexes\indexingNestedData.js /}
+     {CODE:python results_3@Indexes\IndexingNestedData.py /}
 
 * <a id="fanoutMapIndexIndexEntries" /> **The index-entries**:
- ![Fanout - index-entries](images/indexing-nested-data-2.png "Multiple index-entries per document")
+  ![Fanout - index-entries](images/indexing-nested-data-2.png "Multiple index-entries per document")
 
      1. The index-entries content is visible from the Studio [Query view](../studio/database/queries/query-view).
 
@@ -128,17 +128,18 @@ where color == "red" and size == "M"
 * <a id="fanoutMapReduceIndex" /> **Fanout index - Map-Reduce index example**:
 
      * The fanout index concept applies to map-reduce indexes as well:
-          {CODE:nodejs fanout_index_2@Indexes\indexingNestedData.js /}
 
           {CODE-TABS}
-          {CODE-TAB:nodejs:Query fanout_index_query_2@Indexes\indexingNestedData.js /}
-          {CODE-TAB-BLOCK:sql:RQL}
-          from index "Sales/ByTShirtColor/Fanout"
-where color == "black"
-          {CODE-TAB-BLOCK/}
+          {CODE-TAB:python:Fanout_index fanout_index_2@Indexes\IndexingNestedData.py /}
           {CODE-TABS/}
 
-          {CODE:nodejs results_4@Indexes\indexingNestedData.js /}
+          {CODE-TABS}
+          {CODE-TAB:python:Query fanout_index_query_4@Indexes\IndexingNestedData.py /}
+          {CODE-TAB-BLOCK:sql:RQL}
+          from index "Sales/ByTShirtColor/Fanout"
+where Color == "black"
+          {CODE-TAB-BLOCK/}
+          {CODE-TABS/}
 
 * <a id="performanceHints" /> **Fanout index - Performance hints**:
 
@@ -153,13 +154,13 @@ where color == "black"
        (default is 1024).
 
      * So, for example, adding another OnlineShop document with a `tShirt` object containing 1025 items  
-       will trigger the following alert: 
+       will trigger the following alert:  
+       
+          ![Figure 1. High indexing fanout ratio notification](images/fanout-index-performance-hint-1.png "High indexing fanout ratio notification")
 
-         ![Figure 1. High indexing fanout ratio notification](images/fanout-index-performance-hint-1.png "High indexing fanout ratio notification")
+     * Clicking the 'Details' button will show the following info:  
 
-     * Clicking the 'Details' button will show the following info:
-
-         ![Figure 2. Fanout index, performance hint details](images/fanout-index-performance-hint-2.png "Fanout index, performance hint details")
+          ![Figure 2. Fanout index, performance hint details](images/fanout-index-performance-hint-2.png "Fanout index, performance hint details")
 
 * <a id="paging" /> **Fanout index - Paging**:
 
@@ -168,8 +169,8 @@ where color == "black"
        as can be seen in the above [index-entries](../indexes/indexing-nested-data#fanoutMapIndexIndexEntries) example.
 
      * When making a fanout index query that should return full documents (without projecting results),  
-       the `totalResults` property (available when calling the query `statistics()` method)  
-       will contain the total number of index-entries and Not the total number of resulting documents.
+       the `TotalResults` property (available via the `QueryStatistics` object) will contain  
+       the total number of index-entries and Not the total number of resulting documents.
 
      * **To overcome this when paging results**, you must take into account the number of "duplicate"  
        index-entries that are skipped internally by the server when serving the resulting documents.  

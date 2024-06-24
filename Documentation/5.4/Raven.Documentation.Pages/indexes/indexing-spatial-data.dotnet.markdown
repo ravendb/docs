@@ -115,7 +115,7 @@
   and it represents the `40.7144 -74.0060` coordinates. 
   Removing characters from the end of the geohash will decrease the precision level.
 
-* The `maxTreeLevel` determines the length of the geohash used for the indexing, which in turn affects accuracy. 
+* The `maxTreeLevel` determines the length of the geohash used for the indexing, which in turn affects accuracy.  
   By default, it is set to **9**, providing a resolution of approximately 2.5 meters.
 
 * More information about geohash uses, decoding algorithm, and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).

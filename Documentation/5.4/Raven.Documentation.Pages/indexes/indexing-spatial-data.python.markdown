@@ -26,7 +26,7 @@
 
 {PANEL: Create index with spatial field}
 
-* Use `createSpatialField` to index spatial data in a static-index.
+* Use `CreateSpatialField` to index spatial data in a static-index.
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
@@ -35,19 +35,14 @@
 #### Exmaple:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Indexing_coordinates spatial_index_1@Indexes\spatialIndexes.js /}
-{CODE-TAB:nodejs:Indexing_WKT spatial_index_2@Indexes\spatialIndexes.js /}
+{CODE-TAB:python:Indexing_coordinates spatial_index_1@Indexes\SpatialIndexes.py /}
+{CODE-TAB:python:Indexing_WKT spatial_index_2@Indexes\SpatialIndexes.py /}
+{CODE-TAB:python:JavaScript_index spatial_index_3@Indexes\SpatialIndexes.py /}
 {CODE-TABS/}
 
 #### Syntax:
 
-{CODE:nodejs spatial_syntax_1@Indexes\spatialIndexes.js /}
-
-| Parameters | Type     | Description                |
-|------------|----------|----------------------------|
-| **lat**    | `number` | Latitude coordinate        |
-| **lng**    | `number` | Longitude coordinate       |
-| **wkt**    | `string` | Shape in WKT string format |
+{CODE:python spatial_syntax_1@Indexes\SpatialIndexes.py /}
 
 {PANEL/}
 
@@ -56,19 +51,18 @@
 * For each spatial index-field, you can specify the **coordinate system** and **strategy** to be used  
   during indexing and when processing the data at query time.
 
-* RavenDB supports both the `Geography` and `Cartesian` systems with the following strategies:
+* RavenDB supports both the **Geography** and **Cartesian** systems with the following strategies:
 
   * Geography system:
-      * BoundingBox
-      * GeoHashPrefixTree
-      * QuadPrefixTree
+      * `bounding_box_index`
+      * `geohash_prefix_tree_index`
+      * `quad_prefix_tree_index`
 
   * Cartesian system:
-      * BoundingBox
-      * QuadPrefixTree
+      * `bounding_box_index`
+      * `quad_prefix_tree_index`
 
-* **By default**, the `GeoHashPrefixTree` strategy is used with `GeoHashLevel` set to **9**.  
-  Use the `spatial` method to modify this setting.
+* **By default**, the `geohash_prefix_tree_index` strategy is used with `geohash_level` set to **9**.  
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
   Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
@@ -77,22 +71,19 @@
 
 #### Exmaple:
 
-{CODE:nodejs spatial_index_3@Indexes\spatialIndexes.js /}
+{CODE-TABS}
+{CODE-TAB:python:Index spatial_index_4@Indexes\SpatialIndexes.py /}
+{CODE-TAB:python:JavaScript_index spatial_index_5@Indexes\SpatialIndexes.py /}
+{CODE-TABS/}
 
 #### Syntax:
 
-{CODE:nodejs spatial_syntax_2@Indexes\spatialIndexes.js /}
+{CODE:python spatial_syntax_2@Indexes\SpatialIndexes.py /}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:GeographySpatialOptionsFactory spatial_syntax_3@Indexes\spatialIndexes.js /}
-{CODE-TAB:nodejs:CartesianSpatialOptionsFactory spatial_syntax_4@Indexes\spatialIndexes.js /}
+{CODE-TAB:python:GeographySpatialOptionsFactory spatial_syntax_3@Indexes\SpatialIndexes.py /}
+{CODE-TAB:python:CartesianSpatialOptionsFactory spatial_syntax_4@Indexes\SpatialIndexes.py /}
 {CODE-TABS/}
-
-| Parameters            | Type            | Description                                       |
-|-----------------------|-----------------|---------------------------------------------------|
-| **circleRadiusUnits** | `string`        | "Kilometers" or "Miles"                           |
-| **maxTreeLevel**      | `number`        | Controls precision level                          |
-| **bounds**            | `SpatialBounds` | Coordinates for the cartesian quadPrefixTreeIndex |
 
 {PANEL/}
 
@@ -123,7 +114,7 @@
   and it represents the `40.7144 -74.0060` coordinates. 
   Removing characters from the end of the geohash will decrease the precision level.
 
-* The `maxTreeLevel` determines the length of the geohash used for the indexing, which in turn affects accuracy.  
+* The `max_tree_level` determines the length of the geohash used for the indexing, which in turn affects accuracy.  
   By default, it is set to **9**, providing a resolution of approximately 2.5 meters.
 
 * More information about geohash uses, decoding algorithm, and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).
@@ -154,7 +145,7 @@
 * The QuadTree represents Earth as a grid consisting of four cells (also known as buckets).
   Similar to GeoHash, each cell is assigned a letter, and is recursively divided into four more cells, creating a hierarchical structure. 
 
-* By default, the precision level (`maxTreeLevel`) for QuadPrefixTree is **23**.
+* By default, the precision level (`max_tree_level`) for QuadPrefixTree is **23**.
 
 * More information about QuadTree can be found [here](https://en.wikipedia.org/wiki/Quadtree).
 
@@ -201,7 +192,7 @@
 
 {INFO: }
 
-Distance is measured by default in **kilometers**.
+Distance is measured by default in `KILOMETERS`.
 
 {INFO/}
 

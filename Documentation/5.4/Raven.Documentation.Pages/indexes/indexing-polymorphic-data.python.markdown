@@ -26,16 +26,16 @@ while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:python}
 from cat in docs.Cats
-select new { cat.name }
+select new { cat.Name }
 {CODE-BLOCK/}
 
 And for dogs:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:python}
 from dog in docs.Dogs
-select new { dog.name }
+select new { dog.Name }
 {CODE-BLOCK/}
 
 {INFO: The challenge}
@@ -48,17 +48,17 @@ However, what if we need to query across ALL animal collections?
 The easiest way to do this is by writing a multi-map index such as:
 
 {CODE-TABS}
-{CODE-TAB:java:MultiMap multi_map_1@Indexes\IndexingPolymorphicData.java /}
-{CODE-TAB:java:MultiMapJavaScript multi_map_5@Indexes/JavaScript.java /}
+{CODE-TAB:python:MultiMap multi_map_1@Indexes\IndexingPolymorphicData.py /}
+{CODE-TAB:python:MultiMapJavaScript multi_map_5@Indexes/JavaScript.py /}
 {CODE-TABS/}
 
 And query it like this:
 
 {CODE-TABS}
-{CODE-TAB:java:Query multi_map_2@Indexes\IndexingPolymorphicData.java /}
+{CODE-TAB:python:Query multi_map_2@Indexes\IndexingPolymorphicData.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Animals/ByName'
-where name = 'Mitzy'
+where Name = 'Mitzy'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -66,20 +66,20 @@ where name = 'Mitzy'
 
 Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
-{CODE:java other_ways_1@Indexes\IndexingPolymorphicData.java /}
+{CODE:python other_ways_1@Indexes\IndexingPolymorphicData.py /}
 
 Using this method, we can now index on all animals using:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:python}
 from animal in docs.Animals
-select new { animal.name }
+select new { animal.Name }
 {CODE-BLOCK/}
 
 But what happens when you don't want to modify the entity name of an entity itself?
 
 You can create a polymorphic index using:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:python}
 from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new { animal.Name }
 {CODE-BLOCK/}
@@ -99,4 +99,4 @@ It will generate an index that matches both Cats and Dogs.
 
 ### Querying
 
-- [Basics](../indexes/querying/query-index)
+- [Query overview](../client-api/session/querying/how-to-query)
