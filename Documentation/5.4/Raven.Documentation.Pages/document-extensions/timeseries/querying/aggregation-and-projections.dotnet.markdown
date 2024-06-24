@@ -300,6 +300,7 @@ select timeseries (
   This provides immediate context and makes it easier to interpret the time series data.
 
     {CODE-TABS}
+{CODE-TAB:csharp:Query aggregation_8@DocumentExtensions\TimeSeries\Querying\AggregatingValues.cs /}
 {CODE-TAB-BLOCK:sql:RQL_declare_syntax}
 declare timeseries SP(c)
 {
@@ -311,7 +312,7 @@ declare timeseries SP(c)
 
 from "Companies" as c
 // Project the company's name along with the time series query results to make results more clear
-select c.Name, SP(c)
+select SP(c) as MinMaxValues, c.Name as CompanyName
 {CODE-TAB-BLOCK/}
 {CODE-TAB-BLOCK:sql:RQL_select_syntax}
 from "Companies" as c
@@ -320,7 +321,8 @@ select timeseries (
     where Values[4] > 500000
     group by "7 day"
     select max(), min()
-), c.Name // Project property 'Name' from the company document
+) as MinMaxValues,
+c.Name as CompanyName // Project property 'Name' from the company document
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 

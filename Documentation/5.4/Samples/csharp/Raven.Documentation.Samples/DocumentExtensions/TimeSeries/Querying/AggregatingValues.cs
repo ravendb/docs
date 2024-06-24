@@ -210,6 +210,33 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries.Querying
                     List<TimeSeriesAggregationResult> results = query.ToList();
                     #endregion
                 }
+                
+                // Project document data as well
+                using (var session = store.OpenSession())
+                {
+                    #region aggregation_8
+                    var query = session.Query<Company>()
+                        .Select(company => new
+                        {
+                            // Projecting time series data:
+                            MinMaxValues = RavenQuery.TimeSeries(company, "StockPrices")
+                                .Where(e => e.Values[4] > 500_000)
+                                .GroupBy(g => g.Days(7))
+                                .Select(x => new
+                                {
+                                    Min = x.Min(),
+                                    Max = x.Max(),
+                                })
+                                .ToList(),
+                            
+                            // Projecting the company name:
+                            CompanyName = company.Name 
+                        });
+                    
+                    // Execute the query
+                    var results = query.ToList();
+                    #endregion
+                }
             }
         }
     }
