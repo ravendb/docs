@@ -1,14 +1,30 @@
 # Indexing Polymorphic Data
 
-By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, that ignores the inheritance hierarchy.
+---
+{NOTE: }
 
-For example, let's assume that we have the following inheritance hierarchy:
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this Page:  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+
+{NOTE/}
+
+---
+
+{PANEL: Polymorphic Data}
+
+Let's assume, for example, that we have the following inheritance hierarchy:
 
 ![Figure 1: Polymorphic indexes](images/polymorphic_indexes_faq.png)
 
-If we saved a `Cat`, it would have a collection set to "Cats" and if we saved a `Dog`, it would be in collection "Dogs".
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
 
-If we wanted to index cats by name, we would write:
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
 {CODE-BLOCK:csharp}
 from cat in docs.Cats
@@ -22,11 +38,14 @@ from dog in docs.Dogs
 select new { dog.Name }
 {CODE-BLOCK/}
 
-Although it works, each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
+{INFO: The challenge}
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+{INFO/}
 
 ## Multi-Map Indexes
 
-The easiest way to do this is by writing a multi-map index like this one:
+The easiest way to do this is by writing a multi-map index such as:
 
 {CODE-TABS}
 {CODE-TAB:csharp:MultiMap multi_map_1@Indexes\IndexingPolymorphicData.cs /}
@@ -46,7 +65,7 @@ where Name = 'Mitzy'
 
 ## Other Options
 
-Another option would be to modify the way we generate the Collection for subclasses of `Animal`, like this:
+Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
 {CODE other_ways_1@Indexes\IndexingPolymorphicData.cs /}
 
@@ -67,6 +86,8 @@ select new { animal.Name }
 {CODE-BLOCK/}
 
 It will generate an index that matches both Cats and Dogs.
+
+{PANEL/}
 
 ## Related Articles
 

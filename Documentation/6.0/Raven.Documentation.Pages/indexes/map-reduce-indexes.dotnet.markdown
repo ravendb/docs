@@ -13,10 +13,10 @@
   the Map-Reduce index will re-calculate the aggregated data so that the 
   aggregation results are always available and up-to-date.  
 
-* The aggregation computation is done in two separate consecutive actions: the `Map` and the `Reduce`.  
-  * **The Map stage:**  
+* The aggregation computation is done in two separate consecutive actions:  
+  * **The `Map` stage:**  
     This first stage runs the defined Map function(s) on each document, indexing the specified fields.  
-  * **The Reduce stage:**  
+  * **The `Reduce` stage:**  
     This second stage groups the specified requested fields that were indexed in the Map stage,  
     and then runs the Reduce function to get a final aggregation result per field value.  
 
@@ -24,7 +24,7 @@
    * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
    * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
    * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Important Comments](../indexes/map-reduce-indexes#important-comments)  
+   * [Remarks](../indexes/map-reduce-indexes#remarks)  
 
 {NOTE/}
 
@@ -37,7 +37,7 @@ To deploy an index we need to create a definition and deploy it using one of the
 
 ---
 
-### Example I - Count
+#### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
 To do it, we can create the following index using `LoadDocument` inside:  
@@ -60,7 +60,7 @@ The above query will return one result for _Seafood_ with the appropriate number
 
 ---
 
-### Example II - Average
+#### Example II - Average
 
 In this example, we will count an average product price for each category.  
 The index definition:
@@ -81,7 +81,7 @@ where Category == 'Seafood'
 
 ---
 
-### Example III - Calculations
+#### Example III - Calculations
 
 This example illustrates how we can put some calculations inside an index using 
 one of the indexes available in the sample database (`Product/Sales`).  
@@ -242,9 +242,11 @@ type of reference documents:
 | **Id** | `string` | The reference document's ID |
 | **ReduceOutputs** | `List<string>` | List of map-reduce output documents that this reference document aggregates. Determined by the pattern of the reference document ID. |
 
-## Examples
+---
 
-### Example I
+### Examples
+
+#### Example I
 
 Here is a map-reduce index with output documents and reference documents:  
 
@@ -275,7 +277,9 @@ This gives the reference documents IDs in this general format: `sales/daily/1998
 The reference document with that ID contains the IDs of all the output documents from 
 May 6th 1998.  
 
-### Example II
+---
+
+#### Example II
 
 This is an example of a "recursive" map-reduce index - it indexes the output documents 
 of the index above, using the reference documents.  
@@ -284,13 +288,17 @@ of the index above, using the reference documents.
 
 {PANEL/}
 
-{PANEL: Important Comments}
+{PANEL: Remarks}
 
-## Saving documents
+#### Saving documents
+
 [Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 
-## Recursive indexing loop
+---
+
+#### Recursive indexing loop
+
 It is **forbidden** to output reduce results to collections such as the following:  
 
 - A collection that the current index is already working on.  
@@ -306,18 +314,26 @@ It is **forbidden** to output reduce results to collections such as the followin
 When an attempt to create such an infinite indexing loop is 
 detected a detailed error is generated.  
 
-## Output to an Existing collection
+---
+
+#### Output to an Existing collection
+
 Creating a map-reduce index which defines an output collection that already 
 exists and contains documents, will result in an error.  
 Delete all documents from the target collection before creating the index, 
 or output results to a different collection.  
 
-## Modification of Artificial Documents
+---
+
+#### Modification of Artificial Documents
 Artificial documents can be loaded and queried just like regular documents.  
 However, it is **not** recommended to edit artificial documents manually since 
 any index results update would overwrite all manual modifications made in them.  
 
-## Map-Reduce Indexes on a Sharded Database
+---
+
+#### Map-Reduce Indexes on a Sharded Database
+
 On a [sharded database](../sharding/overview), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 

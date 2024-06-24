@@ -3,23 +3,22 @@
 
 {NOTE: }
 
-* Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) 
-  or any common data between types.  
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
 
-* Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes).  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [Indexing multiple collections](../indexes/multi-map-indexes#indexing-multiple-collections)
-  * [Indexing polymorphic data](../indexes/multi-map-indexes#indexing-polymorphic-data)
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Indexing multiple collections](../indexes/multi-map-indexes#indexing-multiple-collections)  
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)  
+  * [Remarks](../indexes/multi-map-indexes#remarks)  
 
 {NOTE/}
 
----
-
 {PANEL: Indexing multiple collections}
 
-Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from the class `Animal`:
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Dog multiMapClass_1@indexes/multiMap.js /}
@@ -27,7 +26,7 @@ Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from
 {CODE-TAB:nodejs:Animal multiMapClass_3@indexes/multiMap.js /}
 {CODE-TABS/}
 
-Now we can define our index in the following way:
+Now we can define and query our index as follows:
 
 {CODE:nodejs multiMapIndex_1@indexes/multiMap.js /}
 
@@ -41,22 +40,14 @@ where Name == "Mitzy"
 
 {PANEL/}
 
-{PANEL: Indexing polymorphic data}
-
-Please read more in our dedicated article on indexing polymorphic data.  
-This article can be found [here](../indexes/indexing-polymorphic-data).
-
-{PANEL/}
-
 {PANEL: Searching across multiple collections}
 
 Another great usage of Multi-Map indexes is smart-search.  
-To search for products, companies, or employees by their name, you need to define the following index:
 
+To search for products, companies, or employees by their name, you need to define the following index:
 {CODE:nodejs multiMapIndex_2@indexes/multiMap.js /}
 
 and query it using:
-
 {CODE-TABS}
 {CODE-TAB:nodejs:Query multiMapQuery_2@indexes/multiMap.js /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -68,9 +59,14 @@ select id() as id, displayName, collection
 
 {PANEL/}
 
-## Remarks
+{PANEL: Remarks}
 
-{INFO Remember that all map functions **must** output objects with **identical** shape (field names have to match). /}
+{INFO: }
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+{INFO/}
+
+{PANEL/}
 
 ## Related Articles
 

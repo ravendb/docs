@@ -1,12 +1,25 @@
 # Multi-Map Indexes
+---
 
-Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) or any common data between types.
+{NOTE: }
 
-## AddMap
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
 
-`AddMap` method is used to map fields from a single collection e.g. `Dogs`.
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
 
-Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from the class `Animal`:
+* In this page:
+  * [AddMap](../indexes/multi-map-indexes#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
+
+{NOTE/}
+
+{PANEL: AddMap}
+
+The `AddMap` method is used to map fields from a single collection, e.g. `Dogs`.
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
 
 {CODE-TABS}
 {CODE-TAB:java:Dog multi_map_1@Indexes/MultiMap.java /}
@@ -15,7 +28,7 @@ Let's assume that we have `Dog` and `Cat` classes, and both of them inherit from
 {CODE-TAB:java:IAnimal multi_map_6@Indexes/MultiMap.java /}
 {CODE-TABS/}
 
-Now we can define our index using `addMap` in the following way:
+Now we can define our index using `addMap` and query it as follows:
 
 {CODE-TABS}
 {CODE-TAB:java:AddMap multi_map_4@Indexes/MultiMap.java /}
@@ -30,23 +43,28 @@ where Name = 'Mitzy'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing Polymorphic Data
+{PANEL/}
 
-Please read more in our dedicated article on indexing polymorphic data. This article can be found [here](../indexes/indexing-polymorphic-data).
+{PANEL: Searching across multiple collections}
 
-## Searching Across Multiple Collections
+Another great usage of Multi-Map indexes is smart-search.  
 
-Another great application of Multi-Map indexes is smart-search. To search for products, companies, or employees by their name, you need to define the following index:
-
+To search for products, companies, or employees by their name, you need to define the following index:
 {CODE:java multi_map_1_0@Indexes\MultiMap.java /}
 
 and query it using:
-
 {CODE:java multi_map_1_1@Indexes\MultiMap.java /}
 
-## Remarks
+{PANEL/}
 
-{INFO Remember that all map functions **must** output objects with **identical** shape (field names have to match). /}
+{PANEL: Remarks}
+
+{INFO: }
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+{INFO/}
+
+{PANEL/}
 
 ## Related Articles
 

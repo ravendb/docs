@@ -19,13 +19,13 @@
 
 {PANEL: The challenge}
 
-For example, let's assume that we have the following inheritance hierarchy:
+Let's assume, for example, that we have the following inheritance hierarchy:
 
 ![Figure 1: Polymorphic indexes](images/polymorphic_indexes_faq.png)
 
 <br>
-__By default__:  
-When saving a `Cat` document, it will be assigned the "Cats" collection,  
+**By default**:  
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
 while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
@@ -42,7 +42,7 @@ And for Dogs:
 {CODE-TAB:nodejs:Class class_2@indexes\indexingPolymorphicData.js /}
 {CODE-TABS/}
 
-__The challenge__:  
+**The challenge**:  
 Querying each index results in documents only from the specific collection the index was defined for.  
 However, what if we need to query across ALL animal collections?
 
@@ -52,7 +52,7 @@ However, what if we need to query across ALL animal collections?
 
 {NOTE: }
 
-<a id="multi-map-index" /> __Multi-Map Index__:
+<a id="multi-map-index" /> **Multi-Map Index**:
 
 ---
 
@@ -75,7 +75,7 @@ where name == "Mitzy"
 {NOTE/}
 {NOTE: }
 
-<a id="polymorphic-index" /> __Polymorphic index__:
+<a id="polymorphic-index" /> **Polymorphic index**:
 
 ---
 
@@ -101,7 +101,7 @@ where name == "Mitzy"
 {NOTE/}
 {NOTE: }
 
-<a id="customize-collection" /> __Customize collection__:
+<a id="customize-collection" /> **Customize collection**:
 
 ---
 
