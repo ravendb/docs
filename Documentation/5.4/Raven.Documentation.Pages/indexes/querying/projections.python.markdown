@@ -285,7 +285,7 @@ select {
 {PANEL/}
 
 {PANEL: Projection Behavior}
-The `aelect_fields` methods can also take a `ProjectionBehavior` parameter, which 
+The `select_fields` methods can also take a `ProjectionBehavior` parameter, which
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
 [here](../../client-api/session/querying/how-to-customize-query#projection).  

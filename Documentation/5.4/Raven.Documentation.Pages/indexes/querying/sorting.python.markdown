@@ -41,7 +41,7 @@ order by UnitsInStock as long desc
 * By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
   and specify that ordering type in the generated RQL that is sent to the server.
 
-* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Int`  
+* E.g., in the above example, ordering by `UnitsInStock` will result in `OrderingType.Int`
   because that property data type is an integer.
 
 * Different ordering can be forced.  

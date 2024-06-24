@@ -63,18 +63,18 @@ to `more_like_this`.
 
 | Option | Type | Description |
 | ------------- | ------------- | ----- |
-| **MinimumTermFrequency** | `int` | Ignores terms with less than this frequency in the source doc |
-| **MaximumQueryTerms** | `int` | Returns a query with no more than this many terms |
-| **MaximumNumberOfTokensParsed** | `int` | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
-| **MinimumWordLength** | `int` | Ignores words less than this length or, if 0, then this has no effect |
-| **MaximumWordLength** | `int` | Ignores words greater than this length or if 0 then this has no effect |
-| **MinimumDocumentFrequency** | `int` | Ignores words which do not occur in at least this many documents |
-| **MaximumDocumentFrequency** | `int` | Ignores words which occur in more than this many documents |
-| **MaximumDocumentFrequencyPercentage** | `int` | Ignores words which occur in more than this percentage of documents |
-| **Boost** | `bool` | Boost terms in query based on score |
-| **BoostFactor** | `float` |  Boost factor when boosting based on score |
-| **StopWordsDocumentId** | `str` | Document ID containing custom stop words |
-| **Fields** | `str[]` | Fields to compare |
+| **minimum_term_frequency** | `int` | Ignores terms with less than this frequency in the source doc |
+| **maximum_query_terms** | `int` | Returns a query with no more than this many terms |
+| **maximum_number_of_tokens_parsed** | `int` | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
+| **minimum_word_length** | `int` | Ignores words less than this length or, if 0, then this has no effect |
+| **maximum_word_length** | `int` | Ignores words greater than this length or if 0 then this has no effect |
+| **minimum_document_frequency** | `int` | Ignores words which do not occur in at least this many documents |
+| **maximum_document_frequency** | `int` | Ignores words which occur in more than this many documents |
+| **maximum_document_frequency_percentage** | `int` | Ignores words which occur in more than this percentage of documents |
+| **boost** | `bool` | Boost terms in query based on score |
+| **boost_factor** | `float` |  Boost factor when boosting based on score |
+| **stop_words_document_id** | `str` | Document ID containing custom stop words |
+| **fields** | `List[str]` | Fields to compare |
 
 {PANEL/}
 

@@ -232,11 +232,11 @@ select facet(id("customDocumentID"))
 
 {CODE:python syntax_1@Indexes\Querying\FacetedSearch.py /}
 
-| Parameter                    | Type                       | Description                                                                                       |
-|------------------------------|----------------------------|---------------------------------------------------------------------------------------------------|
-| **builder_or_facet** (Union) | `Callable[[FacetBuilder]`<br>**or**<br>`FacetBase` | Builder with a fluent API that constructs a `FacetBase` instance<br>**or**<br>`FacetBase` implementation defining the facet and its options |
-| **facets**                   | `List[FacetBase]`                                  | A list of `FacetBase` implementations. |
-| **facet_setup_document_id**  | `str`                   | ID of a document containing `FacetSetup` |
+| Parameter                    | Type                       | Description           |
+|------------------------------|----------------------------|-----------------------|
+| **builder_or_facet** (Union) | `Callable[[FacetBuilder]`<br>**or**<br>`FacetBase` | Builder with a fluent API that constructs a `FacetBase` implementation instance<br>**or**<br>`FacetBase` implementation instance |
+| **facets** | `List[FacetBase]` | A list of `FacetBase` implementations instances. |
+| **facet_setup_document_id**  | `str` | ID of a document containing `FacetSetup` |
 
 {CODE-TABS}
 {CODE-TAB:python:Facet syntax_2@Indexes\Querying\FacetedSearch.py /}
@@ -249,14 +249,15 @@ select facet(id("customDocumentID"))
 
 {CODE:python syntax_6@Indexes\Querying\FacetedSearch.py /}
 
-| Parameter       | Type                        | Description |
-|-----------------|-----------------------------|-------------|
-| **field_name**  | `str` | The index-field to use for the facet |
-| **path**        | `str` | Points to the index-field to use for the facet (`ByRanges`, `ByField`) or for the aggregation (`SUM_ON`, `MIN_ON`, `MAX_ON`, `AVERAGE_ON`) |
-| **display_name** | `str` | If set, results of a facet will be returned under this name |
-| **options**     | `FacetOptions` | Non-default options to use in the facet definition |
-| **range_**     | `RangeBuilder` | A range of indexes |
+| Parameter        | Type                        | Description |
+|------------------|-----------------------------|-------------|
+| **range_**       | `RangeBuilder` | A range of indexes |
 | **\*ranges**     | `RangeBuilder` | Multiple index ranges (at least one), separated by `,` |
+| **field_name**   | `str` | The index-field to use for the facet |
+| **path**         | `str` | Points to the index-field to use for the facet (`ByRanges`, `ByField`) or for the aggregation (`SUM_ON`, `MIN_ON`, `MAX_ON`, `AVERAGE_ON`) |
+| **display_name** | `str` | If set, results of a facet will be returned under this name |
+| **options**      | `FacetOptions` | Non-default options to use in the facet definition |
+
 
 
 **Options**:
