@@ -2727,13 +2727,9 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                         .ToListAsync();
                 }
                 #endregion
-
-
             }
         }
 
-
-        // Patching:multiple time-series entries Using session.Advanced.Defer
         [Fact]
         public void QueryWithJavascriptAndTimeseriesFunctions()
         {
@@ -2743,23 +2739,32 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 using (var session = store.OpenSession())
                 {
                     #region DefineCustomFunctions
-                    var query = from person in session.Query<Person>()
-                                let customFunc = new Func<IEnumerable<TimeSeriesEntry>, 
-                                    IEnumerable<ModifiedTimeSeriesEntry>>(entries =>
-                                    entries.Select(e => new ModifiedTimeSeriesEntry
-                                    {
-                                        Timestamp = e.Timestamp,
-                                        Value = e.Values.Max(),
-                                        Tag = e.Tag ?? "none"
-                                    }))
-                                let tsQuery = RavenQuery.TimeSeries(person, "Heartrate")
-                                    .Where(entry => entry.Values[0] > 100)
-                                    .ToList()
-                                select new
+                    var query = from user in session.Query<User>()
+
+                        // The custom function 
+                        let customFunc = new Func<IEnumerable<TimeSeriesEntry>, IEnumerable<ModifiedTimeSeriesEntry>>(
+                            entries =>
+                                entries.Select(e => new ModifiedTimeSeriesEntry
                                 {
-                                    Id = person.Id,
-                                    ModifiedTimeSeriesResults = customFunc(tsQuery.Results)
-                                };
+                                    Timestamp = e.Timestamp,
+                                    Value = e.Values.Max(),
+                                    Tag = e.Tag ?? "none"
+                                }))
+
+                        // The time series query
+                        let tsQuery = RavenQuery.TimeSeries(user, "HeartRates")
+                            .Where(entry => entry.Values[0] > 100)
+                            .ToList()
+
+                        // Project query results
+                        select new
+                        {
+                            Id = user.Name,
+                            // Call the custom function
+                            TimeSeriesEntries = customFunc(tsQuery.Results)
+                        };
+
+                    var queryResults = query.ToList();
                     #endregion
                 }
             }

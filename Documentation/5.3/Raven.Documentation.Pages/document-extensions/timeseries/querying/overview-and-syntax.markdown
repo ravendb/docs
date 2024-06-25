@@ -37,7 +37,7 @@ Time series query can -
   time series entries by their tags, values and timestamps.  
 * [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
   time series entries into groups by a chosen time resolution, e.g. gather the prices 
-  of a stock that's been collected over the past two months to week-long groups). Entries can 
+  of a stock that's been collected over the past two months to week-long groups. Entries can 
   also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group, 
   and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
