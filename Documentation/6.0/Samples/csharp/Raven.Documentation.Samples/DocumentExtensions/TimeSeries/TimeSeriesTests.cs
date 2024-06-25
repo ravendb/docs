@@ -1805,14 +1805,14 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             declare timeseries getHeartRates(user) 
                             {
                                 from user.HeartRates 
-                                    between $start and $end
+                                    between $from and $to
                                     offset '02:00'
                             }
                             from Users as u where Age < 30
                             select getHeartRates(u)
                             ")
-                            .AddParameter("start", baseTime)
-                            .AddParameter("end", baseTime.AddHours(24));
+                            .AddParameter("from", baseTime)
+                            .AddParameter("to", baseTime.AddHours(24));
 
                     List<TimeSeriesRawResult> results = query.ToList();
                     #endregion
@@ -1829,11 +1829,11 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                             from Users as u where Age < 30
                             select timeseries (
                                 from HeartRates 
-                                    between $start and $end
+                                    between $from and $to
                                     offset '02:00'
                             )")
-                            .AddParameter("start", baseline)
-                            .AddParameter("end", baseline.AddHours(24));
+                            .AddParameter("from", baseline)
+                            .AddParameter("to", baseline.AddHours(24));
 
                     var results = query.ToList();
                     #endregion
@@ -1946,12 +1946,134 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                     #region ts_region_LINQ-3-Range-Selection
                     var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
-                    
+
                     var query = session.Query<User>()
-                        .Select(q => RavenQuery.TimeSeries(q, "HeartRates", baseTime, baseTime.AddDays(3))
+                        .Select(q => RavenQuery
+                            .TimeSeries(q, "HeartRates", baseTime, baseTime.AddDays(3))
                             .ToList());
                     
                     List<TimeSeriesRawResult> result = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_1
+                    var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+                    var from = baseTime;
+                    var to = baseTime.AddMinutes(10);
+                    
+                    var query = session
+                        .Query<Employee>()
+                        .Where(employee => employee.Address.Country == "UK")
+                        .Select(employee => RavenQuery
+                             // Specify the range:
+                             // pass a 'from' and a 'to' DateTime values to the 'TimeSeries' method
+                            .TimeSeries(employee, "HeartRates", from, to)
+                             // Call 'Offset' to adjust the timestamps in the returned results to your local time (optional)
+                            .Offset(TimeSpan.FromHours(3))
+                            .ToList());
+                    
+                    // Execute the query
+                    List<TimeSeriesRawResult> result = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_2
+                    var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+                    var from = baseTime;
+                    var to = baseTime.AddMinutes(10);
+
+                    var query = session.Advanced
+                        .DocumentQuery<Employee>()
+                        .WhereEquals(employee => employee.Address.Country, "UK")
+                        .SelectTimeSeries(builder => builder.From("HeartRates")
+                             // Specify the range:
+                             // pass a 'from' and a 'to' DateTime values to the 'Between' method
+                            .Between(from, to)
+                             // Call 'Offset' to adjust the timestamps in the returned results to your local time (optional)
+                            .Offset(TimeSpan.FromHours(3))
+                            .ToList());
+                    
+                    // Execute the query
+                    List<TimeSeriesRawResult> result = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_3
+                    var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+                    
+                    var query = session.Advanced
+                        .RawQuery<TimeSeriesRawResult>(@"
+                            from Employees
+                            where Address.Country == 'UK'
+                            select timeseries (
+                                from HeartRates
+                                between $from and $to
+                                offset '03:00'
+                            )")
+                        .AddParameter("from", baseTime)
+                        .AddParameter("to", baseTime.AddMinutes(10));
+                    
+                    // Execute the query
+                    List<TimeSeriesRawResult> results = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_4
+                    var query = session
+                        .Query<Employee>()
+                        .Select(p => RavenQuery
+                            .TimeSeries(p, "HeartRates")
+                             // Call 'FromLast'
+                             // specify the time frame from the end of the time series
+                            .FromLast(x => x.Minutes(30))
+                            .Offset(TimeSpan.FromHours(3))
+                            .ToList());
+                    
+                    // Execute the query
+                    List<TimeSeriesRawResult> result = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_5
+                    var query = session.Advanced
+                        .DocumentQuery<Employee>()
+                        .SelectTimeSeries(builder => builder.From("HeartRates")
+                             // Call 'FromLast'
+                             // specify the time frame from the end of the time series
+                            .FromLast(x => x.Minutes(30))
+                            .Offset(TimeSpan.FromHours(3))
+                            .ToList());
+                    
+                    // Execute the query
+                    List<TimeSeriesRawResult> result = query.ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region choose_range_6
+                    var query = session.Advanced
+                         // Provide the raw RQL to the RawQuery method:
+                        .RawQuery<TimeSeriesRawResult>(@"
+                            from Employees
+                            select timeseries (
+                                from HeartRates
+                                last 30 min
+                                offset '03:00'
+                            )");
+
+                    // Execute the query
+                    List<TimeSeriesRawResult> results = query.ToList();
                     #endregion
                 }
 
