@@ -1,0 +1,161 @@
+﻿# Querying Time Series Indexes
+
+---
+
+{NOTE: }
+
+* **Time series index**:
+
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing) or using the [Studio](../../../studio/database/indexes/create-map-index).  
+      Such an index can be queried in the same way as a regular index that indexes documents.  
+      (See [Querying an index](../../../indexes/querying/query-index)).
+    
+    * AUTO-time-series-indexes are Not generated automatically by the server when making a time series query.
+
+* **The contents of the query results**:
+
+    * Unlike a documents index, where the source data are your JSON documents,  
+      the source data for a time series index are the time series entries within the documents.
+
+    * When querying a **documents index**:  
+      the resulting objects are the document entities (unless results are [projected](../../../indexes/querying/projections)).
+  
+    * When querying a **time series index**:  
+      each item in the results is of the type defined by the **index-entry** in the index definition,  
+      (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes#project-results)). 
+      The documents themselves are not returned.
+
+* In this page:
+    * [Sample index](../../../document-extensions/timeseries/querying/using-indexes#sample-index)
+    * [Querying the index](../../../document-extensions/timeseries/querying/using-indexes#querying-the-index)
+        * [Query all time series entries](../../../document-extensions/timeseries/querying/using-indexes#query-all-time-series-entries)
+        * [Filter query results](../../../document-extensions/timeseries/querying/using-indexes#filter-query-results)
+        * [Order query results](../../../document-extensions/timeseries/querying/using-indexes#order-query-results)
+        * [Project results](../../../document-extensions/timeseries/querying/using-indexes#project-results)
+
+{NOTE/}
+
+---
+
+{PANEL: Sample Index}
+
+* The following is a time series map-index that will be used in the query examples throughout this article.
+
+* Each **index-entry** consists of:
+  * Three index-fields obtained from the "HeartRates" time series entries: `bpm`, `date`, and `tag`.
+  * One index-field obtained from the time series [segment](../../../document-extensions/timeseries/indexing#timeseriessegment-object) header: `employeeID`.
+  * One index-field obtained from the loaded employee document: `employeeName`.
+
+* When querying this time series index:  
+  * The resulting items correspond to the time series entries that match the query predicate.  
+  * Each item in the results will in the shape of the defined index-entry.  
+    Different result types may be returned when the query [projects the results](../../../document-extensions/timeseries/querying/using-indexes#project-results).
+
+{CODE:nodejs sample_ts_index@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+
+{PANEL/}
+
+{PANEL: Querying the index} 
+ 
+{NOTE: }
+
+<a id="query-all-time-series-entries" /> **Query all time series entries**:
+
+---
+
+No filtering is applied in this query.  
+Results will include ALL entries from time series "HeartRates".
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_index_1@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB:nodejs:RawQuery query_index_2@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "TsIndex"
+{CODE-TAB-BLOCK/} 
+{CODE-TABS/}
+
+{NOTE/}
+{NOTE: }
+
+<a id="filter-query-results" /> **Filter query results**:
+
+---
+
+In this example, time series entries are filtered by the query.  
+The query predicate is applied to the index-fields.
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_index_3@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB:nodejs:RawQuery query_index_4@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "TsIndex"
+where employeeName == "Robert King" and bpm >= 85
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+{NOTE: }
+
+<a id="order-query-results" /> **Order query results**:
+
+---
+
+Results can be ordered by any of the index-fields.
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_index_5@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB:nodejs:RawQuery query_index_6@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "TsIndex"
+where bpm < 58
+order by date desc
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+<a id="project-results" /> **Project results**:
+
+---
+
+* Instead of returning the entire index entry object for each result item,  
+  you can return only partial fields.
+
+* Learn more about projecting query results in [Project Index Query Results](../../../indexes/querying/projections).
+
+* In this example, we query for time series entries with a very high BPM value.  
+  We retrieve entries with BPM value > 100 but return only the _employeeID_ for each entry.
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_index_7@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB:nodejs:RawQuery query_index_8@documentExtensions\timeSeries\querying\queryingTsIndex.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "TsIndex"
+where bpm > 100
+select distinct employeeID
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+{PANEL/}
+
+## Related articles
+
+**Time Series Overview**  
+[Time Series Overview](../../../document-extensions/timeseries/overview)  
+
+**Studio Articles**  
+[Studio Time Series Management](../../../studio/database/document-extensions/time-series)  
+
+**Time Series Indexing**  
+[Time Series Indexing](../../../document-extensions/timeseries/indexing)  
+
+**Time Series Queries**  
+[Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)  
+[Filtering](../../../document-extensions/timeseries/querying/filtering)  
+[Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)  
+
+**Policies**  
+[Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)  
