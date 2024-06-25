@@ -2098,48 +2098,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                     var result = query.ToList();
                 }
 
-                using (var session = store.OpenSession())
-                {
-                    // May 17 2020, 00:00:00
-                    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
-
-                    #region ts_region_Filter-By-load-Tag-Raw-RQL
-                    // Raw query with no aggregation - Select syntax
-                    IRawDocumentQuery<TimeSeriesRawResult> nonAggregatedRawQuery =
-                        session.Advanced.RawQuery<TimeSeriesRawResult>(@"
-                            from Companies as c where c.Address.Country = 'USA'
-                            select timeseries(
-                                from StockPrices
-                                   load Tag as emp
-                                   where emp.Title == 'Sales Representative'
-                            )");
-
-                    var nonAggregatedRawQueryResult = nonAggregatedRawQuery.ToList();
-                    #endregion
-                }
-
-                // Query - LINQ format - LoadByTag to find a stock broker
-                using (var session = store.OpenSession())
-                {
-                    var baseline = new DateTime(2020, 5, 17, 00, 00, 00);
-
-                    #region ts_region_Filter-By-LoadByTag-LINQ
-                    IRavenQueryable<TimeSeriesRawResult> query =
-                        (IRavenQueryable<TimeSeriesRawResult>)session.Query<Company>()
-
-                            // Choose user profiles of users under the age of 30
-                            .Where(c => c.Address.Country == "USA")
-                            .Select(q => RavenQuery.TimeSeries(q, "StockPrices")
-
-                            .LoadByTag<Employee>()
-                            .Where((ts, src) => src.Title == "Sales Representative")
-
-                            .ToList());
-
-                    var result = query.ToList();
-                    #endregion
-                }
-
                 /*
                                 // Query - LINQ format
                                 using (var session = store.OpenSession())
