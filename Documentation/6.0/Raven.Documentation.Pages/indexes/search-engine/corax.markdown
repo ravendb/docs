@@ -32,9 +32,7 @@
    * [Compound Fields](../../indexes/search-engine/corax#compound-fields)  
    * [Limits](../../indexes/search-engine/corax#limits)  
    * [Configuration Options](../../indexes/search-engine/corax#configuration-options)  
-   * [Index Training: Compression Dictionaries](../../indexes/search-engine/corax#index-training:-compression-dictionaries)  
-   * [Full Text Search for Non-Alphabetical Characters](../../indexes/search-engine/corax#full-text-search-for-non-alphabetical-characters)  
-
+   * [Index Training: Compression Dictionaries](../../indexes/search-engine/corax#index-training:-compression-dictionaries)
 {NOTE/}
 
 ---
@@ -500,29 +498,6 @@ Corax indexes will **not** train compression dictionaries if they are created in
 [Test Index](../../studio/database/indexes/create-map-index#test-index) interface, 
 because the testing interface is designed for indexing prototyping and the training 
 process will add unnecessary overhead.
-
-{PANEL/}
-
-{PANEL: Full Text Search for Non-Alphabetical Characters}
-
-The results returned by Lucene and Corax **may differ** 
-when the two engines run the same full text search over 
-a text that includes non-alphabetical characters.  
-
-Both search engines remove non-alphabetical characters 
-and create search terms for the remaining text.  
-Searching for `din%ner`, for example, will remove the `%`, 
-leave the two search terms `din` and `ner`, and run a search 
-over these two terms.  
-
-Lucene, however, will use its _PharseQuery_ to search for 
-phrases combined of the two terms **in the original order 
-of the terms**: first `din`, followed by `ner`. Texts 
-containing the phrases `ner%din` or `ner din`, for example, 
-will **not** be included in the results.  
-Corax, on the other hand, will run a sub-query for each 
-term as if the search was for `din` OR `ner`. Results for 
-both `dinner` and `nerdin` will, therefore, be returned.  
 
 {PANEL/}
 
