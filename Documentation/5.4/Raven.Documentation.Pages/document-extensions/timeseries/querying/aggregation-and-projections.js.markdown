@@ -30,13 +30,14 @@
   First, you can group the time series entries based on the specified time frame.  
   The following time units are available:
 
-  * `seconds`  ( seconds/ second / s )
-  * `minutes`  ( minutes / minute / min )
-  * `hours`    ( hours / hour / h )
-  * `days`     ( days / day / d )
-  * `months`   ( months / month / mon / mo )
-  * `quarters` ( quarters / quarter / q )
-  * `years`    ( years / year / y )
+  * `milliseconds` ( milliseconds / milli / ms)
+  * `seconds`      ( seconds/ second / s )
+  * `minutes`      ( minutes / minute / min )
+  * `hours`        ( hours / hour / h )
+  * `days`         ( days / day / d )
+  * `months`       ( months / month / mon / mo )
+  * `quarters`     ( quarters / quarter / q )
+  * `years`        ( years / year / y )
 
 * **Secondary grouping**:  
   After grouping by a time unit, you can also perform a _secondary grouping_ by the time series [tag](../../../document-extensions/timeseries/overview#tags).

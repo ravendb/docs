@@ -32,6 +32,7 @@
   First, you can group the time series entries based on the specified time frame.  
   The following time units are available:
 
+  * `Milliseconds`
   * `Seconds`
   * `Minutes`
   * `Hours`
