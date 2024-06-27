@@ -14,10 +14,10 @@
 
 * **The contents of the query results**:
 
-    * Unlike a documents index, where the source data are your JSON documents,  
+    * Unlike a document index, where the source data are your JSON documents,  
       the source data for a time series index are the time series entries within the documents.
 
-    * When querying a **documents index**:  
+    * When querying a **document index**:  
       the resulting objects are the document entities (unless results are [projected](../../../indexes/querying/projections)).
   
     * When querying a **time series index**:  
