@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "telegraf.markdown",
+        "Name": "Telegraf Plugin",
+        "DiscussionId": "f59c124a-b94a-4380-bff2-dcb1782ef1f6",
+        "Mappings": []
+    },
+    {
+        "Path": "prometheus.markdown",
+        "Name": "Prometheus",
+        "DiscussionId": "f59c124a-b94a-4380-bff2-dcb1782ef1f6",
+        "Mappings": []
+    },
+    {
+        "Path": "opentelemetry.markdown",
+        "Name": "OpenTelemetry",
+        "DiscussionId": "TODO",
+        "Mappings": []
+    }
+]
