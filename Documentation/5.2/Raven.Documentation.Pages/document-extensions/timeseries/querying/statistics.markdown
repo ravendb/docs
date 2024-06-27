@@ -36,8 +36,8 @@ series, and less than the remaining 10%.
 * LINQ method: `Percentile()`  
 
 The percentile method can be used to calculate any percentile in a time 
-series or range of time series entries. It takes one `double` value between 
-0 and 100. This represents the percent of the time series values that 
+series or range of time series entries. It takes one `double` value that is greater than
+0 and less than or equal to 100. This represents the percent of the time series values that 
 should be smaller than the result.  
 
 See examples [below](../../../document-extensions/timeseries/querying/statistics#examples).  

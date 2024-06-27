@@ -19,7 +19,7 @@
     },
     {
         "Path": "aggregation-and-projections.markdown",
-        "Name": "Aggregation and Projections",
+        "Name": "Aggregating Values",
         "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
         "Mappings": []
     },
