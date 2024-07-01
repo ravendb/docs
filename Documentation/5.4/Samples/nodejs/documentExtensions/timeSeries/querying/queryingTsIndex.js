@@ -12,7 +12,7 @@ async function queryTsIndex() {
             super();
 
             this.maps.add(`
-                timeSeries.map("Employees", function (segment) {
+                timeSeries.map("Employees", "HeartRates", function (segment) {
                      let employee = load(segment.DocumentId, "Employees")
                      
                      // Return the index-entry:
