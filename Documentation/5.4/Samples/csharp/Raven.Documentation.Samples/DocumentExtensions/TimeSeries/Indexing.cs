@@ -54,33 +54,6 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
         #endregion
 
         #region index_2
-        public class StockPriceTimeSeriesFromCompanyCollection_JS : 
-            AbstractJavaScriptTimeSeriesIndexCreationTask
-        {
-            public StockPriceTimeSeriesFromCompanyCollection_JS()
-            {
-                Maps = new HashSet<string> { @"
-                    timeSeries.map('Companies', 'StockPrices', function (segment) {
-
-                        return segment.Entries.map(entry => {
-                            let employee = load(entry.Tag, 'Employees');
-
-                            return {
-                                TradeVolume: entry.Values[4],
-                                Date: new Date(entry.Timestamp.getFullYear(),
-                                               entry.Timestamp.getMonth(),
-                                               entry.Timestamp.getDate()),
-                                CompanyID: segment.DocumentId,
-                                EmployeeName: employee.FirstName + ' ' + employee.LastName
-                            };
-                        });
-                    })"
-                };
-            }
-        }
-        #endregion
-        
-        #region index_3
         public class StockPriceTimeSeriesFromCompanyCollection_NonTyped : AbstractTimeSeriesIndexCreationTask 
         {
             public override TimeSeriesIndexDefinition CreateIndexDefinition()
@@ -104,6 +77,33 @@ namespace Raven.Documentation.Samples.DocumentExtensions.TimeSeries
                             EmployeeName = employee.FirstName + ' ' + employee.LastName 
                         }"
                     }
+                };
+            }
+        }
+        #endregion
+
+        #region index_3
+        public class StockPriceTimeSeriesFromCompanyCollection_JS : 
+            AbstractJavaScriptTimeSeriesIndexCreationTask
+        {
+            public StockPriceTimeSeriesFromCompanyCollection_JS()
+            {
+                Maps = new HashSet<string> { @"
+                    timeSeries.map('Companies', 'StockPrices', function (segment) {
+
+                        return segment.Entries.map(entry => {
+                            let employee = load(entry.Tag, 'Employees');
+
+                            return {
+                                TradeVolume: entry.Values[4],
+                                Date: new Date(entry.Timestamp.getFullYear(),
+                                               entry.Timestamp.getMonth(),
+                                               entry.Timestamp.getDate()),
+                                CompanyID: segment.DocumentId,
+                                EmployeeName: employee.FirstName + ' ' + employee.LastName
+                            };
+                        });
+                    })"
                 };
             }
         }

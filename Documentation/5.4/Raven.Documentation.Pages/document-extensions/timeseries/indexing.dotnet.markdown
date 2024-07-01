@@ -119,8 +119,8 @@ There are two main ways to create a time series index:
 
     {CODE-TABS}
 {CODE-TAB:csharp:Map_index index_1@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:JS_index index_2@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:NonTyped_index index_3@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:csharp:NonTyped_index index_2@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:csharp:JS_index index_3@DocumentExtensions\TimeSeries\Indexing.cs /}
 {CODE-TAB:csharp:IndexDefinition index_definition_1@DocumentExtensions\TimeSeries\Indexing.cs /}
 {CODE-TAB:csharp:IndexDefinition_builder index_definition_2@DocumentExtensions\TimeSeries\Indexing.cs /}
     {CODE-TABS/}
