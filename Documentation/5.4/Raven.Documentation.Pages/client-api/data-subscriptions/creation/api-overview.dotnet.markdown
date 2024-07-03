@@ -1,11 +1,11 @@
-# Data Subscriptions: Creation and Updating API Overview
+# Data Subscriptions: Creation and Update API Overview
 
 ---
 
 {NOTE: }
 
 * In this page:  
-   * [Subscription Creation Overloads Summary](../../../client-api/data-subscriptions/creation/api-overview#create-and-createasync-overloads-summary)  
+   * [Subscription Creation](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation)  
    * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
    * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>)  
    * [Update Subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
@@ -16,7 +16,7 @@
 
 ---
 
-{PANEL:Create and CreateAsync Overloads Summary}
+{PANEL:Subscription Creation}
 
 Subscription creation is accessible through `DocumentStore`'s `Subscriptions` Property, of type `DocumentSubscriptions`:
 {CODE subscriptionCreationOverloads@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
