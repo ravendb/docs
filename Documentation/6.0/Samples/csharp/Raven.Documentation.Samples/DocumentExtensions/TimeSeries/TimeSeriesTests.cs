@@ -2745,7 +2745,7 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
 
                 store.Maintenance.Send(new StopIndexingOperation());
 
-                var timeSeriesIndex = new SimpleIndex();
+                var timeSeriesIndex = new TsIndex();
                 var indexDefinition = timeSeriesIndex.CreateIndexDefinition();
 
                 timeSeriesIndex.Execute(store);
@@ -2753,60 +2753,6 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 store.Maintenance.Send(new StartIndexingOperation());
 
                 //WaitForIndexing(store);
-
-                #region ts_region_Index-TS-Queries-1-session-Query
-                // Query time-series index using session.Query
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-2-session-Query-with-Linq
-                // Enhance the query using LINQ expressions
-                var chosenDate = new DateTime(2020, 5, 20);
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .Where(w => w.Date < chosenDate)
-                        .OrderBy(o => o.HeartBeat)
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-3-DocumentQuery
-                // Query time-series index using DocumentQuery
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-4-DocumentQuery-with-Linq
-                // Query time-series index using DocumentQuery with Linq-like expressions
-                using (var session = store.OpenSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        session.Advanced.DocumentQuery<SimpleIndex.Result, SimpleIndex>()
-                        .WhereEquals("Tag", "watches/fitbit")
-                        .ToList();
-                }
-                #endregion
-
-                #region ts_region_Index-TS-Queries-5-session-Query-Async
-                // Time-series async index query using session.Query
-                using (var session = store.OpenAsyncSession())
-                {
-                    List<SimpleIndex.Result> results =
-                        await session.Query<SimpleIndex.Result, SimpleIndex>()
-                        .ToListAsync();
-                }
-                #endregion
             }
         }
 
@@ -2850,32 +2796,35 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             }
         }
 
-        #region ts_region_Index-TS-Queries-6-Index-Definition-And-Results-Class
-        public class SimpleIndex : AbstractTimeSeriesIndexCreationTask<Employee>
+        #region sample_ts_index
+        public class TsIndex : AbstractTimeSeriesIndexCreationTask<Employee>
         {
-
-            public class Result
+            public class IndexEntry
             {
-                public double HeartBeat { get; set; }
+                // The index-fields:
+                public double BPM { get; set; }
                 public DateTime Date { get; set; }
-                public string User { get; set; }
                 public string Tag { get; set; }
+                public string EmployeeID { get; set; }
+                public string EmployeeName { get; set; }
             }
 
-            public SimpleIndex()
+            public TsIndex()
             {
-                AddMap(
-                    "HeartRates",
-                    timeSeries => from ts in timeSeries
-                                  from entry in ts.Entries
-                                  select new
-                                  {
-                                      HeartBeat =
-                                        entry.Values[0],
-                                      entry.Timestamp.Date,
-                                      User = ts.DocumentId,
-                                      Tag = entry.Tag
-                                  });
+                AddMap("HeartRates", timeSeries => 
+                    from segment in timeSeries
+                    from entry in segment.Entries
+                    let employee = LoadDocument<Employee>(segment.DocumentId)
+                    
+                    // Define the content of the index-fields:
+                    select new IndexEntry()
+                    {
+                        BPM = entry.Values[0],
+                        Date = entry.Timestamp.Date,
+                        Tag = entry.Tag,
+                        EmployeeID = segment.DocumentId,
+                        EmployeeName = employee.FirstName + " " + employee.LastName 
+                    });
             }
         }
         #endregion
