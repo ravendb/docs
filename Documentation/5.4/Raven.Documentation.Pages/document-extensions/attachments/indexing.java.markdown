@@ -5,10 +5,10 @@
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
-* __Static indexes__:   
+* **Static indexes**:   
   Both attachments' details and content can be indexed within a static-index definition.
 
-* __Auto-indexes__:  
+* **Auto-indexes**:  
   Auto-indexing attachments via dynamic queries is not available at this time.
 
 * In this page:  

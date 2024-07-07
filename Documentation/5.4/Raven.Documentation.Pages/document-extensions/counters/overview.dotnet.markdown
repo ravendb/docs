@@ -161,7 +161,7 @@ When all Counters are removed from a document, the server automatically removes 
 
 Managing Counters is performed using the `CountersFor` Session object.  
 
-*  __Counter methods__: 
+*  **Counter methods**: 
  
  | Method                  | Description                                                                             |
  |-------------------------|-----------------------------------------------------------------------------------------|
@@ -171,7 +171,7 @@ Managing Counters is performed using the `CountersFor` Session object.
  | `CountersFor.GetAll`    | Get *all* the Counters of a document and their values                                   |
 
 
-* __Usage flow__:  
+* **Usage flow**:  
   * Open a session.  
   * Create an instance of `CountersFor`.  
       * Either pass `CountersFor` an explicit document ID, -or-  
@@ -180,12 +180,12 @@ Managing Counters is performed using the `CountersFor` Session object.
   * Use Counter methods to manage the document's Counters.  
   * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
 
-* __Success and failure__:  
+* **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
   * When a transaction that includes a Counter modification fails for any reason (e.g. a document concurrency conflict),  
     the Counter modification is reverted.
 
-* __`CountersFor` usage samples__:  
+* **`CountersFor` usage samples**:  
   * You can Use `CountersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
   * You can also use `CountersFor` by passing it **the document object**.  
   

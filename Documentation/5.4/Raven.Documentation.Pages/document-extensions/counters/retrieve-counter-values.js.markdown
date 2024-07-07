@@ -3,22 +3,22 @@
 
 {NOTE: }
 
-* Use `countersFor.get` to retrieve the value of a __single Counter__,  
-  or `countersFor.getAll` to retrieve the names and values of __all Counters__ associated with a document.
+* Use `countersFor.get` to retrieve the value of a **single Counter**,  
+  or `countersFor.getAll` to retrieve the names and values of **all Counters** associated with a document.
 
 * For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:  
 
   * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
-      * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
-      * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
-      * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
 
   * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
-      * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
-      * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
-      * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
 
 {NOTE/}
 
@@ -28,7 +28,7 @@
 
 {NOTE: }
 
-<a id="get-usage" /> __Get usage__:  
+<a id="get-usage" /> **Get usage**:  
 
 * Open a session
 * Create an instance of `countersFor`.
@@ -40,14 +40,14 @@
 {NOTE/}
 {NOTE: }
 
-<a id="get-example" /> __Get example__:  
+<a id="get-example" /> **Get example**:  
 
 {CODE:nodejs getCounter@documentExtensions\counters\get.js /}
 
 {NOTE/}
 {NOTE: }
 
-<a id="get-syntax" /> __Get syntax__:  
+<a id="get-syntax" /> **Get syntax**:  
 
 {CODE:nodejs syntax_1@documentExtensions\counters\get.js /}
 
@@ -66,7 +66,7 @@
 
 {NOTE: }
 
-<a id="getall-usage" /> __GetAll usage__: 
+<a id="getall-usage" /> **GetAll usage**: 
 
 * Open a session.  
 * Create an instance of `countersFor`.
@@ -78,14 +78,14 @@
 {NOTE/}
 {NOTE: }
 
-<a id="getall-example" /> __GetAll example__:  
+<a id="getall-example" /> **GetAll example**:  
 
 {CODE:nodejs getAllCounters@documentExtensions\counters\get.js /}
 
 {NOTE/}
 {NOTE: }
 
-<a id="getall-syntax" /> __GetAll syntax__:  
+<a id="getall-syntax" /> **GetAll syntax**:  
 
 {CODE:nodejs syntax_2@documentExtensions\counters\get.js /}
 

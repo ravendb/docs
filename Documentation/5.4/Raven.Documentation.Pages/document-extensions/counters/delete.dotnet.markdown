@@ -20,7 +20,7 @@
 
 {PANEL: `Delete ` usage}
 
-__Flow__:  
+**Flow**:  
 
 * Open a session.  
 * Create an instance of `CountersFor`.  
@@ -30,7 +30,7 @@ __Flow__:
 * Call `CountersFor.Delete`.
 * Call `session.SaveChanges` for the changes to take effect.  
 
-__Note__:
+**Note**:
 
 * A Counter you deleted will be removed only after the execution of `SaveChanges()`.  
 * `Delete` will **not** generate an error if the Counter doesn't exist.

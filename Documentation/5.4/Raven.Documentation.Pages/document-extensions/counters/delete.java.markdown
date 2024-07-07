@@ -20,7 +20,7 @@
 
 {PANEL: `delete ` usage}
 
-__Flow__:
+**Flow**:
 
 * Open a session.
 * Create an instance of `countersFor`.
@@ -29,7 +29,7 @@ __Flow__:
 * Call `countersFor.delete`.
 * Call `session.saveChanges` for the changes to take effect.
 
-__Note__:
+**Note**:
 
 * A Counter you deleted will be removed only after the execution of `saveChanges()`.
 * `delete` will **not** generate an error if the Counter doesn't exist.

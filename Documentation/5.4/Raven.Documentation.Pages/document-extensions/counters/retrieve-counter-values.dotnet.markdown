@@ -3,22 +3,22 @@
 
 {NOTE: }
 
-* Use `CountersFor.Get` to retrieve the value of a __single Counter__,  
-  or `CountersFor.GetAll` to retrieve the names and values of __all Counters__ associated with a document.
+* Use `CountersFor.Get` to retrieve the value of a **single Counter**,  
+  or `CountersFor.GetAll` to retrieve the names and values of **all Counters** associated with a document.
 
 * For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:  
 
   * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
-      * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
-      * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
-      * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
 
   * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
-      * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
-      * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
-      * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
 
 {NOTE/}
 
@@ -26,9 +26,7 @@
 
 {PANEL: Get a single Counter's value}
 
-{NOTE: }
-
-<a id="get-usage" /> __Get usage__:  
+#### Get usage:  
 
 * Open a session
 * Create an instance of `CountersFor`.
@@ -37,17 +35,15 @@
       e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
 * Call `CountersFor.Get` to retrieve the current value of a single Counter.
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="get-example" /> __Get example__:  
+#### Get example:  
 
 {CODE counters_region_Get@DocumentExtensions\Counters\Counters.cs /}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="get-syntax" /> __Get syntax__:  
+#### Get syntax:  
 
 {CODE Get-definition@DocumentExtensions\Counters\Counters.cs /}
 
@@ -59,14 +55,13 @@
 |--------------|-------------------------|
 | `long`       | Counter's current value |
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Get all Counters of a document}
 
-{NOTE: }
+---
 
-<a id="getall-usage" /> __GetAll usage__: 
+#### GetAll usage: 
 
 * Open a session.  
 * Create an instance of `CountersFor`.
@@ -75,17 +70,15 @@
       e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
 * Call `CountersFor.GetAll` to retrieve the names and values of all counters associated with the document.
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="getall-example" /> __GetAll example__:  
+#### GetAll example:  
 
 {CODE counters_region_GetAll@DocumentExtensions\Counters\Counters.cs /}
 
-{NOTE/}
-{NOTE: }
+---
 
-<a id="getall-syntax" /> __GetAll syntax__:  
+#### GetAll syntax:  
 
 {CODE GetAll-definition@DocumentExtensions\Counters\Counters.cs /}
 
@@ -93,7 +86,6 @@
 |--------------------------|---------------------------------|
 | Dictionary<string, long> | Map of Counter names and values |
 
-{NOTE/}
 {PANEL/}
 
 ## Related articles

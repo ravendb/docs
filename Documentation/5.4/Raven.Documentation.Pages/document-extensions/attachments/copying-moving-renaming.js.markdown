@@ -59,22 +59,22 @@ Use `session.advanced.attachments.rename` to rename an attachment.
 
 | Parameter                 | Type     | Description                 |
 |---------------------------|----------|-----------------------------|
-| __sourceEntity__          | `object` | Source entity               |
-| __destinationEntity__     | `object` | Destination entity          |
-| __sourceDocumentId__      | string   | Source document Id          |
-| __destinationDocumentId__ | string   | Destination document Id     |
-| __sourceName__            | string   | Source attachment name      |
-| __destinationName__       | string   | Destination attachment name |
+| **sourceEntity**          | `object` | Source entity               |
+| **destinationEntity**     | `object` | Destination entity          |
+| **sourceDocumentId**      | string   | Source document Id          |
+| **destinationDocumentId** | string   | Destination document Id     |
+| **sourceName**            | string   | Source attachment name      |
+| **destinationName**       | string   | Destination attachment name |
 
 
 {CODE:nodejs syntax_rename@documentExtensions\attachments\copyMoveRename.js /}
 
 | Parameter      | Type     | Description                     |
 |----------------|----------|---------------------------------|
-| __entity__     | `object` | The document entity             |
-| __documentId__ | string   | The document Id                 |
-| __name__       | string   | Current name of attachment      |
-| __newName__    | string   | The new name for the attachment |
+| **entity**     | `object` | The document entity             |
+| **documentId** | string   | The document Id                 |
+| **name**       | string   | Current name of attachment      |
+| **newName**    | string   | The new name for the attachment |
 
 {PANEL/}
 

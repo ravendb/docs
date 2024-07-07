@@ -21,7 +21,7 @@
 
 {PANEL: `Increment` usage}
 
- __Flow__:  
+ **Flow**:  
 
 * Open a session.  
 * Create an instance of `countersFor`.  
@@ -31,10 +31,10 @@
 * Call `countersFor.increment`.
 * Call `session.saveChanges` for the changes to take effect.  
 
-__Note__:
+**Note**:
 
 * Modifying a Counter using `increment` only takes effect when `session.saveChanges()` is executed.  
-* To __decrease__ a Counter's value, pass the method a negative number to the `increment` method.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
 
 {PANEL/}
 

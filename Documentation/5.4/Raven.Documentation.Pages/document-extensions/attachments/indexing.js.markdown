@@ -5,10 +5,10 @@
 
 * Indexing attachments allows you to query for documents based on their attachments' details and content.
 
-* __Static indexes__:  
+* **Static indexes**:  
   Both attachments' details and content can be indexed within a static-index definition.
 
-* __Auto-indexes__:  
+* **Auto-indexes**:  
   Auto-indexing attachments via dynamic queries is not available at this time.  
 
 * In this page:  
@@ -26,13 +26,13 @@
 
 {NOTE: }
 
-__The index__:
+**The index**:
 
 ---
 
 * To index attachments' details, call `attachmentsFor()` within the index definition.  
 
-* `attachmentsFor()` provides access to the __name__, __size__, __hash__, and __content-type__ of each attachment a document has.
+* `attachmentsFor()` provides access to the **name**, **size**, **hash**, and **content-type** of each attachment a document has.
   These details can then be used when defining the index-fields.
 
 * To index attachments' content, see the examples below. 
@@ -43,7 +43,7 @@ __The index__:
 
 {NOTE: }
 
-__Query the Index__:
+**Query the Index**:
 
 ---
 
@@ -64,7 +64,7 @@ where attachmentNames == "photo.jpg" and attachmentSizes > 20000
 
 {NOTE: }
 
-__Sample data__:
+**Sample data**:
 
 ---
 
@@ -79,11 +79,11 @@ __Sample data__:
 
 {NOTE: }
 
-__The index__:
+**The index**:
 
 ---
 
-* To index the __details & content__ for a specific attachment, call `loadAttachment()` within the index definition.  
+* To index the **details & content** for a specific attachment, call `loadAttachment()` within the index definition.  
  
 * In addition to accessing the attachment details, `loadAttachment()` provides access to the attachment's content, 
   which can be used when defining the index-fields.
@@ -94,7 +94,7 @@ __The index__:
 
 {NOTE: }
 
-__Query the Index__:
+**Query the Index**:
 
 ---
 
@@ -116,11 +116,11 @@ where search(attachmentContent, "Colorado Dallas")
 
 {NOTE: }
 
-__The index__:
+**The index**:
 
 ---
 
-* Use `loadAttachments()` to be able to index the __details & content__ of ALL attachments.
+* Use `loadAttachments()` to be able to index the **details & content** of ALL attachments.
 
 * Note how the index example below is employing the [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document) pattern.
 
@@ -130,7 +130,7 @@ __The index__:
 
 {NOTE: }
 
-__Query the Index__:
+**Query the Index**:
 
 ---
 
@@ -162,7 +162,7 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 | Parameter    | Type     | Description                                             |
 |--------------|----------|---------------------------------------------------------|
-| __document__ | `object` | The document whose attachments details you want to load |
+| **document** | `object` | The document whose attachments details you want to load |
 
 {CODE:nodejs syntax_2@documentExtensions\attachments\indexAttachments.js /}
 
@@ -172,8 +172,8 @@ where attachmentSize > 20000 or search(attachmentContent, "Colorado Dallas")
 
 | Parameter           | Type      | Description                                    |
 |---------------------|-----------|------------------------------------------------|
-| __document__        | `object`  | The document whose attachment you want to load |
-| __attachmentName__  | `string`  | The name of the attachment to load             |
+| **document**        | `object`  | The document whose attachment you want to load |
+| **attachmentName**  | `string`  | The name of the attachment to load             |
 
 {CODE:nodejs syntax_4@documentExtensions\attachments\indexAttachments.js /}
 
