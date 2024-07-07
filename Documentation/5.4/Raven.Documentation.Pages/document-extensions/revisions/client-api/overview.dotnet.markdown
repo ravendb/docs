@@ -6,7 +6,7 @@
 
 * For a general revisions overview see: [Revisions Overview](../../../document-extensions/revisions/overview).  
 
-* Document revisions can be managed from the [Studio](../../../studio/database/settings/document-revisions) or from the **Client API**.  
+* Document revisions can be managed using [Studio](../../../studio/database/settings/document-revisions) or from the **Client API**.  
 
 * From the **Client API**, revisions can be configured and managed by:  
     * [Store Operations](../../../document-extensions/revisions/client-api/overview#revisions-store-operations)  
