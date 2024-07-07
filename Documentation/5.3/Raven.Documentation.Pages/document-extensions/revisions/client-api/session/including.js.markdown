@@ -5,12 +5,12 @@
 {NOTE: }
 
 * Document revisions can be included in results when:
-    * __Making a query__ (`session.query` / `session.advanced.rawQuery`)
-    * __Loading a document__ (`session.load`) from the server
+    * **Making a query** (`session.query` / `session.advanced.rawQuery`)
+    * **Loading a document** (`session.load`) from the server
 
 * The revisions to include can be specified by:
-    * __Creation time__
-    * __Change vector__
+    * **Creation time**
+    * **Change vector**
 
 * In this page:
   * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
@@ -32,7 +32,7 @@
 
 {NOTE: }
 
-<a id="why-include" /> __Why include revisions__:
+<a id="why-include" /> **Why include revisions**:
 
 ---
 
@@ -47,7 +47,7 @@
 
 {NOTE: }
 
-<a id="include-by-time" /> __Including by Creation Time__:
+<a id="include-by-time" /> **Including by Creation Time**:
 
 ---
 
@@ -55,15 +55,15 @@
 
 * You can pass local time or UTC, either way the server will  convert it to UTC.  
 
-* __If the provided time matches__ the creation time of a document revision, this revision will be included.
+* **If the provided time matches** the creation time of a document revision, this revision will be included.
 
-* __If no exact match is found__, then the first revision that precedes the specified time will be returned.
+* **If no exact match is found**, then the first revision that precedes the specified time will be returned.
 
 {NOTE/}
 
 {NOTE: }
 
-<a id="include-by-change-vector" /> __Including by Change Vector__:
+<a id="include-by-change-vector" /> **Including by Change Vector**:
 
 ---
 
@@ -77,7 +77,7 @@
   * When modifying the document, store its updated change vector in a property in the document.  
     Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.
 
-  * Specify the __path__ to this property when including the revisions, see examples below.  
+  * Specify the **path** to this property when including the revisions, see examples below.  
   
   * e.g.:  
     Each time an employee's contract document is modified (e.g. when their salary is raised),  
@@ -91,13 +91,13 @@
 
 {PANEL: Include revisions when Loading document}
 
-__Include a revision by Time__
+**Include a revision by Time**
 
 {CODE:nodejs include_1@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
-__Include revisions by Change Vector__
+**Include revisions by Change Vector**
 
 {CODE:nodejs include_2@document-extensions\revisions\client-api\session\including.js /}
 
@@ -108,13 +108,13 @@ __Include revisions by Change Vector__
 
 {PANEL: Include revisions when making a Query}
 
-__Include revisions by Time__
+**Include revisions by Time**
 
 {CODE:nodejs include_3@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
-__Include revisions by Change Vector__
+**Include revisions by Change Vector**
 
 {CODE:nodejs include_4@document-extensions\revisions\client-api\session\including.js /}
 
@@ -133,13 +133,13 @@ __Include revisions by Change Vector__
 
 ---
 
-__Include revisions by Time__
+**Include revisions by Time**
 
 {CODE:nodejs include_5@document-extensions\revisions\client-api\session\including.js /}
 
 ---
 
-__Include revisions by Change Vector__
+**Include revisions by Change Vector**
 
 {CODE:nodejs include_6@document-extensions\revisions\client-api\session\including.js /}
 
@@ -153,12 +153,12 @@ __Include revisions by Change Vector__
 
 | Parameters | Type | Description |
 | - | - | - |
-| __before__ | `string` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
-| __path__ | `string` | <ul><li>The path to the document property that contains <br> __a single change vector__ or __an array of change vectors__ <br>of the revisions to be included.</li></ul> |
+| **before** | `string` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
+| **path** | `string` | <ul><li>The path to the document property that contains <br> **a single change vector** or **an array of change vectors** <br>of the revisions to be included.</li></ul> |
 
 | Return value | |
 | - | - |
-| `object` | <ul><li>When __loading__ a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When __querying__ for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
+| `object` | <ul><li>When **loading** a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When **querying** for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
 
 {PANEL/}
 

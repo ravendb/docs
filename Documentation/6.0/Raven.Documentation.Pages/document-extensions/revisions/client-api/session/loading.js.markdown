@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Using the Advanced Session methods you can __retrieve revisions and their metadata__  
+* Using the Advanced Session methods you can **retrieve revisions and their metadata**  
   from the database for the specified document.  
 
 * These methods can also be executed lazily, see [get revisions lazily](../../../../client-api/session/how-to/perform-operations-lazily#getRevisions).
@@ -29,11 +29,11 @@
 
 ---
 
-__Example__:
+**Example**:
 
 {CODE:nodejs example_1@document-extensions\revisions\client-api\session\loading.js /}
 
-__Syntax__:
+**Syntax**:
 
 {CODE:nodejs syntax_1@document-extensions\revisions\client-api\session\loading.js /}
 
@@ -56,11 +56,11 @@ __Syntax__:
 
 ---
 
-__Example__:
+**Example**:
 
 {CODE:nodejs example_2@document-extensions\revisions\client-api\session\loading.js /}
 
-__Syntax__:
+**Syntax**:
 
 {CODE:nodejs syntax_2@document-extensions\revisions\client-api\session\loading.js /}
 
@@ -83,11 +83,11 @@ __Syntax__:
 
 ---
 
-__Example__:
+**Example**:
 
 {CODE:nodejs example_3@document-extensions\revisions\client-api\session\loading.js /}
 
-__Syntax__:
+**Syntax**:
 
 {CODE:nodejs syntax_3@document-extensions\revisions\client-api\session\loading.js /}
 
@@ -108,11 +108,11 @@ __Syntax__:
 
 ---
 
-__Example__:
+**Example**:
 
 {CODE:nodejs example_4@document-extensions\revisions\client-api\session\loading.js /}
 
-__Syntax__:
+**Syntax**:
 
 {CODE:nodejs syntax_4@document-extensions\revisions\client-api\session\loading.js /}
 

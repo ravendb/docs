@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* By default, RavenDB creates __revisions for conflict documents__ for all collections  
+* By default, RavenDB creates **revisions for conflict documents** for all collections  
   when conflicts occur and when they are resolved.  
 
 * Use `ConfigureRevisionsForConflictsOperation` to disable the feature or modify the configuration. 

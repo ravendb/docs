@@ -5,18 +5,18 @@
 {NOTE: }
 
 * Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships#includes) in results when:  
-  * __Making a query__ (`Session.Query` / `Session.Advanced.RawQuery`)
-  * __Loading a document__ (`Session.Load`) from the server  
+  * **Making a query** (`Session.Query` / `Session.Advanced.RawQuery`)
+  * **Loading a document** (`Session.Load`) from the server  
 
 * The revisions to include can be specified by:
-  * __Creation time__
-  * __Change vector__
+  * **Creation time**
+  * **Change vector**
 
 * In this page:
   * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
-      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including#why-include)
-      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including#include-by-time)
-      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including#include-by-change-vector)
+      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including#why-include-revisions)
+      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including#including-by-creation-time)
+      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including#including-by-change-vector)
   * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)  
       * [When Loading document](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)
       * [When making a Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-query)
@@ -30,11 +30,7 @@
 
 {PANEL: Overview}
 
-{NOTE: }
-
-<a id="why-include" /> __Why include revisions__:
-
----
+#### Why include revisions:
 
 * Including revisions may be useful, for example, when an auditing application loads or queries for a document.  
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
@@ -43,29 +39,21 @@
   [Getting](../../../../document-extensions/revisions/client-api/session/loading) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="include-by-time" /> __Including by Creation Time__:
-
 ---
+
+#### Including by Creation Time:
 
 * You can include a single revision by specifying its creation time, see examples below.
 
 * You can pass local time or UTC, either way the server will  convert it to UTC.  
 
-* __If the provided time matches__ the creation time of a document revision, this revision will be included.
+* **If the provided time matches** the creation time of a document revision, this revision will be included.
 
-* __If no exact match is found__, then the first revision that precedes the specified time will be returned.
-
-{NOTE/}
-
-{NOTE: }
-
-<a id="include-by-change-vector" /> __Including by Change Vector__:
+* **If no exact match is found**, then the first revision that precedes the specified time will be returned.
 
 ---
+
+#### Including by Change Vector:
 
 * Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector) is updated.  
 
@@ -77,7 +65,7 @@
   * When modifying the document, store its updated change vector in a property in the document.  
     Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
   
-  * Specify the __path__ to this property when including the revisions, see examples below.  
+  * Specify the **path** to this property when including the revisions, see examples below.  
   
   * e.g.:  
     Each time an employee's contract document is modified (e.g. when their salary is raised),  
@@ -85,13 +73,11 @@
     Whenever the time comes to re-evaluate an employee's terms and their contract is loaded,  
     its past revisions can be easily included with it by their change vectors.
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Include revisions when Loading document}
 
-__Include a revision by Time__
+#### Include a revision by Time:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_1@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -100,7 +86,7 @@ __Include a revision by Time__
 
 ---
 
-__Include revisions by Change Vector__
+#### Include revisions by Change Vector:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_2@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -114,7 +100,7 @@ __Include revisions by Change Vector__
 
 {PANEL: Include revisions when making a Query}
 
-__Include revisions by Time__
+#### Include revisions by Time:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_3@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -123,7 +109,7 @@ __Include revisions by Time__
 
 ---
 
-__Include revisions by Change Vector__
+#### Include revisions by Change Vector:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_4@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -145,7 +131,7 @@ __Include revisions by Change Vector__
 
 ---
 
-__Include revisions by Time__
+#### Include revisions by Time:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_5@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -154,7 +140,7 @@ __Include revisions by Time__
 
 ---
 
-__Include revisions by Change Vector__
+#### Include revisions by Change Vector:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync include_6@DocumentExtensions\Revisions\ClientAPI\Session\Including.cs /}
@@ -171,13 +157,13 @@ __Include revisions by Change Vector__
 
 | Parameters | Type | Description |
 | - | - | - |
-| __before__ | `DateTime` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
-| __path__ | `Expression<Func<T, string>>` | <ul><li>The path to the document property that contains<br> __a single change vector__ of the revision to be included.</li></ul> |
-| __path__ | `Expression<Func<T, IEnumerable<string>>>` | <ul><li>The path to the document property that contains<br> __an array of change vectors__ of the revisions to be included.</li></ul> |
+| **before** | `DateTime` | <ul><li>Creation time of the revision to be included.</li><li>Pass local time or UTC.<br>The server will convert the param to UTC.</li><li>If no revision was created at this time then the first revision that precedes it is returned.</li></ul> |
+| **path** | `Expression<Func<T, string>>` | <ul><li>The path to the document property that contains<br> **a single change vector** of the revision to be included.</li></ul> |
+| **path** | `Expression<Func<T, IEnumerable<string>>>` | <ul><li>The path to the document property that contains<br> **an array of change vectors** of the revisions to be included.</li></ul> |
 
 | Return value | |
 | - | - |
-| `TBuilder` | <ul><li>When __loading__ a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When __querying__ for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
+| `TBuilder` | <ul><li>When **loading** a document:<br>A builder object that is used to build the include part in the Load request.</il><li>When **querying** for a document:<br>A builder object that is used to build the include part in the Query RQL expression.</li><li>Can be used in chaining.</li></ul> |
 
 {PANEL/}
 

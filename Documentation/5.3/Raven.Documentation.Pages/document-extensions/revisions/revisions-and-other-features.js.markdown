@@ -26,11 +26,11 @@
 
 {NOTE: }
 
-__Revisions creation__  
+**Revisions creation**  
 
 * A document revision will be created when:   
-  * A new counter is __created__ on the document.  
-  * A counter is __deleted__ from the document.
+  * A new counter is **created** on the document.  
+  * A counter is **deleted** from the document.
     
 * A revision will Not be created upon modifying the value of an existing counter.
 
@@ -38,14 +38,14 @@ __Revisions creation__
 
 {NOTE: }
 
-__Stored data__  
+**Stored data**  
 
 * A revision that is created for a document that contains counters  
-  will have the `@counters-snapshot` property in its __metadata__.  
+  will have the `@counters-snapshot` property in its **metadata**.  
  
 * This property holds the counters' names and values at the time when the revision was created. 
 
-* The counter's value stored in the  revision's metadata is the __accumulated value__ from all nodes.  
+* The counter's value stored in the  revision's metadata is the **accumulated value** from all nodes.  
   It does not specify the value of the counter on each individual node.
 
 * Sample revision metadata:  
@@ -66,7 +66,7 @@ __Stored data__
 
 {NOTE: }
 
-__Reverted data__  
+**Reverted data**  
 
 * When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has counters,  
   the counters from the revision are restored to functionality along with their values.  
@@ -75,7 +75,7 @@ __Reverted data__
 
 {NOTE: }
 
-__Extract counters data from revisions__  
+**Extract counters data from revisions**  
 
 * Use [getMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) to get the revisions metadata for a specified document,  
   and then extract the counters' data.  
@@ -90,11 +90,11 @@ __Extract counters data from revisions__
 
 {NOTE: }
 
-__Revisions Creation__
+**Revisions Creation**
 
 * A document revision will be created when:  
-    * A new time series is __created__ on the document.  
-    * A time series is __deleted__ from the document.  
+    * A new time series is **created** on the document.  
+    * A time series is **deleted** from the document.  
       (A time series is deleted from a document when all its entries are deleted)
 
 * A revision will Not be created upon modifying the values of an existing [time series](../../document-extensions/timeseries/overview).
@@ -103,10 +103,10 @@ __Revisions Creation__
 
 {NOTE: }
 
-__Stored Data__
+**Stored Data**
 
 * A revision that is created for a document that contains time series  
-  will have the `@timeseries-snapshot` property in its __metadata__.  
+  will have the `@timeseries-snapshot` property in its **metadata**.  
 
 * This property does Not hold the time series values data,  
   it only contains the following information for the time when the revision was created:
@@ -142,15 +142,15 @@ __Stored Data__
 
 {NOTE: }
 
-__Reverted Data__
+**Reverted Data**
 
 When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has a time series:  
 
-* If the current document __contains__ a time series name as in the revision:
+* If the current document **contains** a time series name as in the revision:
     * The reverted document will keep the time series entries & values as it was in the current document.
     * Time series entries and values from the revision are Not restored.
 
-* If the current document __doesn't contain__ a time series name as in the revision,  
+* If the current document **doesn't contain** a time series name as in the revision,  
   or if the document itself was deleted:  
   * The reverted document will have the time series from the revision  
   * However, the entries count will be 0  
@@ -163,22 +163,22 @@ When a document is [reverted](../../document-extensions/revisions/revert-revisio
 
 {NOTE: }
 
-__Revisions Creation__
+**Revisions Creation**
 
 * A document revision will be created when:  
-    * A new [attachment](../../document-extensions/attachments/what-are-attachments) is __added__ to the document.  
-    * An attachment is __deleted__ from the document.   
+    * A new [attachment](../../document-extensions/attachments/what-are-attachments) is **added** to the document.  
+    * An attachment is **deleted** from the document.   
 
 {NOTE/}
 
 {NOTE: }
 
-__Stored Data__
+**Stored Data**
 
 * A revision that is created for a document with attachments  
-  will have the `@attachments` property in its __metadata__.
+  will have the `@attachments` property in its **metadata**.
 
-* This property does Not hold the actual attachments, as the files are stored in __separate storage__.  
+* This property does Not hold the actual attachments, as the files are stored in **separate storage**.  
   The property only contains the following information for each attachment the document had when the revision was created:  
   * Attachment file name
   * File content type
@@ -211,7 +211,7 @@ __Stored Data__
 
 {NOTE: }
 
-__Reverted Data__
+**Reverted Data**
 
 * When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has attachments,  
   the attachments are restored to their state when the revision was created.
