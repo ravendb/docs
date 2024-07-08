@@ -68,7 +68,7 @@
 {NOTE: }
 
 **Execute all aggregation functions**:  
-When the query does Not explicitly select a specific aggregation function,  
+When a query groups entries by a time frame but does Not explicitly select a specific aggregation function,  
 the server will implicitly execute ALL available aggregation functions (except for Percentile, Slope, and StandardDeviation) for each group.
 
 {NOTE/}
