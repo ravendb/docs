@@ -164,7 +164,7 @@ cost, and the expected charge at the end of this month.
 
 ####Charging failures  
 If we fail to charge your account using the payment method you provided, we'll notify
-you and retry for 7 days. Failure to pay after that period may result in account closure.
+you and retry for 5 days. Failure to pay after that period may result in account closure.
 Here's an example of the notification sent to the owner and all cloud account managers:
 
 ![Email](images/known-payment-failure-email.png)
@@ -174,8 +174,13 @@ Here's an example of the notification sent to the owner and all cloud account ma
 ####Pay Now 
 
 The `Pay Now` button becomes visible on your Billing tab dashboard once there are any unpaid costs from previous billing cycle(s).
+
+{INFO: }
+There is one exception to this rule, on the billing day (27th of the month) `Pay Now` functionality is disabled, so the button won't be visible.
+{INFO/}
+
 If you have resolved the issue associated with the charge failure (e.g., updated payment information), you can manually initiate the payment by clicking the `Pay Now` button.
-Upon clicking the `Pay Now` button, the system will process the payment for all outstanding amounts up to the end of the previous billing cycle.
+Upon clicking the `Pay Now` button, the system will process the payment for all outstanding amounts up to the end of the previous billing cycle. If the payment process fails, you will be notified again by email.
 
 
 ![PayNow1](images/pay-now-1.png)
@@ -188,7 +193,7 @@ It does not cover costs incurred in the current billing cycle.
 
 {NOTE: }
 ####Example
-If you have unpaid costs from 13/12/2023 and today is 01/03/2024, using the `Pay Now` button will bill you for the period from **13/12/2023** up to **27/02/2024**.
+If you have unpaid costs from 13/12/2023 and today is 01/03/2024, using the `Pay Now` feature will bill you for the period from **13/12/2023** up to **27/02/2024**.
 {NOTE/}
 
 ####Notifications
@@ -196,8 +201,6 @@ If you have unpaid costs from 13/12/2023 and today is 01/03/2024, using the `Pay
   If the payment fails, you will receive an email notification with the details and possible reasons for the failure.
 
 {INFO: }
-
-Using `Pay Now` button is only available for use once every hour.
 
 Ensure that your payment information is up-to-date to avoid repeated charge failures.
 
