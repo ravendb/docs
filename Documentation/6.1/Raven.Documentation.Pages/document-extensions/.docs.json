@@ -1,0 +1,28 @@
+[
+    {
+        "Path": "overview-extensions.markdown",
+        "Name": "Overview",
+        "DiscussionId": "2bc22ef1-450e-4ae9-aa6f-56b0b47977d9",
+        "Mappings": []
+    },
+    {
+        "Path": "/timeseries",
+        "Name": "Time Series",
+        "Mappings": []
+    },
+    {
+        "Path": "/counters",
+        "Name": "Counters",
+        "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "/revisions",
+        "Name": "Revisions",
+        "Mappings": []
+    }
+]

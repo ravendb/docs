@@ -1,0 +1,38 @@
+[
+    {
+        "Path": "append.markdown",
+        "Name": "Append",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "delete.markdown",
+        "Name": "Delete",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "/get",
+        "Name": "Get",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "/include",
+        "Name": "Include",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "patch.markdown",
+        "Name": "Patch",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "querying.markdown",
+        "Name": "Querying",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

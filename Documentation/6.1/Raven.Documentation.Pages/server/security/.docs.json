@@ -1,0 +1,34 @@
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "b8e6db5e-7ba2-4f41-a6af-0f4f382e92af",
+    "Mappings": []
+  },
+  {
+    "Path": "/authentication",
+    "Name": "Authentication",
+    "Mappings": []
+  },
+  {
+    "Path": "/authorization",
+    "Name": "Authorization",
+    "Mappings": []
+  },
+  {
+    "Path": "/encryption",
+    "Name": "Encryption",
+    "Mappings": []
+  },
+  {
+    "Path": "/audit-log",
+    "Name": "Audit Log",
+    "Mappings": []
+  },
+  {
+    "Path": "common-errors-and-faq.markdown",
+    "Name": "Common Errors & FAQ",
+    "DiscussionId": "5240dcc1-b5ea-4dd7-9b48-c1a436c599a2",
+    "Mappings": []
+  }
+]

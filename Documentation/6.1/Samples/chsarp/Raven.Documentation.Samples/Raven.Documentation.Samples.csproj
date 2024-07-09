@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSXRayRecorder.Handlers.System.Net" Version="2.11.0" />
+    <PackageReference Include="NodaTime" Version="3.1.10" />
+    <PackageReference Include="RavenDB.Client" Version="6.1.0-nightly-20240709-0737" />
+    <PackageReference Include="RavenDB.Embedded" Version="6.1.0-nightly-20240709-0737" />
+    <PackageReference Include="RavenDB.TestDriver" Version="6.1.0-nightly-20240709-0737" />
+    <PackageReference Include="System.Reactive.Core" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
+    <PackageReference Include="xunit" Version="2.6.5" />
+  </ItemGroup>
+
+</Project>

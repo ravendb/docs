@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "snmp.markdown",
+        "Name": "SNMP Support",
+        "DiscussionId": "e93eeece-4ec7-49a1-a421-3e76be46447a",
+        "Mappings": []
+    },
+    {
+        "Path": "setup-zabbix.markdown",
+        "Name": "Zabbix Monitoring",
+        "DiscussionId": "fd2935c8-c276-454b-b518-6449b1d37673",
+        "Mappings": []
+    }
+]

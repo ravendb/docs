@@ -1,0 +1,49 @@
+[
+    {
+        "Path": "how-to-customize-id-generation-for-entities.markdown",
+        "Name": "How to Customize ID Generation for Entities",
+        "DiscussionId": "12fec040-6762-4c9b-a2f5-1a16f3d5c4cc",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/configuration/how-to-customize-key-generation-for-entities"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-customize-collection-assignment-for-entities.markdown",
+        "Name": "How to Customize Collection Assignment for Entities",
+        "DiscussionId": "dfa7951f-d03d-49f8-8251-963946cf95da",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
+        "Name": "How to Customize Identity Property Lookup For Entities",
+        "DiscussionId": "71bc1ab1-a98f-4ce6-9811-5a184c45226b",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
+        "Name": "How to Change Maximum Number of Requests per Session",
+        "DiscussionId": "ca686c7b-cf17-4ea7-852c-5b75a2ce4b0d",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-enable-optimistic-concurrency.markdown",
+        "Name": "How to Enable Optimistic Concurrency",
+        "DiscussionId": "5ebba5ce-fed5-4afa-ad6d-fe11984e9644",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-disable-tracking.markdown",
+        "Name": "Disable Tracking",
+        "DiscussionId": "be9f91c8-eb29-43a3-a331-39ae78fc974a",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-disable-caching.markdown",
+        "Name": "Disable Caching",
+        "DiscussionId": "a1765e03-347e-44bb-9637-046fb7a08235",
+        "Mappings": []
+    }
+]

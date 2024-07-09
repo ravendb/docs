@@ -1,0 +1,49 @@
+[
+    {
+        "Path": "cloud-overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "3631d5ec-4665-4f6c-aad8-ca1e8664b7df",
+        "Mappings": []
+    },
+    {
+        "Path": "/portal",
+        "Name": "Portal",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-instances.markdown",
+        "Name": "Tiers and Instances",
+        "DiscussionId": "a42c200e-cab6-4b43-95b1-42dc10641077",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-pricing-payment-billing.markdown",
+        "Name": "Pricing, Payment and Billing",
+        "DiscussionId": "25c60af6-eaef-4bd9-a35d-d6c2abb77b10",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-backup-and-restore.markdown",
+        "Name": "Backup And Restore",
+        "DiscussionId": "8b319a53-dace-4c5c-b967-aee08d7d4509",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-migration.markdown",
+        "Name": "Migration",
+        "DiscussionId": "b60e4806-f411-4e1d-a96e-88df235ac3f4",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-scaling.markdown",
+        "Name": "Scaling",
+        "DiscussionId": "27ba95e8-d720-4b20-8446-b2a6bbb497a6",
+        "Mappings": []
+    },
+    {
+        "Path": "cloud-security.markdown",
+        "Name": "Security",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
+    }
+]

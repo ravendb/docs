@@ -1,0 +1,55 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "a3903bfd-4d83-4a14-96bf-666d414ec7b6",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/unique-constraints"
+            }
+        ]
+    },
+    {
+        "Path": "put-compare-exchange-value.markdown",
+        "Name": "Put Compare Exchange",
+        "DiscussionId": "3e3b377d-5975-45f9-8ab9-f6f46c207fa9",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-compare-exchange-value.markdown",
+        "Name": "Delete Compare Exchange",
+        "DiscussionId": "5f09d413-83d4-4fcd-ae4d-a43d498deeba",
+        "Mappings": []
+    },
+    {
+        "Path": "get-compare-exchange-value.markdown",
+        "Name": "Get Compare Exchange Value",
+        "DiscussionId": "0e6b0b1a-2749-40ff-8c82-287587e32e2c",
+        "Mappings": []
+    },
+    {
+        "Path": "get-compare-exchange-values.markdown",
+        "Name": "Get Compare Exchange Values",
+        "DiscussionId": "8ebd05d1-0f1f-4196-bb63-bed64fa735bb",
+        "Mappings": []
+    },
+    {
+        "Path": "include-compare-exchange.markdown",
+        "Name": "Include Compare Exchange Values",
+        "DiscussionId": "0c0bdb13-a5a5-465e-8859-64fd3f46b769",
+        "Mappings": []
+    },
+    {
+        "Path": "compare-exchange-expiration.markdown",
+        "Name": "Compare Exchange Expiration",
+        "DiscussionId": "14b18c8c-28fc-4c97-b435-b4176d4e1a26",
+        "Mappings": []
+    },
+    {
+        "Path": "compare-exchange-metadata.markdown",
+        "Name": "Compare Exchange Metadata",
+        "DiscussionId": "42e13e99-2dfb-4f8c-9cde-f0a2cbfccfe0",
+        "Mappings": []
+    }
+]

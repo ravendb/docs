@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Client" Version="6.1.0-nightly-20240709-0737" />
+    <PackageReference Include="RavenDB.Embedded" Version="6.1.0-nightly-20240709-0737" />
+    <PackageReference Include="RavenDB.TestDriver" Version="6.1.0-nightly-20240709-0737" />
+  </ItemGroup>
+
+</Project>
