@@ -60,8 +60,8 @@ Please make sure you understand what each of the options stands for, so your req
 | Within 2 hours    | Your query will be responded to within two hours. Use when due to an error in a production environment, the Software is down or seriously impacted, or there is no workaround currently available, or the workaround is cumbersome to use, or the Customer data is lost or destroyed. |
 
 {INFO: }
-**Within 2 hours** response time is only available for Customers with the **Cloud Support** support option.  
-**Within 2 hours** response time is only available for **Production tier** related issues.
+**Within 2 hours** response time is only available for **Production tier** related issues.  
+**Within 2 hours** and **Next business day** response times are only available for Customers with the **Cloud Support** support option.  
 {INFO/}
 
 {PANEL/}
