@@ -10,6 +10,7 @@
    * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
    * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)  
    * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)  
+   * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
    * [Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
    * [Subscription workers with a primary and a secondary node](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-a-primary-and-a-secondary-node)  
 
@@ -66,6 +67,16 @@ Here we create a worker that processes received data as dynamic objects.
 Here we create a worker that receives all orders without a shipping date, lets the shipment mechanism handle it, and updates the `ShippedAt` field value.
 
 {CODE:python subscription_with_open_session_usage@ClientApi\DataSubscriptions\DataSubscriptions.py /}
+
+{PANEL/}
+
+{PANEL:Subscription that uses included documents}
+
+Here we create a subscription utilizing the includes feature, by processing `Order` documents and including all `Product`s of each order.  
+When processing the subscription, we create a session using the [SubscriptionBatch[\_T]](../../../client-api/data-subscriptions/consumption/api-overview#subscriptionbatch<t>) object, 
+and for each order line, we obtain the `Product` document and process it alongside the `Order`.
+
+{CODE subscription_with_includes_path_usage@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 {PANEL/}
 
