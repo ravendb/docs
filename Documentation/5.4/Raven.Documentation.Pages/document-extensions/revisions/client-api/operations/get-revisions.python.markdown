@@ -37,7 +37,7 @@
 
 | Parameter | Type | Description |
 | - | - | - |
-| **id** | `string` | Document ID for which to get revisions |
+| **id** | `str` | Document ID for which to get revisions |
 | **start** | `int` | Revision number to start from |
 | **page_size** | `int` | Number of revisions to get |
 | **parameters** | `Parameters` | An object that wraps `id`, `start`, and `page_size` |
