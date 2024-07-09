@@ -48,10 +48,10 @@
 
 {CODE:python Increment-definition@DocumentExtensions\Counters\Counters.py /}
 
-| Parameter     | Type    | Description      |
-|---------------|---------|------------------|
-| `counter_name` | string  | Counter's name  |
-| `delta`       | long    | Increase Counter by this value.<br>Default value is 1.<br>For a new Counter, this number will be its initial value. |
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **counter_name** | `str` | Counter's name  |
+| **delta**        | `int` | Increase Counter by this value.<br>Default value is 1.<br>For a new Counter, this number will be its initial value. |
 
 {PANEL/}
 

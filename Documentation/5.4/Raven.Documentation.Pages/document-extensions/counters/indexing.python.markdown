@@ -41,8 +41,8 @@ public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndex
 
 | Property | Type | Description |
 | - | - | - |
-| **Maps** | `HashSet<string>` | The set of javascript map functions |
-| **Reduce** | `string` | The javascript reduce function |
+| **maps** | `Set[str]` | The set of javascript map functions |
+| **reduce** | `str` | The javascript reduce function |
 
 Example:  
 
