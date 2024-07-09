@@ -44,7 +44,7 @@ Create a subscription worker using `get_subscription_worker` or `get_subscriptio
 | Member | Type | Description |
 |--------|:-----|-------------| 
 | **subscription_name** | `str` | Returns the subscription name passed to the constructor. This name will be used by the server side to identify the subscription. |
-| **time_to_wait_before_connection_retry** | `DateTime` | Time to wait before reconnecting, in the case of non-aborting failure during the subscription processing.<br>Default: 5 seconds. |
+| **time_to_wait_before_connection_retry** | `timedelta` | Time to wait before reconnecting, in the case of non-aborting failure during the subscription processing.<br>Default: 5 seconds. |
 | **ignore_subscriber_errors** | `bool` | If `True`, will not abort subscription processing if client code, passed to the `run` function, throws an unhandled exception.<br>Default: `False` |
 | **strategy** | `SubscriptionOpeningStrategy`<br>(enum) | Sets the way the server will treat current and/or other clients when they try to connect. See [Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay). <br>Default: `OPEN_IF_FREE`. |
 | **max_docs_per_batch** | `int` | Max number of documents the server will try to send in a batch. If the server doesn't find as many documents as specified, it will not wait and send those it did find.<br>Default: 4096. |
@@ -59,7 +59,7 @@ Create a subscription worker using `get_subscription_worker` or `get_subscriptio
 After [generating](../../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation) 
 a subscription worker, the worker doesn't process any documents yet.  
 Processing starts when the `run` function is called.  
-The `run` function receives the client-side code as a delegate that will process the retrieved batches:
+The `run` function receives the client-side code as a function that will process the retrieved batches.  
 {CODE:python subscriptionWorkerRunning@ClientApi\DataSubscriptions\DataSubscriptions.py /}
 
 | Parameters | | |
@@ -73,8 +73,11 @@ The `run` function receives the client-side code as a delegate that will process
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **items** | `SubscriptionBatch[_T].item` array | Batch items list |
+| **items** | `SubscriptionBatch[_T].Item` array | Batch items list |
 | **number_of_items_in_batch** | `int` | Number of items in the batch |
+
+{CODE:python number_of_items_in_batch_definition@ClientApi\DataSubscriptions\DataSubscriptions.py /}
+
 
 {NOTE:Subscription Worker Connectivity}
 As long as there is no exception, the worker will continue addressing the same 
@@ -86,18 +89,22 @@ The node that the worker succeeds connecting to, will inform the worker which
 node is currently responsible for data subscriptions.  
 {NOTE/}
 
+{CODE:python Item_definition@ClientApi\DataSubscriptions\DataSubscriptions.py /}
+{CODE:python SubscriptionBatch_definition@ClientApi\DataSubscriptions\DataSubscriptions.py /}
+
 | `SubscriptionBatch[_T].item` Member | Type | Description |
 |--------|:-----|-------------| 
-| **result** | `T` | Current batch item |
-| **exception_message** | `str` | Message of the exception thrown during current document processing in the server side |
-| **id** | `str` | Current batch item's underlying document ID |
-| **change_vector** | `str` | Current batch item's underlying document change vector of the current document |
-| **raw_result** |  | Current batch item before serialization to `T` |
-| **raw_metadata** |  | Current batch item's underlying document metadata |
-| **metadata** |  | Current batch item's underlying metadata values |
+| **\_result** (Optional) | `_T_Item` | Current batch item |
+| **\_exception_message** (Optional) | `str` | Message of the exception thrown during current document processing in the server side |
+| **\_key** (Optional) | `str` | Current batch item underlying document ID |
+| **\_change_vector** (Optional) | `str` | Current batch item underlying document change vector of the current document |
+| **\_projection** (Optional) | `bool` | indicates whether the value id a projection |
+| **raw_result** (Optional) | `Dict` | Current batch item before serialization to `T` |
+| **raw_metadata** (Optional) | `Dict` | Current batch item underlying document metadata |
+| **\_metadata** (Optional) | `MetadataAsDictionary` | Current batch item underlying metadata values |
 
 {WARNING: }
-Usage of `raw_result`, `raw_metadata`, and `metadata` values outside of the document processing delegate 
+Usage of `raw_result`, `raw_metadata`, and `_metadata` values outside of the document processing delegate 
 is not supported.
 {WARNING/}
 
@@ -111,9 +118,8 @@ is not supported.
 
 | Method | Return Type | Description |
 |--------|:-----|-------------| 
-| `dispose` | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running. |
-| `dispose(bool waitForSubscriptionTask)` | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `run` function task or not. |
-| `run` | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
+| `close(bool wait_for_subscription_task = True)` | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `run` function to finish running. |
+| `run` | `Future[None]` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
 
 ---
 
@@ -121,15 +127,15 @@ is not supported.
 
 | Event | Type\Return type | Description |
 |--------|:-----|-------------| 
-| **after\_acknowledgment** | `AfterAcknowledgmentAction` (event) | Event invoked after each time the server acknowledges batch processing progress. |
+| **after\_acknowledgment** | `Callable[[SubscriptionBatch[_T]], None]` | Event invoked after each time the server acknowledges batch processing progress. |
 
-| `AfterAcknowledgmentAction` Parameters | | |
+| `after_acknowledgment` Parameters | | |
 | ------------- | ------------- | ----- |
 | **batch** | `SubscriptionBatch[_T]` | The batch process which was acknowledged |
 
 | Return value | |
 | ------------- | ----- |
-| `Task` | The worker waits for the task to finish the event processing |
+| `Future[None]` | The worker waits for the task to finish the event processing |
 
 ### Properties:
 

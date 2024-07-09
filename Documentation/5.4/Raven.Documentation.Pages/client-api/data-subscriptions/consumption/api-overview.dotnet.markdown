@@ -75,7 +75,7 @@ The `Run` function receives the client-side code as a delegate that will process
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **Items** | `List<SubscriptionBatch&lt;T&gt;.Item>` | Batch's items list. |
+| **Items** | `List<SubscriptionBatch<T>.Item>` | Batch's items list. |
 | **NumberOfItemsInBatch** | `int` | Amount of items in the batch. |
 
 | Method Signature | Return value | Description |

@@ -65,7 +65,7 @@ A worker can be configured to treat the thrown exception in either of the follow
   The task returned by the `run` function will be terminated with an erroneous state, throwing 
   a `SubscriberErrorException` exception.  
 
-* If `SubscriptionWorkerOptions`'s value `IgnoreSubscriberErrors` is set to True, the erroneous 
+* If `SubscriptionWorkerOptions`'s value `ignore_subscriber_errors` is set to True, the erroneous 
   batch will get acknowledged without retrying and the next batches will continue processing. 
 {INFO/}
 
@@ -73,13 +73,13 @@ A worker can be configured to treat the thrown exception in either of the follow
 The above cases describe situations in which a worker tries to reconnect with the server.  
 There are two key `SubscriptionWorkerOptions` fields controlling this state:
 
-* `TimeToWaitBeforeConnectionRetry` - Worker 'sleep' period before trying to reconnect.  
-* `MaxErroneousPeriod` - Maximum time that the worker is allowed to be in an erroneous state.  
+* `time_to_wait_before_connection_retry` - Worker 'sleep' period before trying to reconnect.  
+* `max_erroneous_period` - Maximum time that the worker is allowed to be in an erroneous state.  
   When this time elapses, the worker will stop trying to reconnect.  
 {INFO/}
 
-{INFO: OnUnexpectedSubscriptionError}
-`OnUnexpectedSubscriptionError` is the event raised when a connection failure occurs 
+{INFO: `on_unexpected_subscription_error`}
+`on_unexpected_subscription_error` is the event raised when a connection failure occurs 
 between the subscription worker and the server and it throws an unexpected exception. 
 When this occurs, the worker will automatically try to reconnect again. This event is 
 useful for logging these unexpected exceptions.

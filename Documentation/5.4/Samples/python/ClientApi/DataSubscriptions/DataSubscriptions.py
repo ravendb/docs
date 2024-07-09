@@ -694,6 +694,35 @@ class SubscriptionExamples(ExampleBase):
             # endregion
             """
 
+            # region Item_definition
+            class Item(Generic[_T_Item]):
+                """
+                Represents a single item in a subscription batch results.
+                This class should be used only inside the subscription's run delegate,
+                using it outside this scope might cause unexpected behavior.
+                """
+            # endregion
+
+            # region number_of_items_in_batch_definition
+            def number_of_items_in_batch(self) -> int:
+                return 0 if self.items is None else len(self.items)
+            # endregion
+
+            # region SubscriptionBatch_definition
+            class SubscriptionBatch(Generic[_T]):
+
+            def __init__(self):
+                self._result: Optional[_T_Item] = None
+                self._exception_message: Optional[str] = None
+                self._key: Optional[str] = None
+                self._change_vector: Optional[str] = None
+                self._projection: Optional[bool] = None
+                self._revision: Optional[bool] = None
+                self.raw_result: Optional[Dict] = None
+                self.raw_metadata: Optional[Dict] = None
+                self._metadata: Optional[MetadataAsDictionary] = None
+            # endregion
+
             # region get_subscriptions_1
             def get_subscriptions(
                 self, start: int, take: int, database: Optional[str] = None
