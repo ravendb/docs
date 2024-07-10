@@ -29,8 +29,8 @@
 
 {CODE syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndex.cs /}
 
-| Parameters    | Type | Description |
-|- | - | - |
+| Parameter     | Type     | Description             |
+|---------------|----------|-------------------------|
 | **indexName** | `string` | Name of index to delete |
 
 {PANEL/}

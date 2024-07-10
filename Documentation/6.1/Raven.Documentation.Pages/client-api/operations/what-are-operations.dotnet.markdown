@@ -7,7 +7,7 @@
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)**
   and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
-  They in turn are built on top of the lower-level __Operations__ and __RavenCommands__ API.
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
 
 * **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
   directly to the server via DocumentStore Operations instead of using the higher-level Session API.
@@ -16,11 +16,13 @@
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
   * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
   <br>
-  * __Operation types__: 
+  * **Operation types**: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
-      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)  
-  * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+      * [Kill operation](../../client-api/operations/what-are-operations#kill-operation)  
 
 {NOTE/}
 
@@ -28,7 +30,7 @@
 
 {PANEL: Why use operations}
 
-* Operations provide __management functionality__ that is Not available in the context of the session, for example:
+* Operations provide **management functionality** that is Not available in the context of the session, for example:
     * Create/delete a database
     * Execute administrative tasks
     * Assign permissions
@@ -43,20 +45,20 @@
 
 {PANEL: How operations work}
 
-* __Sending the request__:  
+* **Sending the request**:  
   Each Operation is an encapsulation of a `RavenCommand`.  
   The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
   The DocumentStore `OperationExecutor` sends the request and processes the results.
-* __Target node__:  
+* **Target node**:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
   However, server-maintenance operations can be executed on a specific node by using the [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
-* __Target database__:  
+* **Target database**:  
   By default, operations work on the default database defined in the DocumentStore.  
   However, common operations & maintenance operations can operate on a different database by using the [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
-* __Transaction scope__:  
+* **Transaction scope**:  
   Operations execute as a single-node transaction.  
   If needed, data will then replicate to the other nodes in the database-group.  
-* __Background operations__:  
+* **Background operations**:  
   Some operations may take a long time to complete and can be awaited for completion.   
   Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
 
@@ -64,10 +66,8 @@
 
 {PANEL: Common operations}
 
-{NOTE: }
-
 * All common operations implement the `IOperation` interface.  
-  The operation is executed within the __database scope__.  
+  The operation is executed within the **database scope**.  
   Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
@@ -77,58 +77,52 @@
 * To execute a common operation request,  
   use the `Send` method on the `Operations` property in the DocumentStore.
 
-__Example__:
+#### Example:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync operations_ex@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async operations_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Send syntax__:
+##### Syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync operations_send@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async operations_send_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
 {NOTE: }
 
-<span id="operations-list"> __The following common operations are available:__ </span>
+<span id="operations-list"> **The following common operations are available:** </span>
 
 ---
 
-* __Attachments__:  
+* **Attachments**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)  
 
-* __Counters__:  
+* **Counters**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
 
-* __Time series__:  
+* **Time series**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [TimeSeriesBatchOperation](../../document-extensions/timeseries/client-api/operations/append-and-delete)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetMultipleTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
 
-* __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../client-api/operations/revisions/get-revisions)  
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
 
-* __Patching__:  
+* **Patching**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
 
-* __Delete by query__:  
+* **Delete by query**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
 
-* __Compare-exchange__:  
+* **Compare-exchange**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutCompareExchangeValueOperation](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValuesOperation](../../client-api/operations/compare-exchange/get-compare-exchange-values)  
@@ -139,10 +133,8 @@ __Send syntax__:
 
 {PANEL: Maintenance operations}
 
-{NOTE: }
-
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
-  The operation is executed within the __database scope__.  
+  The operation is executed within the **database scope**.  
   Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
 
 * These operations include database management operations such as setting client configuration,  
@@ -152,43 +144,37 @@ __Send syntax__:
 * To execute a maintenance operation request,  
   use the `Send` method on the `Maintenance` property in the DocumentStore.
 
-__Example__:
+#### Example:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync maintenance_ex@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async maintenance_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Send syntax__:
+##### Syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync maintenance_send@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async maintenance_send_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
 {NOTE: }
 
-<span id="maintenance-list"> __The following maintenance operations are available:__ </span>
+<span id="maintenance-list"> **The following maintenance operations are available:** </span>
 
 ---
 
-* __Statistics__:  
+* **Statistics**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-database-stats)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-collection-stats)   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
 
-* __Client Configuration__:  
+* **Client Configuration**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)  
 
-* __Indexes__:  
+* **Indexes**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)   
@@ -213,21 +199,21 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
 
-* __Analyzers__:  
+* **Analyzers**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutAnalyzersOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
 
-* __Ongoing tasks__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOngoingTaskInfoOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteOngoingTaskOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleOngoingTaskStateOperation  
+* **Ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#delete-ongoing-task)  
 
-* __ETL tasks__:  
+* **ETL tasks**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
 
-* __Replication tasks__:  
+* **Replication tasks**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPullReplicationTasksInfoOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationHubAccessOperation  
@@ -237,44 +223,44 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateExternalReplicationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
 
-* __Backup__:  
+* **Backup**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
 
-* __Connection strings__:  
+* **Connection strings**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutConnectionStringOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveConnectionStringOperation  
 
-* __Transaction recording__:  
+* **Transaction recording**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StopTransactionsRecordingOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
 
-* __Database settings__:  
+* **Database settings**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
 
-* __Identities__:  
+* **Identities**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)
 
-* __Time series__:  
+* **Time series**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
 
-* __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../client-api/operations/revisions/configure-revisions)  
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
 
-* __Sorters__:   
+* **Sorters**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
 
-* __Misc__:  
+* **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
@@ -287,10 +273,8 @@ __Send syntax__:
 
 {PANEL: Server-maintenance operations}
 
-{NOTE: }
-
 * All server-maintenance operations implement the `IServerOperation` interface.  
-  The operation is executed within the __server scope__.   
+  The operation is executed within the **server scope**.   
   Use [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
@@ -299,33 +283,27 @@ __Send syntax__:
 * To execute a server-maintenance operation request,  
   use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
 
-__Example__:
+#### Example:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync server_ex@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async server_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-__Send syntax__:
+##### Syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync server_send@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async server_send_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
 {NOTE: }
 
-<span id="server-list"> __The following server-maintenance operations are available:__ </span>
+<span id="server-list"> **The following server-maintenance operations are available:** </span>
 
 ---
 
-* __Client certificates__:  
+* **Client certificates**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
@@ -334,11 +312,11 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
 
-* __Server-wide client configuration__:  
+* **Server-wide client configuration**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)   
 
-* __Database management__:  
+* **Database management**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)  
@@ -355,78 +333,99 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDatabaseOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateUnusedDatabasesOperation  
 
-* __Server-wide ongoing tasks__:  
+* **Server-wide ongoing tasks**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideTaskOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleServerWideTaskStateOperation  
 
-* __Server-wide replication tasks__:  
+* **Server-wide replication tasks**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideExternalReplicationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
 
-* __Server-wide backup tasks__:  
+* **Server-wide backup tasks**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
 
-* __Server-wide analyzers__:  
+* **Server-wide analyzers**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
 
-* __Server-wide sorters__:  
+* **Server-wide sorters**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
 
-* __Logs & debug__:  
+* **Logs & debug**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
 
-* __Traffic watch__:  
+* **Traffic watch**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
 
-* __Revisions__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRevisionsForConflictsOperation  
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
 
-* __Misc__:  
+* **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
 
 {NOTE/}
 {PANEL/}
 
-{PANEL: Wait for completion}
+{PANEL: Manage lengthy operations}
 
-* Some operations may take a long time to complete.  
-  Those operations will run in the server background and can be awaited for completion.  
-* The response of the inner 'RavenCommand' class for such operations is `OperationIdResult`.  
-* For those operations, the `Send` method will return an `Operation` object that allows waiting on that operation Id.  
+* Some operations that run in the server background may take a long time to complete.  
 
-__Example__:  
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `Send` method will return an `Operation` object,  
+  which can be **awaited for completion** or **aborted (killed)**.  
+
+---
+
+#### Wait for completion:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync wait_ex@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async wait_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_Timeout wait_timeout_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_Timout_async wait_timeout_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_CancellationToken wait_token_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:With_CancellationToken_async wait_token_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-__Syntax__:
+##### Syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync waitForCompletion_syntax@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async waitForCompletion_syntax_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-| Parameters | Type | Description |
-| - | - | - |
-| __timeout__ | `TimeSpan` | <ul><li> __When timespan is specified__ - <br>server throws an error if operation has Not completed within the specified time frame. No rollback action will take place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
+| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
+|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **timeout** | `TimeSpan`          | <ul><li> **When timespan is specified** - <br>The server will throw a `TimeoutException` if operation has Not completed within the specified time frame.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li><li>`null` - <br>WaitForCompletion will wait for operation to complete forever.</li></ul> |
+| **token**   | `CancellationToken` | <ul><li> **When cancellation token is specified** - <br>The server will throw a `TimeoutException` if operation has Not completed at cancellation time.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li></ul>                                                                                      |
 
-| Return type | |
-| - | - |
+| Return type        |                               |
+|--------------------|-------------------------------|
 | `IOperationResult` | The operation result content. |
+
+#### Kill operation:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Kill kill_ex@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TAB:csharp:Kill_async kill_ex_async@ClientApi\Operations\WhatAreOperations.cs /}
+{CODE-TABS/}
+
+##### Syntax:
+
+{CODE kill_syntax@ClientApi\Operations\WhatAreOperations.cs /}
+
+| Parameter   | Type                | Description                                                          |
+|-------------|---------------------|----------------------------------------------------------------------|
+| **token**   | `CancellationToken` | Provide a cancellation token if needed to abort the KillAsync method |
 
 {PANEL/}
 

@@ -9,8 +9,8 @@
   and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
   They in turn are built on top of the lower-level __Operations__ and __RavenCommands__ API.
 
-* __RavenDB provides access to this lower-level API__, so that instead of using the higher session API,  
-  you can generate requests directly to the server by executing operations on the DocumentStore.
+* **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
+  directly to the server via DocumentStore Operations instead of using the higher-level Session API.
 
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  

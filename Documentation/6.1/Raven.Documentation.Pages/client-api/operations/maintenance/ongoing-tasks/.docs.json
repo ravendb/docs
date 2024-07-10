@@ -1,20 +1,8 @@
 [
     {
-        "Path": "get-ongoing-task.markdown",
-        "Name": "Get ongoing task",
+        "Path": "ongoing-task-operations.markdown",
+        "Name": "Ongoing Task Operations",
         "DiscussionId": "b56f5a63-46cf-4e61-956e-4c3e7592274b",
-        "Mappings": []
-    },
-    {
-        "Path": "delete-ongoing-task.markdown",
-        "Name": "Delete ongoing task",
-        "DiscussionId": "af769b85-298f-41af-b17b-de9b1f118ffb",
-        "Mappings": []
-    },
-    {
-        "Path": "toggle-ongoing-task.markdown",
-        "Name": "toggle ongoing task",
-        "DiscussionId": "4f7355c1-7982-4364-8328-67c0fc73cab9",
         "Mappings": []
     }
 ]
