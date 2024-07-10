@@ -1,0 +1,41 @@
+[
+    {
+        "Path": "what-is-document-query.markdown",
+        "Name": "What is a Document Query",
+        "DiscussionId": "3a573c88-0fc6-4269-99e1-0866348147c9",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/querying/lucene/how-to-use-lucene-in-queries"
+            }
+        ]
+    },
+    {
+        "Path": "query-vs-document-query.markdown",
+        "Name": "Query vs DocumentQuery",
+        "DiscussionId": "73b6dea7-68dc-4c75-9072-7b50cff79976",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "indexes/querying/query-vs-document-query"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-use-not-operator.markdown",
+        "Name": "How to Use NOT Operator",
+        "DiscussionId": "5673dffd-2469-4198-b514-87c6ac28660a",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/querying/lucene/how-to-use-not-operator"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-use-lucene.markdown",
+        "Name": "How to Use Lucene",
+        "DiscussionId": "34565381-79bf-4589-888d-3a6409f79261",
+        "Mappings": []
+    }
+]

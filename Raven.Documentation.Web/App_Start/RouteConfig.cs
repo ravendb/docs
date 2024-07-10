@@ -10,7 +10,7 @@ namespace Raven.Documentation.Web
 {
     public class RouteConfig
     {
-        private const string RouteAvailableVersions = "1.0|2.0|2.5|3.0|3.5|4.0|4.1|4.2|5.0|5.1|5.2|5.3|5.4|6.0";
+        private const string RouteAvailableVersions = "1.0|2.0|2.5|3.0|3.5|4.0|4.1|4.2|5.0|5.1|5.2|5.3|5.4|6.0|6.1";
         private const string RouteAvailableLanguages = "csharp|java|nodejs|http|python";
 
         public static void RegisterRoutes(RouteCollection routes)

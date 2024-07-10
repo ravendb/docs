@@ -1,0 +1,44 @@
+[
+    {
+        "Path": "document-view.markdown",
+        "Name": "Document View",
+        "DiscussionId": "fefee714-1922-4329-8ba5-063c1b89a932",
+        "Mappings": []
+    },
+    {
+        "Path": "documents-and-collections.markdown",
+        "Name": "Documents and Collections",
+        "DiscussionId": "a0393edb-501a-4679-bd4d-6991ec12e189",
+        "Mappings": []
+    },
+    {
+        "Path": "create-new-document.markdown",
+        "Name": "Create New Document",
+        "DiscussionId": "8c281a87-5b83-464d-b710-0d4bb41a5f9c",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-view.markdown",
+        "Name": "Patch View",
+        "DiscussionId": "8c281a87-5b83-464d-b710-0d4bb41a5f9c",
+        "Mappings": []
+    },
+    {
+        "Path": "identities-view.markdown",
+        "Name": "Identities View",
+        "DiscussionId": "ed8d7cb0-288d-4967-92f6-d3e1bab4d95c",
+        "Mappings": []
+    },
+    {
+        "Path": "compare-exchange-view.markdown",
+        "Name": "Compare Exchange",
+        "DiscussionId": "ed8d7cb0-288d-4967-92f6-d3e1bab4d95c",
+        "Mappings": []
+    },
+    {
+        "Path": "conflicts-view.markdown",
+        "Name": "Conflicts View",
+        "DiscussionId": "ed8d7cb0-288d-4967-92f6-d3e1bab4d95c",
+        "Mappings": []
+    }
+]

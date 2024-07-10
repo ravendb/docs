@@ -87,6 +87,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
     {
         public static readonly List<string> AllVersions = new List<string>
         {
+            "6.1",
             "6.0",
             "5.4",
             "5.3",

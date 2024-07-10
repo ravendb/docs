@@ -1,0 +1,25 @@
+[
+    {
+        "Path": "/SNMP",
+        "Name": "SNMP",
+        "Mappings": []
+    },
+    {
+        "Path": "/monitoring",
+        "Name": "Monitoring",
+        "DiscussionId": "f59c124a-b94a-4380-bff2-dcb1782ef1f6",
+        "Mappings": []
+    },
+    {
+        "Path": "cli.markdown",
+        "Name": "CLI (Command Line Interface)",
+        "DiscussionId": "9a757074-8bee-4e4c-bab9-ec7217e881f3",
+        "Mappings": []
+    },
+    {
+        "Path": "statistics.markdown",
+        "Name": "Statistics",
+        "DiscussionId": "3677c851-1da8-45d3-a83f-8f577211c0b4",
+        "Mappings": []
+    }
+]

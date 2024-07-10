@@ -1,0 +1,23 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "0aa49ff7-6e17-4b09-8186-72ab82c57ee2",
+        "Mappings": []
+    },
+    {
+        "Path": "/server",
+        "Name": "Server Management",
+        "Mappings": []
+    },
+    {
+        "Path": "/cluster",
+        "Name": "Cluster Management",
+        "Mappings": []
+    },
+    {
+        "Path": "/database",
+        "Name": "Database Management",
+        "Mappings": []
+    }
+]

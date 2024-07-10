@@ -1,0 +1,54 @@
+[
+    {
+        "Path": "get-stats.markdown",
+        "Name": "Get Statistics",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/operations/maintenance/get-statistics"
+            }
+        ]
+    },
+    {
+        "Path": "clean-change-vector.markdown",
+        "Name": "Clean Change Vector",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/identities",
+        "Name": "Identities",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "/backup",
+        "Name": "Backup",
+        "Mappings": []
+    },
+    {
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "/connection-strings",
+        "Name": "Connection strings",
+        "Mappings": []
+    },
+    {
+        "Path": "/Sorters",
+        "Name": "Sorters",
+        "Mappings": []
+    }
+]

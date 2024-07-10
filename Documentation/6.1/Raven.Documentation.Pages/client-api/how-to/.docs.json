@@ -1,0 +1,46 @@
+[
+  {
+    "Path": "setup-aggressive-caching.markdown",
+    "Name": "...setup aggressive caching",
+    "DiscussionId": "c2ab774a-213a-433c-9f3c-867dc4dcf2d9",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/aggressive-caching"
+      }
+    ]
+  },
+  {
+    "Path": "store-dates.markdown",
+    "Name": "...store dates",
+    "DiscussionId": "73c9f0f3-2b5b-4a53-8fab-b5c2bf66c46b",
+    "Mappings": []
+  },
+  {
+    "Path": "handle-document-relationships.markdown",
+    "Name": "...handle document relationships",
+    "DiscussionId": "3a121db5-c5a3-42b8-bd14-b422afa3427e",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "indexes/querying/handling-document-relationships"
+      },
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "use-low-level-commands.markdown",
+    "Name": "...use low-level commands",
+    "DiscussionId": "62dd8114-3cb7-487e-9371-5d5f6d37bdcc",
+    "Mappings": []
+  },
+  {
+    "Path": "integrate-with-excel.markdown",
+    "Name": "...integrate with Excel",
+    "DiscussionId": "22806718-be83-429b-bdc0-9e220caaa733",
+    "Mappings": []
+  }
+]

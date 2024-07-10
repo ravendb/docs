@@ -1,0 +1,36 @@
+[
+    {
+        "Path": "server-dashboard.markdown",
+        "Name": "Server Dashboard",
+        "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
+        "Mappings": []
+    },
+    {
+        "Path": "client-configuration.markdown",
+        "Name": "Client Configuration",
+        "DiscussionId": "e6f2bf1a-caa0-416c-9254-272d85ffe18e",
+        "Mappings": []
+    },
+    {
+        "Path": "server-wide-backup.markdown",
+        "Name": "Server-Wide Backup",
+        "DiscussionId": "4af8df66-b4b6-4125-b6f4-b338e3d2d331",
+        "Mappings": []
+    },
+    {
+        "Path": "server-settings.markdown",
+        "Name": "Server Settings (Read Only)",
+        "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
+        "Mappings": []
+    },
+    {
+        "Path": "/debug",
+        "Name": "Debug",
+        "Mappings": []
+    },
+    {
+        "Path": "/certificates",
+        "Name": "Certificates",
+        "Mappings": []
+    }
+]

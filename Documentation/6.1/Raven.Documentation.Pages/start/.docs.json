@@ -1,0 +1,57 @@
+[
+    {
+        "Path": "getting-started.markdown",
+        "Name": "Getting Started",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "intro/ravendb-in-a-nutshell"
+            }
+        ]
+    },
+    {
+        "Path": "whats-new.markdown",
+        "Name": "What's New",
+        "DiscussionId": "8024efde-88ad-4734-b796-951f35bf65ce",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "intro/what-is-new"
+            }
+        ]
+    },
+    {
+        "Path": "playground-server.markdown",
+        "Name": "Playground Server",
+        "DiscussionId": "7374e4fe-24a7-4e6c-82f2-18360b4ea29d",
+        "Mappings": []
+    },
+    {
+        "Path": "about-examples.markdown",
+        "Name": "About Examples",
+        "DiscussionId": "b8653fd3-687b-40ed-bf9f-12d5beee5647",
+        "Mappings": []
+    },
+    {
+        "Path": "test-driver.markdown",
+        "Name": "Unit Tests",
+        "DiscussionId": "fd87edc9-9295-449c-9534-f41a838339d7",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/troubleshooting/sending-support-ticket"
+            }
+        ]
+    },
+    {
+        "Path": "/installation",
+        "Name": "Installation",
+        "Mappings": []
+    },
+    {
+        "Path": "/licensing",
+        "Name": "Licensing",
+        "Mappings": []
+    }
+]

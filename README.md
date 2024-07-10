@@ -69,11 +69,55 @@ In order to fix the missing language page, the related markdown file should be c
 
 ## Adding new documentation version
 
-1. Add `Documentation/[[version]]/Raven.Documentation.Pages/Raven.Documentation.Pages.csproj` project. Make sure that it references the correct RavenDB nuget packages versions.
-2. Add `Documentation/[[version]]/Samples/csharp/Raven.Documentation.Samples/Raven.Documentation.Samples.csproj` project, similarly as above.
-3. Add version to the `AllVersions` list in `Raven.Documentation.Web.Core.ViewModels.DocsVersion`.
-4. Run `scripts/populateDocsJson.ps1` in order to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project. Please check the script parameters for details.
-5. Add version to the `RouteConfig.RouteAvailableVersions` constant.
+1. In your **File system**:  
+   Create the following new empty directories under the `Documentation` directory.  
+   For example, to create **6.1**:
+
+    ```
+    > 6.1
+      > Raven.Documetation.Pages 
+      > Samples
+        > csharp
+          > Raven.Documentation.Samples
+        > java
+        > nodejs
+        > python
+    ```
+
+2. In your **File system**:   
+   From the previous version, e.g. from 6.0, copy the existing `csproj` files to these new directories respectively:  
+    * Copy `Raven.Documentation.Pages.csproj` to the `Raven.Documentation.Pages` folder.  
+    * Copy `Raven.Documentation.Samples.csproj` to the `Raven.Documentation.Samples` folder.  
+      
+   From the previous version, also copy file `Northwind.cs` to the `Raven.Documentation.Samples` folder.
+
+3. Edit the 2 csproj files in a text editor:  
+   Update all occurrences of RavenDB `Version` to the matching version,  
+   e.g.: `<PackageReference Include="RavenDB.Client" Version="6.1.0-nightly-20240709-0737" />`  
+
+4. In your **Solution**:  
+   Right click on the top `Documentation` folder, select "Add new solution folder", and create the `6.1` folder.  
+   Right click on folder `6.1`, select "Add existing project", and add the `Raven.Documentation.Pages.csproj` file.  
+   Right click on folder `6.1`, select "Add new solution folder", and create the `Samples` folder.  
+   Right click on folder `6.1\Samples`, select "Add new solution project, and create the `csharp` folder.  
+   Right click on folder `6.1\Samples\csharp`, select "Add new existing project", and add the `Raven.Documentation.Samples.csproj` file.  
+
+5. Open file `Models.cs` (under Raven.Documentation.Web.Core.ViewModels).  
+   Add the new version to the `AllVersions` list.  
+
+6. In your **file system**:  
+   Open file `scripts/populateDocsJson.ps1` and update the params, e.g.:  
+   ```
+   param (
+    [string] $FromVersion = "6.0",
+    [string] $FromVersion = "6.1",
+   )
+   ```
+
+7. Run `scripts/populateDocsJson.ps1` to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project.
+
+8. Open file `RountConfig.cs` (under Raven.Documentation.Web\App_Start).  
+   Add the new version to the `RouteAvailableVersions` constant.  
 
 ## Changing document location between versions
 

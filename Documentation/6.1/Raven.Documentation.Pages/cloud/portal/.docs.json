@@ -1,0 +1,38 @@
+[
+  {
+    "Path": "cloud-portal.markdown",
+    "Name": "Cloud Portal",
+    "DiscussionId": "3c97190a-8168-4315-b7b9-09e923616c25",
+    "Mappings": []
+  },
+  {
+    "Path": "cloud-portal-products-tab.markdown",
+    "Name": "Products Tab",
+    "DiscussionId": "0c54534c-3e1a-4c5c-b399-d0261c6c1cdf",
+    "Mappings": []
+  },
+  {
+    "Path": "cloud-portal-backups-tab.markdown",
+    "Name": "Backups Tab",
+    "DiscussionId": "a3a0dce1-3e27-4d6d-ba71-ae67846577c6",
+    "Mappings": []
+  },
+  {
+    "Path": "cloud-portal-billing-tab.markdown",
+    "Name": "Billing & Costs Tab",
+    "DiscussionId": "62743f76-a49d-4b75-a0ca-fa1283729b65",
+    "Mappings": []
+  },
+  {
+    "Path": "cloud-portal-support-tab.markdown",
+    "Name": "Support Tab",
+    "DiscussionId": "97e15463-1433-4999-9c39-65b306c6a091",
+    "Mappings": []
+  },
+  {
+    "Path": "cloud-portal-account-tab.markdown",
+    "Name": "Account Tab",
+    "DiscussionId": "d804d4a7-08bf-4545-9eaf-2623f8986e68",
+    "Mappings": []
+  }
+]

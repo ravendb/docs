@@ -1,0 +1,48 @@
+[
+    {
+        "Path": "what-are-operations.markdown",
+        "Name": "What are Operations",
+        "DiscussionId": "24621696-2fd1-4e20-b196-98b4541277d6",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/common",
+        "Name": "Common Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/maintenance",
+        "Name": "Maintenance Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/server-wide",
+        "Name": "Server-Maintenance",
+        "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "/counters",
+        "Name": "Counters",
+        "Mappings": []
+    },
+    {
+        "Path": "/compare-exchange",
+        "Name": "Compare Exchange",
+        "Mappings": []
+    },
+    {
+        "Path": "/patching",
+        "Name": "Patching",
+        "Mappings": []
+    }
+]

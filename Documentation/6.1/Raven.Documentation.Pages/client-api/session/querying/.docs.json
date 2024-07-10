@@ -1,0 +1,168 @@
+[
+    {
+        "Path": "how-to-query.markdown",
+        "Name": "Query Overview",
+        "DiscussionId": "e88cd882-bd8c-41a4-9bf0-44e5314edd33",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/using-linq-to-query-ravendb"
+            }
+        ]
+    },
+    {
+        "Path": "what-is-rql.markdown",
+        "Name": "What is RQL",
+        "DiscussionId": "de2c079e-8bd4-45fc-86dd-50f25446ed79",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "indexes/querying/what-is-rql"
+            }
+        ]
+    },
+    {
+        "Path": "/document-query",
+        "Name": "DocumentQuery",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-stream-query-results.markdown",
+        "Name": "Stream Query Results",
+        "DiscussionId": "c96a370e-8d0d-4e8f-93b3-03a8105e8b0e",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/advanced/unbounded-results"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-customize-query.markdown",
+        "Name": "Customize Query",
+        "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
+        "Mappings": []
+    },
+    {
+        "Path": "sort-query-results.markdown",
+        "Name": "Sort Query Results",
+        "DiscussionId": "73dfb483-1fca-4fca-a1a4-15c7366b4775",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-project-query-results.markdown",
+        "Name": "Project Query Results",
+        "DiscussionId": "7608822d-893e-4f9e-9011-9ec146af73db",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/results-transformation/transform-results"
+            },
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/querying/how-to-perform-projection"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-perform-group-by-query.markdown",
+        "Name": "Perform Group By Query",
+        "DiscussionId": "9d8bb754-54d4-47dc-bb5d-b101561fc861",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-perform-a-faceted-search.markdown",
+        "Name": "Perform Faceted Search",
+        "DiscussionId": "73756544-0c4f-4d32-a074-d9292cbe4bdb",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/faceted-search"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-make-a-spatial-query.markdown",
+        "Name": "Make a Spatial Query",
+        "DiscussionId": "b62de172-77e9-4241-a525-9ba6cc027860",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-get-query-statistics.markdown",
+        "Name": "Get Query Statistics",
+        "DiscussionId": "6c7d2633-e0ec-4b8f-8ddd-43470f24aa29",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-count-query-results.markdown",
+        "Name": "Count Query Results",
+        "DiscussionId": "77cec3b4-0001-4a30-81a7-e3182f4150bf",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-filter-by-field.markdown",
+        "Name": "Filter by Field Presence",
+        "DiscussionId": "bda0ec07-d0f9-46a0-bab7-ca733f692533",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-filter-by-non-existing-field.markdown",
+        "Name": "Filter by Non-Existing Field",
+        "DiscussionId": "bda0ec07-d0f9-46a0-bab7-ca733f692533",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-use-intersect.markdown",
+        "Name": "Using Intersect",
+        "DiscussionId": "3f14b363-a022-4bca-91ec-eb1b1b2ed230",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-perform-queries-lazily.markdown",
+        "Name": "Perform a Lazy Query",
+        "DiscussionId": "a359f844-7193-4228-98e0-81a07e561a8b",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/lazy-operations"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-work-with-suggestions.markdown",
+        "Name": "Query for Suggestions",
+        "DiscussionId": "a4f62c57-a06a-440c-b1a3-4cbaa9a4f0d0",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/suggestions"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-use-morelikethis.markdown",
+        "Name": "Using MoreLikeThis",
+        "DiscussionId": "977915e5-9b87-43b0-9c31-14c980ee9d36",
+        "Mappings": []
+    },
+    {
+        "Path": "/text-search",
+        "Name": "Text Search",
+        "Mappings": []
+    },
+    {
+        "Path": "/debugging",
+        "Name": "Debugging",
+        "Mappings": []
+    }
+]

@@ -1,0 +1,119 @@
+[
+    {
+        "Path": "clear-a-session.markdown",
+        "Name": "...clear a session",
+        "DiscussionId": "e56c90dd-d214-4a89-82f6-fa06c8ce9a91",
+        "Mappings": []
+    },
+    {
+        "Path": "evict-entity-from-a-session.markdown",
+        "Name": "...evict entity from a session",
+        "DiscussionId": "b1f7156c-f711-40c5-8197-3abca9db94db",
+        "Mappings": []
+    },
+    {
+        "Path": "refresh-entity.markdown",
+        "Name": "...refresh entity",
+        "DiscussionId": "1db8d2ae-1653-49ae-86f1-9bc1ca332e66",
+        "Mappings": []
+    },
+    {
+        "Path": "defer-operations.markdown",
+        "Name": "...defer commands",
+        "DiscussionId": "256c056b-c14c-4a09-94f4-e1ce8f710594",
+        "Mappings": []
+    },
+    {
+        "Path": "perform-operations-lazily.markdown",
+        "Name": "...perform requests lazily",
+        "DiscussionId": "7a54c2fc-67ee-40e6-94b5-1266e990cf57",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/how-to/perform-operations-lazily"
+            }
+        ]
+    },
+    {
+        "Path": "subscribe-to-events.markdown",
+        "Name": "...subscribe to events",
+        "DiscussionId": "816c6a9e-bb14-4373-8425-3d2482a2479c",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/listeners/what-are-listeners"
+            }
+        ]
+    },
+    {
+        "Path": "get-entity-id.markdown",
+        "Name": "...get entity id",
+        "DiscussionId": "3efcabca-cb80-4141-9ce9-f1f03411a94a",
+        "Mappings": []
+    },
+    {
+        "Path": "get-and-modify-entity-metadata.markdown",
+        "Name": "...get and modify entity metadata",
+        "DiscussionId": "bbd67941-bf1c-43e4-b06c-0cc082bc7805",
+        "Mappings": []
+    },
+    {
+        "Path": "get-entity-change-vector.markdown",
+        "Name": "...get entity change vector",
+        "DiscussionId": "7fb0e301-5332-4b15-9848-328ee1d4417c",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/how-to/get-entity-etag"
+            }
+        ]
+    },
+    {
+        "Path": "get-entity-last-modified.markdown",
+        "Name": "...get entity last modified",
+        "DiscussionId": "992ae5c9-6f0b-4ae3-a8c7-e68080072aa2",
+        "Mappings": []
+    },
+    {
+        "Path": "get-entity-counters.markdown",
+        "Name": "...get entity counters",
+        "DiscussionId": "50a16426-4005-439b-8677-952ff194e073",
+        "Mappings": []
+    },
+    {
+        "Path": "get-current-session-node.markdown",
+        "Name": "...get current session node",
+        "DiscussionId": "26d3278f-adfb-4262-9977-75359f912e63",
+        "Mappings": []
+    },
+    {
+        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
+        "Name": "...check for session changes",
+        "DiscussionId": "6f635289-6344-4099-b5d0-42e8cb4b2eaf",
+        "Mappings": []
+    },
+    {
+        "Path": "check-if-entity-has-changed.markdown",
+        "Name": "...check for entity changes",
+        "DiscussionId": "dc75b1fa-a46e-4510-b3d0-c9427b14d6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "check-if-document-exists.markdown",
+        "Name": "...check if document exists",
+        "DiscussionId": "c0dcf9d1-56d4-43e3-885b-74af3fcfd54c",
+        "Mappings": []
+    },
+    {
+        "Path": "check-if-attachment-exists.markdown",
+        "Name": "...check if attachment exists",
+        "DiscussionId": "50a16426-4005-439b-8677-952ff194e073",
+        "Mappings": []
+    },
+    {
+        "Path": "ignore-entity-changes.markdown",
+        "Name": "...ignore entity changes",
+        "DiscussionId": "50a16426-4005-439b-8677-952ff194e073",
+        "Mappings": []
+    }
+]
