@@ -24,28 +24,24 @@
 
 {PANEL: Revisions and Counters}
 
-{NOTE: }
-
-__Revisions creation__  
+### Revisions creation:
 
 * A document revision will be created when:   
-  * A new counter is __created__ on the document.  
-  * A counter is __deleted__ from the document.
+  * A new counter is **created** on the document.  
+  * A counter is **deleted** from the document.
     
 * A revision will Not be created upon modifying the value of an existing [counter](../../document-extensions/counters/overview).
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Stored data__  
+### Stored data:
 
 * A revision that is created for a document that contains counters  
-  will have the `@counters-snapshot` property in its __metadata__.  
+  will have the `@counters-snapshot` property in its **metadata**.  
  
 * This property holds the counters' names and values at the time when the revision was created. 
 
-* The counter's value stored in the  revision's metadata is the __accumulated value__ from all nodes.  
+* The counter's value stored in the  revision's metadata is the **accumulated value** from all nodes.  
   It does not specify the value of the counter on each individual node.
 
 * Sample revision metadata:  
@@ -62,54 +58,44 @@ __Stored data__
   }
   {CODE-BLOCK/}
 
-{NOTE/}
+---
 
-{NOTE: }
+### Reverted data:
 
-__Reverted data__  
+When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has counters,  
+the counters from the revision are restored to functionality along with their values.  
 
-* When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has counters,  
-  the counters from the revision are restored to functionality along with their values.  
+---
 
-{NOTE/}
+### Extract counters data from revisions:
 
-{NOTE: }
-
-__Extract counters data from revisions__  
-
-* Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) to get the revisions metadata for a specified document,  
-  and then extract the counters' data.  
+Use [GetMetadataFor](../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) to get the revisions metadata for a specified document,  
+and then extract the counters' data.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync extract_counters@DocumentExtensions\Revisions\ClientAPI\Session\RevisionsAndOtherFeatures.cs /}
 {CODE-TAB:csharp:Async extract_counters_async@DocumentExtensions\Revisions\ClientAPI\Session\RevisionsAndOtherFeatures.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Revisions and Time Series}
 
-{NOTE: }
-
-__Revisions Creation__
+### Revisions Creation:
 
 * A document revision will be created when:  
-    * A new time series is __created__ on the document.  
-    * A time series is __deleted__ from the document.  
+    * A new time series is **created** on the document.  
+    * A time series is **deleted** from the document.  
       (A time series is deleted from a document when all its entries are deleted)
 
 * A revision will Not be created upon modifying the values of an existing [time series](../../document-extensions/timeseries/overview).
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Stored Data__
+### Stored Data:
 
 * A revision that is created for a document that contains time series  
-  will have the `@timeseries-snapshot` property in its __metadata__.  
+  will have the `@timeseries-snapshot` property in its **metadata**.  
 
 * This property does Not hold the time series values data,  
   it only contains the following information for the time when the revision was created:
@@ -141,47 +127,40 @@ __Stored Data__
   }
   {CODE-BLOCK/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Reverted Data__
+### Reverted Data:
 
 When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has a time series:  
 
-* If the current document __contains__ a time series name as in the revision:
+* If the current document **contains** a time series name as in the revision:
     * The reverted document will keep the time series entries & values as it was in the current document.
     * Time series entries and values from the revision are Not restored.
 
-* If the current document __doesn't contain__ a time series name as in the revision,  
+* If the current document **doesn't contain** a time series name as in the revision,  
   or if the document itself was deleted:  
   * The reverted document will have the time series from the revision  
   * However, the entries count will be 0  
-
-{NOTE/}
 
 {PANEL/}
 
 {PANEL: Revisions and Attachments}
 
-{NOTE: }
+### Revisions Creation:
 
-__Revisions Creation__
+A document revision will be created when:  
 
-* A document revision will be created when:  
-    * A new [attachment](../../document-extensions/attachments/what-are-attachments) is __added__ to the document.  
-    * An attachment is __deleted__ from the document.   
+  * A new [attachment](../../document-extensions/attachments/what-are-attachments) is **added** to the document.  
+  * An attachment is **deleted** from the document.   
 
-{NOTE/}
+---
 
-{NOTE: }
-
-__Stored Data__
+### Stored Data:
 
 * A revision that is created for a document with attachments  
-  will have the `@attachments` property in its __metadata__.
+  will have the `@attachments` property in its **metadata**.
 
-* This property does Not hold the actual attachments, as the files are stored in __separate storage__.  
+* This property does Not hold the actual attachments, as the files are stored in **separate storage**.  
   The property only contains the following information for each attachment the document had when the revision was created:  
   * Attachment file name
   * File content type
@@ -210,39 +189,29 @@ __Stored Data__
   }
   {CODE-BLOCK/}
 
-{NOTE/}
+---
 
-{NOTE: }
+### Reverted Data:
 
-__Reverted Data__
-
-* When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has attachments,  
-  the attachments are restored to their state when the revision was created.
-
-{NOTE/}
+When a document is [reverted](../../document-extensions/revisions/revert-revisions) to a revision that has attachments,  
+the attachments are restored to their state when the revision was created.
 
 {PANEL/}
 
 {PANEL: Revisions and Replication}
 
-{NOTE: }
-
 * Revisions are transferred during [replication](../../server/clustering/replication/replication) from one database instance to another.
 
 * The revisions will be replicated by all replication types:
-  * [Internal replication](../../server/clustering/replication/replication#internal-replication)
-  * [External replication](../../server/clustering/replication/replication#external-replication)
-  * [Hub/Sink replication](../../server/clustering/replication/replication#hubsink-replication)
+   * [Internal replication](../../server/clustering/replication/replication#internal-replication)
+   * [External replication](../../server/clustering/replication/replication#external-replication)
+   * [Hub/Sink replication](../../server/clustering/replication/replication#hubsink-replication)
 
 * Revisions can [help keep data consistency](../../server/clustering/replication/replication#how-revisions-replication-help-data-consistency).  
-
-{NOTE/}
 
 {PANEL/}
 
 {PANEL: Revisions and ETL}
-
-{NOTE: }
 
 * An [ETL](../../server/ongoing-tasks/etl/raven) ongoing task does Not send  revisions to the destination database.  
 
@@ -250,33 +219,21 @@ __Reverted Data__
   whenever the ETL process sends a modified document and the target document is overwritten,  
   a new revision will be created for the document in the target database as expected.  
 
-{NOTE/}
-
 {PANEL/}
 
 {PANEL: Revisions and Backup}
 
-{NOTE: }
-
-* Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-contents) both by a logical-backup and by a snapshot.
-
-{NOTE/}
+Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-contents) both by a logical-backup and by a snapshot.
 
 {PANEL/}
 
 {PANEL: Revisions and Data Subscriptions}
 
-{NOTE: }
-
 * Learn about revisions and data subscriptions [here](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).  
-
-{NOTE/}
 
 {PANEL/}
 
 {PANEL: Revisions Import and Export}
-
-{NOTE: }
 
 * Revisions can be imported and exported with a `.ravendbdump` file:
     * Using [the Client API](../../client-api/smuggler/what-is-smuggler)
@@ -285,8 +242,6 @@ __Reverted Data__
 * Revisions can be imported when migrating data from another [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb#step-#4:-set-import-options).
 
   ![Import from Live Server](images\import-from-live-server.png "Import from Live Server")
-
-{NOTE/}
 
 {PANEL/}
 

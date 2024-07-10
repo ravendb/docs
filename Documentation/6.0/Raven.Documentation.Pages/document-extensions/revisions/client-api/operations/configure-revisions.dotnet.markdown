@@ -5,12 +5,12 @@
 {NOTE: }
 
 * Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
-  * __Default configuration__ - applies to all document collections.  
-  * __Collection-specific configurations__ - override the default settings for these collections.  
+  * **Default configuration** - applies to all document collections.  
+  * **Collection-specific configurations** - override the default settings for these collections.  
   * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
 
-* The configuration passed to this operation will __REPLACE__ the current revisions configuration in the database.  
-  To __MODIFY__ existing configuration, fetch the current configuration from the database record first.  
+* The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
+  To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
 
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
@@ -32,7 +32,7 @@
 {PANEL: Replace configuration}
 
 * In this example, we create a new `RevisionsConfiguration` for the database.  
-  If revisions configuration already exists in the database - it will be __replaced__.
+  If revisions configuration already exists in the database - it will be **replaced**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync replace_configuration@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
@@ -43,7 +43,7 @@
 
 {PANEL: Modify configuration}
 
-* In this example, we fetch the existing revisions configuration from the database record and __modify__ it.   
+* In this example, we fetch the existing revisions configuration from the database record and **modify** it.   
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync modify_configuration@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
@@ -58,14 +58,14 @@
 
 | Parameter | Type | Description |
 | - | - | - |
-| __configuration__ | `RevisionsConfiguration` | The revisions configuration to apply |
+| **configuration** | `RevisionsConfiguration` | The revisions configuration to apply |
 
 {CODE:csharp syntax_2@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
 | Property | Type | Description |
 | - | - | - |
-| __Default__ | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `Collections`. |
-| __Collections__ | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations<br>The `keys` are the collection names<br>The `values` are the corresponding configurations.<br>Overrides the default settings for the collections defined. |
+| **Default** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `Collections`. |
+| **Collections** | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations<br>The `keys` are the collection names<br>The `values` are the corresponding configurations.<br>Overrides the default settings for the collections defined. |
 
 {CODE:csharp syntax_3@DocumentExtensions\Revisions\ClientAPI\Operations\ConfigureRevisions.cs /}
 
@@ -73,11 +73,11 @@
 
 | Property | Type | Description |
 | - | - | - |
-| __MinimumRevisionsToKeep__ | `long` | <ul><li>This number of revisions will be kept per document.</li><li>Older revisions exceeding this number will be purged upon the next document modification.<li> __Default__ : `null` = no limit </li></ul> |
-| __MinimumRevisionAgeToKeep__ | `TimeSpan` | <ul><li>Limit the number of revisions kept per document by their age.</li><li>Revisions that are older than this time will be purged upon the next document modification.</li><li> __Default__ : `null` = no age limit</li><ul> |
-| __MaximumRevisionsToDeleteUponDocumentUpdate__ | `long` | <ul><li>The maximum number of revisions to delete upon each document modification.</li><li> __Default__ : `null` = no limit,<br> all revisions that pend purging will be deleted.</li></ul> |
-| __PurgeOnDelete__ | `bool` | <ul><li>`false` ( __Default__ ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).</li><li>`true` - When a document is deleted all its revisions are also deleted.</li></ul> |
-| __Disabled__ | `bool` | <ul><li>`false` ( __Default__ ) - Revisions will be created and purged according to the configuration.</li><li>`true` - No revisions will be created or purged.</li></ul> |
+| **MinimumRevisionsToKeep** | `long` | <ul><li>This number of revisions will be kept per document.</li><li>Older revisions exceeding this number will be purged upon the next document modification.<li> **Default** : `null` = no limit </li></ul> |
+| **MinimumRevisionAgeToKeep** | `TimeSpan` | <ul><li>Limit the number of revisions kept per document by their age.</li><li>Revisions that are older than this time will be purged upon the next document modification.</li><li> **Default** : `null` = no age limit</li><ul> |
+| **MaximumRevisionsToDeleteUponDocumentUpdate** | `long` | <ul><li>The maximum number of revisions to delete upon each document modification.</li><li> **Default** : `null` = no limit,<br> all revisions that pend purging will be deleted.</li></ul> |
+| **PurgeOnDelete** | `bool` | <ul><li>`false` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).</li><li>`true` - When a document is deleted all its revisions are also deleted.</li></ul> |
+| **Disabled** | `bool` | <ul><li>`false` ( **Default** ) - Revisions will be created and purged according to the configuration.</li><li>`true` - No revisions will be created or purged.</li></ul> |
 
 {PANEL/}
 

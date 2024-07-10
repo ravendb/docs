@@ -6,9 +6,9 @@
 
 * For a general revisions overview see: [Revisions Overview](../../../document-extensions/revisions/overview).
 
-* Document revisions can be managed from the [Studio](../../../studio/database/settings/document-revisions) or from the __Client API__.
+* Document revisions can be managed from the [Studio](../../../studio/database/settings/document-revisions) or from the **Client API**.
 
-* From the __Client API__, revisions can be configured and managed by:
+* From the **Client API**, revisions can be configured and managed by:
     * [Store Operations](../../../document-extensions/revisions/client-api/overview#revisions-store-operations)
     * [Session Methods](../../../document-extensions/revisions/client-api/overview#revisions-session-methods)
 
@@ -26,29 +26,29 @@
 
 {PANEL: Revisions Session methods}
 
-* __Get revisions__:
+* **Get revisions**:
 
     * [getFor](../../../document-extensions/revisions/client-api/session/loading#get-all-revisions) - retrieve all revisions kept for a document.
     * [getMetadataFor](../../../document-extensions/revisions/client-api/session/loading#get-revisions-metadata) - retrieve metadata for all revisions kept for a document.
     * [get](../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-creation-time) - retrieve revisions by change vector or creation time.
-    * Read [here](../../../client-api/session/how-to/perform-operations-lazily#getRevisions) about __lazy versions__ of `getFor`, `getMetadataFor`, and `get`.
+    * Read [here](../../../client-api/session/how-to/perform-operations-lazily#getRevisions) about **lazy versions** of `getFor`, `getMetadataFor`, and `get`.
 
 ---
 
-* __Include revisions__:
+* **Include revisions**:
 
     * [includeRevisions](../../../document-extensions/revisions/client-api/session/including#section) - include revisions when retrieving documents via `session.load` or `session.query`.
     * [rawQuery](../../../document-extensions/revisions/client-api/session/including#including-revisions-with-session.advanced.rawquery) - Learn how to include revisions when retrieving documents via raw queries.
 
 ---
 
-* __Count revisions__:
+* **Count revisions**:
 
     * [getCountFor](../../../document-extensions/revisions/client-api/session/counting#getcountfor) - get the number of revisions kept for a document.
 
 ---
 
-* __Force revision creation__:
+* **Force revision creation**:
 
     * [forceRevisionCreationFor](../../../document-extensions/revisions/overview#force-revision-creation-via-api) - create a revision even if revision configuration is disabled.
 
