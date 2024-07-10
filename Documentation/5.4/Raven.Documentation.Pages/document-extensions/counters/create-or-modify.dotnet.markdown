@@ -21,7 +21,7 @@
 
 {PANEL: `Increment` usage}
 
- __Flow__:  
+ **Flow**:  
 
 * Open a session.  
 * Create an instance of `CountersFor`.  
@@ -31,10 +31,10 @@
 * Call `CountersFor.Increment`.
 * Call `session.SaveChanges` for the changes to take effect.  
 
-__Note__:
+**Note**:
 
 * Modifying a Counter using `Increment` only takes effect when `session.SaveChanges()` is executed.  
-* To __decrease__ a Counter's value, pass the method a negative number to the `Increment` method.  
+* To **decrease** a Counter's value, pass the method a negative number to the `Increment` method.  
 
 {PANEL/}
 

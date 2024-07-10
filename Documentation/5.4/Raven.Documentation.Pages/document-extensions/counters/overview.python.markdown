@@ -18,7 +18,7 @@
   * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
   * [Overview](../../document-extensions/counters/overview#overview)  
   * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
+      * [Counter Methods and the `counters_for` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
       * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
 {NOTE/}
 
@@ -157,41 +157,41 @@ When all Counters are removed from a document, the server automatically removes 
 
 {PANEL: Managing Counters}
 
-#### Counter Methods and the `countersFor` Object
+#### Counter Methods and the `counters_for` Object
 
-Managing Counters is performed using the `countersFor` Session object.  
+Managing Counters is performed using the `counters_for` session object.  
 
 *  **Counter methods**: 
  
  | Method                  | Description                                                                             |
  |-------------------------|-----------------------------------------------------------------------------------------|
- | `countersFor.increment` | Increment the value of an existing Counter, or create a new Counter if it doesn't exist |
- | `countersFor.delete`    | Delete a Counter                                                                        |
- | `countersFor.get`       | Get the current value of a Counter                                                      |
- | `countersFor.getAll`    | Get *all* the Counters of a document and their values                                   |
+ | `counters_for.increment` | Increment the value of an existing Counter, or create a new Counter if it doesn't exist |
+ | `counters_for.delete`    | Delete a Counter                                                                        |
+ | `counters_for.get`       | Get the current value of a Counter                                                      |
+ | `counters_for.get_all`    | Get *all* the Counters of a document and their values                                   |
 
 
 * **Usage flow**:  
   * Open a session.  
-  * Create an instance of `countersFor`.  
-      * Either pass `countersFor` an explicit document ID, -or-  
+  * Create an instance of `counters_for`.  
+      * Either pass `counters_for` an explicit document ID, -or-  
       * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
         e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.saveChanges` for the action to take effect on the server.  
+  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.save_changes` for the action to take effect on the server.  
 
 * **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
   * When a transaction that includes a Counter modification fails for any reason (e.g. a document concurrency conflict),  
     the Counter modification is reverted.
 
-* **`countersFor` usage samples**:  
-  * You can Use `countersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
-  * You can also use `countersFor` by passing it **the document object**.  
+* **`counters_for` usage samples**:  
+  * You can Use `counters_for` by **explicitly passing it a document ID** (without pre-loading the document).  
+  * You can also use `counters_for` by passing it **the document object**.  
   
   {CODE-TABS}
-  {CODE-TAB:nodejs:Pass-CountersFor-Document-ID overview_1@documentExtensions\counters\overview.js /}
-  {CODE-TAB:nodejs:Pass-CountersFor-Document-Object overview_2@documentExtensions\counters\overview.js /}
+  {CODE-TAB:python:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@DocumentExtensions\Counters\Counters.py /}
+  {CODE-TAB:python:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@DocumentExtensions\Counters\Counters.py /}
   {CODE-TABS/}
 
 ---

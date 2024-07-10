@@ -1,5 +1,4 @@
-package net.ravendb.ClientApi.Session.Counters;
-
+import net.ravendb.client.documents.BulkInsertOperation;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.IDocumentQuery;
@@ -7,13 +6,13 @@ import net.ravendb.client.documents.session.IDocumentSession;
 import net.ravendb.client.documents.session.ISessionDocumentCounters;
 import net.ravendb.client.documents.smuggler.DatabaseItemType;
 import net.ravendb.client.documents.smuggler.DatabaseSmugglerExportOptions;
+import net.ravendb.client.documents.BulkInsertOperation.*;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 public class Counters {
+
 
     void test() {
         DocumentStore docStore = new DocumentStore();
@@ -189,13 +188,32 @@ public class Counters {
                 .toList();
             //endregion
         }
+        List<User> result = new ArrayList<>();
+        //region bulk-insert-counters
+        try (IDocumentSession session = docStore.openSession()) {
+            IDocumentQuery<User> query = session.query(User.class)
+                .whereLessThan("age", 30);
+
+            result = query.toList();
+        }
+
+        try (BulkInsertOperation bulkInsert = docStore.bulkInsert()) {
+            for (User user : result) {
+                String userId = user.getId();
+                CountersBulkInsert countersFor = bulkInsert.countersFor(userId);
+                bulkInsert.countersFor(userId).increment("downloaded", 100);
+            }
+        }
+
+        //endregion
     }
+
 
     private class CounterResult {
         private Long productPrice;
         private Long productLikes;
         private String productSection;
-		private String name;
+        private String name;
 
         public Long getProductPrice() {
             return productPrice;
@@ -208,8 +226,8 @@ public class Counters {
         public Long getProductLikes() {
             return productLikes;
         }
-		
-		public String getName() {
+
+        public String getName() {
             return name;
         }
 
@@ -224,8 +242,8 @@ public class Counters {
         public void setProductSection(String productSection) {
             this.productSection = productSection;
         }
-		
-		public void setName(String name) {
+
+        public void setName(String name) {
             this.name = name;
         }
     }
@@ -314,7 +332,8 @@ public class Counters {
     private interface IFoo {
         //region Increment-definition
         void increment(String counterName);
-        void increment(String counterName, long incrementValue);
+
+        void increment(String id, String name, long delta);
         //endregion
 
         //region Delete-definition
@@ -341,4 +360,39 @@ public class Counters {
             //endregion
         }
     }
+
+    private interface IFoo3 {
+        //region CountersFor-definition
+        public CountersBulkInsert countersFor(String id);
+        //endregion
+
+        //region Increment-definition
+        public void increment(String id, String name, long delta);
+        //endregion
+    }
 }
+
+class User {
+    String id;
+    String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+}
+
+

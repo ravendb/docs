@@ -3,12 +3,12 @@
 
 {NOTE: }
 
-* Use the `countersFor.increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+* Use the `counters_for .increment` method to **create** a new Counter or **modify** an existing Counter's value.  
 
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `counters_for ` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:
   - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
@@ -19,39 +19,39 @@
 
 ---
 
-{PANEL: `Increment` usage}
+{PANEL: `increment` usage}
 
  **Flow**:  
 
 * Open a session.  
-* Create an instance of `countersFor`.  
-    * Either pass `countersFor` an explicit document ID, -or-  
+* Create an instance of `counters_for `.  
+    * Either pass `counters_for ` an explicit document ID, -or-  
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
-* Call `countersFor.increment`.
-* Call `session.saveChanges` for the changes to take effect.  
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `counters_for .increment`.
+* Call `session.save_changes` for the changes to take effect.  
 
 **Note**:
 
-* Modifying a Counter using `increment` only takes effect when `session.saveChanges()` is executed.  
+* Modifying a Counter using `increment` only takes effect when `session.aave_changes()` is executed.  
 * To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
 
 {PANEL/}
 
 {PANEL: Example}
 
-{CODE:nodejs create_or_modify@documentExtensions\counters\createOrModify.js /}
+{CODE:python counters_region_Increment@DocumentExtensions\Counters\Counters.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@documentExtensions\counters\createOrModify.js /}
+{CODE:python Increment-definition@DocumentExtensions\Counters\Counters.py /}
 
-| Parameter     | Type    | Description                                                                                                          |
-|---------------|---------|----------------------------------------------------------------------------------------------------------------------|
-| `counter`     | string  | The counter's name                                                                                                   |
-| `delta`       | long    | Increase Counter by this value.<br>Default value is 1.<br>For a new Counter, this number will be its initial value. |
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **counter_name** | `str` | Counter's name  |
+| **delta**        | `int` | Increase Counter by this value.<br>Default value is 1.<br>For a new Counter, this number will be its initial value. |
 
 {PANEL/}
 

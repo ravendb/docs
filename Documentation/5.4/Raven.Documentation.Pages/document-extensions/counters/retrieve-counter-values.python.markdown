@@ -3,10 +3,10 @@
 
 {NOTE: }
 
-* Use `CountersFor.Get` to retrieve the value of a **single Counter**,  
-  or `CountersFor.GetAll` to retrieve the names and values of **all Counters** associated with a document.
+* Use `counters_for.get` to retrieve the value of a **single Counter**,  
+  or `counters_for.get_all` to retrieve the names and values of **all Counters** associated with a document.
 
-* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:  
 
@@ -17,7 +17,7 @@
 
   * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
      * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
-     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-example)  
      * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
 
 {NOTE/}
@@ -29,31 +29,31 @@
 #### Get usage:  
 
 * Open a session
-* Create an instance of `CountersFor`.
-    * Either pass `CountersFor` an explicit document ID, -or-
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
       e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
-* Call `CountersFor.Get` to retrieve the current value of a single Counter.
+* Call `counters_for.get` to retrieve the current value of a single Counter.
 
 ---
 
 #### Get example:  
 
-{CODE counters_region_Get@DocumentExtensions\Counters\Counters.cs /}
+{CODE:python counters_region_Get@DocumentExtensions\Counters\Counters.py /}
 
 ---
 
 #### Get syntax:  
 
-{CODE Get-definition@DocumentExtensions\Counters\Counters.cs /}
+{CODE:python Get-definition@DocumentExtensions\Counters\Counters.py /}
 
 | Parameter     | Type   | Description    |
 |---------------|--------|----------------|
-| `counterName` | string | Counter's name |
+| `counter` | str | Counter name |
 
 | Return Type  | Description             |
 |--------------|-------------------------|
-| `long`       | Counter's current value |
+| `int`        | Counter's current value |
 
 {PANEL/}
 
@@ -64,27 +64,27 @@
 #### GetAll usage: 
 
 * Open a session.  
-* Create an instance of `CountersFor`.
-    * Either pass `CountersFor` an explicit document ID, -or-
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
-* Call `CountersFor.GetAll` to retrieve the names and values of all counters associated with the document.
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
+* Call `counters_for.get_all` to retrieve the names and values of all counters associated with the document.
 
 ---
 
 #### GetAll example:  
 
-{CODE counters_region_GetAll@DocumentExtensions\Counters\Counters.cs /}
+{CODE:python counters_region_GetAll@DocumentExtensions\Counters\Counters.py /}
 
 ---
 
 #### GetAll syntax:  
 
-{CODE GetAll-definition@DocumentExtensions\Counters\Counters.cs /}
+{CODE:python GetAll-definition@DocumentExtensions\Counters\Counters.py /}
 
-| Return Type              | Description                     |
-|--------------------------|---------------------------------|
-| Dictionary<string, long> | Map of Counter names and values |
+| Return Type      | Description                     |
+|------------------|---------------------------------|
+| `Dict[str, int]` | Map of Counter names and values |
 
 {PANEL/}
 
