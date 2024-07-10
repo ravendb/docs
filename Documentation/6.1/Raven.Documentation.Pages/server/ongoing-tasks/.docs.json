@@ -1,12 +1,8 @@
 [
     {
-        "Path": "/etl",
-        "Name": "ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "/queue-sink",
-        "Name": "Queue Sink",
+        "Path": "external-replication.markdown",
+        "Name": "External Replication",
+        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
         "Mappings": []
     },
     {
@@ -31,9 +27,13 @@
         "Mappings": []
     },
     {
-        "Path": "external-replication.markdown",
-        "Name": "External Replication",
-        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "/queue-sink",
+        "Name": "Queue Sink",
         "Mappings": []
     }
 ]
