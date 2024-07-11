@@ -18,4 +18,4 @@ If RavenDB returns an `InvalidAuth` response with a message like:
 The provided certificate may not be the right one, may have the wrong password, or may lack
 permissions. Double-check that the certificate works locally.
 
-[docs-create-db]: /docs/article-page/nodejs/studio/database/create-new-database/general-flow
+[docs-create-db]: ../../../studio/database/create-new-database/general-flow

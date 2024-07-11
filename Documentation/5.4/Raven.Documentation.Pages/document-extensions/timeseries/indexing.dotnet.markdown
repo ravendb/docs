@@ -76,10 +76,10 @@ from employee in employees
 
 * Time series index:  
   When [querying](../../document-extensions/timeseries/querying/using-indexes) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
-  (unless results are [projected](../../../document-extensions/timeseries/querying/using-indexes#project-results)). The documents themselves are not returned.
+  (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes#project-results)). The documents themselves are not returned.
 
 * Document index:  
-  The resulting objects are the document entities (unless results are [projected](../../../indexes/querying/projections)).
+  The resulting objects are the document entities (unless results are [projected](../../indexes/querying/projections)).
 
 {NOTE/}
 {PANEL/}
