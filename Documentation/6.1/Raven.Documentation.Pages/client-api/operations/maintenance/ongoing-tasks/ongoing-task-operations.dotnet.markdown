@@ -72,4 +72,12 @@ Use `ToggleOngoingTaskStateOperation` to enable/disable the task state.
 
 {CODE syntax_4@ClientApi\Operations\Maintenance\OngoingTasks\OngoingTaskOperations.cs /}
 
+<br> 
+
+| Return value of `store.Maintenance.Send(GetOngoingTaskInfoOperation)`   |                                        |
+|-------------------------------------------------------------------------|----------------------------------------|
+| `OngoingTaskReplication`                                                | Object with information about the task |
+
+{CODE syntax_5@ClientApi\Operations\Maintenance\OngoingTasks\OngoingTaskOperations.cs /}
+
 {PANEL/}
