@@ -1,4 +1,4 @@
-﻿# Studio: RabbitMQ ETL Task
+﻿# RabbitMQ ETL Task
 ---
 
 {NOTE: }
@@ -7,13 +7,16 @@
    * **Extract** selected data from RavenDB documents  
    * **Transform** the data to new JSON objects and add the new objects to CloudEvents messages.  
    * **Load** the messages to a **RabbitMQ exchange**.  
+ 
 * The RabbitMQ exchange enqueues incoming messages at the tail of RabbitMQ queue/s.  
   When the enqueued messages advance to the queue head, RabbitMQ clients can access and consume them.  
+ 
 * RabbitMQ ETL tasks transfer **documents only**.  
   Document extensions like attachments, counters, or time series, are not transferred.  
-* This page explains how to create a RabbitMQ ETL task using Studio.  
+ 
+* This page explains how to create a RabbitMQ ETL task using the Studio.  
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq) how to define a RabbitMQ ETL task using code.  
-
+ 
 * In this page:  
   * [Open RabbitMQ ETL Task View](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#open-rabbitmq-etl-task-view)  
   * [Define RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task#define-rabbitmq-etl-task)  

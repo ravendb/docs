@@ -1,4 +1,4 @@
-﻿# Studio: RabbitMQ Queue Sink Task
+﻿# RabbitMQ Queue Sink Task
 ---
 
 {NOTE: }
@@ -17,7 +17,7 @@
   queues, construct documents using user-defined scripts, and store the 
   documents in RavenDB collections.  
 
-* This page explains how to create a RabbitMQ sink task using Studio.  
+* This page explains how to create a RabbitMQ sink task using the Studio.  
   Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
   Learn how to define a RabbitMQ queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink).  
 

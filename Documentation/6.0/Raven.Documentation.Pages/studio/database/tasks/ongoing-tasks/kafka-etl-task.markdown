@@ -1,4 +1,4 @@
-﻿# Studio: Kafka ETL Task
+﻿# Kafka ETL Task
 ---
 
 {NOTE: }
@@ -7,11 +7,14 @@
    * **Extract** selected data from RavenDB documents  
    * **Transform** the data to new JSON objects and add the new objects to CloudEvents messages.  
    * **Load** the messages to **topics** of a Kafka broker.  
+ 
 * Messages enqueued in Kafka topics are added at the queue's tail.  
   When the messages reach the queue's head, Kafka clients can access and consume them.  
+ 
 * Kafka ETL tasks transfer **documents only**.  
   Document extensions like attachments, counters, or time series, are not transferred.  
-* This page explains how to create a Kafka ETL task using Studio.  
+ 
+* This page explains how to create a Kafka ETL task using the Studio.  
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/kafka) how to define a Kafka ETL task using code.  
 
 * In this page:  

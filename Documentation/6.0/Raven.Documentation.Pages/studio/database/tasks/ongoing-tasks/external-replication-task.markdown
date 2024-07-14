@@ -1,4 +1,4 @@
-﻿# Studio: External Replication Task
+﻿# External Replication Task
 ---
 
 {NOTE: }
