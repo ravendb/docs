@@ -116,7 +116,7 @@ and relevant code samples [here](../server/ongoing-tasks/etl/olap#athena-example
 
 {PANEL: Retrieving Shard-Specific ETL Task Info}
 
-* The [GetOngoingTaskInfoOperation](../server/ongoing-tasks/general-info#get-ongoing-task-info-operation) 
+* The [GetOngoingTaskInfoOperation](../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations) 
   store operation can be used on a non-sharded database to retrieve a task's information.  
 
 * `GetOngoingTaskInfoOperation` can also be used on a sharded database.  

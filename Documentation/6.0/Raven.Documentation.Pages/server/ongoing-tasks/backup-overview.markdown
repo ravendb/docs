@@ -81,7 +81,7 @@ Backed-up data includes both database-level and cluster-level contents, as detai
 | [Compare-exchange values](../../client-api/operations/compare-exchange/overview) | ✔ | ✔ |
 | [Identities](../../client-api/document-identifiers/working-with-document-identifiers#identities) | ✔ | ✔ |
 | [Indexes](../../indexes/creating-and-deploying) | Index definitions are saved and used to rebuild indexes during database restoration | ✔ |
-| [Ongoing Tasks configuration](../../server/ongoing-tasks/general-info) | ✔ | ✔ |
+| [Ongoing Tasks configuration](../../studio/database/tasks/ongoing-tasks/general-info) | ✔ | ✔ |
 | [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions) | ✔ | ✔ |
 
 {PANEL/}

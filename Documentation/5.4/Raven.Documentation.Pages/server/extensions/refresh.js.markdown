@@ -95,4 +95,3 @@ Alternatively, document refreshing can also be configured in the studio, under _
 ### Server
 
 - [What is a Change Vector](../../server/clustering/replication/change-vector)  
-- [Ongoing Tasks: General Info](../../server/ongoing-tasks/general-info)  
