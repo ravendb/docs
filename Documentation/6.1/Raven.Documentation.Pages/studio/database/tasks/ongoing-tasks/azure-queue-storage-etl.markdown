@@ -4,9 +4,9 @@
 {NOTE: }
 
 * The RavenDB **Azure Queue Storage ETL task** -  
-   * **Extracts** selected data from RavenDB documents.  
-   * **Transforms** the data into JSON objects that are added to messages following the [CloudEvents format](https://cloudevents.io/).  
-   * **Loads** the messages to an Azure Queue Storage.  
+   * **Extracts** selected data from RavenDB documents from specified collections.
+   * **Transforms** the data into JSON object.
+   * Wraps the JSON objects as [CloudEvents messages](https://cloudevents.io) and **Loads** them to an Azure Queue Storage.
 
 * The Azure Queue Storage ETL task transfers **documents only**.  
   Document extensions like attachments, counters, time series, and revisions are not sent.  
@@ -210,7 +210,7 @@ You can configure the ETL process to delete documents from RavenDB that have alr
 - [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
 - [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
 - [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
-- [Azure Queue Storage ETL](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue-storage)
+- [Azure Queue Storage ETL](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue)
 
 ### Studio
 
