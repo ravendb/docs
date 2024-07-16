@@ -17,7 +17,7 @@
   can be triggered to access and consume messages when the enqueued messages advance to the queue head.
  
 * This page explains how to create an Azure Queue Storage ETL task using the Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue-storage) how to define an Azure Queue Storage ETL task using code.  
+  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue-storage) how to define an Azure Queue Storage ETL task using the Client API.  
  
 * In this page:  
   * [Open Azure Queue Storage ETL task view](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#open-azure-queue-storage-etl-task-view)  
