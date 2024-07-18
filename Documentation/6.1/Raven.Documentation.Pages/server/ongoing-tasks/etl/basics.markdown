@@ -117,7 +117,7 @@ if (this.ReportsTo !== null)
     managerName = manager.FirstName + " " + manager.LastName;
 }
 
-// Load the object to a target collection by the name of "EmployeesWithManager"
+// Load the object to a target destination by the name of "EmployeesWithManager"
 loadToEmployeesWithManager({
     Name: this.FirstName + " " + this.LastName,
     Title: this.Title ,
@@ -130,7 +130,8 @@ loadToEmployeesWithManager({
 
 #### Syntax
 
-In addition to the ECMAScript 5.1 API, RavenDB introduces the following functions and members that can be used in the transformation script:  
+In addition to the ECMAScript 5.1 API,  
+RavenDB introduces the following functions and members that can be used in the transformation script:  
 
 |---|---|---|
 | `this` | object | The current document (with metadata) |
@@ -140,7 +141,7 @@ In addition to the ECMAScript 5.1 API, RavenDB introduces the following function
 Specific ETL functions:  
 
 |---|---|---|
-| `loadTo` | function | Load an object to the specified target.<br>This command has several different syntax options, see the general details [below](../../../server/ongoing-tasks/etl/basics#load) and in each ETL type documentation.<br>**Note:**<br>An object will only be sent to the destination if the `loadTo` method is called. |
+| `loadTo` | function | Load an object to the specified target.<br>This command has several syntax options,<br>see details [below](../../../server/ongoing-tasks/etl/basics#themethod).<br>**Note:**<br>An object will only be sent to the destination if the `loadTo` method is called. |
 | Attachments: |||
 | `loadAttachment(name)` | function | Load an attachment of the current document. |
 | `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document. |
@@ -157,13 +158,20 @@ Specific ETL functions:
 An object will only be sent to the destination if the `loadTo` method is called.
 {INFO /}
 
-An object can be loaded to a specified target using one of the these methods:
+To specify which target to load the data into, use either of the following overloads in your script.  
+The two methods are equivalent, offering alternative syntax.
 
-* The target is specified as a part of the `loadTo` command: `loadToTarget(obj)`  
-  E.g., `loadToOrders(obj)`
+* **`loadTo<TargetName>(obj, {attributes})`**  
+  * Here the target is specified as part of the function name.  
+  * The _&lt;TargetName&gt;_ in this syntax is Not a variable and cannot be used as one,  
+    it is simply a string literal of the target's name.
 
-* The target is specified as an argument of the `loadTo` command: `loadTo('Target', obj)`  
-  E.g., `loadTo('Orders', obj)`
+* **`loadTo('TargetName', obj, {attributes})`**  
+  * Here the target is passed as an argument to the method.  
+  * Separating the target name from the `loadTo` function name makes it possible to include symbols like `'-'` and `'.'` in target names. 
+    This is not possible when the `loadTo<TargetName>` syntax is used because including special characters in the name of a JavaScript function makes it invalid.
+  * This syntax may vary for some ETL types.  
+    Find the accurate syntax for each ETL type in the type's specific documentation.
 
 --- 
 
@@ -176,24 +184,12 @@ For each ETL type, the target must be:
   * Kafka ETL: a _topic_ name
   * RabbitMQ ETL: an _exchange_ name
   * Azure Queue Storage ETL: a _queue_ name
-  
----
-
-**Note**:
-
-* The target name is Not a variable and cannot be used as one; it is simply a string literal of the target's name.
-
-* Separating the target name from the `loadTo` command makes it possible to include symbols like `-` and `.` in target names.
-  This is not possible when using `loadToOrders` syntax because special characters are invalid in the name of a JavaScript function.
-
-* Note that the general syntax specified above, `loadTo('Target', obj)`, varies for some ETL types.  
-  Find the accurate syntax for each ETL type in the type's specific documentation.  
 
 {NOTE/}
 
 {INFO: }
 
-**Batch processing**:
+#### Batch processing
 
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:
@@ -219,7 +215,7 @@ The number of documents processed depends on the following configuration limits:
 * Loading the results to the target destination is the last stage.
 
 * In contrast to [Replication](../../../server/clustering/replication/replication), 
-  ETL is a push-only process that _writes_ data to the destination whenever documents from the relevant collections are changed. Existing entries on the target will always be **overwritten**.
+  ETL is a push-only process that _writes_ data to the destination whenever documents from the relevant collections are changed. **Existing entries on the target will always be overwritten**.
 
 * Updates are implemented by executing consecutive DELETEs and INSERTs.  
   When a document is modified, the delete command is sent before the new data is inserted and both are processed under the same transaction on the destination side. 

@@ -11,13 +11,17 @@
   * **RabbitMQ**
   * **Azure Queue Storage**
 
-* This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#supported-message-brokers) within a RavenDB database.
+* This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#queue-etl-tasks) within a RavenDB database.
 
 * RavenDB can also function as a _Consumer_.  
   To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../../../server/ongoing-tasks/queue-sink/overview).
 
 * In this page:
     * [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#queue-etl-tasks)
+    * [Data delivery](../../../../server/ongoing-tasks/etl/queue-etl/overview#data-delivery)
+        * [What is transferred](../../../../server/ongoing-tasks/etl/queue-etl/overview#what-is-transferred)
+        * [How are messages produced and consumed](../../../../server/ongoing-tasks/etl/queue-etl/overview#how-are-messages-produced-and-consumed)
+        * [Idempotence and message duplication](../../../../server/ongoing-tasks/etl/queue-etl/overview#idempotence-and-message-duplication)
     * [CloudEvents](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)
     * [Task statistics](../../../../server/ongoing-tasks/etl/queue-etl/overview#task-statistics)
 
@@ -49,6 +53,49 @@ These ETL tasks:
 
 {PANEL/}
 
+{PANEL: Data delivery}
+
+{NOTE: }
+
+#### What is transferred
+
+* **Documents only**  
+  A Queue ETL task transfers documents only.  
+  Document extensions like attachments, counters, or time series, will not be transferred.
+* **CloudEvents messages**  
+  JSON objects produced by the task's transformation script are wrapped
+  and delivered as [CloudEvents Messages](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents).
+
+{NOTE/}
+{NOTE: }
+
+#### How are messages produced and consumed
+
+* The Queue ETL task will send the messages it produces to the target using a **connection string**,  
+  which specifies the destination and credentials required to authorize the connection.  
+  Find the specific syntax for defining a connection string per task in each task's documentation.
+* Each message will be added to the tail of its assigned queue according to the transformation script.  
+  As earlier messages are processed, it will advance to the head of the queue, becoming available for consumers.
+* RavenDB publishes messages to the designated brokers using [transactions and batches](../../../../server/ongoing-tasks/etl/basics#batch-processing),  
+  creating a batch of messages and opening a transaction to the destination queue for the batch.
+
+{NOTE/}
+{NOTE: }
+
+#### Idempotence and message duplication
+
+* RavenDB is an **idempotent producer**, which typically does not send duplicate messages to queues.
+* However, it is possible that duplicate messages will be sent to the broker.   
+  For example:    
+  Different nodes of a RavenDB cluster are regarded as different producers by the broker.  
+  If the node responsible for the ETL task fails while sending a batch of messages,  
+  the new responsible node may resend messages that were already received by the broker.
+* Therefore, if processing each message only once is important to the consumer,  
+  it is **the consumer's responsibility** to verify the uniqueness of each consumed message.
+
+{NOTE/}
+{PANEL/}
+
 {PANEL: CloudEvents}
 
 * After preparing a JSON object that needs to be sent to a message broker,  
@@ -62,7 +109,6 @@ These ETL tasks:
     | **id**          | `string` | [Event identifier](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#id)                  | The document Change Vector                           |
     | **type**        | `string` | [Event type](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#type)                      | "ravendb.etl.put"                                    |
     | **source**      | `string` | [Event context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1)               | `<ravendb-node-url>/<database-name>/<etl-task-name>` |
-    | **specversion** | `string` | [CloudEvents version used](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#specversion) | `V1_0`                                               |
 
 * The optional 'partitionkey' attribute can also be added.  
   Currently, it is only implemented by [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  

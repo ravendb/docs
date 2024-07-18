@@ -23,7 +23,7 @@
 
 ---
 
-* This article focuses on how to create an Azure Queue Storage ETL task using from using the Client API.  
+* This article focuses on how to create an Azure Queue Storage ETL task using the Client API.  
   To define an Azure Queue Storage ETL task from the Studio, see [Studio: Azure Queue Storage ETL Task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl).  
   For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).
 
@@ -94,9 +94,9 @@ There are three authenticaton methods available:
 
 * In this example, the Azure Queue Storage ETL Task will -  
   * Extract source documents from the "Orders" collection in RavenDB.  
-  * Process each "Order" document via a defined a script that creates a new `orderData` object.  
+  * Process each "Order" document using a defined script that creates a new `orderData` object.  
   * Load the `orderData` object to the "OrdersQueue" in an Azure Queue Storage.  
-* For more details about the script and the `loadTo` method, see [The transromation script](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#the-transformation-script) below.
+* For more details about the script and the `loadTo` method, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#the-transformation-script) section below.
 
 {CODE add_azure_etl_task@Server\OngoingTasks\ETL\Queue\AzureQueueStorageEtl.cs /}
 
@@ -126,7 +126,8 @@ There are three authenticaton methods available:
 {PANEL: The transformation script}
 
 The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of an Azure Queue Storage ETL script are similar to those of other ETL types.  
-The script defines what data to **extract** from the source document, how to **transform** this data, and which Azure Queue to **load** it to.
+The script defines what data to **extract** from the source document, how to **transform** this data,  
+and which Azure Queue to **load** it to.
 
 ---
 

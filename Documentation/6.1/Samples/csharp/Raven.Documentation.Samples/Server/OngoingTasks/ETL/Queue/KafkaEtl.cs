@@ -5,31 +5,26 @@ using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.ETL.Queue;
 namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
 {
-    public class AzureQueueStorageEtl
+    public class KafkaEtl
     {
         public void AddConnectionString()
         {
             using (var store = new DocumentStore())
             {
-                #region add_azure_connection_string
+                #region add_kafka_connection_string
                 // Prepare the connection string:
                 // ==============================
                 var conStr = new QueueConnectionString
                 {
                     // Provide a name for this connection string
-                    Name = "myAzureQueueConStr", 
+                    Name = "myKafkaConStr",
                     
                     // Set the broker type
-                    BrokerType = QueueBrokerType.AzureQueueStorage,
- 
-                    // In this example we provide a simple string for the connection string
-                    AzureQueueStorageConnectionSettings = new AzureQueueStorageConnectionSettings()
-                    {
-                        ConnectionString = @"DefaultEndpointsProtocol=https;
-                                             AccountName=myAccountName;
-                                             AccountKey=myAccountKey;
-                                             EndpointSuffix=core.windows.net"
-                    }
+                    BrokerType = QueueBrokerType.Kafka,
+                    
+                    // Configure the connection details
+                    KafkaConnectionSettings = new KafkaConnectionSettings() 
+                        { BootstrapServers = "localhost:9092" }
                 };
                 
                 // Deploy (send) the connection string to the server via the PutConnectionStringOperation:
@@ -40,11 +35,11 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             }
         }
 
-        public void AddAzureQueueStorageEtlTask()
+        public void AddKafkaEtlTask()
         {
             using (var store = new DocumentStore())
             {
-                #region add_azure_etl_task
+                #region add_kafka_etl_task
                 // Define a transformation script for the task: 
                 // ============================================
                 Transformation transformation = new Transformation
@@ -71,26 +66,27 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                    orderData.TotalCost += cost;
                                }
 
-                               // Load the object to the 'OrdersQueue' in Azure
+                               // Load the object to the 'OrdersTopic' in Kafka
                                // ============================================= 
-                               loadToOrdersQueue(orderData, {
+                               loadToOrdersTopic(orderData, {
                                    Id: id(this),
+                                   PartitionKey: id(this),
                                    Type: 'com.example.promotions',
                                    Source: '/promotion-campaigns/summer-sale'
                                });"
                 };
 
-                // Define the Azure Queue Storage ETL task:
-                // ========================================
+                // Define the Kafka ETL task:
+                // ==========================
                 var etlTask = new QueueEtlConfiguration()
                 {
-                    BrokerType = QueueBrokerType.AzureQueueStorage,
+                    BrokerType = QueueBrokerType.Kafka,
                     
-                    Name = "myAzureQueueEtlTaskName",
-                    ConnectionStringName = "myAzureQueueConStr",
+                    Name = "myKafkaEtlTaskName",
+                    ConnectionStringName = "myKafkaConStr",
                     
                     Transforms = { transformation },
-                    
+
                     // Set to false to allow task failover to another node if current one is down
                     PinToMentorNode = false
                 }; 
@@ -106,29 +102,29 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
         {
             using (var store = new DocumentStore())
             {
-                Transformation transformation = new Transformation(); // Defined here only for compilation purposes
+                Transformation transformation = new Transformation();  // Defined here only for compilation purposes
                 
-                #region azure_delete_documents
+                #region kafka_delete_documents
                 var etlTask = new QueueEtlConfiguration()
                 {
-                    BrokerType = QueueBrokerType.AzureQueueStorage,
+                    BrokerType = QueueBrokerType.Kafka,
                     
-                    Name = "myAzureQueueEtlTaskName",
-                    ConnectionStringName = "myAzureQueueConStr",
+                    Name = "myKafkaEtlTaskName",
+                    ConnectionStringName = "myKafkaConStr",
                     
                     Transforms = { transformation },
 
-                    // Define whether to delete documents from RavenDB after they are sent to the target queue
+                    // Define whether to delete documents from RavenDB after they are sent to the target topic
                     Queues = new List<EtlQueue>()
                     {
                         new()
                         {
-                            // The name of the Azure queue  
-                            Name = "OrdersQueue",
-
+                            // The name of the Kafka topic
+                            Name = "OrdersTopic",
+                                
                             // When set to 'true',
                             // documents that were processed by the transformation script will be deleted
-                            // from RavenDB after the message is loaded to the "OrdersQueue" in Azure.
+                            // from RavenDB after the message is loaded to the "OrdersTopic" in Kafka.
                             DeleteProcessedDocuments = true
                         }
                     }
@@ -157,8 +153,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             #region queue_connection_string
             public class QueueConnectionString : ConnectionString
             {
-                // Set the broker type to QueueBrokerType.AzureQueueStorage
-                // for an Azure Queue Storage connection string
+                // Set the broker type to QueueBrokerType.Kafka for a Kafka connection string
                 public QueueBrokerType BrokerType { get; set; }
                 
                 // Configure this when setting a connection string for Kafka
@@ -176,33 +171,24 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             {
                 public string Name { get; set; }
             }
-
-            #region azure_con_str_settings
-            public class AzureQueueStorageConnectionSettings
+            
+            #region kafka_con_str_settings
+            public class KafkaConnectionSettings
             {
-                public EntraId EntraId { get; set; }
-                public string ConnectionString { get; set; }
-                public Passwordless Passwordless { get; set; }
-            }
-
-            public class EntraId
-            {
-                public string StorageAccountName { get; set; }
-                public string TenantId { get; set; }
-                public string ClientId { get; set; }
-                public string ClientSecret { get; set; }
-            }
-
-            public class Passwordless
-            {
-                public string StorageAccountName { get; set; }
+                // A string containing comma-separated keys of "host:port" URLs to Kafka brokers
+                public string BootstrapServers { get; set; }
+                
+                // Various configuration options
+                public Dictionary<string, string> ConnectionOptions { get; set; }
+                
+                public bool UseRavenCertificate { get; set; }
             }
             #endregion
 
             #region etl_configuration
             public class QueueEtlConfiguration
             {
-                // Set to QueueBrokerType.AzureQueueStorage to define an Azure Queue Storage ETL task
+                // Set to QueueBrokerType.Kafka to define a Kafka ETL task
                 public QueueBrokerType BrokerType { get; set; }
                 // The ETL task name
                 public string Name { get; set; }
@@ -230,7 +216,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             
             public class EtlQueue
             {
-                // The Azure queue name
+                // The Kafka topic name
                 public string Name { get; set; }
                 // Delete processed documents when set to 'true'
                 public bool DeleteProcessedDocuments { get; set; }
