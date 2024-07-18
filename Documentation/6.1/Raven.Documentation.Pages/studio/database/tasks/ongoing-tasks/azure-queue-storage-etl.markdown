@@ -16,6 +16,8 @@
   [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cextensionv5&pivots=programming-language-csharp) 
   can be triggered to access and consume messages when the enqueued messages advance to the queue head.
  
+---
+
 * This page explains how to create an Azure Queue Storage ETL task using the Studio.  
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue-storage) how to define an Azure Queue Storage ETL task using the Client API.  
  
