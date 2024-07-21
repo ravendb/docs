@@ -18,6 +18,7 @@
 * [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview?pivots=programming-language-csharp)
   can be triggered to consume and process messages that are sent to Azure queues,   
   enabling powerful and flexible workflows.
+  The message visibility period and life span in the Queue can be customized through these [ETL configuration options](../../../../server/configuration/etl-configuration#etl.queue.azurequeuestorage.timetoliveinsec).
 
 * Read more about Azure Queue Storage in the platform's [official documentation](https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction).
 
@@ -33,8 +34,8 @@
       * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example)  
       * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#syntax)
   * [Add an Azure Queue Storage ETL task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#add-an-azure-queue-storage-etl-task)  
-      * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example-basic)  
-      * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#delete-processed-documents)  
+      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example-basic)  
+      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#delete-processed-documents)  
       * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#syntax-1)
   * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#the-transformation-script)
       * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#the-loadto-method)  
@@ -88,7 +89,7 @@ There are three authenticaton methods available:
 
 {NOTE: }
 
-<a id="example-basic" /> __Example - basic__:
+<a id="example-basic" /> __Example__:
 
 ---
 
@@ -103,7 +104,7 @@ There are three authenticaton methods available:
 {NOTE/}
 {NOTE: }
 
-<a id="delete-processed-documents" /> __Example - delete processed documents__:
+<a id="delete-processed-documents" /> __Delete processed documents__:
 
 ---
 
