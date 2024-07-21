@@ -233,8 +233,9 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
 
 * __Connection strings__:  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutConnectionStringOperation  
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveConnectionStringOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string)
 
 * __Transaction recording__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
