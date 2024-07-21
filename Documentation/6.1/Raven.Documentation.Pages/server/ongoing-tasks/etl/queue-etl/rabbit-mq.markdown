@@ -147,10 +147,6 @@ For example, the following two calls, which load data to the Orders exchange, ar
 
   * `loadTo<ExchangeName>(obj)`
 
-    {INFO: }
-    By default we define exchanges on our own with **Fanout** type so the routing keys are ignored.
-    {INFO/}
-
 ---
 
 A sample script that process documents from the Orders collection:
