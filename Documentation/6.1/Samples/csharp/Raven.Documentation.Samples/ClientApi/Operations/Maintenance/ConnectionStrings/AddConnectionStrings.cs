@@ -139,7 +139,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Connectio
             #region raven_connection_string
             public class RavenConnectionString : ConnectionString
             {
-                public ConnectionStringType Type => ConnectionStringType.Raven;
+                public override ConnectionStringType Type => ConnectionStringType.Raven;
                 
                 public string Database { get; set; }   // Target database name
                 public string[] TopologyDiscoveryUrls; // List of server urls in the target RavenDB cluster
@@ -149,7 +149,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Connectio
             #region sql_connection_string
             public class SqlConnectionString : ConnectionString
             {
-                public ConnectionStringType Type => ConnectionStringType.Sql;
+                public override ConnectionStringType Type => ConnectionStringType.Sql;
                 
                 public string ConnectionString { get; set; }
                 public string FactoryName { get; set; }
@@ -159,7 +159,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Connectio
             #region olap_connection_string
             public class OlapConnectionString : ConnectionString
             {
-                public ConnectionStringType Type => ConnectionStringType.Olap;
+                public override ConnectionStringType Type => ConnectionStringType.Olap;
                 
                 public LocalSettings LocalSettings { get; set; }
                 public S3Settings S3Settings { get; set; }
@@ -173,7 +173,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Connectio
             #region elasticsearch_connection_string
             public class ElasticsearchConnectionString : ConnectionString
             {
-                public ConnectionStringType Type => ConnectionStringType.ElasticSearch;
+                public override ConnectionStringType Type => ConnectionStringType.ElasticSearch;
                 
                 public string Nodes { get; set; }
                 public string Authentication { get; set; }
@@ -189,7 +189,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Connectio
             
             public abstract class ConnectionString
             {
-                public string Name { get; set; } // A name for the connection string        
+                // A name for the connection string
+                public string Name { get; set; }
+                
+                // The connection string type
+                public abstract ConnectionStringType Type { get; } 
+            }
+            
+            public enum ConnectionStringType
+            {
+                Raven,
+                Sql,
+                Olap,
+                ElasticSearch,
+                Queue
             }
             #endregion
             

@@ -6,15 +6,15 @@
         "Mappings": []
     },
     {
-        "Path": "remove-connection-string.markdown",
-        "Name": "Remove Connection String",
-        "DiscussionId": "1074768c-807a-4d29-8c61-6facceb7bd67",
-        "Mappings": []
-    },
-    {
         "Path": "get-connection-string.markdown",
         "Name": "Get Connection String",
         "DiscussionId": "c59f5b9b-dbc4-460e-840b-c13a355d37c8",
+        "Mappings": []
+    },
+    {
+        "Path": "remove-connection-string.markdown",
+        "Name": "Remove Connection String",
+        "DiscussionId": "1074768c-807a-4d29-8c61-6facceb7bd67",
         "Mappings": []
     }
 ]

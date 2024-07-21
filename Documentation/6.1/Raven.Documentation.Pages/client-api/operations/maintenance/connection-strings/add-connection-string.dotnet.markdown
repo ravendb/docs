@@ -1,4 +1,4 @@
-# Operations: How to Add a Connection String
+# Add Connection String Operation
 ---
 
 {NOTE: }
@@ -80,7 +80,7 @@ The OLAP connection string is used by RavenDB's [OLAP ETL Task](../../../../serv
   
 * The following example shows a connection string to Amazon AWS.  
 * Adust the parameters as needed if you are using other cloud-based servers (e.g. Google, Azure, Glacier, S3, FTP).  
-* The available parameters are listed in [ETL destination settings](../../../../server/ongoing-tasks/etl/olap#etl-destination-settingss).   
+* The available parameters are listed in [ETL destination settings](../../../../server/ongoing-tasks/etl/olap#etl-destination-settings).   
 
 {CODE add_olap_connection_string_2@ClientApi\Operations\Maintenance\ConnectionStrings\AddConnectionStrings.cs /}
 
@@ -110,14 +110,14 @@ Syntax:
 {PANEL: Add a Kafka connection string }
 
 The Kafkah connection string is used by RavenDB's [Kafka Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  
-Learn to add a Kafka connection string in section [Add a Kafka connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string).
+Learn how to add a Kafka connection string in section [Add a Kafka connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string).
 
 {PANEL/}
 
 {PANEL: Add a RabbitMQ connection string }
 
 The RabbitMQ connection string is used by RavenDB's [RabbitMQ Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq).  
-Learn to add a RabbitMQ connection string in section [Add a RabbitMQ connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).
+Learn how to add a RabbitMQ connection string in section [Add a RabbitMQ connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).
 
 {PANEL/}
 
