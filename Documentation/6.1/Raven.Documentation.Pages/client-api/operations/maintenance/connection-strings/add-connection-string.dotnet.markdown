@@ -123,7 +123,7 @@ Learn how to add a RabbitMQ connection string in section [Add a RabbitMQ connect
 
 {PANEL: Add an Azure Queue Storage connection string }
 
-The Azure Queue Storage connection string is used by RavenDB's [Azure Queue Storage ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/server/ongoing-tasks/etl/queue-etl/azure-queue).  
+The Azure Queue Storage connection string is used by RavenDB's [Azure Queue Storage ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue).  
 Learn to add an Azure Queue Storage connection string in section [Add an Azure Queue Storage connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#add-an-azure-queue-storage-connection-string).
 
 {PANEL/}

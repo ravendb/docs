@@ -27,7 +27,7 @@
 
 * Learn about the RavenDB ETL task in article **[RavenDB ETL task](../../../../server/ongoing-tasks/etl/raven)**.
 * Learn how to define a connection string for the RavenDB ETL task in section **[Add a RavenDB connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-ravendb-connection-string)**.
-* To manage the RavenDB ETL task from the Studio, see **[Studio: RavenDB ETL task](../.././../studio/database/tasks/ongoing-tasks/ravendb-etl-task)**.
+* To manage the RavenDB ETL task from the Studio, see **[Studio: RavenDB ETL task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)**.
 
 ---
 
@@ -54,7 +54,7 @@ The following example adds an SQL ETL task:
 
 * Learn about the OLAP ETL task in article **[OLAP ETL task](../../../../server/ongoing-tasks/etl/olap)**.
 * Learn how to define a connection string for the OLAP ETL task in section **[Add an OLAP connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-olap-connection-string)**.
-* To manage the OLAP ETL task from the Studio, see **[Studio: OLAP ETL task](../.././../studio/database/tasks/ongoing-tasks/olap-etl-task)**.
+* To manage the OLAP ETL task from the Studio, see **[Studio: OLAP ETL task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)**.
 
 ---
 
@@ -68,7 +68,7 @@ The following example adds an OLAP ETL task:
 
 * Learn about the Elasticsearch ETL task in article **[Elasticsearch ETL task](../../../../server/ongoing-tasks/etl/elasticsearch)**.
 * Learn how to define a connection string for the Elasticsearch ETL task in section **[Add an Elasticsearch connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-elasticsearch-connection-string)**.
-* To manage the Elasticsearch ETL task from the Studio, see **[Studio: Elasticsearch ETL task](../.././../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task)**.
+* To manage the Elasticsearch ETL task from the Studio, see **[Studio: Elasticsearch ETL task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task)**.
 
 ---
 
@@ -134,9 +134,9 @@ The following example adds an Elasticsearch ETL task:
 - [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
 - [OLAP ETL](../../../../server/ongoing-tasks/etl/olap)
 - [Elasticsearch ETL](../../../../server/ongoing-tasks/etl/elasticsearch)
-- [Kafka ETL](../../../../server/ongoing-tasks/etl/kafka)
-- [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/rabbit-mq)
-- [Azure Queue Storage ETL](../../../../server/ongoing-tasks/etl/azure-queue)
+- [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
+- [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
+- [Azure Queue Storage ETL](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue)
 
 ### Studio
 
