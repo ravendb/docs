@@ -139,13 +139,12 @@ For example, the following two calls, which load data to the Orders exchange, ar
     When replacing the exchange name with an empty string,  
     the message will be routed using the routingKey via the default exchange, which is predefined by the broker.
 
-  * `loadTo<ExchangeName>(obj, {attributes})`  
+  * `loadTo<ExchangeName>(obj)`  
+    `loadTo<ExchangeName>(obj, {attributes})`  
     When omitting the routingKey, messages delivery will depend on the exchange type.
 
   * `loadTo<ExchangeName>(obj, 'routingKey')`  
     When omitting the attributes, default attribute values will be assigned.
-
-  * `loadTo<ExchangeName>(obj)`
 
 ---
 
