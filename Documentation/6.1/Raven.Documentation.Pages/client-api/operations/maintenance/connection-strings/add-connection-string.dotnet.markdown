@@ -8,7 +8,7 @@
 * In this page:  
     * [Add a RavenDB connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-ravendb-connection-string)  
     * [Add an SQL connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-sql-connection-string)  
-    * [Add an Olap connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-olap-connection-string)  
+    * [Add an OLAP connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-olap-connection-string)  
     * [Add an Elasticsearch connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-elasticsearch-connection-string)  
     * [Add a Kafka connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-kafka-connection-string)  
     * [Add a RabbitMQ connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-rabbitmq-connection-string)  
