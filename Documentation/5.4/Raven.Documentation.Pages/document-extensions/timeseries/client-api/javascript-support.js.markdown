@@ -97,22 +97,14 @@ Values are returned in an array of time series entries, i.e. -
 
 {PANEL: Examples}
 
-{NOTE: }
+* This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
+  The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+  {CODE:nodejs js_support_1@documentExtensions\timeSeries\client-api\javascriptSupport.js /}
 
-This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
-The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+* This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
+  The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
+  {CODE:nodejs js_support_2@documentExtensions\timeSeries\client-api\javascriptSupport.js /}
 
-{CODE:nodejs js_support_1@documentExtensions\timeSeries\client-api\javascriptSupport.js /}
-
-{NOTE/}
-{NOTE: }
-
-This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
-The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
-  
-{CODE:nodejs js_support_2@documentExtensions\timeSeries\client-api\javascriptSupport.js /}
-
-{NOTE/}
 {PANEL/}
 
 ## Related articles

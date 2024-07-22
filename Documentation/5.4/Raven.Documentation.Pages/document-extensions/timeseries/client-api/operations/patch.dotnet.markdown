@@ -50,30 +50,15 @@
 
 ### Examples
 
-{NOTE: }
+* In this example, we **append** a single entry to time series "HeartRates" on the specified document.
+  {CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-In this example, we **append** a single entry to time series "HeartRates" on the specified document.
-  
-{CODE TS_region-Operation_Patch-Append-Single-TS-Entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+* In this example, we **append** 100 entries to time series "HeartRates" on the specified document.  
+  Timestamps and values are drawn from an array and other arguments are provided in the "Values" property.  
+  {CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **append** 100 entries to time series "HeartRates" on the specified document.  
-Timestamps and values are drawn from an array and other arguments are provided in the "Values" property.  
- 
-{CODE TS_region-Operation_Patch-Append-100-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **delete** a range of 50 entries from time series "HeartRates" on the specified document.  
-
-{CODE TS_region-Operation_Patch-Delete-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-{NOTE/}
+* In this example, we **delete** a range of 50 entries from time series "HeartRates" on the specified document.  
+  {CODE TS_region-Operation_Patch-Delete-50-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 ---
 
@@ -116,35 +101,18 @@ In this example, we **delete** a range of 50 entries from time series "HeartRate
 
 ### Examples
 
-{NOTE: }
+* In this example, we **append** an entry to time series "HeartRates" on ALL documents in the "Users" collection.
+  {CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-In this example, we **append** an entry to time series "HeartRates" on ALL documents in the "Users" collection.
-
-{CODE TS_region-PatchByQueryOperation-Append-To-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **delete** the "HeartRates" time series from documents that match the query criteria.  
-
-{CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-{NOTE/}
-
-{NOTE: }
+* In this example, we **delete** the "HeartRates" time series from documents that match the query criteria.  
+  {CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 * In this example, for each document in the "Users" collection, we patch a document field with data retrieved from its time series entries.
   The document's time series data itself is Not patched.
-
-* The document field "NumberOfUniqueTagsInTS" will be updated with the number of unique tags in the user's "HeartRates" time series.
-
-* To do this, we use the JavaScript [get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3) method to get all the time series entries for each document  
+  The document `NumberOfUniqueTagsInTS` field will be updated with the number of unique tags in the user's "HeartRates" time series.
+  To do this, we use the JavaScript [get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3) method to get all the time series entries for each document  
   and extract each entry's tag.  
-  
-{CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-{NOTE/}
+  {CODE TS_region-PatchByQueryOperation-Get@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
 ---
 

@@ -58,11 +58,7 @@
 
 {PANEL: Querying the index} 
  
-{NOTE: }
-
-<a id="query-all-time-series-entries" /> **Query all time series entries**:
-
----
+#### Query all time series entries:
 
 No filtering is applied in this query.  
 Results will include ALL entries from time series "HeartRates".
@@ -77,12 +73,9 @@ from index "TsIndex"
 {CODE-TAB-BLOCK/} 
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-<a id="filter-query-results" /> **Filter query results**:
-
 ---
+
+#### Filter query results:
 
 In this example, time series entries are filtered by the query.  
 The query predicate is applied to the index-fields.
@@ -98,12 +91,9 @@ where EmployeeName == "Robert King" and BPM > 85.0
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-<a id="order-query-results" /> **Order query results**:
-
 ---
+
+#### Order query results:
 
 Results can be ordered by any of the index-fields.
 
@@ -119,13 +109,9 @@ order by Date desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="project-results" /> **Project results**:
-
 ---
+
+#### Project results:
 
 * Instead of returning the entire `TsIndex.IndexEntry` object for each result item,  
   you can return only partial fields.
@@ -148,7 +134,6 @@ select distinct EmployeeID
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Syntax}

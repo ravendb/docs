@@ -46,41 +46,31 @@
 
 {PANEL: Examples}
 
-{NOTE: }
-<a id="append-single-entry" /> __Append single entry__:
+#### Append single entry:
 
----
 In this example, we append a single entry with a single value to time series "HeartRates". 
 {CODE:nodejs append_1@documentExtensions\timeSeries\client-api\appendWithBulkInsert.js /}
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-entries" /> __Append multiple entries__:
-
 ---
+
+#### Append multiple entries:
+
 In this example, we append 100 entries with a single value to time series "HeartRates". 
 {CODE:nodejs append_2@documentExtensions\timeSeries\client-api\appendWithBulkInsert.js /}
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-values-per-entry" /> __Append multiple values per entry__:
-
 ---
+
+#### Append multiple values per entry:
+
 In this example, we append multiple values per entry in time series "HeartRates".
 {CODE:nodejs append_3@documentExtensions\timeSeries\client-api\appendWithBulkInsert.js /}
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-time-series" /> __Append multiple time series__:
-
 ---
+
+#### Append multiple time series:
+
 In this example, we append multiple time series in different documents in the same batch.
 {CODE:nodejs append_4@documentExtensions\timeSeries\client-api\appendWithBulkInsert.js /}
-
-{NOTE/}
 
 {PANEL/}
 

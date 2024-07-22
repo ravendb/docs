@@ -11,11 +11,11 @@
 
 * In this page:
     * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
     * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
-       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
 
 {NOTE/}
 
@@ -31,18 +31,10 @@
 * The provided DateTime values are handled by the server as UTC.  
   The client does Not perform any conversion to UTC prior to sending the request to the server.  
 
-* Note: calling 'offset' will only adjust the timestamps in the returned results to your local time (optional).  
-
 * In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
 
-{CODE-TABS}
-{CODE-TAB:nodejs:Query choose_range_1@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB:nodejs:Query_using_params choose_range_2@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery choose_range_3@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery_using_params choose_range_4@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB-BLOCK:sql:RQL}
-// RQL:
-from "employees" as employee
+{CODE-BLOCK:sql}
+from "Employees" as employee
 where employee.Address.Country == "UK"
 select timeseries(
     from employee.HeartRates
@@ -50,22 +42,7 @@ select timeseries(
     and "2020-05-17T00:10:00.0000000"
     offset "03:00"
 )
-
-// RQL with parameters:
-from "employees"
-where Address.Country = $p0
-select timeseries(
-    from HeartRates
-    between $from and $to
-    offset "03:00"
-)
-{
-  "p0":   "UK",
-  "from": "2020-05-17T00:00:00.0000000",
-  "to":   "2020-05-17T00:10:00.0000000"
-}
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{CODE-BLOCK/}
 
 ---
 
@@ -77,18 +54,14 @@ select timeseries(
 
 * In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
 
-{CODE-TABS}
-{CODE-TAB:nodejs:Query choose_range_5@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB:nodejs:RawQuery choose_range_6@documentExtensions\timeSeries\querying\queryRange.js /}
-{CODE-TAB-BLOCK:sql:RQL}
+{CODE-BLOCK:sql}
 from "Employees" as e 
 select timeseries(
     from e.HeartRates
     last 30 min
     offset "03:00"
 )
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{CODE-BLOCK/}
 
 {PANEL/}
 
@@ -148,7 +121,7 @@ select timeseries(
 * Use `first` to specify the time frame from the start of the time series.  
   Use `last` to specify the time frame from the end of the time series.  
   A query function can use either `first` or `last`, but not both. E.g. -  
-  
+
      {CODE-BLOCK: sql}
 // Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"

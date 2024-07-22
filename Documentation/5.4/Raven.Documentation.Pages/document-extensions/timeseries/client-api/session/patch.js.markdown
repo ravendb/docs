@@ -7,7 +7,7 @@
 * Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
   using [session.advanced.defer](../../../../client-api/operations/patching/single-document#session-api-using-defer), as described below.
   * You can handle a single document at a time.
-  * The patching action is defined by the provided [JavaScript script](../../../../document-extensions/timeseries/client-api/javascript-support).
+  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support).
   
 * Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
   where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch).
@@ -39,25 +39,19 @@
 
 {PANEL: Patching examples}
 
-{NOTE: }
-
-<a id="append-multiple-entries" /> __Append multiple entries__:
+#### Append multiple entries:
 
 In this example, we append 100 time series entries with random heart rate values to a document.  
 
 {CODE:nodejs patch_1@documentExtensions\timeSeries\client-api\patchTimeSeries.js /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-<a id="delete-multiple-entries" /> __Delete multiple entries__:
+#### Delete multiple entries:
 
 In this example, we remove a range of 50 time series entries from a document.  
 
 {CODE:nodejs patch_2@documentExtensions\timeSeries\client-api\patchTimeSeries.js /}
-
-{NOTE/}
 
 {PANEL/}
 

@@ -100,7 +100,7 @@ select timeseries(
 #### Example:  
 
 {CODE-TABS}
-{CODE-TAB-BLOCK:csharp:LINQ}
+{CODE-TAB-BLOCK:python:LINQ}
 var query = session.Query<User>()
     .Select(p => RavenQuery.TimeSeries(p, "HeartRates")
         .Scale(10)
@@ -202,16 +202,15 @@ select timeseries(
 * You can declare and use both time series functions and custom functions in a query.  
   The custom functions can call the time series functions, pass them arguments, and use their results.
 
-* In the example below, a custom function (`customFunc`) is called by the query `select` clause to fetch and format a set of time series entries, which are then projected by the query.  
+* In the example below, a custom function (`customFunc`) is called by the query `select` clause 
+  to fetch and format a set of time series entries, which are then projected by the query.  
   The time series function (`tsQuery`) is called to retrieve the matching time series entries.
 
 * The custom function returns a flat set of values rather than a nested array, to ease the projection of retrieved values.
 
-* Note the generated RQL in the second tab, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare).
+* Note the generated RQL, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare).
  
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ DefineCustomFunctions@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{CODE-TAB-BLOCK:javascript:RQL}
+{CODE-BLOCK:javascript}
 // The time series function:
 // =========================
 declare timeseries tsQuery(user) {
@@ -243,12 +242,11 @@ from "Users" as user
 select
     user.Name,
     customFunc(user) as timeSeriesEntries // Call the custom JavaScript function
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
+{CODE-BLOCK/}
 
 This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LINQ sample:  
 
-{CODE DefineCustomFunctions_ModifiedTimeSeriesEntry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python DefineCustomFunctions_ModifiedTimeSeriesEntry@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
 {PANEL/}
 
