@@ -15,6 +15,7 @@
         Plain,
         PowerShell,
         Python,
+        Php,
         Ruby,
         Sql,
         Xml

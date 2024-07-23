@@ -22,6 +22,10 @@
         [Description("Python")]
         Python,
 
+        [FileExtension(".php")]
+        [Description("PHP")]
+        Php,
+
         [FileExtension(".js")]
         [Description("Node.js")]
         NodeJs,

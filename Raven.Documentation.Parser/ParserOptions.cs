@@ -52,6 +52,8 @@ namespace Raven.Documentation.Parser
                     return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "java", "src", "test", "java", "net", "ravendb");
                 case Language.Python:
                     return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "python");
+                case Language.Php:
+                    return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "php");
                 case Language.NodeJs:
                     return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "nodejs");
                 default:

@@ -134,6 +134,9 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 case Language.Python:
                     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
                     break;
+                case Language.Php:
+                    content = ExtractSectionFromPhpFile(section, Path.Combine(samplesDirectory, file));
+                    break;
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -227,6 +230,9 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                 case Language.Python:
                     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
                     break;
+                case Language.Php:
+                    content = ExtractSectionFromPhpFile(section, Path.Combine(samplesDirectory, file));
+                    break;
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -255,6 +261,26 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
         }
 
         private static string ExtractSectionFromPythonFile(string section, string filePath)
+        {
+            if (File.Exists(filePath) == false)
+                throw new FileNotFoundException(string.Format("File '{0}' does not exist.", filePath), filePath);
+
+            var content = File.ReadAllText(filePath);
+            var startText = string.Format("# region {0}", section);
+            var indexOfStart = content.IndexOf(startText, StringComparison.OrdinalIgnoreCase);
+            if (indexOfStart == -1)
+                throw new InvalidOperationException(string.Format("Section '{0}' not found in '{1}'.", section, filePath));
+
+            var start = content.IndexOf(startText, StringComparison.OrdinalIgnoreCase) + startText.Length;
+            var end = content.IndexOf("# endregion", start, StringComparison.OrdinalIgnoreCase);
+            var sectionContent = content.Substring(start, end - start);
+            if (sectionContent.EndsWith("//"))
+                sectionContent = sectionContent.TrimEnd(new[] { '/' });
+
+            return NormalizeContent(sectionContent);
+        }
+
+        private static string ExtractSectionFromPhpFile(string section, string filePath)
         {
             if (File.Exists(filePath) == false)
                 throw new FileNotFoundException(string.Format("File '{0}' does not exist.", filePath), filePath);
@@ -343,6 +369,8 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                     return "language-javascript";
                 case Language.Python:
                     return "language-python";
+                case Language.Php:
+                    return "language-php";
                 default:
                     throw new NotSupportedException(language.ToString());
             }
@@ -366,6 +394,8 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                     return "language-xml";
                 case CodeBlockLanguage.Python:
                     return "language-python";
+                case CodeBlockLanguage.Php:
+                    return "language-php";
                 case CodeBlockLanguage.Bash:
                     return "language-bash";
                 case CodeBlockLanguage.Batch:
@@ -403,6 +433,8 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
                     return "HTTP";
                 case Language.Python:
                     return "Python";
+                case Language.Php:
+                    return "Php";
                 default:
                     throw new NotSupportedException(language.ToString());
             }

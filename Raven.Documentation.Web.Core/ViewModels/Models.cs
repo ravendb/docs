@@ -184,6 +184,8 @@ namespace Raven.Documentation.Web.Core.ViewModels
                     return "http";
                 case Language.Python:
                     return "python";
+                case Language.Php:
+                    return "php";
                 default:
                     return "general";
             }
