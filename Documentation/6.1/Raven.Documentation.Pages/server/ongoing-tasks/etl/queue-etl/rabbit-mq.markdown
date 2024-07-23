@@ -148,6 +148,13 @@ For example, the following two calls, which load data to the Orders exchange, ar
 
 ---
 
+{NOTE: }
+If no exchange is defined in the RabbitMQ platform, RavenDB will create a default exchange of the **Fanout** type. 
+In this case, all routing keys will be ignored, and messages will be distributed to all bound queues.
+{NOTE/}
+
+---
+
 A sample script that process documents from the Orders collection:
 
 {CODE-BLOCK: JavaScript}
