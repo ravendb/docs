@@ -65,8 +65,8 @@ There are three authenticaton methods available:
     * Use the Entra ID authorization method to achieve enhanced security by leveraging Microsoft Entra’s robust identity solutions.  
     * This approach minimizes the risks associated with exposed credentials commonly found in connection strings and enables
       more granular control through [Role-Based Access Controls](https://learn.microsoft.com/en-us/azure/role-based-access-control/).
-* **Paswordless**
-    * This authorization method authorizes a dedicated machine and can only be used in self-hosted mode.
+* **Passwordless**
+    * This authorization method requires the machine to be pre-authorized and can only be used in self-hosted mode.
     * Passwordless authorization works only when the account on the machine is assigned the Storage Account Queue Data Contributor role; the Contributor role alone is inadequate.
 
 ---

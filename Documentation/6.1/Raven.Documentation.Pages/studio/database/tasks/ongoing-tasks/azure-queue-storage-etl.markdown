@@ -110,7 +110,7 @@ The available authentication methods to an Azure storage account are:
 
 * **Passwordless**
 
-    * This authorization method authorizes a dedicated machine and can only be used in self-hosted mode.
+    * This authorization method requires the machine to be pre-authorized and can only be used in self-hosted mode.
     * Passwordless authorization works only when the account on the machine is assigned the Storage Account Queue Data Contributor role; the Contributor role alone is inadequate.
 
     ![Passwordless method](images/queue/aqs-etl-passwordless-method.png "passwordless method")
