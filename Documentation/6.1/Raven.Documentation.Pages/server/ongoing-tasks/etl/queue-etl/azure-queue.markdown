@@ -31,7 +31,7 @@
 * In this page:  
   * [Add an Azure Queue Storage connection string](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#add-an-azure-queue-storage-connection-string)  
       * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#authentication-methods)  
-      * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example)  
+      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example)  
       * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#syntax)
   * [Add an Azure Queue Storage ETL task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#add-an-azure-queue-storage-etl-task)  
       * [Example](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#example-basic)  
@@ -160,7 +160,7 @@ For example, the following two calls, which load data to "OrdersQueue", are equi
 
 ---
 
-A sample script that process documents from the Orders collection:
+A sample script that processes documents from the Orders collection:
 
 {CODE-BLOCK: JavaScript}
 // Create an orderData object
