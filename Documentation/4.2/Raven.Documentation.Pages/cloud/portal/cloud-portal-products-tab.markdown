@@ -157,6 +157,11 @@ allowed to connect your database instance.
   If your certificate has expired, you can regenerate a new one.  
   After this operation you need to download the certificate again using **Download Certificate** button.  
 
+  {DANGER: } 
+  The previous certificate is not going to be removed by this operation. Old certificates can be
+  removed using RavenDB Studio Certificates view.
+  {DANGER/}
+
 * **Open Studio**  
   Click this button to open the RavenDB Studio of node A.  
 
