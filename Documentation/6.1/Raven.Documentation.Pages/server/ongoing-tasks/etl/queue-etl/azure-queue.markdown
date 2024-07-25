@@ -59,6 +59,7 @@ There are three authenticaton methods available:
       Learn more about Azure Storage connection strings [here](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).
     * Note: the following connection string parameters are mandatory:  
        * `AccountName`
+       * `AccountKey`
        * `DefaultEndpointsProtocol`
        * `QueueEndpoint` (when using http protocol)
 * **Entra ID**
