@@ -29,6 +29,7 @@ The Billing & Costs tab will show your existing resources and their costs as wel
   The `Pay Now` button is designed to facilitate immediate payment of outstanding costs accrued from previous billing
   cycles. This feature is especially useful for ensuring timely payments and maintaining up-to-date account status.
   It can be used when automatic charge fails due to reasons like expired cards or insufficient funds.
+  You can read more about the _Pay Now_ option on the [Pricing, Payment and Billing](../cloud-pricing-payment-billing#pay-now) page.
 
 {PANEL/}
 
