@@ -39,7 +39,7 @@
       [Monitoring.Snmp.PrivacyProtocol](../../server/configuration/monitoring-configuration#monitoring.snmp.privacyprotocol)  
       [Monitoring.Snmp.PrivacyProtocol.Secondary](../../server/configuration/monitoring-configuration#monitoring.snmp.privacyprotocol.secondary)  
       [Monitoring.Snmp.SupportedVersions](../../server/configuration/monitoring-configuration#monitoring.snmp.supportedversions)  
-    * Others:  
+    * Other monitoring:  
       [Monitoring.Cpu.Exec](../../server/configuration/monitoring-configuration#monitoring.cpu.exec)  
       [Monitoring.Cpu.Exec.Arguments](../../server/configuration/monitoring-configuration#monitoring.cpu.exec.arguments)  
       [Monitoring.Disk.ReadStatsDebounceTimeInMs](../../server/configuration/monitoring-configuration#monitoring.disk.readstatsdebouncetimeinms)  

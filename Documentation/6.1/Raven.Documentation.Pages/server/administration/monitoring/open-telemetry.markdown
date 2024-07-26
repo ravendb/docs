@@ -111,117 +111,117 @@ RavenDB also supports exposing metrics developed by Microsoft for AspNetCore and
 
 #### `ravendb.server.cpucredits`
 
-| Instrument name                                                               | Description                               | Instrument type |
-|-------------------------------------------------------------------------------|-------------------------------------------|-----------------|
-| ravendb.server.cpucredits.alert_raised                                        | CPU Credits Any Alert Raised              | Gauge           |
-| ravendb.server.cpucredits.background.tasks.alert_raised                       | CPU Credits Background Tasks Alert Raised | Gauge           |
-| ravendb.server.cpucredits.base                                                | CPU Credits Base                          | UpDownCounter   |
-| ravendb.server.cpucredits.consumption_current                                 | CPU Credits Gained Per Second             | UpDownCounter   |
-| ravendb.server.cpucredits.failover.alert_raised                               | CPU Credits Failover Alert Raised         | Gauge           |
-| ravendb.server.cpucredits.max                                                 | CPU Credits Max                           | UpDownCounter   |
-| ravendb.server.cpucredits.remaining                                           | CPU Credits Remaining                     | Gauge           |
+| Instrument name                                         | Description                               | Instrument type    |
+|---------------------------------------------------------|-------------------------------------------|--------------------|
+| ravendb.server.cpucredits.alert_raised                  | CPU Credits Any Alert Raised              | Gauge              |
+| ravendb.server.cpucredits.background.tasks.alert_raised | CPU Credits Background Tasks Alert Raised | Gauge              |
+| ravendb.server.cpucredits.base                          | CPU Credits Base                          | UpDownCounter      |
+| ravendb.server.cpucredits.consumption_current           | CPU Credits Gained Per Second             | UpDownCounter      |
+| ravendb.server.cpucredits.failover.alert_raised         | CPU Credits Failover Alert Raised         | Gauge              |
+| ravendb.server.cpucredits.max                           | CPU Credits Max                           | UpDownCounter      |
+| ravendb.server.cpucredits.remaining                     | CPU Credits Remaining                     | Gauge              |
 
 #### `ravendb.server.gc`  
 
-| Instrument name                                                               | Description                                                                   | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.gc.compacted                                                   | Specifies if this is a compacting GC or not.                                                                        | Gauge           |
-| ravendb.server.gc.concurrent                                                  | Specifies if this is a concurrent GC or not.                                                                        | Gauge           |
-| ravendb.server.gc.finalizationpendingcount                                    | Gets the number of objects ready for finalization this GC observed.                                                 | Gauge           |
-| ravendb.server.gc.fragmented                                                  | Gets the total fragmentation (in MB) when the last garbage collection occurred.                                     | Gauge           |
-| ravendb.server.gc.gclohsize                                                   | Gets the large object heap size (in MB) after the last garbage collection of given kind occurred.                   | Gauge           |
-| ravendb.server.gc.generation                                                  | Gets the generation this GC collected.                                                                              | Gauge           |
-| ravendb.server.gc.heapsize                                                    | Gets the total heap size (in MB) when the last garbage collection occurred.                                         | Gauge           |
-| ravendb.server.gc.highmemoryloadthreshold                                     | Gets the high memory load threshold (in MB) when the last garbage collection occurred.                              | Gauge           |
-| ravendb.server.gc.index                                                       | The index of this GC.                                                                                               | Gauge           |
-| ravendb.server.gc.memoryload                                                  | Gets the memory load (in MB) when the last garbage collection occurred.                                             | Gauge           |
-| ravendb.server.gc.pausedurations1                                             | Gets the pause durations. First item in the array.                                                                  | Gauge           |
-| ravendb.server.gc.pausedurations2                                             | Gets the pause durations. Second item in the array.                                                                 | Gauge           |
-| ravendb.server.gc.pinnedobjectscount                                          | Gets the number of pinned objects this GC observed.                                                                 | Gauge           |
-| ravendb.server.gc.promoted                                                    | Gets the promoted MB for this GC.                                                                                   | Gauge           |
-| ravendb.server.gc.timepercentage                                              | Gets the pause time percentage in the GC so far.                                                                    | Gauge           |
-| ravendb.server.gc.totalavailablememory                                        | Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred. | Gauge           |
-| ravendb.server.gc.totalcommited                                               | Gets the total committed MB of the managed heap.                                                                    | Gauge           |
+| Instrument name                            | Description                                                                                                         | Instrument type   |
+|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-------------------|
+| ravendb.server.gc.compacted                | Specifies if this is a compacting GC or not.                                                                        | Gauge             |
+| ravendb.server.gc.concurrent               | Specifies if this is a concurrent GC or not.                                                                        | Gauge             |
+| ravendb.server.gc.finalizationpendingcount | Gets the number of objects ready for finalization this GC observed.                                                 | Gauge             |
+| ravendb.server.gc.fragmented               | Gets the total fragmentation (in MB) when the last garbage collection occurred.                                     | Gauge             |
+| ravendb.server.gc.gclohsize                | Gets the large object heap size (in MB) after the last garbage collection of given kind occurred.                   | Gauge             |
+| ravendb.server.gc.generation               | Gets the generation this GC collected.                                                                              | Gauge             |
+| ravendb.server.gc.heapsize                 | Gets the total heap size (in MB) when the last garbage collection occurred.                                         | Gauge             |
+| ravendb.server.gc.highmemoryloadthreshold  | Gets the high memory load threshold (in MB) when the last garbage collection occurred.                              | Gauge             |
+| ravendb.server.gc.index                    | The index of this GC.                                                                                               | Gauge             |
+| ravendb.server.gc.memoryload               | Gets the memory load (in MB) when the last garbage collection occurred.                                             | Gauge             |
+| ravendb.server.gc.pausedurations1          | Gets the pause durations. First item in the array.                                                                  | Gauge             |
+| ravendb.server.gc.pausedurations2          | Gets the pause durations. Second item in the array.                                                                 | Gauge             |
+| ravendb.server.gc.pinnedobjectscount       | Gets the number of pinned objects this GC observed.                                                                 | Gauge             |
+| ravendb.server.gc.promoted                 | Gets the promoted MB for this GC.                                                                                   | Gauge             |
+| ravendb.server.gc.timepercentage           | Gets the pause time percentage in the GC so far.                                                                    | Gauge             |
+| ravendb.server.gc.totalavailablememory     | Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred. | Gauge             |
+| ravendb.server.gc.totalcommitted           | Gets the total committed MB of the managed heap.                                                                    | Gauge             |
 
 #### `ravendb.server.general`
 
-| Instrument name                                                               | Description                                                                                                         | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.general.certificate_server_certificate_expiration_left_seconds | Server certificate expiration left                                                                                  | Gauge           |
-| ravendb.server.general.cluster.index                                          | Cluster index                                                                                                       | UpDownCounter   |
-| ravendb.server.general.cluster.node.state                                     | Current node state                                                                                                  | UpDownCounter   |
-| ravendb.server.general.cluster.term                                           | Cluster term                                                                                                        | UpDownCounter   |
-| ravendb.server.general.license.cores.max                                      | Server license max CPU cores                                                                                        | Gauge           |
-| ravendb.server.general.license.cpu.utilized                                   | Server license utilized CPU cores                                                                                   | Gauge           |
-| ravendb.server.general.license.expiration_left_seconds                        | Server license expiration left                                                                                      | Gauge           |
-| ravendb.server.general.license.type                                           | Server license type                                                                                                 | Gauge           |
+| Instrument name                                                               | Description                        | Instrument type   |
+|-------------------------------------------------------------------------------|------------------------------------|-------------------|
+| ravendb.server.general.certificate_server_certificate_expiration_left_seconds | Server certificate expiration left | Gauge             |
+| ravendb.server.general.cluster.index                                          | Cluster index                      | UpDownCounter     |
+| ravendb.server.general.cluster.node.state                                     | Current node state                 | UpDownCounter     |
+| ravendb.server.general.cluster.term                                           | Cluster term                       | UpDownCounter     |
+| ravendb.server.general.license.cores.max                                      | Server license max CPU cores       | Gauge             |
+| ravendb.server.general.license.cpu.utilized                                   | Server license utilized CPU cores  | Gauge             |
+| ravendb.server.general.license.expiration_left_seconds                        | Server license expiration left     | Gauge             |
+| ravendb.server.general.license.type                                           | Server license type                | Gauge             |
 
 #### `ravendb.server.resources`
 
-| Instrument name                                                               | Description                                                                                                         | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.resources.available_memory_for_processing                      | Available memory for processing \(in MB\)                                                                           | Gauge           |
-| ravendb.server.resources.cpu.machine                                          | Machine CPU usage in %                                                                                              | Gauge           |
-| ravendb.server.resources.cpu.process                                          | Process CPU usage in %                                                                                              | Gauge           |
-| ravendb.server.resources.dirty_memory                                         | Dirty Memory that is used by the scratch buffers in MB                                                              | Gauge           |
-| ravendb.server.resources.encryption_buffers.memory_in_pool                    | Server encryption buffers memory being in pool in MB                                                                | Gauge           |
-| ravendb.server.resources.encryption_buffers.memory_in_use                     | Server encryption buffers memory being in use in MB                                                                 | Gauge           |
-| ravendb.server.resources.io_wait                                              | IO wait in %                                                                                                        | Gauge           |
-| ravendb.server.resources.low_memory_flag                                      | Server low memory flag value                                                                                        | Gauge           |
-| ravendb.server.resources.machine.assigned_processor_count                     | Number of assigned processors on the machine                                                                        | UpDownCounter   |
-| ravendb.server.resources.machine.processor_count                              | Number of processor on the machine                                                                                  | UpDownCounter   |
-| ravendb.server.resources.managed_memory                                       | Server managed memory size in MB                                                                                    | Gauge           |
-| ravendb.server.resources.thread_pool.available_completion_port_threads        | Number of available completion port threads in the thread pool                                                      | Gauge           |
-| ravendb.server.resources.thread_pool.available_worker_threads                 | Number of available worker threads in the thread pool                                                               | Gauge           |
-| ravendb.server.resources.total_memory                                         | Server allocated memory in MB                                                                                       | Gauge           |
-| ravendb.server.resources.total.swap_usage                                     | Server total swap usage in MB                                                                                       | Gauge           |
-| ravendb.server.resources.total.swap.size                                      | Server total swap size in MB                                                                                        | Gauge           |
-| ravendb.server.resources.unmanaged_memory                                     | Server unmanaged memory size in MB                                                                                  | Gauge           |
-| ravendb.server.resources.working_set_swap_usage                               | Server working set swap usage in MB                                                                                 | Gauge           |
+| Instrument name                                                        | Description                                                    | Instrument type |
+|------------------------------------------------------------------------|----------------------------------------------------------------|-----------------|
+| ravendb.server.resources.available_memory_for_processing               | Available memory for processing \(in MB\)                      | Gauge           |
+| ravendb.server.resources.cpu.machine                                   | Machine CPU usage in %                                         | Gauge           |
+| ravendb.server.resources.cpu.process                                   | Process CPU usage in %                                         | Gauge           |
+| ravendb.server.resources.dirty_memory                                  | Dirty Memory that is used by the scratch buffers in MB         | Gauge           |
+| ravendb.server.resources.encryption_buffers.memory_in_pool             | Server encryption buffers memory being in pool in MB           | Gauge           |
+| ravendb.server.resources.encryption_buffers.memory_in_use              | Server encryption buffers memory being in use in MB            | Gauge           |
+| ravendb.server.resources.io_wait                                       | IO wait in %                                                   | Gauge           |
+| ravendb.server.resources.low_memory_flag                               | Server low memory flag value                                   | Gauge           |
+| ravendb.server.resources.machine.assigned_processor_count              | Number of assigned processors on the machine                   | UpDownCounter   |
+| ravendb.server.resources.machine.processor_count                       | Number of processor on the machine                             | UpDownCounter   |
+| ravendb.server.resources.managed_memory                                | Server managed memory size in MB                               | Gauge           |
+| ravendb.server.resources.thread_pool.available_completion_port_threads | Number of available completion port threads in the thread pool | Gauge           |
+| ravendb.server.resources.thread_pool.available_worker_threads          | Number of available worker threads in the thread pool          | Gauge           |
+| ravendb.server.resources.total_memory                                  | Server allocated memory in MB                                  | Gauge           |
+| ravendb.server.resources.total.swap_usage                              | Server total swap usage in MB                                  | Gauge           |
+| ravendb.server.resources.total.swap.size                               | Server total swap size in MB                                   | Gauge           |
+| ravendb.server.resources.unmanaged_memory                              | Server unmanaged memory size in MB                             | Gauge           |
+| ravendb.server.resources.working_set_swap_usage                        | Server working set swap usage in MB                            | Gauge           |
 
 #### `ravendb.server.requests`
 
-| Instrument name                                                               | Description                                                                                                         | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.requests.requests.average_duration                             | Average request time in milliseconds                                                                                | Gauge           |
-| ravendb.server.requests.requests.concurrent_requests                          | Number of concurrent requests                                                                                       | UpDownCounter   |
-| ravendb.server.requests.requests.per_second                                   | Number of requests per second.                                                                                      | Gauge           |
-| ravendb.server.requests.tcp.active.connections                                | Number of active TCP connections                                                                                    | Gauge           |
-| ravendb.server.requests.total.requests                                        | Total number of requests since server startup                                                                       | UpDownCounter   |
+| Instrument name                                      | Description                                   | Instrument type  |
+|------------------------------------------------------|-----------------------------------------------|------------------|
+| ravendb.server.requests.requests.average_duration    | Average request time in milliseconds          | Gauge            |
+| ravendb.server.requests.requests.concurrent_requests | Number of concurrent requests                 | UpDownCounter    |
+| ravendb.server.requests.requests.per_second          | Number of requests per second.                | Gauge            |
+| ravendb.server.requests.tcp.active.connections       | Number of active TCP connections              | Gauge            |
+| ravendb.server.requests.total.requests               | Total number of requests since server startup | UpDownCounter    |
 
 #### `ravendb.server.storage`
 
-| Instrument name                                                               | Description                                                                                                         | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.storage.storage.disk.ios.read_operations                       | IO read operations per second                                                                                       | Gauge           |
-| ravendb.server.storage.storage.disk.ios.write_operations                      | IO write operations per second                                                                                      | Gauge           |
-| ravendb.server.storage.storage.disk.queue_length                              | Queue length                                                                                                        | Gauge           |
-| ravendb.server.storage.storage.disk.read_throughput                           | Read throughput in kilobytes per second                                                                             | Gauge           |
-| ravendb.server.storage.storage.disk.remaining.space                           | Remaining server storage disk space in MB                                                                           | Gauge           |
-| ravendb.server.storage.storage.disk.remaining.space_percentage                | Remaining server storage disk space in %                                                                            | Gauge           |
-| ravendb.server.storage.storage.disk.write_throughput                          | Write throughput in kilobytes per second                                                                            | Gauge           |
-| ravendb.server.storage.storage.total_size                                     | Server storage total size in MB                                                                                     | Gauge           |
-| ravendb.server.storage.storage.used_size                                      | Server storage used size in MB                                                                                      | Gauge           |
+| Instrument name                                                | Description                               | Instrument type   |
+|----------------------------------------------------------------|-------------------------------------------|-------------------|
+| ravendb.server.storage.storage.disk.ios.read_operations        | IO read operations per second             | Gauge             |
+| ravendb.server.storage.storage.disk.ios.write_operations       | IO write operations per second            | Gauge             |
+| ravendb.server.storage.storage.disk.queue_length               | Queue length                              | Gauge             |
+| ravendb.server.storage.storage.disk.read_throughput            | Read throughput in kilobytes per second   | Gauge             |
+| ravendb.server.storage.storage.disk.remaining.space            | Remaining server storage disk space in MB | Gauge             |
+| ravendb.server.storage.storage.disk.remaining.space_percentage | Remaining server storage disk space in %  | Gauge             |
+| ravendb.server.storage.storage.disk.write_throughput           | Write throughput in kilobytes per second  | Gauge             |
+| ravendb.server.storage.storage.total_size                      | Server storage total size in MB           | Gauge             |
+| ravendb.server.storage.storage.used_size                       | Server storage used size in MB            | Gauge             |
 
 #### `ravendb.server.totaldatabases`
 
-| Instrument name                                                               | Description                                                                                                         | Instrument type |
-|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------|
-| ravendb.server.totaldatabases.count_stale_indexes                             | Number of stale indexes in all loaded databases                                                                     | UpDownCounter   |
-| ravendb.server.totaldatabases.data.written.per_second                         | Number of bytes written \(documents, attachments, counters\) in all loaded databases                                | Gauge           |
-| ravendb.server.totaldatabases.database.disabled_count                         | Number of disabled databases                                                                                        | UpDownCounter   |
-| ravendb.server.totaldatabases.database.encrypted_count                        | Number of encrypted databases                                                                                       | UpDownCounter   |
-| ravendb.server.totaldatabases.database.faulted_count                          | Number of faulted databases                                                                                         | UpDownCounter   |
-| ravendb.server.totaldatabases.database.loaded_count                           | Number of loaded databases                                                                                          | UpDownCounter   |
-| ravendb.server.totaldatabases.database.node_count                             | Number of databases for current node                                                                                | UpDownCounter   |
-| ravendb.server.totaldatabases.database.total_count                            | Number of all databases                                                                                             | UpDownCounter   |
-| ravendb.server.totaldatabases.map_reduce.index.mapped_per_second              | Number of maps per second for map-reduce indexes \(one minute rate\) in all loaded databases                        | Gauge           |
-| ravendb.server.totaldatabases.map_reduce.index.reduced_per_second             | Number of reduces per second for map-reduce indexes \(one minute rate\) in all loaded databases                     | Gauge           |
-| ravendb.server.totaldatabases.map.index.indexed_per_second                    | Number of indexed documents per second for map indexes \(one minute rate\) in all loaded databases                  | Gauge           |
-| ravendb.server.totaldatabases.number_error_indexes                            | Number of error indexes in all loaded databases                                                                     | UpDownCounter   |
-| ravendb.server.totaldatabases.number_of_indexes                               | Number of indexes in all loaded databases                                                                           | UpDownCounter   |
-| ravendb.server.totaldatabases.number.faulty_indexes                           | Number of faulty indexes in all loaded databases                                                                    | UpDownCounter   |
-| ravendb.server.totaldatabases.writes_per_second                               | Number of writes \(documents, attachments, counters\) in all loaded databases                                       | Gauge           |
+| Instrument name                                                   | Description                                                                                        | Instrument type   |
+|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-------------------|
+| ravendb.server.totaldatabases.count_stale_indexes                 | Number of stale indexes in all loaded databases                                                    | UpDownCounter     |
+| ravendb.server.totaldatabases.data.written.per_second             | Number of bytes written \(documents, attachments, counters\) in all loaded databases               | Gauge             |
+| ravendb.server.totaldatabases.database.disabled_count             | Number of disabled databases                                                                       | UpDownCounter     |
+| ravendb.server.totaldatabases.database.encrypted_count            | Number of encrypted databases                                                                      | UpDownCounter     |
+| ravendb.server.totaldatabases.database.faulted_count              | Number of faulted databases                                                                        | UpDownCounter     |
+| ravendb.server.totaldatabases.database.loaded_count               | Number of loaded databases                                                                         | UpDownCounter     |
+| ravendb.server.totaldatabases.database.node_count                 | Number of databases for current node                                                               | UpDownCounter     |
+| ravendb.server.totaldatabases.database.total_count                | Number of all databases                                                                            | UpDownCounter     |
+| ravendb.server.totaldatabases.map_reduce.index.mapped_per_second  | Number of maps per second for map-reduce indexes \(one minute rate\) in all loaded databases       | Gauge             |
+| ravendb.server.totaldatabases.map_reduce.index.reduced_per_second | Number of reduces per second for map-reduce indexes \(one minute rate\) in all loaded databases    | Gauge             |
+| ravendb.server.totaldatabases.map.index.indexed_per_second        | Number of indexed documents per second for map indexes \(one minute rate\) in all loaded databases | Gauge             |
+| ravendb.server.totaldatabases.number_error_indexes                | Number of error indexes in all loaded databases                                                    | UpDownCounter     |
+| ravendb.server.totaldatabases.number_of_indexes                   | Number of indexes in all loaded databases                                                          | UpDownCounter     |
+| ravendb.server.totaldatabases.number.faulty_indexes               | Number of faulty indexes in all loaded databases                                                   | UpDownCounter     |
+| ravendb.server.totaldatabases.writes_per_second                   | Number of writes \(documents, attachments, counters\) in all loaded databases                      | Gauge             |
 
 {PANEL/}
 
@@ -301,13 +301,14 @@ The endpoint format should match the transport protocol you are using:
     By default, the endpoint path for the OpenTelemetry Collector is `/v1/metrics.`
   
   * So, for example, if you are using the default settings for the OpenTelemetry Collector  
-    and utilizing `HttpProtobuf` as the transport protocol, the endpoint used would be 
+    and utilizing **HttpProtobuf** as the transport protocol, the endpoint used would be 
     `http://localhost:4318/v1/metrics` (replace the default port 4318 with whatever port you are using).
 
 * **gRPC** protocol:
 
-  * When using the gRPC transport protocol, the endpoint should be specified in the format  
-    `grpc://localhost:4317` (replace the default port 4317 with whatever port you are using).
+  * When using the default settings for the OpenTelemetry Collector with the **gRPC** transport protocol,  
+    the endpoint should be specified in the format `grpc://localhost:4317`  
+    (replace the default port 4317 with whatever port you are using).
   
   * The gRPC endpoint does not include a path like _/v1/metrics_.
 
@@ -358,8 +359,9 @@ receivers:
 ---
 
 * The OpenTelemetry Collector includes support for retrieving metrics from a Prometheus endpoint.  
-   RavenDB provides a Prometheus endpoint that can be used as a data source for the OpenTelemetry Collector.
-   This endpoint provides metrics in a standardized format and integrates seamlessly without requiring custom configuration.  
+
+* RavenDB provides a Prometheus endpoint that can be used as a data source for the OpenTelemetry Collector.
+  This endpoint provides metrics in a standardized format and integrates seamlessly without requiring you to enable OpenTelemetry in RavenDB.
 
 * Use the `prometheus_simple` receiver in your OpenTelemetry Collector configuration.  
   This setup instructs the collector to scrape metrics from a Prometheus endpoint.
