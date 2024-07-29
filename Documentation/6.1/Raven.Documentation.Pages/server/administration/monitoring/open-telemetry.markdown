@@ -23,7 +23,7 @@
 
 * In this page:
   * [Enabling OpenTelemetry in RavenDB](../../../server/administration/monitoring/open-telemetry#enabling-opentelemetry-in-ravendb)
-  * [RavenDB OpenTelemetry metrics](../../../server/administration/monitoring/open-telemetry#ravendb-opentelemetry-metrics)
+  * [RavenDB OpenTelemetry meters](../../../server/administration/monitoring/open-telemetry#ravendb-opentelemetry-meters)
   * [The metric instruments](../../../server/administration/monitoring/open-telemetry#the-metric-instruments)
   * [Metrics export options](../../../server/administration/monitoring/open-telemetry#metrics-export-options)
       * [Console](../../../server/administration/monitoring/open-telemetry#console)
@@ -48,11 +48,15 @@
 
 {PANEL/}
 
-{PANEL: RavenDB OpenTelemetry Metrics}
+{PANEL: RavenDB OpenTelemetry meters}
 
-RavenDB exposes the following meters:  
-Note: Only most commonly used meters are enabled by default.  
+Each meter listed below groups similar or related [metric instruments](../../../server/administration/monitoring/open-telemetry#the-metric-instruments).  
+Each metric instrument observes some metric value.
+
+Only the most commonly used meters are enabled by default.  
 This can be customized through the specified configuration keys.  
+
+RavenDB exposes the following meters:
 
 * **ravendb.server.cpucredits**  
   Description: Exposes status of CPU credits (cloud)  
@@ -85,7 +89,7 @@ This can be customized through the specified configuration keys.
 
 ---
 
-RavenDB also supports exposing metrics developed by Microsoft for AspNetCore and .NET Runtime:  
+RavenDB also supports exposing meters developed by Microsoft for AspNetCore and .NET Runtime:  
 
 * **Official AspNetCore instrumentation**  
   Description: See the official MS documentation [AspNetCore documentation](https://github.com/open-telemetry/opentelemetry-dotnet-contrib/blob/main/src/OpenTelemetry.Instrumentation.AspNetCore/README.md#metrics)  
