@@ -148,9 +148,22 @@ allowed to connect your database instance.
 
 !["Figure 14 - Manage Product: Manage access"](images\portal-product-details-manage-access.png "Figure 14 - Manage Product: Access")
 
-* **Download**  
+* **Download Certificate**  
   Click this button to download your certificate.  
   Your product will communicate only with trusted sources. Install this certificate only on trusted machines.  
+
+* **Regenerate Certificate**  
+  Click this button to regenerate your certificate.  
+  If your certificate has expired, you can regenerate a new one.  
+  After this operation you need to download the certificate again using **Download Certificate** button.  
+
+  {DANGER: } 
+  The previous certificate is not going to be removed by this operation. Old certificates can be
+  removed using RavenDB Studio Certificates view.
+  {DANGER/}
+
+* **Open Studio**  
+  Click this button to open the RavenDB Studio of node A.  
 
 * **Edit**  
   Click this button to edit your product's list of Allowed IPs.
