@@ -9,6 +9,7 @@ Access to *RavenDB Cloud* services is available through the *Microsoft Azure Mar
     * [Overview](../cloud/cloud-microsoft-azure-marketplace#overview)
     * [Registration process](../cloud/cloud-microsoft-azure-marketplace#registration-process)
     * [Subscription cancellation process](../cloud/cloud-microsoft-azure-marketplace#subscription-cancellation-process)
+    * [Conversion from a regular Cloud Account to an Azure Marketplace Account](../cloud/cloud-microsoft-azure-marketplace#conversion-from-a-regular-cloud-account-to-an-azure-marketplace-account)
 
 {NOTE/}
 
@@ -140,5 +141,13 @@ Subscription cancellation is **irreversible**. Your account and data and will be
 {INFO: }
 Successful cancellation process is also confirmed by an email from *Microsoft Azure Marketplace*.
 {INFO/}
+
+{PANEL/}
+
+---
+
+{PANEL: Conversion from a regular Cloud Account to an Azure Marketplace Account}
+
+If you would like to convert your existing *Cloud Account* to an *Azure Marketplace Account* to pay for your services using a credit card associated with your *Azure* account, please submit a support request via the *RavenDB Cloud Portal*.
 
 {PANEL/}
