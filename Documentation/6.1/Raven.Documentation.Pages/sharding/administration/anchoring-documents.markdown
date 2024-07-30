@@ -27,8 +27,8 @@
   You cannot explicitly select a bucket by number; instead, the bucket is determined based on the suffix used.  
   The suffix is composed of the `$` symbol + your choice of `suffix-text`.  
 
-* RavenDB will run the hash algorithm only over the ID part following the `$` symbol to determine which bucket the document will be placed in.
-  In a document ID that contains multiple `$` symbols, only the suffix following the **last** `$` will be used to calculate the bucket number.
+* RavenDB will run the hashing algorithm only over the ID part following the `$` symbol to determine which bucket the document will be placed in.
+  If a document ID contains multiple `$` symbols, only the suffix following the **last `$`** will be used to calculate the bucket number.
  
 * Documents whose IDs end with the **same suffix**, will **share the same bucket** (and therefore a shard).
 
