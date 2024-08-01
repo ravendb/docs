@@ -172,27 +172,33 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
         private static string GenerateCodeTabsBlock(string content, string documentationVersion, ParserOptions options, IDictionary<string, string> placeholders)
         {
             var tabs = new List<CodeTabBase>();
+            var matchList = new SortedList<int, (Match Match, bool IsFromFile)>();
+            
             var matches = CodeTabFinder.Matches(content);
             foreach (Match match in matches)
-            {
-                var languageAndTitle = match.Groups[1].Value.Trim();
-                var parts = languageAndTitle.Split(':');
-                var languageAsString = parts[0];
-
-                var title = parts.Length > 1 ? parts[1] : null;
-                var value = match.Groups[2].Value.Trim();
-                tabs.Add(GenerateCodeTabFromFile(languageAsString, title, value, documentationVersion, options));
-            }
+                matchList.Add(match.Index, (match, true));
 
             matches = CodeTabBlockFinder.Matches(content);
             foreach (Match match in matches)
+                matchList.Add(match.Index, (match, false));
+
+            foreach (var kvp in matchList)
             {
+                var isFromFile = kvp.Value.IsFromFile;
+                var match = kvp.Value.Match;
+
                 var languageAndTitle = match.Groups[1].Value.Trim();
                 var parts = languageAndTitle.Split(':');
                 var languageAsString = parts[0];
-
                 var title = parts.Length > 1 ? parts[1] : null;
                 var value = match.Groups[2].Value.Trim();
+
+                if (isFromFile)
+                {
+                    tabs.Add(GenerateCodeTabFromFile(languageAsString, title, value, documentationVersion, options));
+                    continue;
+                }
+
                 tabs.Add(GenerateCodeTabBlock(languageAsString, title, value));
             }
 
