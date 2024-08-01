@@ -50,6 +50,7 @@ namespace Raven.Documentation.Parser
             {
                 _content = NoteBlockHelper.GenerateNoteBlocks(_content);
                 _content = PanelBlockHelper.GeneratePanelBlocks(_content);
+                _content = CodeBlockHelper.GenerateCodeExamples(_content);
             }
 
             if (_codeBlocks != null)

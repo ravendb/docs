@@ -38,6 +38,8 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 
         private static readonly Regex CodeTabBlockFinder = new Regex(@"{CODE-TAB-BLOCK:(.+?)}(.*?){CODE-TAB-BLOCK/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
+        private static readonly Regex CodeExampleFinder = new Regex(@"{CODE-EXAMPLE:(.+?)}(.*?){CODE-EXAMPLE/}", RegexOptions.Compiled | RegexOptions.Singleline);
+
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
         public static string ReplaceCodeBlocksWithPlaceholders(string content, out IDictionary<string, string> placeholders)
@@ -98,6 +100,27 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
             content = CodeBlockFinder.Replace(content, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim(), placeholders));
 
             return content;
+        }
+
+        public static string GenerateCodeExamples(string content)
+        {
+            content = CodeExampleFinder.Replace(content, match => GenerateCodeExample(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+
+            return content;
+        }
+
+        private static string GenerateCodeExample(string title, string content)
+        {
+            content = NormalizeContent(content);
+
+            var builder = new StringBuilder();
+            builder.AppendLine("<div class='code-example'>");
+            if (string.IsNullOrWhiteSpace(title) == false)
+                builder.AppendLine($"<h4>{title}</h4>");
+
+            builder.AppendLine(content);
+            builder.AppendLine("</div>");
+            return builder.ToString();
         }
 
         private static string GenerateCodeBlock(string languageAsString, string content, IDictionary<string, string> placeholders)

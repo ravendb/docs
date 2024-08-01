@@ -116,7 +116,7 @@ namespace Raven.Documentation.Web.Core.ViewModels
             }
         }
 
-        public const string Default = "5.0";
+        public const string Default = "6.0";
 
         public enum DocsMode
         {
