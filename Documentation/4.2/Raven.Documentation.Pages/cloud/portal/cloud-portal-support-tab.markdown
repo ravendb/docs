@@ -67,11 +67,6 @@ After verification, the support team will add the support option to your account
 will be confirmed in a separate email.
 
 {INFO: }
-The *Cloud Support Activation* email requests the enabling of the **Cloud Support option** for a period of **12 months**. 
-If you want to change this period, please send a *support request* via the *Support form*.
-{INFO/}
-
-{INFO: }
 Cloud Support activation takes up to **3 business days**.
 {INFO/}
 
