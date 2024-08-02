@@ -60,7 +60,7 @@ To request the **Cloud Support option**, please click the *Request Cloud Support
 This will show you Support Activation Request Form. There you can select type of support you want to activate and send a
 support request to our *RavenDB Cloud* support team with *Request Activation* button.
 
-!["Figure 5 - Support Activation Request From"](images\portal-support-activation-request-form.png "Figure 5 - Support Activation Request Form")
+!["Figure 5 - Support Activation Request Form"](images\portal-support-activation-request-form.png "Figure 5 - Support Activation Request Form")
 
 
 After verification, the support team will add the support option to your account, which 
