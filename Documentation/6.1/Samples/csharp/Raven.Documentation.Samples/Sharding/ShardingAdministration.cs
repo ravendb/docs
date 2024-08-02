@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Conventions;
-using Raven.Client.Documents.Operations.Backups;
-using Raven.Client.Documents.Operations.Backups.Sharding;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 using Raven.Client.ServerWide.Sharding;
 
-namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
+namespace Raven.Documentation.Samples.Sharding
 {
-    public class User1
-    {
-        public string Name { get; set; }
-    }
-
     class Program1
     {
         static void Main(string[] args)
@@ -107,7 +98,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
             }
         }
 
-
         public class Invoice
         {
             public string Id;
@@ -118,7 +108,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
         {
             public string Id;
         }
-    
 
         public class Foo
         {
@@ -209,7 +198,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 public string[] PendingDeletes { get; set; }
             }
             #endregion
-
             
             internal class AddDatabaseShardOperation
             {
@@ -253,5 +241,3 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
         }
     }
 }
-
-

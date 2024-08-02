@@ -6,23 +6,16 @@
 * Sharding, supported by RavenDB from version 6.0 onward, is the distribution of a database's content among autonomous **Shards**,
   where each Shard hosts and manages a **unique subset** of the database content.
 
-* In most cases, sharding allows the efficient usage and management of exceptionally large databases  
-  (e.g., a 10-terabyte DB).
-
 * Shards can be replicated across multiple nodes to enhance data accessibility.  
   Therefore, each RavenDB shard is hosted on at least one cluster node.
-
-* Sharding is managed by the RavenDB server;  
-  clients require no special adaptation when accessing a sharded database.
-     
-    * The client API remains unchanged when using a sharded database.       
-    * Clients using RavenDB versions older than 6.0, which lack sharding support,  
-      can seamlessly connect to a sharded database without any adaptations or even realizing it is sharded.     
-    * Specific modifications to RavenDB features in a sharded environment are documented in detail in feature-specific articles.
+ 
+* In most cases, sharding allows the efficient usage and management of exceptionally large databases  
+  (e.g., a 10-terabyte DB).
 
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
      * [Licensing](../sharding/overview#licensing)
+     * [Client compatability](../sharding/overview#client-compatability)
      * [Client-Server communication](../sharding/overview#client-server-communication)  
      * [When should sharding be used?](../sharding/overview#when-should-sharding-be-used)  
   * [Shards](../sharding/overview#shards)  
@@ -65,6 +58,20 @@ Sharding is fully available with the **Enterprise** license.
 
 ---
 
+#### Client compatability
+
+Sharding is managed by the RavenDB server;  
+clients require no special adaptation when accessing a sharded database:
+
+  * The client API remains unchanged when using a sharded database.
+  * Clients using RavenDB versions older than 6.0, which lack sharding support,  
+    can seamlessly connect to a sharded database without any adaptations or even realizing it is sharded.
+
+Specific modifications to RavenDB features in a sharded environment are documented in detail  
+in feature-specific articles.
+
+---
+
 #### Client-Server communication
 
 When a client connects to a sharded database, it is appointed a RavenDB server that functions as an **orchestrator**,  
@@ -85,10 +92,10 @@ You can postpone the transit to a sharded database when, for example, the databa
 the server is well-equipped and can comfortably handle a much larger volume,  
 and no dramatic increase in the number of potential users is expected any time soon.  
 
-{NOTE: }
+We recommend that you plan ahead for a transition to a sharded database when your database size  
+is in the vicinity of 250 GB, so the transition is already well established when it reaches 500 GB.  
 
-* We recommend that you plan ahead for a transition to a sharded database when your database size  
-  is in the vicinity of 250 GB, so the transition is already well established when it reaches 500 GB.  
+{NOTE: }
 
 * RavenDB 6.0 and above can **migrate** a non-sharded database to a sharded database via  
   [external replication](../server/ongoing-tasks/external-replication) or [export & import](../studio/database/tasks/export-database) operations.
