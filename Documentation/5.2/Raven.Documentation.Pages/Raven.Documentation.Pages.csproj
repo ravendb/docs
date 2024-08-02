@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="5.2.112" />
+    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
   </ItemGroup>
 
 </Project>
