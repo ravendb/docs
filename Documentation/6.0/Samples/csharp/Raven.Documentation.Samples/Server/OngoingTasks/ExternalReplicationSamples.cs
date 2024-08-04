@@ -47,7 +47,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
                 new UpdateExternalReplicationOperation(new ExternalReplication
             {
                 ConnectionStringName = connectionStrName,
-                Name = "targetDatabaseName",
+                Name = "task-name",
             }));
 
             #endregion
@@ -78,7 +78,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ExternalReplicationSam
                 new UpdateExternalReplicationOperation(new ExternalReplication
             {
                 ConnectionStringName = connectionStrName,
-                Name = "targetDatabaseName",
+                Name = "task-name",
                 MentorNode = "B",
                 DelayReplicationFor = TimeSpan.FromMinutes(30)
             }));
