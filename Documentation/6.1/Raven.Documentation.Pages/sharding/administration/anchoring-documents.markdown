@@ -39,7 +39,7 @@ that cannot be split and resharded if needed to balance the database.
 
 {PANEL/}
 
-{PANEL: Anchor multiple documents to the same bucket as a specific document }
+{PANEL: Anchor multiple documents to the same bucket as a specific document}
 
 * To store a document in the same bucket as another specific document,  
   use the following format for the new document's ID:  

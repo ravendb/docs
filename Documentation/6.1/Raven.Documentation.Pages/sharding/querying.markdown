@@ -168,7 +168,7 @@ It is used by the server to restrict data retrieval from the database to only th
   When a query that applies `where` is executed over a non-sharded database,  
   the filtering applies to the **entire** database.
 
-    If want to find only the most successful products, we can easily run a query such as:  
+    To find only the most successful products, we can easily run a query such as:  
     {CODE-BLOCK:JSON}
 from index 'Products/Sales'
 where TotalSales >= 5000
