@@ -241,7 +241,6 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
 
                                 loadToOrders(orderData, `routingKey`, {  
                                     Id: id(this),
-                                    PartitionKey: id(this),
                                     Type: 'special-promotion',
                                     Source: '/promotion-campaigns/summer-sale'
                                 });",
@@ -310,7 +309,6 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
 
                                 loadToOrders(orderData, `routingKey`, {  
                                     Id: id(this),
-                                    PartitionKey: id(this),
                                     Type: 'special-promotion',
                                     Source: '/promotion-campaigns/summer-sale'
                                 });",

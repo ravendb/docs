@@ -32,6 +32,11 @@
         "Mappings": []
     },
     {
+        "Path": "/ongoing-tasks",
+        "Name": "Ongoing Tasks",
+        "Mappings": []
+    },
+    {
         "Path": "/backup",
         "Name": "Backup",
         "Mappings": []

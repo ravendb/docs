@@ -59,8 +59,10 @@ The OLAP connection string contains the configurations for each destination of t
 | `GoogleCloudSettings` | Settings for Google Cloud Platform. |
 | `FTPSettings` | Settings for File Transfer Protocol. |
 
-{NOTE: ETL Destination Settings}
-<br/>
+{NOTE: }
+
+#### ETL destination settings
+
 This is the list of different settings objects that the `OlapConnectionString` object can contain.  
 
 #### `LocalSettings`

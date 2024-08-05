@@ -73,7 +73,6 @@ for (var i = 0; i < this.Lines.length; i++) {
 // Attributes: Id, PartitionKey, Type, Source
 loadToOrders(orderData, `users`, {  
     Id: id(this),
-    PartitionKey: id(this),
     Type: 'special-promotion',
     Source: '/promotion-campaigns/summer-sale'
 });

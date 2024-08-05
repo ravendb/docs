@@ -1,6 +1,5 @@
 ﻿# OLAP ETL Task
-
---
+---
 
 {NOTE: }
 

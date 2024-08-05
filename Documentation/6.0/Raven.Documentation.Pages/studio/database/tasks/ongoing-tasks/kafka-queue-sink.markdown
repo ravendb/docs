@@ -1,4 +1,4 @@
-﻿# Studio: Kafka Queue Sink Task
+﻿# Kafka Queue Sink Task
 ---
 
 {NOTE: }
@@ -15,7 +15,7 @@
   can read batches of JSON formatted enqueued messages from Kafka topics, construct 
   documents using user-defined scripts, and store the documents in RavenDB collections.  
 
-* This page explains how to create a Kafka queue sink task using Studio.  
+* This page explains how to create a Kafka queue sink task using the Studio.  
   Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
   Learn how to define a Kafka queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink).  
 

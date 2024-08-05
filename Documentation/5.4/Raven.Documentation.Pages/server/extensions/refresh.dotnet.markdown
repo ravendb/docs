@@ -92,4 +92,3 @@ How to set a document to refresh 1 hour from now:
 ### Server
 
 - [What is a Change Vector](../../server/clustering/replication/change-vector)  
-- [Ongoing Tasks: General Info](../../server/ongoing-tasks/general-info)  

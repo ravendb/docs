@@ -125,7 +125,7 @@ The following operations are **forbidden**:
 
 - Creating documents or modifying existing documents  
 - Changing any configurations or settings  
-- Creating or modifying [ongoing tasks](../../../server/ongoing-tasks/general-info)  
+- Creating or modifying [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info)  
 - Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
 [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) if there is no existing index that satisfies a query.)
 
