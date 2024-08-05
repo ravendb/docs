@@ -50,27 +50,15 @@ The class can then be used by time series methods like _append_:
 
 #### Examples
 
-{NOTE: }
+* In this example, we define a StockPrice class and use it when appending StockPrice entries.
+  {CODE:nodejs stockPrice_class@documentExtensions\timeSeries\client-api\namedValues.js /}
+  {CODE:nodejs named_values_2@documentExtensions\timeSeries\client-api\namedValues.js /}
 
-In this example, we define a StockPrice class and use it when appending StockPrice entries.
+* In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
+  {CODE:nodejs named_values_3@documentExtensions\timeSeries\client-api\namedValues.js /}
 
-{CODE:nodejs stockPrice_class@documentExtensions\timeSeries\client-api\namedValues.js /}
-
-{CODE:nodejs named_values_2@documentExtensions\timeSeries\client-api\namedValues.js /}
-
-{NOTE/}
-{NOTE: }
-
-In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
-
-{CODE:nodejs named_values_3@documentExtensions\timeSeries\client-api\namedValues.js /}
-
-{NOTE/}
-{NOTE: }
-
-In this query, we use the custom StockPrice type so we can address trade Volume by name.
-
-{CODE-TABS}
+* In this query, we use the custom StockPrice type so we can address trade Volume by name.
+  {CODE-TABS}
 {CODE-TAB:nodejs:Query named_values_4@documentExtensions\timeSeries\client-api\namedValues.js /}  
 {CODE-TAB-BLOCK:sql:RQL}
 from "companies"
@@ -87,7 +75,6 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Register time series named values}

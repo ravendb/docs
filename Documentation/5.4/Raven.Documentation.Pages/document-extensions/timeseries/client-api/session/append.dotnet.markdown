@@ -5,31 +5,29 @@
 {NOTE: }
 
 * Use `TimeSeriesFor.Append` for the following actions:
-
-    * __Create a new time series__:  
+    * **Creating a new time series**  
       Appending an entry to a time series that doesn't exist yet  
       will create the time series and add it the new entry.
-
-    * __Create a new time series entry__:  
+    * **Creating a new time series entry**  
       Appending a new entry to an existing time series  
       will add the entry to the series at the specified timestamp.
+    * **Modifying an existing time series entry**  
+      Use `Append` to update the data of an existing entry with the specified timestamp.
 
-    * __Modify an existing time series entry__:  
-      Use _Append_ to update the data of an existing entry with the specified timestamp.
+* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
 
-* Each call to `Append` handles a __single__ [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
-
-* To append __multiple__ entries in a single transaction you can:  
+* To append **multiple** entries in a single transaction you can:  
   * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).
-  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete). 
+  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
+    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete). 
 
 ---
 
 * In this page:
     * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)
     * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-        * [Append entries with single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-single-value)
+        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
         * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
     * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
 
@@ -39,7 +37,7 @@
 
 {PANEL: `Append` usage}
 
-__Flow__:
+**Flow**:
 
 * Open a session.
 * Create an instance of `TimeSeriesFor` and pass it the following:
@@ -50,7 +48,7 @@ __Flow__:
 * Call `TimeSeriesFor.Append` and pass it the time series entry details.
 * Call `session.SaveChanges` for the action to take effect on the server.
 
-__Note__:
+**Note**:
 
 * A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
 
@@ -58,37 +56,25 @@ __Note__:
 
 {PANEL: Examples}
 
-{NOTE: }
-
-<a id="append-entries-with-single-value" /> __Append entries with single value__:
-
----
+#### Append entries with a single value:
 
 * In this example, entries are appended with a single value.
-
 * Although a loop is used to append multiple entries,  
   all entries are appended in a single transaction when `SaveChanges` is executed.
 
 {CODE timeseries_region_TimeSeriesFor-Append-TimeSeries-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="append-entries-with-multiple-values" /> __Append entries with multiple values__:
-
 ---
 
-* In this example, we append multi-value StockPrice entries.
+#### Append entries with multiple values:
 
-* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
 
-  {CODE-TABS}
-  {CODE-TAB:csharp:Native timeseries_region_Append-Unnamed-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-  {CODE-TAB:csharp:Using_named_values timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-  {CODE-TABS/}
-
-{NOTE/}
+{CODE-TABS}
+{CODE-TAB:csharp:Native timeseries_region_Append-Unnamed-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE-TAB:csharp:Using_named_values timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
@@ -100,10 +86,10 @@ __Note__:
 
 | Parameter     | Type                  | Description                   |
 |---------------|-----------------------|-------------------------------|
-| __timestamp__ | `DateTime`            | Time series entry's timestamp |
-| __value__     | `double`              | Entry's value                 |
-| __values__    | `IEnumerable<double>` | Entry's values                |
-| __tag__       | `string`              | An optional tag for the entry |
+| **timestamp** | `DateTime`            | Time series entry's timestamp |
+| **value**     | `double`              | Entry's value                 |
+| **values**    | `IEnumerable<double>` | Entry's values                |
+| **tag**       | `string`              | An optional tag for the entry |
 
 {PANEL/}
 

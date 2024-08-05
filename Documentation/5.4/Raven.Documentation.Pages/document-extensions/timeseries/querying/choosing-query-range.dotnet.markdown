@@ -11,11 +11,11 @@
 
 * In this page:
     * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
     * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and)
-      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and-1)
+       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
 
 {NOTE/}
 
@@ -23,17 +23,15 @@
 
 {PANEL: Choose range in a query}
 
-{NOTE: }
+#### Specify range:
 
-#### Specify range
+* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).  
+  Omitting these parameters will retrieve the entire series.  
 
-* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).
-  Omitting these parameters will retrieve the entire series.
+* The provided DateTime values are handled by the server as UTC.  
+  The client does Not perform any conversion to UTC prior to sending the request to the server.  
 
-* The provided DateTime values are treated by the server as UTC.  
-  The client does Not perform any conversion to UTC prior to sending the request to the server.
-
-* In this example, we specify a 10-minute range from which to retrieve "HeartRates" entries for UK employees.  
+* In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query choose_range_1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -51,17 +49,15 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-#### Retrieve first or last entries
+#### Retrieve first or last entries:
 
 * Use `FromFirst()` to specify the time frame from the start of the time series.  
   Use `FromLast()` to specify the time frame from the end of the time series.  
-  Only one of them can be used in the same query function.  
+  A query function can use either `FromFirst` or `FromLast`, but not both.  
 
-* In this example, we select only the entries in the last 30 minutes of time series "HeartRates".
+* In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query choose_range_4@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
@@ -77,22 +73,16 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Choose range - RQL syntax}
 
-{NOTE: }
-
-#### `between`&nbsp;and&nbsp;`and`
-
----
+#### `between` and `and`:
 
 * Use the `between` and `and` keywords to retrieve time series entries from the specified range (inclusive).  
   Provide the timestamps in UTC format.
   E.g.:  
-
-    {CODE-TABS}
+  {CODE-TABS}
 {CODE-TAB-BLOCK:sql:RQL_select_syntax}
 from "Employees"
 where Address.Country == "UK"
@@ -118,12 +108,11 @@ select getHeartRates(e)
 
 // Results will include only time series entries within the specified range for employees from UK.
 {CODE-TAB-BLOCK/}
-    {CODE-TABS/}
+{CODE-TABS/}
 
-* RQL queries can be run from the [query view](../../../studio/database/queries/query-view) in the Studio.  
-  Using the Studio, you can use parameters in the following way for a clearer query.  
-  
-    {CODE-BLOCK:sql}
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+  Using Studio, you can apply parameters as follows for a clearer query.  
+  {CODE-BLOCK:sql}
 $from = "2020-05-17T00:00:00.0000000Z"
 $to = "2020-05-17T01:00:00.0000000Z"
 
@@ -133,37 +122,33 @@ select timeseries(
     from HeartRates
     between $from and $to  // using parameters
 )
-    {CODE-BLOCK/}
-
-{NOTE/}
-
-{NOTE: }
-
-#### `first`&nbsp;and&nbsp;`last`
+{CODE-BLOCK/}
 
 ---
 
+#### `first` and `last`:
+
 * Use `first` to specify the time frame from the start of the time series.  
   Use `last` to specify the time frame from the end of the time series.  
-  Only one of them can be used in the same query function. E.g.:  
+  A query function can use either `first` or `last`, but not both. E.g. -  
 
-    {CODE-BLOCK: sql}
+     {CODE-BLOCK: sql}
 // Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"
 select timeseries(
     from HeartRates
     last 1 day
 )
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
 
-    {CODE-BLOCK: sql}
+     {CODE-BLOCK: sql}
 // Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
 from "Employees"
 select timeseries(
     from HeartRates
     first 10 min
 )
-    {CODE-BLOCK/}
+{CODE-BLOCK/}
 
 * The range is specified using a whole number of one of the following units.  
 
@@ -176,7 +161,6 @@ select timeseries(
     * **years**    ( years / year / y )
     * Note: **milliseconds** are currently not supported by 'first' and 'last' in a time series query.
 
-{NOTE/}
 {PANEL/}
 
 ## Related articles

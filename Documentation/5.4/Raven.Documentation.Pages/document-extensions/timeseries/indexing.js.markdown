@@ -24,9 +24,7 @@
 
 {PANEL: Time series indexes vs Document indexes}
 
-{NOTE: }
-
-**Auto-Indexes**:
+#### Auto-Indexes:
 
 * Time series index:  
   Dynamic time series indexes are Not created in response to queries.
@@ -34,10 +32,9 @@
 * Document index:  
   [Auto-indexes](../../studio/database/indexes/indexes-overview#indexes-types) are created in response to dynamic queries.
 
-{NOTE/}
-{NOTE: }
+---
 
-**Data source**:
+#### Data source:
 
 * Time series index:
 
@@ -54,10 +51,9 @@
     * The index processes fields from your JSON documents.  
       Documents are indexed through the collection they belong to.
 
-{NOTE/}
-{NOTE: }
+---
 
-**Query results**:
+#### Query results:
 
 * Time series index:  
   When [querying](../../document-extensions/timeseries/querying/using-indexes) a time series index, each result item corresponds to the type defined by the **index-entry** in the index definition,
@@ -66,7 +62,6 @@
 * Document index:  
   The resulting objects are the document entities (unless results are [projected](../../indexes/querying/projections)).
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Ways to create a time series index}
@@ -82,11 +77,7 @@ There are two main ways to create a time series index:
 
 {PANEL: Examples of time series indexes}
 
-{NOTE: }
-
-#### Map index - index single time series from single collection
-
----
+#### Map index - index single time series from single collection:
 
 * In this index, we index data from the "StockPrices" time series entries in the "Companies" collection (`tradeVolume`, `date`).   
 
@@ -114,51 +105,38 @@ select distinct companyID
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Map index - index all time series from single collection
-
 ---
+
+#### Map index - index all time series from single collection:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Map_index index_2@documentExtensions\timeSeries\indexing.js /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Map index - index all time series from all collections
-
 ---
+
+#### Map index - index all time series from all collections:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Map_index index_3@documentExtensions\timeSeries\indexing.js /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Multi-Map index - index time series from several collections
-
 ---
+
+#### Multi-Map index - index time series from several collections:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Multi_Map_index index_4@documentExtensions\timeSeries\indexing.js /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: } 
-
-#### Map-Reduce index
-
 ---
+
+#### Map-Reduce index:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Map_Reduce_index index_5@documentExtensions\timeSeries\indexing.js /}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Syntax}

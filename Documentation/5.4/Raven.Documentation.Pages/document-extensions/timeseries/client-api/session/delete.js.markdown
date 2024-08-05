@@ -5,19 +5,16 @@
 {NOTE: }
 
 * Use `timeSeriesFor.delete` for the following actions:
-
-    * __Delete a single time series entry__
-  
-    * __Delete a range of entries__
-  
-    * __Delete the whole time series__
+    * **Delete a single time series entry**
+    * **Delete a range of entries**
+    * **Delete the whole time series**
 
 * In this page:  
     * [`delete` usage](../../../../document-extensions/timeseries/client-api/session/delete#delete-usage)
     * [Examples](../../../../document-extensions/timeseries/client-api/session/delete#examples)
       * [Delete single entry](../../../../document-extensions/timeseries/client-api/session/delete#delete-single-entry)
       * [Delete range of entries](../../../../document-extensions/timeseries/client-api/session/delete#delete-range-of-entries)
-      * [Delete time series](../../../../document-extensions/timeseries/client-api/session/delete#delete-time-series)
+      * [Delete time series](../../../../document-extensions/timeseries/client-api/session/delete#delete-time-series-1)
     * [Syntax](../../../../document-extensions/timeseries/client-api/session/delete#syntax)
   
 {NOTE/}
@@ -26,7 +23,7 @@
 
 {PANEL: `Delete` usage}
 
-__Flow__:
+**Flow**:
 
 * Open a session.  
 * Create an instance of `timeSeriesFor` and pass it the following:
@@ -39,7 +36,7 @@ __Flow__:
     * Specify a range of timestamps to delete multiple entries.
 * Call `session.saveChanges` for the action to take effect on the server.  
 
-__Note__:
+**Note**:
 
 * If the specified document doesn't exist, a `DocumentDoesNotExistException` is thrown.
 * Attempting to delete nonexistent entries results in a no-op and generates no exception.
@@ -51,37 +48,26 @@ __Note__:
 
 {PANEL: Examples}
 
-The following examples delete the time series entries that were appended in the [Append](../../../../document-extensions/timeseries/client-api/session/append) article:
-
-{NOTE: }
-
-<a id="delete-single-entry" /> __Delete single entry__:
+In the following examples we delete time series entries appended by sample code in the 
+[Append](../../../../document-extensions/timeseries/client-api/session/append) article.  
 
 ---
+
+#### Delete single entry:
 
 {CODE:nodejs delete_1@documentExtensions\timeSeries\client-api\deleteTimeSeries.js /}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="delete-range-of-entries" /> __Delete range of entries__:
-
 ---
- 
+
+#### Delete range of entries:
+
 {CODE:nodejs delete_2@documentExtensions\timeSeries\client-api\deleteTimeSeries.js /}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="delete-time-series" /> __Delete time series__:
-
 ---
 
-{CODE:nodejs delete_3@documentExtensions\timeSeries\client-api\deleteTimeSeries.js /}
+#### Delete time series:
 
-{NOTE/}
+{CODE:nodejs delete_3@documentExtensions\timeSeries\client-api\deleteTimeSeries.js /}
 
 {PANEL/}
 
@@ -89,11 +75,11 @@ The following examples delete the time series entries that were appended in the 
 
 {CODE:nodejs syntax@documentExtensions\timeSeries\client-api\deleteTimeSeries.js /}
 
-| Parameter | Type   | Description                                                                                                                     |
-|-----------|--------|:--------------------------------------------------------------------------------------------------------------------------------|
-| __at__    | `Date` | Timestamp of the time series entry to delete.                                                                                   |
-| __from__  | `Date` | Delete the range of time series entries starting from this timestamp (inclusive).<br>Pass `null` to use the minimum date value. |
-| __to__    | `Date` | Delete the range of time series entries ending at this timestamp (inclusive).<br>Pass `null` to use the maximum date value.     |
+| Parameter | Type   | Description                                   |
+|-----------|--------|:----------------------------------------------|
+| **at**    | `Date` | Timestamp of the time series entry to delete. |
+| **from**  | `Date` | Delete the time series entries range that starts at this timestamp (inclusive).<br>Pass `null` to use the minimum date value. |
+| **to**    | `Date` | Delete the time series entries range that ends at this timestamp (inclusive).<br>Pass `null` to use the maximum date value.   |
 
 {PANEL/}
 

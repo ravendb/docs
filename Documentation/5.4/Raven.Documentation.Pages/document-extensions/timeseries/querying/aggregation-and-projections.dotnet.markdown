@@ -12,7 +12,7 @@
 
 * In this page:  
   * [Grouping and aggregation options](../../../document-extensions/timeseries/querying/aggregation-and-projections#grouping-and-aggregation-options)  
-  * [Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#Examples)
+  * [Examples](../../../document-extensions/timeseries/querying/aggregation-and-projections#examples)
       * [Aggregate entries with single value](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregate-entries-with-single-value)
       * [Aggregate entries with multiple values](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregate-entries-with-multiple-values)
       * [Aggregate entries without grouping by time frame](../../../document-extensions/timeseries/querying/aggregation-and-projections#aggregate-entries-without-grouping-by-time-frame)
@@ -83,11 +83,7 @@ the aggregation calculations will be executed over the entire set of time series
 
 {PANEL: Examples}
 
-{NOTE: }
-
-#### Aggregate entries with single value
-
----
+#### Aggregate entries with single value:
 
 * Each entry in the "HeartRates" time series within the Employees collection contains a single value.
 
@@ -110,12 +106,9 @@ the aggregation calculations will be executed over the entire set of time series
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Aggregate entries with multiple values  
-
 ---
+
+#### Aggregate entries with multiple values:  
 
 * Each entry in the "StockPrices" time series within the Companies collection holds five values:  
   Values[0] - **Open** - stock price when trade opens  
@@ -162,12 +155,9 @@ where c.Address.Country = 'USA'
   * 5 `Max` values for each group (the highest Values[0], highest Values[1], etc.) and
   * 5 `Min` values for each group (the lowest Values[0], lowest Values[1], etc.)
 
-{NOTE/}
-{NOTE: }
-
-#### Aggregate entries without grouping by time frame  
-
 ---
+
+#### Aggregate entries without grouping by time frame:  
 
 * This example is similar to the one above, except that time series entries are Not grouped by a time frame.
 
@@ -192,12 +182,9 @@ select SP(c)
 * Since no grouping is done, results wil include the highest and lowest Open, Close, High, Low, and Volume values 
   for ALL entries in the time series that match the query criteria.
 
-{NOTE/}
-{NOTE: }
-
-#### Aggregate entries filtered by referenced document
-
 ---
+
+#### Aggregate entries filtered by referenced document:
 
 * The tag in each entry in the "StockPrices" series contains an Employee document ID.
 
@@ -223,12 +210,9 @@ select timeseries(
 * Only entries that reference an employee with title 'Sales Representative' will be grouped by 1 month,  
   and the results will include the highest and lowest values for each group.
 
-{NOTE/}
-{NOTE: }
-
-#### Secondary grouping by tag
-
 ---
+
+#### Secondary grouping by tag:
 
 * In this example, we perform secondary grouping by the entries' tags.
 
@@ -249,12 +233,9 @@ select timeseries (
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Group by dynamic criteria
-
 ---
+
+#### Group by dynamic criteria:
 
 Starting in version 5.2, the LINQ method `GroupBy()` can take a switch statement or a method as an argument.
 
@@ -288,12 +269,9 @@ select timeseries (
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
-
-#### Project document data in addition to aggregated data
-
 ---
+
+#### Project document data in addition to aggregated data:
 
 * In addition to projecting the aggregated time series data, you can project data from the parent document that contains the time series.
  
@@ -327,7 +305,6 @@ c.Name as CompanyName // Project property 'Name' from the company document
 {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Syntax}

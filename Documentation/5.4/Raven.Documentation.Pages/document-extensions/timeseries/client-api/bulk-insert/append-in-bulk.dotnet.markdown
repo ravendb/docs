@@ -46,41 +46,31 @@
 
 {PANEL: Examples}
 
-{NOTE: }
-<a id="append-single-entry" /> __Append single entry__:
+#### Append single entry:
 
----
 In this example, we append a single entry with a single value to time series "HeartRates". 
 {CODE timeseries_region_Use-BulkInsert-To-Append-single-entry@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-entries" /> __Append multiple entries__:
-
 ---
+
+#### Append multiple entries:
+
 In this example, we append 100 entries with a single value to time series "HeartRates". 
 {CODE timeseries_region_Use-BulkInsert-To-Append-100-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-values-per-entry" /> __Append multiple values per entry__:
-
 ---
+
+#### Append multiple values per entry:
+
 In this example, we append multiple values per entry in time series "HeartRates".
 {CODE BulkInsert-overload-2-Two-HeartRate-Sets@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE/}
-
-{NOTE: }
-<a id="append-multiple-time-series" /> __Append multiple time series__:
-
 ---
+
+#### Append multiple time series:
+
 In this example, we append multiple time series in different documents in the same batch.
 {CODE timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
 
 {PANEL/}
 

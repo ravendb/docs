@@ -5,12 +5,9 @@
 {NOTE: }
 
 * Use `TimeSeriesFor.Delete` for the following actions:
-
-    * __Delete a single time series entry__
-  
-    * __Delete a range of entries__
-  
-    * __Delete the whole time series__:  
+    * **Delete a single time series entry**
+    * **Delete a range of entries**
+    * **Delete the whole time series**:  
       To remove the whole time series simply delete all its entries.
 
 * In this page:  
@@ -26,7 +23,7 @@
 
 {PANEL: `Delete` usage}
 
-__Flow__:
+**Flow**:
 
 * Open a session.  
 * Create an instance of `TimeSeriesFor` and pass it the following:
@@ -39,7 +36,7 @@ __Flow__:
     * Specify a range of timestamps to delete multiple entries.
 * Call `session.SaveChanges` for the action to take effect on the server.  
 
-__Note__:
+**Note**:
 
 * If the specified document doesn't exist, a `DocumentDoesNotExistException` is thrown.
 * Attempting to delete nonexistent entries results in a no-op and generates no exception.
@@ -51,27 +48,20 @@ __Note__:
 
 {PANEL: Examples}
 
-The following examples delete the time series entries that were appended in the [Append](../../../../document-extensions/timeseries/client-api/session/append) article:
-
-{NOTE: }
-
-<a id="delete-single-entry" /> __Delete single entry__:
+In the following examples we delete time series entries appended by sample code in the 
+[Append](../../../../document-extensions/timeseries/client-api/session/append) article.  
 
 ---
+
+#### Delete single entry:
 
 {CODE timeseries_region_Delete-TimeSeriesFor-Single-Time-Point@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="delete-range-of-entries" /> __Delete range of entries__:
-
 ---
- 
-{CODE timeseries_region_TimeSeriesFor-Delete-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
+#### Delete range of entries:
+
+{CODE timeseries_region_TimeSeriesFor-Delete-Time-Points-Range@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 {PANEL/}
 
@@ -81,11 +71,11 @@ The following examples delete the time series entries that were appended in the 
 
 {CODE TimeSeriesFor-Delete-definition-range-of-timepoints@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-| Parameter | Type        | Description                                                                                                       |
-|-----------|-------------|:------------------------------------------------------------------------------------------------------------------|
-| __at__    | `DateTime`  | Timestamp of the time series entry to delete.                                                                     |
-| __from__  | `DateTime?` | Delete the range of time series entries starting from this timestamp (inclusive).<br>Default: `DateTime.MinValue` |
-| __to__    | `DateTime?` | Delete the range of time series entries ending at this timestamp (inclusive).<br>Default: `DateTime.MaxValue`     |
+| Parameter | Type        | Description                                 |
+|-----------|-------------|:--------------------------------------------|
+| **at**    | `DateTime`  | Timestamp of a time series entry to delete. |
+| **from**  | `DateTime?` | Delete the time series entries range that starts at this timestamp (inclusive).<br>Default: `DateTime.MinValue` |
+| **to**    | `DateTime?` | Delete the time series entries range that ends at this timestamp (inclusive).<br>Default: `DateTime.MaxValue`   |
 
 {PANEL/}
 

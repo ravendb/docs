@@ -31,8 +31,6 @@ Learn more about time series queries in the [section dedicated to this subject](
 
 {PANEL: Query}
 
----
-
 ### Query usage
 
 * Open a session  
@@ -50,11 +48,8 @@ Learn more about time series queries in the [section dedicated to this subject](
 
 ### Query examples
 
-{NOTE: }
-
-This query filters users by their age and retrieves their HeartRates time series.
-
-{CODE-TABS}
+* This query filters users by their age and retrieves their HeartRates time series.
+  {CODE-TABS}
 {CODE-TAB:nodejs:Query query_1@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "users"
@@ -66,12 +61,8 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: } 
-In this example, we select a 5-minute range from the HeartRates time series.  
-
-{CODE-TABS}
+* In this example, we select a 5-minute range from the HeartRates time series.  
+  {CODE-TABS}
 {CODE-TAB:nodejs:Query query_2@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Users"
@@ -82,15 +73,10 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, we retrieve a company's stock trade data.  
-* Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
-* This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
-
-{CODE-TABS}
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+  This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).  
+  {CODE-TABS}
 {CODE-TAB:nodejs:Native query_3@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB:nodejs:Named query_4@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -105,14 +91,9 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, we group heart-rate data of people above the age of 72 into 1-day groups,
-* For each group, we retrieve the number of measurements, the minimum, maximum, and average heart rate.
-
-{CODE-TABS}
+  For each group, we retrieve the number of measurements, the minimum, maximum, and average heart rate.
+  {CODE-TABS}
 {CODE-TAB:nodejs:Native query_5@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "users"
@@ -126,8 +107,6 @@ select timeseries(
 {"start":"2024-05-20T09:32:58.951Z","end":"2024-05-30T09:32:58.951Z"}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 ---
 
@@ -163,8 +142,6 @@ The time series query builder has one method:
 
 {PANEL: RawQuery}
 
----
-
 ### RawQuery usage
 
 * Open a session  
@@ -179,11 +156,8 @@ The time series query builder has one method:
 
 ### RawQuery examples
 
-{NOTE: }
-
-In this example, we retrieve all HearRates time series for all users under 30.
-
-{CODE-TABS}
+* In this example, we retrieve all HearRates time series for all users under 30.
+  {CODE-TABS}
 {CODE-TAB:nodejs:RawQuery query_6@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from users where age < 30
@@ -193,15 +167,10 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, a raw RQL query retrieves 24 hours of heart rate data from users under 30.  
-* The query does not aggregate data, so results are in the form of a `TimeSeriesRawResult` list.  
-* We define an **offset**, to adjust retrieved results to the client's local time-zone.
-
-{CODE-TABS}
+  The query does not aggregate data, so results are in the form of a `TimeSeriesRawResult` list.  
+  We define an **offset**, to adjust retrieved results to the client's local time-zone.
+  {CODE-TABS}
 {CODE-TAB:nodejs:Declare-Syntax query_7@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB:nodejs:Select-Syntax query_8@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
@@ -232,16 +201,11 @@ select timeseries (
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, the query aggregates 7 days of HeartRates entries into 1-day groups.  
-* From each group, two values are selected and projected to the client:  
+  From each group, two values are selected and projected to the client:  
   the **min** and **max** hourly HeartRates values.  
-* The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
-
-{CODE-TABS}
+  The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
+  {CODE-TABS}
 {CODE-TAB:nodejs:RawQuery query_9@documentExtensions\timeSeries\client-api\queryTimeSeries.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from users as u
@@ -254,8 +218,6 @@ select timeseries(
 {"start":"2024-05-20T12:06:40.595Z","end":"2024-05-27T12:06:40.595Z"}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 ---
 

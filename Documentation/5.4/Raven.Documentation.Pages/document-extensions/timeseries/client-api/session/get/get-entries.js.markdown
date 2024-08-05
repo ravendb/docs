@@ -23,9 +23,9 @@
 * In this page:  
   * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
   * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
-      * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
-      * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
-      * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
   * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
 
@@ -47,34 +47,24 @@
 
 {PANEL: Examples}
 
-{NOTE: }
-
-<a id="get-all-entries" /> __Get all entries__:
-
----
+#### Get all entries:
 
 In this example, we retrieve all entries of the "Heartrate" time series.  
 The ID of the parent document is explicitly specified.  
 
 {CODE:nodejs get_Entries_1@documentExtensions\timeSeries\client-api\getEntries.js /}
 
-{NOTE/}
-{NOTE: }
-
-<a id="get-range-of-entries" /> __Get range of entries__:
-
 ---
+
+#### Get range of entries:
 
 In this example, we query for a document and get a range of entries from its "Heartrate" time series.
 
 {CODE:nodejs get_Entries_2@documentExtensions\timeSeries\client-api\getEntries.js /}
 
-{NOTE/}
-{NOTE: }
-
-<a id="get-entries-with-multiple-values" /> __Get entries with multiple values__:
-
 ---
+
+#### Get entries with multiple values:
 
 * Here, we check if a stock's closing price is rising consecutively over three days.  
   This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
@@ -87,8 +77,6 @@ In this example, we query for a document and get a range of entries from its "He
 {CODE-TAB:nodejs:Native get_Entries_3@documentExtensions\timeSeries\client-api\getEntries.js /}
 {CODE-TAB:nodejs:Named get_Entries_3_named@documentExtensions\timeSeries\client-api\getEntries.js /}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 

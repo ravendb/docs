@@ -61,27 +61,15 @@ public void Deconstruct(out DateTime timestamp, out T value, out string tag);
 
 #### Examples
 
-{NOTE: }
+* In this example, we define a StockPrice type and use it when appending StockPrice entries.
+  {CODE Custom-Data-Type-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+  {CODE timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-In this example, we define a StockPrice type and use it when appending StockPrice entries.
+* In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
+  {CODE timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{CODE Custom-Data-Type-1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{CODE timeseries_region_Append-Named-Values-2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
-{NOTE: }
-
-In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
-
-{CODE timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
-{NOTE: }
-
-In this query, we use the custom StockPrice type so we can address trade Volume by name.
-
-{CODE-TABS}
+* In this query, we use the custom StockPrice type so we can address trade Volume by name.
+  {CODE-TABS}
 {CODE-TAB:csharp:Query timeseries_region_Named-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "companies" as c
@@ -99,7 +87,6 @@ select timeseries(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Register time series type}

@@ -5,31 +5,29 @@
 {NOTE: }
 
 * Use `timeSeriesFor.append` for the following actions:
-
-  * __Create a new time series__:  
+  * **Creating a new time series**  
     Appending an entry to a time series that doesn't exist yet  
     will create the time series and add the new entry to it.
-  
-  * __Create a new time series entry__:  
+  * **Creating a new time series entry**  
     Appending a new entry to an existing time series  
     will add the entry to the series at the specified timestamp.  
+  * **Modifying an existing time series entry**  
+    Use `append` to update the data of an existing entry with the specified timestamp.
 
-  * __Modify an existing time series entry__:  
-    Use _append_ to update the data of an existing entry with the specified timestamp.
+* Each call to `append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
 
-* Each call to `append` handles a __single__ [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
-
-* To append __multiple__ entries in a single transaction you can:
+* To append **multiple** entries in a single transaction you can:
     * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.
-    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).
-    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).
+    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
+    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
+      Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).
 
 ---
 
 * In this page:  
   * [`append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)  
   * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-      * [Append entries with single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-single-value)  
+      * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)  
       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)  
   * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
   
@@ -39,7 +37,7 @@
 
 {PANEL: `append` usage}
 
-__Flow__:  
+**Flow**:  
 
 * Open a session.
 * Create an instance of `timeSeriesFor` and pass it the following:
@@ -50,7 +48,7 @@ __Flow__:
 * Call `timeSeriesFor.append` and pass it the time series entry details.
 * Call `session.saveChanges` for the action to take effect on the server.
 
-__Note__:  
+**Note**:  
 
 * A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
 
@@ -58,38 +56,26 @@ __Note__:
 
 {PANEL: Examples}
 
-{NOTE: }
-
-<a id="append-entries-with-single-value" /> __Append entries with single value__:
-
----
+#### Append entries with a single value:
 
 * In this example, entries are appended with a single value.
-
 * Although a loop is used to append multiple entries,  
   all entries are appended in a single transaction when `saveChanges` is executed.  
 
 {CODE:nodejs append_1@documentExtensions\timeSeries\client-api\appendTimeSeries.js /}
 
-{NOTE/}
-
-{NOTE: }
-
-<a id="append-entries-with-multiple-values" /> __Append entries with multiple values__:
-
 ---
 
-* In this example, we append multi-value StockPrice entries.  
+#### Append entries with multiple values:
 
-* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Native append_2@documentExtensions\timeSeries\client-api\appendTimeSeries.js /}
 {CODE-TAB:nodejs:Using_named_values append_3@documentExtensions\timeSeries\client-api\appendTimeSeries.js /}
 {CODE-TAB:nodejs:StockPrice_class stockPrice_class@documentExtensions\timeSeries\client-api\appendTimeSeries.js /}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 
@@ -103,11 +89,11 @@ __Note__:
 
 | Parameter     | Type     | Description                    |
 |---------------|----------|--------------------------------|
-| __timestamp__ | Date     | Time series entry's timestamp  |
-| __value__     | number   | Entry's value                  |
-| __values__    | number[] | Entry's values                 |
-| __tag__       | string   | An optional tag for the entry  |
-| __entry__     | object   | object with the entry's values |
+| **timestamp** | Date     | Time series entry's timestamp  |
+| **value**     | number   | Entry's value                  |
+| **values**    | number[] | Entry's values                 |
+| **tag**       | string   | An optional tag for the entry  |
+| **entry**     | object   | object with the entry's values |
 
 {PANEL/}
 

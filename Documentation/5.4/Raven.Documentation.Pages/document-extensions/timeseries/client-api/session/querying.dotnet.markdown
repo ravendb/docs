@@ -36,8 +36,6 @@ Learn more about time series queries in the [section dedicated to this subject](
 
 {PANEL: Query}
 
----
-
 ### Query usage
 
 * Open a session  
@@ -56,11 +54,10 @@ Learn more about time series queries in the [section dedicated to this subject](
 
 ### Query examples
 
-{NOTE: }
-This LINQ query filters users by their age and retrieves their HeartRates time series.  
-The first occurence of `Where` filters the documents.  
-The second `Where` filters the time series entries.
-{CODE-TABS}
+* This LINQ query filters users by their age and retrieves their HeartRates time series.  
+  The first occurence of `Where` filters the documents.  
+  The second `Where` filters the time series entries.
+  {CODE-TABS}
 {CODE-TAB:csharp:Query ts_region_LINQ-1-Select-Timeseries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Users" as q
@@ -68,34 +65,27 @@ where q.Age < 30
 select timeseries(from q.HeartRates where (Tag == "watches/fitbit"))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-{NOTE/}
 
-{NOTE: } 
-In this example, we select a three-day range from the HeartRates time series.  
-{CODE-TABS}
+* In this example, we select a three-day range from the HeartRates time series.  
+  {CODE-TABS}
 {CODE-TAB:csharp:Query ts_region_LINQ-3-Range-Selection@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Users" as q
 select timeseries(from q.HeartRates between "2020-05-17T00:00:00.0000000" and "2020-05-17T00:03:00.0000000")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-{NOTE/}
 
-{NOTE: }
-In this example, we retrieve a company's stock trade data.  
-Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
-{CODE-TABS}
+* In this example, we retrieve a company's stock trade data.  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+  {CODE-TABS}
 {CODE-TAB:csharp:Native timeseries_region_Unnamed-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB:csharp:Named timeseries_region_Named-Values-Query@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TABS/}
-{NOTE/}
 
-{NOTE: }
-In this example, we group heart-rate data of people above the age of 72 into 1-day groups,  
-and retrieve each group's average heart rate and number of measurements.  
-The aggregated results are retrieved as `List<TimeSeriesAggregationResult>`.
-{CODE ts_region_LINQ-6-Aggregation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{NOTE/}
+* In this example, we group heart-rate data of people above the age of 72 into 1-day groups,  
+  and retrieve each group's average heart rate and number of measurements.  
+  The aggregated results are retrieved as `List<TimeSeriesAggregationResult>`.
+  {CODE ts_region_LINQ-6-Aggregation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 ---
 
@@ -134,8 +124,6 @@ Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
 
 {PANEL: DocumentQuery}
 
----
-
 ### DocumentQuery usage
 
 * Open a session
@@ -154,38 +142,28 @@ Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
 
 ### DocumentQuery examples
 
-{NOTE: }
-A _DocumentQuery_ using only the `From()` method.  
-The query returns all entries from the 'HeartRates' time series.
-{CODE TS_DocQuery_1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-{NOTE/}
+* A _DocumentQuery_ using only the `From()` method.  
+  The query returns all entries from the 'HeartRates' time series.
+  {CODE TS_DocQuery_1@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE: }
-A _DocumentQuery_ using `Between()`.  
-The query returns only entries from the specified time range.
-{CODE TS_DocQuery_2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-{NOTE/}
+* A _DocumentQuery_ using `Between()`.  
+  The query returns only entries from the specified time range.
+  {CODE TS_DocQuery_2@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE: }
-A _DocumentQuery_ using `FromFirst()`.  
-The query returns the first three days of the 'HeartRates' time series.  
-{CODE TS_DocQuery_3@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-{NOTE/}
+* A _DocumentQuery_ using `FromFirst()`.  
+  The query returns the first three days of the 'HeartRates' time series.  
+  {CODE TS_DocQuery_3@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE: }
-A _DocumentQuery_ using `FromLast()`.  
-The query returns the last three days of the 'HeartRates' time series.  
-{CODE TS_DocQuery_4@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-{NOTE/}
+* A _DocumentQuery_ using `FromLast()`.  
+  The query returns the last three days of the 'HeartRates' time series.  
+  {CODE TS_DocQuery_4@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{NOTE: }
-A _DocumentQuery_ that loads the related `Monitor` documents that are specified in the time entries tags.  
-The results are then filtered by their content. 
-{CODE-TABS}
+* A _DocumentQuery_ that loads the related `Monitor` documents that are specified in the time entries tags.  
+  The results are then filtered by their content. 
+  {CODE-TABS}
 {CODE-TAB:csharp:Query TS_DocQuery_5@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB:csharp:Class TS_DocQuery_class@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TABS/}
-{NOTE/}
 
 ---
 
@@ -249,15 +227,13 @@ public interface ITimePeriodBuilder
 
 {PANEL: RawQuery}
 
----
-
 ### RawQuery usage
 
 * Open a session  
 * Call `session.Advanced.RawQuery`, pass it the raw RQL that will be sent to the server 
 * Results will be in the form:  
-    * `TimeSeriesRawResult` for non-aggregated data, or -
-    * `TimeSeriesAggregationResult` for aggregated data
+   * `TimeSeriesRawResult` for non-aggregated data, or -
+   * `TimeSeriesAggregationResult` for aggregated data
 * Note:  
   The raw query transmits the provided RQL to the server as is, without checking or altering its content.
 
@@ -265,39 +241,24 @@ public interface ITimePeriodBuilder
 
 ### RawQuery examples
 
-{NOTE: }
-
-In this example, we retrieve all HearRates time series for all users under 30.
-
-{CODE-TABS}
+* In this example, we retrieve all HearRates time series for all users under 30.
+  {CODE-TABS}
 {CODE-TAB:csharp:RawQuery ts_region_LINQ-2-RQL-Equivalent@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, a raw RQL query retrieves 24 hours of heart rate data from users under the age of 30.  
-* The query does not aggregate data, so results are in the form of a `TimeSeriesRawResult` list.  
-* We define an **offset**, to adjust retrieved results to the client's local time-zone.
-
-{CODE-TABS}
+  The query does not aggregate data, so results are in the form of a `TimeSeriesRawResult` list.  
+  We define an **offset**, to adjust retrieved results to the client's local time-zone.
+  {CODE-TABS}
 {CODE-TAB:csharp:Declare-Syntax ts_region_Raw-Query-Non-Aggregated-Declare-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TAB:csharp:Select-Syntax ts_region_Raw-Query-Non-Aggregated-Select-Syntax@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-
-{NOTE: }
-
 * In this example, the query aggregates 7 days of HeartRates entries into 1-day groups.  
-* From each group, two values are selected and projected to the client:  
+  From each group, two values are selected and projected to the client:  
   the **min** and **max** hourly HeartRates values.  
-* The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
-
-{CODE ts_region_Raw-Query-Aggregated@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
+  The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
+  {CODE ts_region_Raw-Query-Aggregated@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
 ---
 
