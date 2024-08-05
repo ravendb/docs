@@ -103,6 +103,8 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 {PANEL: Syntax}
 
+### The time series policies
+
 * `raw_policy`  
   * Used to define the retention time of the raw time series. 
   * Only one such policy per collection can be defined.
@@ -112,13 +114,148 @@ Because time series entries are limited to 32 values, rollups are limited to the
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-* `TimeValue` methods:  
-  `of_seconds(int seconds)`  
-  `of_minutes(int minutes)`  
-  `of_hours(int hours)`  
-  `of_days(int days)`  
-  `of_months(int months)`  
-  `of_years(int years)`  
+{CODE-BLOCK: python}
+class RawTimeSeriesPolicy(TimeSeriesPolicy):    
+    def __init__(self, retention_time: TimeValue = TimeValue.MAX_VALUE()):
+        ...
+
+class TimeSeriesPolicy:
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        aggregation_time: Optional[TimeValue] = None,
+        retention_time: TimeValue = TimeValue.MAX_VALUE(),
+    ):
+        ...
+{CODE-BLOCK/}
+
+| Property             | Type | Description |
+|----------------------|------|-------------|
+| **name** (Optional)  | `str` | This string is used to create the name of the rollup time series.<br/>`name` is added to the raw time series name - with `@` as a separator,<br>e.g.: `<name of raw time series>@<name of time series policy>` |
+| **retention_time** | `TimeValue` | Time series entries older than this time value (see `TimeValue` below) are automatically deleted. |
+| **aggregation_time** (Optional) | `TimeValue` |The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series. |
+
+{CODE-BLOCK: python}
+class TimeValue:
+    def __init__(self, value: int, unit: TimeValueUnit):
+        self.value = value
+        self.unit = unit
+
+   @classmethod
+   def of_seconds(cls, seconds: int) -> TimeValue:
+       return cls(seconds, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_minutes(cls, minutes: int) -> TimeValue:
+       return cls(minutes * 60, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_hours(cls, hours: int) -> TimeValue:
+       return cls(hours * 3600, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_days(cls, days: int) -> TimeValue:
+       return cls(days * cls.SECONDS_PER_DAY, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_months(cls, months: int) -> TimeValue:
+       return cls(months, TimeValueUnit.MONTH)
+
+   @classmethod
+   def of_years(cls, years: int) -> TimeValue:
+       return cls(12 * years, TimeValueUnit.MONTH)
+{CODE-BLOCK/}
+
+Each of the above `TimeValue` methods returns a `TimeValue` object representing a whole number of the specified time units. 
+These methods are used to define the aggregation and retention spans om time series policies.  
+
+---
+
+### The time series configuration object
+
+{CODE-BLOCK: python}
+class TimeSeriesConfiguration:
+    def __init__(self):
+        self.collections: Dict[str, TimeSeriesCollectionConfiguration] = {}
+        self.policy_check_frequency: Optional[datetime.timedelta] = None
+        self.named_values: Optional[Dict[str, Dict[str, List[str]]]] = None
+
+class TimeSeriesCollectionConfiguration:
+    def __init__(
+        self,
+        disabled: Optional[bool] = False,
+        policies: Optional[List[TimeSeriesPolicy]] = None,
+        raw_policy: Optional[RawTimeSeriesPolicy] = RawTimeSeriesPolicy.DEFAULT_POLICY(),
+    ):
+        self.disabled = disabled
+        self.policies = policies
+        self.raw_policy = raw_policy
+{CODE-BLOCK/}
+
+| Property        | Type | Description |
+|-----------------|------|-------------|
+| **collections** | `Dict` | Populate this `Dictionary` with the collection names and their corresponding `TimeSeriesCollectionConfiguration` objects. |
+| **disabled** (Optional) | `bool` | If set to `true`, rollup processes will stop, and time series data will not be deleted by retention policies. |
+| **policies** (Optional) | `List[TimeSeriesPolicy]` | Populate this `List` with your rollup policies. |
+| **raw_policy** (Optional) | `RawTimeSeriesPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series. |
+
+---
+
+### The time series configuration operation
+
+{CODE-BLOCK: python}
+class ConfigureTimeSeriesOperation(MaintenanceOperation[ConfigureTimeSeriesOperationResult])
+{CODE-BLOCK/}
+
+Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
+
+---
+
+### Time series entries
+
+Time series entries are of one of the following classes:  
+
+{CODE-BLOCK: python}
+class TimeSeriesEntry:
+  def __init__(
+   self, timestamp: datetime.datetime = None, tag: str = None, values: List[int] = None, rollup: bool = None
+  ):
+   self.timestamp = timestamp
+   self.tag = tag
+   self.values = values
+   self.rollup = rollup
+
+class TypedTimeSeriesEntry(Generic[_T_TSBindable]):
+  def __init__(
+   self,
+   timestamp: datetime.datetime = None,
+   tag: str = None,
+   values: List[int] = None,
+   is_rollup: bool = None,
+   value: _T_TSBindable = None,
+  ):
+   self.timestamp = timestamp
+   self.tag = tag
+   self.values = values
+   self.is_rollup = is_rollup
+   self.value = value
+
+
+class TypedTimeSeriesRollupEntry(Generic[_T_Values]):
+  def __init__(self, object_type: Type[_T_Values], timestamp: datetime.datetime):
+   self._object_type = object_type
+   self.tag: Optional[str] = None
+   self.rollup = True
+   self.timestamp = timestamp
+
+   self._first: Optional[_T_Values] = None
+   self._last: Optional[_T_Values] = None
+   self._max: Optional[_T_Values] = None
+   self._min: Optional[_T_Values] = None
+   self._sum: Optional[_T_Values] = None
+   self._count: Optional[_T_Values] = None
+   self._average: Optional[_T_Values] = None
+{CODE-BLOCK/}
 
 {PANEL/}
 

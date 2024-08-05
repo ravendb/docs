@@ -7,9 +7,6 @@
 
 * Indexing allows for fast retrieval of the indexed time series data when querying a time series.
 
-* The API for creating time series indexes is very similar to (and it inherits from) the API for  
-  [creating document indexes](../../indexes/creating-and-deploying).  
-
 * In this page:  
   * [Time series indexes vs Document indexes](../../document-extensions/timeseries/indexing#time-series-indexes-vs-document-indexes)
   * [Ways to create a time series index](../../document-extensions/timeseries/indexing#ways-to-create-a-time-series-index)

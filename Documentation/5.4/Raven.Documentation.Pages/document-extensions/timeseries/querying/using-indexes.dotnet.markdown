@@ -6,7 +6,8 @@
 
 * **Time series index**:
 
-    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing) or using the [Studio](../../../studio/database/indexes/create-map-index).  
+    * STATIC-time-series-indexes can be defined from the [Client API](../../../document-extensions/timeseries/indexing) 
+      or using [Studio](../../../studio/database/indexes/create-map-index).  
       Such an index can be queried in the same way as a regular index that indexes documents.  
       (See [Querying an index](../../../indexes/querying/query-index)).
     
