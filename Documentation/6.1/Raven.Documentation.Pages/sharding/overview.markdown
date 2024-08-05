@@ -15,7 +15,7 @@
 * In this page:  
   * [Sharding](../sharding/overview#sharding)  
      * [Licensing](../sharding/overview#licensing)
-     * [Client compatability](../sharding/overview#client-compatability)
+     * [Client compatibility](../sharding/overview#client-compatibility)
      * [Client-Server communication](../sharding/overview#client-server-communication)  
      * [When should sharding be used?](../sharding/overview#when-should-sharding-be-used)  
   * [Shards](../sharding/overview#shards)  
@@ -58,7 +58,7 @@ Sharding is fully available with the **Enterprise** license.
 
 ---
 
-#### Client compatability
+#### Client compatibility
 
 Sharding is managed by the RavenDB server;  
 clients require no special adaptation when accessing a sharded database:
@@ -165,7 +165,7 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 Upon creating a sharded database, the cluster reserves **1,048,576** (1024 x 1024) buckets for the entire database.  
 Each shard is assigned a range of buckets from this overall set, where documents can be stored.  
-(Note: This default reservation method differs when using prefixed sharding. Learn more in [todo..](../todo..)).
+(Note: This default reservation method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix#bucket-management)).
 
 !["Buckets Allocation"](images/overview_buckets-allocation.png "A range of buckets is assigned to each shard")
 
@@ -177,7 +177,7 @@ The cluster automatically populates the buckets with documents in the following 
 
 A hashing algorithm is applied to each document ID, generating a number between **0** and **1,048,575**.  
 The resulting number determines the bucket number where the document is stored.  
-(Note: This default hashing method differs when using prefixed sharding. Learn more in [todo..](../todo..).)  
+(Note: This default hashing method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix#bucket-management).)  
 
 Since the buckets are pre-assigned to the shards,  
 the bucket number assigned to a document also determines which shard the document will reside on.

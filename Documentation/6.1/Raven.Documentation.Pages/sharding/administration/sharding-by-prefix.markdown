@@ -12,7 +12,8 @@
 
 * With prefixed sharding, you only control the shard where a document is stored.  
   You cannot control the specific bucket within that shard where the document will reside.  
-  This limitation can be somewhat mitigated by anchoring documents to a bucket. Learn more [below](../../todo..).
+  This can be partially addressed by [anchoring documents](../../sharding/administration/anchoring-documents) to a bucket.
+  Learn more [below](../../sharding/administration/sharding-by-prefix#prefixed-sharding-vs-anchoring-documents).
   
 * In this page:  
   * [Why use prefixed sharding](../../sharding/administration/sharding-by-prefix#why-use-prefixed-sharding)  
@@ -83,7 +84,7 @@ reduces network latency for region-specific operations, and enhances overall sys
 * The maximum number of prefixes that can be defined is 4096.  
 
 * The prefix string that you define must end with either the `/` character or with `-`.  
-  e.g.`users/us/` or `users/us-`.
+  e.g. `users/us/` or `users/us-`.
 
 * Prefixes are case-insensitive.  
   RavenDB will treat `/users/us/` and `/users/US/` as equivalent document prefixes.  
@@ -99,7 +100,7 @@ reduces network latency for region-specific operations, and enhances overall sys
 {PANEL:  Bucket management}
 
 **When you define a sharded database**:  
-Ravendb reserves 1,048,576 buckets for the entire database. Each shard is assigned a range of buckets from this set.  
+RavenDB reserves 1,048,576 buckets for the entire database. Each shard is assigned a range of buckets from this set.  
 Any document added to the database is processed through a hashing algorithm, which determines the bucket number where the document will reside.
 The initial bucket distribution for a sharded database with 3 shards will be:   
 
