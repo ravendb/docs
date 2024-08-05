@@ -14,7 +14,7 @@
 * In this page:  
    * [Telegraf](../../../server/administration/monitoring/telegraf#telegraf)  
    * [Monitoring Endpoints](../../../server/administration/monitoring/telegraf#monitoring-endpoints)  
-   * [JSON Fields Retuened by the Endpoints](../../../server/administration/monitoring/telegraf#json-fields-retuened-by-the-endpoints)  
+   * [JSON Fields Returned by the Endpoints](../../../server/administration/monitoring/telegraf#json-fields-returned-by-the-endpoints)  
 
 {NOTE/}
 
@@ -38,7 +38,7 @@ The monitoring endpoints output data in JSON format. There are four endpoints:
 * `<your server URL>/admin/monitoring/v1/indexes`  
 * `<your server URL>/admin/monitoring/v1/collections`  
 
-## JSON Fields Retuened by the Endpoints
+## JSON Fields Returned by the Endpoints
 
 The following is a list of JSON fields returned by the endpoints:  
 
