@@ -14,7 +14,7 @@
 * In this page:  
   * [Overview](../../sharding/administration/anchoring-documents#overview)  
   * [Anchor multiple documents to the same bucket as a specific document](../../sharding/administration/anchoring-documents#anchor-multiple-documents-to-the-same-bucket-as-a-specific-document)  
-  * [Anchor multiple documents to the same bucket](../../sharding/administration/anchoring-documents#anchor-multiple-documents-using-a-common-suffix)  
+  * [Anchor multiple documents using a common suffix](../../sharding/administration/anchoring-documents#anchor-multiple-documents-using-a-common-suffix)  
   * [Examples](../../sharding/administration/anchoring-documents#examples)  
   
 {NOTE/}
