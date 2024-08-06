@@ -3,6 +3,9 @@
 
 {NOTE: }
 
+query specfic
+know in advance
+
 * Query syntax is similar in sharded and non-sharded databases.  
 
 * A sharded database offers the same set of querying features that a non-sharded database offers,  
@@ -14,7 +17,7 @@
 
 * In this page:  
   * [Querying a sharded database](../sharding/querying#querying-a-sharded-database)
-  * [Querying a selected shard](../sharding/querying#querying-a-selected-shard)
+  * [Querying selected shards](../sharding/querying#querying-selected-shards)
   * [Including items](../sharding/querying#including-items)
   * [Paging results](../sharding/querying#paging-results)
   * [Filtering results](../sharding/querying#filtering-results)
@@ -53,54 +56,59 @@ To allow this comfort, the database performs the following steps when a client s
 
 {PANEL/}
 
-{PANEL: Querying a selected shard}
+{PANEL: Querying selected shards}
 
-* A query is normally executed over all shards. However, it is also possible to query only selected shards.
+* A query is normally executed over all shards. However, it is also possible to query only selected shards.  
+  Querying a specific shard directly avoids unnecessary trips to other shards by the orchestrator.
 
-* Query a selected shard when you know in advance that the documents you need to query reside on that shard,  
-  to avoid trips to other shards.
-
-* This approach is useful when documents are intentionally stored on the same shard,  
-  either by using [Anchoring documents](../sharding/administration/anchoring-documents) or by configuring [Prefixed sharding](../sharding-by-prefix#prefixed-sharding-vs-anchoring-documents).
+* This approach can be useful, for example, when documents are intentionally stored on the same shard using [Anchoring documents](../sharding/administration/anchoring-documents).
 
 ---
 
-* Use the `ShardContext` method in your query to specify which shard/s to query.  
+* Use method `ShardContext` together with `ByDocumentId` or `ByDocumentIds` to specify which shard/s to query.
 
-* Use the `ByDocumentId` or `ByDocumentIds` methods to identify the shard(s) where documents are stored.  
-  Pass .... todo... Aviv ?
+* To identify which shard to query, RavenDB passes the document ID that you provide in the _ByDocumentId/s_ methods
+  to the [hashing algorithm](../sharding/overview#how-documents-are-distributed-among-shards), which determines the bucket ID and thus the shard.
+
+* The document ID parameter is not required to be one of the documents you are querying for;  
+  it is just used to calculate the target shard to query. See the following examples:  
 
 {NOTE: }
 
-**Examples**:  
+**Query a selected shard**:  
 
-  Query only the shard containing document `users/1`:
+Query only the shard containing document `users/1`:
 
-  {CODE-TABS}
-  {CODE-TAB:csharp:Query query_selected_shard_1@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:Query_async query_selected_shard_1_async@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:DocumentQuery query_selected_shard_2@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:DocumentQuery_async query_selected_shard_2_async@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB-BLOCK:sql:RQL}
-  from "Users
-  where Name == Joe"
-  { "__shardContext": "users/1" }
-  {CODE-TAB-BLOCK/}
-  {CODE-TABS/}
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_selected_shard_1@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:Query_async query_selected_shard_1_async@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:DocumentQuery query_selected_shard_2@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:DocumentQuery_async query_selected_shard_2_async@Sharding\ShardingQuerying.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Users"
+where Name == "Joe"
+{ "__shardContext": "users/1" }
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-  Query only the shard/s containing documents `users/2` and `users/3`:  
+{NOTE/}
+{NOTE: }
 
-  {CODE-TABS}
-  {CODE-TAB:csharp:Query query_selected_shard_3@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:Query_async query_selected_shard_3_async@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:DocumentQuery query_selected_shard_4@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB:csharp:DocumentQuery_async query_selected_shard_4_async@Sharding\ShardingQuerying.cs /}
-  {CODE-TAB-BLOCK:sql:RQL}
-  from "Users
-  where Name == Joe"
-  { "__shardContext" : ["users/2", "users/3"] }
-  {CODE-TAB-BLOCK/}
-  {CODE-TABS/}
+**Query selected shards**:  
+
+Query only the shards containing documents `users/2` and `users/3`:  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_selected_shard_3@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:Query_async query_selected_shard_3_async@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:DocumentQuery query_selected_shard_4@Sharding\ShardingQuerying.cs /}
+{CODE-TAB:csharp:DocumentQuery_async query_selected_shard_4_async@Sharding\ShardingQuerying.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Users"
+where Name == "Joe"
+{ "__shardContext" : ["users/2", "users/3"] }
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 {NOTE/}
 
