@@ -1,20 +1,20 @@
 [
-  {
-    "Path": "studio-admin.markdown",
-    "Name": "Studio Administration",
-    "DiscussionId": "6069ef7d-5242-40d7-adbc-ec7bd5e68921",
-    "Mappings": []
-  },
-  {
-    "Path": "api-admin.markdown",
-    "Name": "API Administration",
-    "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
-    "Mappings": []
-  },
-  {
-    "Path": "anchoring-documents.markdown",
-    "Name": "Anchoring Documents",
-    "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
-    "Mappings": []
-  }
+    {
+        "Path": "studio-admin.markdown",
+        "Name": "Studio Administration",
+        "DiscussionId": "6069ef7d-5242-40d7-adbc-ec7bd5e68921",
+        "Mappings": []
+    },
+    {
+        "Path": "api-admin.markdown",
+        "Name": "API Administration",
+        "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
+        "Mappings": []
+    },
+    {
+        "Path": "anchoring-documents.markdown",
+        "Name": "Anchoring Documents",
+        "DiscussionId": "445e663b-fb72-40b4-8b81-b221be977c21",
+        "Mappings": []
+    }
 ]

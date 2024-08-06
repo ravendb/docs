@@ -5,7 +5,9 @@
 
 * Indexing a sharded database is performed locally, per shard.  
   There is no multi-shard indexing process.  
+
 * Indexes use the same syntax in sharded and non-sharded databases.  
+
 * Most indexing features supported by non-sharded databases 
   are also supported by sharded databases. Unsupported features are listed below.  
 
@@ -45,8 +47,8 @@ Learn about **querying map-reduce indexes** in a sharded database [here](../shar
 
 Unsupported or yet-unimplemented indexing features include: 
 
-* **Rolling index deploymeny**  
-  [Rolling index deploymeny](../indexes/rolling-index-deployment) 
+* **Rolling index deployment**  
+  [Rolling index deployment](../indexes/rolling-index-deployment) 
   is not supported in a Sharded Database.  
 * **Loading documents from other shards**  
   Loading a document during indexing is possible only if the document 
