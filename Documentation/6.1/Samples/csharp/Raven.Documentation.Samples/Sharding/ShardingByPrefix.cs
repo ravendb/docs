@@ -41,13 +41,13 @@ namespace Raven.Documentation.Samples.Sharding
                     new PrefixedShardingSetting
                     {
                         Prefix = "users/us/",
-                        // Assign a the target shard for the prefix
+                        // Assign a SINGLE shard for the prefix
                         Shards = [0]
                     },
                     new PrefixedShardingSetting
                     {
                         Prefix = "users/asia/",
-                        // Can assign multiple shards for a prefix
+                        // Can assign MULTIPLE shards for a prefix
                         Shards = [1, 2]
                     }
                 ];
@@ -96,13 +96,13 @@ namespace Raven.Documentation.Samples.Sharding
                     new PrefixedShardingSetting
                     {
                         Prefix = "users/us/",
-                        // Assign a the target shard for the prefix
+                        // Assign a SINGLE shard for the prefix
                         Shards = [0]
                     },
                     new PrefixedShardingSetting
                     {
                         Prefix = "users/asia/",
-                        // Can assign multiple shards for a prefix
+                        // Can assign MULTIPLE shards for a prefix
                         Shards = [1, 2]
                     }
                 ];
@@ -132,6 +132,7 @@ namespace Raven.Documentation.Samples.Sharding
                 {
                     Prefix = "users/eu/",
                     Shards = [2]
+                    // Can assign multiple shards, e.g.: Shards = [2, 3]
                 };
 
                 // Define the add operation:
@@ -150,6 +151,7 @@ namespace Raven.Documentation.Samples.Sharding
                 {
                     Prefix = "users/eu/",
                     Shards = [2]
+                    // Can assign multiple shards, e.g.: Shards = [2, 3]
                 };
 
                 // Define the add operation:
