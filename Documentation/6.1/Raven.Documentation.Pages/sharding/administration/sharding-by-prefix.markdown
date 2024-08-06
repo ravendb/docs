@@ -25,7 +25,6 @@
       * [Add prefixes after database creation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)
   * [Removing prefixes](../../sharding/administration/sharding-by-prefix#removing-prefixes)
   * [Updating shard configurations for prefixes](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
-  * [Query selected shards](../../sharding/administration/sharding-by-prefix#query-selected-shards)
   * [Prefixed sharding vs Anchoring documents](../../sharding/administration/sharding-by-prefix#prefixed-sharding-vs-anchoring-documents)
 
 {NOTE/}
@@ -251,15 +250,6 @@ Using the Client API, you can add prefixes when creating the database or after d
 
 {PANEL/}
 
-{PANEL: Query selected shards}
-
-* Storing documents on specific shards allows you to query only those shards directly,  
-  avoiding unnecessary trips to other shards by the orchestrator.
-
-* Please refer to [Querying a selected shard](../../sharding/querying#querying-a-selected-shard) to see how to query specific shard/s.
-
-{PANEL/}
-
 {PANEL: Prefixed sharding vs Anchoring documents}
 
 **Anchoring documents**:  
@@ -303,6 +293,4 @@ The result:
 ### Client
 
 - [Sharding queries](../../sharding/querying)  
-- [Querying a selected shard](../../sharding/querying#querying-a-selected-shard)  
-
-Any document with an ID starting with one of these prefixes will be stored on the shard associated with that prefix.
+- [Querying a selected shard](../../sharding/querying#querying-a-selected-shard)

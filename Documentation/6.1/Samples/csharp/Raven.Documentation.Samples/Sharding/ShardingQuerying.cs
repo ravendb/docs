@@ -89,6 +89,7 @@ namespace Raven.Documentation.Samples.Sharding
                 #region query_selected_shard_1
                 var queryResults = session.Query<User>()
                      // Call 'ShardContext' to select which shard to query
+                     // RavenDB will query only the shard containing document "users/1"
                     .Customize(x => x.ShardContext(s => s.ByDocumentId("users/1")))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
@@ -115,6 +116,7 @@ namespace Raven.Documentation.Samples.Sharding
                 #region query_selected_shard_3
                 var queryResults = session.Query<User>()
                      // Call 'ShardContext' to select which shards to query
+                     // RavenDB will query only the shards containing documents "users/2" & "users/3"
                     .Customize(x => x.ShardContext(s => s.ByDocumentIds(new[] { "users/2", "users/3" })))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
