@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "integrating-with-akka-persistence.markdown",
+        "Name": "Integrating with Akka.Persistence",
+        "DiscussionId": "a7895a1d-83d8-4cd3-9b25-254981cdb3ac",
+        "Mappings": []
+    },
+    {
+        "Path": "events-and-snapshots.markdown",
+        "Name": "Events and Snapshots",
+        "DiscussionId": "6fb092ac-b96d-47c9-b848-7e47dca6cee6",
+        "Mappings": []
+    }
+]
