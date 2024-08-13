@@ -194,7 +194,7 @@ class TimeSeriesCollectionConfiguration:
 
 | Property        | Type | Description |
 |-----------------|------|-------------|
-| **collections** | `Dict` | Populate this `Dictionary` with the collection names and their corresponding `TimeSeriesCollectionConfiguration` objects. |
+| **collections** | `Dict[str, TimeSeriesCollectionConfiguration]` | Populate this `Dictionary` with the collection names and their corresponding `TimeSeriesCollectionConfiguration` objects. |
 | **disabled** (Optional) | `bool` | If set to `true`, rollup processes will stop, and time series data will not be deleted by retention policies. |
 | **policies** (Optional) | `List[TimeSeriesPolicy]` | Populate this `List` with your rollup policies. |
 | **raw_policy** (Optional) | `RawTimeSeriesPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series. |

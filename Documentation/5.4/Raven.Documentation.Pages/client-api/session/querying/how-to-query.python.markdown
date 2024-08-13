@@ -6,7 +6,7 @@
 
 * Queries in RavenDB can be written with either of the following:
    * Using a rich API via session's `query` method  
-   * Using a low-level API via session's `document_query` method  
+   * Using the [document_query](../../../client-api/session/querying/document-query/query-vs-document-query) method  
    * Using **RQL** -  
       - when querying via session's `raw_query` method  
       - when querying through Studio's [Query view](../../../studio/database/queries/query-view)  

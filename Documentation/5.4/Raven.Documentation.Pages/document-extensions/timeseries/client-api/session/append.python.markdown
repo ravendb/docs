@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Use `time_series_for.append` for the following actions:
+* Use `time_series_for.append_single` or `time_series_for.append` for the following actions:
     * **Creating a new time series**  
       Appending an entry to a time series that doesn't exist yet  
       will create the time series and add it the new entry.
@@ -12,19 +12,21 @@
       Appending a new entry to an existing time series  
       will add the entry to the series at the specified timestamp.
     * **Modifying an existing time series entry**  
-      Use `append` to update the data of an existing entry with the specified timestamp.
+      Use `append_single` or `append` to update the data of an existing entry with the specified timestamp.
 
-* Each call to `append` handles a **single** 
-  [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+* Each call to `append_single` handles a **single** time series value at 
+  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+  Each call to `append` can handle **multiple** time series values at 
+  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
 
 * To append **multiple** entries in a single transaction you can:  
-   * Call `append` as many times as needed before calling `session.save_changes`, as shown in the examples below.  
+   * Call `append_single` or `append` as many times as needed before calling `session.save_changes`, as shown in the examples below.  
    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
      Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).  
 
 * In this page:
-    * [`append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append#usage)
     * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
@@ -34,7 +36,7 @@
 
 ---
 
-{PANEL: `append` usage}
+{PANEL: Usage}
 
 **Flow**:
 
@@ -45,7 +47,7 @@
       e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) 
       or from [session.load](../../../../client-api/session/loading-entities#load).
     * Specify the time series name.
-* Call `time_series_for.append` and pass it the time series entry details.
+* Call `time_series_for.append_single` or `time_series_for.append` and pass it the time series entry details.
 * Call `session.save_changes` for the action to take effect on the server.
 
 **Note**:

@@ -130,7 +130,6 @@ select distinct EmployeeID
 {PANEL: Syntax}
    
 * [query](../../../client-api/session/querying/how-to-query#query-overview)  
-
     {CODE-BLOCK: JSON}
     def query(
     self, source: Optional[Query] = None, object_type: Optional[Type[_T]] = None
@@ -138,8 +137,7 @@ select distinct EmployeeID
     ...
     {CODE-BLOCK/}
 
-* [document_query](../../../client-api/session/querying/how-to-query#query-overview)  
-    
+* [document_query](../../../client-api/session/querying/document-query/query-vs-document-query)  
     {CODE-BLOCK: JSON}
     def document_query(
     self,
