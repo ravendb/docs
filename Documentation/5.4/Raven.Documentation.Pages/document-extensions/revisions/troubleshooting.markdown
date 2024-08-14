@@ -13,11 +13,11 @@
 {PANEL: `ThrowDocumentIdTooBig` exception}
 
 A `ThrowDocumentIdTooBig` exception is thrown when attempting to store a document revision 
-whose ID length exceeds **512 bytes**.  
+whose ID length exceeds **1,536 bytes**.  
 
 * **When does this happen?**  
   A document revision's *ID* is based upon the revision's [change vector](../../server/clustering/replication/change-vector), 
-  which **is** allowed to grow [beyond 512 bytes](../../client-api/operations/maintenance/clean-change-vector).  
+  which **is** allowed to grow [beyond 1,536 bytes](../../client-api/operations/maintenance/clean-change-vector).  
   The change vector includes IDs of used cluster instances, but may also include IDs of unused databases (like 
   the origin database of a document that was once imported via external replication). This way, a change vector 
   may lengthen beyond the limit allowed for revision IDs.  
@@ -50,15 +50,16 @@ whose ID length exceeds **512 bytes**.
 * **Imported databases**  
   Importing a database is always regarded as the creation of a new database.  
   An exception **will** therefore be thrown if the ID of an imported revision 
-  exceeds 512 bytes, regardless of the imported revision's database version.  
+  exceeds 1,536 bytes, regardless of the imported revision's database version.  
 * **Restoring database from backup**  
    * Revisions ID length **will** be checked if the database version is not defined in its 
      restored database record or if the version is **5.4.200** or newer.  
    * Revision ID lengths will **not** be checked when restoring databases older than **5.4.200**.  
 * **Restoring database from a snapshot**  
   Revisions ID length will not be checked while restoring a snapshot, since snapshots are 
-  restored as an image. If revision IDs longer than 512 exist in the restored database, it 
-  is because its version is older than **5.4.200** in any case and this check is not required.  
+  restored as an image. If revision IDs longer than 1,536 bytes exist in the restored database, 
+  they are in it because the database is of an older version than **5.4.200** and doesn't perform 
+  this check.  
 
 {PANEL/}
 
