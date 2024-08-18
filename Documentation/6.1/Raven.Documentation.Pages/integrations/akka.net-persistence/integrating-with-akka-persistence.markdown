@@ -6,7 +6,7 @@
 * This article provides guidance on integrating RavenDB with Akka.Persistence.
 
 * In this page:
-   * [Overview](../../integrations/akka.net-persistence/overview#overview)
+   * [Overview](../../integrations/akka.net-persistence/integrating-with-akka-persistence#overview)
    * [Akka.Persistence.RavenDB](../../integrations/akka.net-persistence/integrating-with-akka-persistence#akka.persistence.ravendb)
    * [Installing the RavenDB persistence plugin](../../integrations/akka.net-persistence/integrating-with-akka-persistence#installing-the-ravendb-persistence-plugin)
    * [Configuring the RavenDB persistence plugin with HOCON](../../integrations/akka.net-persistence/integrating-with-akka-persistence#configuring-the-ravendb-persistence-plugin-with-hocon)
@@ -58,7 +58,7 @@ With the RavenDB plugin your application can:
 
   * Persist and recover Events to/from a **Journal store**. Learn more in [Events](../../integrations/akka.net-persistence/events-and-snapshots#storing-events).
   * Persist and recover Snapshots to/from a **Snapshot store**. Learn more in [Snapshots](../../integrations/akka.net-persistence/events-and-snapshots#storing-snapshots). 
-  * Query the stored events and snapshot. Learn more in [Queries](../todo..).
+  * Query the stored events. Learn more in [Queries](../../integrations/akka.net-persistence/queries).
 
 {PANEL/}
 
@@ -217,4 +217,4 @@ Default: `false`
 ### Integrations
 
 [Events and Snapshots](../../integrations/akka.net-persistence/events-and-snapshots)  
-[Queries](../todo..)  
+[Queries](../../integrations/akka.net-persistence/queries)  
