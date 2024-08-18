@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Akka;
 using Akka.Actor;
 using Akka.Hosting;
 using Akka.Persistence;
@@ -8,7 +9,9 @@ using Akka.Persistence.Query;
 using Akka.Persistence.RavenDb.Hosting;
 using Akka.Persistence.RavenDb.Query;
 using Akka.Streams;
+using Akka.Streams.Dsl;
 using Microsoft.Extensions.Hosting;
+using Raven.Client.Documents.Session;
 
 namespace AkkaPersistenceSampleApp
 {
@@ -221,46 +224,91 @@ namespace AkkaPersistenceSampleApp
         }
         #endregion
         
-        #region queries
+        void QueryPersistenceId(ActorSystem system)
+        {
+            #region query_1
+            // Obtain the RavenDB read journal
+            // ===============================
+            RavenDbReadJournal readJournal = PersistenceQuery
+                .Get(system)
+                .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
+            
+            // Issue query 'CurrentPersistenceIds' to the journal
+            // ==================================================
+            Source<string, NotUsed> allPersistenceIds = readJournal.CurrentPersistenceIds();
+            
+            // The materializer handles data flow from the persistence storage through the query pipeline
+            // ==========================================================================================
+            ActorMaterializer materializer = system.Materializer();
+            
+            // Execute the query and consume the results
+            // =========================================
+            allPersistenceIds.RunForeach(persistenceId =>
+            {
+                Console.WriteLine($"ActorID: {persistenceId}");
+            }, materializer).Wait();
+            #endregion
+        }
+        
         void QueryEventsById(ActorSystem system)
         {
-            var _readJournal = PersistenceQuery.Get(system)
-                .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
+            #region query_2
+            RavenDbReadJournal readJournal = PersistenceQuery
+                .Get(system)
+                .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier); 
 
-            var eventsSource = _readJournal.CurrentEventsByPersistenceId("sales-actor", 0L, long.MaxValue);
-            var materializer = system.Materializer();
-
-            ConsoleHelper.WriteToConsole(ConsoleColor.DarkBlue,
-                "Query results for CurrentEventsByPersistenceId:");
+            // Issue query 'CurrentEventsByPersistenceId'
+            Source<EventEnvelope, NotUsed> eventsSource = readJournal
+                .CurrentEventsByPersistenceId("sales-actor", 0L, long.MaxValue);
             
+            ActorMaterializer materializer = system.Materializer();
             eventsSource.RunForeach(envelope =>
             {
                 var saleEvent = (Sale)envelope.Event;
-                ConsoleHelper.WriteToConsole(ConsoleColor.DarkBlue,
-                    $"CurrentEventsByPersistenceId: " +
-                    $"Sale Event - Brand: {saleEvent.Brand}, Price: {saleEvent.Price}");
+                Console.WriteLine($"Sale Event - Brand: {saleEvent.Brand}, Price: {saleEvent.Price}");
             }, materializer).Wait();
+            #endregion
+        }
+        
+        void QueryEventsByTag(ActorSystem system)
+        {
+            #region query_3
+            RavenDbReadJournal _readJournal = PersistenceQuery.Get(system)
+                .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
+
+            // Define an offset after which to return results.
+            // See the available offset options in the syntax below..
+            ChangeVectorOffset cvOffset = 
+                new ChangeVectorOffset("RAFT:1-hJ9jo4rRBEKs/kqNXV107Q TRXN:1169-5LEbeyPG40eQiq6fnnCthA");
+                
+            // Issue query 'CurrentEventsByTag'
+            var eventsSource = _readJournal.CurrentEventsByTag("some-tag", cvOffset);
+
+            ActorMaterializer materializer = system.Materializer();
+            eventsSource.RunForeach(envelope =>
+            {
+                var saleEvent = (Sale)envelope.Event;
+                Console.WriteLine($"Sale Event - Brand: {saleEvent.Brand}, Price: {saleEvent.Price}");
+            }, materializer).Wait();
+            #endregion
         }
         
         void QueryAllEvents(ActorSystem system)
         {
-            var _readJournal = PersistenceQuery.Get(system)
+            #region query_4
+            RavenDbReadJournal readJournal = PersistenceQuery.Get(system)
                 .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
 
-            var eventsSource = _readJournal.CurrentAllEvents(NoOffset.Instance);
-            var materializer = system.Materializer();
-
-            ConsoleHelper.WriteToConsole(ConsoleColor.DarkBlue,
-                "Query results for CurrentAllEvents:");
+            // Issue query 'CurrentAllEvents'
+            var eventsSource = readJournal.CurrentAllEvents(Offset.NoOffset());
             
+            ActorMaterializer materializer = system.Materializer();
             eventsSource.RunForeach(envelope =>
             {
                 var saleEvent = (Sale)envelope.Event;
-                ConsoleHelper.WriteToConsole(ConsoleColor.DarkBlue,
-                    $"CurrentAllEvents: " +
-                    $"Sale Event - Brand: {saleEvent.Brand}, Price: {saleEvent.Price}");
+                Console.WriteLine($"Sale Event - Brand: {saleEvent.Brand}, Price: {saleEvent.Price}");
             }, materializer).Wait();
+            #endregion
         }
-        #endregion
     }
 }

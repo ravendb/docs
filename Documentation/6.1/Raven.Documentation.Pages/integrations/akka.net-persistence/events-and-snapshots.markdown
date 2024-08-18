@@ -8,7 +8,7 @@
  
 * Upon actor restart, both events and snapshots can be replayed to restore the actor's internal state. 
 
-* The stored events and snapshots can be queried via Akka's query interface.  
+* The stored events can be queried via Akka's query interface.  
   Learn more about that in [Queries](../todo..).
 
 * To learn how to configure the events journal and the snapshot-store via the _Akka.Persistence.RavenDB_ plugin, 
@@ -167,9 +167,6 @@ The data stored for each event is an instance of the `Sale` class, containing `P
 4. The sequence number of the event after which the snapshot was stored, `5` in this case.
 5. The data stored in this snapshot represents the actor's state immediately after event 5 was stored.  
    In this example, it reflects the **accumulated sales profit** made after the first 5 sale events.  
-
-
-
 
 {PANEL/}
 
