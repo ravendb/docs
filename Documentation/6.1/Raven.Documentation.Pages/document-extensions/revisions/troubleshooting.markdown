@@ -38,20 +38,22 @@ whose ID length exceeds this limit.
      to register IDs of databases that are irrelevant to this server. IDs listed in this view will 
      be omitted from the change vectors of imported revisions.  
 
-       ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
+           ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
 
-       1. **Unused Database IDs**  
-          Click to open the **Unused Database IDs** view.  
-       2. **Database ID**  
-          The ID of this cluster node.  
-       3. **Change Vector**  
-          A list of IDs that may be added to the list.  
-          To add an ID to the unused IDs list, click the **Add to unused** button to its right.  
-       4. **Save**  
-          Click to save the current list of unused IDs.  
-       5. **Unused Database IDs**  
-          A. Click the bar to enter an ID manually, and add it to the list using the **Add ID** button.  
-          B. This is the list of unused database IDs. To remove an ID from the list, click the trash bin to its right.  
+           1. **Unused Database IDs**  
+              Click to open the **Unused Database IDs** view.  
+           2. **Save**  
+              Click to save the current list of unused IDs.  
+           3. **Used IDs**  
+              IDs of databases that are currently used by this database.  
+           4. **Enter database ID to add**  
+              Use this bar to manually enter an unused ID.  
+              Click the **Add ID** button to add the ID to the list.  
+           5. **List of unused IDs.**  
+              To remove an ID from the list, click the trash bin to its right.  
+           6. **IDs that may be added to the list**  
+              A. an ID that was already added to the list.  
+              B. an ID that hasn't been added to the list yet. Click it to add the ID to the list.  
 
 * **What to be aware of:**  
   When adding a database ID to the **Unused Database IDs** list via studio:  
@@ -59,17 +61,18 @@ whose ID length exceeds this limit.
      If, for example, your database imports data from another database using an import task, 
      you should make sure that the ID of the other database is **not** removed.  
      The ID of a RavenDB database can be found in the Studio > **Stats** view.  
-     
-          ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
+
+         ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
 
    * If an external replication task is running:  
      **Do not** add the IDs of databases that are used by the destination database.  
      **Add** the unused IDs on the **destination** database first, to prevent conflicts.  
+
    * **Do not** use the IDs indicated by the database record `DatabaseTopologyIdBase64` and 
      `ClusterTransactionIdBase64` properties.  
      Find these IDs using the Studio > Settings > **Database Record** view.  
 
-          ![Database Record](images\revisions_database-record.png "Database Record")
+         ![Database Record](images\revisions_database-record.png "Database Record")
 
 ---
 
