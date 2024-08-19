@@ -3,13 +3,16 @@
 
 {NOTE: }
 
-* Akka.Persistence provides two primary methods to persist actor state: **Event sourcing** and **Snapshots**.   
-  Event sourcing stores state changes as a sequence of events, while snapshots capture the actor's state at specific points for quicker recovery.
- 
-* Upon actor restart, both events and snapshots can be replayed to restore the actor's internal state. 
+* Akka.Persistence provides two primary methods to persist actor state: **Event sourcing** and **Snapshots**.
+
+* With event sourcing, each state change is stored as a separate event, creating a sequence of events that represents the actor’s history. 
+  Snapshots, on the other hand, capture the actor’s state at specific points in time.
+
+* Upon actor restart, both events and snapshots can be replayed to restore the actor's internal state,  
+  with snapshots allowing for quicker recovery by avoiding the need to replay all past events.
 
 * The stored events can be queried via Akka's query interface.  
-  Learn more about that in [Queries](../todo..).
+  Learn more about that in [Queries](../../integrations/akka.net-persistence/queries).
 
 * To learn how to configure the events journal and the snapshot-store via the _Akka.Persistence.RavenDB_ plugin, 
   see [Integrating with Akka.NET persistence](../../integrations/akka.net-persistence/integrating-with-akka-persistence).
@@ -17,6 +20,7 @@
 * In this page:
    * [Storing events](../../integrations/akka.net-persistence/events-and-snapshots#storing-events)
    * [Storing snapshots](../../integrations/akka.net-persistence/events-and-snapshots#storing-snapshots)
+   * [Storing guidelines](../../integrations/akka.net-persistence/events-and-snapshots#storing-guidelines)
    * [Global consistency](../../integrations/akka.net-persistence/events-and-snapshots#global-consistency)
    * [Sample application](../../integrations/akka.net-persistence/events-and-snapshots#sample-application)
 
@@ -31,12 +35,7 @@ Persistent actors can write messages, called events, into the configured RavenDB
 which serves as the events journal.
 
 **The Events collection**:  
-
-  * Each event is stored as a document in the `Events` collection in append-only mode.  
-
-  * This collection is designated by the RavenDB plugin for Akka's stored events.   
-    Although it is technically possible to store documents from other sources in this collection,  
-    it is recommended to reserve the Events collection exclusively for Akka storage.  
+Each event is stored as a document in the `Events` collection in append-only mode.  
 
 **The Event document**:  
 Each event document includes the following fields, among others:  
@@ -63,15 +62,10 @@ enables retrieval and replay in the correct sequence when an actor restarts.
   * Persistent actors can store these snapshots in the configured RavenDB database,  
     which serves as the snapshot-store.
 
-  * When an actor restarts, instead of replaying each individual message from the events journal, which can be inefficient as this journal grows,
-    the actor's state can be restored from a snapshot and then replay only the events that occurred after that snapshot.
+  * After a snapshot is successfully persisted, events can be deleted from the events journal to free up space.  
 
 **The Snapshots collection**:  
-
-  * Each snapshot is stored as a document in the `Snapshots` collection in append-only mode.  
-
-  * Similar to the Events collection, this collection is designated by the RavenDB plugin for Akka's snapshots,  
-    and it is recommended to reserve the Snapshots collection exclusively for Akka storage.
+Each snapshot is stored as a document in the `Snapshots` collection in append-only mode.  
 
 **The Snapshot document**:  
 Each snapshot document includes the following fields, among others:
@@ -84,10 +78,27 @@ Each snapshot document includes the following fields, among others:
 
 **Replaying snapshots**:  
 
+  * When an actor restarts, instead of replaying the entire event history from the events journal,  
+    which can be inefficient as this journal grows, the actor's state can be restored from a snapshot  
+    and then replay only the events that occurred after that snapshot.
+
   * Replaying snapshots significantly accelerates recovery, reduces network transmission,  
     and lowers both actor event replay time and CPU usage.
 
-  * After the snapshot is retrieved, events can be deleted from the events journal to free up space.
+{PANEL/}
+
+{PANEL: Storing guidelines}
+
+{INFO: }
+
+* The RavenDB plugin designates the Events and Snapshots collections for storing Akka’s data.  
+  While it’s technically possible to store documents from other sources in these collections,  
+  you shouldn't do so.
+ 
+* The Events and Snapshots collections should be reserved exclusively for Akka’s storage needs.  
+  It is recommended to place these collections in a separate, designated database.
+
+{INFO/}
 
 {PANEL/}
 
@@ -106,8 +117,8 @@ Each snapshot document includes the following fields, among others:
 
   * RavenDB is a distributed database, allowing writes, reads, and queries to target different nodes across the cluster.  
 
-  * To prioritize consistency over availability, the RavenDB plugin uses a [cluster-wide transaction](../../server/clustering/cluster-transactions) for storing events and snapshot documents.
-    This ensures that persisted data is consistently applied across all database instances in the cluster, fulfilling Akka's global consistency requirement.
+  * To prioritize consistency over availability, the RavenDB plugin uses a [cluster-wide transaction](../../server/clustering/cluster-transactions) for storing events and snapshot documents. 
+    This ensures that persisted data is consistently applied across all database instances in the cluster, fulfilling Akka's requirement for no gaps in event sequence numbers at any point in time, across all nodes.
 
   * Note that cluster consensus is required for a cluster-wide transaction to execute. 
     This means that a majority of nodes in the [database group](../../studio/database/settings/manage-database-group) must be up and connected in order to persist new events & snapshots.

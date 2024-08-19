@@ -7,10 +7,8 @@
 * Akka.Persistence.Query comes with several stream-based query interfaces for querying persisted data.  
   This interface abstracts the underlying database, allowing your application to switch persistence providers without requiring changes to the query code.
  
-* The RavenDB persistence plugin fully supports all Akka's query interfaces.  
+* The RavenDB persistence plugin fully supports all of Akka's query interfaces.  
   Just include `Akka.Persistence.RavenDb.Query` in your application.
-
-* view queries in traffic watch under 'streams' todo..
  
 * In this page:
   * [Interface types](../../integrations/akka.net-persistence/queries#interface-types)
@@ -19,7 +17,7 @@
      * [IEventsByPersistenceIdQuery & ICurrentEventsByPersistenceIdQuery](../../integrations/akka.net-persistence/queries#ieventsbypersistenceidquery--icurrenteventsbypersistenceidquery)
      * [IEventsByTagQuery & ICurrentEventsByTagQuery](../../integrations/akka.net-persistence/queries#ieventsbytagquery--icurrenteventsbytagquery)
      * [IAllEventsQuery & ICurrentAllEventsQuery](../../integrations/akka.net-persistence/queries#ialleventsquery--icurrentalleventsquery)
-  * [Indexes](../../integrations/akka.net-persistence/queries#indexes)
+  * [Inner implementation details](../../integrations/akka.net-persistence/queries#inner-implementation-details)
 
 {NOTE/}
 
@@ -182,15 +180,45 @@ for the `EventsByTag` & `CurrentEventsByTag` methods above.
 
 {PANEL/}
 
-{PANEL: Indexes}
+{PANEL: Inner implementation details}
 
-* To support these queries, the RavenDB plugin automatically creates internal static-indexes,  
-  optimized for fast data retrieval.
+#### Indexes
 
-* The indexes created are:
+To support the above queries and optimize for fast data retrieval, 
+the RavenDB plugin automatically creates the following internal static-indexes upon instantiation of `RavenDbReadJournal`:
 
-    * `ActorsByChangeVector`
-    * `EventsByTagAndChangeVector`
+  * `ActorsByChangeVector`
+  * `EventsByTagAndChangeVector`
+
+---
+
+#### Additional collections
+
+In addition to the _Events_ & _Snapshots_ collections, which contain the persisted data,  
+the RavenDB plugin creates the following collections to keep track of actors and event metadata:  
+
+  * `UniqueActors`  
+    This collection stores a document for each unique actor that has persisted data.  
+    Each document includes the actor's PersistenceId.  
+
+  * `EventMetadatas`  
+    This collection stores a document for each unique actor that has persisted data.  
+    Each document includes the latest sequence number of the most recent event persisted by the actor.
+
+---
+
+#### Streaming queries
+
+The RavenDb plugin implements the above queries as [streaming queries](../../client-api/session/querying/how-to-stream-query-results).  
+You can monitor each query sent from your client to the RavenDB server in the _Traffic Watch_ view in the Studio.  
+  
+![Navigate to traffic watch](images/navigate-to-traffic-watch.png "Navigate to Traffic Watch view")
+
+1. Navigate to _Manage Server > Traffic Watch_.
+2. Select **Streams** from the HTTP types dropdown.
+
+![Queries in traffic watch](images/queries-in-traffic-watch.png "View queries in Traffic Watch")
+
 
 {PANEL/}
 

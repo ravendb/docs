@@ -230,7 +230,7 @@ namespace AkkaPersistenceSampleApp
             // Obtain the RavenDB read journal
             // ===============================
             RavenDbReadJournal readJournal = PersistenceQuery
-                .Get(system)
+                .Get(system) // system is your 'ActorSystem' param
                 .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
             
             // Issue query 'CurrentPersistenceIds' to the journal

@@ -79,7 +79,7 @@ Installing either package will also install the _Akka.Persistence_ package.
 
 {INFO: }
 When configuring the plugin using both Hosting and HOCON, if the same parameters are specified in both,  
-the configuration provided via Hosting take precedence and will override the corresponding HOCON settings.
+the configuration provided via Hosting takes precedence and will override the corresponding HOCON settings.
 {INFO/}
 
 {PANEL/}
