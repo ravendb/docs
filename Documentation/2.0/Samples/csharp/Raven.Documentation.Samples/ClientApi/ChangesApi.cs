@@ -1,15 +1,15 @@
 ﻿namespace RavenCodeSamples.ClientApi
 {
 	using System;
-	using Raven.Abstractions.Data;
-	using Raven.Client.Changes;
 
 	public class ChangesApi : CodeSampleBase
 	{
 		public ChangesApi()
 		{
+/*
 			using (var store = NewDocumentStore())
 			{
+
 				#region getting_database_changes_instance
 
 				IDatabaseChanges changes = store.Changes("DatabaseName");
@@ -76,6 +76,7 @@
 					 });
 				#endregion
 			}
+*/
 		}
 	}
 }
