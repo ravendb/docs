@@ -114,7 +114,7 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
             content = NormalizeContent(content);
 
             var builder = new StringBuilder();
-            builder.AppendLine("<div class='code-example'>");
+            builder.AppendLine("<div class='content-frame'>");
             if (string.IsNullOrWhiteSpace(title) == false)
                 builder.AppendLine($"<h4>{title}</h4>");
 
