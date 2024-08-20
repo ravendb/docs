@@ -72,6 +72,7 @@ using (var store = new DocumentStore())
 
 When [LoadDocument](../../indexes/indexing-related-documents) is used in an index query 
 to load related documents, it is passed a **document ID** and a **collection name**.  
+
 The collection name **must** be passed to `LoadDocument` as a regular string; attempting 
 to pass it a dynamic expression instead of a string will fail with an `IndexCompilationException` 
 exception and this message: `LoadDocument method has to be called with constant value as collection name`
