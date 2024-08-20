@@ -52,8 +52,8 @@ using `PutCompareExchangeValueOperation` is now possible only if the item's init
 
 {PANEL: Dynamic Linq query cannot apply `.Any` with `&&`}
 
-RavenDB does not support dynamic Linq queries (that are executed over auto indexes), when 
-the query attempts to apply the `.Any` method with a logical AND (`&&`) over multiple parameters.  
+RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) when 
+they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
 The below query, for example, is *not supported*.  
 
 {CODE-BLOCK:sql}
@@ -98,13 +98,13 @@ an exception will not be generated.
 
 ## Related Articles
 
-### Installation
-- [Setup Wizard](../../start/installation/setup-wizard)  
-- [System Requirements](../../start/installation/system-requirements)  
-- [Running in a Docker Container](../../start/installation/running-in-docker-container)  
+### Counters
+- [Counters](../../document-extensions/counters/overview)  
+- [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
 
-### Session
-- [Introduction](../../client-api/session/what-is-a-session-and-how-does-it-work)  
+### Compare Exchange
+- [Compare Exchange](../../client-api/operations/compare-exchange/overview)  
+- [Put compare exchange op](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
 
 ### Querying
 - [Query Overview](../../client-api/session/querying/how-to-query) 
@@ -113,7 +113,4 @@ an exception will not be generated.
 ### Indexes
 - [What are Indexes](../../indexes/what-are-indexes)  
 - [Indexing Basics](../../indexes/indexing-basics)  
-
-### Sharding
-- [Overview](../../sharding/overview)  
-- [Migration](../../sharding/migration)  
+- [LoadDocument](../../indexes/indexing-related-documents)  

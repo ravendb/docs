@@ -20,9 +20,9 @@ with their behavior in previous versions.
 
 [Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes) 
 now requires that you pass the changes API both a database name **and** a node tag for the specific node that 
-runs the operation/s you want to track, to assure that the API consistently tracks this selected node.  
+runs the operation/s you want to track, to ensure that the API consistently tracks this selected node.  
 
-The changes API can be opened using two `Changes` overloads. The first passes the API only the database name, 
+The changes API can be opened using two `Changes` overloads. The first passes the API only the database name 
 and is capable of tracking all entities besides operations. Attempting to track operations after opening the 
 API this way will fail with the following exception:  
 `"Changes API must be provided a node tag in order to track node-specific operations."`
@@ -80,7 +80,7 @@ handling [complex fields](../../indexes/search-engine/corax#handling-of-complex-
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
 configuration option.  
 (The [handling of auto indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
-remains unhanged.)  
+remains unchanged.)  
 
 By default, `ComplexFieldIndexingBehavior` is set to **`Throw`** to instruct the search 
 engine to throw a `NotSupportedInCoraxException` exception when it encounters a complex 
@@ -101,3 +101,22 @@ indexing of complex fields without throwing an exception or raising a notificati
   It is recommended, though, to index individual properties of the complex field.  
 
 {PANEL/}
+
+
+## Related Articles
+
+### Changes API
+- [Changes API](../../client-api/changes/what-is-changes-api)  
+- [Tracking operations](../../client-api/changes/how-to-subscribe-to-operation-changes)  
+
+### Studio
+- [Identity parts separator](../../studio/server/client-configuration#set-the-client-configuration-(server-wide))  
+- [SQL connection string](../../studio/database/tasks/import-data/import-from-sql#create-a-new-import-configuration)  
+
+### Server
+- [ID Generation](../../server/kb/document-identifier-generation#id-generation-by-server)
+
+### Corax
+- [Corax](../../indexes/search-engine/corax)  
+- [Complex fields](../../indexes/search-engine/corax#handling-of-complex-json-objects)  
+- [Auto indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing)  

@@ -91,16 +91,16 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
             using (var store = new DocumentStore())
             {
                 #region CmpXchg
-                // This will fail, since the initial index value is not 0 but 123
+                // This will fail since the initial index value is not 0 but 123
                 CompareExchangeResult<string> compareExchangeResult
                     = store.Operations.Send(
                         new PutCompareExchangeValueOperation<string>("key", "value", 123));
 
-                // This will succeed, since the item is created with an initial index of 0
+                // This will succeed since the item is created with an initial index of 0
                 compareExchangeResult = store.Operations.Send(
                         new PutCompareExchangeValueOperation<string>("key", "value", 0));
 
-                // This will succeed, since the item already exists and we just update its value
+                // This will succeed since the item already exists and we just update its value
                 compareExchangeResult
                     = store.Operations.Send(
                         new PutCompareExchangeValueOperation<string>("key", "value", 123));
