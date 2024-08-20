@@ -157,7 +157,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                                     },
                                     new CounterOperation
                                     {
-                                        // No Delta specified, value will remain unchanged
+                                        // No Delta specified, value will be incremented by 1
+                                        // (From RavenDB 6.1 on, the default Delta is 1)
 
                                         Type = CounterOperationType.Increment,
                                         CounterName = "dislikes"

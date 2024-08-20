@@ -8,9 +8,9 @@ with their behavior in previous versions.
 
 * In this page:
    * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes#consistency-in-null-handling)  
-   * [`CounterBatchOperation` default increment value](../../migration/client-api/client-breaking-changes#counterbatchoperation-default-increment-value)  
-   * [CmpXchg item can only be created with its index set to `0`](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-its-index-set-to-0)  
-   * [Dynamic Linq query cannot apply `.Any` with `&&`](../../migration/client-api/client-breaking-changes#dynamic-linq-query-cannot-apply-.any-with-&&)  
+   * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/client-breaking-changes#counterbatchoperation-default-increment-delta-is-1)  
+   * [CmpXchg item can only be created with its index set to 0](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-its-index-set-to-0)  
+   * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/client-breaking-changes#dynamic-linq-query-cannot-apply-.any-with-logical-and-(&&))  
    * [`LoadDocument` must be provided with a collection name string](../../migration/client-api/client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
 
 {NOTE/}
@@ -30,27 +30,28 @@ IAsyncDocumentSession.LoadAsync(null)
 
 {PANEL/}
 
-{PANEL: `CounterBatchOperation` default increment value}
+{PANEL: `CounterBatchOperation` default increment Delta is 1}
 
 When [CounterBatchOperation](../../client-api/operations/counters/counter-batch) is 
-called without providing it with a `Delta` value, it will increment counters by a default 
-`Delta` of `1`.  
+called to `Increment` a batch of counters, and `Delta` is not specified to indicate 
+what value should be added to the counters, the operation will increment the counters 
+by a default `Delta` of `1`.  
 
 {CODE:csharp CounterBatchOperation@migration\BreakingChanges.cs /}
 
 {PANEL/}
 
-{PANEL: CmpXchg item can only be created with its index set to `0`}
+{PANEL: CmpXchg item can only be created with its index set to 0}
 
 Creating a [compare exchange item](../../client-api/operations/compare-exchange/put-compare-exchange-value) 
-using `PutCompareExchangeValueOperation` is now possible only if the item's initial index is set to 0.  
-(It **is** possible to update an **existing** compare exchange item with an index other than 0.)
+using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
+passed to the method is `0`.  
 
 {CODE:csharp CmpXchg@migration\BreakingChanges.cs /}  
 
 {PANEL/}
 
-{PANEL: Dynamic Linq query cannot apply `.Any` with `&&`}
+{PANEL: Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)}
 
 RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) when 
 they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
@@ -89,9 +90,10 @@ select new {
 
 {NOTE: }
 Note that the validation of the collection name string will be forced only during 
-the creation of a **new** index. Updating an existing index with a collection name 
-expression instead of a string will not work, but will not be checked either and 
-an exception will not be generated.
+the creation of a **new** index. 
+An attempt to update an existing index with a collection name expression rather 
+than a string will fail but the failure will remain unnoticed and an exception 
+will not be thrown.
 {NOTE/}
 
 {PANEL/}

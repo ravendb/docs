@@ -10,7 +10,7 @@ with their behavior in previous versions.
    * [Tracking operations using the Changes API now requires Node Tag](../../migration/server/server-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
    * [Custom identity parts-separator is operative](../../migration/server/server-breaking-changes#custom-identity-parts-separator-is-operative)  
    * [MsSql connection string requires an Encrypt property](../../migration/server/server-breaking-changes#mssql-connection-string-requires-an-encrypt-property)  
-   * [Corax handling of complex fields in a static index is configurable](../../migration/server/server-breaking-changes#corax-handling-of-complex-fields-in-a-static-index-is-configurable)  
+   * [Corax handling of complex JSON objects in static indexes is configurable](../../migration/server/server-breaking-changes#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)  
 
 {NOTE/}
 
@@ -24,7 +24,7 @@ runs the operation/s you want to track, to ensure that the API consistently trac
 
 The changes API can be opened using two `Changes` overloads. The first passes the API only the database name 
 and is capable of tracking all entities besides operations. Attempting to track operations after opening the 
-API this way will fail with the following exception:  
+API this way will fail with an `ArgumentException` exception and the following message:  
 `"Changes API must be provided a node tag in order to track node-specific operations."`
 
 To track operations, open the API using this overload:  
@@ -56,40 +56,42 @@ will apply your new separator.
 
 {PANEL: MsSql connection string requires an Encrypt property}
 
-RavenDB is now required by the `Microsoft.Data.SqlClient` package it comprises for 
-MsSql ETL communication, to include an `Encrypt` property in its MsSql connection strings.  
-The property needs to be included in the connection string to determine whether to encrypt 
-the connection or not. 
+To establish a connection with an MsSql server via ETL, RavenDB is required 
+by the `Microsoft.Data.SqlClient` package it utilizes to include in its 
+connection string an `Encrypt` property that would determine whether to 
+encrypt the connection or not.  
 
-Recent RavenDB versions up to 6.0 included a `Encrypt=Optional` property in their MsSql 
-connection strings, which effectively left the connection unencrypted. RavenDB 6.1 no 
-longer includes this property in its connection string, and users are required to explicitly 
-choose whether to encrypt the connection or not.  
+Recent RavenDB versions added this property to their connection strings 
+without bothering their users, setting it to `Encrypt=Optional` and leaving 
+the connection unencrypted unless users set it differently on their own accord.  
+From RavenDB 6.1 on, we no longer include this property in MsSql connection 
+string and users are required to explicitly choose whether to encrypt the 
+connection or not.  
 
-To encrypt the connection, set this property to `Encrypt=true` and provide the server with 
-a valid certificate. The connection string can be provided to RavenDB via Studio or using the API.  
-
+To encrypt the connection include an `Encrypt=true` in your connection 
+string and provide the server you use with a valid certificate. You can 
+create a connection string using [code](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-sql-connection-string) 
+or via Studio.  
 ![SQL ETL task](images/breaking-changes_SQL-ETL-task.png "SQL ETL task")
 
 {PANEL/}
 
-{PANEL: Corax handling of complex fields in a static index is configurable}
+{PANEL: Corax handling of complex JSON objects in static indexes is configurable}
 
-RavenDB's [Corax](../../indexes/search-engine/corax) search engine's behavior while 
-handling [complex fields](../../indexes/search-engine/corax#handling-of-complex-json-objects) 
+The behavior of RavenDB's [Corax](../../indexes/search-engine/corax) search engine while 
+handling [complex JSON objects](../../indexes/search-engine/corax#handling-of-complex-json-objects) 
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
 configuration option.  
 (The [handling of auto indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
 remains unchanged.)  
 
-By default, `ComplexFieldIndexingBehavior` is set to **`Throw`** to instruct the search 
+By default, `ComplexFieldIndexingBehavior` is set to **`Throw`**, instructing the search 
 engine to throw a `NotSupportedInCoraxException` exception when it encounters a complex 
 field in a static index.  
-The exception is accompanied by this message:  
-**"The value of '`{fieldName}`' field is a complex object. Indexing it as a text 
-isn't supported. You should consider querying on individual fields of that object.**
+The exception includes this message: **The value of '`{fieldName}`' field is a complex object. 
+Indexing it as a text isn't supported. You should consider querying on individual fields of that object.**
 
-Alternatively, you can set `ComplexFieldIndexingBehavior` to **`Skip`** to disable the 
+If you prefer, you can set `ComplexFieldIndexingBehavior` to **`Skip`** to disable the 
 indexing of complex fields without throwing an exception or raising a notification.  
 
 * The configuration option will apply only to **new** static indexes, created after the release 
