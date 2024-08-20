@@ -7,28 +7,15 @@ In RavenDB `6.1.x`, they are either unavailable or their behavior is inconsisten
 with their behavior in previous versions.  
 
 * In this page:
-   * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes#consistency-in-null-handling)  
    * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/client-breaking-changes#counterbatchoperation-default-increment-delta-is-1)  
-   * [CmpXchg item can only be created with its index set to 0](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-its-index-set-to-0)  
+   * [CmpXchg item can only be created with an index of 0](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
    * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/client-breaking-changes#dynamic-linq-query-cannot-apply-.any-with-logical-and-(&&))  
    * [`LoadDocument` must be provided with a collection name string](../../migration/client-api/client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
+   * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes#consistency-in-null-handling)  
 
 {NOTE/}
 
 ---
-
-{PANEL: Consistency in `null` handling}
-
-`IAsyncDocumentSession.LoadAsync` and `IAsyncLazySessionsOperations.LoadAsync` now 
-do not throw an exception when they are passed `null`, becoming consistent with the 
-behavior of the majority of RavenDB's methods.  
-
-{CODE-BLOCK:csharp}
-// This will work without issues
-IAsyncDocumentSession.LoadAsync(null)
-{CODE-BLOCK/}
-
-{PANEL/}
 
 {PANEL: `CounterBatchOperation` default increment Delta is 1}
 
@@ -41,7 +28,7 @@ by a default `Delta` of `1`.
 
 {PANEL/}
 
-{PANEL: CmpXchg item can only be created with its index set to 0}
+{PANEL: CmpXchg item can only be created with an index of 0}
 
 Creating a [compare exchange item](../../client-api/operations/compare-exchange/put-compare-exchange-value) 
 using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
@@ -95,6 +82,19 @@ An attempt to update an existing index with a collection name expression rather
 than a string will fail but the failure will remain unnoticed and an exception 
 will not be thrown.
 {NOTE/}
+
+{PANEL/}
+
+{PANEL: Consistency in `null` handling}
+
+`IAsyncDocumentSession.LoadAsync` and `IAsyncLazySessionsOperations.LoadAsync` now 
+do not throw an exception when they are passed `null`, becoming consistent with the 
+behavior of the majority of RavenDB's methods.  
+
+{CODE-BLOCK:csharp}
+// This will work without issues
+IAsyncDocumentSession.LoadAsync(null)
+{CODE-BLOCK/}
 
 {PANEL/}
 

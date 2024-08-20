@@ -8,9 +8,9 @@ with their behavior in previous versions.
 
 * In this page:  
    * [Tracking operations using the Changes API now requires Node Tag](../../migration/server/server-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
-   * [Custom identity parts-separator is operative](../../migration/server/server-breaking-changes#custom-identity-parts-separator-is-operative)  
    * [MsSql connection string requires an Encrypt property](../../migration/server/server-breaking-changes#mssql-connection-string-requires-an-encrypt-property)  
    * [Corax handling of complex JSON objects in static indexes is configurable](../../migration/server/server-breaking-changes#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)  
+   * [Custom identity parts-separator is operative](../../migration/server/server-breaking-changes#custom-identity-parts-separator-is-operative)  
 
 {NOTE/}
 
@@ -34,24 +34,6 @@ Then, you can use `ForOperationId` or `ForAllOperations` to track a certain oper
 the operations executed by the selected node. Here's a simple usage example:  
 {CODE:csharp changes_ForOperationId@migration\BreakingChanges.cs /}  
  
-{PANEL/}
-
-{PANEL: Custom identity parts-separator is operative}
-
-An **identity parts separator** can now be defined using the server-wide client configuration, 
-to replace the default separator with a user-defined one.  
-
-The configuration option was available in Studio's **Client Configuration** for a while, but 
-up until now wasn't operative. Please be aware that changing this setting **will** change your 
-IDs now.  
-
-![Identity parts separator](images/breaking-changes_identity-parts-separator.png "Identity parts separator")
-
-After making this change, creating a new document with the identity prefix `|`, e.g. `user|`, 
-will apply your new separator.  
-
-![New separator](images/breaking-changes_new-separator.png "New separator")
-
 {PANEL/}
 
 {PANEL: MsSql connection string requires an Encrypt property}
@@ -104,6 +86,23 @@ indexing of complex fields without throwing an exception or raising a notificati
 
 {PANEL/}
 
+{PANEL: Custom identity parts-separator is operative}
+
+An **identity parts separator** can now be defined using the server-wide client configuration, 
+to replace the default separator with a user-defined one.  
+
+The configuration option was available in Studio's **Client Configuration** for a while, but 
+up until now wasn't operative. Please be aware that changing this setting **will** change your 
+IDs now.  
+
+![Identity parts separator](images/breaking-changes_identity-parts-separator.png "Identity parts separator")
+
+After making this change, creating a new document with the identity prefix `|`, e.g. `user|`, 
+will apply your new separator.  
+
+![New separator](images/breaking-changes_new-separator.png "New separator")
+
+{PANEL/}
 
 ## Related Articles
 
