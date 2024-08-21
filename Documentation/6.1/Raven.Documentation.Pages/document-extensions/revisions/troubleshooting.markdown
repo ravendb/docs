@@ -79,20 +79,20 @@ whose ID length exceeds this limit.
 * **New databases only**  
   Checking revisions ID length is enabled only for **new databases**.  
    * A database is regarded as **new**, and its revisions ID length **will** be checked, if 
-     its version is not defined in the database record or the version is **5.4.200** or newer.  
-   * Revisions ID length will **not** be checked for databases older than **5.4.200**.  
+     its version is not defined in the database record or the version is **5.4.203** or newer.  
+   * Revisions ID length will **not** be checked for databases older than **5.4.203**.  
 * **Imported databases**  
   Importing a database is always regarded as the creation of a new database.  
   An exception **will** therefore be thrown if the ID of an imported revision 
   exceeds 1,536 bytes, regardless of the imported revision's database version.  
 * **Restoring database from backup**  
    * Revisions ID length **will** be checked if the database version is not defined in its 
-     restored database record or if the version is **5.4.200** or newer.  
-   * Revision ID lengths will **not** be checked when restoring databases older than **5.4.200**.  
+     restored database record or if the version is **5.4.203** or newer.  
+   * Revision ID lengths will **not** be checked when restoring databases older than **5.4.203**.  
 * **Restoring database from a snapshot**  
   Revisions ID length will not be checked while restoring a snapshot, since snapshots are 
   restored as an image. If revision IDs longer than 1,536 bytes exist in the restored database, 
-  they are in it because the database is of an older version than **5.4.200** and doesn't perform 
+  they are in it because the database is of an older version than **5.4.203** and doesn't perform 
   this check.  
 * **Receiving a revision via replication**  
   The check is not performed when receiving a revision or a revision tombstone via replication.  
