@@ -33,10 +33,10 @@ whose ID length exceeds this limit.
      limit. When the destination database attempts to give such a revision an ID to store it by, 
      it will fail with a `ThrowRevisionKeyTooBig` exception.  
 * **What to do?**  
-   * Shorten revision **IDs** by shortening revision **change vectors**.  
+   * Revision **IDs** can be shortened by minimizing revision **change vectors**.  
    * To shorten revision change vectors, use Studio's **Unused Database IDs** view as shown below, 
      to register IDs of databases that are irrelevant to this server. IDs listed in this view will 
-     be omitted from the change vectors of imported revisions.  
+     be omitted from revision change vectors.  
 
            ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
 
@@ -58,8 +58,6 @@ whose ID length exceeds this limit.
 * **What to be aware of:**  
   When adding a database ID to the **Unused Database IDs** list via studio:  
    * **Do not** add IDs of databases that are currently in use.  
-     If, for example, your database imports data from another database using an import task, 
-     you should make sure that the ID of the other database is **not** removed.  
      The ID of a RavenDB database can be found in the Studio > **Stats** view.  
 
          ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
