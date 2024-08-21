@@ -11,12 +11,17 @@
   font-style: normal;
 }
 body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue","Ubuntu" !important;
+    font-family: Figtree,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji !important;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue","Ubuntu" !important;
+    font-family: Figtree,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji !important;
     font-weight: 700 !important;
 }
+
+code, code[class*="language-"], pre[class*="language-"] {
+    font-family: JetBrainsMono, 'JetBrains Mono', monospace;
+}
+
 .dev-controls {
   z-index: 1;
   display: flex;
@@ -206,6 +211,11 @@ table {
 .entry-content > * > h3:not([class*=font-size-]), .entry-content > h3:not([class*=font-size-]), .wp-bootstrap-blocks-container > * > h3:not([class*=font-size-]), .wp-bootstrap-blocks-container > h3:not([class*=font-size-]), .wp-bootstrap-blocks-row [class*=col-] > * > h3:not([class*=font-size-]), .wp-bootstrap-blocks-row [class*=col-] > h3:not([class*=font-size-]) {
     font-size: 1.5rem !important;
 }
+
+.docs-table-of-contents__collapsible-button {
+    font-weight: 400;
+}
+
 .docs-table-of-contents__collapsible-button:after {
     left: -0.35rem;
 }
@@ -222,4 +232,35 @@ table {
     color: #7e8c9e !important;
     opacity: .33;
     cursor: not-allowed;
+}
+
+.article-content .nav-tabs a.nav-link.active {
+    border: none;
+    color: #c8c5d6 !important;
+    font-weight: 400;
+}
+
+li.code-tab {
+    border-bottom: 3px solid transparent;
+}
+
+li.code-tab.active {
+    border-bottom: 3px solid #388ee9;
+}
+
+pre {
+    background-color: #0f1425 !important;
+}
+
+.related-articles h2, .related-articles h3 {
+    letter-spacing: 0;
+}
+
+.article-content h1 .glyphicon.glyphicon-link:before, .article-content h2 .glyphicon.glyphicon-link:before, .article-content h3 .glyphicon.glyphicon-link:before, .article-content h4 .glyphicon.glyphicon-link:before, .article-content h5 .glyphicon.glyphicon-link:before, .article-content h6 .glyphicon.glyphicon-link:before {
+    content: "\e9b3";
+}
+
+.docs strong, #articleContainer strong {
+    color: #dbd8e6 !important;
+    font-weight: 600 !important;
 }
