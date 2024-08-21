@@ -33,43 +33,42 @@ whose ID length exceeds this limit.
      limit. When the destination database attempts to give such a revision an ID to store it by, 
      it will fail with a `ThrowRevisionKeyTooBig` exception.  
 * **What to do?**  
-   * Shorten revision **IDs** by shortening revision **change vectors**.  
-   * To shorten revision change vectors, use Studio's **Unused Database IDs** view as shown below, 
-     to register IDs of databases that are irrelevant to this server. IDs listed in this view will 
-     be omitted from the change vectors of imported revisions.  
+   * Revision **IDs** can be shortened by minimizing revision **change vectors**.  
+   * To shorten revision change vectors, register IDs of databases that are irrelevant to this 
+     server via Studio's **Unused Database IDs** view, as shown below. IDs listed in this view 
+     will be omitted from revision change vectors.  
 
-       ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
+        ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
 
-       1. **Unused Database IDs**  
-          Click to open the **Unused Database IDs** view.  
-       2. **Database ID**  
-          The ID of this cluster node.  
-       3. **Change Vector**  
-          A list of IDs that may be added to the list.  
-          To add an ID to the unused IDs list, click the **Add to unused** button to its right.  
-       4. **Save**  
-          Click to save the current list of unused IDs.  
-       5. **Unused Database IDs**  
-          A. Click the bar to enter an ID manually, and add it to the list using the **Add ID** button.  
-          B. This is the list of unused database IDs. To remove an ID from the list, click the trash bin to its right.  
+        1. **Unused Database IDs**  
+           Click to open the **Unused Database IDs** view.  
+        2. **Database ID**  
+           The ID of this cluster node.  
+        3. **Change Vector**  
+           A list of IDs that may be added to the list.  
+           To add an ID to the unused IDs list, click the **Add to unused** button to its right.  
+        4. **Save**  
+           Click to save the current list of unused IDs.  
+        5. **Unused Database IDs**  
+           A. Click the bar to enter an ID manually, and add it to the list using the **Add ID** button.  
+           B. This is the list of unused database IDs. To remove an ID from the list, click the trash bin to its right.  
 
 * **What to be aware of:**  
   When adding a database ID to the **Unused Database IDs** list via studio:  
    * **Do not** add IDs of databases that are currently in use.  
-     If, for example, your database imports data from another database using an import task, 
-     you should make sure that the ID of the other database is **not** removed.  
      The ID of a RavenDB database can be found in the Studio > **Stats** view.  
      
-          ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
+         ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
 
    * If an external replication task is running:  
      **Do not** add the IDs of databases that are used by the destination database.  
      **Add** the unused IDs on the **destination** database first, to prevent conflicts.  
+
    * **Do not** use the IDs indicated by the database record `DatabaseTopologyIdBase64` and 
      `ClusterTransactionIdBase64` properties.  
      Find these IDs using the Studio > Settings > **Database Record** view.  
 
-          ![Database Record](images\revisions_database-record.png "Database Record")
+         ![Database Record](images\revisions_database-record.png "Database Record")
 
 ---
 
@@ -93,9 +92,8 @@ whose ID length exceeds this limit.
   restored as an image. If revision IDs longer than 1,536 bytes exist in the restored database, 
   they are in it because the database is of an older version than **5.4.200** and doesn't perform 
   this check.  
-* **Receiving a revision via regular replication**  
-  When a revision is received via regular (not external) replication, the check is **not** 
-  performed to prevent inconsistencies.  
+* **Receiving a revision via replication**  
+  The check is not performed when receiving a revision or a revision tombstone via replication.  
 
 {PANEL/}
 

@@ -34,26 +34,26 @@ whose ID length exceeds this limit.
      it will fail with a `ThrowRevisionKeyTooBig` exception.  
 * **What to do?**  
    * Revision **IDs** can be shortened by minimizing revision **change vectors**.  
-   * To shorten revision change vectors, use Studio's **Unused Database IDs** view as shown below, 
-     to register IDs of databases that are irrelevant to this server. IDs listed in this view will 
-     be omitted from revision change vectors.  
+   * To shorten revision change vectors, register IDs of databases that are irrelevant to this 
+     server via Studio's **Unused Database IDs** view, as shown below. IDs listed in this view 
+     will be omitted from revision change vectors.  
 
-           ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
+        ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
 
-           1. **Unused Database IDs**  
-              Click to open the **Unused Database IDs** view.  
-           2. **Save**  
-              Click to save the current list of unused IDs.  
-           3. **Used IDs**  
-              IDs of databases that are currently used by this database.  
-           4. **Enter database ID to add**  
-              Use this bar to manually enter an unused ID.  
-              Click the **Add ID** button to add the ID to the list.  
-           5. **List of unused IDs.**  
-              To remove an ID from the list, click the trash bin to its right.  
-           6. **IDs that may be added to the list**  
-              A. an ID that was already added to the list.  
-              B. an ID that hasn't been added to the list yet. Click it to add the ID to the list.  
+        1. **Unused Database IDs**  
+           Click to open the **Unused Database IDs** view.  
+        2. **Save**  
+           Click to save the current list of unused IDs.  
+        3. **Used IDs**  
+           IDs of databases that are currently used by this database.  
+        4. **Enter database ID to add**  
+           Use this bar to manually enter an unused ID.  
+           Click the **Add ID** button to add the ID to the list.  
+        5. **List of unused IDs.**  
+           To remove an ID from the list, click the trash bin to its right.  
+        6. **IDs that may be added to the list**  
+           A. an ID that was already added to the list.  
+           B. an ID that hasn't been added to the list yet. Click it to add the ID to the list.  
 
 * **What to be aware of:**  
   When adding a database ID to the **Unused Database IDs** list via studio:  
@@ -94,9 +94,8 @@ whose ID length exceeds this limit.
   restored as an image. If revision IDs longer than 1,536 bytes exist in the restored database, 
   they are in it because the database is of an older version than **5.4.200** and doesn't perform 
   this check.  
-* **Receiving a revision via regular replication**  
-  When a revision is received via regular (not external) replication, the check is **not** 
-  performed to prevent inconsistencies.  
+* **Receiving a revision via replication**  
+  The check is not performed when receiving a revision or a revision tombstone via replication.  
 
 {PANEL/}
 
