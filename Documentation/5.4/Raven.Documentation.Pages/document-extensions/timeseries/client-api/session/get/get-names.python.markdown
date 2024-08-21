@@ -8,6 +8,7 @@
 * In this page:   
   * [`get_time_series_for` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names#get_time_series_for-usage)
   * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names#syntax)
 
 {NOTE/}
 
@@ -32,6 +33,23 @@
 {PANEL: Example}
 
 {CODE:python timeseries_region_Retrieve-TimeSeries-Names@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}  
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE-BLOCK:python}
+def get_time_series_for(self, entity: object) -> List[str]:
+    ...
+{CODE-BLOCK/}
+ 
+| Parameter    | Type  | Description                                         |
+|--------------|-------|-----------------------------------------------------|
+| **entity** | `object` | The entity whose time series names you want to get |
+
+| Return value   |                                                                                                   |
+|----------------|---------------------------------------------------------------------------------------------------|
+| `List[str]` | A list of names of all the time series associated with the entity, sorted alphabetically by the name |
 
 {PANEL/}
 

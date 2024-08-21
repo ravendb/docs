@@ -14,6 +14,7 @@
       * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing#map-index---index-single-time-series-from-single-collection)
       * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing#multi-map-index---index-time-series-from-several-collections)
       * [Map-Reduce index](../../document-extensions/timeseries/indexing#map-reduce-index)
+  * [Syntax](../../document-extensions/timeseries/indexing#syntax)
 
 {NOTE/}
 
@@ -140,6 +141,131 @@ select distinct CompanyID
 {CODE-TABS}
 {CODE-TAB:python:Map_Reduce_index index_7@DocumentExtensions\TimeSeries\Indexing.py /}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+---
+
+### `AbstractJavaScriptTimeSeriesIndexCreationTask`
+ 
+{CODE-BLOCK:python}
+class AbstractJavaScriptTimeSeriesIndexCreationTask(AbstractIndexCreationTaskBase[TimeSeriesIndexDefinition]):
+    def __init__(
+        self,
+        conventions: DocumentConventions = None,
+        priority: IndexPriority = None,
+        lock_mode: IndexLockMode = None,
+        deployment_mode: IndexDeploymentMode = None,
+        state: IndexState = None,
+    ):
+        super().__init__(conventions, priority, lock_mode, deployment_mode, state)
+        self._definition = TimeSeriesIndexDefinition()
+
+    @property
+    def maps(self) -> Set[str]:
+        return self._definition.maps
+
+    @maps.setter
+    def maps(self, maps: Set[str]):
+        self._definition.maps = maps
+
+    @property
+    def reduce(self) -> str:
+        return self._definition.reduce
+
+    @reduce.setter
+    def reduce(self, reduce: str):
+        self._definition.reduce = reduce
+{CODE-BLOCK/}
+
+Learn more about JavaScript indexes in [JavaScript Indexes](../../indexes/javascript-indexes).
+
+---
+
+### `TimeSeriesIndexDefinition`
+
+{CODE-BLOCK:python}
+class TimeSeriesIndexDefinition(IndexDefinition):
+    @property
+    def source_type(self) -> IndexSourceType:
+        return IndexSourceType.TIME_SERIES
+{CODE-BLOCK/}
+
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular 
+[`IndexDefinition`](../../indexes/creating-and-deploying#using-maintenance-operations) 
+class from which it inherits, it is recommended to use `TimeSeriesIndexDefinition` when 
+creating a time series index definition in case additional functionality is added in 
+future versions of RavenDB.
+
+---
+
+### `TimeSeriesIndexDefinitionBuilder`
+
+{CODE-BLOCK:python}
+class TimeSeriesIndexDefinitionBuilder(AbstractIndexDefinitionBuilder[TimeSeriesIndexDefinition]):
+    def __init__(self, index_name: Optional[str] = None):
+        super().__init__(index_name)
+        self.map: Optional[str] = None
+{CODE-BLOCK/}
+
+---
+
+### `TimeSeriesSegment`
+
+* Segment properties include the entries data and aggregated values that RavenDB automatically updates in the segment's header.
+
+* The following segment properties can be indexed:
+
+    {CODE-BLOCK:python}
+public sealed class TimeSeriesSegment
+{
+    // The ID of the document this time series belongs to
+    public string DocumentId { get; set; }
+ 
+    // The name of the time series this segment belongs to
+    public string Name { get; set; }
+  
+    // The smallest values from all entries in the segment
+    // The first array item is the Min of all first values, etc.
+    public double[] Min { get; set; }
+
+    // The largest values from all entries in the segment
+    // The first array item is the Max of all first values, etc.
+    public double[] Max { get; set; }
+  
+    // The sum of all values from all entries in the segment 
+    // The first array item is the Sum of all first values, etc.
+    public double[] Sum { get; set; }
+  
+    // The number of entries in the segment
+    public int Count { get; set; }
+  
+    // The timestamp of the first entry in the segment
+    public DateTime Start { get; set; }
+  
+    // The timestamp of the last entry in the segment
+    public DateTime End { get; set; }
+  
+    // The segment's entries themselves
+    public TimeSeriesEntry[] Entries { get; set; }
+}
+    {CODE-BLOCK/}
+
+* These are the properties of a `TimeSeriesEntry` which can be indexed:
+
+    {CODE-BLOCK:python}
+public class TimeSeriesEntry
+{
+    public DateTime Timestamp;
+    public string Tag;
+    public double[] Values;
+
+    // This is exactly equivalent to Values[0]
+    public double Value;
+}
+    {CODE-BLOCK/}
 
 {PANEL/}
 
