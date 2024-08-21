@@ -81,7 +81,7 @@ The required elements of an External Replication task are:
   * **ConnectionStringName**  
     The connection string name.  
   * **Name**  
-    The target database name.
+    The External Replication task name.
 
 {CODE ExternalReplication@Server\OngoingTasks\ExternalReplicationSamples.cs /}
 
