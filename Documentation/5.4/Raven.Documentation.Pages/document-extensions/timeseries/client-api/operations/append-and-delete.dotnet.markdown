@@ -48,37 +48,29 @@
 
 {PANEL: Examples}
 
-{NOTE: }
-
-#### Append multiple entries
+#### Append multiple entries:
 
 In this example, we append four entries to a time series.
 
 {CODE timeseries_region_Append-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-#### Delete multiple entries
+#### Delete multiple entries:
 
 In this example, we delete a range of two entries from a time series.  
 
 {CODE timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-#### Append & Delete entries in the same batch
+#### Append & Delete entries in the same batch:
 
 * In this example, we append and delete entries in the same batch operation.
 
 * Note: the Delete actions are executed **before** all Append actions.
 
 {CODE timeseries_region-Append-and-Delete-TimeSeriesBatchOperation@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
 
 {PANEL/}
 

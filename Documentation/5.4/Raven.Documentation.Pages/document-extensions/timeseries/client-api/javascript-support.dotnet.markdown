@@ -97,22 +97,14 @@ Values are returned in an array of time series entries, i.e. -
 
 {PANEL: Examples}
 
-{NOTE: }
+* This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
+  The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+  {CODE TS_region-Session_Patch-Append-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
 
-This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
-The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+* This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
+  The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
+  {CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
 
-{CODE TS_region-Session_Patch-Append-TS-Entries@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-{NOTE/}
-{NOTE: }
-
-This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
-The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
-  
-{CODE TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}  
-
-{NOTE/}
 {PANEL/}
 
 ## Related articles

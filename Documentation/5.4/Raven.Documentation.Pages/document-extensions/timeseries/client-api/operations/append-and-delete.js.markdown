@@ -48,29 +48,23 @@
 
 {PANEL: Examples}
 
-{NOTE: }
-
-#### Append multiple entries
+#### Append multiple entries:
 
 In this example, we append four entries to a time series.
 
 {CODE:nodejs operation_1@documentExtensions\timeSeries\client-api\appendAndDeleteOperations.js /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-#### Delete multiple entries
+#### Delete multiple entries:
 
 In this example, we delete a range of two entries from a time series.  
 
 {CODE:nodejs operation_2@documentExtensions\timeSeries\client-api\appendAndDeleteOperations.js /}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-#### Append & delete entries in the same batch
+#### Append & delete entries in the same batch:
 
 * In this example, we append and delete entries in the same batch operation.
 
@@ -78,7 +72,6 @@ In this example, we delete a range of two entries from a time series.
 
 {CODE:nodejs operation_3@documentExtensions\timeSeries\client-api\appendAndDeleteOperations.js /}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Syntax}

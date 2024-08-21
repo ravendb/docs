@@ -71,7 +71,7 @@ select timeseries (
     {CODE-TABS/}
 
 * **Index queries**:
-    * Static time series indexes can be created by clients (or using the Studio).  
+    * Static time series indexes can be created by clients (or using Studio).  
       To learn how to create such indexes, see [indexing time series](document-extensions/timeseries/indexing).
     * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes).
 
@@ -236,7 +236,7 @@ select
 
 {PANEL: Use Studio to experiment}
 
-You can use the [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
+You can use [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
 
 !["Time Series Query in Studio"](images/time-series-query.png "Time Series Query in Studio")
 

@@ -42,7 +42,7 @@ This results in a much more compact time series that still contains useful infor
 
 #### Rollup policies:
 
-Rollup time series are created automatically according to rollup policies that can be defined from the Studio or from the client code.  
+Rollup time series are created automatically according to rollup policies that can be defined from the tudio or client code.  
 
 * A rollup policy applies to all time series of every document in the given collection. 
 
@@ -85,20 +85,13 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 {PANEL: Examples}
 
-{NOTE: }
-
-#### Create time series policies
-
----
+#### Create time series policies:
 
 {CODE:nodejs rollup_1@documentExtensions\timeSeries\rollupAndRetention.js /}
 
-{NOTE/}
-{NOTE: }
-
-#### Retrieve rollup data
-
 ---
+
+#### Retrieve rollup data:
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
@@ -106,7 +99,6 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 {CODE:nodejs rollup_2@documentExtensions\timeSeries\rollupAndRetention.js /}
 
-{NOTE/}
 {PANEL/}
 
 {PANEL: Syntax}

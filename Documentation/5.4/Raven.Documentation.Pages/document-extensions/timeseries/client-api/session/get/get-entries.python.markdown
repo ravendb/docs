@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Use `TimeSeriesFor.Get` to retrieve a range of entries from a **single** time series.  
+* Use `time_series_for.get` to retrieve a range of entries from a **single** time series.  
   To retrieve a range of entries from **multiple** series, 
   use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) operation.
 
@@ -16,7 +16,7 @@
   you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
   Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
 
-* Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
+* Calling `time_series_for.get` will result in a trip to the server unless the series' parent document was loaded  
   (or queried for) with the time series included beforehand.  
   Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview).
 
@@ -36,12 +36,13 @@
 {PANEL: `Get` usage }
 
 * Open a session.  
-* Create an instance of `TimeSeriesFor` and pass it the following:
+* Create an instance of `time_series_for` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
-      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../../client-api/session/loading-entities#load).
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query) 
+      or from [session.load](../../../../../client-api/session/loading-entities#load).
     * Specify the time series name.
-* Call `TimeSeriesFor.Get`.  
+* Call `time_series_for.get`.  
 
 {PANEL/}
 
@@ -52,7 +53,7 @@
 In this example, we retrieve all entries of the "Heartrate" time series.  
 The ID of the parent document is explicitly specified.  
 
-{CODE timeseries_region_Get-All-Entries-Using-Document-ID@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python timeseries_region_Get-All-Entries-Using-Document-ID@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
 ---
 
@@ -60,7 +61,7 @@ The ID of the parent document is explicitly specified.
 
 In this example, we query for a document and get its "Heartrate" time series data.
 
-{CODE timeseries_region_Pass-TimeSeriesFor-Get-Query-Results@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python timeseries_region_Pass-TimeSeriesFor-Get-Query-Results@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
 ---
 
@@ -69,50 +70,47 @@ In this example, we query for a document and get its "Heartrate" time series dat
 * Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
   This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
  
-* Since each time series entry contains multiple StockPrice values,  
-  we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values) 
-  to make the code easier to read.  
+* Since each time series entry contains multiple StockPrice values, 
+  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values) 
+  time series values to make the code easier to read.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Native timeseries_region_Get-NO-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{CODE-TAB:csharp:Named timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-{CODE-TABS/}
+{CODE:python timeseries_region_Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
 {PANEL/}
 
 {PANEL: Include parent and tagged documents}
 
-* When retrieving time series entries using `TimeSeriesFor.Get`,  
-  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../document-extensions/timeseries/overview#tags).  
+* When retrieving time series entries using `time_series_for.get`,  
+  you can include the series parent document and/or documents referred to by the entries 
+  [tags](../../../../../document-extensions/timeseries/overview#tags).  
 
 * The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
 
 * Use the following syntax to include the parent or tagged documents:
 
-{CODE IncludeParentAndTaggedDocuments@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python IncludeParentAndTaggedDocuments@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE TimeSeriesFor-Get-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python TimeSeriesFor-Get-definition@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
-{CODE TimeSeriesFor-Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
+{CODE:python TimeSeriesFor-Get-Named-Values@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
-| Parameter    | Type        | Description                                                                                                                                      |
-|--------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **from**     | `DateTime?` | Get the range of time series entries starting from this timestamp (inclusive).<br/>Default: `DateTime.MinValue`                                  |
-| **to**       | `DateTime?` | Get the range of time series entries ending at this timestamp (inclusive).<br/>Default: `DateTime.MaxValue`                                      |
-| **start**    | `int`       | Paging first entry.<br>E.g. 50 means the first page would start at the 50th time series entry. <br> Default: 0, for the first time-series entry. |
-| **pageSize** | `int`       | Paging page-size.<br>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br>Default: `int.MaxValue`, for all time series entries.         |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **from_date** (Optional) | `datetime` | Get the range of time series entries starting from this timestamp (inclusive).<br/>Default: `datetime.min` |
+| **to_date** (Optional) | `datetime` | Get the range of time series entries ending at this timestamp (inclusive).<br/>Default: `datetime.max` |
+| **start** | `int` | Paging first entry.<br>E.g. 50 means the first page would start at the 50th time series entry. <br> Default: `0`, for the first time-series entry. |
+| **page_size** | `int` | Paging page-size.<br>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br>Default: `int_max`, for all time series entries. |
 
-**Return Values**
+**Return Values (Optional)**
  
-* **`TimeSeriesEntry[]`** - an array of time series entry classes.
+* `List[TypedTimeSeriesEntry[_T_TS_Values_Bindable]]` - an array of time series entry classes.
+  {CODE:python TimeSeriesEntry-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.py /}
 
-{CODE TimeSeriesEntry-Definition@DocumentExtensions\TimeSeries\TimeSeriesTests.cs /}
-
-* **`TimeSeriesEntry<TValues>[]`** - Time series values that can be referred to [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values).
+* `TimeSeriesEntry<TValues>[]` - Time series values that can be referred to by name.  
 
 {PANEL/}
 

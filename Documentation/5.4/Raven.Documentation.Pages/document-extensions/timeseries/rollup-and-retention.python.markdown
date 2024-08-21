@@ -31,12 +31,12 @@ A rollup is a time series that summarizes the data from another time series,
 with each rollup entry representing a specific time frame in the original time series.  
 Each rollup entry contains 6 values that aggregate the data from all the entries in the original time frame:  
 
-* *First* - the value of the first entry in the frame.  
-* *Last* - the value of the last entry.  
-* *Min* - the smallest value.  
-* *Max* - the largest value.  
-* *Sum* - the sum of all the values in the frame.  
-* *Count* - the total number of entries in the frame.  
+* `First` - the value of the first entry in the frame.  
+* `Last` - the value of the last entry.  
+* `Min` - the smallest value.  
+* `Max` - the largest value.  
+* `Sum` - the sum of all the values in the frame.  
+* `Count` - the total number of entries in the frame.  
 
 This results in a much more compact time series that still contains useful information about the original time series (also called "raw" time series).
 
@@ -87,7 +87,7 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 #### Create time series policies:
 
-{CODE rollup_and_retention_0@DocumentExtensions\TimeSeries\RollupAndRetention.cs /}
+{CODE:python rollup_and_retention_0@DocumentExtensions\TimeSeries\RollupAndRetention.py /}
 
 ---
 
@@ -95,9 +95,9 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `TimeSeriesFor.Get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
+* Learn more about using `time_series_for.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
 
-{CODE rollup_and_retention_1@DocumentExtensions\TimeSeries\RollupAndRetention.cs /}
+{CODE:python rollup_and_retention_1@DocumentExtensions\TimeSeries\RollupAndRetention.py /}
 
 {PANEL/}
 
@@ -105,7 +105,7 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 ### The time series policies
 
-* Raw policy:  
+* `raw_policy`  
   * Used to define the retention time of the raw time series. 
   * Only one such policy per collection can be defined.
   * Does not perform aggregation.
@@ -114,110 +114,148 @@ Because time series entries are limited to 32 values, rollups are limited to the
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-{CODE-BLOCK: csharp}
-public class RawTimeSeriesPolicy : TimeSeriesPolicy
-{
-    public TimeValue RetentionTime;
-}
+{CODE-BLOCK: python}
+class RawTimeSeriesPolicy(TimeSeriesPolicy):    
+    def __init__(self, retention_time: TimeValue = TimeValue.MAX_VALUE()):
+        ...
 
-public class TimeSeriesPolicy
-{
-    public string Name;
-    public TimeValue RetentionTime; { get; protected set; }
-    public TimeValue AggregationTime; { get; private set; }
-}
+class TimeSeriesPolicy:
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        aggregation_time: Optional[TimeValue] = None,
+        retention_time: TimeValue = TimeValue.MAX_VALUE(),
+    ):
+        ...
 {CODE-BLOCK/}
 
-| Property             | Description                                                                                                                                                                                                    |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Name**             | This string is used to create the name of the rollup time series.<br/>`Name` is added to the raw time series name - with `@` as a separator,<br>e.g.: `<name of raw time series>@<name of time series policy>` |
-| **RetentionTime**    | Time series entries older than this time span (see `TimeValue` below) are automatically deleted.                                                                                                               |
-| **AggregationTime**  | The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series.                             |
+| Property             | Type | Description |
+|----------------------|------|-------------|
+| **name** (Optional)  | `str` | This string is used to create the name of the rollup time series.<br/>`name` is added to the raw time series name - with `@` as a separator,<br>e.g.: `<name of raw time series>@<name of time series policy>` |
+| **retention_time** | `TimeValue` | Time series entries older than this time value (see `TimeValue` below) are automatically deleted. |
+| **aggregation_time** (Optional) | `TimeValue` |The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series. |
 
-{CODE-BLOCK: csharp}
-public struct TimeValue
-{
-    public static TimeValue FromSeconds(int seconds);
-    public static TimeValue FromMinutes(int minutes);
-    public static TimeValue FromHours(int hours);
-    public static TimeValue FromDays(int days);
-    public static TimeValue FromMonths(int months);
-    public static TimeValue FromYears(int years);
-}
+{CODE-BLOCK: python}
+class TimeValue:
+    def __init__(self, value: int, unit: TimeValueUnit):
+        self.value = value
+        self.unit = unit
+
+   @classmethod
+   def of_seconds(cls, seconds: int) -> TimeValue:
+       return cls(seconds, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_minutes(cls, minutes: int) -> TimeValue:
+       return cls(minutes * 60, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_hours(cls, hours: int) -> TimeValue:
+       return cls(hours * 3600, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_days(cls, days: int) -> TimeValue:
+       return cls(days * cls.SECONDS_PER_DAY, TimeValueUnit.SECOND)
+
+   @classmethod
+   def of_months(cls, months: int) -> TimeValue:
+       return cls(months, TimeValueUnit.MONTH)
+
+   @classmethod
+   def of_years(cls, years: int) -> TimeValue:
+       return cls(12 * years, TimeValueUnit.MONTH)
 {CODE-BLOCK/}
 
 Each of the above `TimeValue` methods returns a `TimeValue` object representing a whole number of the specified time units. 
 These methods are used to define the aggregation and retention spans om time series policies.  
 
-{INFO: }
-The main reason we use `TimeValue` rather than something like `TimeSpan` is that `TimeSpan` doesn't have a notion of 'months' 
-because a calendar month is not a standard unit of time (as it can range from 28 to 31 days).  
-`TimeValue` enables you to define retention and aggregation spans specifically tailored to calendar months.
-{INFO/}
-
 ---
 
 ### The time series configuration object
 
-{CODE-BLOCK: csharp}
-public class TimeSeriesConfiguration
-{
-    public Dictionary<string, TimeSeriesCollectionConfiguration> Collections;
-}
+{CODE-BLOCK: python}
+class TimeSeriesConfiguration:
+    def __init__(self):
+        self.collections: Dict[str, TimeSeriesCollectionConfiguration] = {}
+        self.policy_check_frequency: Optional[datetime.timedelta] = None
+        self.named_values: Optional[Dict[str, Dict[str, List[str]]]] = None
 
-public class TimeSeriesCollectionConfiguration
-{
-    public bool Disabled;
-    public List<TimeSeriesPolicy> Policies;
-    public RawTimeSeriesPolicy RawPolicy;
-}
+class TimeSeriesCollectionConfiguration:
+    def __init__(
+        self,
+        disabled: Optional[bool] = False,
+        policies: Optional[List[TimeSeriesPolicy]] = None,
+        raw_policy: Optional[RawTimeSeriesPolicy] = RawTimeSeriesPolicy.DEFAULT_POLICY(),
+    ):
+        self.disabled = disabled
+        self.policies = policies
+        self.raw_policy = raw_policy
 {CODE-BLOCK/}
 
-| Property        | Description                                                                                                               |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------|
-| **Collections** | Populate this `Dictionary` with the collection names and their corresponding `TimeSeriesCollectionConfiguration` objects. |
-| **Disabled**    | If set to `true`, rollup processes will stop, and time series data will not be deleted by retention policies.             |
-| **Policies**    | Populate this `List` with your rollup policies.                                                                           |
-| **RawPolicy**   | The `RawTimeSeriesPolicy`, the retention policy for the raw time series.                                                  |
+| Property        | Type | Description |
+|-----------------|------|-------------|
+| **collections** | `Dict[str, TimeSeriesCollectionConfiguration]` | Populate this `Dictionary` with the collection names and their corresponding `TimeSeriesCollectionConfiguration` objects. |
+| **disabled** (Optional) | `bool` | If set to `true`, rollup processes will stop, and time series data will not be deleted by retention policies. |
+| **policies** (Optional) | `List[TimeSeriesPolicy]` | Populate this `List` with your rollup policies. |
+| **raw_policy** (Optional) | `RawTimeSeriesPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series. |
 
 ---
 
 ### The time series configuration operation
 
-{CODE-BLOCK: csharp}
-public ConfigureTimeSeriesOperation(TimeSeriesConfiguration configuration);
+{CODE-BLOCK: python}
+class ConfigureTimeSeriesOperation(MaintenanceOperation[ConfigureTimeSeriesOperationResult])
 {CODE-BLOCK/}
 
 Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
 
 ---
 
-### Casting time series entries
+### Time series entries
 
 Time series entries are of one of the following classes:  
 
-{CODE-BLOCK: csharp}
-public class TimeSeriesEntry {   }
-public class TimeSeriesEntry<T> : TimeSeriesEntry {   }
-public class TimeSeriesRollupEntry<TValues> : TimeSeriesEntry {   }
+{CODE-BLOCK: python}
+class TimeSeriesEntry:
+  def __init__(
+   self, timestamp: datetime.datetime = None, tag: str = None, values: List[int] = None, rollup: bool = None
+  ):
+   self.timestamp = timestamp
+   self.tag = tag
+   self.values = values
+   self.rollup = rollup
+
+class TypedTimeSeriesEntry(Generic[_T_TSBindable]):
+  def __init__(
+   self,
+   timestamp: datetime.datetime = None,
+   tag: str = None,
+   values: List[int] = None,
+   is_rollup: bool = None,
+   value: _T_TSBindable = None,
+  ):
+   self.timestamp = timestamp
+   self.tag = tag
+   self.values = values
+   self.is_rollup = is_rollup
+   self.value = value
+
+
+class TypedTimeSeriesRollupEntry(Generic[_T_Values]):
+  def __init__(self, object_type: Type[_T_Values], timestamp: datetime.datetime):
+   self._object_type = object_type
+   self.tag: Optional[str] = None
+   self.rollup = True
+   self.timestamp = timestamp
+
+   self._first: Optional[_T_Values] = None
+   self._last: Optional[_T_Values] = None
+   self._max: Optional[_T_Values] = None
+   self._min: Optional[_T_Values] = None
+   self._sum: Optional[_T_Values] = None
+   self._count: Optional[_T_Values] = None
+   self._average: Optional[_T_Values] = None
 {CODE-BLOCK/}
-
-If you have an existing rollup entry of type `TimeSeriesEntry`,  
-you can cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.  
-
-{CODE-BLOCK: csharp}
-public static TimeSeriesRollupEntry<T> AsRollupEntry<T>(this TimeSeriesEntry<T> entry);
-{CODE-BLOCK/}
-
-You can cast a `TimeSeriesRollupEntry` to a `TimeSeriesEntry` directly.  
-Its values will consist of all the `First` values of the rollup entry.  
-
-{CODE-BLOCK: csharp}
-var rollupEntry = new TimeSeriesRollupEntry<int>(new DateTime(2020,1,1));
-TimeSeriesEntry<int> TSEntry = (TimeSeriesEntry<int>)rollupEntry;
-{CODE-BLOCK/}
-
-Read more about time series with generic types [here](../../document-extensions/timeseries/client-api/named-time-series-values).
 
 {PANEL/}
 

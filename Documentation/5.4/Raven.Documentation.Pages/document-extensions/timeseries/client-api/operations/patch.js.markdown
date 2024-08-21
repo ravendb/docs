@@ -50,30 +50,15 @@
 
 ### Examples
 
-{NOTE: }
+* In this example, we **append** a single entry to time series "HeartRates" on the specified document.
+  {CODE:nodejs patch_1@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
-In this example, we **append** a single entry to time series "HeartRates" on the specified document.
-  
-{CODE:nodejs patch_1@documentExtensions\timeSeries\client-api\patchOperations.js /}
+* In this example, we **append** 100 entries to time series "HeartRates" on the specified document.  
+  Timestamps and values are drawn from an array and other arguments are provided in the "values" property.  
+  {CODE:nodejs patch_2@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **append** 100 entries to time series "HeartRates" on the specified document.  
-Timestamps and values are drawn from an array and other arguments are provided in the "values" property.  
- 
-{CODE:nodejs patch_2@documentExtensions\timeSeries\client-api\patchOperations.js /}
-
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **delete** a range of 50 entries from time series "HeartRates" on the specified document.  
-
-{CODE:nodejs patch_3@documentExtensions\timeSeries\client-api\patchOperations.js /}
-
-{NOTE/}
+* In this example, we **delete** a range of 50 entries from time series "HeartRates" on the specified document.  
+  {CODE:nodejs patch_3@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
 ---
 
@@ -116,35 +101,18 @@ In this example, we **delete** a range of 50 entries from time series "HeartRate
 
 ### Examples
 
-{NOTE: }
+* In this example, we **append** an entry to time series "HeartRates" on ALL documents in the "Users" collection.
+  {CODE:nodejs patch_4@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
-In this example, we **append** an entry to time series "HeartRates" on ALL documents in the "Users" collection.
+* In this example, we **delete** the "HeartRates" time series from documents that match the query criteria.  
+  {CODE:nodejs patch_5@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
-{CODE:nodejs patch_4@documentExtensions\timeSeries\client-api\patchOperations.js /}
-
-{NOTE/}
-
-{NOTE: }
-
-In this example, we **delete** the "HeartRates" time series from documents that match the query criteria.  
-
-{CODE:nodejs patch_5@documentExtensions\timeSeries\client-api\patchOperations.js /}
-
-{NOTE/}
-
-{NOTE: }
-
-* In this example, for each document in the "Users" collection, we patch a document field with data retrieved from its time series entries.
-  The document's time series data itself is Not patched.
-
-* The document field "numberOfUniqueTagsInTS" will be updated with the number of unique tags in the user's "HeartRates" time series.
-
-* To do this, we use the JavaScript [get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3) method to get all the time series entries for each document  
+* In this example, for each document in the "Users" collection, we patch a document field with data retrieved from its time series entries.  
+  The document's time series data itself is Not patched.  
+  The document `numberOfUniqueTagsInTS` field will be updated with the number of unique tags in the user's "HeartRates" time series.  
+  To do this, we use the JavaScript [get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3) method to get all the time series entries for each document  
   and extract each entry's tag.  
-  
-{CODE:nodejs patch_6@documentExtensions\timeSeries\client-api\patchOperations.js /}
-
-{NOTE/}
+  {CODE:nodejs patch_6@documentExtensions\timeSeries\client-api\patchOperations.js /}
 
 ---
 

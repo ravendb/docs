@@ -12,8 +12,6 @@
   * [Ways to create a time series index](../../document-extensions/timeseries/indexing#ways-to-create-a-time-series-index)
   * [Examples of time series indexes](../../document-extensions/timeseries/indexing#examples-of-time-series-indexes)
       * [Map index - index single time series from single collection](../../document-extensions/timeseries/indexing#map-index---index-single-time-series-from-single-collection)
-      * [Map index - index all time series from single collection](../../document-extensions/timeseries/indexing#map-index---index-all-time-series-from-single-collection)
-      * [Map index - index all time series from all collections](../../document-extensions/timeseries/indexing#map-index---index-all-time-series-from-all-collections)
       * [Multi-Map index - index time series from several collections](../../document-extensions/timeseries/indexing#multi-map-index---index-time-series-from-several-collections)
       * [Map-Reduce index](../../document-extensions/timeseries/indexing#map-reduce-index)
   * [Syntax](../../document-extensions/timeseries/indexing#syntax)
@@ -38,7 +36,7 @@
 
 * Time series index:
 
-    * Time series indexes process **[segments](../../document-extensions/timeseries/design#segmentation)** that contain time series entries.  
+    * Time series indexes process [segments](../../document-extensions/timeseries/design#segmentation) that contain time series entries.  
       The entries are indexed through the segment they are stored in, for example, using a LINQ syntax that resembles this one:
 
       {CODE-BLOCK:sql}
@@ -51,7 +49,7 @@ from entry in segment
         * Values & timestamp of a time series entry
         * The entry tag
         * Content from a document referenced by the tag
-        * Properties of the containing segment (see **[`TimeSeriesSegment`](../../document-extensions/timeseries/indexing#section-5)**)
+        * Properties of the containing segment
 
 * Document index:
 
@@ -72,7 +70,7 @@ from employee in employees
   (unless results are [projected](../../document-extensions/timeseries/querying/using-indexes#project-results)). The documents themselves are not returned.
 
 * Document index:  
-  The resulting objects are the document entities (unless results are [projected](../../indexes/querying/projections)).
+  The resulting objects are the document entities (unless results are projected).
 
 {PANEL/}
 
@@ -81,16 +79,16 @@ from employee in employees
 There are two main ways to create a time series index:
 
 1. Create a class that inherits from one of the following abstract index creation task classes:
-    * [`AbstractTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section)
-      for [map](../../indexes/map-indexes) and [map-reduce](../../indexes/map-reduce-indexes) time series indexes.
-    * [`AbstractMultiMapTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section-1)
-      for [multi-map](../../indexes/multi-map-indexes) time series indexes.
-    * [`AbstractJavaScriptTimeSeriesIndexCreationTask`](../../document-extensions/timeseries/indexing#section-2)
-      for static [javascript indexes](../../indexes/javascript-indexes).
+    * `AbstractTimeSeriesIndexCreationTask`  
+      for [map](../../indexes/map-indexes) and [map-reduce](../../indexes/map-reduce-indexes) time series indexes.  
+    * `AbstractMultiMapTimeSeriesIndexCreationTask`  
+      for [multi-map](../../indexes/multi-map-indexes) time series indexes.  
+    * `AbstractJavaScriptTimeSeriesIndexCreationTask`  
+      for static [javascript indexes](../../indexes/javascript-indexes).  
 
 2. Deploy a time series index definition via [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes):
-   * Create a [`TimeSeriesIndexDefinition`](../../document-extensions/timeseries/indexing#section-3) directly.  
-   * Create a strongly typed index definition using [`TimeSeriesIndexDefinitionBuilder`](../../document-extensions/timeseries/indexing#section-4).  
+   * Create a `TimeSeriesIndexDefinition` directly.  
+   * Create a strongly typed index definition using `TimeSeriesIndexDefinitionBuilder`.  
 
 {PANEL/}
 
@@ -106,22 +104,21 @@ There are two main ways to create a time series index:
 * Each tab below presents one of the different [ways](../../document-extensions/timeseries/indexing#ways-to-create-a-time-series-index) the index can be defined.
 
     {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_1@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:NonTyped_index index_2@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:JS_index index_3@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:IndexDefinition index_definition_1@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TAB:csharp:IndexDefinition_builder index_definition_2@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:python:Map_index index_1@DocumentExtensions\TimeSeries\Indexing.py /}
+{CODE-TAB:python:JS_index index_3@DocumentExtensions\TimeSeries\Indexing.py /}
+{CODE-TAB:python:IndexDefinition index_definition_1@DocumentExtensions\TimeSeries\Indexing.py /}
+{CODE-TAB:python:IndexDefinition_builder index_definition_2@DocumentExtensions\TimeSeries\Indexing.py /}
     {CODE-TABS/}
 
 * Querying this index, you can retrieve the indexed time series data while filtering by any of the index-fields.
  
     {CODE-TABS}
-{CODE-TAB:csharp:Query_example_1 query_1@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:python:Query_example_1 query_1@DocumentExtensions\TimeSeries\Indexing.py /}
 {CODE-TAB-BLOCK:sql:RQL_1}
 from index "StockPriceTimeSeriesFromCompanyCollection"
 where "CompanyID" == "Comapnies/91-A"
 {CODE-TAB-BLOCK/}
-{CODE-TAB:csharp:Query_example_2 query_2@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:python:Query_example_2 query_2@DocumentExtensions\TimeSeries\Indexing.py /}
 {CODE-TAB-BLOCK:sql:RQL_2}
 from index "StockPriceTimeSeriesFromCompanyCollection"
 where "TradeVolume" > 150_000_000
@@ -131,26 +128,10 @@ select distinct CompanyID
 
 ---
 
-#### Map index - index all time series from single collection:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Map_index index_4@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TABS/}
-
----
-
-#### Map index - index all time series from all collections:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Map_index index_5@DocumentExtensions\TimeSeries\Indexing.cs /}
-{CODE-TABS/}
-
----
-
 #### Multi-Map index - index time series from several collections:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Multi_Map_index index_6@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:python:Multi_Map_index index_6@DocumentExtensions\TimeSeries\Indexing.py /}
 {CODE-TABS/}
 
 ---
@@ -158,7 +139,7 @@ select distinct CompanyID
 #### Map-Reduce index:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_Reduce_index index_7@DocumentExtensions\TimeSeries\Indexing.cs /}
+{CODE-TAB:python:Map_Reduce_index index_7@DocumentExtensions\TimeSeries\Indexing.py /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -167,66 +148,36 @@ select distinct CompanyID
 
 ---
 
-### `AbstractTimeSeriesIndexCreationTask`
-
-{CODE-BLOCK: csharp}
-// To define a Map index inherit from:
-// ===================================
-public abstract class AbstractTimeSeriesIndexCreationTask<TDocument> { }
-// Time series that belong to documents of the specified `TDocument` type will be indexed. 
-
-// To define a Map-Reduce index inherit from:
-// ==========================================
-public abstract class AbstractTimeSeriesIndexCreationTask<TDocument, TReduceResult> { }
-// Specify both the document type and the reduce type
-
-// Methods available in AbstractTimeSeriesIndexCreationTask class:
-// ===============================================================
-
-// Set a map function for the specified time series
-protected void AddMap(string timeSeries,
-    Expression<Func<IEnumerable<TimeSeriesSegment>, IEnumerable>> map);
-
-// Set a map function for all time series 
-protected void AddMapForAll(
-    Expression<Func<IEnumerable<TimeSeriesSegment>, IEnumerable>> map);
-{CODE-BLOCK/}
-
----
-
-### `AbstractMultiMapTimeSeriesIndexCreationTask`
-
-{CODE-BLOCK: csharp}
-// To define a Multi-Map index inherit from:
-// =========================================
-public abstract class AbstractMultiMapTimeSeriesIndexCreationTask { }
-
-// Methods available in AbstractMultiMapTimeSeriesIndexCreationTask class:
-// =======================================================================
-
-// Set a map function for all time series with the specified name
-// that belong to documents of type `TSource`
-protected void AddMap<TSource>(string timeSeries,
-    Expression<Func<IEnumerable<TimeSeriesSegment>, IEnumerable>> map);
-
-// Set a map function for all time series that belong to documents of type `TBase`
-// or any type that inherits from `TBase`
-protected void AddMapForAll<TBase>(
-    Expression<Func<IEnumerable<TimeSeriesSegment>,IEnumerable>> map);
-{CODE-BLOCK/}
-
----
-
 ### `AbstractJavaScriptTimeSeriesIndexCreationTask`
  
-{CODE-BLOCK: csharp}
-// To define a JavaScript index inherit from:
-// ==========================================
-public abstract class AbstractJavaScriptTimeSeriesIndexCreationTask
-{    
-    public HashSet<string> Maps; // The set of JavaScript map functions for this index
-    protected string Reduce;     // The JavaScript reduce function
-}
+{CODE-BLOCK:python}
+class AbstractJavaScriptTimeSeriesIndexCreationTask(AbstractIndexCreationTaskBase[TimeSeriesIndexDefinition]):
+    def __init__(
+        self,
+        conventions: DocumentConventions = None,
+        priority: IndexPriority = None,
+        lock_mode: IndexLockMode = None,
+        deployment_mode: IndexDeploymentMode = None,
+        state: IndexState = None,
+    ):
+        super().__init__(conventions, priority, lock_mode, deployment_mode, state)
+        self._definition = TimeSeriesIndexDefinition()
+
+    @property
+    def maps(self) -> Set[str]:
+        return self._definition.maps
+
+    @maps.setter
+    def maps(self, maps: Set[str]):
+        self._definition.maps = maps
+
+    @property
+    def reduce(self) -> str:
+        return self._definition.reduce
+
+    @reduce.setter
+    def reduce(self, reduce: str):
+        self._definition.reduce = reduce
 {CODE-BLOCK/}
 
 Learn more about JavaScript indexes in [JavaScript Indexes](../../indexes/javascript-indexes).
@@ -235,32 +186,29 @@ Learn more about JavaScript indexes in [JavaScript Indexes](../../indexes/javasc
 
 ### `TimeSeriesIndexDefinition`
 
-{CODE-BLOCK: csharp}
-public class TimeSeriesIndexDefinition : IndexDefinition
+{CODE-BLOCK:python}
+class TimeSeriesIndexDefinition(IndexDefinition):
+    @property
+    def source_type(self) -> IndexSourceType:
+        return IndexSourceType.TIME_SERIES
 {CODE-BLOCK/}
 
-While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular [`IndexDefinition`](../../indexes/creating-and-deploying#using-maintenance-operations) class from which it inherits,
-it is recommended to use `TimeSeriesIndexDefinition` when creating a time series index definition in case additional functionality is added in future versions of RavenDB.
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular 
+[`IndexDefinition`](../../indexes/creating-and-deploying#using-maintenance-operations) 
+class from which it inherits, it is recommended to use `TimeSeriesIndexDefinition` when 
+creating a time series index definition in case additional functionality is added in 
+future versions of RavenDB.
 
 ---
 
 ### `TimeSeriesIndexDefinitionBuilder`
 
-{CODE-BLOCK: csharp}
-public class TimeSeriesIndexDefinitionBuilder<TDocument>
-{ 
-    public TimeSeriesIndexDefinitionBuilder(string indexName = null)  
-}
+{CODE-BLOCK:python}
+class TimeSeriesIndexDefinitionBuilder(AbstractIndexDefinitionBuilder[TimeSeriesIndexDefinition]):
+    def __init__(self, index_name: Optional[str] = None):
+        super().__init__(index_name)
+        self.map: Optional[str] = None
 {CODE-BLOCK/}
-
-{WARNING: }
-**Note**:  
-
-* Currently, class `TimeSeriesIndexDefinitionBuilder` does Not support API methods from abstract class `AbstractCommonApiForIndexes`,
-  such as `LoadDocument` or `Recurse`.
-
-* Use one of the other index creation methods if needed.   
-{WARNING/}
 
 ---
 
@@ -270,7 +218,7 @@ public class TimeSeriesIndexDefinitionBuilder<TDocument>
 
 * The following segment properties can be indexed:
 
-    {CODE-BLOCK: csharp}
+    {CODE-BLOCK:python}
 public sealed class TimeSeriesSegment
 {
     // The ID of the document this time series belongs to
@@ -307,7 +255,7 @@ public sealed class TimeSeriesSegment
 
 * These are the properties of a `TimeSeriesEntry` which can be indexed:
 
-    {CODE-BLOCK: csharp}
+    {CODE-BLOCK:python}
 public class TimeSeriesEntry
 {
     public DateTime Timestamp;
