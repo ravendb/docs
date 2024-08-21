@@ -25,6 +25,7 @@
       * [Add prefixes after database creation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)
   * [Removing prefixes](../../sharding/administration/sharding-by-prefix#removing-prefixes)
   * [Updating shard configurations for prefixes](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
+  * [Querying selected shards by prefix](../../sharding/administration/sharding-by-prefix#querying-selected-shards-by-prefix)
   * [Prefixed sharding vs Anchoring documents](../../sharding/administration/sharding-by-prefix#prefixed-sharding-vs-anchoring-documents)
 
 {NOTE/}
@@ -99,7 +100,7 @@ reduces network latency for region-specific operations, and enhances overall sys
 {PANEL:  Bucket management}
 
 **When you define a sharded database**:  
-RavenDB reserves 1,048,576 buckets for the entire database. Each shard is assigned a range of buckets from this set.  
+RavenDB reserves 1,048,576 buckets for the entire database. Each shard is assigned a range of buckets from this set. 
 Any document added to the database is processed through a hashing algorithm, which determines the bucket number where the document will reside.
 The initial bucket distribution for a sharded database with 3 shards will be:   
 
@@ -180,11 +181,12 @@ New documents will be stored in the matching shards:
 
 {PANEL: Adding prefixes via Client API}
 
-Using the Client API, you can add prefixes when creating the database or after database creation.
+Using the Client API, you can add prefixes when creating the database or after database creation:  
 
 {NOTE: }
 
-#### Add prefixes when creating a database
+##### Add prefixes when creating a database
+---
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync prefix_1@Sharding\ShardingByPrefix.cs /}
@@ -194,7 +196,8 @@ Using the Client API, you can add prefixes when creating the database or after d
 {NOTE/}
 {NOTE: }
 
-#### Add prefixes after database creation
+##### Add prefixes after database creation
+---
 
 * Use `AddPrefixedShardingSettingOperation` to add a prefix to your sharding configuration after the database has been created.
 
@@ -247,6 +250,95 @@ Using the Client API, you can add prefixes when creating the database or after d
 {CODE-TAB:csharp:Sync prefix_4@Sharding\ShardingByPrefix.cs /}
 {CODE-TAB:csharp:Async prefix_4_async@Sharding\ShardingByPrefix.cs /}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Querying selected shards by prefix}
+
+* Storing documents on specific shards allows you to query only those shards directly,  
+  avoiding unnecessary trips to other shards by the orchestrator.
+
+* Use method `ShardContext` together with `ByPrefix` or `ByPrefixes` to specify which shard/s to query.  
+  Only the shard/s assigned the specified prefix/prefixes will be queried.  
+  Note: An exception will be thrown if the specified prefix is not already defined in the database.
+
+* The provided prefix does not need to match the prefix of any specific document you are querying;  
+  it is just used to determine which shard(s) to query.  
+  (Remember that a single prefix can be assigned to multiple shards.)  
+
+* You can designate which shard/s to query by combining both selecting a shard by prefix  
+  and [selecting a shard by document ID](../../sharding/querying#querying-selected-shards).
+
+* See the following examples:
+
+{NOTE: }
+
+**Query a selected shard by prefix**:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_1@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:Query_async query_1_async@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:DocumentQuery query_2@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Query for 'Company' documents from shard/s assigned to a specific prefix:
+// =========================================================================
+from "Companies"
+where Address.Country == "US"
+{ "__shardContext" : { "Prefixes": ["users/us/"] }}
+
+// Query for ALL documents from shard/s assigned to a specific prefix:
+// ===================================================================
+from @all_docs
+where Address.Country == "US"
+{ "__shardContext" : { "Prefixes": ["users/us/"] }}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+**Query selected shards by prefix**:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_3@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:Query_async query_3_async@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:DocumentQuery query_4@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Query for 'Company' documents from shard/s assigned to the specified prefixes:
+// ==============================================================================
+from "Companies"
+where Address.Country == "US"
+{ "__shardContext": { "Prefixes": ["users/us/", "users/asia/"] }}
+
+// Query for ALL documents from shard/s assigned to the specified prefixes:
+// ========================================================================
+from @all_docs
+where Address.Country == "US"
+{ "__shardContext": { "Prefixes": ["users/us/", "users/asia/"] }}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
+
+{NOTE: }
+
+**Query selected shard by prefix and by document ID**:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_5@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:Query_async query_5_async@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB:csharp:DocumentQuery query_6@Sharding\ShardingByPrefix.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+// Query for 'Company' documents from shard/s assigned to a prefix & by document ID:
+// =================================================================================
+from "Companies"
+where Address.Country == "US"
+{ "__shardContext": { "DocumentIds": ["companies/1"], "Prefixes": ["users/us/"] }}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE/}
 
 {PANEL/}
 

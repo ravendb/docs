@@ -87,13 +87,27 @@ namespace Raven.Documentation.Samples.Sharding
             using (var session = store.OpenSession())
             {
                 #region query_selected_shard_1
-                var queryResults = session.Query<User>()
+                // Query for 'User' documents from a specific shard:
+                // ================================================
+                var userDocuments = session.Query<User>()
                      // Call 'ShardContext' to select which shard to query
-                     // RavenDB will query only the shard containing document "users/1"
-                    .Customize(x => x.ShardContext(s => s.ByDocumentId("users/1")))
+                     // RavenDB will query only the shard containing document "companies/1"
+                    .Customize(x => x.ShardContext(s => s.ByDocumentId("companies/1")))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
                     .ToList();
+
+                // Variable 'userDocuments' will include all documents of type 'User'
+                // that match the query predicate and reside on the shard containing document 'companies/1'.
+                
+                // Query for ALL documents from a specific shard:
+                // ==============================================
+                var allDocuments = session.Query<object>() // query with <object>
+                    .Customize(x => x.ShardContext(s => s.ByDocumentId("companies/1")))
+                    .ToList();
+                
+                // Variable 'allDocuments' will include ALL documents
+                // that reside on the shard containing document 'companies/1'.
                 #endregion
             }
             
@@ -101,11 +115,19 @@ namespace Raven.Documentation.Samples.Sharding
             using (var session = store.OpenSession())
             {
                 #region query_selected_shard_2
-                var queryResult = session.Advanced.DocumentQuery<User>()
+                // Query for 'User' documents from a specific shard:
+                // =================================================
+                var userDocuments = session.Advanced.DocumentQuery<User>()
                     // Call 'ShardContext' to select which shard to query
-                    .ShardContext(s => s.ByDocumentId("users/1"))
+                    .ShardContext(s => s.ByDocumentId("companies/1"))
                     // The query predicate
                     .Where(x => x.Name == "Joe")
+                    .ToList();
+                
+                // Query for ALL documents from a specific shard:
+                // ==============================================
+                var allDocuments = session.Advanced.DocumentQuery<object>()
+                    .ShardContext(s => s.ByDocumentId("companies/1"))
                     .ToList();
                 #endregion
             }
@@ -114,13 +136,22 @@ namespace Raven.Documentation.Samples.Sharding
             using (var session = store.OpenSession())
             {
                 #region query_selected_shard_3
-                var queryResults = session.Query<User>()
+                // Query for 'User' documents from the specified shards:
+                // =====================================================
+                var userDocuments = session.Query<User>()
                      // Call 'ShardContext' to select which shards to query
-                     // RavenDB will query only the shards containing documents "users/2" & "users/3"
-                    .Customize(x => x.ShardContext(s => s.ByDocumentIds(new[] { "users/2", "users/3" })))
+                     // RavenDB will query only the shards containing documents "companies/2" & "companies/3"
+                    .Customize(x => x.ShardContext(s => s.ByDocumentIds(new[] { "companies/2", "companies/3" })))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
                     .ToList();
+
+                // Variable 'userDocuments' will include all documents of type 'User' that match the query predicate
+                // and reside on either the shard containing document 'companies/2'
+                // or the shard containing document 'companies/3'.
+
+                // To get ALL documents from the designated shards instead of just 'User' documents,
+                // query with `session.Query<object>`. 
                 #endregion
             }
 
@@ -128,9 +159,11 @@ namespace Raven.Documentation.Samples.Sharding
             using (var session = store.OpenSession())
             {
                 #region query_selected_shard_4
-                var queryResult = session.Advanced.DocumentQuery<User>()
+                // Query for 'User' documents from the specified shards:
+                // =====================================================
+                var userDocuments = session.Advanced.DocumentQuery<User>()
                      // Call 'ShardContext' to select which shards to query
-                    .ShardContext(s => s.ByDocumentIds(new[] {"users/2", "users/3"}))
+                    .ShardContext(s => s.ByDocumentIds(new[] {"companies/2", "companies/3"}))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
                     .ToList();
@@ -146,11 +179,19 @@ namespace Raven.Documentation.Samples.Sharding
             using (var asyncSession = store.OpenAsyncSession())
             {
                 #region query_selected_shard_1_async
-                var queryResults = await asyncSession.Query<User>()
+                // Query for 'User' documents from a specific shard:
+                // =================================================
+                var userDocuments = await asyncSession.Query<User>()
                      // Call 'ShardContext' to select which shard to query
-                    .Customize(x => x.ShardContext(s => s.ByDocumentId("users/1")))
+                    .Customize(x => x.ShardContext(s => s.ByDocumentId("companies/1")))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
+                    .ToListAsync();
+                
+                // Query for ALL documents from a specific shard:
+                // ==============================================
+                var allDocuments = await asyncSession.Query<object>()
+                    .Customize(x => x.ShardContext(s => s.ByDocumentId("companies/1")))
                     .ToListAsync();
                 #endregion
             }
@@ -159,11 +200,19 @@ namespace Raven.Documentation.Samples.Sharding
             using (var asyncSession = store.OpenAsyncSession())
             {
                 #region query_selected_shard_2_async
-                var queryResult = await asyncSession.Advanced.AsyncDocumentQuery<User>()
+                // Query for 'User' documents from a specific shard:
+                // =================================================
+                var userDocuments = await asyncSession.Advanced.AsyncDocumentQuery<User>()
                     // Call 'ShardContext' to select which shard to query
-                    .ShardContext(s => s.ByDocumentId("users/1"))
+                    .ShardContext(s => s.ByDocumentId("companies/1"))
                     // The query predicate
                     .WhereEquals(x => x.Name, "Joe")
+                    .ToListAsync();
+                
+                // Query for ALL documents from a specific shard:
+                // ==============================================
+                var allDocuments = await asyncSession.Advanced.AsyncDocumentQuery<object>()
+                    .ShardContext(s => s.ByDocumentId("companies/1"))
                     .ToListAsync();
                 #endregion
             }
@@ -172,9 +221,11 @@ namespace Raven.Documentation.Samples.Sharding
             using (var asyncSession = store.OpenAsyncSession())
             {
                 #region query_selected_shard_3_async
-                var queryResults = await asyncSession.Query<User>()
+                // Query for 'User' documents from the specified shards:
+                // =====================================================
+                var userDocuments = await asyncSession.Query<User>()
                      // Call 'ShardContext' to select which shards to query
-                    .Customize(x => x.ShardContext(s => s.ByDocumentIds(new[] { "users/2", "users/3" })))
+                    .Customize(x => x.ShardContext(s => s.ByDocumentIds(new[] { "companies/2", "companies/3" })))
                      // The query predicate
                     .Where(x => x.Name == "Joe")
                     .ToListAsync();
@@ -185,9 +236,11 @@ namespace Raven.Documentation.Samples.Sharding
             using (var asyncSession = store.OpenAsyncSession())
             {
                 #region query_selected_shard_4_async
-                var queryResult = await asyncSession.Advanced.AsyncDocumentQuery<User>()
+                // Query for 'User' documents from the specified shards:
+                // =====================================================
+                var userDocuments = await asyncSession.Advanced.AsyncDocumentQuery<User>()
                      // Call 'ShardContext' to select which shards to query
-                    .ShardContext(s => s.ByDocumentIds(new[] {"users/2", "users/3"}))
+                    .ShardContext(s => s.ByDocumentIds(new[] {"companies/2", "companies/3"}))
                      // The query predicate
                     .WhereEquals(x => x.Name, "Joe")
                     .ToListAsync();

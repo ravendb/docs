@@ -3,9 +3,6 @@
 
 {NOTE: }
 
-query specfic
-know in advance
-
 * Query syntax is similar in sharded and non-sharded databases.  
 
 * A sharded database offers the same set of querying features that a non-sharded database offers,  
@@ -63,6 +60,8 @@ To allow this comfort, the database performs the following steps when a client s
 
 * This approach can be useful, for example, when documents are intentionally stored on the same shard using [Anchoring documents](../sharding/administration/anchoring-documents).
 
+* To query specific shards using a pre-defined sharding prefix, see: [Querying selected shards by prefix](../sharding/administration/sharding-by-prefix#querying-selected-shards-by-prefix).
+ 
 ---
 
 * Use method `ShardContext` together with `ByDocumentId` or `ByDocumentIds` to specify which shard/s to query.
@@ -71,13 +70,13 @@ To allow this comfort, the database performs the following steps when a client s
   to the [hashing algorithm](../sharding/overview#how-documents-are-distributed-among-shards), which determines the bucket ID and thus the shard.
 
 * The document ID parameter is not required to be one of the documents you are querying for;  
-  it is just used to calculate the target shard to query. See the following examples:  
+  it is just used to determine the target shard to query. See the following examples:  
 
 {NOTE: }
 
 **Query a selected shard**:  
 
-Query only the shard containing document `users/1`:
+Query only the shard containing document `companies/1`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query query_selected_shard_1@Sharding\ShardingQuerying.cs /}
@@ -85,9 +84,17 @@ Query only the shard containing document `users/1`:
 {CODE-TAB:csharp:DocumentQuery query_selected_shard_2@Sharding\ShardingQuerying.cs /}
 {CODE-TAB:csharp:DocumentQuery_async query_selected_shard_2_async@Sharding\ShardingQuerying.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
+// Query for 'User' documents from a specific shard:
+// ================================================
 from "Users"
 where Name == "Joe"
-{ "__shardContext": "users/1" }
+{ "__shardContext": "companies/1" }
+
+// Query for ALL documents from a specific shard:
+// ==============================================
+from @all_docs
+where Name == "Joe"
+{ "__shardContext": "companies/1" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -96,7 +103,7 @@ where Name == "Joe"
 
 **Query selected shards**:  
 
-Query only the shards containing documents `users/2` and `users/3`:  
+Query only the shards containing documents `companies/2` and `companies/3`:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query query_selected_shard_3@Sharding\ShardingQuerying.cs /}
@@ -104,9 +111,17 @@ Query only the shards containing documents `users/2` and `users/3`:
 {CODE-TAB:csharp:DocumentQuery query_selected_shard_4@Sharding\ShardingQuerying.cs /}
 {CODE-TAB:csharp:DocumentQuery_async query_selected_shard_4_async@Sharding\ShardingQuerying.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
+// Query for 'User' documents from the specified shards:
+// =====================================================
 from "Users"
 where Name == "Joe"
-{ "__shardContext" : ["users/2", "users/3"] }
+{ "__shardContext" : ["companies/2", "companies/3"] }
+
+// Query for ALL documents from the specified shards:
+// ==================================================
+from @all_docs
+where Name == "Joe"
+{ "__shardContext" : ["companies/2", "companies/3"] }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
