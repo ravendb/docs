@@ -21,10 +21,10 @@
             {
                 <div class="docs__search-dropdown dropdown mt-0 position-relative">
                     <button type="button" class="docs__dropdown-button dropdown-toggle w-100 text-left overflow-hidden line-height-1-4 font-size-14 position-relative js-search-dropdown-verions-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="docs__dropdown-button-title font-weight-bold d-block font-size-12">
+                        <span class="docs__dropdown-button-title d-block font-size-12">
                             Version
                         </span>
-                        <span class="docs__dropdown-button-selection d-block text-light-gray-secondary text-uppercase font-weight-bold">
+                        <span class="docs__dropdown-button-selection d-block">
                             RavenDB @Model.SelectedVersion
                         </span>
                     </button>
@@ -52,10 +52,10 @@
                 <div class="docs__search-dropdown dropdown mt-0 position-relative">
 
                     <button type="button" class="docs__dropdown-button dropdown-toggle w-100 text-left overflow-hidden line-height-1-4 font-size-14 position-relative js-search-dropdown-verions-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="docs__dropdown-button-title font-weight-bold d-block font-size-12">
+                        <span class="docs__dropdown-button-title d-block font-size-12">
                             Language
                         </span>
-                        <span class="docs__dropdown-button-selection d-block text-light-gray-secondary text-uppercase font-weight-bold">
+                        <span class="docs__dropdown-button-selection d-block">
                             @Model.Page.Language.GetDescription()
                         </span>
                     </button>
@@ -72,7 +72,7 @@
             }
             <div id="docs-search" class="flex-grow">
                 <form method="get" action="@Url.Action(MVC.Docs.ActionNames.Search)" id="form-search" class="docs__search-form d-flex c-ml-lg-only-3 c-mt-only-3 c-mt-lg-0 position-relative">
-                    <input autocomplete="off" type="text" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="docs__search-input js-search-input font-weight-bold m-0 font-size-14 line-height-1-4 text-light-gray-secondary w-100" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
+                    <input autocomplete="off" type="text" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="docs__search-input js-search-input m-0 font-size-14 line-height-1-4 w-100" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
                     <div class="docs__search-sugestions position-absolute z-index-2 js-search-sugestions-wrapper" data-bind="style: { display: shouldShowSuggest() ? 'block' : 'none' }">
                         <ul class="docs__search-sugestions-list list-unstyled js-search-sugestions" data-bind="foreach: items">
                             <li class="c-mb-only-2">
@@ -100,13 +100,13 @@
     @if (string.IsNullOrEmpty(Model.Page.RelatedArticlesContent) == false)
     {
         <section class="related-articles padding">
-            <a href="https://github.com/ravendb/docs/blob/master/@Model.Page.RelativePath" target="_blank" class="docs-page-template__github-button d-flex align-items-center font-size-12 border-0 line-height-1-3 position-relative ml-0 text-uppercase external mb-5">
+            <a href="https://github.com/ravendb/docs/blob/master/@Model.Page.RelativePath" target="_blank" class="docs-page-template__github-button d-flex align-items-center font-size-12 border-0 line-height-1-3 position-relative ml-0 external c-mb-only-6">
                 <svg width="22" height="23" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11.9986 0.956177C5.37312 0.956177 0.00012207 6.35018 0.00012207 13.0042C0.00012207 18.3262 3.43812 22.8412 8.20812 24.4357C8.80812 24.5467 9.02712 24.1747 9.02712 23.8552C9.02712 23.5687 9.01662 22.8112 9.01062 21.8062C5.67312 22.5337 4.96812 20.1907 4.96812 20.1907C4.42362 18.7987 3.63612 18.4282 3.63612 18.4282C2.54562 17.6812 3.71712 17.6962 3.71712 17.6962C4.92162 17.7817 5.55462 18.9382 5.55462 18.9382C6.62562 20.7787 8.36412 20.2477 9.04812 19.9387C9.15612 19.1602 9.46662 18.6292 9.81012 18.3277C7.14612 18.0232 4.34412 16.9897 4.34412 12.3742C4.34412 11.0587 4.81212 9.98318 5.58012 9.14018C5.45562 8.83568 5.04462 7.61018 5.69712 5.95268C5.69712 5.95268 6.70512 5.62868 8.99712 7.18718C9.95412 6.92018 10.9801 6.78668 12.0016 6.78218C13.0201 6.78818 14.0476 6.92018 15.0061 7.18868C17.2966 5.63018 18.3031 5.95418 18.3031 5.95418C18.9571 7.61318 18.5461 8.83718 18.4231 9.14168C19.1926 9.98468 19.6561 11.0602 19.6561 12.3757C19.6561 17.0032 16.8511 18.0217 14.1781 18.3202C14.6086 18.6922 14.9926 19.4272 14.9926 20.5507C14.9926 22.1617 14.9776 23.4607 14.9776 23.8552C14.9776 24.1777 15.1936 24.5527 15.8026 24.4342C20.5651 22.8382 24.0001 18.3247 24.0001 13.0042C24.0001 6.35018 18.6271 0.956177 11.9986 0.956177Z" fill="currentColor"></path>
                 </svg>
-                <span class="docs-page-template__github-button-text d-none d-md-inline text-uppercase">see on GitHub</span>
+                <span class="docs-page-template__github-button-text d-none d-md-inline">See on GitHub</span>
             </a>
-            <h2 class="font-size-14 text-uppercase line-height-1-3 font-weight-black d-flex aling-items-center"><img class="c-mr-3" src="https://ravendb.net/wp-content/themes/ravendb/images/icon__related-articles.svg" alt="related articles"> Related articles</h2>
+            <h2 class="font-size-14 c-mb-3 line-height-1-3 d-flex"><img class="c-mr-3" src="https://ravendb.net/wp-content/themes/ravendb/images/icon__related-articles.svg" alt="related articles"> Related articles</h2>
             @Html.Raw(Model.Page.RelatedArticlesContent)
         </section>
     }
