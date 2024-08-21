@@ -43,7 +43,7 @@ whose ID length exceeds this limit.
         1. **Unused Database IDs**  
            Click to open the **Unused Database IDs** view.  
         2. **Database ID**  
-           The ID of this cluster node.  
+           The ID of this database on the current cluster node.  
         3. **Change Vector**  
            A list of IDs that may be added to the list.  
            To add an ID to the unused IDs list, click the **Add to unused** button to its right.  
