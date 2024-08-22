@@ -390,8 +390,8 @@ curl -X POST \
 | <a id="5.2.D.5.5" /> 5.2.`D`.5.5   | Number of disabled indexes                                               |
 | <a id="5.2.D.5.6" /> 5.2.`D`.5.6   | Number of error indexes                                                  |
 | <a id="5.2.D.5.7" /> 5.2.`D`.5.7   | Number of faulty indexes                                                 |
-| <a id="5.2.D.6.1" /> 5.2.`D`.6.1   | Number of writes (documents, attachments, counters)                      |
-| <a id="5.2.D.6.2" /> 5.2.`D`.6.2   | Number of bytes written (documents, attachments, counters)               |
+| <a id="5.2.D.6.1" /> 5.2.`D`.6.1   | Number of writes (documents, attachments, counters, timeseries)          |
+| <a id="5.2.D.6.2" /> 5.2.`D`.6.2   | Number of bytes written (documents, attachments, counters, timeseries)   |
 
 | OID                                      | Metric (Index)                                 |
 |------------------------------------------|------------------------------------------------| 
@@ -426,8 +426,8 @@ curl -X POST \
 | <a id="5.1.8.1" /> 5.1.8.1 | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
 | <a id="5.1.8.2" /> 5.1.8.2 | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
 | <a id="5.1.8.3" /> 5.1.8.3 | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
-| <a id="5.1.9.1" /> 5.1.9.1 | Number of writes (documents, attachments, counters) in all loaded databases                      |
-| <a id="5.1.9.2" /> 5.1.9.2 | Number of bytes written (documents, attachments, counters) in all loaded databases               |
+| <a id="5.1.9.1" /> 5.1.9.1 | Number of writes (documents, attachments, counters, timeseries) in all loaded databases          |
+| <a id="5.1.9.2" /> 5.1.9.2 | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
 | <a id="5.1.10" /> 5.1.10   | Number of faulted databases                                                                      |
 
 {PANEL/}
