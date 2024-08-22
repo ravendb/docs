@@ -38,7 +38,7 @@ whose ID length exceeds this limit.
      server via Studio's **Unused Database IDs** view, as shown below. IDs listed in this view 
      will be omitted from revision change vectors.  
 
-        ![Unused Database IDs List](images\revisions_unused-database-IDs.png "Unused Database IDs List")
+        ![Unused Database IDs List](images\troubleshooting_rev_unused-db-IDs.png "Unused Database IDs List")
 
         1. **Unused Database IDs**  
            Click to open the **Unused Database IDs** view.  
@@ -60,7 +60,7 @@ whose ID length exceeds this limit.
    * **Do not** add IDs of databases that are currently in use.  
      The ID of a RavenDB database can be found in the Studio > **Stats** view.  
 
-         ![Studio Stats: Database ID](images\revisions_stats-database-ID.png "Studio Stats: Database ID")
+         ![Studio Stats: Database ID](images\troubleshooting_rev_stats-DB-ID.png "Studio Stats: Database ID")
 
    * If an external replication task is running:  
      **Do not** add the IDs of databases that are used by the destination database.  
@@ -70,7 +70,7 @@ whose ID length exceeds this limit.
      `ClusterTransactionIdBase64` properties.  
      Find these IDs using the Studio > Settings > **Database Record** view.  
 
-         ![Database Record](images\revisions_database-record.png "Database Record")
+         ![Database Record](images\troubleshooting_rev_db-record.png "Database Record")
 
 ---
 
@@ -79,20 +79,20 @@ whose ID length exceeds this limit.
 * **New databases only**  
   Checking revisions ID length is enabled only for **new databases**.  
    * A database is regarded as **new**, and its revisions ID length **will** be checked, if 
-     its version is not defined in the database record or the version is **5.4.203** or newer.  
-   * Revisions ID length will **not** be checked for databases older than **5.4.203**.  
+     its version is not defined in the database record or the version is `6.0.107` or newer.  
+   * Revisions ID length will **not** be checked for databases older than `6.0.107`.  
 * **Imported databases**  
   Importing a database is always regarded as the creation of a new database.  
   An exception **will** therefore be thrown if the ID of an imported revision 
   exceeds 1,536 bytes, regardless of the imported revision's database version.  
 * **Restoring database from backup**  
    * Revisions ID length **will** be checked if the database version is not defined in its 
-     restored database record or if the version is **5.4.203** or newer.  
-   * Revision ID lengths will **not** be checked when restoring databases older than **5.4.203**.  
+     restored database record or if the version is `6.0.107` or newer.  
+   * Revision ID lengths will **not** be checked when restoring databases older than `6.0.107`.  
 * **Restoring database from a snapshot**  
   Revisions ID length will not be checked while restoring a snapshot, since snapshots are 
   restored as an image. If revision IDs longer than 1,536 bytes exist in the restored database, 
-  they are in it because the database is of an older version than **5.4.203** and doesn't perform 
+  they are in it because the database is of an older version than `6.0.107` and doesn't perform 
   this check.  
 * **Receiving a revision via replication**  
   The check is not performed when receiving a revision or a revision tombstone via replication.  

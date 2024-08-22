@@ -84,5 +84,11 @@
           "Key": "client-api/session/revisions/counter-revisions"
       }
     ]
+  },
+  {
+    "Path": "troubleshooting.markdown",
+    "Name": "Troubleshooting",
+    "DiscussionId": "e60b674f-e129-4426-92c0-84adb33cbe25",
+    "Mappings": []
   }
 ]
