@@ -82,11 +82,11 @@ namespace Raven.Documentation.Samples.SearchEngine
 
                 SearchEngineType = type;
 
-                // Disable Indexing for this field
+                // Disable indexing for this field
                 Index("Location", FieldIndexing.No);
 
-                // Enable storing the field's contents
-                // (this is mandatory if its indexing is disabled)
+                // Store the field's content
+                // (this is mandatory if the field's indexing is disabled)
                 Store("Location", FieldStorage.Yes);
             }
         }

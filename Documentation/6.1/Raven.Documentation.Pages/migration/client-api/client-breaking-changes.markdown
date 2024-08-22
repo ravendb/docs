@@ -24,6 +24,9 @@ called to `Increment` a batch of counters, and `Delta` is not specified to indic
 what value should be added to the counters, the operation will increment the counters 
 by a default `Delta` of `1`.  
 
+(The default `Delta` was `0` in previous RavenDB versions, we changed it in this 
+version to make it consistent with the rest of the API.)
+
 {CODE:csharp CounterBatchOperation@migration\BreakingChanges.cs /}
 
 {PANEL/}
