@@ -23,6 +23,7 @@
       [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Headers](../../server/configuration/monitoring-configuration#monitoring.opentelemetry.opentelemetryprotocol.headers)  
       [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Protocol](../../server/configuration/monitoring-configuration#monitoring.opentelemetry.opentelemetryprotocol.protocol)  
       [Monitoring.OpenTelemetry.OpenTelemetryProtocol.Timeout](../../server/configuration/monitoring-configuration#monitoring.opentelemetry.opentelemetryprotocol.timeout)    
+      [Monitoring.OpenTelemetry.ServiceInstanceId](../../server/configuration/monitoring-configuration#monitoring.opentelemetry.serviceinstanceid)    
     * SNMP monitoring  
       [Monitoring.Snmp.AuthenticationPassword](../../server/configuration/monitoring-configuration#monitoring.snmp.authenticationpassword)  
       [Monitoring.Snmp.AuthenticationPassword.Secondary](../../server/configuration/monitoring-configuration#monitoring.snmp.authenticationpassword.secondary)  
@@ -223,6 +224,22 @@ Defines the protocol that OpenTelemetryProtocol should use to send data.
 OpenTelemetryProtocol timeout value.
 
 - **Type**: `int?`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Monitoring.OpenTelemetry.ServiceInstanceId}
+
+* OpenTelemetry monitoring requires a service instance ID for initialization.  
+  You can set the OpenTelemetry service instance ID using this configuration option.  
+
+* If this configuration key is not set, RavenDB will default to using the server's public URL hostname.  
+  If the public hostname is unavailable, RavenDB will use the node tag as the identifier.
+
+---
+
+- **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide only
 

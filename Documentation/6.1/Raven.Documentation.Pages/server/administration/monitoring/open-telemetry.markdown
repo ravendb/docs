@@ -24,6 +24,7 @@
 * In this page:
   * [Enabling OpenTelemetry in RavenDB](../../../server/administration/monitoring/open-telemetry#enabling-opentelemetry-in-ravendb)
   * [RavenDB OpenTelemetry meters](../../../server/administration/monitoring/open-telemetry#ravendb-opentelemetry-meters)
+  * [Server identification in metrics](../../../server/administration/monitoring/open-telemetry#server-identification-in-metrics)
   * [The metric instruments](../../../server/administration/monitoring/open-telemetry#the-metric-instruments)
   * [Metrics export options](../../../server/administration/monitoring/open-telemetry#metrics-export-options)
       * [Console](../../../server/administration/monitoring/open-telemetry#console)
@@ -100,14 +101,24 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
   Enabled by default: _false_   
   Configuration key: [Monitoring.OpenTelemetry.Meters.Runtime.Enabled](../../../server/configuration/monitoring-configuration#monitoring.opentelemetry.meters.runtime.enabled)  
 
----
+{PANEL/}
 
-{INFO: }
-**Identification of nodes in metrics**:  
+{PANEL: Server identification in metrics}
 
-* RavenDB includes the node tag in each exposed metric to identify metrics specific to individual machines.  
-* The node tag appears under the `serviceInstanceId` property.
-{INFO/}
+* OpenTelemetry monitoring requires a service instance ID for initialization.  
+
+* The identification of the server that originated each exposed metric will be listed in the `serviceInstanceId` property within the metric data.
+
+* The server instance identification is determined by the following sequence:
+
+    1. **Configuration Key**  
+       First, attempt to retrieve the [Monitoring.OpenTelemetry.ServiceInstanceId](../../../server/configuration/monitoring-configuration#monitoring.opentelemetry.serviceinstanceid) configuration key.  
+    2. **Public URL Hostname**  
+       If the configuration key is Not defined, use the server's public URL hostname, provided it is available.
+    3. **Node Tag**  
+       If the public URL hostname is unavailable, attempt to use the node tag.
+    4. **Initialization Failure**  
+       If none of the above options are available, OpenTelemetry will Not be initialized.
 
 {PANEL/}
 
@@ -212,7 +223,7 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 | Instrument name                                                   | Description                                                                                        | Instrument type   |
 |-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-------------------|
 | ravendb.server.totaldatabases.count_stale_indexes                 | Number of stale indexes in all loaded databases                                                    | UpDownCounter     |
-| ravendb.server.totaldatabases.data.written.per_second             | Number of bytes written \(documents, attachments, counters\) in all loaded databases               | Gauge             |
+| ravendb.server.totaldatabases.data.written.per_second             | Number of bytes written \(documents, attachments, counters, timeseries\) in all loaded databases   | Gauge             |
 | ravendb.server.totaldatabases.database.disabled_count             | Number of disabled databases                                                                       | UpDownCounter     |
 | ravendb.server.totaldatabases.database.encrypted_count            | Number of encrypted databases                                                                      | UpDownCounter     |
 | ravendb.server.totaldatabases.database.faulted_count              | Number of faulted databases                                                                        | UpDownCounter     |
@@ -225,7 +236,7 @@ RavenDB also supports exposing meters developed by Microsoft for AspNetCore and 
 | ravendb.server.totaldatabases.number_error_indexes                | Number of error indexes in all loaded databases                                                    | UpDownCounter     |
 | ravendb.server.totaldatabases.number_of_indexes                   | Number of indexes in all loaded databases                                                          | UpDownCounter     |
 | ravendb.server.totaldatabases.number.faulty_indexes               | Number of faulty indexes in all loaded databases                                                   | UpDownCounter     |
-| ravendb.server.totaldatabases.writes_per_second                   | Number of writes \(documents, attachments, counters\) in all loaded databases                      | Gauge             |
+| ravendb.server.totaldatabases.writes_per_second                   | Number of writes \(documents, attachments, counters, timeseries\) in all loaded databases          | Gauge             |
 
 {PANEL/}
 
@@ -261,7 +272,7 @@ RavenDB offers two options for exporting metrics:
 * OpenTelemetry supports the **OpenTelemetry Protocol** (OTLP),  
   a standard wire protocol used by all OpenTelemetry SDKs.
 
-* This protocol allows data to be sent from metrics producers (e.g. RavenDB) to any software that supports OTLP.
+* This protocol allows data to be sent from metrics producers (e.g. RavenDB) to any software that supports OTLP.  
   The recommended software, as suggested by OpenTelemetry, is called **OpenTelemetry Collector**.  
   The Collector can be further configured to forward and export this data to various analysis tools.  
   Learn about the OpenTelemetry Collector on the official documentation site: [OTel Collector](https://opentelemetry.io/docs/collector/).
