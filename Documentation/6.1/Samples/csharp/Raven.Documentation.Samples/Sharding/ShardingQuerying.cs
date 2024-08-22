@@ -88,7 +88,7 @@ namespace Raven.Documentation.Samples.Sharding
             {
                 #region query_selected_shard_1
                 // Query for 'User' documents from a specific shard:
-                // ================================================
+                // =================================================
                 var userDocuments = session.Query<User>()
                      // Call 'ShardContext' to select which shard to query
                      // RavenDB will query only the shard containing document "companies/1"

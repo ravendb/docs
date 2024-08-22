@@ -280,17 +280,23 @@ Using the Client API, you can add prefixes when creating the database or after d
 {CODE-TAB:csharp:Query_async query_1_async@Sharding\ShardingByPrefix.cs /}
 {CODE-TAB:csharp:DocumentQuery query_2@Sharding\ShardingByPrefix.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
+// Query for 'User' documents from shard/s assigned to a specific prefix:
+// ======================================================================
+from "Users"
+where Name == "Joe"
+{ "__shardContext" : { "Prefixes": ["users/"] }}
+
 // Query for 'Company' documents from shard/s assigned to a specific prefix:
 // =========================================================================
 from "Companies"
 where Address.Country == "US"
-{ "__shardContext" : { "Prefixes": ["users/us/"] }}
+{ "__shardContext" : { "Prefixes": ["users/"] }}
 
 // Query for ALL documents from shard/s assigned to a specific prefix:
 // ===================================================================
 from @all_docs
 where Address.Country == "US"
-{ "__shardContext" : { "Prefixes": ["users/us/"] }}
+{ "__shardContext" : { "Prefixes": ["users/"] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -305,6 +311,12 @@ where Address.Country == "US"
 {CODE-TAB:csharp:Query_async query_3_async@Sharding\ShardingByPrefix.cs /}
 {CODE-TAB:csharp:DocumentQuery query_4@Sharding\ShardingByPrefix.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
+// Query for 'User' documents from shard/s assigned to the specified prefixes:
+// ===========================================================================
+from "Users"
+where Name == "Joe"
+{ "__shardContext": { "Prefixes": ["users/us/", "users/asia/"] }}
+
 // Query for 'Company' documents from shard/s assigned to the specified prefixes:
 // ==============================================================================
 from "Companies"

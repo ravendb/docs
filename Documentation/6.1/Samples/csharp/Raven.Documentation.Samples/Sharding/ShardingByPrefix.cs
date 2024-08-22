@@ -240,44 +240,62 @@ namespace Raven.Documentation.Samples.Sharding
                 using (var session = store.OpenSession())
                 {
                     #region query_1
+                    // Query for 'User' documents from shard/s assigned to a specific prefix:
+                    // ======================================================================
+                    var userDocs = session.Query<User>()
+                         // Call 'ShardContext' to select which shard/s to query
+                         // RavenDB will query only the shard/s assigned to prefix 'users/'
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
+                         // The query predicate
+                        .Where(x => x.Name == "Joe")
+                        .ToList();
+                    
+                    // Variable 'userDocs' will include all documents of type 'User'
+                    // that match the query predicate and reside on the shard/s assigned to prefix 'users/'.
+                    
                     // Query for 'Company' documents from shard/s assigned to a specific prefix:
                     // =========================================================================
                     var companyDocs = session.Query<Company>()
-                         // Call 'ShardContext' to select which shard/s to query
-                         // RavenDB will query only the shard/s assigned to prefix 'users/us/'
-                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/us/")))
-                         // The query predicate
+                         // This example shows that the prefix doesn't need to match the document type queried 
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
                         .Where(x => x.Address.Country == "US")
                         .ToList();
                     
                     // Variable 'companyDocs' will include all documents of type 'Company'
-                    // that match the query predicate and reside on the shard/s assigned to prefix 'users/us/'.
+                    // that match the query predicate and reside on the shard/s assigned to prefix 'users/'.
                     
                     // Query for ALL documents from shard/s assigned to a specific prefix:
                     // ===================================================================
                     var allDocs = session.Query<object>() // query with <object>
-                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/us/")))
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
                         .ToList();
                     
                     // Variable 'allDocs' will include ALL documents that reside on
-                    // the shard/s assigned to prefix 'users/us/'.
+                    // the shard/s assigned to prefix 'users/'.
                     #endregion
                 }
                 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region query_1_async
+                    // Query for 'User' documents from shard/s assigned to a specific prefix:
+                    // ======================================================================
+                    var userDocs = await asyncSession.Query<User>()
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
+                        .Where(x => x.Name == "Joe")
+                        .ToListAsync();
+                    
                     // Query for 'Company' documents from shard/s assigned to a specific prefix:
                     // =========================================================================
                     var companyDocs = await asyncSession.Query<Company>()
-                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/us/")))
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
                         .Where(x => x.Address.Country == "US")
                         .ToListAsync();
                     
                     // Query for ALL documents from shard/s assigned to a specific prefix:
                     // ===================================================================
                     var allDocs = await asyncSession.Query<object>()
-                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/us/")))
+                        .Customize(x => x.ShardContext(s => s.ByPrefix("users/")))
                         .ToListAsync();
                     #endregion
                 }
@@ -285,17 +303,24 @@ namespace Raven.Documentation.Samples.Sharding
                 using (var session = store.OpenSession())
                 {
                     #region query_2
+                    // Query for 'User' documents from shard/s assigned to a specific prefix:
+                    // ======================================================================
+                    var userDocs = session.Advanced.DocumentQuery<Company>()
+                        .ShardContext(s => s.ByPrefix("users/"))
+                        .WhereEquals(x => x.Name, "Joe")
+                        .ToList();
+                    
                     // Query for 'Company' documents from shard/s assigned to a specific prefix:
                     // =========================================================================
                     var companyDocs = session.Advanced.DocumentQuery<Company>()
-                        .ShardContext(s => s.ByPrefix("users/us/"))
+                        .ShardContext(s => s.ByPrefix("users/"))
                         .WhereEquals(x => x.Address.Country, "US")
                         .ToList();
                     
                     // Query for ALL documents from shard/s assigned to a specific prefix:
                     // ===================================================================
                     var allDocs = session.Advanced.DocumentQuery<Company>()
-                        .ShardContext(s => s.ByPrefix("users/us/"))
+                        .ShardContext(s => s.ByPrefix("users/"))
                         .ToList();
                     #endregion
                 }
@@ -309,13 +334,25 @@ namespace Raven.Documentation.Samples.Sharding
                 using (var session = store.OpenSession())
                 {
                     #region query_3
+                    // Query for 'User' documents from shard/s assigned to the specified prefixes:
+                    // ===========================================================================
+                    var userDocs = session.Query<User>()
+                        // Call 'ShardContext' to select which shard/s to query
+                        // RavenDB will query only the shard/s assigned to prefixes 'users/us/' or 'users/asia/'
+                        .Customize(x => x.ShardContext(s => s.ByPrefixes(["users/us/", "users/asia/"])))
+                        // The query predicate
+                        .Where(x => x.Name == "Joe")
+                        .ToList();
+                    
+                    // Variable 'userDocs' will include all documents of type 'User'
+                    // that match the query predicate and reside on the shard/s
+                    // assigned to prefix 'users/us/' or prefix 'users/asia/'.
+                    
                     // Query for 'Company' documents from shard/s assigned to the specified prefixes:
                     // ==============================================================================
                     var companyDocs = session.Query<Company>()
-                         // Call 'ShardContext' to select which shard/s to query
-                         // RavenDB will query only the shard/s assigned to prefixes 'users/us/' or 'users/asia/'
+                         // This example shows that the prefixes don't need to match the document type queried 
                         .Customize(x => x.ShardContext(s => s.ByPrefixes(["users/us/", "users/asia/"])))
-                         // The query predicate
                         .Where(x => x.Address.Country == "US")
                         .ToList();
                     
@@ -337,6 +374,13 @@ namespace Raven.Documentation.Samples.Sharding
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region query_3_async
+                    // Query for 'User' documents from shard/s assigned to the specified prefixes:
+                    // ===========================================================================
+                    var userDocs = await asyncSession.Query<User>()
+                        .Customize(x => x.ShardContext(s => s.ByPrefixes(["users/us/", "users/asia/"])))
+                        .Where(x => x.Name == "Joe")
+                        .ToListAsync();
+                    
                     // Query for 'Company' documents from shard/s assigned to the specified prefixes:
                     // ==============================================================================
                     var companyDocs = await asyncSession.Query<Company>()
@@ -355,6 +399,13 @@ namespace Raven.Documentation.Samples.Sharding
                 using (var session = store.OpenSession())
                 {
                     #region query_4
+                    // Query for 'User' documents from shard/s assigned to the specified prefixes:
+                    // ===========================================================================
+                    var userDocs = session.Advanced.DocumentQuery<User>()
+                        .ShardContext(s => s.ByPrefixes(["users/us/", "users/asia/"]))
+                        .WhereEquals(x => x.Name, "Joe")
+                        .ToList();
+                    
                     // Query for 'Company' documents from shard/s assigned to the specified prefixes:
                     // ==============================================================================
                     var companyDocs = session.Advanced.DocumentQuery<Company>()
@@ -421,5 +472,10 @@ namespace Raven.Documentation.Samples.Sharding
                 }
             }
         }
+    }
+
+    public class User
+    {
+        public string Name { get; set; }
     }
 }
