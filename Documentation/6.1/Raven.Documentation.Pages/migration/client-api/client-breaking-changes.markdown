@@ -11,6 +11,7 @@ with their behavior in previous versions.
    * [CmpXchg item can only be created with an index of 0](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
    * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/client-breaking-changes#dynamic-linq-query-cannot-apply-.any-with-logical-and-(&&))  
    * [`LoadDocument` must be provided with a collection name string](../../migration/client-api/client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
+   * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/client-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
    * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes#consistency-in-null-handling)  
 
 {NOTE/}
@@ -20,12 +21,12 @@ with their behavior in previous versions.
 {PANEL: `CounterBatchOperation` default increment Delta is 1}
 
 When [CounterBatchOperation](../../client-api/operations/counters/counter-batch) is 
-called to `Increment` a batch of counters, and `Delta` is not specified to indicate 
+called to `Increment` a batch of counters, and no `Delta` is specified to indicate 
 what value should be added to the counters, the operation will increment the counters 
-by a default `Delta` of `1`.  
+by a default `Delta`.  
 
-(The default `Delta` was `0` in previous RavenDB versions, we changed it in this 
-version to make it consistent with the rest of the API.)
+  * Previous RavenDB versions set a default `Delta` of `0`, leaving the counters value unchanged.  
+  * Starting RavenDB `6.1` the default `Delta` is `1` to make it consistent with the rest of the API.  
 
 {CODE:csharp CounterBatchOperation@migration\BreakingChanges.cs /}
 
@@ -43,8 +44,8 @@ passed to the method is `0`.
 
 {PANEL: Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)}
 
-RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) when 
-they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
+RavenDB does not support dynamic Linq queries (i.e. queries executed over auto indexes) 
+when they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
 The below query, for example, is *not supported*.  
 
 {CODE-BLOCK:sql}
@@ -56,6 +57,14 @@ using (var store = new DocumentStore())
         .ToList();
 }
 {CODE-BLOCK/}
+
+{INFO: }
+While _auto_ indexes do not currently support this type of query, _static_ indexes do.  
+You can define a **static fanout index** that creates separate index entries for different 
+document sub-objects, and run your query over these entries.  
+Read about the indexing of nested data [here](../../indexes/indexing-nested-data),  
+and find explanations and samples for fanout indexes [here](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).  
+{INFO/}
 
 {PANEL/}
 
@@ -74,7 +83,7 @@ The following query, for example, will fail because it attempts to build the col
 from doc in docs.Orders
 select new {
     // This attempt to construct a collection name will fail with an exception
-    ComapnyName = LoadDocument(doc.Company, doc.Company.Split('/')[0]).Name
+    CompanyName = LoadDocument(doc.Company, doc.Company.Split('/')[0]).Name
 }
 {CODE-BLOCK/}
 
@@ -86,6 +95,26 @@ than a string will fail but the failure will remain unnoticed and an exception
 will not be thrown.
 {NOTE/}
 
+{PANEL/}
+
+{PANEL: Tracking operations using the Changes API now requires Node Tag}
+
+[Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes) 
+now requires that you pass the changes API both a database name **and** a node tag for the specific node that 
+runs the operation/s you want to track, to ensure that the API consistently tracks this selected node.  
+
+The changes API can be opened using two `Changes` overloads. The first passes the API only the database name 
+and is capable of tracking all entities besides operations. Attempting to track operations after opening the 
+API this way will fail with an `ArgumentException` exception and the following message:  
+`"Changes API must be provided a node tag in order to track node-specific operations."`
+
+To track operations, open the API using this overload:  
+{CODE:csharp changes-definition@migration\BreakingChanges.cs /}  
+
+Then, you can use `ForOperationId` or `ForAllOperations` to track a certain operation or all 
+the operations executed by the selected node. Here's a simple usage example:  
+{CODE:csharp changes_ForOperationId@migration\BreakingChanges.cs /}  
+ 
 {PANEL/}
 
 {PANEL: Consistency in `null` handling}

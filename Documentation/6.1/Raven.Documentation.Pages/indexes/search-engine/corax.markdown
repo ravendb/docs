@@ -343,12 +343,12 @@ Please consider querying on individual fields of that object or using
 a static index.
 {CODE-BLOCK/}
 
-* **New static index** - created or reset on RavenDB `6.1.x` and on  
+* **New static index** (created or reset on RavenDB `6.1.x` and on)  
   The index will behave as determined by the 
   [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior) 
   configuration option.  
    * If `ComplexFieldIndexingBehavior` is set to **`Throw`** -  
-     Corax will throw a `NotSupportedInCoraxException ` exception with this message:  
+     Corax will throw a `NotSupportedInCoraxException` exception with this message:  
      {CODE-BLOCK:JSON}
 The value of `{fieldName}` field is a complex object.  
 Typically a complex field is not intended to be indexed as a whole hence indexing 
@@ -365,7 +365,7 @@ Read more at: https://ravendb.net/l/OB9XW4/6.1
    * If `ComplexFieldIndexingBehavior` is set to **`Skip`** -  
      Corax will skip indexing the complex field without throwing an exception.  
 
-* **Old static index** - created using RavenDB `6.0.x` or older  
+* **Old static index** (created using RavenDB `6.0.x` or older)  
   If the index doesn't explicitly relate to the complex field, Corax will automatically 
   **disable indexing** for this field by defining **Indexing: No** for it as shown 
   [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field).  

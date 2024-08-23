@@ -506,18 +506,12 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
 
 Set Corax's [default behavior](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
 when a static index is requested to index a complex JSON object.  
+`CoraxComplexFieldIndexingBehavior.Throw` - Corax will throw a `NotSupportedInCoraxException` exception  
+`CoraxComplexFieldIndexingBehavior.Skip` - Corax will skip indexing the complex field without throwing an exception.  
 
-- **Type**: `enum`
-  {CODE-BLOCK:csharp}
-  public enum CoraxComplexFieldIndexingBehavior
-  {
-     None,
-     Throw,
-     Skip
-  }
-  {CODE-BLOCK/}
-- **Default**: `CoraxComplexFieldIndexingBehavior.Throw`
-- **Scope**: Server-wide, or per database, or per index
+- **Type**: `enum`  
+- **Default**: `CoraxComplexFieldIndexingBehavior.Throw`  
+- **Scope**: Server-wide, or per database, or per index  
 
 {PANEL/}
 
