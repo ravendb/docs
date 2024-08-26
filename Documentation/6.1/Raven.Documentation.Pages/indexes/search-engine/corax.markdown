@@ -370,7 +370,9 @@ Read more at: https://ravendb.net/l/OB9XW4/6.1
   **disable indexing** for this field by defining **Indexing: No** for it as shown 
   [above](../../indexes/search-engine/corax#disable-the-indexing-of-the-complex-field).  
    * If the Indexing flag is set to anything but "no" -  
-     Corax will throw a `NotSupportedInCoraxException ` exception.  
+     Corax will throw a `NotSupportedInCoraxException` exception.  
+     As disabling indexing for this field will prevent additional attempts to index its values,  
+     the exception will be thrown just once.  
 
 {PANEL/}
 

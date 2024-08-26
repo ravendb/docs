@@ -23,9 +23,9 @@ deprecated `System.Data.SqlClient` package we've been using in previous versions
 to include in its connection string an `Encrypt` property that would determine 
 whether to encrypt the connection or not.  
 
-Some RavenDB versions preceding `6.1` (down to `6.0.105`) added this 
-property to their connection strings without bothering their users, setting 
-it to [Encrypt=Optional](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlconnectionencryptoption.optional?view=sqlclient-dotnet-standard-5.2#microsoft-data-sqlclient-sqlconnectionencryptoption-optional) 
+RavenDB versions preceding `6.1` (down to `6.0.105`) added this property 
+to their connection strings without bothering their users, setting it to 
+[Encrypt=Optional](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlconnectionencryptoption.optional?view=sqlclient-dotnet-standard-5.2#microsoft-data-sqlclient-sqlconnectionencryptoption-optional) 
 and leaving the connection unencrypted unless users set it differently on 
 their own accord.  
 From RavenDB 6.1 on, we no longer include this property in MSSQL connection 

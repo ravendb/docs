@@ -8,5 +8,10 @@
         "Path": "/server",
         "Name": "Server",
         "Mappings": []
+    },
+    {
+        "Path": "/embedded",
+        "Name": "Embedded",
+        "Mappings": []
     }
 ]
