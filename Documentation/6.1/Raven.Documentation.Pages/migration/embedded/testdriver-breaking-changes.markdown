@@ -28,25 +28,26 @@ licensed using a [free developers license](https://ravendb.net/buy#developer)
 can use up to 9 cores and run way faster.  
 
 RavenDB `5.4` introduced the `ThrowOnInvalidOrMissingLicense` exception, thrown 
-if TestDriver runs using an unlicensed server to notify users they may miss out 
+if TestDriver runs using an unlicensed server to notify users that they may miss out 
 on much of their system's potential.  
-a `TestServerOptions.License.ThrowOnInvalidOrMissingLicense` flag was introduced 
-along with it, determining whether the exception would be thrown or not when the 
-server is used without license.  
+A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` flag was introduced 
+along with the exception, determining whether to throw the exception or not when the 
+server is used without a license.  
 
-In version `5.4`, the default value we gave this flag was `false`; an exception 
-**wouldn't** be thrown even if the server was unlicensed. For an exception to be 
-thrown, users needed to change the flag to `true` on their own initiative.  
+In version `5.4`, the default value for this flag was `false`, disabling the exception 
+even if the server is unlicensed. For an exception to be thrown, users needed to change 
+the flag to `true` on their own initiative.  
 
 ### The breaking change:
 
-In version `6.1`, we **changed** the default value of the `TestServerOptions.License.ThrowOnInvalidOrMissingLicense` 
-flag to `true`; a `ThrowOnInvalidOrMissingLicense` exception **would** be thrown if 
-a license wasn't provided yet while running TestDriver.  
+In version `6.1`, the default value given to `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+has **changed** to `true`; a `ThrowOnInvalidOrMissingLicense` exception **would** 
+be thrown if TestDriver runs with an embedded server that hasn't been provided with 
+a license yet.  
 
 Users that prefer not to license their embedded server for some reason can disable 
-the exception by changing the value of this flag to `false`. TestDriver tests will 
-still run, but server capabilities will be limited to those defined by the basic 
+the exception by setting the flag to `false`. TestDriver tests will still run, but 
+the server's capabilities will be limited to those defined by the basic 
 [AGPL](https://ravendb.net/legal/ravendb/commercial-license-eula) license.  
 
 {PANEL/}
