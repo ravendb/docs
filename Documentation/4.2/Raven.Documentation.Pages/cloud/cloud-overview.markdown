@@ -306,6 +306,9 @@ RavenDB provides a built-in [GUI to monitor and manage](../studio/overview) your
    The example image above shows the certificate name after the node-tag "a." in the URL - "free.serez".  
    Choosing the wrong certificate will result in a recurring [error](../server/security/common-errors-and-faq#authentication-issues)
    when trying to access the Studio.
+5. **Product Labels**
+   Product labels describe current alerts for given product. Product alerts are described
+   on [Maintenance & Troubleshooting](./cloud-maintenance-troubleshooting) page.
 
 ---
 
