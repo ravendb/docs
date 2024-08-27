@@ -264,6 +264,11 @@ __Send syntax__:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
 
+* **Sharding**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
+
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
