@@ -147,6 +147,8 @@ class SubscriptionExamples(ExampleBase):
             # endregion
 
             # region create_whole_collection_generic1
+            # With the following subscription definition, the server will send all documents
+            # from the 'Orders' collection to a client that connects to this subscription.
             name = store.subscriptions.create_for_class(Order)
             # endregion
 
@@ -159,9 +161,11 @@ class SubscriptionExamples(ExampleBase):
             name = store.subscriptions.create_for_options(
                 SubscriptionCreationOptions(
                     query=(
-                        "declare function getOrderLinesSum(doc){"
+                        "declare function getOrderLinesSum(doc) {"
                         "    var sum = 0;"
-                        "    for (var i in doc.Lines) { sum += doc.Lines[i]; }"
+                        "    for (var i in doc.Lines) {"
+                        "        sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;"
+                        "    }"
                         "    return sum;"
                         "}"
                         "From Orders as o "
@@ -175,16 +179,18 @@ class SubscriptionExamples(ExampleBase):
             name = store.subscriptions.create_for_options(
                 SubscriptionCreationOptions(
                     query="""
-                    declare function getOrderLinesSum(doc){
+                    declare function getOrderLinesSum(doc) {
                         var sum = 0;
-                        for (var i in doc.Lines) { sum += doc.Lines[i]; }
+                        for (var i in doc.Lines) {
+                            sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                        }
                         return sum;
                     }
                     
-                    declare function projectOrder(doc){
+                    declare function projectOrder(doc) {
                         return {
-                            Id: order.Id,
-                            Total: getOrderLinesSum(order)
+                            Id: doc.Id,
+                            Total: getOrderLinesSum(doc)
                         };
                     }
                     
@@ -200,21 +206,27 @@ class SubscriptionExamples(ExampleBase):
             name = store.subscriptions.create_for_options(
                 SubscriptionCreationOptions(
                     query="""
-                    declare function getOrderLinesSum(doc){
+                    declare function getOrderLinesSum(doc) {
                         var sum = 0;
-                        for (var i in doc.Lines) { sum += doc.Lines[i]; }
+                        for (var i in doc.Lines) {
+                            sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                        }
                         return sum;
                     }
                    
-                    declare function projectOrder(doc){
+                    declare function projectOrder(doc) {
+                        var employee = load(doc.Employee);
                         return {
-                            Id: order.Id,
-                            Total: getOrderLinesSum(order)
+                            Id: doc.Id,
+                            Total: getOrderLinesSum(doc),
+                            ShipTo: doc.ShipTo,
+                            EmployeeName: employee.FirstName + ' ' + employee.LastName
                         };
                     }
                    
                     From Orders as o
-                    Where getOrderLinesSum(o)
+                    Where getOrderLinesSum(o) > 100
+                    Select projectOrder(o)
                     """
                 )
             )
@@ -337,22 +349,22 @@ class SubscriptionExamples(ExampleBase):
             store.subscriptions.create_for_options(
                 SubscriptionCreationOptions(
                     query="""
-                declare function includeProducts(doc) 
-                {
-                    doc.IncludedFields=0;
-                    doc.LinesCount = doc.Lines.length;
-                    for (let i=0; i< doc.Lines.length; i++)
-                    {
-                        doc.IncludedFields++;
-                        include(doc.Lines[i].Product);
+                    declare function includeProducts(doc) {
+                        let includedFields = 0;
+                        let linesCount = doc.Lines.length;
+
+                        for (let i = 0; i < linesCount; i++) {
+                            includedFields++;
+                            include(doc.Lines[i].Product);
+                        }
+
+                        return doc;
                     }
-                    return doc;
-                }
-                from Orders as o select includeProducts(o)
-                """
+
+                    from Orders as o select includeProducts(o)
+                    """
                 )
             )
-
             # endregion
 
             # region include_builder_counter_methods

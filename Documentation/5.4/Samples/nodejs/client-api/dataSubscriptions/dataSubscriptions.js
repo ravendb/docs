@@ -40,11 +40,17 @@ const session = store.openSession();
 
     //region subscriptions_example
     async function worker() {
+    
+        // Create the ongoing subscription task on the server
         const subscriptionName = await store.subscriptions.create({ 
             query: "from Orders where Company = 'companies/11'" 
         });
-        const subscription = store.subscriptions.getSubscriptionWorker(subscriptionName);
-        subscription.on("batch", (batch, callback) => {
+        
+        // Create a worker on the client that will consume the subscription
+        const worker = store.subscriptions.getSubscriptionWorker(subscriptionName);
+
+        // Listen for and process data received in batches from the subscription
+        worker.on("batch", (batch, callback) => {
             for (const item of batch.items) {
                 console.log(`Order #${item.result.Id} will be shipped via: ${item.result.ShipVia}`);
             }
@@ -78,6 +84,8 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic1
+            // With the following subscription definition, the server will send all documents
+            // from the 'Orders' collection to a client that connects to this subscription.
             store.subscriptions.create(Order);
             //endregion
         }
