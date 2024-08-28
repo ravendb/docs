@@ -158,7 +158,7 @@ In this example we update the filtering **query** of an existing subscription na
 
 {NOTE: }
 
-**Modify the subscription's name**:
+**Modifying the subscription's name**:
 
 In addition to names, subscriptions also have a **subscription ID** on the server side.  
 This ID can be used to identify the subscription instead of using its name.  
