@@ -122,7 +122,7 @@ public class DataSubscriptions {
 
         {
             //region create_whole_collection_generic1
-            // With the following subscription definition, the server will send all documents
+            // With the following subscription definition, the server will send ALL documents
             // from the 'Orders' collection to a client that connects to this subscription.
             name = store.subscriptions().create(Order.class);
             //endregion

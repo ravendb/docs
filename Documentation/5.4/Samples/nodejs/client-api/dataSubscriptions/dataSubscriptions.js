@@ -66,17 +66,19 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic_with_name
-            const name = await store.subscriptions.create({ 
-                name: "OrdersProcessingSubscription",
-                documentType: Order
+            const subscriptionName = await store.subscriptions.create({
+                query: "from Orders",
+                // Set a custom name for the subscription 
+                name: "OrdersProcessingSubscription"
             });
             //endregion
         }
 
         {
             //region create_whole_collection_generic_with_mentor_node
-            const name = await store.subscriptions.create({
-                documentType: Order,
+            const subscriptionName = await store.subscriptions.create({
+                query: "from Orders",
+                // Set a responsible node for the subscritpion 
                 mentorNode: "D"
             });
             //endregion
@@ -84,91 +86,10 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic1
-            // With the following subscription definition, the server will send all documents
+            // With the following subscription definition, the server will send ALL documents
             // from the 'Orders' collection to a client that connects to this subscription.
-            store.subscriptions.create(Order);
-            //endregion
-        }
-
-        {
-            //region create_whole_collection_RQL
-            store.subscriptions.create({ query: "from Orders" });
-            //endregion
-        }
-
-        {
-            //region create_filter_only_RQL
-            const query = `declare function getOrderLinesSum(doc) {
-                    var sum = 0;
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-                from Orders as o 
-                where getOrderLinesSum(o) > 100`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_filter_and_projection_RQL
-            const query = 
-                `declare function getOrderLinesSum(doc) {
-                    var sum = 0; 
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-
-                declare function projectOrder(doc) {
-                     return {
-                         Id: order.Id,
-                         Total: getOrderLinesSum(order)
-                     }
-                 }
-                 from order as o 
-                 where getOrderLinesSum(o) > 100 
-                 select projectOrder(o)`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_filter_and_load_document_RQL
-            const query =
-                `declare function getOrderLinesSum(doc) {
-                    var sum = 0;
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-
-                declare function projectOrder(doc) {
-                     var employee = LoadDocument(doc.Employee);
-                     return {
-                         Id: order.Id,
-                         Total: getOrderLinesSum(order),
-                         ShipTo: order.ShipTo,
-                         EmployeeName: employee.FirstName + ' ' + employee.LastName
-                     }
-                 }
-                 from order as o
-                 where getOrderLinesSum(o) > 100
-                 select projectOrder(o)`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_simple_revisions_subscription_generic
-            const name = await store.subscriptions.createForRevisions(Order);
-            //endregion
-        }
-
-        {
-            //region create_simple_revisions_subscription_RQL
-            const name = await store.subscriptions.createForRevisions({
-                query: "from orders (Revisions = true)"
+            const subscriptionName = await documentStore.subscriptions.create({
+                query: "from Orders"
             });
             //endregion
         }

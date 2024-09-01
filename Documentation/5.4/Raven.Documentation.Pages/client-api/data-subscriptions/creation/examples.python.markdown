@@ -3,6 +3,11 @@
 
 {NOTE: }
 
+* This page contains examples of **creating a subscription**.  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
+
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
+
 * In this page:
     * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)
     * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)
@@ -18,8 +23,8 @@
 
 {PANEL: Create subscription - for all documents in a collection}
 
-Here we create a plain subscription on the Orders collection without any constraints or transformations.  
-The server will send all documents from the Orders collection to a client that connects to this subscription.
+Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
+The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
 
 {CODE-TABS}
 {CODE-TAB:python:Generic-syntax create_whole_collection_generic_with_name@ClientApi\DataSubscriptions\DataSubscriptions.py /}
@@ -30,8 +35,8 @@ The server will send all documents from the Orders collection to a client that c
 
 {PANEL: Create subscription - filter documents}
 
-Here we create a subscription for documents from the Orders collection where the total order revenue is greater than 100.
-Only documents that match this criteria will be sent from the server to a client connected to this subscription.
+Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
+Only documents that match this condition will be sent from the server to a client connected to this subscription.
 
 {CODE:python create_filter_only_RQL@ClientApi\DataSubscriptions\DataSubscriptions.py /}
 
@@ -39,7 +44,7 @@ Only documents that match this criteria will be sent from the server to a client
 
 {PANEL: Create subscription - filter and project fields}
 
-Here, again, we create a subscription for documents from the Orders collection where the total order revenue is greater than 100.
+Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
 However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
 
 {CODE:python create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.py /}
@@ -49,7 +54,7 @@ However, this time we only project the document ID and the Total Revenue propert
 {PANEL: Create subscription - project data from a related document}
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `Load` method.
+we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
 
 {CODE:python create_filter_and_load_document_RQL@ClientApi\DataSubscriptions\DataSubscriptions.py /}
 
@@ -57,7 +62,7 @@ we also project data from a [related document](../../../indexes/indexing-related
 
 {PANEL: Create subscription - include documents}
 
-Here we create a subscription on the Orders collection, which returns all the _Order_ documents.
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.
 
 In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client.
 This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
@@ -122,8 +127,8 @@ the include will search for the specified paths in the projected fields rather t
 | **name**    | `str` | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
 | **\*names** | `str` | Array of counter names.                                                                                                                          |
 
-In the following example we create a subscription that uses all three methods to include counters.  
-This demonstrates how the methods can be chained (note that calling `include_all_counters` makes the other two methods redundant).
+The following subscription, which includes multiple counters in the batch sent to the client,  
+demonstrates how the methods can be chained.
 
 {CODE:python create_subscription_include_counters_builder@ClientApi\DataSubscriptions\DataSubscriptions.py /}
 
@@ -142,8 +147,8 @@ In this example we update the filtering query of an existing subscription named 
 
 **Modifying the subscription's name**:
 
-In addition to names, subscriptions also have a **subscription ID** on the server side.  
-This ID can be used to identify the subscription instead of using its name.
+In addition to the subscription name, each subscription is assigned a **subscription ID** when it is created by the server. 
+This ID can be used to identify the subscription, instead of the name, when updating the subscription.
 
 This allows users to change an existing subscription's **name** by specifying the subscription's ID  
 and submitting a new string in the `name` field of `SubscriptionUpdateOptions`.

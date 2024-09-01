@@ -147,7 +147,7 @@ class SubscriptionExamples(ExampleBase):
             # endregion
 
             # region create_whole_collection_generic1
-            # With the following subscription definition, the server will send all documents
+            # With the following subscription definition, the server will send ALL documents
             # from the 'Orders' collection to a client that connects to this subscription.
             name = store.subscriptions.create_for_class(Order)
             # endregion
@@ -381,16 +381,17 @@ class SubscriptionExamples(ExampleBase):
             store.subscriptions.create_for_class(
                 Order,
                 SubscriptionCreationOptions(
-                    includes=lambda builder: builder.include_counter("numLines")
-                    .include_counters("pros", "cons")
-                    .include_all_counters()
+                    includes=lambda builder: builder
+                    .include_counter("Likes")
+                    .include_counters("Pros", "Cons")
                 ),
             )
             # endregion
             
             
             # region update_subscription_example_0
-            store.subscriptions.update(SubscriptionUpdateOptions(name="My subscription", query="From Orders"))
+            store.subscriptions.update(SubscriptionUpdateOptions(
+                name="My subscription", query="from Products where PricePerUnit > 50"))
             # endregion
             
             

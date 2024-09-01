@@ -149,7 +149,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
             #region create_whole_collection_generic1
-            // With the following subscription definition, the server will send all documents
+            // With the following subscription definition, the server will send ALL documents
             // from the 'Orders' collection to a client that connects to this subscription.
             subscriptionName = store.Subscriptions.Create<Order>();
             #endregion
@@ -277,7 +277,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
             #region create_simple_revisions_subscription_RQL
-            subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 Query = @"From Orders (Revisions = true)"
             });
@@ -384,7 +384,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
             #region create_subscription_with_includes_strongly_typed
-            store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+            subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
             {
                 Includes = builder => builder
                      // The documents whose IDs are specified in the 'Product' property
@@ -394,14 +394,14 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
             
             #region create_subscription_with_includes_rql_path
-            store.Subscriptions.Create(new SubscriptionCreationOptions()
+            subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 Query = @"from Orders include Lines[].Product"
             });
             #endregion
 
             #region create_subscription_with_includes_rql_javascript
-            store.Subscriptions.Create(new SubscriptionCreationOptions()
+            subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 Query = @"declare function includeProducts(doc) {
                               let includedFields = 0;
@@ -427,26 +427,57 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             // Include multiple counters
             ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
 
-            // Include ALL counters from ALL subscribed documents.
+            // Include ALL counters from ALL documents that match the subscription criteria
             ISubscriptionIncludeBuilder<T> IncludeAllCounters();
             #endregion
             */
 
             #region create_subscription_include_counters_builder
-            store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+            subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+            {
+                Includes = builder => builder
+                     // Values for the specified counters will be included in the batch
+                    .IncludeCounters(new[] { "Pros", "Cons" })
+            });
+            #endregion
+            
+            #region create_subscription_include_counters_rql
+            subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+            {
+                Query = @"from Orders include counters('Pros'), counters('Cons')"
+            });
+            #endregion
+            
+            #region create_subscription_include_chained_builder
+            subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
             {
                 Includes = builder => builder
                     .IncludeCounter("Likes")
                     .IncludeCounters(new[] { "Pros", "Cons" })
-                    .IncludeAllCounters()
+                    .IncludeDocuments("Employee")
             });
             #endregion
 
-            #region update_subscription_example_0
-            store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            #region create_by_update
+            subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
             {
                 Name = "my subscription",
-                Query = "From Orders" // Provide the new query string
+                Query = "from Products where PricePerUnit > 20",
+                
+                // Set to true so that a new subscription will be created 
+                // if a subscription with name "mySubscription" does Not exist
+                CreateNew = true
+            });
+            #endregion
+            
+            #region update_subscription_example_0
+            subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            {
+                // Specify the subscription you wish to modify
+                Name = "my subscription",
+                
+                // Provide a new query
+                Query = "from Products where PricePerUnit > 50" 
             });
             #endregion
 
@@ -455,11 +486,24 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             SubscriptionState mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
             long subscriptionId = mySubscription.SubscriptionId;
 
-            // Update the subscription's name
-            store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            // Update the subscription
+            subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
             {
                 Id = subscriptionId,
-                Name = "new name"
+                Query = "from Products where PricePerUnit > 50" 
+            });
+            #endregion
+            
+            #region update_subscription_example_2
+            // Get the subscription's ID
+            mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+            subscriptionId = mySubscription.SubscriptionId;
+
+            // Update the subscription name
+            subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+            {
+                Id = subscriptionId,
+                Name = "New name" 
             });
             #endregion
         }

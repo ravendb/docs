@@ -30,20 +30,24 @@
 Data subscription is a batch processing mechanism that sends documents that meet specific criteria to connected clients.
 
 In order to create a data subscription, we first need to define the criteria.  
-The minimum is to provide the collection to which the data subscription belongs.
-However, the criteria can be a complex RQL-like expression defining JavaScript functions for the filtering and the projections.  
-See a simple example:
+The basic requirement is to specify the collection from which the subscription will retrieve documents.  
+However, the criteria can be a complex RQL-like expression defining JavaScript functions that filter documents and project their content.  
 
-{CODE:nodejs create_whole_collection_generic1@client-api\dataSubscriptions\dataSubscriptions.js /}
+* The following is a simple subscription definition:
 
-For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples).
+    {CODE:nodejs create_whole_collection_generic1@client-api\dataSubscriptions\dataSubscriptions.js /}
+
+* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples).
+
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
 
 {PANEL/}
 
 {PANEL: Subscription name}
 
 In order to consume a data subscription, a subscription name is required to identify it.  
-By default, the server can generate a subscription name on its own, but it's also possible to pass a custom name.
+If you don't specify a name when creating the subscription, the server will automatically generate a default name.  
+However, you have the option to provide a custom name for the subscription.  
 
 A dedicated name can be useful for use cases like dedicated, long-running batch processing mechanisms,  
 where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
