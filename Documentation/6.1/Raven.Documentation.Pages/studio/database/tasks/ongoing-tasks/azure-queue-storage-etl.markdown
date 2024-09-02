@@ -128,6 +128,8 @@ You can configure the ETL process to delete documents from RavenDB that have alr
    Click to add a per-queue option.  
 2. **Queue Name**  
    Enter the name of the Azure Queue Storage the documents are loaded to.  
+   Note: The queue name defined in the transform script must follow the set of rules outlined in:  
+   [Naming Queues and Metadata](https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names ).
 3. **Delete processed documents**  
    Enable this option to remove documents that were processed and loaded to the Azure Queue Storage from the RavenDB database.   
 4. **Delete queue option**  

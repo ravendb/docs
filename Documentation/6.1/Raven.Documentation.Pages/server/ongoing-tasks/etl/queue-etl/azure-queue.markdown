@@ -52,7 +52,7 @@ The connection string includes the authorization credentials required to connect
 ---
 
 #### Authentication methods:  
-There are three authenticaton methods available:
+There are three authentication methods available:
 
 * **Connection string**  
     * Provide a single string that includes all the options required to connect to your Azure account.  
@@ -161,7 +161,7 @@ For example, the following two calls, which load data to "OrdersQueue", are equi
 
 ---
 
-A sample script that processes documents from the Orders collection:
+The following is a sample script that processes documents from the Orders collection:
 
 {CODE-BLOCK: JavaScript}
 // Create an orderData object
@@ -188,6 +188,14 @@ loadToOrdersQueue(orderData, {
     Source: '/promotion-campaigns/summer-sale'
 })
 {CODE-BLOCK/}
+
+{INFO: }
+
+Note:  
+The queue name defined in the transform script must follow the set of rules outlined in:  
+[Naming Queues and Metadata](https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names ).
+
+{INFO/}
 
 {PANEL/}
 
