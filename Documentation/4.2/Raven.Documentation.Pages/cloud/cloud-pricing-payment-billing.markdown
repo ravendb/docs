@@ -177,6 +177,8 @@ The `Pay Now` button becomes visible on your Billing tab dashboard once there ar
 
 {INFO: }
 There is one exception to this rule, on the billing day (27th of the month) `Pay Now` functionality is disabled, so the button won't be visible.
+
+After a failed charge attempt, another attempt can be made after **60** minutes.
 {INFO/}
 
 If you have resolved the issue associated with the charge failure (e.g., updated payment information), you can manually initiate the payment by clicking the `Pay Now` button.
