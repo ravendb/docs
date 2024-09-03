@@ -56,15 +56,15 @@ You can read more about the *Response time* types in the [Support](../../cloud/c
 
 !["Figure 4 - Request to enable the Cloud Support option"](images\portal-support-request-cloud-support-on-free-support.png "Figure 4 - Request to enable the Cloud Support option")
 
-To request the **Cloud Support option**, please click the *Request Cloud Support Activation* button. 
-This will send a support request to our *RavenDB Cloud* support team. 
+To request the **Cloud Support option**, please click the *Request Cloud Support Activation* button.
+This will show you Support Activation Request Form. There you can select type of support you want to activate and send a
+support request to our *RavenDB Cloud* support team with *Request Activation* button.
+
+!["Figure 5 - Support Activation Request Form"](images\portal-support-activation-request-form.png "Figure 5 - Support Activation Request Form")
+
+
 After verification, the support team will add the support option to your account, which 
 will be confirmed in a separate email.
-
-{INFO: }
-The *Cloud Support Activation* email requests the enabling of the **Cloud Support option** for a period of **12 months**. 
-If you want to change this period, please send a *support request* via the *Support form*.
-{INFO/}
 
 {INFO: }
 Cloud Support activation takes up to **3 business days**.
