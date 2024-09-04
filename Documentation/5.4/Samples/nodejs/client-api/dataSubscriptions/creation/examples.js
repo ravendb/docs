@@ -254,18 +254,5 @@ async function createExamples() {
         //endregion
     }
 
-    {
-        //region include_coutners_syntax
-        // Include a single counter
-        includeCounter(name);
-        
-        // Include multiple counters
-        includeCounters(names);
-        
-        // Include ALL counters from ALL documents that match the subscription criteria
-        includeAllCounters();
-        //endregion
-    }
-
     class Order {}
 }

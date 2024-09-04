@@ -1,13 +1,12 @@
-# Data Subscriptions: Creation and Update API Overview
-
+# Create and Update Subscription API
 ---
 
 {NOTE: }
 
 * In this page:  
-   * [Subscription Creation](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation)  
+   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview#create-subscription)  
    * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
-   * [Update Subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
+   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
    * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions)  
    * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
 
@@ -15,7 +14,7 @@
 
 ---
 
-{PANEL:Subscription Creation}
+{PANEL: Create subscription}
 
 Subscriptions can be created using the `create_for_options` and `create_for_class` methods.  
 {CODE:python subscriptionCreationOverloads@ClientApi\DataSubscriptions\DataSubscriptions.py /}
@@ -23,7 +22,7 @@ Subscriptions can be created using the `create_for_options` and `create_for_clas
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
 | **options** | `SubscriptionCreationOptions` | Contains subscription creation options |
-| **database** (Optional) | `[str]` | Name of database to create a data subscription. If `None`, default database configured in DocumentStore will be used. |
+| **database** (Optional) | `[str]` | The name of the database where the subscription task will be created. If `None`, default database configured in DocumentStore will be used. |
 | **object_type** | `Type[_T]` | Predicate describing the subscription documents filter |
 
 | Return value | Description |
@@ -32,22 +31,22 @@ Subscriptions can be created using the `create_for_options` and `create_for_clas
 
 {PANEL/}
 
-{PANEL:SubscriptionCreationOptions}
+{PANEL: SubscriptionCreationOptions}
 
 An RQL statement will be built based on the fields.  
 {CODE:python sub_create_options@ClientApi\DataSubscriptions\DataSubscriptions.py /}
 
-| Member | Type | Description |
-|--------|:-----|-------------| 
-| **name** (Optional) | `str` | User-defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database. |
-| **query** (Optional) | `str` | RQL query that describes the subscription. This RQL comes with additional support to JavaScript clause inside the `where` statement and special semantics for subscriptions on documents revisions. |
-| **change_vector** (Optional) | `str` | Allows to define a change vector, from which the subscription will start processing. It might be useful for ad-hoc processes that need to process only recent changes in data, for that specific use, the field may receive a special value: "LastDocument", that will take the latest change vector in the machine. |
-| **mentor_node** (Optional) | `str` | Allows to define a specific node in the cluster that we want to treat the subscription. That's useful in cases when one server is preffered over other, either because of stronger hardware or closer geographic proximity to clients etc. |
-| **includes** (Optional) | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#including-counters). |
+| Member                       | Type                                     | Description                                                                                                                                                                                                                                                                                                                                                                                  |
+|------------------------------|:-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **name** (Optional)          | `str`                                    | User-defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database.                                                                                                                                                                                                                                            |
+| **query** (Optional)         | `str`                                    | RQL query that describes the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                                                                                                                          |
+| **change_vector** (Optional) | `str`                                    | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                           |
+| **mentor_node** (Optional)   | `str`                                    | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                 |
+| **includes** (Optional)      | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). |
 
 {PANEL/}
 
-{PANEL: Update Subscription}
+{PANEL: Update subscription}
 
 Modifies an existing data subscription. These methods are accessible at `DocumentStore.Subscriptions`.  
 
@@ -56,7 +55,7 @@ Modifies an existing data subscription. These methods are accessible at `Documen
 | Parameter | Type | Description |
 | - | - | - |
 | **options** | `SubscriptionUpdateOptions` | A subscription update options object |
-| **database** (Optional) | `str` | Name of database to create a data subscription. If `None`, default database configured in DocumentStore will be used. |
+| **database** (Optional) | `str` | The name of the database where the subscription task will be created. If `None`, default database configured in DocumentStore will be used. |
 
 | Return value | Description |
 | ------------- | ----- |
@@ -73,13 +72,13 @@ Inherits from `SubscriptionCreationOptions` and has all the same fields (see [ab
 | Parameter | Type | Description |
 | - | - | - |
 | **key** (Optional) | `int` | Unique server-side ID of the data subscription. `key` can be used instead of the subscription update options `name` field, and takes precedence over it. This allows you to change the subscription's name: submit a subscription's ID, and submit a different name in the `name` field. |
-| **create_new** (Optional) | `bool` | If set to `True`, and the specified subscription does not exist, the subscription is created. If set to `False`, and the specified subscription does not exist, an exception is thrown. |
+| **create_new** (Optional) | `bool` | Determines the behavior when the subscription you wish to update does Not exist.<br>`true` - a new subscription is created with the provided option parameters.<br>`false` - an exception will be thrown.<br>Default: `false`   |
 
 {PANEL/}
 
 {PANEL: Subscription query} 
 
-All subscriptions, are eventually translated to an RQL-like statement. These statements has four parts:
+All subscriptions are eventually translated to an RQL-like statement. These statements have the following parts:
 
 * Functions definition part, like in ordinary RQL. Those functions can contain any JavaScript code,
   and also supports `load` and `include` operations.
@@ -87,12 +86,12 @@ All subscriptions, are eventually translated to an RQL-like statement. These sta
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-send the documents to the worker or not. Those statements supports either RQL like `equality` operations (`=`, `==`) ,  
-plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
-The subscriptions RQL does not support any of the known RQL searching keywords.
+  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
+  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
-The select statements can contain function calls, allowing complex transformations.
+  The select statements can contain function calls, allowing complex transformations.
 
 * Include statement allowing to define include path in document.  
 
