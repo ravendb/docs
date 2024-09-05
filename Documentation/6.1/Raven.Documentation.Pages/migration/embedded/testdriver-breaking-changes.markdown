@@ -41,28 +41,39 @@ can use up to 9 cores and run way faster.
 * A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` configuration option 
   is available since RavenDB `5.4`, determining whether to throw a `LicenseExpiredException` 
   exception if TestDriver uses an unlicensed embedded server.  
-   * If `ThrowOnInvalidOrMissingLicense` is set to `true` and validation fails, the 
-     exception **will be thrown** to **warn TestDriver users** that their server's capabilities 
-     are limited and they may miss out on much of their system's potential.  
-   * If the configuration option is set to `false`, **no exception will be thrown** even 
-     if validation fails.  
+   * If `ThrowOnInvalidOrMissingLicense` is set to **`true`** and the validation fails, 
+     a `LicenseExpiredException` exception will be thrown to **warn TestDriver users** 
+     that in lack of a valid license, their server's capabilities are limited and they 
+     may therefore miss out on much of their system's potential.  
+   * If the configuration option is set to **`false`**, **no exception will be thrown** 
+     even if a license cannot be validated.  
+
+---
 
 ### The breaking change:
 
-Up until RavenDB version `6.0`, `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
-was set by default to `false`, so no exception was thrown even if license validation failed.  
-For an exception to be thrown, users needed to change the flag to `true` on their own initiative.  
+Up until RavenDB version `6.0` we set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+to **`false`** by default, so no exception would be thrown even if license validation fails.  
+For an exception to be thrown, users needed to change the flag to **`true`** on their own initiative.  
 
-In version `6.1`, the default value for this configuration option **changed** to `true`;  
+In version `6.1`, the default value for this configuration option **changed** to **`true`**;  
 a `LicenseExpiredException` exception **would** be thrown if the embedded server used by 
 TestDriver fails to validate a license.  
 
 Users that prefer that no exception would be thrown if an unlicensed embedded server is 
-used can set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` to `false`.  
+used, can set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` to **`false`**.  
 
 {PANEL/}
 
 ## Related Articles
+
+### Embedded Server
+- [Running an Embedded Instance](../../server/Embedded)  
+- [Embedded Server Options](../../server/embedded#server-options)  
+
+### TestDriver
+- [TestDriver](../../start/test-driver)  
+- [TestDriver Licensing](../../start/test-driver#licensing)  
 
 ### Changes API
 - [Changes API](../../client-api/changes/what-is-changes-api)  
