@@ -226,7 +226,7 @@ will be able to use up to 9 cores and run way faster.
      {NOTE/}
 
 * Additional `TestServerOptions.Licensing` configuration options are available as well, 
-  you can read about them [above](../server/embedded#licensing-options).  
+  you can read about them [here](../server/embedded#licensing-options).  
 
 
 

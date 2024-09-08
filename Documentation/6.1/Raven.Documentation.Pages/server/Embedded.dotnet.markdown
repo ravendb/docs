@@ -194,12 +194,12 @@ A `ServerOptions.Licensing` class gathers configuration options related to the l
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **License** | `string` | Use this setting to pass the server a license |
-| **LicensePath** | `string` | Use this setting to pass the server a path in which the license exists |
+| **License** | `string` | Specifies the full license string directly in the configuration.<br>If both `License` and `LicensePath` are defined, `License` takes precedence. |
+| **LicensePath** | `string` | Specifies a path to a license file.<br>If both `License` and `LicensePath` are defined, `License` takes precedence.<br>Default: `license.json` |
 | **EulaAccepted** |  `bool` | Set to `false` to present a request to accept our terms & conditions |
-| **DisableAutoUpdate** | `bool` | Disable automatic server updates |
-| **DisableAutoUpdateFromApi** | `bool` | Disable automatic server updates from API |
-| **DisableLicenseSupportCheck** | `bool` | Disable license support check |
+| **DisableAutoUpdate** | `bool` | Disable automatic license updates (from both the `api.ravendb.net` license server **and** the `License` and `LicensePath` configuration options) |
+| **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options |
+| **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br>`true`: disable verification<br>`false`: enable verification |
 | **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license cannot be validated |
 
 {PANEL/}
