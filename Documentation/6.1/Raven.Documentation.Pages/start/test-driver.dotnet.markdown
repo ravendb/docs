@@ -3,18 +3,20 @@
 
 {NOTE: }
 
-* In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) to write RavenDB unit tests.  
+* In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) 
+  to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of [prerequisite](../server/embedded#prerequisite) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of 
+  [prerequisites](../server/embedded#prerequisite) as embedded servers to run the tests.  
 
 * In this page: 
- - [`RavenTestDriver`](../start/test-driver#raventestdriver)
- - [Pre-initializing the store: `PreInitialize`](../start/test-driver#pre-initializing-the-store:-preinitialize)
- - [Configure the server: `ConfigureServer`](../start/test-driver#configure-the-server:-configureserver)
- - [Unit test](../start/test-driver#unit-test)
- - [Complete example](../start/test-driver#complete-example)
- - [Continuous Integration (CI) Servers](../start/test-driver#continuous-integration-(ci)-servers)
- - [Licensing](../start/test-driver#licensing)
+   - [`RavenTestDriver`](../start/test-driver#raventestdriver)
+   - [Pre-initializing the store: `PreInitialize`](../start/test-driver#pre-initializing-the-store:-preinitialize)
+   - [Configure the server: `ConfigureServer`](../start/test-driver#configure-the-server:-configureserver)
+   - [Unit test](../start/test-driver#unit-test)
+   - [Complete example](../start/test-driver#complete-example)
+   - [Continuous Integration (CI) Servers](../start/test-driver#continuous-integration-(ci)-servers)
+   - [Licensing](../start/test-driver#licensing)
 
 {NOTE/}
 
@@ -117,7 +119,7 @@ The `ConfigureServer` method allows you to be more in control of your server.
 You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, adjust .NET framework versions, etc.
 
 * `ConfigureServer` can only be set once per test run.  
-  It needs to be set before `DocumentStore` is called.  
+  It needs to be set before `DocumentStore` is instantiated or `GetDocumentStore` is called.  
   See an [example](../start/test-driver#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
@@ -188,8 +190,8 @@ Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Stud
 
 {PANEL: Licensing}
 
-The embedded server that TestDriver uses while running your tests, can only apply the 
-features and acces the resources defined by its [license](https://ravendb.net/buy).  
+The embedded server that TestDriver uses while running your tests can only apply the 
+features and access the resources defined by its [license](https://ravendb.net/buy).  
 An unlicensed server, for example, will be able to use no more than 3 CPU cores, while 
 a server licensed using a [free developers license](https://ravendb.net/buy#developer) 
 will be able to use up to 9 cores and run way faster.  

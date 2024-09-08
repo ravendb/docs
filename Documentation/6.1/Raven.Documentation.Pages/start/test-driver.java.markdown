@@ -1,17 +1,26 @@
 # Getting Started: Writing your Unit Test using TestDriver
+---
 
-In this section we will explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) in order to write unit tests for working with RavenDB.
-TestDriver uses an [ravendb-embedded](../server/embedded) package with the same set of [prerequisites](../server/embedded#prerequisites) to run the Server.
+{NOTE: }
 
-- [RavenTestDriver](../start/test-driver#raventestdriver)
-- [Pre-initializing the store](../start/test-driver#preinitialize)
-- [ConfigureServer](../start/test-driver#configureserver)
-- [Unit test](../start/test-driver#unittest)
-- [Complete example](../start/test-driver#complete-example)
+* In this section, we explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) 
+  to write RavenDB unit tests.  
 
-{PANEL:RavenTestDriver}
+* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of 
+  [prerequisites](../server/embedded#prerequisites) as embedded servers to run the tests.  
 
-First, make sure you added Raven's TestDriver to your project dependencies:
+* In this page: 
+   - [RavenTestDriver](../start/test-driver#raventestdriver)
+   - [Pre-initializing the store](../start/test-driver#preinitialize)
+   - [ConfigureServer](../start/test-driver#configureserver)
+   - [Unit test](../start/test-driver#unittest)
+   - [Complete example](../start/test-driver#complete-example)
+
+{NOTE/}
+
+{PANEL: RavenTestDriver}
+
+First, please make sure that the Raven TestDriver is added to your project dependencies.  
 
 ```
 <dependency>
@@ -22,10 +31,15 @@ First, make sure you added Raven's TestDriver to your project dependencies:
 </dependency>
 ```
 
-After that, we define a class that derives from Raven's TestDriver.
-Lets start with reviewing the TestDriver's methods and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver##complete-example) of the page).
+Then, define a class that derives from the Raven TestDriver.
+
+We can start by reviewing TestDriver methods, and then get into implementation 
+(find a complete Raven TestDriver code sample [below](../start/test-driver#complete-example)).  
+
+---
 
 ### Methods
+
 | Signature | Description |
 | ----------| ----- |
 | **protected String getDatabaseDumpFilePath()** | Allows you to override the path to the database dump file that will be loaded when calling importDatabase. |
@@ -47,7 +61,7 @@ Lets start with reviewing the TestDriver's methods and later we will get into im
 
 {PANEL/}
 
-{PANEL:PreInitialize}
+{PANEL: PreInitialize}
 
 Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
 
@@ -57,8 +71,9 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 
 {PANEL/}
 
-{PANEL:UnitTest}
-We'll be using [junit](https://junit.org/) for my test framework in the below example.
+{PANEL: UnitTest}
+
+We'll be using [JUnit](https://junit.org/) for my test framework in the below example.
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
 
@@ -66,9 +81,11 @@ The example below depends on the `TestDocumentByName` index and `TestDocument` c
 
 {CODE:java test_driver_MyFirstTest@Start\RavenDBTestDriver.java /}
 
-In the test we get an IDocumentStore to our test database. Deploy an index and insert two documents into it. 
-We then wait for the indexing to complete and launch the Studio so we can verify that the documents and index are deployed (we can remove this line once the test is working).
-At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+In the test we get an IDocumentStore to our test database, deploy an index and insert two documents into it.  
+We then wait for the indexing to complete, and launch Studio so we can verify that the documents and index 
+are deployed (we can remove this line once the test is working).  
+Finally we query for a TestDocument whose name contains the word 'hello' and assert that we have only one 
+such document.  
 
 {PANEL/}
 
@@ -79,7 +96,7 @@ Before RavenDB server can be started, TestDriver extracts binaries to `targetSer
 The `configureServer` method allows you to be more in control on your server. 
 You can use it with `ServerOptions` to change the target path where Raven server binaries are extracted to or to specify where your RavenDB data is stored, security, etc.
 
-{INFO:ServerOptions}
+{INFO: ServerOptions}
 
 `ServerOptions` gives you control of how the embedded server is going to run
 with just a minor change. Here you can change your targetServerLocation.

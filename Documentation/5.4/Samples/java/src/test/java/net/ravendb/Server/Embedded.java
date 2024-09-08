@@ -41,7 +41,7 @@ public class Embedded {
 
             // location where server binaries will be extracted
             serverOptions.setTargetServerLocation("c:\\RavenServer");
-            EmbeddedServer.INSTANCE.startServer();
+            EmbeddedServer.INSTANCE.startServer(serverOptions);
             //endregion
         }
 

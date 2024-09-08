@@ -52,7 +52,7 @@ can use up to 9 cores and run way faster.
 
 ### The breaking change:
 
-Up until RavenDB version `6.0` we set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+Up until RavenDB version `6.0`, we set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
 to **`false`** by default, so no exception would be thrown even if license validation fails.  
 For an exception to be thrown, users needed to change the flag to **`true`** on their own initiative.  
 

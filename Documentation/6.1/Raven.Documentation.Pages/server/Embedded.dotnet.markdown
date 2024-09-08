@@ -151,10 +151,10 @@ If `ServerOptions` is not provided, RavenDB server will start with a default val
 ---
 
 ### Setting Server Directory:
-In case you're not interested in installing the .Net run-time environment on your system, you can -  
+In case you're not interested in installing the .NET run-time environment on your system, you can -  
 
 * [Download](https://ravendb.net/download) a full RavenDB version.  
-  This version already includes a .Net run-time environment.  
+  This version already includes a .NET run-time environment.  
 * Extract the downloaded version to a local folder.  
   E.g. `C:\RavenDB`.  
 * Set the `ServerDirectory` server option to the RavenDB subfolder that contains -
@@ -216,8 +216,8 @@ version that is currently running on the machine, starting from the version at t
 
 Remember that each RavenDB release is compiled with the .NET version that was current at the time of release.  
 
-* To find what .Net version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
-  The correct .Net version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
+* To find what .NET version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
+  The correct .NET version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
 * By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
   RavenDB will work well.  
 
