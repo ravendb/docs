@@ -200,7 +200,7 @@ A `ServerOptions.Licensing` class gathers configuration options related to the l
 | **DisableAutoUpdate** | `bool` | Disable automatic license updates (from both the `api.ravendb.net` license server **and** the `License` and `LicensePath` configuration options) |
 | **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options |
 | **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br>`true`: disable verification<br>`false`: enable verification |
-| **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license cannot be validated |
+| **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated |
 
 {PANEL/}
 
