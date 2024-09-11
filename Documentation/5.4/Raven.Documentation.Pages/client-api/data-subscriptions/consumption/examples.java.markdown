@@ -1,5 +1,4 @@
 # Subscription Consumption Examples
-
 ---
 
 {NOTE: }
@@ -75,10 +74,11 @@ When the worker accesses these _Product_ documents, no additional requests will 
 {PANEL: Primary and secondary workers}
 
 Here we create two workers:  
-* The main worker with the `TAKE_OVER` strategy that will take over the other one and will take the lead  
-* The secondary worker that will wait for the first one fail (due to machine failure etc.)
 
-The main worker:
+* The primary worker, with a `TAKE_OVER` strategy, will take over the other worker and establish the connection.
+* The secondary worker, with a `WAIT_FOR_FREE` strategy, will wait for the first worker to fail (due to machine failure, etc.).
+
+The primary worker:
 
 {CODE:java waiting_subscription_1@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 

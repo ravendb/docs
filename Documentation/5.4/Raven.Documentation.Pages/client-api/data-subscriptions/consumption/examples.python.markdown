@@ -1,5 +1,4 @@
 # Subscription Consumption Examples
-
 ---
 
 {NOTE: }
@@ -37,7 +36,7 @@ Here we create a worker and specify the maximum number of documents the server w
 
 {PANEL: Worker that operates with a session}
 
-Here we create a subscription that sends Order documents that do not have a shipping date.  
+Here we create a subscription that sends _Order_ documents that do not have a shipping date.  
 The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
 {CODE:python subscription_with_open_session_usage@ClientApi\DataSubscriptions\DataSubscriptions.py /}
@@ -46,7 +45,7 @@ The worker receiving these documents will update the `ShippedAt` field value and
 
 {PANEL: Worker that processes dynamic objects}
 
-Here we define a subscription that projects the Order documents into a dynamic format.  
+Here we define a subscription that projects the _Order_ documents into a dynamic format.  
 The worker processes the dynamic objects it receives.
 
 {CODE:python dynamic_worker@ClientApi\DataSubscriptions\DataSubscriptions.py /}
@@ -87,9 +86,8 @@ If the worker fails, another available node will take over.
 
 Here we create two workers:  
 
-* The primary worker, set with a `TAKE_OVER` strategy, will take the lead over the secondary worker.  
-* The secondary worker, set with a `WAIT_FOR_FREE` strategy, will take over if the primary worker fails  
-  (e.g. due to a machine failure).  
+* The primary worker, with a `TAKE_OVER` strategy, will take over the other worker and establish the connection.
+* The secondary worker, with a `WAIT_FOR_FREE` strategy, will wait for the first worker to fail (due to machine failure, etc.).
 
 The primary worker:  
 {CODE:python waiting_subscription_1@ClientApi\DataSubscriptions\DataSubscriptions.py /}

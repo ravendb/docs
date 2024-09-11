@@ -639,7 +639,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 try
                 {
                     // Subscribe to connection retry events
-                    // to log any exceptions that occur during processing
+                    // and log any exceptions that occur during processing
                     subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
                     {
                         Logger.Error("Error during subscription processing: " + subscriptionName,
@@ -652,14 +652,14 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     {
                         foreach (var item in batch.Items)
                         {
-                            // Forcefully stop subscription processing if the ID is "companies/832-A"
+                            // Forcefully stop subscription processing if the ID is "companies/2-A"
                             // and throw an exception to let external logic handle the specific case
-                            if (item.Result.Company == "companies/832-A")
+                            if (item.Result.Company == "companies/2-A")
                             {
                                 // The custom exception thrown from here
                                 // will be wrapped by `SubscriberErrorException`
                                 throw new UnsupportedCompanyException(
-                                    "Company Id can't be 'companies/832-A', you must fix this");
+                                    "Company ID can't be 'companies/2-A', pleases fix");
                             }
 
                             // Process the order document - provide your own logic
@@ -742,7 +742,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             var highValueOrdersWorker = store.Subscriptions.GetSubscriptionWorker<OrderAndCompany>(
                 new SubscriptionWorkerOptions(subscriptionName)
                 {
-                    // Here we ask the worker to stop when there are no more documents left to send 
+                    // Here we set the worker to stop when there are no more documents left to send 
                     // Will throw SubscriptionClosedException when it finishes it's job
                     CloseWhenNoDocsLeft = true
                 });
@@ -753,7 +753,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 {
                     foreach (var item in batch.Items)
                     {
-                        SendThankYouNoteToEmployee(item.Result); // your custom method 
+                        SendThankYouNoteToEmployee(item.Result); // call your custom method 
                     }
                 });
             }
@@ -771,9 +771,10 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         public async Task DynamicWorkerSubscription(DocumentStore store)
         {
             #region dynamic_worker
-            var subscriptionName = "My dynamic subscription";
+            // Create the subscription task on the server:
+            // ===========================================
             
-            // Create the subscription:
+            var subscriptionName = "My dynamic subscription";
             store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
             {
                 Name = subscriptionName,
@@ -781,20 +782,24 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     new { DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
             });
 
-            // Create the worker:
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionName);
             _ = subscriptionWorker.Run(batch =>
             {
                 foreach (var item in batch.Items)
                 {
-                    // Process the incoming item
-                    dynamic result = item.Result;
-                    ProcessItem(result.DynanamicField_1); // your custom method
+                    // Access the dynamic field in the document
+                    dynamic field = item.Result.DynanamicField_1;
+                    
+                    // Call your custom method
+                    ProcessItem(field); 
                 }
             });
             #endregion
 
-            void ProcessItem(string message)
+            void ProcessItem(string field)
             {
             }
         }
@@ -802,14 +807,18 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         public async Task SubscriptionWithIncludesPath(DocumentStore store)
         {
             #region subscription_with_includes_path_usage
-            // Create the subscription:
+            // Create the subscription task on the server:
+            // ===========================================
+            
             var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 // Include the referenced Product documents for each Order document
                 Query = @"from Orders include Lines[].Product"
             });
 
-            // Create the worker:
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
             _ = subscriptionWorker.Run(batch =>
             {
@@ -825,7 +834,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                             // because orderLine.Product was included in the batch
                             var product = session.Load<Product>(orderLine.Product);
                             
-                            ProcessOrderAndProduct(order, product); // your custom method
+                            ProcessOrderAndProduct(order, product); // call your custom method
                         }
                     }
                 }
@@ -840,27 +849,30 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         public async Task SubscriptionsWithOpenSession(DocumentStore store)
         {
             #region subscription_with_open_session_usage
-            // Create the subscription:
+            // Create the subscription task on the server:
+            // ===========================================
+
             var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 Query = @"from Orders as o where o.ShippedAt = null"
             });
 
-            // Create the worker:
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
             _ = subscriptionWorker.Run(batch =>
             {
-                // Note:
-                // Open a session with 'batch.OpenSession' (instead of 'store.OpenSession')
+                // Open a session with 'batch.OpenSession'
                 using (var session = batch.OpenSession())
                 {
                     foreach (var order in batch.Items.Select(x => x.Result))
                     {
-                        TransferOrderToShipmentCompany(order); // your custom method 
+                        TransferOrderToShipmentCompany(order); // call your custom method 
                         order.ShippedAt = DateTime.UtcNow;     // update the document field
                     }
 
-                    // Save the updated Order document
+                    // Save the updated Order documents
                     session.SaveChanges();
                 }
             });
@@ -874,7 +886,9 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         public async Task BlittableWorkerSubscription(DocumentStore store)
         {
             #region blittable_worker
-            // Create the subscription:
+            // Create the subscription task on the server:
+            // ===========================================
+            
             var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
             {
                 Projection = x => new
@@ -883,7 +897,9 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 }
             });
 
-            // Create the worker:
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = 
                 // Specify `BlittableJsonReaderObject` as the generic type parameter
                 store.Subscriptions.GetSubscriptionWorker<BlittableJsonReaderObject>(subscriptionName);
@@ -895,7 +911,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                     // Access the Employee field within the blittable object
                     var employeeField = item.Result["Employee"].ToString();
                     
-                    ProcessItem(employeeField); // your custom method 
+                    ProcessItem(employeeField); // call your custom method 
                 }
             });
             #endregion
