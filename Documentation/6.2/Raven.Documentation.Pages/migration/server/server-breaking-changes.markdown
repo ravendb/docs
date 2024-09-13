@@ -3,7 +3,7 @@
 
 {NOTE: }
 The features listed in this page were available in former RavenDB versions.  
-In RavenDB `6.1.x`, they are either unavailable or their behavior is inconsistent 
+In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 
 * In this page:  
@@ -23,12 +23,12 @@ deprecated `System.Data.SqlClient` package we've been using in previous versions
 to include in its connection string an `Encrypt` property that would determine 
 whether to encrypt the connection or not.  
 
-RavenDB versions preceding `6.1` (down to `6.0.105`) added this property 
+RavenDB versions preceding `6.2` (down to `6.0.105`) added this property 
 to their connection strings without bothering their users, setting it to 
 [Encrypt=Optional](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlconnectionencryptoption.optional?view=sqlclient-dotnet-standard-5.2#microsoft-data-sqlclient-sqlconnectionencryptoption-optional) 
 and leaving the connection unencrypted unless users set it differently on 
 their own accord.  
-From RavenDB 6.1 on, we no longer include this property in MSSQL connection 
+From RavenDB 6.2 on, we no longer include this property in MSSQL connection 
 strings and users are required to explicitly choose whether to encrypt the 
 connection or not.  
 
@@ -63,7 +63,7 @@ remains unchanged).
 {INFO: }
 
 * The configuration option will apply only to [new static indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing), 
-  created after the release of RavenDB `6.1`. It will not affect older indexes.  
+  created after the release of RavenDB `6.2`. It will not affect older indexes.  
 * [ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior) 
   can be set for a particular index as well as for all indexes.  
 * Though complex fields cannot be indexed, they **can** still be [stored and projected](../../indexes/search-engine/corax#revise-index-definition-and-fields-usage).  
@@ -83,12 +83,12 @@ allows you to choose which character would be placed as a separator between ID p
 when new documents are given their IDs.  
 
 This configuration is available in the database level as well as server-wide, but in 
-versions lower than RavenDB `6.1` its server-wide level wasn't implemented even if 
+versions lower than RavenDB `6.2` its server-wide level wasn't implemented even if 
 a new separator was selected.  
 
-RavenDB `6.1` applies your identifier parts separator selection in the server-wide level 
-as well. This means that if you selected a separator in a RavenDB version lower than `6.1` 
-and you now migrate to `6.1`, your selected separator **will become active**.  
+RavenDB `6.2` applies your identifier parts separator selection in the server-wide level 
+as well. This means that if you selected a separator in a RavenDB version lower than `6.2` 
+and you now migrate to `6.2`, your selected separator **will become active**.  
 
 Please be aware of this change and check this setting before migrating.  
 

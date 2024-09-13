@@ -190,15 +190,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{9C7EEE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\6.0\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{9F4B4370-0C08-45DE-B0E0-0ADEAD66F323}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.1", "6.1", "{CD046076-3C5E-4457-91CF-E4CB7995B591}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.2", "6.2", "{CD046076-3C5E-4457-91CF-E4CB7995B591}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\6.1\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{B531335D-21DB-4CE7-ADB8-5E95116A2292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\6.2\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{B531335D-21DB-4CE7-ADB8-5E95116A2292}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{DB44720D-588F-44B4-BFF4-066016079E79}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{42AE309C-48F6-436E-8460-2CC47E7C3F79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\6.1\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{B8760E30-83F0-4BE6-8DC5-115EE9DD1AEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\6.2\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{B8760E30-83F0-4BE6-8DC5-115EE9DD1AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

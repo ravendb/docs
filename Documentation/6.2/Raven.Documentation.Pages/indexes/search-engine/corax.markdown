@@ -343,7 +343,7 @@ Please consider querying on individual fields of that object or using
 a static index.
 {CODE-BLOCK/}
 
-* **New static index** (created or reset on RavenDB `6.1.x` and on)  
+* **New static index** (created or reset on RavenDB `6.2.x` and on)  
   The index will behave as determined by the 
   [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior) 
   configuration option.  
@@ -360,7 +360,7 @@ fields in the index or globally for all indexes (index reset is required).
 If you really need to use this field for searching purposes, you have to call ToString() 
 on the field value in the index definition. Although it's recommended to index individual 
 fields of this complex object.  
-Read more at: https://ravendb.net/l/OB9XW4/6.1  
+Read more at: https://ravendb.net/l/OB9XW4/6.2  
 {CODE-BLOCK/}
    * If `ComplexFieldIndexingBehavior` is set to **`Skip`** -  
      Corax will skip indexing the complex field without throwing an exception.  

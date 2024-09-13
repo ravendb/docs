@@ -3,7 +3,7 @@
 
 {NOTE: }
 The features listed in this page were available in former RavenDB versions.  
-In RavenDB `6.1.x`, they are either unavailable or their behavior is inconsistent 
+In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 
 * In this page:
@@ -26,7 +26,7 @@ what value should be added to the counters, the operation will increment the cou
 by a default `Delta`.  
 
   * Previous RavenDB versions set a default `Delta` of `0`, leaving the counters value unchanged.  
-  * Starting RavenDB `6.1` the default `Delta` is `1` to make it consistent with the rest of the API.  
+  * Starting RavenDB `6.2` the default `Delta` is `1` to make it consistent with the rest of the API.  
 
 {CODE:csharp CounterBatchOperation@migration\BreakingChanges.cs /}
 
