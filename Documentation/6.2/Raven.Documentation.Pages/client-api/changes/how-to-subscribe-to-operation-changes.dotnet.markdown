@@ -10,7 +10,7 @@ The following methods allow you to subscribe to operation changes:
 Operation changes for one operation can be observed using the `ForOperationId` method.
 
 {NOTE: }
-Please note that from RavenDB 6.1 on, operation changes can be tracked only on a **specific node**.  
+Please note that from RavenDB 6.2 on, operation changes can be tracked only on a **specific node**.  
 The purpose of this change is to improve results consistency, as an operation may behave very differently 
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
 the operation fails over from one node to another.  
@@ -42,7 +42,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 Operations changes for all Operations can be observed using the `ForAllOperations` method.
 
 {NOTE: }
-Please note that from RavenDB 6.1 on, operation changes can be tracked only on a **specific node**.  
+Please note that from RavenDB 6.2 on, operation changes can be tracked only on a **specific node**.  
 The purpose of this change is to improve results consistency, as an operation may behave very differently 
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
 the operation fails over from one node to another.  

@@ -44,7 +44,7 @@ or `ISingleNodeDatabaseChanges` interfaces.
 * Use `IDatabaseChanges` to subscribe to database changes.  
 * Use `ISingleNodeDatabaseChanges` to limit tracking to a specific node.  
   {NOTE: }
-  Note that from RavenDB 6.1 on, some changes can be tracked not cross-cluster but only 
+  Note that from RavenDB 6.2 on, some changes can be tracked not cross-cluster but only 
   **on a specific node**. In these cases, it is required that you open the Changes API using 
   the second overload, passing both a database name and a node tag: `store.Changes(dbName, nodeTag)`  
   {NOTE/}

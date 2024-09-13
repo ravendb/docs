@@ -3,7 +3,7 @@
 
 {NOTE: }
 The features listed in this page were available in former RavenDB versions.  
-In RavenDB `6.1.x`, they are either unavailable or their behavior is inconsistent 
+In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 
 * In this page:  
@@ -40,7 +40,7 @@ the flag to `true` on their own initiative.
 
 ### The breaking change:
 
-In version `6.1`, the default value given to `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+In version `6.2`, the default value given to `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
 has **changed** to `true`; a `ThrowOnInvalidOrMissingLicense` exception **would** 
 be thrown if TestDriver runs with an embedded server that hasn't been provided with 
 a license yet.  
