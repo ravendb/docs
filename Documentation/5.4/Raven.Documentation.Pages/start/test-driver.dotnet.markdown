@@ -119,7 +119,7 @@ The `ConfigureServer` method allows you to be more in control of your server.
 You can use it with `TestServerOptions` to change the path to the Raven server binaries, specify data storage path, adjust .NET framework versions, etc.
 
 * `ConfigureServer` can only be set once per test run.  
-  It needs to be set before `DocumentStore` is instantiated or `GetDocumentStore` is called.  
+  It needs to be set before `GetDocumentStore` is called.  
   See an [example](../start/test-driver#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
