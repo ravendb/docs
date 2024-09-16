@@ -26,8 +26,13 @@
     * _rvn.exe_
 
 {WARNING: }
-Be cautious not to overwrite your `settings.json` (if it was customized), your server certificate,  
-or any other configuration files you have added if they reside in the same directory.
+
+* Be cautious not to overwrite your `settings.json` (if it was customized), your server certificate,  
+  or any other configuration files you have added if they reside in your server directory.
+
+* Additionally, if you keep your [data directory](../../server/storage/directory-structure) under the server directory,  
+  make sure you don't delete or overwrite it.
+
 {WARNING/}
 
 {PANEL/}
