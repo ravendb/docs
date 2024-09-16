@@ -27,32 +27,53 @@ An unlicensed server, for example, can use only 3 CPU cores, while a server
 licensed using a [free developers license](https://ravendb.net/buy#developer) 
 can use up to 9 cores and run way faster.  
 
-RavenDB `5.4` introduced the `ThrowOnInvalidOrMissingLicense` exception, thrown 
-if TestDriver runs using an unlicensed server to notify users that they may miss out 
-on much of their system's potential.  
-A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` flag was introduced 
-along with the exception, determining whether to throw the exception or not when the 
-server is used without a license.  
+* When a RavenDB server starts, its license is validated.  
+   * If the validation succeeds, the server will run and offer the capabilities defined 
+     by its license.  
+   * If the validation fails, the server may still run but limit its capabilities to those 
+     defined by the basic [AGPL](https://ravendb.net/legal/ravendb/commercial-license-eula) 
+     license.  
+     {NOTE: }
+     If the validation fails because the license expired, and the expiration date precedes 
+     the server build date, the server will not start at all.  
+     {NOTE/}
 
-In version `5.4`, the default value for this flag was `false`, disabling the exception 
-even if the server is unlicensed. For an exception to be thrown, users needed to change 
-the flag to `true` on their own initiative.  
+* A `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` configuration option 
+  is available since RavenDB `5.4`, determining whether to throw a `LicenseExpiredException` 
+  exception if TestDriver uses an unlicensed embedded server.  
+   * If `ThrowOnInvalidOrMissingLicense` is set to **`true`** and the validation fails, 
+     a `LicenseExpiredException` exception will be thrown to **warn TestDriver users** 
+     that in lack of a valid license, their server's capabilities are limited and they 
+     may therefore miss out on much of their system's potential.  
+   * If the configuration option is set to **`false`**, **no exception will be thrown** 
+     even if a license cannot be validated.  
+
+---
 
 ### The breaking change:
 
-In version `6.2`, the default value given to `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
-has **changed** to `true`; a `ThrowOnInvalidOrMissingLicense` exception **would** 
-be thrown if TestDriver runs with an embedded server that hasn't been provided with 
-a license yet.  
+Up until RavenDB version `6.0`, we set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+to **`false`** by default, so no exception would be thrown even if license validation fails.  
+For an exception to be thrown, users needed to change the flag to **`true`** on their own initiative.  
 
-Users that prefer not to license their embedded server for some reason can disable 
-the exception by setting the flag to `false`. TestDriver tests will still run, but 
-the server's capabilities will be limited to those defined by the basic 
-[AGPL](https://ravendb.net/legal/ravendb/commercial-license-eula) license.  
+In version `6.2`, the default value for this configuration option **changed** to **`true`**;  
+a `LicenseExpiredException` exception **would** be thrown if the embedded server used by 
+TestDriver fails to validate a license.  
+
+Users that prefer that no exception would be thrown if an unlicensed embedded server is 
+used, can set `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` to **`false`**.  
 
 {PANEL/}
 
 ## Related Articles
+
+### Embedded Server
+- [Running an Embedded Instance](../../server/Embedded)  
+- [Embedded Server Options](../../server/embedded#server-options)  
+
+### TestDriver
+- [TestDriver](../../start/test-driver)  
+- [TestDriver Licensing](../../start/test-driver#licensing)  
 
 ### Changes API
 - [Changes API](../../client-api/changes/what-is-changes-api)  
