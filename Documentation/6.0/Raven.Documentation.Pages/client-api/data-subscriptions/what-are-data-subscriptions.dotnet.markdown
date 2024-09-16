@@ -27,7 +27,7 @@
 * Data subscriptions are consumed by clients, called **Subscription Workers**.  
 * You can determine whether workers would be able to connect a subscription 
   [concurrently, or only one at a time](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay).  
-* A worker that connects a data subscription receives a batch of documents, and gets to process it.  
+* A worker that connects to a data subscription receives a batch of documents, and gets to process it.  
   Depending on the code that the client provided the worker with, processing can take from seconds to hours.  
   When all documents are processed, the worker informs the server of its progress and the server can send it the next batch.  
 
@@ -105,12 +105,12 @@ See the sequence diagram below that summarizes the lifespan of a subscription co
 
 {PANEL:Working with multiple clients}
 
-You can use a **Suscription Worker Strategy** to determine whether multiple 
-workers of the same subscription can connect it one by one, or **concurrently**.  
+You can use a **Subscription Worker Strategy** to determine whether multiple 
+workers of the same subscription can connect to it one by one, or **concurrently**.  
 
 * **One Worker Per Subscription Strategies**  
   The one-worker-per-subscription strategies allow workers of the same subscription 
-  to connect it **one worker at a time**, with different strategies to support various 
+  to connect to it **one worker at a time**, with different strategies to support various 
   inter-worker scenarios.  
    * One worker is allowed to take the place of another in the processing of a subscription.  
      Thanks to subscriptions persistence, the worker will be able to continue the work 
@@ -121,7 +121,7 @@ workers of the same subscription can connect it one by one, or **concurrently**.
 
 * **Concurrent Subscription Strategy**  
   Using the concurrent subscription strategy, multiple workers of the same subscription can 
-  connect it simultaneously and divide the documents processing load between them to speed it up.  
+  connect to it simultaneously and divide the documents processing load between them to speed it up.  
    * Batch processing is divided between the multiple workers.  
    * Connection failure is handled by assigning batches of failing workers to 
      active available workers.  

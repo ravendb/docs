@@ -4,9 +4,9 @@
 {NOTE: }
 
 * This page contains examples of **creating a subscription**.  
-  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
 
-* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).  
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
 
 * In this page:  
    * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)  
@@ -28,10 +28,9 @@
 Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
 The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_whole_collection_generic_with_name@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_whole_collection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs create_1@client-api\dataSubscriptions\creation\examples.js /}
+{CODE:nodejs create_1_1@client-api\dataSubscriptions\creation\examples.js /}
+{CODE:nodejs create_1_2@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
@@ -40,10 +39,7 @@ The server will send ALL documents from the _Orders_ collection to a client that
 Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100. 
 Only documents that match this condition will be sent from the server to a client connected to this subscription.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_filter_only_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_filter_only_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs create_2@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
@@ -52,22 +48,16 @@ Only documents that match this condition will be sent from the server to a clien
 Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
 However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_filter_and_projection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs create_3@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
 {PANEL: Create subscription - project data from a related document} 
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `Load` method.
+we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_filter_and_load_document_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_filter_and_load_document_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs create_4@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
@@ -81,21 +71,21 @@ This way, when the subscription worker that processes the batch in the client ac
 See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
 
 {CODE-TABS}
-{CODE-TAB:csharp:Builder-syntax create_subscription_with_includes_strongly_typed@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-path-syntax create_subscription_with_includes_rql_path@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-javascript-syntax create_subscription_with_includes_rql_javascript@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE-TAB:nodejs:Builder-syntax create_5@client-api\dataSubscriptions\creation\examples.js /}
+{CODE-TAB:nodejs:RQL-path-syntax create_5_1@client-api\dataSubscriptions\creation\examples.js /}
+{CODE-TAB:nodejs:RQL-javascript-syntax create_5_2@client-api\dataSubscriptions\creation\examples.js /}
 {CODE-TABS/}
 
 {NOTE: }
 
 **Include using builder**:
 
-Include statements can be added to the subscription with `ISubscriptionIncludeBuilder`.  
-This builder is assigned to the  `Includes` property in [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>).  
+Include statements can be added to the subscription with a _builder_ object.  
+This builder is assigned to the  `includes` property in the _options_ object.  
 It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
 These methods can be chained.
 
-To include related documents, use method `IncludeDocuments`.  
+To include related documents, use method `includeDocuments`.  
 (See the _Builder-syntax_ tab in the example above).
 
 {NOTE/}
@@ -129,16 +119,16 @@ In addition, values for the specified counters will be **included** in the batch
 
 Note:  
 Modifying an existing counter's value after the document has been sent to the client does Not trigger re-sending.  
-However, adding a new counter to the document or removing an existing one will trigger re-sending the document.  
+However, adding a new counter to the document or removing an existing one will trigger re-sending the document.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Builder-syntax create_subscription_include_counters_builder@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_subscription_include_counters_rql@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE-TAB:nodejs:Builder-syntax create_7@client-api\dataSubscriptions\creation\examples.js /}
+{CODE-TAB:nodejs:RQL-syntax create_7_1@client-api\dataSubscriptions\creation\examples.js /}
 {CODE-TABS/}
 
-`ISubscriptionIncludeBuilder` has three methods for including counters:  
+The following include counters methods are available:
 
-{CODE:csharp include_builder_counter_methods@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs include_coutners_syntax@client-api\dataSubscriptions\creation\examples.js /}
 
 | Parameter  | Type       | Description                                                                                                                                      |
 |------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -148,7 +138,7 @@ However, adding a new counter to the document or removing an existing one will t
 **All include methods can be chained**:  
 For example, the following subscription includes multiple counters and documents:
 
-{CODE:csharp create_subscription_include_chained_builder@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs create_8@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
@@ -157,8 +147,8 @@ For example, the following subscription includes multiple counters and documents
 Here we create a simple revisions subscription on the _Orders_ collection that will send pairs of subsequent document revisions to the client.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Generic-syntax create_simple_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL-syntax create_simple_revisions_subscription_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE-TAB:nodejs:documentType-syntax create_9@client-api\dataSubscriptions\creation\examples.js /}
+{CODE-TAB:nodejs:RQL-syntax create_9_1@client-api\dataSubscriptions\creation\examples.js /}
 {CODE-TABS/}
 
 Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
@@ -168,10 +158,10 @@ Learn more about subscribing to document revisions in [subscriptions: revisions 
 {PANEL: Create subscription - via update}
 
 When attempting to update a subscription that does Not exist,  
-you can request a new subscription to be created by setting `CreateNew` to `true`.  
+you can request a new subscription to be created by setting `createNew` to `true`.  
 In such a case, a new subscription will be created with the provided query.
 
-{CODE:csharp create_by_update@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs update_0@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 
@@ -179,21 +169,21 @@ In such a case, a new subscription will be created with the provided query.
 
 **Update subscription by name**:  
 The subscription definition can be updated after it has been created.  
-In this example we update the filtering **query** of an existing subscription named "my subscription".  
+In this example we update the filtering **query** of an existing subscription named "my subscription".
 
-{CODE:csharp update_subscription_example_0@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs update_1@client-api\dataSubscriptions\creation\examples.js /}
 
 ---
 
 **Update subscription by id**:  
 In addition to the subscription name, each subscription is assigned a subscription ID when it is created by the server.
-This ID can be used instead of the name when updating the subscription.  
+This ID can be used instead of the name when updating the subscription.
 
-{CODE:csharp update_subscription_example_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs update_2@client-api\dataSubscriptions\creation\examples.js /}
 
 Using the subscription ID allows you to modify the subscription name:
 
-{CODE:csharp update_subscription_example_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs update_3@client-api\dataSubscriptions\creation\examples.js /}
 
 {PANEL/}
 

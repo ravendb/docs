@@ -71,13 +71,18 @@ public class DataSubscriptions {
 
     //region subscriptions_example
     public void worker(IDocumentStore store) {
+    
+        // Create the ongoing subscription task on the server
         SubscriptionCreationOptions options = new SubscriptionCreationOptions();
         options.setQuery("from Orders where Company = 'companies/11'");
-
         String subscriptionName = store.subscriptions().create(Order.class, options);
-        SubscriptionWorker<Order> subscription = store
+        
+        // Create a worker on the client that will consume the subscription
+        SubscriptionWorker<Order> worker = store
             .subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
-        subscription.run(x -> {
+            
+        // Run the worker task and process data received from the subscription    
+        worker.run(x -> {
             for (SubscriptionBatch.Item<Order> item : x.getItems()) {
                 System.out.println("Order #"
                     + item.getResult().getId()
@@ -117,6 +122,8 @@ public class DataSubscriptions {
 
         {
             //region create_whole_collection_generic1
+            // With the following subscription definition, the server will send ALL documents
+            // from the 'Orders' collection to a client that connects to this subscription.
             name = store.subscriptions().create(Order.class);
             //endregion
         }

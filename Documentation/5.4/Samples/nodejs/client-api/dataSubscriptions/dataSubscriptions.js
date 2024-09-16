@@ -40,11 +40,17 @@ const session = store.openSession();
 
     //region subscriptions_example
     async function worker() {
+    
+        // Create the ongoing subscription task on the server
         const subscriptionName = await store.subscriptions.create({ 
             query: "from Orders where Company = 'companies/11'" 
         });
-        const subscription = store.subscriptions.getSubscriptionWorker(subscriptionName);
-        subscription.on("batch", (batch, callback) => {
+        
+        // Create a worker on the client that will consume the subscription
+        const worker = store.subscriptions.getSubscriptionWorker(subscriptionName);
+
+        // Listen for and process data received in batches from the subscription
+        worker.on("batch", (batch, callback) => {
             for (const item of batch.items) {
                 console.log(`Order #${item.result.Id} will be shipped via: ${item.result.ShipVia}`);
             }
@@ -60,17 +66,19 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic_with_name
-            const name = await store.subscriptions.create({ 
-                name: "OrdersProcessingSubscription",
-                documentType: Order
+            const subscriptionName = await store.subscriptions.create({
+                query: "from Orders",
+                // Set a custom name for the subscription 
+                name: "OrdersProcessingSubscription"
             });
             //endregion
         }
 
         {
             //region create_whole_collection_generic_with_mentor_node
-            const name = await store.subscriptions.create({
-                documentType: Order,
+            const subscriptionName = await store.subscriptions.create({
+                query: "from Orders",
+                // Set a responsible node for the subscritpion 
                 mentorNode: "D"
             });
             //endregion
@@ -78,89 +86,10 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic1
-            store.subscriptions.create(Order);
-            //endregion
-        }
-
-        {
-            //region create_whole_collection_RQL
-            store.subscriptions.create({ query: "from Orders" });
-            //endregion
-        }
-
-        {
-            //region create_filter_only_RQL
-            const query = `declare function getOrderLinesSum(doc) {
-                    var sum = 0;
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-                from Orders as o 
-                where getOrderLinesSum(o) > 100`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_filter_and_projection_RQL
-            const query = 
-                `declare function getOrderLinesSum(doc) {
-                    var sum = 0; 
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-
-                declare function projectOrder(doc) {
-                     return {
-                         Id: order.Id,
-                         Total: getOrderLinesSum(order)
-                     }
-                 }
-                 from order as o 
-                 where getOrderLinesSum(o) > 100 
-                 select projectOrder(o)`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_filter_and_load_document_RQL
-            const query =
-                `declare function getOrderLinesSum(doc) {
-                    var sum = 0;
-                    for (var i in doc.Lines) { sum += doc.Lines[i]; }
-                    return sum;
-                }
-
-                declare function projectOrder(doc) {
-                     var employee = LoadDocument(doc.Employee);
-                     return {
-                         Id: order.Id,
-                         Total: getOrderLinesSum(order),
-                         ShipTo: order.ShipTo,
-                         EmployeeName: employee.FirstName + ' ' + employee.LastName
-                     }
-                 }
-                 from order as o
-                 where getOrderLinesSum(o) > 100
-                 select projectOrder(o)`;
-
-            const name = await store.subscriptions.create({ query });
-            //endregion
-        }
-
-        {
-            //region create_simple_revisions_subscription_generic
-            const name = await store.subscriptions.createForRevisions(Order);
-            //endregion
-        }
-
-        {
-            //region create_simple_revisions_subscription_RQL
-            const name = await store.subscriptions.createForRevisions({
-                query: "from orders (Revisions = true)"
+            // With the following subscription definition, the server will send ALL documents
+            // from the 'Orders' collection to a client that connects to this subscription.
+            const subscriptionName = await documentStore.subscriptions.create({
+                query: "from Orders"
             });
             //endregion
         }
