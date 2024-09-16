@@ -96,7 +96,7 @@ The `Run` function takes a delegate, which is your client-side code responsible 
 
 {INFO: }
 
-##### Subscription Worker Connectivity
+##### Subscription worker connectivity
 
 As long as there is no exception, the worker will continue addressing the same server that the first batch was received from.  
 If the worker fails to reach that node, it will try to [failover](../../../client-api/configuration/load-balance/overview) to another node from the session's topology list.  
@@ -112,15 +112,15 @@ This class represents a single item in a subscription batch results.
 
 {CODE batch_item@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-| Member               | Type                        | Description                                                                                         |
-|----------------------|-----------------------------|-----------------------------------------------------------------------------------------------------| 
+| Member               | Type                        | Description                                                                                           |
+|----------------------|-----------------------------|-------------------------------------------------------------------------------------------------------| 
 | **Result**           | `T`                         | The current batch item.<br>If `T` is `BlittableJsonReaderObject`, no deserialization will take place. |
-| **ExceptionMessage** | `string`                    | The exception message thrown during current document processing in the server side.                 |
-| **Id**               | `string`                    | The document ID of the underlying document for the current batch item.                              |
-| **ChangeVector**     | `string`                    | The change vector of the underlying document for the current batch item.                            |
-| **RawResult**        | `BlittableJsonReaderObject` | Current batch item before serialization to `T`.                                                     |
-| **RawMetadata**      | `BlittableJsonReaderObject` | Current batch item's underlying document metadata.                                                  |
-| **Metadata**         | `IMetadataDictionary`       | Current batch item's underlying metadata values.                                                    |
+| **ExceptionMessage** | `string`                    | The exception message thrown during current document processing in the server side.                   |
+| **Id**               | `string`                    | The document ID of the underlying document for the current batch item.                                |
+| **ChangeVector**     | `string`                    | The change vector of the underlying document for the current batch item.                              |
+| **RawResult**        | `BlittableJsonReaderObject` | Current batch item before serialization to `T`.                                                       |
+| **RawMetadata**      | `BlittableJsonReaderObject` | Current batch item's underlying document metadata.                                                    |
+| **Metadata**         | `IMetadataDictionary`       | Current batch item's underlying metadata values.                                                      |
 
 {WARNING: }
 This class should only be used within the subscription's `Run` delegate.  
@@ -175,10 +175,11 @@ Using it outside this scope may cause unexpected behavior.
 
 ##### Properties
 
-| Member               | Type     | Description                                                           |
-|----------------------|----------|-----------------------------------------------------------------------| 
-| **CurrentNodeTag**   | `string` | The node tag of the current RavenDB server handling the subscription. |
-| **SubscriptionName** | `string` | The name of the currently processed subscription.                     |
+| Member                        | Type     | Description                                                           |
+|-------------------------------|----------|-----------------------------------------------------------------------| 
+| **CurrentNodeTag**            | `string` | The node tag of the current RavenDB server handling the subscription. |
+| **SubscriptionName**          | `string` | The name of the currently processed subscription.                     |
+| **WorkerId**                  | `string` | The worker ID.                                                        |
 
 {NOTE/}
 

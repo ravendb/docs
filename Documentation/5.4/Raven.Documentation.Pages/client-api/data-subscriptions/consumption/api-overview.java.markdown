@@ -83,7 +83,7 @@ The `run` function takes a delegate, which is your client-side code responsible 
 | **openSession()**  | `IDocumentSession` | New document session, that tracks all items and included items of the current batch. |
 
 
-{NOTE: Subscription Worker Connectivity}
+{NOTE: Subscription worker connectivity}
 
 As long as there is no exception, the worker will continue addressing the same 
 server that the first batch was received from.  

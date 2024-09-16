@@ -18,26 +18,6 @@ const session = store.openSession();
     //endregion
 }
 
-    async function example() {
-        const subscription = await store.subscriptions.create({});
-        //region subscriptionWorkerGeneration
-        store.subscriptions.getSubscriptionWorker(options, [database]);
-        store.subscriptions.getSubscriptionWorker(subscriptionName, [database]);
-
-        store.subscriptions.getSubscriptionWorkerForRevisions(options, [database]);
-        store.subscriptions.getSubscriptionWorkerForRevisions(subscriptionName, [database]);
-        //endregion
-    }
-
-    {
-        let subscriptionWorker;
-        //region subscriptionWorkerRunning
-        subscriptionWorker.on("batch", (batch, callback) => { });
-        subscriptionWorker.on("error", (error) => {});
-        subscriptionWorker.on("end", () => {});
-        //endregion
-    }
-
     //region subscriptions_example
     async function worker() {
     
