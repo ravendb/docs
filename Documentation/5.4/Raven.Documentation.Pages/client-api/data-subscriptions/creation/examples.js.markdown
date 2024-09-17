@@ -85,6 +85,8 @@ This builder is assigned to the  `includes` property in the _options_ object.
 It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
 These methods can be chained.
 
+See this [API overview](../../../client-api/data-subscriptions/creation/api-overview#include-methods) for all available include methods.
+
 To include related documents, use method `includeDocuments`.  
 (See the _Builder-syntax_ tab in the example above).
 
@@ -125,15 +127,6 @@ However, adding a new counter to the document or removing an existing one will t
 {CODE-TAB:nodejs:Builder-syntax create_7@client-api\dataSubscriptions\creation\examples.js /}
 {CODE-TAB:nodejs:RQL-syntax create_7_1@client-api\dataSubscriptions\creation\examples.js /}
 {CODE-TABS/}
-
-The following include counters methods are available:
-
-{CODE:nodejs include_coutners_syntax@client-api\dataSubscriptions\creation\examples.js /}
-
-| Parameter  | Type       | Description                                                                                                                                      |
-|------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**   | `string`   | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
-| **names**  | `string[]` | Array of counter names.                                                                                                                          |
 
 **All include methods can be chained**:  
 For example, the following subscription includes multiple counters and documents:
