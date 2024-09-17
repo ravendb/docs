@@ -118,7 +118,7 @@ Each snapshot document includes the following fields, among others:
   * RavenDB is a distributed database, allowing writes, reads, and queries to target different nodes across the cluster.  
 
   * To prioritize consistency over availability, the RavenDB plugin uses a [cluster-wide transaction](../../server/clustering/cluster-transactions) for storing events and snapshot documents. 
-    This ensures that persisted data is consistently applied across all database instances in the cluster, fulfilling Akka's requirement for no gaps in event sequence numbers at any point in time, across all nodes.
+    This ensures that persisted data is consistently applied across all database instances in the cluster, preventing conflicts and guaranteeing that restoring to the latest state reflects the correct event sequence, as required by Akka.
 
   * Note that cluster consensus is required for a cluster-wide transaction to execute. 
     This means that a majority of nodes in the [database group](../../studio/database/settings/manage-database-group) must be up and connected in order to persist new events & snapshots.
@@ -186,4 +186,4 @@ The data stored for each event is an instance of the `Sale` class, containing `P
 ### Integrations  
 
 [Integrating with Akka.Persistence](../../integrations/akka.net-persistence/integrating-with-akka-persistence)  
-[Queries](../todo..)  
+[Queries](../../integrations/akka.net-persistence/queries)

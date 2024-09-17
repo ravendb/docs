@@ -68,12 +68,24 @@ Integrate RavenDB with Akka.Persistence using one of the two available NuGet pac
 
   * [Akka.Persistence.RavenDB](https://www.nuget.org/packages/Akka.Persistence.RavenDB)  
     This package allows you to configure the plugin solely through HOCON (Human-Optimized Config Object Notation), 
-    which is typically embedded within your _app.config_ or _web.config_ file, or a dedicated HOCON file.      
-  
+    which is typically embedded within your _app.config_ or _web.config_ file, or a dedicated HOCON file.
+    
+    {CODE-BLOCK: powershell}
+# Installing via .NET CLI:
+dotnet add package Akka.Persistence.RavenDB
+    {CODE-BLOCK/}
+
   * [Akka.Persistence.RavenDB.Hosting](https://www.nuget.org/packages/Akka.Persistence.RavenDB.Hosting)  
     This package includes the base _Akka.Persistence.RavenDB_, offering greater flexibility 
     by allowing you to configure the plugin through **Hosting** or via a **HOCON** configuration file. 
     Using Hosting provides a fast and easy way to set up your app and its persistence without the need to configure HOCON.  
+    
+    {CODE-BLOCK: powershell}
+# Installing via .NET CLI:
+dotnet add package Akka.Persistence.RavenDB.Hosting
+    {CODE-BLOCK/}
+
+---
 
 Installing either package will also install the _Akka.Persistence_ package.
 
@@ -218,3 +230,8 @@ Default: `false`
 
 [Events and Snapshots](../../integrations/akka.net-persistence/events-and-snapshots)  
 [Queries](../../integrations/akka.net-persistence/queries)  
+
+### RavenDB Articles
+
+[Using RavenDB Persistence in an Akka.NET application](https://ravendb.net/articles/using-ravendb-persistence-in-an-akka-net-application)
+[Notes from integrating RavenDB with Akka.NET Persistence](https://ravendb.net/articles/notes-from-integrating-ravendb-with-akka-net-persistence)
