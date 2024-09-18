@@ -322,77 +322,145 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
             #region create_simple_revisions_subscription_generic
             subscriptionName = store.Subscriptions.Create(
+                // Use <Revision<documentClassType>> as the type for the processed items
+                // e.g. <Revision<Order>>
                 new SubscriptionCreationOptions<Revision<Order>>());
             #endregion
 
             #region create_simple_revisions_subscription_RQL
             subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
+                // Add (Revisions = true) to your subscription RQL
                 Query = @"From Orders (Revisions = true)"
             });
             #endregion
 
             #region use_simple_revision_subscription_generic
-            SubscriptionWorker<Revision<Order>> revisionWorker = store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+            SubscriptionWorker<Revision<Order>> revisionsWorker = 
+                // Specify <Revision<Order>> as the type of the processed items
+                store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
 
-            await revisionWorker.Run((SubscriptionBatch<Revision<Order>> x) =>
+            await revisionsWorker.Run((SubscriptionBatch<Revision<Order>> batch) =>
             {
-                foreach (var documentsPair in x.Items)
+                foreach (var item in batch.Items)
                 {
-                    var prev = documentsPair.Result.Previous;
-                    var current = documentsPair.Result.Current;
+                    // Access the previous revision via 'Result.Previous'
+                    var previousRevision = item.Result.Previous;
 
-                    ProcessOrderChanges(prev, current);
+                    // Access the current revision via 'Result.Current'
+                    var currentRevision = item.Result.Current;
+
+                    // Provide your own processing logic:
+                    ProcessOrderRevisions(previousRevision, currentRevision);
                 }
-            }
-            );
+            });
             #endregion
 
-            void ProcessOrderChanges(Order prev, Order cur)
+            void ProcessOrderRevisions(Order prev, Order cur)
             {
-
             }
+            
+            #region create_filtered_revisions_subscription_generic
+            subscriptionName = store.Subscriptions.Create(
+                // Specify <Revision<Order>> as the type of the processed items
+                new SubscriptionCreationOptions<Revision<Order>>()
+                {
+                    // Provide filtering logic
+                    // Only revisions that where shipped to Mexico will be sent to subscribed clients
+                    Filter = revision => revision.Current.ShipTo.Country == "Mexico",
+                });
+            #endregion
+
+            #region create_filtered_revisions_subscription_RQL
+            subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            {
+                Query = @"declare function isSentToMexico(doc) { 
+                              return doc.Current.ShipTo.Country == 'Mexico'
+                          }
+
+                          from 'Orders' (Revisions = true) as doc
+                          where isSentToMexico(doc) == true"
+            });
+            #endregion
+            
+            #region consume_filtered_revisions_subscription
+            SubscriptionWorker<Revision<Order>> worker =
+                store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
+
+            await worker.Run(batch =>
+            {
+                foreach (var item in batch.Items)
+                {
+                    Console.WriteLine($@"
+                        This is a revision of document {item.Id}.
+                        The order in this revision was shipped at {item.Result.Current.ShippedAt}.");
+                }
+            });
+            #endregion
             
             #region create_projected_revisions_subscription_generic
             subscriptionName = store.Subscriptions.Create(
+                // Specify <Revision<Order>> as the type of the processed items within the query
                 new SubscriptionCreationOptions<Revision<Order>>()
                 {
-                    Filter = tuple => tuple.Current.Lines.Count > tuple.Previous.Lines.Count,
-                    Projection = tuple => new
+                    // Filter revisions by the revenue delta.
+                    // The subscription will only process revisions where the revenue
+                    // is higher than in the preceding revision by 2500.
+                    Filter = revision =>
+                        revision.Previous != null &&
+                        revision.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity) > 
+                        revision.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity) + 2500,
+                    
+                    // Define the projected fields that will be sent to the client
+                    Projection = revision => new OrderRevenues()
                     {
-                        PreviousRevenue = tuple.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity),
-                        CurrentRevenue = tuple.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity)
+                        PreviousRevenue = 
+                            revision.Previous.Lines.Sum(x => x.PricePerUnit * x.Quantity),
+                        
+                        CurrentRevenue = 
+                            revision.Current.Lines.Sum(x => x.PricePerUnit * x.Quantity)
                     }
                 });
             #endregion
 
             #region create_projected_revisions_subscription_RQL
-            subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
-                Query = @"declare function getOrderLinesSum(doc){
-                                var sum = 0;
-                                for (var i in doc.Lines) { sum += doc.Lines[i];}
-                                return sum;
-                            }
+                Query = @"declare function isRevenueDeltaAboveThreshold(doc, threshold) { 
+                              return doc.Previous !== null && doc.Current.Lines.map(function(x) {
+                                  return x.PricePerUnit * x.Quantity;
+                              }).reduce((a, b) => a + b, 0) > doc.Previous.Lines.map(function(x) { 
+                                  return x.PricePerUnit * x.Quantity;
+                              }).reduce((a, b) => a + b, 0) + threshold
+                          }
 
-                        From Orders (Revisions = true)
-                        Where getOrderLinesSum(this.Current)  > getOrderLinesSum(this.Previous)
-                        Select 
-                        {
-                            PreviousRevenue: getOrderLinesSum(this.Previous),
-                            CurrentRevenue: getOrderLinesSum(this.Current)                            
-                        }"
+                          from 'Orders' (Revisions = true) as doc
+                          where isRevenueDeltaAboveThreshold(doc, 2500)
+
+                          select {
+                              PreviousRevenue: doc.Previous.Lines.map(function(x) {
+                                  return x.PricePerUnit * x.Quantity;
+                              }).reduce((a, b) => a + b, 0),
+
+                              CurrentRevenue: doc.Current.Lines.map(function(x) {
+                                  return x.PricePerUnit * x.Quantity;
+                              }).reduce((a, b) => a + b, 0)
+                          }"
             });
             #endregion
 
             #region consume_revisions_subscription_generic
-            SubscriptionWorker<OrderRevenues> revenuesComparisonWorker = store.Subscriptions.GetSubscriptionWorker<OrderRevenues>(subscriptionName);
+            SubscriptionWorker<OrderRevenues> revenuesComparisonWorker =
+                // Use the projected class type 'OrderRevenues' for the items the worker will process
+                store.Subscriptions.GetSubscriptionWorker<OrderRevenues>(subscriptionName);
 
-            await revenuesComparisonWorker.Run(x =>
+            await revenuesComparisonWorker.Run(batch =>
             {
-                foreach (var item in x.Items)
+                foreach (var item in batch.Items)
                 {
-                    Console.WriteLine($"Revenue for order with Id: {item.Id} grown from {item.Result.PreviousRevenue} to {item.Result.CurrentRevenue}");
+                    Console.WriteLine($@"Revenue for order with ID: {item.Id}
+                                         has grown from {item.Result.PreviousRevenue}
+                                         to {item.Result.CurrentRevenue}");
                 }
             });
             #endregion
@@ -627,11 +695,13 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             public static void Error(string text, Exception ex) { }
         }
 
+        #region projection_class
         public class OrderRevenues
         {
-            public int PreviousRevenue { get; set; }
-            public int CurrentRevenue { get; set; }
+            public decimal PreviousRevenue { get; set; }
+            public decimal CurrentRevenue { get; set; }
         }
+        #endregion
 
         public class OrderAndCompany
         {
