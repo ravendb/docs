@@ -133,7 +133,7 @@ async function consumeExamples() {
                     return;
                 });
 
-                // Handle Worker End Event:
+                // Handle worker end event:
                 // ========================
                 subscriptionWorker.on("end", () => {
                     closeWorker(subscriptionWorker);
