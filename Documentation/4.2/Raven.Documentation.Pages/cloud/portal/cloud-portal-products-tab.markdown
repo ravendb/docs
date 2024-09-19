@@ -10,7 +10,8 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
 
 * In this page:  
   * [Provisioning a New Product](../../cloud/portal/cloud-portal-products-tab#provisioning-a-new-product)  
-  * [View a Product Metrics](../../cloud/portal/cloud-portal-products-tab#view-a-product-metrics)  
+  * [View the Product Metrics](../../cloud/portal/cloud-portal-products-tab#view-the-product-metrics)  
+  * [View the Cluster Health](../../cloud/portal/cloud-portal-products-tab#view-the-cluster-health)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
      - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#change-instance-type-and-storage)  
      - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
@@ -94,7 +95,7 @@ your new product's status until it's ready to go.
 
 ---
 
-{PANEL: View a Product Metrics}
+{PANEL: View the Product Metrics}
 
 !["Figure 8 - Product Metrics: General View"](images\portal-product-details-metrics.png "Figure 8 - Product Metrics: General View")
 
@@ -105,29 +106,43 @@ It's useful for analysing usage, instance overload and traffic.
 
 ---
 
+{PANEL: View the Cluster Health}
+
+!["Figure 9 - Cluster Health: General View"](images\portal-product-details-cluster-health.png "Figure 9 - Cluster Health: General View")
+
+This allows you to analyse your cluster incidents for a selected *time period*, *cluster node*, *severity* and *category*.  
+In addition, **Cluster Health** generates suggestions for a selected *cluster node* based on incident trends that can help resolve cluster stability issues.  
+It's useful for analysing usage, instance overload and traffic.  
+
+More details can be found [here](../cloud-maintenance-troubleshooting#cluster-health).
+
+{PANEL/}
+
+---
+
 {PANEL: Managing an Existing Product}
   
 To modify an existing product, find it in the Products tab and click its Manage button.  
 
-!["Figure 9 - Manage Product: Manage Button"](images\portal-product-list-manage-button.png "Figure 9 - Manage Product: Manage Button")
+!["Figure 10 - Manage Product: Manage Button"](images\portal-product-list-manage-button.png "Figure 10 - Manage Product: Manage Button")
 
 This is a general view of the product details page:
 
-!["Figure 10 - Product Details"](images\portal-product-details.png "Figure 10 - Manage Product: Product Details")
+!["Figure 11 - Product Details"](images\portal-product-details.png "Figure 11 - Manage Product: Product Details")
 
 ---
 
 ### Change Instance Type and Storage  
 You can view your configuration and change your product's instance type and storage size here.  
 
-!["Figure 11 - Manage Product tab"](images\portal-product-details-instance-parameters.png "Figure 11 - Manage Product: Instance Parameters")
+!["Figure 12 - Manage Product tab"](images\portal-product-details-instance-parameters.png "Figure 12 - Manage Product: Instance Parameters")
 
 ---
 
 * **Change Instance Type**  
   Use sliders to set your desired configuration. This can be changed later as you need to scale to changing data processing needs.
 
-!["Figure 12 - Manage Product: Scale"](images\portal-product-details-edit-tier.png "Figure 12 - Manage Product: Change Tier")
+!["Figure 13 - Manage Product: Scale"](images\portal-product-details-edit-tier.png "Figure 13 - Manage Product: Change Tier")
 
   More details can be found [here](../cloud-scaling#change-instance-type).
 
@@ -136,7 +151,7 @@ You can view your configuration and change your product's instance type and stor
 * **Change Storage**  
   Use this slider to modify your product's storage.  
 
-!["Figure 13 - Manage Product: Storage"](images\portal-product-details-edit-storage.png "Figure 13 - Manage Product: Change Storage")
+!["Figure 14 - Manage Product: Storage"](images\portal-product-details-edit-storage.png "Figure 14 - Manage Product: Change Storage")
 
   More details can be found [here](../cloud-scaling#change-storage).
 
@@ -146,7 +161,7 @@ You can view your configuration and change your product's instance type and stor
 Use the security tab to download your [certificate](../../cloud/cloud-security) or determine which addresses are 
 allowed to connect your database instance.  
 
-!["Figure 14 - Manage Product: Manage access"](images\portal-product-details-manage-access.png "Figure 14 - Manage Product: Access")
+!["Figure 15 - Manage Product: Manage access"](images\portal-product-details-manage-access.png "Figure 15 - Manage Product: Access")
 
 * **Download Certificate**  
   Click this button to download your certificate.  
@@ -168,7 +183,7 @@ allowed to connect your database instance.
 * **Edit**  
   Click this button to edit your product's list of Allowed IPs.
 
-  !["Figure 15 - Manage Product: Edit IPs"](images\portal-product-details-allowed-ips.png "Figure 15 - Manage Product: Edit Allowed IPs")
+  !["Figure 16 - Manage Product: Edit IPs"](images\portal-product-details-allowed-ips.png "Figure 16 - Manage Product: Edit Allowed IPs")
 
   {INFO: We recommend fortifying your security by allowing access only to specific IPs}
   You can increase your system's security further using this in-depth security measure and restrict access to
@@ -181,21 +196,21 @@ allowed to connect your database instance.
 ### Maintenance and Danger Zones: Terminate and Restart your Instance
 You can restart your product nodes, deploy additional tools and terminate your product here.
 
-!["Figure 16 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 16 - Manage Product: Terminate")
+!["Figure 17 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 17 - Manage Product: Terminate")
 
 ---
 
 * **Maintenance Zone**  
   Use this tab to restart selected node and deploy RavenDB tools.
 
-!["Figure 17 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 17 - Manage Product: Maintenance Zone")
+!["Figure 18 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 18 - Manage Product: Maintenance Zone")
 
 ---
 
 * **Danger Zone**  
   Use this tab's **Terminate** button to eliminate your cluster.
 
-!["Figure 18 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 18 - Manage Product: Danger Zone")
+!["Figure 19 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 19 - Manage Product: Danger Zone")
 
   {DANGER: }
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  
