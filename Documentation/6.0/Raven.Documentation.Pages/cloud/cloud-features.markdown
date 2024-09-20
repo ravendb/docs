@@ -24,6 +24,10 @@ Usage of this feature is described [here](../integrations/postgresql-protocol/po
 *Power Bi* IPs must be configured after enabling *PowerBi* feature.
 {WARNING/}
 
+{WARNING: Product Restart }
+Your product will be restarted automatically node by node to apply settings needed for feature to work properly.
+{WARNING/}
+
 To access *Power Bi* Configuration View click **Configure** Button in *Power Bi* feature row. Here you can edit your IP
 addresses that will have access to *RavenDB Power Bi* port.
 
@@ -93,6 +97,10 @@ The second section displays SNMPv3 Monitoring credentials.
 
 {WARNING: Required }
 *SNMP Monitoring* IPs must be configured **after** enabling *Monitoring* feature.
+{WARNING/}
+
+{WARNING: Product Restart }
+Your product will be restarted automatically (node by node) to apply settings needed for feature to work properly.
 {WARNING/}
 
 This section allows you to specify IPs that will have access to your product using the *SNMP* protocol.
