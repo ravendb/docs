@@ -61,7 +61,7 @@
 
 {PANEL: Open session example}
 
-* The following example opens a __cluster-wide Session__:
+* The following example opens a **cluster-wide Session**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Using-await open_session_2@client-api\session\openSession.js /}

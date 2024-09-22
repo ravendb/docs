@@ -10,9 +10,9 @@ Stores the entity in a session, then extracts the ID from the entity or if not a
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** | object | Entity that will be stored |
-| **change_vector** | str | Entity change vector, used for concurrency checks (`None` to skip check) |
-| **key** | str | Entity will be stored under this ID, (`None` to generate automatically) |
+| **entity** | `object` | Entity that will be stored |
+| **change_vector** | `str` | Entity change vector, used for concurrency checks (`None` to skip check) |
+| **key** | `str` | Entity will be stored under this ID, (`None` to generate automatically) |
 
 ## Example
 

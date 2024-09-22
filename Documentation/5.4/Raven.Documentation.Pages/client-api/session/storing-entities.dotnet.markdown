@@ -19,9 +19,9 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** | object | Entity that will be stored |
-| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
-| **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
+| **entity** | `object` | Entity that will be stored |
+| **changeVector** | `string` | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **id** | `string` | Entity will be stored under this ID, (`null` to generate automatically) |
 
 ## Example
 

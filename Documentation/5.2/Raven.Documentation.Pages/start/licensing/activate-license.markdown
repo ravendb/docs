@@ -7,7 +7,7 @@
 * Each RavenDB cluster must be registered with its own license.  
 
 * The license key is sent to the email that was provided when obtaining the license.  
-  There are a few ways to __activate your license__, see below.  
+  There are a few ways to **activate your license**, see below.  
 
 * In this page:
 

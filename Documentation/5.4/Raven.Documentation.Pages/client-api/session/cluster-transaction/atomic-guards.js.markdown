@@ -38,17 +38,17 @@
 
 {PANEL: How Atomic Guards Work}
 
-Atomic guards are created and managed by default __only when the session's transaction mode is set to 
-[ClusterWide](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)__.  
+Atomic guards are created and managed by default **only when the session's transaction mode is set to 
+[ClusterWide](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.  
 The atomic guards are managed as follows:
  
-* __New document__:  
+* **New document**:  
   A new atomic guard is created when successfully saving a new document.  
   
-* __Existing document that doesn't have an atomic guard__:  
+* **Existing document that doesn't have an atomic guard**:  
   A new atomic guard is created when modifying an existing document that does not yet have an associated atomic guard.
 
-* __Existing document that already has an atomic guard__:  
+* **Existing document that already has an atomic guard**:  
 
     * Whenever one session modifies a document that already has an associated atomic guard,  
       the value of its related atomic guard increases.  
