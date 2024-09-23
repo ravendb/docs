@@ -1,5 +1,4 @@
-# Data Subscriptions: Subscription Consumption Examples
-
+# Subscription Consumption Examples
 ---
 
 {NOTE: }
@@ -8,42 +7,43 @@
    * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
    * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
    * [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
-   * [Subscription that processes ObjectNode objects](../../../client-api/data-subscriptions/consumption/examples#subscription-that-processes-objectnode-objects)  
-   * [Subscription that works with a session](../../../client-api/data-subscriptions/consumption/examples#subscription-that-works-with-a-session)  
+   * [Worker that processes raw objects](../../../client-api/data-subscriptions/consumption/examples#sworker-that-processes-raw-objects)  
+   * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session)
    * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
-   * [Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
+   * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples#primary-and-secondary-workers)  
 
 {NOTE/}
 
 ---
 
-{PANEL:Worker with a specified batch size}
+{PANEL: Worker with a specified batch size}
 
-Here we create a worker, specifying the maximum batch size we want to receive.
+Here we create a worker and specify the maximum number of documents the server will send to the worker in each batch.
 
 {CODE:java subscription_worker_with_batch_size@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
-{PANEL:Client with full exception handling and processing retries}
+{PANEL: Client with full exception handling and processing retries}
 
-Here we implement a client that treats exceptions thrown by worker, and retries creating the worker if an exception is recoverable.
+Here we implement a client that handles exceptions thrown by a worker.  
+If the exception is recoverable, the client retries creating the worker.
 
 {CODE:java reconnecting_client@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
-{PANEL:Subscription that ends when no documents left}
+{PANEL: Subscription that ends when no documents left}
 
 Here we create a subscription client that runs only up to the point there are no more new documents left to process.  
 
-This is useful for an ad-hoc single use processing that the user wants to be sure is performed completely. 
+This is useful for ad-hoc, single-use processing where the user needs to ensure that all documents are fully processed.
 
 {CODE:java single_run@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
-{PANEL:Worker that processes raw objects}
+{PANEL: Worker that processes raw objects}
 
 Here we create a worker that processes received data as ObjectNode objects.
 
@@ -51,32 +51,34 @@ Here we create a worker that processes received data as ObjectNode objects.
 
 {PANEL/}
 
-{PANEL:Subscription that works with a session}
+{PANEL: Worker that operates with a session}
 
-Here we create a worker that receives all orders without a shipping date, lets the shipment mechanism to handle it and updates the `ShippedAt` field value.
+Here we create a subscription that sends Order documents that do not have a shipping date.  
+The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
 {CODE:java subscription_with_open_session_usage@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
-{PANEL:Subscription that uses included documents}
+{PANEL: Subscription that uses included documents}
 
-Here we create a subscription utilizing the includes feature, by processing `Order` documents and including all `Product`s of each order.  
-When processing the subscription, we create a session using the [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview#subscriptionbatch<t>) object, 
-and for each order line, we obtain the `Product` document and process it alongside with the `Order`.
+Here we create a subscription that, in addition to sending all the _Order_ documents to the worker,  
+will include all the referenced _Product_ documents in the batch sent to the worker.
+
+When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
 {CODE:java subscription_with_includes_path_usage@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 {PANEL/}
 
-
-{PANEL:Two subscription workers that are waiting for each other}
+{PANEL: Primary and secondary workers}
 
 Here we create two workers:  
-* The main worker with the `TAKE_OVER` strategy that will take over the other one and will take the lead  
-* The secondary worker that will wait for the first one fail (due to machine failure etc.)
 
-The main worker:
+* The primary worker, with a `TAKE_OVER` strategy, will take over the other worker and establish the connection.
+* The secondary worker, with a `WAIT_FOR_FREE` strategy, will wait for the first worker to fail (due to machine failure, etc.).
+
+The primary worker:
 
 {CODE:java waiting_subscription_1@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 

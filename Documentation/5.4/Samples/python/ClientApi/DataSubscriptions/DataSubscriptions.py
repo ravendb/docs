@@ -509,9 +509,9 @@ class SubscriptionExamples(ExampleBase):
                         for item in batch.items:
                             # we want to force close the subscription processing in that case
                             # and let the external code decide what to do with that
-                            if item.result.company == "companies/832-A":
+                            if item.result.company == "companies/2-A":
                                 raise UnsupportedCompanyException(
-                                    "Company Id can't be 'companies/832-A', you must fix this"
+                                    "Company Id can't be 'companies/2-A', you must fix this"
                                 )
                             process_order(item.result)
 

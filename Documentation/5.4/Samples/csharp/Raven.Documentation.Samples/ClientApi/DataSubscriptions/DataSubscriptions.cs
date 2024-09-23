@@ -617,7 +617,11 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 {
                     MaxDocsPerBatch = 20
                 });
-            _ = workerWBatch.Run(x => { /* custom logic */ });
+
+            _ = workerWBatch.Run(x =>
+            {
+                // your custom logic 
+            });
             #endregion
 
             #region throw_during_user_logic
@@ -627,9 +631,13 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #region reconnecting_client
             while (true)
             {
+                // Create the worker:
+                // ==================
                 var options = new SubscriptionWorkerOptions(subscriptionName);
 
-                // here we configure that we allow a down time of up to 2 hours, and will wait for 2 minutes for reconnecting
+                // Configure the worker:
+                // Allow a downtime of up to 2 hours,
+                // and wait 2 minutes before reconnecting
                 options.MaxErroneousPeriod = TimeSpan.FromHours(2);
                 options.TimeToWaitBeforeConnectionRetry = TimeSpan.FromMinutes(2);
 
@@ -637,59 +645,75 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
                 try
                 {
-                    // here we are able to be informed of any exception that happens during processing                    
+                    // Subscribe to connection retry events
+                    // and log any exceptions that occur during processing
                     subscriptionWorker.OnSubscriptionConnectionRetry += exception =>
                     {
-                        Logger.Error("Error during subscription processing: " + subscriptionName, exception);
+                        Logger.Error("Error during subscription processing: " + subscriptionName,
+                            exception);
                     };
 
-                    await subscriptionWorker.Run(async batch =>
+                    // Run the worker:
+                    // ===============
+                    await subscriptionWorker.Run(batch =>
                     {
                         foreach (var item in batch.Items)
                         {
-                            // we want to force close the subscription processing in that case
-                            // and let the external code decide what to do with that
-                            if (item.Result.Company == "companies/832-A")
-                                throw new UnsupportedCompanyException("Company Id can't be 'companies/832-A', you must fix this");
-                            await ProcessOrder(item.Result);
+                            // Forcefully stop subscription processing if the ID is "companies/2-A"
+                            // and throw an exception to let external logic handle the specific case
+                            if (item.Result.Company == "companies/2-A")
+                            {
+                                // The custom exception thrown from here
+                                // will be wrapped by `SubscriberErrorException`
+                                throw new UnsupportedCompanyException(
+                                    "Company ID can't be 'companies/2-A', pleases fix");
+                            }
+
+                            // Process the order document - provide your own logic
+                            ProcessOrder(item.Result);
                         }
                     }, cancellationToken);
 
-                    // Run will complete normally if you have disposed the subscription
+                    // The Run method will stop if the subscription worker is disposed,
+                    // exiting the while loop
                     return;
                 }
                 catch (Exception e)
                 {
                     Logger.Error("Failure in subscription: " + subscriptionName, e);
 
+                    // The following exceptions are Not recoverable
                     if (e is DatabaseDoesNotExistException ||
                         e is SubscriptionDoesNotExistException ||
                         e is SubscriptionInvalidStateException ||
                         e is AuthorizationException)
-                        throw; // not recoverable
+                        throw;
 
 
                     if (e is SubscriptionClosedException)
-                        // closed explicitly by admin, probably
+                        // Subscription probably closed explicitly by admin
                         return;
 
                     if (e is SubscriberErrorException se)
                     {
-                        // for UnsupportedCompanyException type, we want to throw an exception, otherwise
-                        // we continue processing
+                        // For UnsupportedCompanyException we want to throw an exception,
+                        // otherwise, continue processing
                         if (se.InnerException != null && se.InnerException is UnsupportedCompanyException)
                         {
                             throw;
                         }
 
+                        // Call continue to skip the current while(true) iteration and try reconnecting
+                        // in the next one, allowing the worker to process future batches.
                         continue;
                     }
 
-                    // handle this depending on subscription
-                    // open strategy (discussed later)
+                    // Handle this depending on the subscription opening strategy
                     if (e is SubscriptionInUseException)
                         continue;
 
+                    // Call return to exit the while(true) loop,
+                    // dispose the worker (via finally), and stop the subscription.
                     return;
                 }
                 finally
@@ -748,181 +772,216 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 #endregion
             }
 
-            async Task ProcessOrder(Order o)
+            void ProcessOrder(Order o)
             {
-
             }
         }
 
         private static async Task SingleRun(DocumentStore store)
         {
-            var subsId = store.Subscriptions.Create<Order>(
-                            new SubscriptionCreationOptions<Order>
-                            {
-                                Filter = order => order.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 10000,
-                                Projection = order => new OrderAndCompany
-                                {
-                                    OrderId = order.Id,
-                                    Company = RavenQuery.Load<Company>(order.Company)
-                                }
-                            });
-
             #region single_run
-            var highValueOrdersWorker = store.Subscriptions.GetSubscriptionWorker<OrderAndCompany>(
-                new SubscriptionWorkerOptions(subsId)
+            // Create the subscription task on the server:
+            // ===========================================
+            var subscriptionName = store.Subscriptions.Create<Order>(
+                new SubscriptionCreationOptions<Order>
                 {
-                    // Here we ask the worker to stop when there are no documents left to send. 
+                    Filter = order => order.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 10000,
+                    Projection = order => new OrderAndCompany
+                    {
+                        OrderId = order.Id,
+                        Company = RavenQuery.Load<Company>(order.Company)
+                    }
+                });
+
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            var highValueOrdersWorker = store.Subscriptions.GetSubscriptionWorker<OrderAndCompany>(
+                new SubscriptionWorkerOptions(subscriptionName)
+                {
+                    // Here we set the worker to stop when there are no more documents left to send 
                     // Will throw SubscriptionClosedException when it finishes it's job
                     CloseWhenNoDocsLeft = true
                 });
 
             try
             {
-                await highValueOrdersWorker.Run(async batch =>
+                await highValueOrdersWorker.Run(batch =>
                 {
                     foreach (var item in batch.Items)
                     {
-                        await SendThankYouNoteToEmployee(item.Result);
+                        SendThankYouNoteToEmployee(item.Result); // call your custom method 
                     }
                 });
             }
             catch (SubscriptionClosedException)
             {
-                // that's expected
+                // That's expected, no more documents to process
             }
             #endregion
 
-            async Task SendThankYouNoteToEmployee(OrderAndCompany oac)
+            void SendThankYouNoteToEmployee(OrderAndCompany oac)
             {
-
             }
         }
 
         public async Task DynamicWorkerSubscription(DocumentStore store)
         {
             #region dynamic_worker
-            var subscriptionName = "My dynamic subscription";
+            // Create the subscription task on the server:
+            // ===========================================
             
-            await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>()
+            var subscriptionName = "My dynamic subscription";
+            store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
             {
-                Name = "My dynamic subscription",
-                Projection = order => new { DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
+                Name = subscriptionName,
+                Projection = order => 
+                    new { DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
             });
 
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionName);
-            _ = subscriptionWorker.Run(async batch =>
+            _ = subscriptionWorker.Run(batch =>
             {
                 foreach (var item in batch.Items)
                 {
-                    await RaiseNotification(item.Result.DynanamicField_1);
+                    // Access the dynamic field in the document
+                    dynamic field = item.Result.DynanamicField_1;
+                    
+                    // Call your custom method
+                    ProcessItem(field); 
                 }
             });
             #endregion
 
-            async Task RaiseNotification(string message)
+            void ProcessItem(string field)
             {
-
             }
         }
 
         public async Task SubscriptionWithIncludesPath(DocumentStore store)
         {
             #region subscription_with_includes_path_usage
-            var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            // Create the subscription task on the server:
+            // ===========================================
+            
+            var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
+                // Include the referenced Product documents for each Order document
                 Query = @"from Orders include Lines[].Product"
             });
 
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
-            _ = subscriptionWorker.Run(async batch =>
+            _ = subscriptionWorker.Run(batch =>
             {
-                using (var session = batch.OpenAsyncSession())
+                // Open a session via 'batch.OpenSession'
+                // in order to access the Product documents
+                using (var session = batch.OpenSession())
                 {
                     foreach (var order in batch.Items.Select(x => x.Result))
                     {
                         foreach (var orderLine in order.Lines)
                         {
-                            // this line won't generate a request, because orderLine.Product was included
-                            var product = await session.LoadAsync<Product>(orderLine.Product);
-                            await RaiseNotification(order, product);
+                            // Calling Load will Not generate a request to the server,
+                            // because orderLine.Product was included in the batch
+                            var product = session.Load<Product>(orderLine.Product);
+                            
+                            ProcessOrderAndProduct(order, product); // call your custom method
                         }
-
                     }
                 }
             });
             #endregion
 
-            async Task RaiseNotification(Order modifiedOrder, Product productInOrder)
+            void ProcessOrderAndProduct(Order order, Product productInOrder)
             {
-
             }
         }
 
         public async Task SubscriptionsWithOpenSession(DocumentStore store)
         {
             #region subscription_with_open_session_usage
-            var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            // Create the subscription task on the server:
+            // ===========================================
+
+            var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
                 Query = @"from Orders as o where o.ShippedAt = null"
             });
 
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
-            _ = subscriptionWorker.Run(async batch =>
+            _ = subscriptionWorker.Run(batch =>
             {
-                using (var session = batch.OpenAsyncSession())
+                // Open a session with 'batch.OpenSession'
+                using (var session = batch.OpenSession())
                 {
                     foreach (var order in batch.Items.Select(x => x.Result))
                     {
-                        await TransferOrderToShipmentCompanyAsync(order);
-                        order.ShippedAt = DateTime.UtcNow;
-
+                        TransferOrderToShipmentCompany(order); // call your custom method 
+                        order.ShippedAt = DateTime.UtcNow;     // update the document field
                     }
 
-                    // we know that we have at least one order to ship,
-                    // because the subscription query above has that in it's WHERE clause
-                    await session.SaveChangesAsync();
+                    // Save the updated Order documents
+                    session.SaveChanges();
                 }
             });
             #endregion
 
-            async Task TransferOrderToShipmentCompanyAsync(Order modifiedOrder)
+            void TransferOrderToShipmentCompany(Order modifiedOrder)
             {
             }
         }
 
-        public async Task BlittableWorkerSubscription(DocumentStore store, string subscriptionId)
+        public async Task BlittableWorkerSubscription(DocumentStore store)
         {
             #region blittable_worker
-            await store.Subscriptions.CreateAsync(
-                new SubscriptionCreationOptions<Order>
+            // Create the subscription task on the server:
+            // ===========================================
+            
+            var subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+            {
+                Projection = x => new
                 {
-                    Projection = x => new
-                    {
-                        x.Employee
-                    }
-                });
+                    x.Employee
+                }
+            });
 
-            var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<BlittableJsonReaderObject>(subscriptionId);
-            _ = subscriptionWorker.Run(async batch =>
+            // Create the subscription worker that will consume the documents:
+            // ===============================================================
+            
+            var subscriptionWorker = 
+                // Specify `BlittableJsonReaderObject` as the generic type parameter
+                store.Subscriptions.GetSubscriptionWorker<BlittableJsonReaderObject>(subscriptionName);
+            
+            _ = subscriptionWorker.Run(batch =>
             {
                 foreach (var item in batch.Items)
                 {
-                    await RaiseNotification(item.Result["Employee"].ToString());
+                    // Access the Employee field within the blittable object
+                    var employeeField = item.Result["Employee"].ToString();
+                    
+                    ProcessItem(employeeField); // call your custom method 
                 }
             });
             #endregion
 
-            async Task RaiseNotification(string message)
+            void ProcessItem(string message)
             {
-
             }
         }
 
         public async Task WaitForFreeSubscription(DocumentStore store, string subscriptionName)
         {
             #region waitforfree
-            var worker = store.Subscriptions.GetSubscriptionWorker<Order>
-                    (new SubscriptionWorkerOptions(subscriptionName)
+            var worker = store.Subscriptions.GetSubscriptionWorker<Order>(
+                new SubscriptionWorkerOptions(subscriptionName)
             {
                 Strategy = SubscriptionOpeningStrategy.WaitForFree
             });
@@ -932,7 +991,8 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         public async Task TwoSubscriptions(DocumentStore store, string subscriptionName)
         {
             #region waiting_subscription_1
-            var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
+            var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+                new SubscriptionWorkerOptions(subscriptionName)
             {
                 Strategy = SubscriptionOpeningStrategy.TakeOver
             });
@@ -954,7 +1014,8 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
             #region waiting_subscription_2
-            var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(subscriptionName)
+            var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
+                new SubscriptionWorkerOptions(subscriptionName)
             {
                 Strategy = SubscriptionOpeningStrategy.WaitForFree
             });
