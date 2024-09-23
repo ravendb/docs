@@ -18,7 +18,6 @@
   * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
   * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption)   
   * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#filtering-revisions)   
-  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions)   
 
 {NOTE/}
 
@@ -52,8 +51,8 @@
 * **Query access scope**:  
   For each revision, the subscription query running on the server has access to both the currently processed revision and its previous revision.
 * **Data sent to client**:  
-  By default, unless the subscription query is [projecting specific fields](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions),
-  each item in the batch sent to the client contains both the processed revision (`Result.Current`) and its preceding revision (`Result.Previous`).
+  By default, unless the subscription query is projecting specific fields,
+  each item in the batch sent to the client contains both the processed revision (`result.current`) and its preceding revision (`result.previous`).
   If the document has just been created, the previous revision will be `null`. 
 
 ---
@@ -88,7 +87,7 @@ We update this User document in two consecutive operations:
 * Update the 'Age' field to the value of 22  
 * Update the 'Age' field to the value of 23  
 
-The subscription worker in the client will receive pairs of revisions ( _Previous_ & _Current_ )  
+The subscription worker in the client will receive pairs of revisions ( _previous_ & _current_ )  
 within each item in the batch in the following order:  
 
 | Batch item | Previous                       | Current                        |
@@ -105,14 +104,11 @@ Here we set up a basic revisions subscription that will deliver pairs of consecu
 
 **Create subscription**:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic_syntax create_simple_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL_syntax create_simple_revisions_subscription_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs revisions_1@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
 
 **Consume subscription**:
 
-{CODE use_simple_revision_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs revisions_2@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
 
 {PANEL/}
 
@@ -122,36 +118,11 @@ Here we set up a revisions subscription that will send the client only document 
 
 **Create subscription**:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Generic_syntax create_filtered_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL_syntax create_filtered_revisions_subscription_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
+{CODE:nodejs revisions_3@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
 
 **Consume subscription**:
 
-{CODE consume_filtered_revisions_subscription@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
-{PANEL/}
-
-{PANEL: Projecting fields from revisions}
-
-Here we define a revisions subscription that will filter the revisions and send projected data to the client.
-
-**Create subscription**:
-
-{CODE-TABS}
-{CODE-TAB:csharp:Generic_syntax create_projected_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:RQL_syntax create_projected_revisions_subscription_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TAB:csharp:Projection_class projection_class@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{CODE-TABS/}
-
-**Consume subscription**:
-
-Since the revision fields are projected into the `OrderRevenues` class in the subscription definition,  
-each item received in the batch has the format of this projected class instead of the default `Result.Previous` and `Result.Current` fields, 
-as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption).
-
-{CODE consume_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:nodejs revisions_4@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
 
 {PANEL/}
 
