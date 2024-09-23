@@ -15,6 +15,7 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
      - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#change-instance-type-and-storage)  
      - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
+     - [Manage features](#manage-features)
      - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab#maintenance-and-danger-zones-terminate-and-restart-your-instance)  
 {NOTE/}
 
@@ -193,24 +194,40 @@ allowed to connect your database instance.
 
 ---
 
+### Manage features
+
+You can view features available for your product, enable, disable and configure them here.
+
+{NOTE: Important }
+After enabling features some of them must be configured to work properly.
+{NOTE/}
+
+!["Figure 17 - Manage Features: Enable features"](images/portal-product-features-disabled.png "Figure 17 - Manage Features: Enable features")
+
+!["Figure 18 - Manage Features: Configure or disable features"](images/portal-product-features-enabled.png "Figure 18 - Manage Features: Configure or disable features")
+
+Available features are described on [Product Features](../cloud-features) page.
+
+---
+
 ### Maintenance and Danger Zones: Terminate and Restart your Instance
 You can restart your product nodes, deploy additional tools and terminate your product here.
 
-!["Figure 17 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 17 - Manage Product: Terminate")
+!["Figure 19 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 19 - Manage Product: Terminate")
 
 ---
 
 * **Maintenance Zone**  
   Use this tab to restart selected node and deploy RavenDB tools.
 
-!["Figure 18 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 18 - Manage Product: Maintenance Zone")
+!["Figure 20 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 20 - Manage Product: Maintenance Zone")
 
 ---
 
 * **Danger Zone**  
   Use this tab's **Terminate** button to eliminate your cluster.
 
-!["Figure 19 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 19 - Manage Product: Danger Zone")
+!["Figure 21 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 21 - Manage Product: Danger Zone")
 
   {DANGER: }
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  

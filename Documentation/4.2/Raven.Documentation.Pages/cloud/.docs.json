@@ -69,5 +69,11 @@
         "Name": "Maintenance & Troubleshooting",
         "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
         "Mappings": []
+    },
+    {
+        "Path": "cloud-features.markdown",
+        "Name": "Product Features",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
     }
 ]

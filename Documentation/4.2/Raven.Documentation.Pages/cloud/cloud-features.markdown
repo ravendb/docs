@@ -6,7 +6,7 @@
 *RavenDB Cloud* provides *OLAP ETL* capabilities, allowing you to integrate your operational data with analytical data
 warehouses.
 
-Usage of this feature is described [here](../studio/database/tasks/ongoing-tasks/olap-etl-task).
+Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/tasks/ongoing-tasks/olap-etl-task).
 
 {PANEL/}
 
@@ -16,7 +16,7 @@ Usage of this feature is described [here](../studio/database/tasks/ongoing-tasks
 to seamlessly connect your RavenDB data with *Power BI* for advanced visualization and reporting, enabling real-time
 insights and data-driven decision-making.
 
-Usage of this feature is described [here](../integrations/postgresql-protocol/power-bi).
+Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/integrations/postgresql-protocol/power-bi).
 
 ## Configuration
 
@@ -47,7 +47,7 @@ The *Queue ETL* feature enables you to export data from *RavenDB* to various que
 This is particularly useful for scenarios where you need to process data asynchronously or distribute it
 to other microservices and applications.
 
-Usage of this feature is described [here](../server/ongoing-tasks/etl/queue-etl/overview).
+Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/etl/queue-etl/overview).
 
 {PANEL/}
 
@@ -57,7 +57,7 @@ Usage of this feature is described [here](../server/ongoing-tasks/etl/queue-etl/
 database from external systems or services. This feature is ideal for integrating with event-driven architectures
 where data is processed and ingested in real time.
 
-Usage of this feature is described [here](../server/ongoing-tasks/queue-sink/overview).
+Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/queue-sink/overview).
 
 {INFO: Availability }
 This feature is available only for *RavenDB* **6.0 and newer**.
@@ -72,7 +72,7 @@ Archived documents are compressed and can be handled differently by *RavenDB* fu
 archived documents from indexes and Data Subscriptions can avoid sending archived docs to workers), helping to keep the
 database smaller and quicker and its contents more relevant.
 
-Usage of this feature is described [here](../server/extensions/archival).
+Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/extensions/archival).
 
 {INFO: Availability }
 This feature is available only for *RavenDB* **6.0 and newer**.

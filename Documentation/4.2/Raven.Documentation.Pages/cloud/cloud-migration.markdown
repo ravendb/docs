@@ -58,16 +58,19 @@ Configure the Client Certificate's **Database Permissions** to include the datab
 
 ---
 
-In the Destination Server, create or select an empty database and open its **Settings --> Import Data** option.  
+In the Destination Server, create or select an empty database and open its **Tasks --> Import Data** option.  
 
-!["Import Data"](images\migration-006-import-data.png "import data")
+!["Import Data"](images\migrating-data-from-ravendb-steps.png "import data")
 
----
+1. Select the **Tasks** tab.  
+2. Select **Import Data**.  
+3. Select the **From RavenDB** tab.  
+4. Select the destination server.  
+5. **Make sure that you are not writing over data that you want to keep**. One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  If you create a new one, choose the new database server in step 4 (above).  
+6. Enter the URL of the source server and choose which data to migrate.  
+7. Click **Migrate Database**  
 
-Enter the URL of the source server.  
-Choose which data to migrate, and click **Migrate Database**.  
 
-!["Import Options"](images\migration-007-options.png "Import Options")
 
 {PANEL/}
 
@@ -77,20 +80,34 @@ Another option is to [export a database](../studio/database/tasks/export-databas
 `.ravenDBDump` format, and upload it to another database using the 
 [import data from file](../studio/database/tasks/import-data/import-data-file) operation.  
 This option doesn't require passing certificates:  
-{NOTE: Encryption}
- If you selected encryption during the export, you also need to select encryption during the import.
- {NOTE/}
 
 ---
 
-In the source server, select a database to export and go to **Settings --> Export Database**.  
-After choosing which data to export, click **Export Database**.  
+#### First export the data from source server  
+
+!["Export Data to File"](images\studio-view-export-database-tofile-steps.png "Export Data to File")
+
+1. In the source server, select a database to export and go to **Tasks tab**.  
+2. Select **Export Database**.  
+3. Change the destination file name if you'd prefer (optional).  
+4. Select desired options.  
+ Note that **Encrypt Exported File** is off by default.  
+5. After choosing which data to export, click **Export Database**.  
 
 ---
 
-In the destination server, go to **Settings --> Import Database**.  
-Click the **From file (.ravendbdump)** tab.  
-Select the file and click **Import Database**.  
+#### Next import the data to destination server from file
+
+!["Import Data from File"](images\studio-view-import-fromfile-steps.png "Import Data from File")
+
+1. In the destination server, go to **Tasks** tab.  
+2. Select **Import Data**.  
+3. **Make sure that you are not writing over data that you want to keep**.  
+ One option is [to start a new database with the studio](https://ravendb.net/docs/article-page/5.2/csharp/studio/database/create-new-database/general-flow).  
+4. Select the `.ravendbdump` file that you previously exported from the source server.  
+5. Select desired options.  
+ **If you encrypted while exporting** make sure to select **imported file is encrypted**.  
+6. Click **Import Database**.  
 
 {PANEL/}
 

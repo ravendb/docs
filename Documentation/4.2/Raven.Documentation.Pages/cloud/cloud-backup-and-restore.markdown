@@ -61,6 +61,21 @@ cloud you have no direct access to.
 You can [view and restore](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
+{NOTE: }
+A backup created for data hosted by a server in Europe or the US 
+will be kept within the same [geographical region](https://cloud.ravendb.net/pricing), 
+i.e. backups made for a database hosted in Europe are kept in Europe 
+and backups made for a database hosted in the US are kept in the US.  
+{NOTE/}
+
+{NOTE: Backup location - GDPR/DPA consideration}
+Upon backup geographically closest AWS S3 bucket is used for backup storage e.g. :
+
+- if your RavenDB Cloud cluster has been created in Europe, it backs up to AWS S3 buckets in Europe.
+
+- if your RavenDB Cloud cluster has been created in the US, it backs up to AWS S3 buckets in the US.
+{NOTE/}
+
 ---
 
 ####Custom-Backup Storage
@@ -157,7 +172,6 @@ Backup files that have already been created, are listed in the backups tab.
   Its backups will be shown, listed by the databases they've been created for.  
 * Click "Generate Backup Link" for the database you want to restore.  
   The backup link window will open.
-
   !["Backups List"](images\backup-and-restore-002-mandatory-backups-tab-list.png "Backups List")  
 
 ---
@@ -206,4 +220,4 @@ Clicking the **Generate Backup Link** button will show you a simple procedure. F
 [Backup Overview](../server/ongoing-tasks/backup-overview)  
 
 **Studio**  
-[Backup Task](../studio/database/tasks/ongoing-tasks/backup-task)  
+[Backup Task](../studio/database/tasks/backup-task)  
