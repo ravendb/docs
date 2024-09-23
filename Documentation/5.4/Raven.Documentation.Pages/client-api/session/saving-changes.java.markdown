@@ -1,6 +1,6 @@
 # Session: Saving changes
 
-Pending session operations e.g. `store`, `delete` and many others will not be send to the server until `saveChanges` is called.
+Pending session operations like `store`, `delete`, and many others, will not be sent to the server until `saveChanges` is called.
 
 {INFO: }
 

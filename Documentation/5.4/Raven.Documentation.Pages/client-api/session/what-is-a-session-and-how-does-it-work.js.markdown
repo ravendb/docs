@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* The __session__, which is obtained from the [Document Store](../../client-api/what-is-a-document-store),  
+* The **session**, which is obtained from the [Document Store](../../client-api/what-is-a-document-store),  
   is the primary interface your application will interact with.
 
 * In this page:
@@ -27,10 +27,10 @@
 
 {PANEL: Session overview}
 
-* __What is the session__:  
+* **What is the session**:  
 
     * The session (`IDocumentSession`/`IAsyncDocumentSession`) serves as a [Unit of Work](https://en.wikipedia.org/wiki/Unit_of_work) representing a single  
-      __[Business Transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html)__ on a specific database (not to be confused with an [ACID transaction](../../client-api/faq/transaction-support)).
+      **[Business Transaction](https://martinfowler.com/eaaCatalog/unitOfWork.html)** on a specific database (not to be confused with an [ACID transaction](../../client-api/faq/transaction-support)).
 
     * It is a container that allows you to query for documents and load, create, or update entities  
       while keeping track of changes.
@@ -38,25 +38,25 @@
     * Basic document CRUD actions and document Queries are available through the `session`.  
       More advanced options are available using the `advanced` Session operations.
 
-* __Batching modifications__:  
+* **Batching modifications**:  
   A business transaction usually involves multiple requests such as loading of documents or execution of queries.  
   Calling [saveChanges()](../../client-api/session/saving-changes) indicates the completion of the client-side business logic .
-  At this point, all modifications made within the session are batched and sent together in a __single HTTP request__ to the server to be persisted as a single ACID transaction.
+  At this point, all modifications made within the session are batched and sent together in a **single HTTP request** to the server to be persisted as a single ACID transaction.
 
-* __Tracking changes__:  
+* **Tracking changes**:  
   Based on the [Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html) and the [Identity Map](https://martinfowler.com/eaaCatalog/identityMap.html) patterns,
   the session tracks all changes made to all entities that it has either loaded, stored, or queried for.  
   Only the modifications are sent to the server when _saveChanges()_ is called.
 
-* __Client side object__:  
+* **Client side object**:  
   The session is a pure client side object. Opening the session does Not establish any connection to a database,  
   and the session's state isn't reflected on the server side during its duration.
 
-* __Configurability__:  
+* **Configurability**:  
   Various aspects of the session are configurable.  
   For example, the number of server requests allowed per session is [configurable](../../client-api/session/configuration/how-to-change-maximum-number-of-requests-per-session) (default is 30).
 
-* __The session and ORM Comparison__:  
+* **The session and ORM Comparison**:  
   The RavenDB Client API is a native way to interact with a RavenDB database.  
   It is _not_ an Object–relational mapping (ORM) tool. Although if you're familiar with NHibernate of Entity Framework ORMs you'll recognize that
   the session is equivalent of NHibernate's session and Entity Framework's DataContext which implement UoW pattern as well.
@@ -70,7 +70,7 @@
 * Using the session, perform needed operations on your documents.  
   e.g. create a new document, modify an existing document, query for documents, etc.  
 * Any such operation '*loads*' the document as an entity to the Session,  
-  and the entity is added to the __session's entities map__.  
+  and the entity is added to the **session's entities map**.  
 * The session **tracks all changes** made to all entities stored in its internal map.  
   You don't need to manually track the changes and decide what needs to be saved and what doesn't, the session will do it for you.  
   Prior to saving, you can review the changes made if necessary. See: [Check for session changes](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session).
@@ -124,9 +124,9 @@
 #### Batching
 
 * Remote calls to a server over the network are among the most expensive operations an application makes.  
-  The session optimizes this by batching all __write operations__ it has tracked into the `saveChanges()` call.
+  The session optimizes this by batching all **write operations** it has tracked into the `saveChanges()` call.
 * When calling _saveChanges_, the session evaluates its state to identify all pending changes requiring persistence in the database.
-  These changes are then combined into a single batch that is sent to the server in a __single remote call__ and executed as a single ACID transaction.  
+  These changes are then combined into a single batch that is sent to the server in a **single remote call** and executed as a single ACID transaction.  
 
 {NOTE/}
 {NOTE: }
@@ -163,8 +163,8 @@
 #### Transaction mode
 
 * The session's transaction mode can be set to either:
-    * __Single-Node__ - transaction is executed on a specific node and then replicated
-    * __Cluster-Wide__ - transaction is registered for execution on all nodes in an atomic fashion
+    * **Single-Node** - transaction is executed on a specific node and then replicated
+    * **Cluster-Wide** - transaction is registered for execution on all nodes in an atomic fashion
     * {WARNING: }
       The phrase "session's transaction mode" refers to the type of transaction that will be executed on the server-side when `saveChanges()` is called.
       As mentioned earlier, the session itself does not represent an ACID transaction.

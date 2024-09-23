@@ -76,9 +76,9 @@ The atomic guards are managed as follows:
 {PANEL: Syntax and Usage}
 
 In the code sample below, an atomic guard is automatically created upon the creation of a new document,  
-and then used when two sessions compete on changing the document.
+and then used when two sessions compete on changing the document.  
 
-{CODE:nodejs atomic-guards-enabled@client-api/session/ClusterTransaction/AtomicGuards.js /}
+{CODE:php atomic-guards-enabled@ClientApi/Session/ClusterTransaction/AtomicGuards.php /}
 
 After running the above example, the atomic guard that was automatically created can be viewed in the Studio,  
 in the [Compare-Exchange view](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view):
@@ -87,18 +87,18 @@ in the [Compare-Exchange view](../../../studio/database/documents/compare-exchan
 
 The generated atomic guard key name is composed of:
 
-* The prefix `rvn-atomic`
-* The ID of the document that it is associated with
+  * The prefix `rvn-atomic`
+  * The ID of the document that it is associated with
 
 {PANEL/}
 
 {PANEL: Disabling Atomic Guards}
 
 To **disable** the automatic creation & usage of atomic guards in a session, set the session 
-`disableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.  
+`DisableAtomicDocumentWritesInClusterWideTransaction` configuration option to `true`.  
 
 In the sample below, the session uses **no atomic guards**.  
-{CODE:nodejs atomic-guards-disabled@client-api/session/ClusterTransaction/AtomicGuards.js /}
+{CODE:php atomic-guards-disabled@ClientApi/Session/ClusterTransaction/AtomicGuards.php /}
 
 {WARNING: Warning}
 

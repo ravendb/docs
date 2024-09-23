@@ -1,20 +1,20 @@
 # Session: Storing Entities
 
-To store entities inside the **session** object, use one of the three `Store` methods.
+To store entities inside the **session** object, use one of the three `store` methods.
 
 ## Syntax
 
 First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
 
-{CODE store_entities_1@ClientApi\Session\StoringEntities.cs /}
+{CODE:php store_entities_1@ClientApi\Session\StoringEntities.php /}
 
 Second overload: Stores the entity in a session with given ID.
 
-{CODE store_entities_2@ClientApi\Session\StoringEntities.cs /}
+{CODE:php store_entities_2@ClientApi\Session\StoringEntities.php /}
 
 Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-{CODE store_entities_3@ClientApi\Session\StoringEntities.cs /}
+{CODE:php store_entities_3@ClientApi\Session\StoringEntities.php /}
 
 
 | Parameters | | |
@@ -25,7 +25,7 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ## Example
 
-{CODE store_entities_5@ClientApi\Session\StoringEntities.cs /}
+{CODE:php store_entities_5@ClientApi\Session\StoringEntities.php /}
 
 ## Related Articles
 

@@ -5,14 +5,15 @@
 
 * To modify existing documents:
 
-    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities#load) or by a [query](../../client-api/session/querying/how-to-query#session.query).  
-      The entities loaded from the documents are added to the internal entities map that the Session manages.
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities#load) 
+      or by a [query](../../client-api/session/querying/how-to-query#session.query).  
+      The entities loaded from the documents are added to the internal entities map that the session manages.  
   
     * **Edit** the properties you wish to change.  
       The session will track all changes made to the loaded entities.
 
     * **Save** to apply the changes.  
-      Once `save_changes()` returns it is guaranteed that the data is persisted in the database.
+      Once `saveChanges()` returns it is guaranteed that the data is persisted in the database.
       
 
 
@@ -28,7 +29,7 @@
 
 * In this example we `load` a company document and update its **PostalCode** property.  
 
-{CODE:python load-company-and-update@ClientApi\Session\UpdateDocuments.py /}
+{CODE:php load-company-and-update@ClientApi\Session\UpdateDocuments.php /}
 
 {PANEL/}
 
@@ -37,7 +38,7 @@
 * In this example we `query` for company documents whose **PostalCode** property is _12345_,  
   and modify this property for the matching documents.  
 
-{CODE:python query-companies-and-update@ClientApi\Session\UpdateDocuments.py /}
+{CODE:php query-companies-and-update@ClientApi\Session\UpdateDocuments.php /}
 
 {PANEL/}
 

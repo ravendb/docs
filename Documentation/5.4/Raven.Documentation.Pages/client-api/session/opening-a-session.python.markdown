@@ -29,7 +29,7 @@ Use `open_session()` to open a session from the Document Store.
 
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| **database** | str              | The session will operate on this database,<br>overriding the default database set in the document store.                       |
+| **database** | `str`              | The session will operate on this database,<br>overriding the default database set in the document store.                       |
 | **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
 
 | Return Value                                 | Description                   |
@@ -44,9 +44,9 @@ Use `open_session()` to open a session from the Document Store.
 
 | Option                                                  | Type               | Description                                                                                                                                                                                                                               | Default Value                                         |
 |---------------------------------------------------------|------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| **database**                                            | str                | The Session will operate on this database,<br>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
-| **no_tracking**                                         | bool               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br>`False` - Tracking will be turned off.<br>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `False`                                               |
-| **no_caching**                                          | bool               | `True` - Server responses will not be cached.<br>`False` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
+| **database**                                            | `str`                | The Session will operate on this database,<br>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
+| **no_tracking**                                         | `bool`               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br>`False` - Tracking will be turned off.<br>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `False`                                               |
+| **no_caching**                                          | `bool`               | `True` - Server responses will not be cached.<br>`False` - The Session caches the server responses.<br>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
 | **request_executor**                                    | `RequestExecutor`  | ( _Advanced option_ ) <br>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
 | **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br>`SINGLE_NODE` / `CLUSTER_WIDE`<br>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
 
@@ -54,13 +54,13 @@ Use `open_session()` to open a session from the Document Store.
 
 | Option                                                             | Type                | Description                                                                                                                                                                                                                                             | Default Value |
 |--------------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **disable_atomic_document_writes_in_cluster_wide_transaction**     | bool                | **Experts only**<br>`True` - Disable Atomic-Guards in cluster-wide sessions.<br>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `False`       |
+| **disable_atomic_document_writes_in_cluster_wide_transaction**     | `bool`                | **Experts only**<br>`True` - Disable Atomic-Guards in cluster-wide sessions.<br>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `False`       |
 
 {PANEL/}
 
 {PANEL:Open session example}
 
-* The following example opens a __cluster-wide Session__:
+* The following example opens a **cluster-wide Session**:
 
 {CODE:python open_session_2@ClientApi\session\OpenSession.py /}
 

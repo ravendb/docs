@@ -5,13 +5,13 @@
 
 * To modify existing documents:
 
-    * __Retrieve__ documents from the database using [Load](../../client-api/session/loading-entities#load) or by a [Query](../../client-api/session/querying/how-to-query#session.query).  
+    * **Retrieve** documents from the database using [Load](../../client-api/session/loading-entities#load) or by a [Query](../../client-api/session/querying/how-to-query#session.query).  
       The entities loaded from the documents are added to the internal entities map that the Session manages.
   
-    * __Edit__ the properties you wish to change.  
+    * **Edit** the properties you wish to change.  
       The session will track all changes made to the loaded entities.
 
-    * __Save__ to apply the changes.  
+    * **Save** to apply the changes.  
       Once `SaveChanges()` returns it is guaranteed that the data is persisted in the database.
       
 
