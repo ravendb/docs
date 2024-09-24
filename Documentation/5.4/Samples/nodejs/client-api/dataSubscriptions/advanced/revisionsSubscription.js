@@ -20,6 +20,7 @@ async function revisionsSubscription() {
         const workerOptions = { subscriptionName };
 
         const worker = 
+            // Use method `getSubscriptionWorkerForRevisions`
             documentStore.subscriptions.getSubscriptionWorkerForRevisions(workerOptions);
 
         worker.on("batch", (batch, callback) => {
@@ -80,11 +81,6 @@ async function revisionsSubscription() {
         //endregion
     }
     
-    //////////////
-    /// Note: regions revisions_5 & revisions_6 are currently not referenced in the markdown
-    /// I'm keeping them here to be used once issue RDBC-876 is fixed
-    //////////////
-    
     {
         //region revisions_5
         const subscriptionName = await documentStore.subscriptions.create({
@@ -119,14 +115,20 @@ async function revisionsSubscription() {
     
     {        
         //region revisions_6
-        const workerOptions = { subscriptionName: subscriptionName, documentType: MyProjection };
+        const workerOptions = { 
+            subscriptionName: subscriptionName,
+            documentType: OrderRevenues
+        };
 
         const worker =
-            documentStore.subscriptions.getSubscriptionWorkerForRevisions(workerOptions);
+            // Note: in this case, where each resulting item in the batch is a projected object
+            // and not the revision itself, we use method `getSubscriptionWorker`
+            documentStore.subscriptions.getSubscriptionWorker(workerOptions);
 
         worker.on("batch", (batch, callback) => {
             try {
                 for (const item of batch.items) {
+                    // Access the projected content:
                     console.log(`
                         Revenue for order with ID: ${item.id}
                         has grown from ${item.result.previousRevenue}
@@ -143,9 +145,11 @@ async function revisionsSubscription() {
     }
 }
 
+//region projection_class
 class OrderRevenues {
     constructor() {
         this.previousRevenue;
         this.currentRevenue;
     }
 }
+//endregion

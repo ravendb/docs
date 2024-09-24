@@ -457,6 +457,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             {
                 foreach (var item in batch.Items)
                 {
+                    // Access the projected content:
                     Console.WriteLine($@"Revenue for order with ID: {item.Id}
                                          has grown from {item.Result.PreviousRevenue}
                                          to {item.Result.CurrentRevenue}");

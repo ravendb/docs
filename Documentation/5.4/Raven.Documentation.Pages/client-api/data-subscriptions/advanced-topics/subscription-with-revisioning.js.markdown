@@ -17,7 +17,8 @@
   * [Regular subscription vs Revisions subscription](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#regular-subscription-vs-revisions-subscription)
   * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
   * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption)   
-  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#filtering-revisions)   
+  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#filtering-revisions)
+  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions)
 
 {NOTE/}
 
@@ -123,6 +124,27 @@ Here we set up a revisions subscription that will send the client only document 
 **Consume subscription**:
 
 {CODE:nodejs revisions_4@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
+
+{PANEL/}
+
+{PANEL: Projecting fields from revisions}
+
+Here we define a revisions subscription that will filter the revisions and send projected data to the client.
+
+**Create subscription**:
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Subscription_definition revisions_5@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
+{CODE-TAB:nodejs:Projection_class projection_class@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
+{CODE-TABS/}
+
+**Consume subscription**:
+
+Since the revision fields are projected into the `OrderRevenues` class in the subscription definition,  
+each item received in the batch has the format of this projected class instead of the default `result.previous` and `result.current` fields,
+as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption).
+
+{CODE:nodejs revisions_6@client-api\dataSubscriptions\advanced\revisionsSubscription.js /}
 
 {PANEL/}
 
