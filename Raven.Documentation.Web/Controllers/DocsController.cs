@@ -507,46 +507,71 @@ namespace Raven.Documentation.Web.Controllers
                 .WaitForCompletion();
 
             DocumentSession.SaveChanges();
-
-            var toDispose = new List<IDisposable>();
+            
             var parserOutput = parser.Parse();
+            
+            StoreAndSavePages(parserOutput.Pages);
+            StoreAndSaveTocs(parserOutput.TableOfContents);
 
+            return RedirectToDocPage(language, version, key);
+        }
+
+        private void StoreAndSavePages(IEnumerable<DocumentationPage> pages)
+        {
+            var toDispose = new List<IDisposable>();
+            var numberOfSavedPages = 0;
+            
             try
             {
-                foreach (var page in parserOutput.Pages)
+                using (var session = DocumentStore.OpenSession())
                 {
-                    DocumentSession.Store(page);
-
-                    foreach (var image in page.Images)
+                    foreach (var page in pages)
                     {
-                        var fileInfo = new FileInfo(image.ImagePath);
-                        if (fileInfo.Exists == false)
-                            continue;
+                        session.Store(page);
+                        numberOfSavedPages++;
 
-                        var file = fileInfo.OpenRead();
-                        toDispose.Add(file);
+                        foreach (var image in page.Images)
+                        {
+                            var fileInfo = new FileInfo(image.ImagePath);
+                            if (fileInfo.Exists == false)
+                                continue;
 
-                        var documentId = page.Id;
-                        var fileName = Path.GetFileName(image.ImagePath);
+                            var file = fileInfo.OpenRead();
+                            toDispose.Add(file);
 
-                        DocumentSession.Advanced.Attachments.Store(documentId, fileName, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
+                            var documentId = page.Id;
+                            var fileName = Path.GetFileName(image.ImagePath);
+
+                            session.Advanced.Attachments.Store(documentId, fileName, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
+                        }
+
+                        if (numberOfSavedPages == 1000)
+                        {
+                            session.SaveChanges();
+                            numberOfSavedPages = 0;
+                        }
                     }
+                    
+                    session.SaveChanges();
                 }
-
-                foreach (var toc in parserOutput.TableOfContents)
-                {
-                    DocumentSession.Store(toc);
-                }
-
-                DocumentSession.SaveChanges();
             }
             finally
             {
                 foreach (var disposable in toDispose)
                     disposable?.Dispose();
             }
-
-            return RedirectToDocPage(language, version, key);
+        }
+        
+        private void StoreAndSaveTocs(List<TableOfContents> tocs)
+        {
+            using (var session = DocumentStore.OpenSession())
+            {
+                foreach (var toc in tocs)
+                {
+                    session.Store(toc);
+                }
+                session.SaveChanges();
+            }
         }
 
         private ParserOptions GetParserOptions(bool parseAllVersions)
