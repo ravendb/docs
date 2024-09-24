@@ -548,6 +548,7 @@ namespace Raven.Documentation.Web.Controllers
                         if (numberOfSavedPages == 1000)
                         {
                             session.SaveChanges();
+                            session.Advanced.Clear();
                             numberOfSavedPages = 0;
                         }
                     }
