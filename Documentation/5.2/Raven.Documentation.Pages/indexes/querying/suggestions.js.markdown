@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Prior to this article, please refer to article [Query for Suggestions](../../client-api/session/querying/how-to-work-with-suggestions)  
+* Prior to this article, please refer to [Query for Suggestions](../../client-api/session/querying/how-to-work-with-suggestions)  
   for general knowledge about Suggestions, and for dynamic-queries examples.
 
 * In addition to getting suggested terms when making a dynamic-query,  
