@@ -48,7 +48,7 @@ from version `5.x` or lower to version `6.0` or higher.
 
 The default **UID** (User ID) and **GID** (Group ID) 
 used by `ravendb` are **999**.  
-Change owner of the RavenDB data direcory to `ravendb` (`999` UID by default) on the container host.
+Change owner of the RavenDB data directory to `ravendb` (`999` UID by default) on the container host.
 E.g. `chown -R 999:999 $TARGET_DATA_DIR`
 
 ## Customizing the RavenDB data directory owner user UID/GID 
