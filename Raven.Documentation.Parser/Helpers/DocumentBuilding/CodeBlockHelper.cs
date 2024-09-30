@@ -111,8 +111,6 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 
         private static string GenerateContentFrame(string title, string content)
         {
-            content = NormalizeContent(content);
-
             var builder = new StringBuilder();
             builder.AppendLine("<div class='content-frame'>");
             if (string.IsNullOrWhiteSpace(title) == false)
