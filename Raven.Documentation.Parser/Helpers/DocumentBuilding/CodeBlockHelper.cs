@@ -38,7 +38,7 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 
         private static readonly Regex CodeTabBlockFinder = new Regex(@"{CODE-TAB-BLOCK:(.+?)}(.*?){CODE-TAB-BLOCK/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex CodeExampleFinder = new Regex(@"{CODE-EXAMPLE:(.+?)}(.*?){CODE-EXAMPLE/}", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex ContentFrameFinder = new Regex(@"{CONTENT-FRAME:(.+?)}(.*?){CONTENT-FRAME/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
@@ -102,14 +102,14 @@ namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
             return content;
         }
 
-        public static string GenerateCodeExamples(string content)
+        public static string GenerateContentFrames(string content)
         {
-            content = CodeExampleFinder.Replace(content, match => GenerateCodeExample(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+            content = ContentFrameFinder.Replace(content, match => GenerateContentFrame(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
             return content;
         }
 
-        private static string GenerateCodeExample(string title, string content)
+        private static string GenerateContentFrame(string title, string content)
         {
             content = NormalizeContent(content);
 
