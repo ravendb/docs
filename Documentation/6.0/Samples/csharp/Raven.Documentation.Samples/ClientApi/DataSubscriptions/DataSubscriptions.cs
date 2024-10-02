@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Queries;
+using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Session.Loaders;
 using Raven.Client.Documents.Subscriptions;
 using Raven.Client.Exceptions.Database;
@@ -88,22 +89,69 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             }
             #endregion
         }
+        
+        private interface ISubscriptionWorkerOptions
+        {
+            #region worker_options
+            public class SubscriptionWorkerOptions
+            {
+                public string SubscriptionName { get; }
+                public int MaxDocsPerBatch { get; set; }
+                public int SendBufferSizeInBytes { get; set; }
+                public int ReceiveBufferSizeInBytes { get; set; }
+                public bool IgnoreSubscriberErrors { get; set; }
+                public bool CloseWhenNoDocsLeft { get; set; }
+                public TimeSpan TimeToWaitBeforeConnectionRetry { get; set; }
+                public TimeSpan ConnectionStreamTimeout { get; set; }
+                public TimeSpan MaxErroneousPeriod { get; set; }
+                public SubscriptionOpeningStrategy Strategy { get; set; }
+            }
+            #endregion
+        }
+        
+        private interface ISubscriptionBatchItem
+        {
+            #region batch_item
+            public struct Item
+            {
+                public T Result { get; internal set; }
+                public string ExceptionMessage { get; internal set; }
+                public string Id { get; internal set; }
+                public string ChangeVector { get; internal set; }
+                public bool Projection { get; internal set; }
+                public bool Revision { get; internal set; }
+                public BlittableJsonReaderObject RawResult { get; internal set; }
+                public BlittableJsonReaderObject RawMetadata { get; internal set; }
+                public IMetadataDictionary Metadata { get; internal set; }
+            }
+            #endregion
+        }
 
         public interface ISubscriptionConsumptionOverloads
         {
             #region subscriptionWorkerGeneration
-            SubscriptionWorker<dynamic> GetSubscriptionWorker(string subscriptionName, string database = null);
-            SubscriptionWorker<dynamic> GetSubscriptionWorker(SubscriptionWorkerOptions options, string database = null);
-            SubscriptionWorker<T> GetSubscriptionWorker<T>(string subscriptionName, string database = null) where T : class;
-            SubscriptionWorker<T> GetSubscriptionWorker<T>(SubscriptionWorkerOptions options, string database = null) where T : class;
+            SubscriptionWorker<dynamic> GetSubscriptionWorker(
+                string subscriptionName, string database = null);
+            
+            SubscriptionWorker<dynamic> GetSubscriptionWorker(
+                SubscriptionWorkerOptions options, string database = null);
+            
+            SubscriptionWorker<T> GetSubscriptionWorker<T>(
+                string subscriptionName, string database = null) where T : class;
+            
+            SubscriptionWorker<T> GetSubscriptionWorker<T>(
+                SubscriptionWorkerOptions options, string database = null) where T : class;
             #endregion
         }
 
         public interface ISubscriptionWorkerRunning<T>
         {
             #region subscriptionWorkerRunning
-            Task Run(Action<SubscriptionBatch<T>> processDocuments, CancellationToken ct = default(CancellationToken));
-            Task Run(Func<SubscriptionBatch<T>, Task> processDocuments, CancellationToken ct = default(CancellationToken));
+            Task Run(Action<SubscriptionBatch<T>> processDocuments,
+                CancellationToken ct = default(CancellationToken));
+            
+            Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
+                CancellationToken ct = default(CancellationToken));
             #endregion
         }
 
@@ -980,6 +1028,26 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             }
             #endregion
         }
+        
+        private interface StrategyEnum
+        {
+            #region strategy_enum
+            public enum SubscriptionOpeningStrategy
+            {
+                // Connect if no other worker is connected 
+                OpenIfFree,
+                
+                // Take over the connection 
+                TakeOver,
+                
+                // Wait for currently connected worker to disconnect 
+                WaitForFree,
+                
+                // Connect concurrently  
+                Concurrent
+            }
+            #endregion
+        }
 
         public DataSubscriptions()
         {
@@ -1075,5 +1143,9 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
         //public delegate void AfterBatch(int documentsProcessed);
         //#endregion
+    }
+
+    internal class T
+    {
     }
 }
