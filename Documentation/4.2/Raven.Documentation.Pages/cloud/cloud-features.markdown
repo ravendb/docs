@@ -6,7 +6,8 @@
 *RavenDB Cloud* provides *OLAP ETL* capabilities, allowing you to integrate your operational data with analytical data
 warehouses.
 
-Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/tasks/ongoing-tasks/olap-etl-task).
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/tasks/ongoing-tasks/olap-etl-task).
 
 {PANEL/}
 
@@ -16,7 +17,8 @@ Usage of this feature is described [here](https://ravendb.net/docs/article-page/
 to seamlessly connect your RavenDB data with *Power BI* for advanced visualization and reporting, enabling real-time
 insights and data-driven decision-making.
 
-Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/integrations/postgresql-protocol/power-bi).
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/integrations/postgresql-protocol/power-bi).
 
 ## Configuration
 
@@ -47,7 +49,8 @@ The *Queue ETL* feature enables you to export data from *RavenDB* to various que
 This is particularly useful for scenarios where you need to process data asynchronously or distribute it
 to other microservices and applications.
 
-Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/etl/queue-etl/overview).
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/etl/queue-etl/overview).
 
 {PANEL/}
 
@@ -57,7 +60,8 @@ Usage of this feature is described [here](https://ravendb.net/docs/article-page/
 database from external systems or services. This feature is ideal for integrating with event-driven architectures
 where data is processed and ingested in real time.
 
-Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/queue-sink/overview).
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/server/ongoing-tasks/queue-sink/overview).
 
 {INFO: Availability }
 This feature is available only for *RavenDB* **6.0 and newer**.
@@ -72,7 +76,8 @@ Archived documents are compressed and can be handled differently by *RavenDB* fu
 archived documents from indexes and Data Subscriptions can avoid sending archived docs to workers), helping to keep the
 database smaller and quicker and its contents more relevant.
 
-Usage of this feature is described [here](https://ravendb.net/docs/article-page/latest/csharp/server/extensions/archival).
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/server/extensions/archival).
 
 {INFO: Availability }
 This feature is available only for *RavenDB* **6.0 and newer**.
@@ -82,7 +87,8 @@ This feature is available only for *RavenDB* **6.0 and newer**.
 
 {PANEL: Monitoring }
 
-*RavenDB Cloud* allows you to monitor your *RavenDB Cloud* instances via *SNMP* protocol. *SNMP* is a widely used network
+*RavenDB Cloud* allows you to monitor your *RavenDB Cloud* instances via *SNMP* protocol. *SNMP* is a widely used
+network
 management protocol that allows for the collection and organization of information about managed devices on IP networks.
 
 ## Configuration
@@ -124,3 +130,32 @@ that define networks from which the connection is allowed.
 
 {PANEL/}
 
+{PANEL: Autoscaling }
+
+*RavenDB Cloud* allows you to autoscale your *RavenDB Cloud* instances based on the CPU usage.
+
+## Configuration
+
+Click **Configure** Button in *Autoscaling* feature row in order to configure this feature.
+You will see Autoscaling Configuration View. It's separated into downscaling parameters and upscaling parameters.
+
+| Parameter                   | Description                                                                                                                                          |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Highest Type                | The maximum virtual machine size (inclusive) available for upscaling                                                                                 |
+| Upscaling Grace Period      | The time delay before upscaling begins after a high resource threshold is exceeded, allowing the system to avoid immediate scaling.                  |
+| High Cpu Threshold          | The average CPU usage percentage from last *High CPU Threshold Duration* that triggers the upscaling                      process.                   |
+| High Cpu Threshold Duration | The duration for which the average CPU usage must exceed the threshold before triggering upscaling.                                                  |
+| Upscaling Step              | Determines by how many instances upscaling should take place in one go. For example with step set to 2 it will scale up from *Dev10* to *Dev30*      |
+| Lowest Type                 | The minimum virtual machine size (inclusive) available for downscaling.                                                                              |
+| Downscaling Grace Period    | The time delay before downscaling begins after a low resource threshold is exceeded, allowing the system to avoid immediate scaling.                 |
+| Low Cpu Threshold           | The average CPU usage percentage from last *Low CPU Threshold Duration* that triggers the downscaling process.                                       |
+| Low Cpu Threshold Duration  | The duration for which the average CPU usage must exceed the threshold before triggering downscaling.                                                |
+| Downscaling Step            | Determines by how many instances downscaling should take place in one go. For example with step set to 2 it will scale down from *Dev30* to *Dev10*. |
+
+!["Autoscaling Configuration"](images/product-features-autocaling-configuration.png "Autoscaling Configuration")
+
+You can edit Autoscaling parameters by clicking on **Edit** button.
+
+!["Autoscaling Edit Configuration"](images/product-features-autocaling-configuration-edit.png "Autoscaling Edit Configuration")
+
+{PANEL/}
