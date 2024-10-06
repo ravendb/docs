@@ -74,56 +74,17 @@ RavenDB would attempt to restore the `*` to their original positions before send
 ##### Behavior for `6.0` and up:
 
 Once wildcards are stripped by the analyzer, we no longer add them back before sending the term to the search engine.
-The search terms sent to the search engine are solely based on the transformations applied by the analyzer used.
+The search terms sent to the search engine are solely based on the transformations applied by the analyzer used in the index.
 
-Note the different behavior in the following cases: 
+Note the different behavior in the following cases:  
 
-{NOTE: }
+* **When using `StandardAnalyzer` or `NGramAnalyzer`**:  
+  The queried terms in the Search method are processed with the `LowerCaseKeywordAnalyzer` before being sent to the search engine.
+* **When using a custom analyzer**:  
+  The queried terms in the Search method are processed according to the custom analyzer's logic.
+* **When using the Exact analyzer**:  
+  The queried terms in the Search method remain untouched as produced by the exact analyzer. 
 
-**When using `StandardAnalyzer` or `NGramAnalyzer`**:
-
----
-
-Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
-before they are sent to the search engine to retrieve matching documents.
-
-However, in the following cases:
-
-* When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search) 
-* or when querying a static index that uses the default `StandardAnalyzer`
-* or when querying a static index that uses the `NGramAnalyzer`
-
-the queried terms in the `Search` method are processed with the **`LowerCaseKeywordAnalyzer`** analyzer before being sent to the search engine.  
-
-This analyzer does Not remove the `*`, so the terms are sent with `*` as provided in the search terms.
-
-{NOTE/}
-{NOTE: }
-
-**When using a Custom Analyzer**:
-
----
-
-When setting a [custom analyzer](../../indexes/using-analyzers#creating-custom-analyzers) in your index to tokenize field content, 
-then when querying the index, the search terms in the query will be processed according to the custom analyzer's logic.  
-
-The `*` will remain in the terms if the custom analyzer allows it.
-It is the user’s responsibility to ensure that wildcards are not removed by the custom analyzer if they should be included in the query.
-
-{NOTE/}
-{NOTE: }
-
-**When using the Exact Analyzer:**
-
----
-
-When using `KeywordAnalyzer`(the default Exact analyzer) in your index,
-then when querying the index, the wildcards in your query terms remain untouched, the terms are sent to the search engine exactly as prepared by the analyzer.
-
-{NOTE/}
-
----
-
-See behavior example in [here](../../todo..).
+See detailed examples in: [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards).
 
 {PANEL/}
