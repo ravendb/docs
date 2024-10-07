@@ -79,11 +79,11 @@ The search terms sent to the search engine are solely based on the transformatio
 Note the different behavior in the following cases:  
 
 * **When using `StandardAnalyzer` or `NGramAnalyzer`**:  
-  The queried terms in the Search method are processed with the `LowerCaseKeywordAnalyzer` before being sent to the search engine.
+  The queried terms in the _Search_ method are processed with the `LowerCaseKeywordAnalyzer` before being sent to the search engine.
 * **When using a custom analyzer**:  
-  The queried terms in the Search method are processed according to the custom analyzer's logic.
+  The queried terms in the _Search_ method are processed according to the custom analyzer's logic.
 * **When using the Exact analyzer**:  
-  The queried terms in the Search method remain untouched as produced by the exact analyzer. 
+  The queried terms in the _Search_ method remain untouched as produced by the exact analyzer. 
 
 See detailed examples in: [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards).
 
