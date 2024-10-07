@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Indexes.Analysis;
+using Raven.Client.Documents.Operations.Analyzers;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
 using Xunit;
@@ -136,15 +138,15 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         #endregion
         
         #region index_5
-        public class Employees_ByNotes_usingExactAnalyzer :
-            AbstractIndexCreationTask<Employee, Employees_ByNotes_usingExactAnalyzer.IndexEntry>
+        public class Employees_ByFirstName_usingExactAnalyzer :
+            AbstractIndexCreationTask<Employee, Employees_ByFirstName_usingExactAnalyzer.IndexEntry>
         {
             public class IndexEntry
             {
                 public string FirstName { get; set; }
             }
         
-            public Employees_ByNotes_usingExactAnalyzer()
+            public Employees_ByFirstName_usingExactAnalyzer()
             {
                 Map = employees => from employee in employees
                     select new IndexEntry()
@@ -292,7 +294,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region search_7
                     List<Employee> employees = session
-                        .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry, 
+                        .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry,
                             Employees_ByNotes_usingDefaultAnalyzer>()
                         
                          // If you request to include explanations,
@@ -321,7 +323,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region search_8
                     List<Employee> employees = await asyncSession
-                        .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry, 
+                        .Query<Employees_ByNotes_usingDefaultAnalyzer.IndexEntry,
                             Employees_ByNotes_usingDefaultAnalyzer>()
                         
                          // If you request to include explanations,
@@ -390,7 +392,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     
                     // Even though a wildcard was provided,
-                    // the results will contain all Employee documents that contain the exact term 'French'.
+                    // the results will contain only Employee documents that contain the exact term 'French'.
                     
                     // The search term was sent to the search engine WITHOUT the wildcard,
                     // as the custom analyzer's logic strips them out.
@@ -419,7 +421,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToListAsync();
                     
                     // Even though a wildcard was provided,
-                    // the results will contain all Employee documents that contain the exact term 'French'.
+                    // the results will contain only Employee documents that contain the exact term 'French'.
                     
                     // The search term was sent to the search engine WITHOUT the wildcard,
                     // as the custom analyzer's logic strips them out.
@@ -444,7 +446,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     
                     // Even though a wildcard was provided,
-                    // the results will contain all Employee documents that contain the exact term 'French'.
+                    // the results will contain only Employee documents that contain the exact term 'French'.
                     
                     // The search term was sent to the search engine WITHOUT the wildcard,
                     // as the custom analyzer's logic strips them out.
@@ -460,8 +462,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region search_13
                     List<Employee> employees = session
-                        .Query<Employees_ByNotes_usingExactAnalyzer.IndexEntry,
-                            Employees_ByNotes_usingExactAnalyzer>()
+                        .Query<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
+                            Employees_ByFirstName_usingExactAnalyzer>()
                         
                         .ToDocumentQuery()
                         .IncludeExplanations(out var explanations)
@@ -487,8 +489,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region search_14
                     List<Employee> employees = await asyncSession
-                        .Query<Employees_ByNotes_usingExactAnalyzer.IndexEntry,
-                            Employees_ByNotes_usingExactAnalyzer>()
+                        .Query<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
+                            Employees_ByFirstName_usingExactAnalyzer>()
                         
                         .ToDocumentQuery()
                         .IncludeExplanations(out var explanations)
@@ -514,8 +516,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 {
                     #region search_15
                     List<Employee> employees = session.Advanced
-                        .DocumentQuery<Employees_ByNotes_usingExactAnalyzer.IndexEntry,
-                            Employees_ByNotes_usingExactAnalyzer>()
+                        .DocumentQuery<Employees_ByFirstName_usingExactAnalyzer.IndexEntry,
+                            Employees_ByFirstName_usingExactAnalyzer>()
                         .IncludeExplanations(out var explanations)
                          // Provide a term with a wildcard to the Search method:
                         .Search(x => x.FirstName, "Mich*")
@@ -532,40 +534,52 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     Assert.Contains($"FirstName:Mich*", explanation);
                     #endregion
                 }
+
+                #region analyzer_1
+                // The custom analyzer:
+                // ====================
+                
+                const string RemoveWildcardsAnalyzer =
+                    @"
+                      using System.IO;
+                      using Lucene.Net.Analysis; 
+                      using Lucene.Net.Analysis.Standard;
+                      namespace CustomAnalyzers
+                      {
+                          public class RemoveWildcardsAnalyzer : StandardAnalyzer
+                          {
+                              public RemoveWildcardsAnalyzer() : base(Lucene.Net.Util.Version.LUCENE_30)
+                              {
+                              }
+
+                              public override TokenStream TokenStream(string fieldName, System.IO.TextReader reader)
+                              {
+                                   // Read input stream and remove wildcards (*)
+                                  string text = reader.ReadToEnd();
+                                  string processedText = RemoveWildcards(text);
+                                  StringReader newReader = new StringReader(processedText);
+                                  
+                                  return base.TokenStream(fieldName, newReader);
+                              }
+
+                              private string RemoveWildcards(string input)
+                              {
+                                  // Replace wildcard characters with an empty string
+                                  return input.Replace(""*"", """");
+                              }
+                          }
+                      }";
+
+                // Deploying the custom analyzer:
+                // ==============================
+                
+                store.Maintenance.Send(new PutAnalyzersOperation(new AnalyzerDefinition()
+                {
+                    Name = "CustomAnalyzers.RemoveWildcardsAnalyzer",
+                    Code = RemoveWildcardsAnalyzer,
+                }));
+                #endregion
             }
         }
-        
-        #region analyzer_1
-        public const string RemoveWildcardsAnalyzer =
-            @"
-                using System.IO;
-                using Lucene.Net.Analysis; 
-                using Lucene.Net.Analysis.Standard;
-                namespace CustomAnalyzers
-                {
-                    public class RemoveWildcardsAnalyzer : StandardAnalyzer
-                    {
-                        public RemoveWildcardsAnalyzer() : base(Lucene.Net.Util.Version.LUCENE_30)
-                        {
-                        }
-
-                        public override TokenStream TokenStream(string fieldName, System.IO.TextReader reader)
-                        {
-                             // Read input stream and remove wildcards (*)
-                            string text = reader.ReadToEnd();
-                            string processedText = RemoveWildcards(text);
-                            StringReader newReader = new StringReader(processedText);
-                            
-                            return base.TokenStream(fieldName, newReader);
-                        }
-
-                        private string RemoveWildcards(string input)
-                        {
-                            // Replace wildcard characters with an empty string
-                            return input.Replace(""*"", """");
-                        }
-                    }
-                }";
-        #endregion
     }
 }

@@ -122,7 +122,7 @@ before they are sent to the search engine to retrieve matching documents.
 
 the queried terms in the _Search_ method are processed with the **`LowerCaseKeywordAnalyzer`** before being sent to the search engine.
 
-This analyzer does Not remove the `*`, so the terms are sent with `*` as provided in the search terms.  
+This analyzer does Not remove the `*`, so the terms are sent with `*`, as provided in the search terms.  
 For example:  
 
 {CODE-TABS}
@@ -182,7 +182,7 @@ For example:
 {CODE-TAB:csharp:Query_async search_14@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_15@Indexes\Querying\Searching.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index "Employees/ByNotes/usingExactAnalyzer"
+from index "Employees/ByFirstName/usingExactAnalyzer"
 where search(FirstName, "Mich*")
 include explanations()
 {CODE-TAB-BLOCK/}
