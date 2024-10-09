@@ -12,6 +12,8 @@ class BlogPost:
         self.author = author
         self.title = title
         self.text = text
+        
+        # Blog post readers can leave comments
         self.comments = comments
 
 
@@ -20,7 +22,7 @@ class BlogPostComment:
         self.author = author
         self.text = text
 
-        # Comments can be left recursively
+        # Allow nested comments, enabling replies to existing comments
         self.comments = comments
 
 

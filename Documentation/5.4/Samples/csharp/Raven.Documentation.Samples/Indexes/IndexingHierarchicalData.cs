@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
@@ -9,7 +10,7 @@ namespace Raven.Documentation.Samples.Indexes
     public class IndexingHierarchicalData
     {
         #region indexes_1
-        private class BlogPost
+        public class BlogPost
         {
             public string Author { get; set; }
             public string Title { get; set; }
@@ -24,16 +25,16 @@ namespace Raven.Documentation.Samples.Indexes
             public string Author { get; set; }
             public string Text { get; set; }
 
-            // Comments can be left recursively
+            // Allow nested comments, enabling replies to existing comments
             public List<BlogPostComment> Comments { get; set; }
         }
         #endregion
 
         #region indexes_2
         private class BlogPosts_ByCommentAuthor : 
-            AbstractIndexCreationTask<BlogPost, BlogPosts_ByCommentAuthor.Result>
+            AbstractIndexCreationTask<BlogPost, BlogPosts_ByCommentAuthor.IndexEntry>
         {
-            public class Result
+            public class IndexEntry
             {
                 public IEnumerable<string> Authors { get; set; }
             }
@@ -42,7 +43,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Map = blogposts => from blogpost in blogposts
                                    let authors = Recurse(blogpost, x => x.Comments)
-                                   select new Result
+                                   select new IndexEntry
                                    {
                                        Authors = authors.Select(x => x.Author)
                                    };
@@ -50,7 +51,7 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
-        public void Sample()
+        public async Task Sample()
         {
             using (var store = new DocumentStore())
             {
@@ -75,10 +76,21 @@ namespace Raven.Documentation.Samples.Indexes
                 {
                     #region indexes_4
                     IList<BlogPost> results = session
-                        .Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
+                        .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
                         .Where(x => x.Authors.Any(a => a == "John"))
                         .OfType<BlogPost>()
                         .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region indexes_4_async
+                    IList<BlogPost> results = await asyncSession
+                        .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
+                        .Where(x => x.Authors.Any(a => a == "John"))
+                        .OfType<BlogPost>()
+                        .ToListAsync();
                     #endregion
                 }
 

@@ -1,48 +1,52 @@
-# Indexes: Indexing Hierarchical Data
-
+# Indexing Hierarchical Data
 ---
+
 {NOTE: }
 
-Use the indexing `Recurse` method to recurse through the layers of a hierarchical document 
-and index its elements.  
+* Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:  
-   * [Hierarchical Data](../indexes/indexing-hierarchical-data#hierarchical-data)  
-   * [Indexing Hierarchical Data](../indexes/indexing-hierarchical-data#indexing-hierarchical-data)  
+   * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
+   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Hierarchical Data}
+{PANEL: Hierarchical data}
 
-One of the significant advantages offered by document databases is their tendency not to force 
-limits upon data structuring. **Hierarchical data structures** demonstrate this quality beautifully: 
-take, for example, the commonly-used **Comment thread**, implemented using objects such as:  
+One significant advantage of document databases is their tendency not to impose limits on data structuring.
+**Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
+
 {CODE indexes_1@Indexes\IndexingHierarchicalData.cs /}
 
-Readers of a post created using the above `BlogPost` structure, can add `BlogPostComment` comments 
-to its Comments field. And readers of these comments can reply with comments of their own, creating 
-a recursive hierarchical structure.  
+Readers of a post created using the above `BlogPost` structure can add `BlogPostComment` entries to the post's _Comments_ field,
+and readers of these comments can reply with comments of their own, creating a recursive hierarchical structure.
 
-`BlogPosts/1-A`, for example, is a blog entry posted by John, that contains several layers of 
-comments left by various authors.  
+For example, the following document, `BlogPosts/1-A`, represents a blog post by John that contains multiple layers of comments from various authors.
 
-`BlogPosts/1-A`:
+`BlogPosts/1-A`:  
+
 {CODE-BLOCK:JSON}
 {
-    "Author ": "John",
+    "Author": "John",
+    "Title": "Post title..",
+    "Text": "Post text..",
     "Comments": [
         {
             "Author": "Moon",
+            "Text": "Comment text..", 
             "Comments": [
                 {
-                    "Author": "Bob"
+                    "Author": "Bob",
+                    "Text": "Comment text.."
                 },
                 {
                     "Author": "Adel",
+                    "Text": "Comment text..", 
                     "Comments": {
-                        "Author": "Moon"
+                        "Author": "Moon",
+                        "Text": "Comment text.."
                     }
                 }
             ]
@@ -56,13 +60,11 @@ comments left by various authors.
 
 {PANEL/}
 
-{PANEL: Indexing Hierarchical Data}
+{PANEL: Index hierarchical data}
 
-To index the elements of a hierarchical structure like the one demonstrated above, 
-use RavenDB's `Recurse` method.  
+To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.  
+The sample below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
 
-In the sample below, we use `Recurse` to go through comments in the post thread 
-and index them by their authors.  
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask indexes_2@Indexes\IndexingHierarchicalData.cs /}
 {CODE-TAB:csharp:Operation indexes_3@Indexes\IndexingHierarchicalData.cs /}
@@ -71,29 +73,34 @@ and index them by their authors.
 
 ---
 
-### Querying the created index
+### Querying the index
 
-* The index we created can be queried using code.  
+* The index we created can be queried using code:  
   {CODE-TABS}
   {CODE-TAB:csharp:Query indexes_4@Indexes\IndexingHierarchicalData.cs /}
+  {CODE-TAB:csharp:Query_async indexes_4_async@Indexes\IndexingHierarchicalData.cs /}
   {CODE-TAB:csharp:DocumentQuery indexes_5@Indexes\IndexingHierarchicalData.cs /}
+  {CODE-TAB-BLOCK:sql:RQL}
+from index "BlogPosts/ByCommentAuthor"
+where Authors == "John"
+  {CODE-TAB-BLOCK/}
   {CODE-TABS/}
 
-* The index can also be queried using Studio.  
+* The index can also be queried using the Studio:
 
-   * Use Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) 
-     view to define and query the index.  
-     
-         !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
+    * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
 
-   * Use the **Query** view to see the results and the list of [terms](../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
-     indexed by the `Recurse` method.  
-     
-         !["Query View"](images/query-view.png "Query View")
+          !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
 
-         !["Click to View Index Terms"](images/click-to-view-terms.png "Click to View Index Terms")
+    * View the query results in the [Query](../studio/database/queries/query-view) view:
 
-         !["Index Terms"](images/index-terms.png "Index Terms")
+          !["Query View"](images/query-view.png "Query view")
+
+    * View the list of terms indexed by the `Recurse` method:
+
+          !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
+
+          !["Index Terms"](images/index-terms.png "Index terms")
 
 {PANEL/}
 
