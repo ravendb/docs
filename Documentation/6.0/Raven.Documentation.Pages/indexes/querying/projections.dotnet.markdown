@@ -5,8 +5,7 @@
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
-* Prior to reading this article, it is recommended to take a look at the 
-  [query results projection Overview](../../client-api/session/querying/how-to-project-query-results) 
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:  

@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* __Prior to this article__, please refer to article [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search)  
+* __Prior to this article__, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search)  
   to learn about the `Search` method.  
 
 * __All capabilities__ provided by `Search` with a dynamic query can also be used when querying a static-index.

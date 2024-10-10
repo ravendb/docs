@@ -8,9 +8,8 @@
   also request to get a list of text fragments that highlight the searched terms.  
 
 * This article provides examples of highlighting search results when querying a static-index.  
-  Prior to reading this article, it is recommended to take a look at the 
-  [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results) 
-  article for general knowledge about Highlighting and for dynamic-queries examples.
+  Prior to reading this article, please refer to [Highlight search results](../../client-api/session/querying/text-search/highlight-query-results) 
+  for general knowledge about Highlighting and for dynamic-queries examples.
 
 * To search and get fragments with highlighted terms when querying a static-index,  
   the index field on which you search must be configured for highlighting. See examples below.  

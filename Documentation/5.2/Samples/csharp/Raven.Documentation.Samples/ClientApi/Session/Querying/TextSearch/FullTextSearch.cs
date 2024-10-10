@@ -598,7 +598,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_33
                     List<Employee> employees = session
                         .Query<Employee>()
-                         // Use '*' to replace one ore more characters
+                         // Use '*' to replace one or more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")
@@ -618,7 +618,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_34
                     List<Employee> employees = await asyncSession
                         .Query<Employee>()
-                         // Use '*' to replace one ore more characters
+                         // Use '*' to replace one or more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")
@@ -638,7 +638,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.TextSearch
                     #region fts_35
                     List<Employee> employees = session.Advanced
                         .DocumentQuery<Employee>()
-                         // Use '*' to replace one ore more characters
+                         // Use '*' to replace one or more characters
                         .Search(x => x.Notes, "art*")
                         .Search(x => x.Notes, "*logy")
                         .Search(x => x.Notes, "*mark*")

@@ -4,9 +4,8 @@
 
 {NOTE: }
 
-* Prior to reading this article, it is recommended to take a look at the 
-  [Query for Suggestions](../../client-api/session/querying/how-to-work-with-suggestions) 
-  article for general knowledge about Suggestions and for dynamic-queries examples.  
+* Prior to reading this article, please refer to [query for suggestions](../../client-api/session/querying/how-to-work-with-suggestions) 
+  for general knowledge about Suggestions and for dynamic-queries examples.  
 
 * In addition to getting suggested terms when making a dynamic-query,  
   you can query for similar terms when querying an index.

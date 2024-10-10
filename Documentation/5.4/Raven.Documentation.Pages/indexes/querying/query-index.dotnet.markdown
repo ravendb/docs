@@ -4,8 +4,7 @@
 
 {NOTE: }
 
-* Prior to reading this article, it is recommended to take a look at the 
-  [Query Overview](../../client-api/session/querying/how-to-query).  
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).  
   
 * For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview).
 
