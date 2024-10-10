@@ -72,7 +72,7 @@ select new
                 # region indexes_4
                 results = list(
                     session.query_index_type(BlogPosts_ByCommentAuthor, BlogPosts_ByCommentAuthor.Result).where_equals(
-                        "authors", "John"
+                        "authors", "Moon"
                     )
                 )
                 # endregion

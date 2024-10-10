@@ -67,7 +67,7 @@ namespace Raven.Documentation.Samples.Indexes
                     @"map('BlogPosts', function (blogpost) {
 
                           var authors =
-                               recurse(blogpost, function(x) {
+                               recurse(blogpost.Comments, function(x) {
                                    return x.Comments;
                                })
                               .filter(function(comment) { 
@@ -113,8 +113,8 @@ namespace Raven.Documentation.Samples.Indexes
                     #region query_1
                     List<BlogPost> results = session
                         .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
-                         // Query for all blog posts that contain comments by 'John':
-                        .Where(x => x.Authors.Any(a => a == "John"))
+                         // Query for all blog posts that contain comments by 'Moon':
+                        .Where(x => x.Authors.Any(a => a == "Moon"))
                         .OfType<BlogPost>()
                         .ToList();
                     #endregion
@@ -125,8 +125,8 @@ namespace Raven.Documentation.Samples.Indexes
                     #region query_2
                     List<BlogPost> results = await asyncSession
                         .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
-                         // Query for all blog posts that contain comments by 'John':
-                        .Where(x => x.Authors.Any(a => a == "John"))
+                         // Query for all blog posts that contain comments by 'Moon':
+                        .Where(x => x.Authors.Any(a => a == "Moon"))
                         .OfType<BlogPost>()
                         .ToListAsync();
                     #endregion
@@ -138,8 +138,8 @@ namespace Raven.Documentation.Samples.Indexes
                     List<BlogPost> results = session
                         .Advanced
                         .DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
-                         // Query for all blog posts that contain comments by 'John':
-                        .WhereEquals("Authors", "John")
+                         // Query for all blog posts that contain comments by 'Moon':
+                        .WhereEquals("Authors", "Moon")
                         .ToList();
                     #endregion
                 }

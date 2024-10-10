@@ -66,8 +66,8 @@ async function sample() {
     //region query_1
     const results = await session
         .query({ indexName: "BlogPosts/ByCommentAuthor" })
-         // Query for all blog posts that contain comments by 'John':
-        .whereEquals("authors", "John")
+         // Query for all blog posts that contain comments by 'Moon':
+        .whereEquals("authors", "Moon")
         .all();
     //endregion
 }

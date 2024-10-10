@@ -85,7 +85,7 @@ The index can be queried for all blog posts that contain comments made by specif
 {CODE-TAB:python:Query indexes_4@Indexes\IndexingHierarchicalData.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "BlogPosts/ByCommentAuthor"
-where Authors == "John"
+where Authors == "Moon"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

@@ -85,7 +85,7 @@ The index can be queried for all blog posts that contain comments made by specif
 {CODE-TAB:nodejs:Query query_1@indexes\indexingHierarchicalData.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "BlogPosts/ByCommentAuthor"
-where authors == "John"
+where authors == "Moon"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
