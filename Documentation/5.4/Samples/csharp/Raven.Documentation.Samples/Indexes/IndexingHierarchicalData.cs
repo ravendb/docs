@@ -9,7 +9,7 @@ namespace Raven.Documentation.Samples.Indexes
 {
     public class IndexingHierarchicalData
     {
-        #region indexes_1
+        #region classes_1
         public class BlogPost
         {
             public string Author { get; set; }
@@ -30,8 +30,8 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
-        #region indexes_2
-        private class BlogPosts_ByCommentAuthor : 
+        #region index_1
+        public class BlogPosts_ByCommentAuthor : 
             AbstractIndexCreationTask<BlogPost, BlogPosts_ByCommentAuthor.IndexEntry>
         {
             public class IndexEntry
@@ -41,12 +41,47 @@ namespace Raven.Documentation.Samples.Indexes
 
             public BlogPosts_ByCommentAuthor()
             {
-                Map = blogposts => from blogpost in blogposts
-                                   let authors = Recurse(blogpost, x => x.Comments)
-                                   select new IndexEntry
-                                   {
-                                       Authors = authors.Select(x => x.Author)
-                                   };
+                Map = blogposts => 
+                    from blogpost in blogposts
+                    let authors = Recurse(blogpost, x => x.Comments)
+                    select new IndexEntry
+                    {
+                        Authors = authors.Select(x => x.Author)
+                    };
+            }
+        }
+        #endregion
+
+        #region index_2
+        public class BlogPosts_ByCommentAuthor_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public class Result
+            {
+                public string[] Authors { get; set; }
+            }
+
+            public BlogPosts_ByCommentAuthor_JS()
+            {
+                Maps = new HashSet<string>
+                {
+                    @"map('BlogPosts', function (blogpost) {
+
+                          var authors =
+                               recurse(blogpost, function(x) {
+                                   return x.Comments;
+                               })
+                              .filter(function(comment) { 
+                                   return comment.Author != null;
+                               })
+                              .map(function(comment) { 
+                                  return comment.Author;
+                               });
+
+                          return {
+                             Authors: authors
+                          };
+                    });"
+                };
             }
         }
         #endregion
@@ -55,7 +90,7 @@ namespace Raven.Documentation.Samples.Indexes
         {
             using (var store = new DocumentStore())
             {
-                #region indexes_3
+                #region index_3
                 store.Maintenance.Send(new PutIndexesOperation(
                     new IndexDefinition
                     {
@@ -63,10 +98,11 @@ namespace Raven.Documentation.Samples.Indexes
                         Maps =
                         {
                             @"from blogpost in docs.BlogPosts
-                              from comment in Recurse(blogpost, (Func<dynamic, dynamic>)(x => x.Comments))
+                              let authors = Recurse(blogpost, (Func<dynamic, dynamic>)(x => x.Comments))
+                              let authorNames = authors.Select(x => x.Author)
                               select new
                               {
-                                  Author = comment.Author
+                                  Authors = authorNames
                               }"
                         }
                     }));
@@ -74,9 +110,10 @@ namespace Raven.Documentation.Samples.Indexes
 
                 using (var session = store.OpenSession())
                 {
-                    #region indexes_4
-                    IList<BlogPost> results = session
+                    #region query_1
+                    List<BlogPost> results = session
                         .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
+                         // Query for all blog posts that contain comments by 'John':
                         .Where(x => x.Authors.Any(a => a == "John"))
                         .OfType<BlogPost>()
                         .ToList();
@@ -85,9 +122,10 @@ namespace Raven.Documentation.Samples.Indexes
                 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region indexes_4_async
-                    IList<BlogPost> results = await asyncSession
+                    #region query_2
+                    List<BlogPost> results = await asyncSession
                         .Query<BlogPosts_ByCommentAuthor.IndexEntry, BlogPosts_ByCommentAuthor>()
+                         // Query for all blog posts that contain comments by 'John':
                         .Where(x => x.Authors.Any(a => a == "John"))
                         .OfType<BlogPost>()
                         .ToListAsync();
@@ -96,10 +134,11 @@ namespace Raven.Documentation.Samples.Indexes
 
                 using (var session = store.OpenSession())
                 {
-                    #region indexes_5
-                    IList<BlogPost> results = session
+                    #region query_3
+                    List<BlogPost> results = session
                         .Advanced
                         .DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
+                         // Query for all blog posts that contain comments by 'John':
                         .WhereEquals("Authors", "John")
                         .ToList();
                     #endregion

@@ -1,21 +1,111 @@
-# Indexes: Indexing Hierarchical Data
+# Indexing Hierarchical Data
+---
 
-One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
+{NOTE: }
 
-{CODE:nodejs indexes_1@indexes\indexingHierarchicalData.js /}
+* Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
-While it is very easy to work with such a structure in all respects, it does bring up an interesting question, namely how can we search for all blog posts that were commented by specified author?
+* In this Page:
+    * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)
+    * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)
+    * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)
 
-The answer to that is that RavenDB contains built-in support for indexing hierarchies, and you can take advantage of the `Recurse` method to define an index using the following syntax:
+{NOTE/}
+
+---
+
+{PANEL: Hierarchical data}
+
+One significant advantage of document databases is their tendency not to impose limits on data structuring.
+**Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
+
+{CODE:nodejs class_1@indexes\indexingHierarchicalData.js /}
+
+Readers of a post created using the above `BlogPost` structure can add `BlogPostComment` entries to the post's _comments_ field,
+and readers of these comments can reply with comments of their own, creating a recursive hierarchical structure.
+
+For example, the following document, `BlogPosts/1-A`, represents a blog post by John that contains multiple layers of comments from various authors.
+
+`BlogPosts/1-A`:
+
+{CODE-BLOCK:JSON}
+{
+    "author": "John",
+    "title": "Post title..",
+    "text": "Post text..",
+    "comments": [
+        {
+            "author": "Moon",
+            "text": "Comment text..",
+            "comments": [
+                {
+                    "author": "Bob",
+                    "text": "Comment text.."
+                },
+                {
+                    "author": "Adel",
+                    "text": "Comment text..",
+                    "comments": {
+                        "author": "Moon",
+                        "text": "Comment text.."
+                    }
+                }
+            ]
+        }
+    ],
+    "@metadata": {
+    "@collection": "BlogPosts"
+    }
+}
+{CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL: Index hierarchical data}
+
+To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
+
+The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:AbstractIndexCreationTask indexes_2@indexes\indexingHierarchicalData.js /}
-{CODE-TAB:nodejs:Operation indexes_3@indexes\indexingHierarchicalData.js /}
+{CODE-TAB:nodejs:Index index_1@indexes\indexingHierarchicalData.js /}
+{CODE-TAB:nodejs:Put_indexes_operation index_2@indexes\indexingHierarchicalData.js /}
 {CODE-TABS/}
 
-This will index all the comments in the thread, regardless of their location in the hierarchy.
+{PANEL/}
 
-{CODE:nodejs indexes_4@indexes\indexingHierarchicalData.js /}
+{PANEL: Query the index}
+
+The index can be queried for all blog posts that contain comments made by specific authors.
+
+**Query the index using code**:  
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_1@indexes\indexingHierarchicalData.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "BlogPosts/ByCommentAuthor"
+where authors == "John"
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+**Query the index using the Studio**:  
+
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
+
+      !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
+
+  * View the query results in the [Query](../studio/database/queries/query-view) view:
+
+      !["Query View"](images/query-view.png "Query view")
+
+  * View the list of terms indexed by the `Recurse` method:
+
+      !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
+
+      !["Index Terms"](images/index-terms.png "Index terms")
+
+{PANEL/}
 
 ## Related articles
 
@@ -26,6 +116,6 @@ This will index all the comments in the thread, regardless of their location in 
 - [Indexing Spatial Data](../indexes/indexing-spatial-data)
 - [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
 
-### Querying 
+### Querying
 
 - [Query Overview](../client-api/session/querying/how-to-query)

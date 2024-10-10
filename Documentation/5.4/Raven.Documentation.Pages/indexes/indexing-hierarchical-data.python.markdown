@@ -8,6 +8,7 @@
 * In this Page:  
    * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
    * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)  
+   * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)  
 
 {NOTE/}
 
@@ -62,42 +63,47 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 
 {PANEL: Index hierarchical data}
 
-To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.  
-The sample below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
+
+The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
 
 {CODE-TABS}
 {CODE-TAB:python:AbstractIndexCreationTask indexes_2@Indexes\IndexingHierarchicalData.py /}
 {CODE-TAB:python:Operation indexes_3@Indexes\IndexingHierarchicalData.py /}
 {CODE-TABS/}
 
----
+{PANEL/}
 
-### Querying the index
+{PANEL: Query the index}
 
-* The index we created can be queried using code:  
-  {CODE-TABS}
-  {CODE-TAB:python:Query indexes_4@Indexes\IndexingHierarchicalData.py /}
-  {CODE-TAB-BLOCK:sql:RQL}
+The index can be queried for all blog posts that contain comments made by specific authors.
+
+**Query the index using code**:  
+
+{CODE-TABS}
+{CODE-TAB:python:Query indexes_4@Indexes\IndexingHierarchicalData.py /}
+{CODE-TAB-BLOCK:sql:RQL}
 from index "BlogPosts/ByCommentAuthor"
 where Authors == "John"
-  {CODE-TAB-BLOCK/}
-  {CODE-TABS/}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-* The index can also be queried using the Studio:  
+**Query the index using the Studio**:
 
-   * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
      
-         !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
+      !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
 
-   * View the query results in the [Query](../studio/database/queries/query-view) view:  
-     
-         !["Query View"](images/query-view.png "Query view")
+  * View the query results in the [Query](../studio/database/queries/query-view) view:  
     
-   * View the list of terms indexed by the `Recurse` method:
+      !["Query View"](images/query-view.png "Query view")
+    
+  * View the list of terms indexed by the `Recurse` method:
 
-         !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
+      !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
 
-         !["Index Terms"](images/index-terms.png "Index terms")
+      !["Index Terms"](images/index-terms.png "Index terms")
 
 {PANEL/}
 

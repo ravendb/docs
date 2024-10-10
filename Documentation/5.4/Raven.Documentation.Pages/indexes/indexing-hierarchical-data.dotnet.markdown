@@ -7,7 +7,8 @@
 
 * In this Page:  
    * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
-   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)  
+   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)
+   * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)
 
 {NOTE/}
 
@@ -18,7 +19,7 @@
 One significant advantage of document databases is their tendency not to impose limits on data structuring.
 **Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
 
-{CODE indexes_1@Indexes\IndexingHierarchicalData.cs /}
+{CODE classes_1@Indexes\IndexingHierarchicalData.cs /}
 
 Readers of a post created using the above `BlogPost` structure can add `BlogPostComment` entries to the post's _Comments_ field,
 and readers of these comments can reply with comments of their own, creating a recursive hierarchical structure.
@@ -63,44 +64,49 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 {PANEL: Index hierarchical data}
 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.  
-The sample below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+
+The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
+We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
 
 {CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask indexes_2@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:Operation indexes_3@Indexes\IndexingHierarchicalData.cs /}
-{CODE-TAB:csharp:JavaScript indexes_3@Indexes\JavaScript.cs /}
+{CODE-TAB:csharp:Index index_1@Indexes\IndexingHierarchicalData.cs /}
+{CODE-TAB:csharp:JavaScript_index index_2@Indexes\IndexingHierarchicalData.cs /}
+{CODE-TAB:csharp:Put_indexes_operation index_3@Indexes\IndexingHierarchicalData.cs /}
 {CODE-TABS/}
 
----
+{PANEL/}
 
-### Querying the index
+{PANEL: Query the index}
 
-* The index we created can be queried using code:  
-  {CODE-TABS}
-  {CODE-TAB:csharp:Query indexes_4@Indexes\IndexingHierarchicalData.cs /}
-  {CODE-TAB:csharp:Query_async indexes_4_async@Indexes\IndexingHierarchicalData.cs /}
-  {CODE-TAB:csharp:DocumentQuery indexes_5@Indexes\IndexingHierarchicalData.cs /}
-  {CODE-TAB-BLOCK:sql:RQL}
+The index can be queried for all blog posts that contain comments made by specific authors.
+
+**Query the index using code**:  
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_1@Indexes\IndexingHierarchicalData.cs /}
+{CODE-TAB:csharp:Query_async query_2@Indexes\IndexingHierarchicalData.cs /}
+{CODE-TAB:csharp:DocumentQuery query_3@Indexes\IndexingHierarchicalData.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
 from index "BlogPosts/ByCommentAuthor"
 where Authors == "John"
-  {CODE-TAB-BLOCK/}
-  {CODE-TABS/}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
-* The index can also be queried using the Studio:
+**Query the index using the Studio**:
 
-    * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
 
-          !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
+      !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
 
-    * View the query results in the [Query](../studio/database/queries/query-view) view:
+  * View the query results in the [Query](../studio/database/queries/query-view) view:
 
-          !["Query View"](images/query-view.png "Query view")
+      !["Query View"](images/query-view.png "Query view")
 
-    * View the list of terms indexed by the `Recurse` method:
+  * View the list of terms indexed by the `Recurse` method:
 
-          !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
+      !["Click to View Index Terms"](images/click-to-view-terms.png "Click to view index terms")
 
-          !["Index Terms"](images/index-terms.png "Index terms")
+      !["Index Terms"](images/index-terms.png "Index terms")
 
 {PANEL/}
 
