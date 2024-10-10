@@ -96,10 +96,13 @@ where (search(employeeData, "Manager") or search(employeeData, "French Spanish",
   the presence of wildcards (`*`) in the terms sent to the search engine is determined by the transformations applied by the
   [analyzer](../../indexes/using-analyzers) used in the index.
 
-* Note the different behavior in the following cases:
-    * [When using StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingor)
-    * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
-    * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+* Note the different behavior in the following cases, as described below:
+  * [When using StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingor)
+  * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
+  * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+
+* When using [Corax](../../indexes/search-engine/corax) as the search engine,  
+  this behavior will only apply to indexes that are newly created or have been reset.
 
 ---
 
@@ -138,11 +141,15 @@ include explanations()
 ##### When using a custom analyzer:
 ---
 
-When setting a [custom analyzer](../../indexes/using-analyzers#creating-custom-analyzers) in your index to tokenize field content,
-then when querying the index, the search terms in the query will be processed according to the custom analyzer's logic.
+* When setting a [custom analyzer](../../indexes/using-analyzers#creating-custom-analyzers) in your index to tokenize field content,
+  then when querying the index, the search terms in the query will be processed according to the custom analyzer's logic.
 
-The `*` will remain in the terms if the custom analyzer allows it.
-It is the user’s responsibility to ensure that wildcards are not removed by the custom analyzer if they should be included in the query.
+* The `*` will remain in the terms if the custom analyzer allows it.
+  It is the user’s responsibility to ensure that wildcards are not removed by the custom analyzer if they should be included in the query.
+
+* Note:  
+  An exception to the above is when the wildcard is used as a suffix in the search term (e.g. `Fren*`).  
+  In this case the wildcard will be included in the query regardless of the analyzer's logic.
 
 For example:
 

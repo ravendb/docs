@@ -66,10 +66,16 @@ This is done to distinguish partial load errors that are used in SQL ETL from, f
 
 Starting with `6.0` we have changed how the [Search method](../../indexes/querying/searching) handles wildcards when they are included in search terms:
 
+{NOTE: }
+
 ##### Behavior for versions lower than `6.0`:  
 
 After the analyzer stripped wildcards from the search term, 
 RavenDB would attempt to restore the `*` to their original positions before sending the term to the search engine (Lucene or Corax). 
+
+{NOTE/}
+
+{NOTE: }
 
 ##### Behavior for `6.0` and up:
 
@@ -85,6 +91,12 @@ Note the different behavior in the following cases:
 * **When using the Exact analyzer**:  
   The queried terms in the _Search_ method remain untouched as produced by the exact analyzer. 
 
+{INFO: }
+When using **Corax** as the search engine,  
+this behavior will only apply to indexes that are newly created or have been reset.
+{INFO/}
+
 See detailed examples in: [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards).
 
+{NOTE/}
 {PANEL/}
