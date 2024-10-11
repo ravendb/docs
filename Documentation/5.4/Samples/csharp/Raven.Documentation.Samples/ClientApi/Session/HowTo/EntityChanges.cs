@@ -64,7 +64,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 #region changes_3
                 using (var session = store.OpenSession())
                 {
-                    
                     // Load the entity, it will be tracked by the session
                     Employee employee = session.Load<Employee>("employees/1-A");
                     

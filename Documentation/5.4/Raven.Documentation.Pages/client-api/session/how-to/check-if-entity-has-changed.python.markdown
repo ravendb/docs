@@ -41,7 +41,7 @@
     * The type of change
 
 * Note: `what_changed` reports changes made prior to calling `save_changes`.  
-  Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
+  Calling it immediately after _save_changes_ will return no results, since all changes are cleared at that point.
 
 ---
 
@@ -60,9 +60,9 @@
 {CODE:python syntax_1@ClientApi\Session\HowTo\EntityChanges.py /}
 {CODE:python syntax_2@ClientApi\Session\HowTo\EntityChanges.py /}
 
-| ReturnValue        |                                    |
-|--------------------|------------------------------------|
-| `DocumentsChanges` | List of changes made in the entity (see `ChangeType` class below for available change types) |
+| ReturnValue        |                                                                                              |
+|--------------------|----------------------------------------------------------------------------------------------|
+| `DocumentsChanges` | List of changes made to the entity (see `ChangeType` class below for available change types) |
 
 {CODE:python syntax_3@ClientApi\Session\HowTo\EntityChanges.py /}
 

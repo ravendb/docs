@@ -43,7 +43,7 @@
     * The type of change
 
 * Note: `WhatChangedFor()` reports changes made prior to calling `SaveChanges()`.  
-  Calling it immediately after _SaveChanges_ will return no results, as the changes are cleared.
+  Calling it immediately after _SaveChanges_ will return no results, since all changes are cleared at that point.
 
 ---
 
@@ -64,7 +64,7 @@
 
 | ReturnValue          |                                    |
 |----------------------|------------------------------------|
-| `DocumentsChanges[]` | List of changes made in the entity |
+| `DocumentsChanges[]` | List of changes made to the entity |
 
 {CODE syntax_3@ClientApi\Session\HowTo\EntityChanges.cs /}
 

@@ -13,6 +13,7 @@
 
 * In this page:
     * [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#check-for-entity-changes)
+    * [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes)
     * [Syntax](../../../client-api/session/how-to/check-if-entity-has-changed#syntax)
 
 {NOTE/}
@@ -31,9 +32,46 @@
 
 {PANEL/}
 
+{PANEL: Get entity changes }
+
+* Use the session's advanced method `whatChangedFor()` to get all changes made to the specified entity  
+  within the session.
+
+* Details will include:
+    * The name and path of the changed field
+    * Its old and new values
+    * The type of change
+
+* Note: `whatChangedFor()` reports changes made prior to calling `saveChanges()`.  
+  Calling it immediately after _saveChanges_ will return no results, since all changes are cleared at that point.
+
+---
+
+##### Example I
+
+{CODE:nodejs changes_2@client-api\session\howTo\entityChanges.js /}
+
+##### Example II
+
+{CODE:nodejs changes_3@client-api\session\howTo\entityChanges.js /}
+
+{PANEL/}
+
 {PANEL: Syntax}
 
 {CODE:nodejs syntax_1@client-api\session\howTo\entityChanges.js /}
+
+| ReturnValue |                                                                                                          |
+|-------------|----------------------------------------------------------------------------------------------------------|
+| `boolean`   | `true` - modifications were made to the entity in this session.<br>`false` - no modifications were made. |
+
+{CODE:nodejs syntax_2@client-api\session\howTo\entityChanges.js /}
+
+| ReturnValue          |                                    |
+|----------------------|------------------------------------|
+| `DocumentsChanges[]` | List of changes made to the entity |
+
+{CODE:nodejs syntax_3@client-api\session\howTo\entityChanges.js /}
 
 {PANEL/}
 
