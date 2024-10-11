@@ -9,6 +9,8 @@
 
 * This article describes how to check for changes made to **all** tracked entities within the session.  
   To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
  
 * In this page:
   * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
