@@ -9,6 +9,8 @@
 * This article describes how to check for changes made to a specific **entity** within a session.  
   To check for changes to **all** tracked entities, see [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session).
 
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
+
 * In this page:
     * [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#check-for-entity-changes)
     * [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes)
@@ -32,13 +34,16 @@
 
 {PANEL: Get entity changes }
 
-* Use the session's advanced method `WhatChangedFor()` to get all changes made in the specified entity  
+* Use the session's advanced method `WhatChangedFor()` to get all changes made to the specified entity  
   within the session.
 
 * Details will include:
     * The name and path of the changed field
     * Its old and new values
     * The type of change
+
+* Note: `WhatChangedFor()` reports changes made prior to calling `SaveChanges()`.  
+  Calling it immediately after _SaveChanges_ will return no results, as the changes are cleared.
 
 ---
 

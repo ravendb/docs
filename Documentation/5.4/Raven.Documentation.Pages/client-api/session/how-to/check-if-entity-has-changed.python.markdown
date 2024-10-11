@@ -32,13 +32,16 @@
 
 {PANEL: Get entity changes }
 
-* Use the advanced session `what_changed` method to get all changes made in the specified entity  
+* Use the advanced session `what_changed` method to get all changes made to the specified entity  
   within the session.
 
 * Details will include:
     * The name and path of the changed field
     * Its old and new values
     * The type of change
+
+* Note: `what_changed` reports changes made prior to calling `save_changes`.  
+  Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
 
 ---
 
