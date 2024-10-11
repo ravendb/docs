@@ -39,6 +39,9 @@
   * The name and path of the changed field   
   * Its old and new values  
   * The type of change  
+  
+* Note: `WhatChanged()` reports changes made prior to calling `SaveChanges()`.  
+  Calling it immediately after _SaveChanges_ will return no results, as the changes are cleared.
 
 ---
 

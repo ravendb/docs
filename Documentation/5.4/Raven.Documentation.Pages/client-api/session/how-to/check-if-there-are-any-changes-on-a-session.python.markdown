@@ -40,6 +40,9 @@
   * Its old and new values  
   * The type of change  
 
+* Note: `what_changed` reports changes made prior to calling `save_changes`.  
+  Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
+
 ---
 
 ##### Example I

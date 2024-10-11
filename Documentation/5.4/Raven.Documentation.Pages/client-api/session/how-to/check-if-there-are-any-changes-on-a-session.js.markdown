@@ -40,6 +40,9 @@
     * Its old and new values
     * The type of change
 
+* Note: `whatChanged()` reports changes made prior to calling `saveChanges()`.  
+  Calling it immediately after _saveChanges_ will return no results, as the changes are cleared.
+
 ---
 
 ##### Example I
