@@ -13,7 +13,7 @@ async function revisionsSubscription() {
     }    
     {
         //region disable
-        await documentStore.subscriptions.disable("subscriptionNameToDidable");
+        await documentStore.subscriptions.disable("subscriptionNameToDisable");
         //endregion
     }
     {
@@ -50,7 +50,7 @@ async function revisionsSubscription() {
 
 
         worker.on("batch", (batch, callback) => {
-            // worker processing logic           
+            // worker processing logic 
         });
         
         await documentStore.subscriptions.dropConnection(worker);

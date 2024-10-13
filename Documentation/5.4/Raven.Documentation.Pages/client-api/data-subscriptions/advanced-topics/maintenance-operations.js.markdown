@@ -85,17 +85,17 @@ Get a list of all existing subscription tasks in the database.
 
 ##### SubscriptionState
 
-| Member                                    | Type         | Description                                                                                                                                                 |
-|-------------------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------| 
-| **query**                                 | `string`     | Subscription's RQL like query.                                                                                                                              |
-| **lastBatchAckTime**                      | `DateTime?`  | Last time a batch processing progress was acknowledged.                                                                                                     |
-| **nodeTag**                               | `string`     | Processing server's node tag.                                                                                                                               |
-| **mentorNode**                            | `string`     | The mentor node that was manually set.                                                                                                                      |
-| **subscriptionName**                      | `string`     | The subscription's name, which is also its unique identifier.                                                                                               |
-| **subscriptionId**                        | `long`       | Subscription's internal identifier (cluster's operation etag during subscription creation).                                                                 |
-| **changeVectorForNextBatchStartingPoint** | `string`     | The Change Vector from which the subscription will begin sending documents.<br>This value is updated on batch acknowledgement and can also be set manually. |
-| **disabled**                              | `bool`       | If `true`, subscription will not allow workers to connect.                                                                                                  |
-| **lastClientConnectionTime**              | `DateTime?`  | Time when last client was connected (value sustained after disconnection).                                                                                  |                
+| Member                                    | Type      | Description                                                                                                                                                 |
+|-------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **query**                                 | `string`  | Subscription's RQL like query.                                                                                                                              |
+| **lastBatchAckTime**                      | `string`  | Last time a batch processing progress was acknowledged.                                                                                                     |
+| **nodeTag**                               | `string`  | Processing server's node tag.                                                                                                                               |
+| **mentorNode**                            | `string`  | The mentor node that was manually set.                                                                                                                      |
+| **subscriptionName**                      | `string`  | The subscription's name, which is also its unique identifier.                                                                                               |
+| **subscriptionId**                        | `number`  | Subscription's internal identifier (cluster's operation etag during subscription creation).                                                                 |
+| **changeVectorForNextBatchStartingPoint** | `string`  | The Change Vector from which the subscription will begin sending documents.<br>This value is updated on batch acknowledgement and can also be set manually. |
+| **disabled**                              | `boolean` | If `true`, subscription will not allow workers to connect.                                                                                                  |
+| **lastClientConnectionTime**              | `string`  | Time when last client was connected (value sustained after disconnection).                                                                                  |                
 
 {INFO/}
 
