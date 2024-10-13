@@ -62,7 +62,7 @@
 {CODE syntax_1@ClientApi\Session\HowTo\SessionChanges.cs /}
 {CODE syntax_2@ClientApi\Session\HowTo\SessionChanges.cs /}
 
-| ReturnValue                               |                                                       |
+| Return value                              |                                                       |
 |-------------------------------------------|-------------------------------------------------------|
 | `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID |
 

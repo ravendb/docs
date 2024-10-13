@@ -61,13 +61,13 @@
 
 {CODE:nodejs syntax_1@client-api\session\howTo\entityChanges.js /}
 
-| ReturnValue |                                                                                                          |
-|-------------|----------------------------------------------------------------------------------------------------------|
-| `boolean`   | `true` - modifications were made to the entity in this session.<br>`false` - no modifications were made. |
+| Return value |                                                                                                          |
+|--------------|----------------------------------------------------------------------------------------------------------|
+| `boolean`    | `true` - modifications were made to the entity in this session.<br>`false` - no modifications were made. |
 
 {CODE:nodejs syntax_2@client-api\session\howTo\entityChanges.js /}
 
-| ReturnValue          |                                    |
+| Return value         |                                    |
 |----------------------|------------------------------------|
 | `DocumentsChanges[]` | List of changes made to the entity |
 

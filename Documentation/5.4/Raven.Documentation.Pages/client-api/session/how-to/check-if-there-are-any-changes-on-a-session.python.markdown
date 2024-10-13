@@ -60,7 +60,7 @@
 {CODE:python syntax_1@ClientApi\Session\HowTo\SessionChanges.py /}
 {CODE:python syntax_2@ClientApi\Session\HowTo\SessionChanges.py /}
 
-| ReturnValue                         |                                                       |
+| Return value                        |                                                       |
 |-------------------------------------|-------------------------------------------------------|
 | `Dict[str, List[DocumentsChanges]]` | Dictionary containing list of changes per document ID |
 

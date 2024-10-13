@@ -62,7 +62,7 @@
 {CODE:nodejs syntax_1@client-api\session\howTo\sessionChanges.js /}
 {CODE:nodejs syntax_2@client-api\session\howTo\sessionChanges.js /}
 
-| ReturnValue                        |                                                       |
+| Return value                       |                                                       |
 |------------------------------------|-------------------------------------------------------|
 | `Record<string, DocumentsChanges>` | Dictionary containing list of changes per document ID |
 

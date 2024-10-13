@@ -62,7 +62,7 @@
 {CODE syntax_1@ClientApi\Session\HowTo\EntityChanges.cs /}
 {CODE syntax_2@ClientApi\Session\HowTo\EntityChanges.cs /}
 
-| ReturnValue          |                                    |
+| Return value         |                                    |
 |----------------------|------------------------------------|
 | `DocumentsChanges[]` | List of changes made to the entity |
 

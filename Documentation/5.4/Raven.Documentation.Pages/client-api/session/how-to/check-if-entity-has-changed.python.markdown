@@ -60,7 +60,7 @@
 {CODE:python syntax_1@ClientApi\Session\HowTo\EntityChanges.py /}
 {CODE:python syntax_2@ClientApi\Session\HowTo\EntityChanges.py /}
 
-| ReturnValue        |                                                                                              |
+| Return value       |                                                                                              |
 |--------------------|----------------------------------------------------------------------------------------------|
 | `DocumentsChanges` | List of changes made to the entity (see `ChangeType` class below for available change types) |
 

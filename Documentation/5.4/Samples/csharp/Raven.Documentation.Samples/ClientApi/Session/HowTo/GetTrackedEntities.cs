@@ -28,7 +28,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
 
                     // The session tracks the 3 new stored entities:
-                    Assert.Equivalent(3, trackedEntities.Keys.Count);
+                    Assert.Equal(3, trackedEntities.Keys.Count);
                     var entityInfo = trackedEntities["employees/1-A"];
                     Assert.Equal("employees/1-A", entityInfo.Id);
                     Assert.True(entityInfo.Entity is Employee);
@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     
                     // The session keeps tracking the entities even after SaveChanges is called:
                     trackedEntities = session.Advanced.GetTrackedEntities();
-                    Assert.Equivalent(3, trackedEntities.Keys.Count);
+                    Assert.Equal(3, trackedEntities.Keys.Count);
                 }
                 #endregion
                 
@@ -55,7 +55,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
                     
                     // The session tracks the 2 entities:
-                    Assert.Equivalent(2, trackedEntities.Keys.Count);
+                    Assert.Equal(2, trackedEntities.Keys.Count);
                     
                     // Note the 'IsDeleted' property that is set for deleted entities:
                     var entityInfo = trackedEntities["employees/3-A"];
@@ -76,7 +76,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
                     
                     // The session tracks the entities loaded via the query:
-                    Assert.Equivalent(2, trackedEntities.Keys.Count); 
+                    Assert.Equal(2, trackedEntities.Keys.Count); 
                 }
                 #endregion
             }
