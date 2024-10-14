@@ -141,11 +141,11 @@ You will see Autoscaling Configuration View. It's separated into downscaling par
 
 | Parameter                   | Description                                                                                                                                          |
 |-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Highest Type                | The maximum virtual machine size (inclusive) available for upscaling                                                                                 |
+| Highest Type                | The maximum virtual machine size (inclusive) available for upscaling.                                                                                |
 | Upscaling Grace Period      | The time delay before upscaling begins after a high resource threshold is exceeded, allowing the system to avoid immediate scaling.                  |
-| High Cpu Threshold          | The average CPU usage percentage from last *High CPU Threshold Duration* that triggers the upscaling                      process.                   |
+| High Cpu Threshold          | The average CPU usage percentage from last *High CPU Threshold Duration* that triggers the upscaling process.                                        |
 | High Cpu Threshold Duration | The duration for which the average CPU usage must exceed the threshold before triggering upscaling.                                                  |
-| Upscaling Step              | Determines by how many instances upscaling should take place in one go. For example with step set to 2 it will scale up from *Dev10* to *Dev30*      |
+| Upscaling Step              | Determines by how many instances upscaling should take place in one go. For example with step set to 2 it will scale up from *Dev10* to *Dev30*.     |
 | Lowest Type                 | The minimum virtual machine size (inclusive) available for downscaling.                                                                              |
 | Downscaling Grace Period    | The time delay before downscaling begins after a low resource threshold is exceeded, allowing the system to avoid immediate scaling.                 |
 | Low Cpu Threshold           | The average CPU usage percentage from last *Low CPU Threshold Duration* that triggers the downscaling process.                                       |
