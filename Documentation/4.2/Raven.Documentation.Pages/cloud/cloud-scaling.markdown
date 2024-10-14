@@ -17,6 +17,8 @@ two RavenDB instances using:
   * [Scaling Up/Down - General](../cloud/cloud-scaling#scaling-up/down---general)  
      - [Change instance type](../cloud/cloud-scaling#scaling---change-instance-type)  
      - [Change storage](../cloud/cloud-scaling#scaling---change-storage)  
+  * [Additional product nodes - General](#additional-product-nodes---general)
+     - [Adding a node to a database group](#additional-product-nodes---adding-a-node-to-a-database-group)
 
 {NOTE/}
 
@@ -143,6 +145,30 @@ default one.
 {INFO: }
 **GCP** offers only **Premium** Disk type.
 {INFO/}
+
+{PANEL/}
+
+{PANEL: Additional product nodes - General}
+The *Production Tier* products can be expanded by adding *additional nodes* to the cluster.
+
+![Figure 8 - Cluster view with additional product nodes](images/studio-cluster-view-with-additional-nodes.png "Figure 8 - Cluster view with additional product nodes")
+
+{INFO: }
+This option **is not available** for **PS** instance types.  
+The maximum number of additional nodes that can be added equals **3**.  
+Nodes *A*, *B*, *C* **cannot be removed**.  
+{INFO/}
+
+{WARNING: }
+The process of adding a new node **does not guarantee** that the node will be distributed in separated *Availability Zone*.
+{WARNING/}
+{PANEL/}
+
+{PANEL: Additional product nodes - Adding a node to a database group}
+The new product node **does not belong to any database group**. The User should do this *manually* by adding the new node to the database group.  
+This operation is described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/settings/manage-database-group#database-group-topology---add-new-node).
+
+![Figure 9 - Add a new node to the database group](images/studio-add-new-node-to-database-group.png "Figure 9 - Add a new node to the database group")
 
 {PANEL/}
 

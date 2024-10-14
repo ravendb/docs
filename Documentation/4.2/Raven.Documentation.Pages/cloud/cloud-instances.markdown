@@ -93,12 +93,17 @@ number of IOPS reserved for your instances.
 {PANEL: A Production Cloud Cluster}
 
 The default production configuration is a three-node cluster, provisioned in separate 
-availability zones for maximum durability.  
+availability zones for maximum durability.
 
 RavenDB Cloud also offers **multi-region clusters** to minimize local latency and clusters 
 with a **higher number of nodes** to further distribute the cluster's workload.  
 [Contact Support](https://ravendb.net/contact) to provision customized cloud-based clusters 
 with configurations that suit your needs.  
+
+*Production tier* clusters can be also extended by [additional product nodes](../cloud/portal/cloud-portal-products-tab#nodes-additional-product-nodes).  
+{INFO: }
+This option is not available for **PS** instance types.
+{INFO/}
 
 !["Production Tier"](images\tiers-and-instances-003-production.png "Production Tier")
 
