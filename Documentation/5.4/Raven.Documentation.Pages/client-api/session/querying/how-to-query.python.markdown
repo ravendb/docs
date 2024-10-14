@@ -296,7 +296,7 @@ Available custom methods for session's [query](../../../client-api/session/query
 - [lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [long_count](../../../client-api/session/querying/how-to-count-query-results)
 - [more_like_this](../../../client-api/session/querying/how-to-use-morelikethis)
-- [if_type](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
+- [of_type](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
 - [order_by_distance](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistance)
 - [order_by_distance_descending](../../../client-api/session/querying/how-to-make-a-spatial-query#orderByDistanceDesc)
 - [order_by_score](../../../client-api/session/querying/sort-query-results#order-by-score)

@@ -62,11 +62,11 @@
 
 | Parameters | Type                 | Description                                                                          |
 |------------|----------------------|--------------------------------------------------------------------------------------|
-| __onEval__ | `(object[]) => void` | An action that will be performed on the query results<br>when the query is executed. |
+| **onEval** | `(object[]) => void` | An action that will be performed on the query results<br>when the query is executed. |
 
 | Return Value |                                                                  |
 |--------------|------------------------------------------------------------------|
-| __object__   | A `Lazy` instance that will evaluate the query only when needed. |
+| **object**   | A `Lazy` instance that will evaluate the query only when needed. |
 
 {PANEL/}
 

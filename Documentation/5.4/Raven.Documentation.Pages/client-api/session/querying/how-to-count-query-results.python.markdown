@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* The following options are available to __count query results__:
+* The following options are available to **count query results**:
 
     * [`count`](../../../client-api/session/querying/how-to-count-query-results#count)
     * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
@@ -37,7 +37,7 @@ To do this, define a callback function that takes `QueryStatistics` as an argume
 logic you want to apply.  
 
 {CODE-BLOCK:python}
-def __statistics_callback(statistics: QueryStatistics) -> None:
+def **statistics_callback(statistics: QueryStatistics) -> None:
    # Read and interact with QueryStatistics here
    total_results = statistics.total_results
    duration_milliseconds = statistics.duration_in_ms
@@ -50,7 +50,7 @@ Then pass your function as an argument to the `query.statistics` method and use 
    employees = list(
    session.query(object_type=Employee)
    .where_equals("first_name", "Robert")
-   .statistics(__statistics_callback)
+   .statistics(**statistics_callback)
 )
 {CODE-BLOCK/}
 

@@ -190,11 +190,13 @@
 
 {PANEL: Projection}
 
-* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
-  (projecting means the query returns only specific document fields instead of the full document)  
-  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+  {NOTE: }
+  Projecting means the query returns only specific document fields instead of the full document.  
+  {NOTE/}
 
-* If the index does Not store those fields then the fields' values will be retrieved from the documents.
+* If the index does Not store these fields, the field values will be retrieved from the documents.
 
 * Use the `Projection` method to customize and modify this behavior.
 

@@ -22,7 +22,7 @@
 
 {PANEL: API support}
 
-__Query__:
+**Query**:
 
 * The `Query` API supports LINQ, the essential data access solution in .NET.
 
@@ -35,7 +35,7 @@ __Query__:
 
 ---
 
-__DocumentQuery__:
+**DocumentQuery**:
 
 * `DocumentQuery` does Not support LINQ.
  
@@ -49,7 +49,7 @@ __DocumentQuery__:
 
 {NOTE: }
 
-__Note__:
+**Note**:
 
 `Query` and `DocumentQuery` can be converted to one another.  
 This enables you to take advantage of all available API methods & extensions.  
@@ -61,7 +61,7 @@ See [Convert between DocumentQuery and Query](../../../../client-api/session/que
 
 {PANEL: Immutability}
 
-* `Query` is __immutable__ while `DocumentQuery` is __mutable__.  
+* `Query` is **immutable** while `DocumentQuery` is **mutable**.  
   You might get different results if you try to *reuse* a query.
 
 ---

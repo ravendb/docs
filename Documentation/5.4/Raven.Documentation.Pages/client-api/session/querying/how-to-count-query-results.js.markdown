@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* The following options are available to __count query results__:
+* The following options are available to **count query results**:
 
     * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
   

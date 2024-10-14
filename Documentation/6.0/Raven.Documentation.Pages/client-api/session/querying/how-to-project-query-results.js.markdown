@@ -6,8 +6,8 @@
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content.
 
-* This article provides examples of projecting query results when making a __dynamic-query__.  
-  For projecting results when querying a __static-index__ see [project index query results](../../../indexes/querying/projections).
+* This article provides examples of projecting query results when making a **dynamic-query**.  
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
 
 * In this page:
 
@@ -27,9 +27,9 @@
 
 ---
 
-__What are projections__:
+**What are projections**:
 
-* A projection refers to the __transformation of query results__ into a customized structure,  
+* A projection refers to the **transformation of query results** into a customized structure,  
   modifying the shape of the data returned by the server.
 
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
@@ -43,7 +43,7 @@ __What are projections__:
 
 ---
 
-__When to use projections__:
+**When to use projections**:
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
@@ -62,7 +62,7 @@ __When to use projections__:
 
 ---
 
-__Projections are not tracked by the session__:
+**Projections are not tracked by the session**:
 
 * On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
@@ -70,7 +70,7 @@ __Projections are not tracked by the session__:
 
 ---
 
-__Projections are the final stage in the query pipeline__:
+**Projections are the final stage in the query pipeline**:
 
 * Projections are applied as the last stage in the query pipeline,  
   after the query has been processed, filtered, sorted, and paged.
@@ -83,7 +83,7 @@ __Projections are the final stage in the query pipeline__:
 
 ---
 
-__The cost of projections__:
+**The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
   However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#projectionWithCalculations) inside the projection.
@@ -105,7 +105,7 @@ __The cost of projections__:
 
 {NOTE: }
 
-__Example I - Projecting individual fields of the document__:
+**Example I - Projecting individual fields of the document**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1@client-api\session\querying\howToProjectQueryResults.js /}
@@ -119,7 +119,7 @@ select Name, Address.City, Address.Country
 
 {NOTE: }
 
-__Example II - Projecting individual fields with alias__:
+**Example II - Projecting individual fields with alias**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_2@client-api\session\querying\howToProjectQueryResults.js /}
@@ -133,7 +133,7 @@ select Name as CompanyName, Address.City as City, Address.Country as Country
 
 {NOTE: }
 
-__Example III - Projecting arrays and objects__:
+**Example III - Projecting arrays and objects**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_3@client-api\session\querying\howToProjectQueryResults.js /}
@@ -155,7 +155,7 @@ select {
 
 {NOTE: }
 
-__Example IV - Projection with expression__:
+**Example IV - Projection with expression**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_4@client-api\session\querying\howToProjectQueryResults.js /}
@@ -171,7 +171,7 @@ select {
 
 {NOTE: }
 
-<a id="projectionWithCalculations" /> __Example V - Projection with calculations__:
+<a id="projectionWithCalculations" /> **Example V - Projection with calculations**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_5@client-api\session\querying\howToProjectQueryResults.js /}
@@ -191,7 +191,7 @@ select {
 
 {NOTE: }
 
-__Example VI - Projecting using functions__:
+**Example VI - Projecting using functions**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_6@client-api\session\querying\howToProjectQueryResults.js /}
@@ -208,7 +208,7 @@ from "employees" as e select output(e)
 
 {NOTE: }
 
-__Example VII - Projecting using a loaded document__:
+**Example VII - Projecting using a loaded document**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_7@client-api\session\querying\howToProjectQueryResults.js /}
@@ -226,7 +226,7 @@ select {
 
 {NOTE: }
 
-__Example VIII - Projection with dates__:
+**Example VIII - Projection with dates**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_8@client-api\session\querying\howToProjectQueryResults.js /}
@@ -244,7 +244,7 @@ select {
 
 {NOTE: }
 
-__Example IX - Projection with metadata__:
+**Example IX - Projection with metadata**:
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_9@client-api\session\querying\howToProjectQueryResults.js /}
@@ -272,7 +272,7 @@ the metadata field `@nested-object-types` from the document will be automaticall
 // =====================================================
 
 from "users"
-select name, @metadata.@nested-object-types as __PROJECTED_NESTED_OBJECT_TYPES__
+select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
 {CODE-BLOCK/}
 
 {CODE:nodejs projections_10_results@client-api\session\querying\howToProjectQueryResults.js /}
@@ -285,11 +285,11 @@ select name, @metadata.@nested-object-types as __PROJECTED_NESTED_OBJECT_TYPES__
 
 | Parameter              | Type        | Description                                                                                                                                             |
 |------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __property__           | `string`    | Field name to project                                                                                                                                   |
-| __properties__         | `string[]`  | List of field names to project                                                                                                                          |
-| __queryData__          | `QueryData` | Object with projection query definitions                                                                                                                |
-| __projectionClass__    | `object`    | The class type of the projected fields                                                                                                                  |
-| __projectionBehavior__ | `string`    | Projection behavior is useful when querying a static-index.<br>Learn more in [projection behavior with indexes](../../../indexes/querying/projections). |
+| **property**           | `string`    | Field name to project                                                                                                                                   |
+| **properties**         | `string[]`  | List of field names to project                                                                                                                          |
+| **queryData**          | `QueryData` | Object with projection query definitions                                                                                                                |
+| **projectionClass**    | `object`    | The class type of the projected fields                                                                                                                  |
+| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br>Learn more in [projection behavior with indexes](../../../indexes/querying/projections). |
 
 {PANEL/}
 

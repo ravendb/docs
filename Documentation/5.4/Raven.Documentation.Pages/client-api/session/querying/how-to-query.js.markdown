@@ -14,21 +14,21 @@
 
 ---
 
-* All queries in RavenDB use an __index__ to provide results, even when you don't specify one.  
+* All queries in RavenDB use an **index** to provide results, even when you don't specify one.  
   Learn more [below](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
 
-* Queries that do Not specify which index to use are called __Dynamic Queries__.  
+* Queries that do Not specify which index to use are called **Dynamic Queries**.  
   This article displays examples of dynamic queries only.  
   For examples showing how to query an index see [querying an index](../../../indexes/querying/query-index).
 
 ---
 
-* The entities returned by the query are 'loaded' and __tracked__ by the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work).  
+* The entities returned by the query are 'loaded' and **tracked** by the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work).  
   Entities will Not be tracked when:  
     * Query returns a [projection](../../../client-api/session/querying/how-to-project-query-results)  
     * Tracking is [disabled](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)  
 
-* Query results are __cached__ by default. To disable query caching see [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).  
+* Query results are **cached** by default. To disable query caching see [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching).  
 
 * Queries are timed out after a configurable time period.  See [query timeout](../../../server/configuration/database-configuration#databases.querytimeoutinsec).
 
@@ -49,7 +49,7 @@
 
 * Queries always use an index to provide fast results regardless of the size of your data.
 
-* When a query reaches a RavenDB instance, the instance calls its __query optimizer__ to analyze the query  
+* When a query reaches a RavenDB instance, the instance calls its **query optimizer** to analyze the query  
   and determine which index should be used to retrieve the requested data.
 
 * Indexes allow to provide query results without scanning the entire dataset each and every time.  
@@ -57,7 +57,7 @@
 
 {INFO: }
 
-We differentiate between the following __3 query scenarios__:
+We differentiate between the following **3 query scenarios**:
 
   * Index query
   * Dynamic query
@@ -70,12 +70,12 @@ For each scenario, a different index type will be used.
 {NOTE: }
 
 <a id="indexQuery" /> 
-__1. Query an existing index__:
+**1. Query an existing index**:
 
-*  __Query type__: Index query  
-   __Index used__: Static-index
+*  **Query type**: Index query  
+   **Index used**: Static-index
 
-* You can specify which __STATIC-static index__ the query will use.
+* You can specify which **STATIC-static index** the query will use.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
   when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../studio/database/indexes/indexes-overview#auto-indexes--vs--static-indexes).
@@ -88,13 +88,13 @@ __1. Query an existing index__:
 {NOTE: }
 
 <a id="dynamicQuery" /> 
-__2. Query a collection - with filtering (Dynamic Query)__:
+**2. Query a collection - with filtering (Dynamic Query)**:
 
-*  __Query type__: Dynamic Query  
-   __Index used__: Auto-index
+*  **Query type**: Dynamic Query  
+   **Index used**: Auto-index
 
 * When querying a collection without specifying an index and with some filtering condition  
-  (other than just the document ID) the query-optimizer will analyze the query to see if an __AUTO-index__  
+  (other than just the document ID) the query-optimizer will analyze the query to see if an **AUTO-index**  
   that can answer the query already exists, i.e. an auto-index on the collection queried with index-fields that match those queried.
 
 * If such auto-index (Not a static one...) is found, it will be used to fetch the results.
@@ -128,17 +128,17 @@ __2. Query a collection - with filtering (Dynamic Query)__:
 {NOTE: }
 
 <a id="collectionQuery" /> 
-__3. Query a collection - no filtering__:
+**3. Query a collection - no filtering**:
 
-* __Query type__: Full collection Query  
-  __Index used__: The raw collection (internal storage indexes)
+* **Query type**: Full collection Query  
+  **Index used**: The raw collection (internal storage indexes)
 
 * Full collection query:
 
   * When querying a collection without specifying an index and with no filtering condition,  
     then all documents from the specified collection are returned.
 
-  * RavenDB uses the raw collection documents in its __internal storage indexes__ as the source for this query.  
+  * RavenDB uses the raw collection documents in its **internal storage indexes** as the source for this query.  
     No auto-index is created.
 
   * Example RQL: &nbsp; `from Employees`
@@ -162,12 +162,12 @@ __3. Query a collection - no filtering__:
 * The simplest way to issue a query is by using the session's `query` method.    
   Customize your query with these [API methods](../../../client-api/session/querying/how-to-query#query-api).
 
-* The following examples show __dynamic queries__ that do not specify which index to use.  
+* The following examples show **dynamic queries** that do not specify which index to use.  
   Please refer to [querying an index](../../../indexes/querying/query-index) for other examples.
 
 {NOTE: }
 
-__Query collection - no filtering__ 
+**Query collection - no filtering** 
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_1_0@client-api\session\Querying\howToQuery.js /}
@@ -184,7 +184,7 @@ from "employees"
 
 {NOTE: }
 
-__Query collection - by ID__
+**Query collection - by ID**
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_2_0@client-api\session\Querying\howToQuery.js /}
@@ -201,7 +201,7 @@ from "employees" where id() == "employees/1-A"
 
 {NOTE: }
 
-__Query collection - with filtering__ 
+**Query collection - with filtering** 
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_3_0@client-api\session\Querying\howToQuery.js /}
@@ -220,7 +220,7 @@ from "employees" where firstName == "Robert"
 
 {NOTE: }
 
-__Query collection - with paging__ 
+**Query collection - with paging** 
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query query_4_0@client-api\session\Querying\howToQuery.js /}
@@ -245,7 +245,7 @@ from "products" limit 5, 10 // skip 5, take 10
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 
-__Example__:
+**Example**:
 
 {CODE:nodejs query_5@client-api\session\Querying\howToQuery.js /}
 
@@ -335,16 +335,16 @@ Available methods for the session's [query](../../../client-api/session/querying
 
 | Parameter        | Type                          | Description                  |
 |------------------|-------------------------------|------------------------------|
-| __documentType__ | object                        | The type of entities queried |
-| __index__        | object                        | The index class              |
-| __opts__         | `DocumentQueryOptions` object | Query options                |
-| __query__        | string                        | The RQL query string         |
+| **documentType** | object                        | The type of entities queried |
+| **index**        | object                        | The index class              |
+| **opts**         | `DocumentQueryOptions` object | Query options                |
+| **query**        | string                        | The RQL query string         |
 
 | `DocumentQueryOptions` | | |
 | - | - | - |
-|  __collection__ | string | <ul><li>Collection name queried</li></ul> |
-|  __indexName__ | string | <ul><li>Index name queried</li></ul> |
-|  __index__ | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/query-index).</li></ul> |
+|  **collection** | string | <ul><li>Collection name queried</li></ul> |
+|  **indexName** | string | <ul><li>Index name queried</li></ul> |
+|  **index** | object | <ul><li>Index object queried</li><li>Note:<br>`indexName` & `index` are mutually exclusive with `collection`.<br>See examples in [querying an index](../../../indexes/querying/query-index).</li></ul> |
 
 | Return Value | |
 | - | - |

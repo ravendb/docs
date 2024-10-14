@@ -4,12 +4,12 @@
 
 {NOTE: }
 
-* Given a string term, the Suggestion feature will offer __similar terms__ from your data.
+* Given a string term, the Suggestion feature will offer **similar terms** from your data.
 
 * Word similarities are found using string distance algorithms.
 
-* Examples in this article demonstrate getting suggestions with a __dynamic-query__.  
-  For getting suggestions with an __index-query__ see [query for suggestions with index](../../../indexes/querying/suggestions).
+* Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions).
 
 ---
 
@@ -36,7 +36,7 @@
 
 * All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
-  the data from your documents is 'broken' into __terms__ that are kept in the index.  
+  the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
   various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers).
@@ -49,7 +49,7 @@
 
 Querying for suggestions is useful in the following scenarios:
 
-  * __When query has no results__:
+  * **When query has no results**:
 
       * When searching for documents that match some condition on a given string term,  
         if the term is misspelled then you will Not get any results.  
@@ -58,7 +58,7 @@ Querying for suggestions is useful in the following scenarios:
       * The suggested terms can then be used in a new query to retrieve matching documents,  
         or simply presented to the user asking what they meant to query.
 
-  * __When looking for alternative terms__:
+  * **When looking for alternative terms**:
 
       * When simply searching for additional alternative terms for a term that does exist.  
 
@@ -84,7 +84,7 @@ as no document in the Products collection contains the term `chaig` in its `Name
   The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
-  you can ask RavenDB to suggest __existing terms__ that are similar to `chaig`, as follows:.  
+  you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query suggest_2@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
@@ -166,47 +166,47 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 ![Figure 1. Auto-index terms](images/auto-index-terms.png "Terms generated for index Auto/Products/ByName")
 
-1. __The field name__ - derived from the document field that was used in the dynamic-query.  
+1. **The field name** - derived from the document field that was used in the dynamic-query.  
    In this example the field name is `Name`.
 
-2. __The terms__ generated from the data that the Products collection documents have in their `Name` field.
+2. **The terms** generated from the data that the Products collection documents have in their `Name` field.
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-__Suggest using__:
+**Suggest using**:
 
 {CODE syntax_1@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
 | Parameter      | Type                                         | Description                                                                   |
 |----------------|----------------------------------------------|-------------------------------------------------------------------------------|
-| __suggestion__ | `SuggestionWithTerm` / `SuggestionWithTerms` | An instance of `SuggestionBase`.<br>Defines the type of suggestion requested. |
-| __builder__    | `Action<ISuggestionBuilder<T>>`              | Builder with a fluent API that constructs a `SuggestionBase` instance.        |
+| **suggestion** | `SuggestionWithTerm` / `SuggestionWithTerms` | An instance of `SuggestionBase`.<br>Defines the type of suggestion requested. |
+| **builder**    | `Action<ISuggestionBuilder<T>>`              | Builder with a fluent API that constructs a `SuggestionBase` instance.        |
 
-__Builder operations__:
+**Builder operations**:
 
 {CODE syntax_2@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
 | Parameter       | Type                          | Description                                             |
 |-----------------|-------------------------------|---------------------------------------------------------|
-| __fieldName__   | `string`                      | The index field in which to search for similar terms    |
-| __path__        | `Expression<Func<T, object>>` | The index field in which to search for similar terms    |
-| __term__        | `string`                      | The term for which to get suggested similar terms       |
-| __terms__       | `string[]`                    | List of terms for which to get suggested similar terms  |
-| __displayName__ | `string`                      | A custom name for the suggestions result (optional).    |
-| __options__     | `SuggestionOptions`           | Non-default options to use in the operation (optional). |
+| **fieldName**   | `string`                      | The index field in which to search for similar terms    |
+| **path**        | `Expression<Func<T, object>>` | The index field in which to search for similar terms    |
+| **term**        | `string`                      | The term for which to get suggested similar terms       |
+| **terms**       | `string[]`                    | List of terms for which to get suggested similar terms  |
+| **displayName** | `string`                      | A custom name for the suggestions result (optional).    |
+| **options**     | `SuggestionOptions`           | Non-default options to use in the operation (optional). |
 
-__Suggestions options__:
+**Suggestions options**:
 
 {CODE syntax_3@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
 | Option       | Type                  | Description                                                                                                                                                 |
 |--------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __PageSize__ | `int`                 | <ul><li>Maximum number of suggested terms that will be returned</li><li>Default is <strong>15</strong></li></ul>                                            |
-| __Distance__ | `StringDistanceTypes` | <ul><li>String distance algorithm to use</li><li>`None` / `Levenshtein` / `JaroWinkler` / `NGram`</li><li>Default is <strong>Levenshtein</strong></li></ul> |
-| __Accuracy__ | `float?`              | <ul><li>Suggestion accuracy</li><li>Default is <strong>0.5f</strong></li></ul>                                                                              |
-| __SortMode__ | `SuggestionSortMode`  | <ul><li>Indicates the order by which results are returned</li><li>`None` / `Popularity`</li><li>Default is <strong>Popularity</strong></li></ul>            |
+| **PageSize** | `int`                 | <ul><li>Maximum number of suggested terms that will be returned</li><li>Default is <strong>15</strong></li></ul>                                            |
+| **Distance** | `StringDistanceTypes` | <ul><li>String distance algorithm to use</li><li>`None` / `Levenshtein` / `JaroWinkler` / `NGram`</li><li>Default is <strong>Levenshtein</strong></li></ul> |
+| **Accuracy** | `float?`              | <ul><li>Suggestion accuracy</li><li>Default is <strong>0.5f</strong></li></ul>                                                                              |
+| **SortMode** | `SuggestionSortMode`  | <ul><li>Indicates the order by which results are returned</li><li>`None` / `Popularity`</li><li>Default is <strong>Popularity</strong></li></ul>            |
 
 {PANEL/}
 
