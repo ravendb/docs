@@ -26,7 +26,7 @@
 {PANEL: Include timings in a query}
 
 {CODE-TABS}
-{CODE-TAB:python:Query timing_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
+{CODE-TAB:php:query timing_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -49,17 +49,10 @@ include timings()
 
 {PANEL: Syntax}
 
-{CODE:python syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
+{CODE:php syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.php /}
 
 | Parameter   | Type           | Description   |
 |-------------|----------------|---------------|
-| **timings_callback** | `Callable[[QueryTimings], None]` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
-
-{CODE:python syntax_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
-
-| `QueryTimings`   |                                     |                                                   |
-|------------------|-------------------------------------|---------------------------------------------------|
-| **duration_in_ms** | `int` | Total duration |
-| **timings**      | `Dict[str, QueryTimings]` | Dictionary with `QueryTimings` info per time part |
+| **&$timings** | `QueryTimings` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
 
 {PANEL/}

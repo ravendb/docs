@@ -10,7 +10,7 @@
 
 * By default, the timings stats are Not included in the query results, to avoid the measuring overhead.
 
-* __To include the query timings__ in the query results:  
+* **To include the query timings** in the query results:  
   add a call to `Timings()` in your query code, or add `include timings()` to an RQL query.  
   See examples below.  
 
@@ -41,9 +41,9 @@ include timings()
 
 {PANEL: View timings}
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.  
+* The detailed timings can be viewed from Studio's [Query view](../../../../studio/database/queries/query-view).
 
-* Running an RQL query with `include timings()` will show an additional __Timings Tab__  
+* Running an RQL query with `include timings()` will show an additional **Timings Tab**  
   with a graphical representation of the time spent in each query part.   
 
 ![Figure 1. Include timings graphical results](images/include-timings.png "Include timings results")
@@ -56,11 +56,11 @@ include timings()
 
 | Parameter   | Type           | Description                                                 |
 |-------------|----------------|-------------------------------------------------------------|
-| __timings__ | `QueryTimings` | An _out_ param that will be filled with the timings results |
+| ****timings** | `QueryTimings` | An _out_ param that will be filled with the timings results |
 
 | `QueryTimings`   |                                     |                                                   |
 |------------------|-------------------------------------|---------------------------------------------------|
-| __DurationInMs__ | `long`                              | Total duration                                    |
-| __Timings__      | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+| **DurationInMs** | `long`                              | Total duration                                    |
+| **Timings**      | `IDictionary<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
 
 {PANEL/}
