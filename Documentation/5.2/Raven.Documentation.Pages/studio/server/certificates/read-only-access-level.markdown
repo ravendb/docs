@@ -9,7 +9,7 @@ can grant different levels of access for different databases. These access level
 **Read/Write**, and **Read Only**.  
 
 * The Read Only access level only allows you to read data from a database, but not to write data. 
-You cannot update existing documents, change any configurations, define [ongoing tasks](../../../server/ongoing-tasks/general-info) 
+You cannot update existing documents, change any configurations, define [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info) 
 or [static indexes](../../../indexes/creating-and-deploying#static-indexes). However, the database 
 will still create [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) in response 
 to the clients' queries.  
