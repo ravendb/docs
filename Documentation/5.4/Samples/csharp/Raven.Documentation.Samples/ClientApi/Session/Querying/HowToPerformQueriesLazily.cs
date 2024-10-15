@@ -236,7 +236,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #region syntax_2
             // Lazy count query overloads:
             Lazy<int> CountLazily<T>();
+            Lazy<long> LongCountLazily<T>();
+            
             Lazy<Task<int>> CountLazilyAsync<T>(CancellationToken token = default(CancellationToken));
+            Lazy<Task<long>> LongCountLazilyAsync<T>(CancellationToken token = default(CancellationToken));
             #endregion
 
             #region syntax_3
