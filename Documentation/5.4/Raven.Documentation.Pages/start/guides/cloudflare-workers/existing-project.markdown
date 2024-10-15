@@ -85,7 +85,7 @@ export function openAsyncSession() {
 }
 {CODE-BLOCK/}
 
-For more on what options are available, see [Creating a Document Store][docs-creating-document-store].  
+For more on what options are available, see [Creating a Document Store][docs-what-is-document-store].  
 
 You can set options manually but it's more likely you'll want to set config variables in Wrangler 
 or in Cloudflare to customize the document store initialization.  
@@ -380,7 +380,7 @@ Navigate to your Worker **Settings > Variables > Environment Variables** and add
 [cf-mtls-worker]: https://developers.cloudflare.com/workers/runtime-apis/mtls
 [cf-wrangler]: https://developers.cloudflare.com/workers/wrangler/install-and-update/
 [docs-nodejs]: ../../../../nodejs/client-api/session/what-is-a-session-and-how-does-it-work
-[docs-creating-document-store]: ../../../..//nodejs/client-api/creating-document-store
+[docs-what-is-document-store]: ../../../..//nodejs/client-api/what-is-a-document-store
 [docs-create-db]: ../../../studio/database/create-new-database/general-flow
 [docs-cloud-certs]: ../../../cloud/cloud-security
 [docs-on-prem-certs]: ../../../studio/overview

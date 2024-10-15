@@ -65,7 +65,7 @@ The available ongoing tasks are:
 * **[RabbitMQ ETL](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)**  
     Write all or chosen database documents to a RabbitMQ exchange.  
     Data can be filtered and modified with transformation scripts.  
-* **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl-task)**  
+* **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl)**  
     Write all or chosen database documents to Azure Queue Storage.  
     Data can be filtered and modified with transformation scripts.  
 

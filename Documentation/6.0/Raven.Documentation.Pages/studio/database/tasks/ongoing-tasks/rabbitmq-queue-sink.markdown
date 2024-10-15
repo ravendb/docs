@@ -137,7 +137,7 @@ To open the ongoing tasks view:
 
 Sink statistics are added to RavenDB's ongoing tasks stats view, where their 
 performance can be examined from various aspects. To watch these statistics, 
-enter Studio's [ongoing tasks stats](../../../studio/database/stats/ongoing-tasks-stats/overview) 
+enter Studio's [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview) 
 view.  
 
 ![Queue Sink Stats](images/queue/sink/kafka-stats.png "Queue Sink Stats")
