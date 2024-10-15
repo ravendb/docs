@@ -5,7 +5,7 @@
 {NOTE: }
 
 * In contrast to the .NET client,  
-  the Node.js client provides a __unified API__ for querying documents via the `session.query()` method.  
+  the Node.js client provides a **unified API** for querying documents via the `session.query()` method.  
 
 * The `query` method is essentially a shorthand for invoking the `documentQuery` method.  
   See examples of those equivalent calls in [query vs documentQuery](../../../../client-api/session/querying/document-query/query-vs-document-query).

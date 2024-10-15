@@ -14,9 +14,10 @@
   * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
 
   * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
-      * [select_fields_query_data](../../../client-api/session/querying/how-to-project-query-results#select_fields_query_data)  
-      * [raw_query with `select`](../../../client-api/session/querying/how-to-project-query-results#raw_query-with-select)  
-      * [select_fields](../../../client-api/session/querying/how-to-project-query-results#select_fields)  
+      * [`select`, `selectFields`](../../../client-api/session/querying/how-to-project-query-results#select,-selectfields)  
+      * [`ofType`](../../../client-api/session/querying/how-to-project-query-results#oftype)  
+
+  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
 
 {NOTE/}
 
@@ -60,7 +61,7 @@
 
 * On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
-* Any modification made to a projection entity will not modify the corresponding document on the server when `save_changes` is called.
+* Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
 
 ### Projections are the final stage in the query pipeline:
 
@@ -73,14 +74,13 @@
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a single projection request can be made per query.  
-  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
+* Only a [single projection request](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query) can be made per query.  
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
   However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations) 
-* inside the projection.
+  inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
@@ -90,47 +90,37 @@
 
 {PANEL/}
 
-
 ## Projection Methods
 
-{PANEL: select_fields_query_data}
+{PANEL: `select`, `selectFields`}
 
-* The most common way to perform a query with a projection is to use the `select_fields` or `select_fields_query_data` method.  
+Projections are commonly performed in PHP using the `select` and `selectFields` methods.  
+You can specify what fields from a document you want to retrieve and even provide complex expression.
 
-* You can specify what fields from the document you want to retrieve and even provide a complex expression.
-
-### Example - Projecting individual fields of the document:
+### Example - Projecting Individual Fields of the Document:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
-from "Companies"
+from Companies
 select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projecting arrays and objects:
+### Example - Projecting Arrays and Objects:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
-// Using simple expression:
-from "Orders"
-select ShipTo, Lines[].ProductName as ProductNames
-
-// Using JavaScript object literal syntax:
-from "Orders" as x
-select {
-    ShipTo: x.ShipTo, 
-    ProductNames: x.Lines.map(y => y.ProductName)
-}
+from Orders
+select ShipTo, Lines[].ProductName as Products
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ### Example - Projection with expression:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e
 select {
@@ -139,81 +129,93 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with calculations:
+### Example - Projection with Calculation:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
-from "Orders" as x
+from "Orders" as o
 select {
-    TotalProducts: x.Lines.length,
-    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
-    TotalPrice: x.Lines
-                  .map(l => l.PricePerUnit * l.Quantity)
-                  .reduce((a, b) => a + b, 0)
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{PANEL/}
-
-{PANEL: raw_query with `select`}
-
-Data can be projected by sending the server raw RQL with the `select` keyword using the `raw_query` method.  
-
-### Example - Projection with dates:
+### Example - Projection Using a Loaded Document:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Orders" as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### Example - Projection with Dates:
+
+{CODE-TABS}
+{CODE-TAB:php projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select { 
-    DayOfBirth: new Date(Date.parse(e.Birthday)).getDate(), 
-    MonthOfBirth: new Date(Date.parse(e.Birthday)).getMonth() + 1,
-    Age: new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with raw JavaScript code:
+### Example - Projection with Raw JavaScript Code:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select {
-    Date: new Date(Date.parse(e.Birthday)), 
-    Name: e.FirstName.substr(0, 3)
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with metadata:
+### Example - Projection with Metadata:
 
 {CODE-TABS}
-{CODE-TAB:python:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
+{CODE-TAB:php projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Employees" as e 
 select {
-     Name: e.FirstName, 
-     Metadata: getMetadata(e)
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL: select_fields}
+{PANEL: `ofType`}
 
-The projected fields can also be specified using the `select_fields` method.  
+`ofType` is a client-side projection that maps results that the server returns into a given type.  
+This may become useful when querying an index that contains fields that are not available in the mapped type.  
+
+### Example
 
 {CODE-TABS}
-{CODE-TAB:python:DocumentQuery projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.py /}
-{CODE-TAB-BLOCK:sql:RQL}
-from "Companies"
-select Name, Phone
-{CODE-TAB-BLOCK/}
+{CODE-TAB:php:Sync projections_10@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
+{CODE-TAB:php:Index projections_11@ClientApi\Session\Querying\HowToProjectQueryResults.php /}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Single projection per query}
+
+As of RavenDB v6.0, only a single projection request can be made per query.
+Attempting multiple projection executions in the same query will result in an exception.
 
 {PANEL/}
 

@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* The Node.js client provides a __unified API__ for querying documents via the `session.query()` method.  
+* The Node.js client provides a **unified API** for querying documents via the `session.query()` method.  
   All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query#query-api).
 
 * The `query` method is essentially a shorthand for invoking the `documentQuery` method.  

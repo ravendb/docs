@@ -6,8 +6,8 @@
 * Applying a projection in a query allows you to shape the query results to meet specific requirements,  
   delivering just the data needed instead of the original full document content. 
 
-* This article provides examples of projecting query results when making a __dynamic-query__.  
-  For projecting results when querying a __static-index__ see [project index query results](../../../indexes/querying/projections).
+* This article provides examples of projecting query results when making a **dynamic-query**.  
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
 
 * In this page:
 
@@ -28,7 +28,7 @@
 
 ### What are projections:
 
-* A projection refers to the __transformation of query results__ into a customized structure,  
+* A projection refers to the **transformation of query results** into a customized structure,  
   modifying the shape of the data returned by the server.
 
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  

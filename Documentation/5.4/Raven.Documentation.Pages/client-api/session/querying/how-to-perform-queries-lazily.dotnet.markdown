@@ -80,7 +80,7 @@
 
 | Parameters | Type                                                                                                                              | Description                                                                          |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| __onEval__ | `Action<IEnumerable<TResult>>` <br> `Action<Dictionary<string, SuggestionResult>>` <br> `Action<Dictionary<string, FacetResult>>` | An action that will be performed on the query results<br>when the query is executed. |
+| **onEval** | `Action<IEnumerable<TResult>>` <br> `Action<Dictionary<string, SuggestionResult>>` <br> `Action<Dictionary<string, FacetResult>>` | An action that will be performed on the query results<br>when the query is executed. |
 
 | Return Value                                                                                                                           |                                                                |
 |----------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|

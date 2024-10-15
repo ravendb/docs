@@ -6,9 +6,9 @@
 
 * When making a query, the server will return the results **sorted** only if explicitly requested by the query.  
   If no sorting method is specified when issuing the query then results will not be sorted.
-
+  
     * Note: An exception to the above rule is when [Boosting](../../../indexes/boosting) is involved in the query.  
-      Learn more in [Automatic score-based ordering](../../../indexes/boosting#automatic-score-based-ordering).
+      Learn more in [Automatic score-based ordering](../../../indexes/boosting#automatic-score-based-ordering).  
 
 * Sorting is applied by the server after the query filtering stage.  
   Applying filtering is recommended as it reduces the number of results RavenDB needs to sort  
@@ -20,25 +20,25 @@
   For sorting results when querying a **static-index** see [sort index query results](../../../indexes/querying/sorting).
 
 * In this page:
-    * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value)
- 
-    * [Order by score](../../../client-api/session/querying/sort-query-results#order-by-score)
-        * [Get resulting score](../../../client-api/session/querying/sort-query-results#get-resulting-score)
+    * [Order by field value](../../../client-api/session/querying/sort-query-results#order-by-field-value) 
   
-    * [Order by random](../../../client-api/session/querying/sort-query-results#order-by-random)
-   
+    * [Order by score](../../../client-api/session/querying/sort-query-results#order-by-score)  
+        * [Get resulting score](../../../client-api/session/querying/sort-query-results#get-resulting-score)
+     
+    * [Order by random](../../../client-api/session/querying/sort-query-results#order-by-random)   
+     
     * [Order by spatial](../../../client-api/session/querying/sort-query-results#order-by-spatial)
      
     * [Order by count (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-count-(aggregation-query))
-  
+     
     * [Order by sum (aggregation query)](../../../client-api/session/querying/sort-query-results#order-by-sum-(aggregation-query))
-
+     
     * [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type)
-
+     
     * [Chain ordering](../../../client-api/session/querying/sort-query-results#chain-ordering)
-
-    * [Custom sorters](../../../client-api/session/querying/sort-query-results#custom-sorters) 
-
+     
+    * [Custom sorters](../../../client-api/session/querying/sort-query-results#custom-sorters)
+     
     * [Syntax](../../../client-api/session/querying/sort-query-results#syntax)
 
 {NOTE/}
@@ -47,10 +47,11 @@
 
 {PANEL: Order by field value}
 
-* Use `orderBy` or `orderByDescending` to order the results by the specified document-field.
+* Use `orderBy` or `orderByDescending` (see below) to order the results by the specified document field.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_1@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_1@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_3@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -62,9 +63,11 @@ order by UnitsInStock as long
 
 **Ordering Type**:
 
-* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+* By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.  
 
-* In the above example, the ordering type was set to `Long`.
+* E.g. in the above example, ordering by `UnitsInStock` will result in `OrderingType::long`  
+  because this property's data type is integer.
 
 * Different ordering can be forced - see [Force ordering type](../../../client-api/session/querying/sort-query-results#force-ordering-type) below.
 
@@ -79,10 +82,11 @@ order by UnitsInStock as long
 
 * The higher the score value the better the match.  
 
-* Use `orderByScore` or `orderByScoreDescending` to order by this score.
+* Use `orderByScore` to order the query results by this score.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_2@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_4@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_6@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock < 5 or Discontinued == true
@@ -96,18 +100,18 @@ order by score()
 
 ---
 
-The score details can be retrieved by either:
+The score details can be retrieved by either:  
+ 
+  * **Request to include explanations**:  
+    You can get the score details and see how it was calculated by requesting to include explanations in the query. 
+    Currently, this is only available when using Lucene as the underlying indexing engine.  
+    Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
+   
+  * **Get score from metadata**:  
+    The score is available in the `INDEX_SCORE` metadata property within each result.  
+    The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
 
-* **Request to include explanations**:  
-  You can get the score details and see how it was calculated by requesting to include explanations in the query. 
-  Currently, this is only available when using Lucene as the underlying indexing engine.  
-  Learn more in [Include query explanations](../../../client-api/session/querying/debugging/include-explanations).
-
-* **Get score from metadata**:  
-  The score is available in the `@index-score` metadata property within each result.  
-  The following example shows how to get the score from the metadata of the resulting entities that were loaded to the session:
-
-  {CODE:nodejs get_score_from_metadata@client-api\session\querying\sortQueryResults.js /}
+    {CODE:php get_score_from_metadata@ClientApi\Session\Querying\SortQueryResults.php /}
 
 {INFO/}
 
@@ -120,7 +124,8 @@ The score details can be retrieved by either:
 * An optional seed parameter can be passed.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_3@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_7@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_9@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -142,10 +147,11 @@ order by random()
 
 {PANEL: Order by count (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `count` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Count` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_4@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_10@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_12@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 group by Category
@@ -158,15 +164,16 @@ select key() as "Category", count()
 
 {PANEL: Order by sum (aggregation query)}
 
-* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `sum` aggregation operation used in the query.
+* The results of a [group-by query](../../../client-api/session/querying/how-to-perform-group-by-query) can be sorted by the `Sum` aggregation operation used in the query.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_5@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_13@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_15@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 group by Category
-order by sum as long
-select key() as 'Category', sum(UnitsInStock) as sum
+order by Sum as long
+select key() as 'Category', sum(UnitsInStock) as Sum
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -174,16 +181,19 @@ select key() as 'Category', sum(UnitsInStock) as sum
 
 {PANEL: Force ordering type}
 
-* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+* By default, the `orderBy` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
 
 * A different ordering can be forced by passing the ordering type explicitly to `orderBy` or `orderByDescending`.
 
 * The following ordering types are available:
 
-    * `Long`
-    * `Double`
-    * `AlphaNumeric`
-    * `String` (lexicographic ordering)
+    * `OrderingType::long`
+    * `OrderingType::double`
+    * `OrderingType::alphaNumeric`
+    * `OrderingType::string` (lexicographic ordering)
+
+* When using RQL directly, if no ordering type is specified, then the server defaults to lexicographic ordering.
 
 {NOTE: }
 
@@ -197,14 +207,13 @@ select key() as 'Category', sum(UnitsInStock) as sum
   where "Abc10" will result after "Abc9".
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_6@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_16@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_18@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 order by QuantityPerUnit as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{CODE:nodejs sort_6_results@client-api\session\querying\sortQueryResults.js /}
 
 {NOTE/}
 
@@ -216,9 +225,10 @@ order by QuantityPerUnit as alphanumeric
   Any combination of secondary sorting is possible as the fields are indexed independently of one another.
 
 * There is no limit on the number of sorting actions that can be chained.
-
+  
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_7@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_19@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_21@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -240,7 +250,8 @@ order by UnitsInStock as long desc, score(), Name
 * Once the custom sorter is deployed, you can sort the query results with it.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query sort_8@client-api\session\querying\sortQueryResults.js /}
+{CODE-TAB:php:Query sort_22@ClientApi\Session\Querying\SortQueryResults.php /}
+{CODE-TAB:php:DocumentQuery sort_24@ClientApi\Session\Querying\SortQueryResults.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where UnitsInStock > 10
@@ -252,13 +263,12 @@ order by custom(UnitsInStock, "MySorter")
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\session\querying\sortQueryResults.js /}
+{code:php syntax@ClientApi\Session\Querying\SortQueryResults.php /}
 
-| Parameter    | Type     | Description                                                                                                            |
-|--------------|----------|------------------------------------------------------------------------------------------------------------------------|
-| **field**    | `string` | The name of the field to sort by                                                                                       |
-| **ordering** | `string` | The ordering type that will be used to sort the results:<br>`Long`<br>`Double`<br>`AlphaNumeric`<br>`String` (default) |
-| **options**  | `object` | An object that specifies the custom `sorterName`                                                                       |
+| Parameter  | Type     | Description          |
+|------------|----------|----------------------|
+| **$field** | `string` | The field to sort by |
+| **$sorterNameOrOrdering** | `string` | The ordering type to sort the results by:<br>`OrderingType::long`<br>`OrderingType::double`<br>`OrderingType::alphaNumeric`<br>`OrderingType::string` (default) |
 
 {PANEL/}
 

@@ -4,8 +4,8 @@
 
 {NOTE: }
 
-* The following query customization methods that are available for the __.NET client__ under `IDocumentQueryCustomization` 
-  are also available in the __Node.js client__.
+* The following query customization methods that are available for the **.NET client** under `IDocumentQueryCustomization` 
+  are also available in the **Node.js client**.
 
 * These methods can be used for both a dynamic-query and an index-query.
 
@@ -33,7 +33,7 @@
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query customize_1_0@client-api\session\querying\howToCustomize.js /}
@@ -44,13 +44,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_1_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters       | Type            | Description                                                                                                                           |
 |------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| __eventHandler__ | (query) => void | A callback method that is invoked when the `beforeQueryExecuted` event is emitted.<br>The passed query param is of type `IndexQuery`. |
+| **eventHandler** | (query) => void | A callback method that is invoked when the `beforeQueryExecuted` event is emitted.<br>The passed query param is of type `IndexQuery`. |
 
 {NOTE/}
 
@@ -62,7 +62,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_2_0@client-api\session\querying\howToCustomize.js /}
 
@@ -70,13 +70,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_2_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters               | Type                  | Description                                                                                                                            |
 |--------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| __eventHandler__ | (queryResult) => void | A callback method that is invoked when the `afterQueryExecuted` event is emitted.<br> The passed query param is of type `QueryResult`. |
+| **eventHandler** | (queryResult) => void | A callback method that is invoked when the `afterQueryExecuted` event is emitted.<br> The passed query param is of type `QueryResult`. |
 
 {NOTE/}
 
@@ -90,7 +90,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_3_0@client-api\session\querying\howToCustomize.js /}
 
@@ -98,7 +98,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_3_1@client-api\session\querying\howToCustomize.js /}
 
@@ -116,7 +116,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_4_0@client-api\session\querying\howToCustomize.js /}
 
@@ -124,7 +124,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_4_1@client-api\session\querying\howToCustomize.js /}
 
@@ -150,7 +150,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query customize_5_0@client-api\session\querying\howToCustomize.js /}
@@ -161,15 +161,15 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_5_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters             | Type     | Description                                                    |
 |------------------------|----------|----------------------------------------------------------------|
-| __properties__         | string[] | Fields' names for which to fetch values                        |
-| __projectionClass__    | object   | The projected results class                                    |
-| __projectionBehavior__ | string   | The requested projection behavior, see available options below |
+| **properties**         | string[] | Fields' names for which to fetch values                        |
+| **projectionClass**    | object   | The projected results class                                    |
+| **projectionBehavior** | string   | The requested projection behavior, see available options below |
 
 * `Default`  
   Retrieve values from the stored index fields when available.  
@@ -200,7 +200,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_6_0@client-api\session\querying\howToCustomize.js /}
 
@@ -208,13 +208,13 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_6_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | Type   | Description                                                                                            |
 |------------|--------|--------------------------------------------------------------------------------------------------------|
-| __seed__   | string | Order the search results randomly using this seed. <br> Useful when executing repeated random queries. |
+| **seed**   | string | Order the search results randomly using this seed. <br> Useful when executing repeated random queries. |
 
 {NOTE/}
 
@@ -230,7 +230,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_7_0@client-api\session\querying\howToCustomize.js /}
 
@@ -238,18 +238,18 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_7_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | Type | Description |
 | - |----------------| - |
-| __timings__ | `QueryTimings` | An _out_ param that will be filled with the timings results |
+| **timings** | `QueryTimings` | An _out_ param that will be filled with the timings results |
 
 | `QueryTimings` |  |  |
 | - |-----------------------------------|---------------------------------------------------|
-| __DurationInMs__ | long | Total duration |
-| __Timings__ | IDictionary<string, QueryTimings> | Dictionary with _QueryTimings_ info per time part |
+| **DurationInMs** | long | Total duration |
+| **Timings** | IDictionary<string, QueryTimings> | Dictionary with _QueryTimings_ info per time part |
 
 
 {NOTE/}
@@ -273,7 +273,7 @@ __Syntax__
 
 {NOTE: }
 
-__Example__
+**Example**
 
 {CODE:nodejs customize_8_0@client-api\session\querying\howToCustomize.js /}
 
@@ -281,7 +281,7 @@ __Example__
 
 {NOTE: }
 
-__Syntax__
+**Syntax**
 
 {CODE:nodejs customize_8_1@client-api\session\querying\howToCustomize.js /}
 

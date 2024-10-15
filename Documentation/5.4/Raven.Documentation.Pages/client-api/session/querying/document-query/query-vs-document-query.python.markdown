@@ -13,7 +13,7 @@
   provide the same functionality. (This is different from the C# client implementation, 
   which often provides different functionality for `Query` methods and their `DocumentQuery` 
   counterparts.)  
-  Therefore the Python documentation often provides `query` usage samples without adding 
+  The Python documentation therefore often provides `query` usage samples without adding 
   `document_query` examples as well.  
 
 * In this page:
