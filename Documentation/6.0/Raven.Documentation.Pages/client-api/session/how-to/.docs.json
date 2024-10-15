@@ -87,6 +87,12 @@
         "Mappings": []
     },
     {
+        "Path": "get-tracked-entities.markdown",
+        "Name": "...get tracked entities",
+        "DiscussionId": "1fac4202-6803-4b93-86db-2ba2945af5b7",
+        "Mappings": []
+    },
+    {
         "Path": "check-if-there-are-any-changes-on-a-session.markdown",
         "Name": "...check for session changes",
         "DiscussionId": "6f635289-6344-4099-b5d0-42e8cb4b2eaf",

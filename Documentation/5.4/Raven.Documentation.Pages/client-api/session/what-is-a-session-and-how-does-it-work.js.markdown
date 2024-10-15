@@ -15,7 +15,7 @@
         * [Modify document example](../../client-api/session/what-is-a-session-and-how-does-it-work#modify-document-example)
     * [Identity map pattern](../../client-api/session/what-is-a-session-and-how-does-it-work#identity-map-pattern)
     * [Batching & Transactions](../../client-api/session/what-is-a-session-and-how-does-it-work#batching-&-transactions)
-    * [Concurrency control](../../client-api/session/what-is-a-session-and-how-does-it-work#concurrency-control)<br><br>
+    * [Concurrency control](../../client-api/session/what-is-a-session-and-how-does-it-work#concurrency-control)
     * [Reducing server calls (best practices) for:](../../client-api/session/what-is-a-session-and-how-does-it-work#reducing-server-calls-(best-practices)-for:)
         * [The N+1 problem](../../client-api/session/what-is-a-session-and-how-does-it-work#the-select-n1-problem)
         * [Large query results](../../client-api/session/what-is-a-session-and-how-does-it-work#large-query-results)
@@ -40,12 +40,12 @@
 
 * **Batching modifications**:  
   A business transaction usually involves multiple requests such as loading of documents or execution of queries.  
-  Calling [saveChanges()](../../client-api/session/saving-changes) indicates the completion of the client-side business logic .
+  Calling [saveChanges()](../../client-api/session/saving-changes) indicates the completion of the client-side business logic.
   At this point, all modifications made within the session are batched and sent together in a **single HTTP request** to the server to be persisted as a single ACID transaction.
 
 * **Tracking changes**:  
   Based on the [Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html) and the [Identity Map](https://martinfowler.com/eaaCatalog/identityMap.html) patterns,
-  the session tracks all changes made to all entities that it has either loaded, stored, or queried for.  
+  the session tracks all changes made to all entities that it has either loaded, stored, deleted, or queried for.  
   Only the modifications are sent to the server when _saveChanges()_ is called.
 
 * **Client side object**:  
@@ -72,8 +72,11 @@
 * Any such operation '*loads*' the document as an entity to the Session,  
   and the entity is added to the **session's entities map**.  
 * The session **tracks all changes** made to all entities stored in its internal map.  
-  You don't need to manually track the changes and decide what needs to be saved and what doesn't, the session will do it for you.  
-  Prior to saving, you can review the changes made if necessary. See: [Check for session changes](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session).
+  You don't need to manually track the changes and decide what needs to be saved and what doesn't,  
+  the session will do it for you.  
+* Prior to saving, you can review the changes made if necessary. See:  
+    * [Get tracked entities](../../client-api/session/how-to/get-tracked-entities)
+    * [Check for session changes](../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
 * All the tracked changes are combined & persisted in the database only when calling `saveChanges()`.  
 * Entity tracking can be disabled if needed. See:
     * [Disable entity tracking](../../client-api/session/configuration/how-to-disable-tracking)

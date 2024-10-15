@@ -48,7 +48,7 @@ class EntityChanges(ExampleBase):
                 session.store(employee, "employees/1-A")
 
                 # Get the changes for the entity in the session
-                # Call 'WhatChangedFor', pass the entity object in the param
+                # Call 'what_changed', pass the document id as a key to a resulting dict
                 changes = session.advanced.what_changed()
                 changes_for_employee = changes["employees/1-A"]
 
