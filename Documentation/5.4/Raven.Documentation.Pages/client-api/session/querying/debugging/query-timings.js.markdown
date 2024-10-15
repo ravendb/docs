@@ -10,7 +10,7 @@
 
 * By default, the timings stats are Not included in the query results, to avoid the measuring overhead.
 
-* __To include the query timings__ in the query results:  
+* **To include the query timings** in the query results:  
   add a call to `timings()` in your query code, or add `include timings()` to an RQL query.  
   See examples below.
 
@@ -38,9 +38,9 @@ include timings()
 
 {PANEL: View timings}
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.  
+* The detailed timings can be viewed from Studio's [Query view](../../../../studio/database/queries/query-view).
 
-* Running an RQL query with `include timings()` will show an additional __Timings Tab__  
+* Running an RQL query with `include timings()` will show an additional **Timings Tab**  
   with a graphical representation of the time spent in each query part.
 
 ![Figure 1. Include timings graphical results](images/include-timings.png "Include timings results")
@@ -53,11 +53,11 @@ include timings()
 
 | Parameter           | Type                        | Description                                                                                                                                                                    |
 |---------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| __timingsCallback__ | `(timingsCallback) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `QueryTimings` object when query returns.</li></ul> |
+| **timingsCallback** | `(timingsCallback) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `QueryTimings` object when query returns.</li></ul> |
 
 | `QueryTimings`   |                                |                                                   |
 |------------------|--------------------------------|---------------------------------------------------|
-| __durationInMs__ | `number`                       | Total duration                                    |
-| __timings__      | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
+| **durationInMs** | `number`                       | Total duration                                    |
+| **timings**      | `Record<string, QueryTimings>` | Dictionary with `QueryTimings` info per time part |
 
 {PANEL/}

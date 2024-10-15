@@ -10,7 +10,7 @@
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
-* Use `include_explanations` to get the score details** and see how it was calculated.  
+* Use `includeExplanations` to get the score details and see how it was calculated.  
 
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
@@ -23,7 +23,7 @@
 {PANEL: Include explanations in a query}
 
 {CODE-TABS}
-{CODE-TAB:python:Query explain@ClientApi\Session\Querying\Debugging\IncludeExplanations.py /}
+{CODE-TAB:php:query explain@ClientApi\Session\Querying\Debugging\IncludeExplanations.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -31,13 +31,18 @@ include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{NOTE: }
+Please note that the First parameter is optional.  
+If you intend to use the default options, just paste `null` instead of the options object.  
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: View explanations}
 
 * The detailed explanations can be viewed from the **Query view** in Studio.  
 
-* Running a query with `include_explanations` will show an additional **Explanations Tab**.
+* Running a query with `includeExplanations` will show an additional **Explanations Tab**.
 
 ![Figure 1. Explanations in the Studio](images/include-explanations-1.png "Include explanations")
 
@@ -49,15 +54,11 @@ include explanations()
 
 {PANEL: Syntax}
 
-{CODE:python syntax@ClientApi\Session\Querying\Debugging\IncludeExplanations.py /}
+{CODE:php syntax@ClientApi\Session\Querying\Debugging\IncludeExplanations.php /}
 
 | Parameters | Data type | Description |
 | - | - | - |
-| **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
-| **options** (Optional) | `ExplanationOptions` | Can be a `group_key` string |
-
-| `Explanations` | |
-| - | - |
-| `Dict[str, List[str]]` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
+| **$options** | `?ExplanationOptions` | This object is optional.<br>If you intend to use the default options, place `null` here. |
+| **&$explanations** | `Explanations` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
 
 {PANEL/}

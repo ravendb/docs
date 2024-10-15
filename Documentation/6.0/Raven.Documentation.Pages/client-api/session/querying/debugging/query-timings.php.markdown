@@ -18,6 +18,7 @@
     * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
     * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
     * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
 
 {NOTE/}
 
@@ -26,7 +27,7 @@
 {PANEL: Include timings in a query}
 
 {CODE-TABS}
-{CODE-TAB:python:Query timing_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
+{CODE-TAB:php:query timing_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -49,17 +50,18 @@ include timings()
 
 {PANEL: Syntax}
 
-{CODE:python syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
+{CODE:php syntax@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.php /}
 
 | Parameter   | Type           | Description   |
 |-------------|----------------|---------------|
-| **timings_callback** | `Callable[[QueryTimings], None]` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
+| **&$timings** | `QueryTimings` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
 
-{CODE:python syntax_2@ClientApi\Session\Querying\Debugging\IncludeQueryTimings.py /}
+{PANEL/}
 
-| `QueryTimings`   |                                     |                                                   |
-|------------------|-------------------------------------|---------------------------------------------------|
-| **duration_in_ms** | `int` | Total duration |
-| **timings**      | `Dict[str, QueryTimings]` | Dictionary with `QueryTimings` info per time part |
+{PANEL: Timings in a sharded database}
+
+* In a sharded database, timings for each part are provided **per shard**.
+
+* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
 
 {PANEL/}
