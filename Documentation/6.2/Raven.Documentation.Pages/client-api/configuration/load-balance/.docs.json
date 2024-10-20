@@ -1,0 +1,35 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "b0d33f30-29ae-4972-8342-e6ce5ac9a4d1",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/configuration/load-balance-and-failover"
+            }
+        ]
+    },
+    {
+        "Path": "read-balance-behavior.markdown",
+        "Name": "Read balance behavior",
+        "DiscussionId": "b0d33f30-29ae-4972-8342-e6ce5ac9a4d1",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/configuration/load-balance-and-failover"
+            }
+        ]
+    },
+    {
+        "Path": "load-balance-behavior.markdown",
+        "Name": "Load balance behavior",
+        "DiscussionId": "b0d33f30-29ae-4972-8342-e6ce5ac9a4d1",
+        "Mappings": [
+            {
+                "Version": 5.0,
+                "Key": "client-api/session/configuration/use-session-context-for-load-balancing"
+            }
+        ]
+    }
+]
