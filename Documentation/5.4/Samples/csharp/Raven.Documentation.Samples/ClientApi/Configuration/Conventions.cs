@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client;
@@ -168,6 +169,20 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     FindPropertyNameForDynamicIndex = (Type indexedType, string indexedName, string path, string prop) =>
                         path + prop
                     #endregion
+                    ,
+                    #region AsyncDocumentIdGenerator
+                    // Customize ID generation for all collections
+                    AsyncDocumentIdGenerator = (database, obj) =>
+                    {
+                        var objectType = obj.GetType().Name;  // e.g., Person, Order, etc.
+                        var timestamp = DateTime.UtcNow.Ticks; // Get the current timestamp
+
+                        // Format the ID as {ObjectType}/{Ticks}
+                        var id = $"{objectType}/{timestamp}";
+
+                        return Task.FromResult(id);
+                    }
+                    #endregion
                 }
             };
             
@@ -195,6 +210,11 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         #region AggressiveCacheModeSyntax
         // Syntax:
         public AggressiveCacheMode Mode { get; set; }
+        #endregion
+        
+        #region AsyncDocumentIdGeneratorSyntax
+        // Syntax:
+        public Func<string, object, Task<string>> AsyncDocumentIdGenerator { get; set; }
         #endregion
         
         #region CreateHttpClientSyntax

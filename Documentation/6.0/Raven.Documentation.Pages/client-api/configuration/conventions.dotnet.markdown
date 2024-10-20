@@ -2,7 +2,7 @@
 
 {NOTE: }
 
-* __Conventions__ in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
+* **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
 
 * In this page:
     * [How to set conventions](../../client-api/configuration/conventions#how-to-set-conventions)
@@ -10,6 +10,7 @@
       [AddIdFieldToDynamicObjects](../../client-api/configuration/conventions#addidfieldtodynamicobjects)  
       [AggressiveCache.Duration](../../client-api/configuration/conventions#aggressivecache.duration)  
       [AggressiveCache.Mode](../../client-api/configuration/conventions#aggressivecache.mode)  
+      [AsyncDocumentIdGenerator](../../client-api/configuration/conventions#asyncdocumentidgenerator)  
       [CreateHttpClient](../../client-api/configuration/conventions#createhttpclient)  
       [DisableAtomicDocumentWritesInClusterWideTransaction](../../client-api/configuration/conventions#disableatomicdocumentwritesinclusterwidetransaction)  
       [DisableTcpCompression](../../client-api/configuration/conventions#disabletcpcompression)  
@@ -116,6 +117,24 @@
 {NOTE/}
 {NOTE: }
 
+#### AsyncDocumentIdGenerator
+
+---
+
+* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method for all collections.
+
+* You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../client-api/configuration/identifier-generation/type-specific) convention.
+
+* DEFAULT:  
+  The default document ID generator is the `GenerateDocumentIdAsync` method, which is part of the `HiLoIdGenerator` object within the DocumentStore.
+  This method implements the [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) to ensure efficient ID generation.
+
+{CODE AsyncDocumentIdGenerator@ClientApi\Configuration\Conventions.cs /}
+{CODE AsyncDocumentIdGeneratorSyntax@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
+{NOTE: }
+
 #### CreateHttpClient
 
 ---
@@ -124,7 +143,7 @@
 
 * For example, implementing your own HTTP client can be useful when you'd like your clients to provide the server with tracing info.
 
-* If you override the default `CreateHttpClient` convention we advise that you also set the HTTP client type  
+* If you override the default `CreateHttpClient` convention we advise that you also set the HTTP client type
   correctly using the [HttpClientType](../../client-api/configuration/conventions#httpclienttype) convention.
 
 {CODE CreateHttpClient@ClientApi\Configuration\Conventions.cs /}
@@ -175,8 +194,8 @@
   In such a case:
 
     * The client will not load the topology from the cache upon failing to connect to a server.
-    * Even if the client is configured to [receive topology updates](../../client-api/configuration/conventions#disabletopologyupdates) from the server, no topology files will be saved on disk,  
-      thus preventing the accumulation of these files.
+    * Even if the client is configured to [receive topology updates](../../client-api/configuration/conventions#disabletopologyupdates) from the server,
+      no topology files will be saved on disk, thus preventing the accumulation of these files.
 
 * DEFAULT: `false`
 
@@ -305,7 +324,7 @@
 
 ---
 
-* Use the `FindIdentityPropertyNameFromCollectionName` convention to define a function that customizes  
+* Use the `FindIdentityPropertyNameFromCollectionName` convention to define a function that customizes
   the entity's ID property from the collection name.
 
 * DEFAULT: Will use the `Id` property.
