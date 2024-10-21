@@ -1,14 +1,14 @@
 [
-  {
-    "Path": "working-with-document-identifiers.markdown",
-    "Name": "Working with Document Identifiers",
-    "DiscussionId": "f3115d3f-7faa-4cd5-9581-1c56153f51a9",
-    "Mappings": []
-  },
-  {
-    "Path": "hilo-algorithm.markdown",
-    "Name": "HiLo Algorithm",
-    "DiscussionId": "cc329253-5159-4a41-a95a-fe156eefd76e",
-    "Mappings": []
-  }
+    {
+        "Path": "working-with-document-identifiers.markdown",
+        "Name": "Working with Document Identifiers",
+        "DiscussionId": "f3115d3f-7faa-4cd5-9581-1c56153f51a9",
+        "Mappings": []
+    },
+    {
+        "Path": "hilo-algorithm.markdown",
+        "Name": "HiLo Algorithm",
+        "DiscussionId": "34ff3367-c155-4af9-8fa5-4ed517efc5e5",
+        "Mappings": []
+    }
 ]

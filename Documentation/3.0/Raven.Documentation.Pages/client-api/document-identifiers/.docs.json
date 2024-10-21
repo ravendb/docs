@@ -1,31 +1,31 @@
 [
-  {
-    "Path": "working-with-document-ids.markdown",
-    "Name": "Working with document ids",
-    "DiscussionId": "691ee493-f813-42eb-90d1-c5634efabd48",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/saving-new-document#document-ids"
-      }
-    ]
-  },
-  {
-    "Path": "hilo-algorithm.markdown",
-    "Name": "HiLo algorithm",
-    "DiscussionId": "96f4b9ea-12d1-4744-95e0-8b88da38543c",
-    "Mappings": []
-  },
-  {
-    "Path": "beware-of.markdown",
-    "Name": "Beware of ...",
-    "DiscussionId": "b62dc188-4d1f-4745-9acd-72983c036c90",
-    "Mappings": []
-  },
-  {
-    "Path": "handling-case-sensitive-document-ids.markdown",
-    "Name": "Handling case sensitive document IDs",
-    "DiscussionId": "bef2ca24-1003-45ce-848d-093beff6b3aa",
-    "Mappings": []
-  }
+    {
+        "Path": "working-with-document-ids.markdown",
+        "Name": "Working with document ids",
+        "DiscussionId": "691ee493-f813-42eb-90d1-c5634efabd48",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document#document-ids"
+            }
+        ]
+    },
+    {
+        "Path": "hilo-algorithm.markdown",
+        "Name": "HiLo algorithm",
+        "DiscussionId": "c6aab86a-cdd8-42b5-8eb0-68afea4d875e",
+        "Mappings": []
+    },
+    {
+        "Path": "beware-of.markdown",
+        "Name": "Beware of ...",
+        "DiscussionId": "b62dc188-4d1f-4745-9acd-72983c036c90",
+        "Mappings": []
+    },
+    {
+        "Path": "handling-case-sensitive-document-ids.markdown",
+        "Name": "Handling case sensitive document IDs",
+        "DiscussionId": "bef2ca24-1003-45ce-848d-093beff6b3aa",
+        "Mappings": []
+    }
 ]
