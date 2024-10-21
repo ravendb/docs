@@ -8,37 +8,40 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
     {
         public HiloAlgorithm()
         {
-            #region return_hilo_1
+            #region hilo_1
             var store = new DocumentStore();
 
             using (var session = store.OpenSession())
             {
-                // Store an entity will give us the hilo range (ex. 1-32)
+                // Storing the first entity causes the client to receive the initial HiLo range (1-32)
                 session.Store(new Employee
                 {
                     FirstName = "John",
                     LastName = "Doe"
                 });
 
-                session.SaveChanges();
+                session.SaveChanges(); 
+                // The document ID will be: employees/1-A
             }
             
             // Release the range when it is no longer relevant
             store.Dispose();
             #endregion
 
-            #region return_hilo_2
+            #region hilo_2
             var newStore = new DocumentStore();
             using (var session = newStore.OpenSession())
             {
-                // Store an entity after disposing the last store will give us  (ex. 2-33) 
+                // Storing an entity after disposing the store in the previous example
+                // causes the client to receive the next HiLo range (2-33)
                 session.Store(new Employee
                 {
-                    FirstName = "John",
-                    LastName = "Doe"
+                    FirstName = "Dave",
+                    LastName = "Brown"
                 });
 
                 session.SaveChanges();
+                // The document ID will be: employees/2-A
             }
             #endregion
         }
@@ -50,37 +53,66 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
             #region manual_hilo_sample
             using (var session = store.OpenSession())
             {
-                // Using overload - GenerateNextIdFor(string database, string collectionName);
+                // Use any overload to get the next id:
+                // (Note how the id increases with each call)
+                // ==========================================
+                
                 var nextId = await store.HiLoIdGenerator.GenerateNextIdForAsync(null, "Products");
-
-                // Using overload - GenerateNextIdFor(string database, object entity);
+                // nextId = 1
+                
                 nextId = await store.HiLoIdGenerator.GenerateNextIdForAsync(null, new Product());
-
-                // Using overload - GenerateNextIdFor(string database, Type type);
+                // nextId = 2
+                
                 nextId = await store.HiLoIdGenerator.GenerateNextIdForAsync(null, typeof(Product));
+                // nextId = 3
 
-                // Now you can create a new document with the ID received.
+                // Now you can create a new document with the nextId received
+                // ==========================================================
+                
                 var product = new Product
                 {
-                    Id = "myCustomId/" + nextId.ToString()
+                    Id = "MyCustomId/" + nextId.ToString()
                 };
                 
-                // Store the new document.
+                // Store the new document
+                // The document ID will be: "MyCustomId/3"  
+                session.Store(product);
+                session.SaveChanges();
+            }
+            #endregion
+            
+            #region manual_hilo_getFullId
+            using (var session = store.OpenSession())
+            {
+                var nextFullId = await store.HiLoIdGenerator.GenerateDocumentIdAsync(null, "Products");
+                // nextFullId = "products/4-A"
+
+                // You can now use the nextFullId and customize the document ID as you wish:
+                var product = new Product
+                {
+                    Id = "MyCustomId/" + nextFullId
+                };
+                
                 session.Store(product);
                 session.SaveChanges();
             }
             #endregion
 
             /*
-             #region manual_HiLo_Signatures
-        Task<long> GenerateNextIdForAsync(string database, object entity);
+            #region manual_hilo_overloads
+            Task<long> GenerateNextIdForAsync(string database, object entity);
 
-        Task<long> GenerateNextIdForAsync(string database, Type type);
+            Task<long> GenerateNextIdForAsync(string database, Type type);
 
-        Task<long> GenerateNextIdForAsync(string database, string collectionName);
+            Task<long> GenerateNextIdForAsync(string database, string collectionName);
             #endregion
-
-             */
+            */
+            
+            /*
+            #region manual_hilo_getFullId_syntax
+            Task<string> GenerateDocumentIdAsync(string database, object entity);
+            #endregion
+            */
         }
     }
 }

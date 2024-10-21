@@ -120,13 +120,13 @@
 
 ---
 
-* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method for all collections.
+* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method that will be used when storing a document without explicitly specifying its `Id`.
   
 * You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../client-api/configuration/identifier-generation/type-specific) convention.
 
 * DEFAULT:  
-  The default document ID generator is the `GenerateDocumentIdAsync` method, which is part of the `HiLoIdGenerator` object within the DocumentStore.
-  This method implements the [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) to ensure efficient ID generation.
+  The default document ID generator is the `GenerateDocumentIdAsync` method, which is part of the `HiLoIdGenerator` object within the _DocumentStore_.
+  This method implements the [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) to ensure efficient ID generation when storing a document without explicitly specifying its `Id`.
 
 {CODE AsyncDocumentIdGenerator@ClientApi\Configuration\Conventions.cs /}
 {CODE AsyncDocumentIdGeneratorSyntax@ClientApi\Configuration\Conventions.cs /}
