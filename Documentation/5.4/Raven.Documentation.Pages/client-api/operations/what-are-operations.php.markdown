@@ -20,6 +20,8 @@
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
       * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
 
 {NOTE/}
 
@@ -49,10 +51,10 @@
   The DocumentStore `OperationExecutor` sends the request and processes the results.
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-  However, server-maintenance operations can be executed on a specific node by using the [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
 * **Target database**:  
   By default, operations work on the default database defined in the DocumentStore.  
-  However, common operations & maintenance operations can operate on a different database by using the [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
 * **Transaction scope**:  
   Operations execute as a single-node transaction.  
   If needed, data will then replicate to the other nodes in the database-group.  
@@ -66,7 +68,7 @@
 
 * All common operations implement the `IOperation` interface.  
   The operation is executed within the **database scope**.  
-  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
 
 * These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
   document-extensions related operations such as getting/putting an attachment, and more.  
@@ -77,11 +79,11 @@
 
 #### Example:
 
-{CODE:python operations_ex@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php operations_ex@ClientApi\Operations\WhatAreOperations.php /}
 
 ##### Syntax:
 
-{CODE:python operations_send@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php operations_send@ClientApi\Operations\WhatAreOperations.php /}
 
 {NOTE: }
 
@@ -127,7 +129,7 @@
 
 * All maintenance operations implement the `IMaintenanceOperation` interface.  
   The operation is executed within the **database scope**.  
-  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
 
 * These operations include database management operations such as setting client configuration,  
   managing indexes & ongoing-tasks operations, getting stats, and more.  
@@ -138,11 +140,11 @@
 
 #### Example:
 
-{CODE:python maintenance_ex@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php maintenance_ex@ClientApi\Operations\WhatAreOperations.php /}
 
 ##### Syntax:
 
-{CODE:python maintenance_send@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php maintenance_send@ClientApi\Operations\WhatAreOperations.php /}
 
 {NOTE: }
 
@@ -261,7 +263,7 @@
 
 * All server-maintenance operations implement the `IServerOperation` interface.  
   The operation is executed within the **server scope**.   
-  Use [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+  Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
 
 * These operations include server management and configuration operations.  
   See all available operations [below](../../client-api/operations/what-are-operations#server-list).
@@ -271,11 +273,11 @@
 
 #### Example:
 
-{CODE:python server_ex@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php server_ex@ClientApi\Operations\WhatAreOperations.php /}
 
 ##### Syntax:
 
-{CODE:python server_send@ClientApi\Operations\WhatAreOperations.py /}
+{CODE:php server_send@ClientApi\Operations\WhatAreOperations.php /}
 
 {NOTE: }
 
@@ -355,6 +357,30 @@
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
 
 {NOTE/}
+{PANEL/}
+
+{PANEL: Manage lengthy operations}
+
+* Some operations that run in the server background may take a long time to complete.  
+
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `Send` method will return an `Operation` object,  
+  which can be **awaited for completion**.  
+
+---
+
+#### Wait for completion:
+
+{CODE:php wait_timeout_ex@ClientApi\Operations\WhatAreOperations.php /}
+
+##### Syntax:
+
+{CODE:php waitForCompletion_syntax@ClientApi\Operations\WhatAreOperations.php /}
+
+| Parameter   | Type         | Description                                                                                                                                                                                                                                                                                                                                           |
+|-------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$duration** | `Duration` or `int` | <ul><li> **When a duration is specified** - <br>The server will throw a `TimeoutException` if the peration has Not completed within the specified time frame.<br>The operation itself continues to run in the background,<br>no rollback action takes place.</li><li>`null` - <br>`waitForCompletion` will wait for the operation to complete indefinitely.</li></ul> |
+
 {PANEL/}
 
 ## Related articles

@@ -6,7 +6,7 @@
 * Use `DeleteByQueryOperation` to delete a large number of documents that match the provided query in a single server call.
 
 * **Dynamic behavior**:   
-  The deletion of documents matching the specified query is run in batches of size 1024.  
+  The deletion of documents matching the specified query is performed in batches of size 1024.  
   During the deletion process, documents that are added/modified **after** the delete operation has started  
   may also be deleted if they match the query criteria.
 
