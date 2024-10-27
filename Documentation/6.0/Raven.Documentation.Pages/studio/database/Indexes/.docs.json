@@ -1,13 +1,13 @@
 [
     {
         "Path": "indexes-overview.markdown",
-    "Name": "Indexes Overview",
+        "Name": "Indexes Overview",
         "DiscussionId": "872c4e77-4201-4eb9-b497-8c00c840273b",
         "Mappings": []
     },
     {
         "Path": "indexes-list-view.markdown",
-    "Name": "Index List View",
+        "Name": "Index List View",
         "DiscussionId": "9f8b585d-146f-4271-bc89-686aa9dc016d",
         "Mappings": []
     },
@@ -34,11 +34,17 @@
         "Name": "Map-Reduce Visualizer",
         "DiscussionId": "4ac7b114-eeeb-4af5-8317-ca4144ee48e1",
         "Mappings": []
-  },
-  {
-    "Path": "index-history.markdown",
-    "Name": "Index History",
-    "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
-    "Mappings": []
+    },
+    {
+        "Path": "index-history.markdown",
+        "Name": "Index History",
+        "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-performance.markdown",
+        "Name": "Indexing Performance",
+        "DiscussionId": "b48853b6-1680-44e1-a10e-6d445e7ee9de",
+        "Mappings": []
     }
 ]
