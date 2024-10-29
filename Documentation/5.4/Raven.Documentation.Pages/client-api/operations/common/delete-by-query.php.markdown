@@ -12,7 +12,6 @@
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can **wait** for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
 
 * In this page:  
    * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
@@ -23,31 +22,25 @@
 
 {PANEL: Delete by dynamic query}
 
-{NOTE: }
-
-**Delete all documents in collection**:
+#### Delete all documents in a collection:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_0@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:php:DeleteByQueryOperation delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-**Delete with filtering**:  
+#### Delete with filtering:  
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_1@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:php:DeleteByQueryOperation delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-{NOTE/}
 
 {PANEL/}
 
@@ -60,59 +53,50 @@ from "Orders" where Freight > 30
 
 ---
 
-{NOTE: }
+#### A sample Map-index:
 
-**A sample Map-index**:
+{CODE:php the_index@ClientApi\Operations\Common\DeleteByQuery.php /}
 
-{CODE:nodejs the_index@client-api\Operations\Common\deleteByQuery.js /}
+---
 
-{NOTE/}
-
-{NOTE: }
-
-**Delete documents via an index query**:
+#### Delete documents via an index query:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_2@client-api\Operations\Common\deleteByQuery.js /}
-{CODE-TAB:nodejs:DeleteOperation_overload delete_by_query_3@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:php:RQL delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.php /}
+{CODE-TAB:php:IndexQuery delete_by_query_3@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+---
 
-{NOTE: }
-
-**Delete with options**:
+#### Delete with options:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_4@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:php:QueryOperationOptions delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-* Specifying `options` is also supported by the other overload methods, see the Syntax section below.
-
-{NOTE/}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\Operations\Common\deleteByQuery.js /}
+{CODE:php syntax_1@ClientApi\Operations\Common\DeleteByQuery.php /}
 <br />
 
-| Parameter         | Type                        | Description                                                |
-|-------------------|-----------------------------|------------------------------------------------------------|
-| **queryToDelete** | `string`                      | The RQL query to perform                                   |
-| **queryToDelete** | `IndexQuery`                | Holds all the information required to query an index       |
-| **options**       | `object`                    | Object holding different setting options for the operation |
+| Parameter         | Type                      | Description              |
+|-------------------|---------------------------|--------------------------|
+| **$queryToDelete** | `string` | The RQL query to perform |
+| **$queryToDelete** | `IndexQuery` | Holds all the information required to query an index |
+| **$options** | `?QueryOperationOptions` | Object holding different setting options for the operation |
 
-{CODE:nodejs syntax_2@client-api\Operations\Common\DeleteByQuery.js /}
+{CODE:php syntax_2@ClientApi\Operations\Common\DeleteByQuery.php /}
 
 {PANEL/}
+
 
 ## Related Articles
 
