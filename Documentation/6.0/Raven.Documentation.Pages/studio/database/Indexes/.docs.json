@@ -36,15 +36,21 @@
         "Mappings": []
     },
     {
-        "Path": "index-history.markdown",
-        "Name": "Index History",
-        "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
-        "Mappings": []
-    },
-    {
         "Path": "indexing-performance.markdown",
         "Name": "Indexing Performance",
         "DiscussionId": "b48853b6-1680-44e1-a10e-6d445e7ee9de",
+        "Mappings": []
+    },
+    {
+        "Path": "index-cleanup.markdown",
+        "Name": "Index Cleanup",
+        "DiscussionId": "f2e147c4-5780-477b-b355-6b16d667e0dc",
+        "Mappings": []
+    },
+    {
+        "Path": "index-history.markdown",
+        "Name": "Index History",
+        "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
         "Mappings": []
     }
 ]
