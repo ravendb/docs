@@ -34,7 +34,7 @@
         "Name": "Map-Reduce Visualizer",
         "DiscussionId": "4ac7b114-eeeb-4af5-8317-ca4144ee48e1",
         "Mappings": []
-  },
+    },
     {
         "Path": "index-history.markdown",
         "Name": "Index History",

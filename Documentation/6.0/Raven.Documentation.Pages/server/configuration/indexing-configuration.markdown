@@ -92,8 +92,7 @@
 
 {PANEL: Indexing.CleanupIntervalInMin}
 
-Time (in minutes) between auto index cleanup.
-Time (in minutes) between index cleanup"
+Time (in minutes) between auto-index cleanup.
 
 - **Type**: `int`
 - **Default**: `10`

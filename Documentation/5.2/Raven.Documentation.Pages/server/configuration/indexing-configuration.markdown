@@ -206,7 +206,7 @@ The maximum number of steps in the script execution of a JavaScript index.
 
 {PANEL:Indexing.CleanupIntervalInMin}
 
-Time (in minutes) between auto index cleanup.
+Time (in minutes) between auto-index cleanup.
 
 - **Type**: `int`
 - **Default**: `10`
