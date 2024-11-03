@@ -86,8 +86,8 @@ No exception is thrown if a change vector doesn’t match any revision.
 | **documentId**                  | `string`       | The ID of the document whose revisions you want to delete.                                                                                                                            |
 | **documentIds**                 | `List<string>` | A list of document IDs whose revisions you want to delete.                                                                                                                            |
 | **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../../document-extensions/revisions/overview#force-revision-creation) in the deletion.<br>`false` - Exclude force-created revisions. |
-| **from**                        | `DateTime`     | The start date of the range for revisions to delete (inclusive).                                                                                                                      |
-| **to**                          | `DateTime`     | The end date of the range for revisions to delete (inclusive).                                                                                                                        |
+| **from**                        | `DateTime`     | The start of the date range for the revisions to delete (inclusive).                                                                                                                  |
+| **to**                          | `DateTime`     | The end of the date range for the revisions to delete (inclusive).                                                                                                                    |
 | **revisionsChangeVectors**      | `List<string>` | A list of change vectors corresponding to the revisions that you want to delete.                                                                                                      |
 
 {PANEL/}
