@@ -93,7 +93,7 @@ class GetSamples(ExampleBase):
                 # region get_sample_paged
                 command = GetDocumentsCommand.from_paging(0, 128)
                 session.advanced.request_executor.execute_command(command)
-                first_10_docs = command.result.results
+                first_docs = command.result.results
                 # endregion
 
                 # region get_sample_startswith

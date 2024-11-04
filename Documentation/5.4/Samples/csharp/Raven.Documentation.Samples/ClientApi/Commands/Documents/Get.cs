@@ -110,7 +110,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 #region get_sample_paged
                 var command = new GetDocumentsCommand(start: 0, pageSize: 128);
                 session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-                var first10Docs = command.Result.Results;
+                var firstDocs = command.Result.Results;
                 #endregion
             }
         }
