@@ -103,9 +103,9 @@ The number of hours audit logs are kept before they are deleted.
 {PANEL: Security.Certificate.Change.Exec}
 
 A command or executable that handles cluster certificate changes.  
-When the cluster certificate is updated, this executable will persist the new certificate on all nodes.
+This executable allows you to implement your own custom logic for persisting the new certificate on all nodes.
 
-It will only be triggered if [Security.Certificate.Path](../../server/configuration/security-configuration#security.certificate.path) is not defined.
+Note: it will only be triggered if [Security.Certificate.Path](../../server/configuration/security-configuration#security.certificate.path) is not defined.
 
 - **Type**: `string`
 - **Default**: `null`
