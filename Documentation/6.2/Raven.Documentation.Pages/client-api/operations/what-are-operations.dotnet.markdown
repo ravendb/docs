@@ -1,5 +1,4 @@
 # What are Operations
-
 ---
 
 {NOTE: }
@@ -113,6 +112,7 @@
 
 * **Revisions**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RevertRevisionsByIdOperation](../../document-extensions/revisions/client-api/operations/revert-document-to-revision)  
 
 * **Patching**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
