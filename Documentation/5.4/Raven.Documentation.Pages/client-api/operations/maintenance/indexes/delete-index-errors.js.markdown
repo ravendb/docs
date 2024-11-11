@@ -40,7 +40,7 @@
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexNames** | `string[]` | List of index names to delete errors from.<br>An exception is thrown if any of the specified indexes do not exist. |
+| **indexNames** | `string[]` | List of index names to delete errors from.<br>An exception is thrown if any of the specified indexes does not exist. |
 
 {PANEL/}
 

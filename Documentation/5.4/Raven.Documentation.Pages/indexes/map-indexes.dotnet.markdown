@@ -186,7 +186,6 @@ Index definition:
 
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_1_7@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/Query'
