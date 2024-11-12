@@ -15,7 +15,7 @@
         * [Modify document example](../../client-api/session/what-is-a-session-and-how-does-it-work#modify-document-example)
     * [Identity map pattern](../../client-api/session/what-is-a-session-and-how-does-it-work#identity-map-pattern)
     * [Batching & Transactions](../../client-api/session/what-is-a-session-and-how-does-it-work#batching-&-transactions)
-    * [Concurrency control](../../client-api/session/what-is-a-session-and-how-does-it-work#concurrency-control)<br><br>
+    * [Concurrency control](../../client-api/session/what-is-a-session-and-how-does-it-work#concurrency-control)
     * [Reducing server calls (best practices) for:](../../client-api/session/what-is-a-session-and-how-does-it-work#reducing-server-calls-(best-practices)-for:)
         * [The N+1 problem](../../client-api/session/what-is-a-session-and-how-does-it-work#the-select-n1-problem)
         * [Large query results](../../client-api/session/what-is-a-session-and-how-does-it-work#large-query-results)
@@ -40,12 +40,12 @@
 
 * **Batching modifications**:  
   A business transaction usually involves multiple requests such as loading of documents or execution of queries.  
-  Calling [saveChanges()](../../client-api/session/saving-changes) indicates the completion of the client-side business logic .
+  Calling [saveChanges()](../../client-api/session/saving-changes) indicates the completion of the client-side business logic.
   At this point, all modifications made within the session are batched and sent together in a **single HTTP request** to the server to be persisted as a single ACID transaction.
 
 * **Tracking changes**:  
   Based on the [Unit of Work](https://martinfowler.com/eaaCatalog/unitOfWork.html) and the [Identity Map](https://martinfowler.com/eaaCatalog/identityMap.html) patterns,
-  the session tracks all changes made to all entities that it has either loaded, stored, or queried for.  
+  the session tracks all changes made to all entities that it has either loaded, stored, deleted, or queried for.  
   Only the modifications are sent to the server when _saveChanges()_ is called.
 
 * **Client side object**:  

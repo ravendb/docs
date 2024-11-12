@@ -4,11 +4,13 @@
 {NOTE: }
 
 * The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
-  made in all the entities it has either loaded, stored, or queried for,  
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `saveChanges()` is called.
 
-* This article describes how to check for changes made to all tracked entities within the **session**.  
-  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
 
 * In this page:
     * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
@@ -40,6 +42,9 @@
     * Its old and new values
     * The type of change
 
+* Note: `whatChanged()` reports changes made prior to calling `saveChanges()`.  
+  Calling it immediately after _saveChanges_ will return no results, as the changes are cleared.
+
 ---
 
 ##### Example I
@@ -57,7 +62,7 @@
 {CODE:nodejs syntax_1@client-api\session\howTo\sessionChanges.js /}
 {CODE:nodejs syntax_2@client-api\session\howTo\sessionChanges.js /}
 
-| ReturnValue                        |                                                       |
+| Return value                       |                                                       |
 |------------------------------------|-------------------------------------------------------|
 | `Record<string, DocumentsChanges>` | Dictionary containing list of changes per document ID |
 
