@@ -40,7 +40,7 @@
       Use `PutClientConfigurationOperation` to set the client configuration options on the server.  
       See the example below.
     
-    * From the Studio:  
+    * From Studio:  
       Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database) view.
 
 * **Updating the running client**:  
@@ -78,23 +78,23 @@ The following client configuration options are available:
 
 {PANEL/}
 
-{PANEL: Put client-configuration (for-database)}
+{PANEL: Put client configuration (for database)}
 
-{CODE:nodejs put_config_1@client-api\Operations\Maintenance\Configuration\putClientConfig.js /}
+{CODE:php put_config_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.php /}
 
-{CODE:nodejs put_config_2@client-api\Operations\Maintenance\Configuration\putClientConfig.js /}
+{CODE:php put_config_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.php /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\Operations\Maintenance\Configuration\putClientConfig.js /}
+{CODE:php syntax_1@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.php /}
 
-| Parameter         | Type     | Description                                                            |
-|-------------------|----------|------------------------------------------------------------------------|
-| **configuration** | `object` | Client configuration that will be set on the server (for the database) |
+| Parameter         | Type                  | Description                                                            |
+|-------------------|-----------------------|------------------------------------------------------------------------|
+| **$configuration** | `?ClientConfiguration` | Client configuration that will be set on the server (for the database) |
 
-{CODE:nodejs syntax_2@client-api\Operations\Maintenance\Configuration\putClientConfig.js /}
+{CODE:php syntax_2@ClientApi\Operations\Maintenance\Configuration\PutClientConfig.php /}
 
 {PANEL/}
 

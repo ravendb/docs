@@ -34,16 +34,13 @@ Learn more about identities in:
 
 {PANEL: Get identities operation }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TAB:csharp:Async get_identities_async@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
-{CODE-TABS/}
+{CODE:php get_identities@ClientApi\Operations\Maintenance\Identities\GetIdentities.php /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.cs /}
+{CODE:php syntax@ClientApi\Operations\Maintenance\Identities\GetIdentities.php /}
 
 {PANEL/}
 

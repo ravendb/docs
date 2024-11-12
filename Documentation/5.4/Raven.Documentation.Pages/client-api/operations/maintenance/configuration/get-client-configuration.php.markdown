@@ -5,7 +5,7 @@
 {NOTE: }
 
 * It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
-
+  
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
@@ -18,15 +18,15 @@
 
 {PANEL: Get client-configuration}
 
-{CODE:nodejs get_config@client-api\Operations\Maintenance\Configuration\getClientConfig.js /}
+{CODE:php get_config@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.php /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\Operations\Maintenance\Configuration\getClientConfig.js /}
+{CODE:php syntax_1@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.php /}
 
-{CODE:nodejs syntax_2@client-api\Operations\Maintenance\Configuration\getClientConfig.js /}
+{CODE:php syntax_2@ClientApi\Operations\Maintenance\Configuration\GetClientConfig.php /}
 
 {PANEL/}
 

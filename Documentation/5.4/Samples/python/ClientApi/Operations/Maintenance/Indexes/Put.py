@@ -109,7 +109,7 @@ class Put(ExampleBase):
                             Employee = order.Employee,
                             Company = order.Company,
                             Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
-                        }"               
+                        }               
                     """
             # Can provide other properties available on the IndexDefinitionBuilder class, e.g.:
             builder.deployment_mode = IndexDeploymentMode.ROLLING

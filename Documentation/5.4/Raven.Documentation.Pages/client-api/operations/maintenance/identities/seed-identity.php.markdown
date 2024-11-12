@@ -22,8 +22,9 @@
 {PANEL: Set a higher identity value }
 
 You can replace the latest identity value on the server with a new, **higher** number. 
+ 
 
-{CODE:nodejs seed_identity_1@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:php seed_identity_1@ClientApi\Operations\Maintenance\Identities\SeedIdentity.php /}
 
 {PANEL/}
 
@@ -33,19 +34,19 @@ You can replace the latest identity value on the server with a new, **higher** n
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
-{CODE:nodejs seed_identity_2@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:php seed_identity_2@ClientApi\Operations\Maintenance\Identities\SeedIdentity.php /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE:nodejs syntax@client-api\Operations\Maintenance\Identities\seedIdentity.js /}
+{CODE:php syntax@ClientApi\Operations\Maintenance\Identities\SeedIdentity.php /}
 
-| Parameter       | Type      | Description                                                                                                                    |
-|-----------------|-----------|--------------------------------------------------------------------------------------------------------------------------------|
-| **name**        | `string`  | The collection name to seed the identity value for.<br>Can be ended with or without a pipe (e.g. "companies" or "companies\|". |
-| **value**       | `number`  | The number to set as the latest identity value.                                                                                |
-| **forceUpdate** | `boolean` | `true` - force a new value that is lower than the latest.<br>`false` - only a higher value can be set.                         |
+| Parameter        | Type      | Description                                                                                                                               |
+|------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------|
+| **$name**        | `string ` | The collection name to seed the identity value for.<br>Can be ended with or without a pipe (e.g. "companies" or "companies\|". |
+| **$value**       | `int`     | The number to set as the latest identity value.                                                                                           |
+| **$forceUpdate** | `bool`    | `True` - force a new value that is lower than the latest.<br>`False` - only a higher value can be set.                                  |
 
 {PANEL/}
 
@@ -53,6 +54,7 @@ You can replace the latest identity value on the server with a new, **higher** n
 
 ### Document Identifiers
 
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
 - [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
 - [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
 

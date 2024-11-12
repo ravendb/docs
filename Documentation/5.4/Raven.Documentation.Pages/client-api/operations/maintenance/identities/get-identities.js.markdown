@@ -15,9 +15,10 @@
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 
-* Learn more about identities in:
-
-    * [Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
+{INFO: }
+Learn more about identities in:
+[Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
+{INFO/}
 
 * In this page:
 

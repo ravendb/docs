@@ -41,7 +41,7 @@
       See the example below.
     
     * From the Studio:  
-      Set the client configuration from the [Client Configuration view](../../../../studio/database/settings/client-configuration-per-database).
+      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database) view.
 
 * **Updating the running client**:  
 

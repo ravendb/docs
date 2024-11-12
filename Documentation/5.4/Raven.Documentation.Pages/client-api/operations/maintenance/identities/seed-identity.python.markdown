@@ -42,11 +42,11 @@ You can replace the latest identity value on the server with a new, **higher** n
 
 {CODE:python syntax@ClientApi\Operations\Maintenance\Identities\SeedIdentity.py /}
 
-| Parameter        | Type   | Description                                                                                                                               |
-|------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**         | `str`  | The collection name for which to seed the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
-| **value**        | `long` | The number to set as the latest identity value.                                                                                           |
-| **force_update** | `bool` | `True` - force a new value that is lower than the latest.<br>`False` - only a higher value can be set.                                  |
+| Parameter        | Type   | Description                                                                                                                    |
+|------------------|--------|--------------------------------------------------------------------------------------------------------------------------------|
+| **name**         | `str`  | The collection name to seed the identity value for.<br>Can be ended with or without a pipe (e.g. "companies" or "companies\|". |
+| **value**        | `long` | The number to set as the latest identity value.                                                                                |
+| **force_update** | `bool` | `True` - force a new value that is lower than the latest.<br>`False` - only a higher value can be set.                         |
 
 {PANEL/}
 

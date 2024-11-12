@@ -19,17 +19,17 @@
 
 {PANEL: Increment the next identity value }
 
-{CODE:nodejs increment_identity@client-api\Operations\Maintenance\Identities\incrementIdentity.js /}
+{CODE:php increment_identity@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.php /}
 
 {PANEL/}
 
 {PANEL: Syntax }
 
-{CODE:nodejs syntax@client-api\Operations\Maintenance\Identities\incrementIdentity.js /}
+{CODE:php syntax@ClientApi\Operations\Maintenance\Identities\IncrementIdentity.php /}
 
-| Parameter | Type   | Description                                                                                                                                    |
-|-----------|--------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| **name**  | string | The collection name for which to increment the identity value.<br>Can be with or without a pipe in the end (e.g. "companies" or "companies\|". |
+| Parameter | Type   | Description                                     |
+|-----------|--------|-------------------------------------------------|
+| **$name** | `?string` | The name of a collection to create an ID for |
 
 {PANEL/}
 
@@ -37,6 +37,7 @@
 
 ### Document Identifiers
 
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
 - [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
 - [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
 
