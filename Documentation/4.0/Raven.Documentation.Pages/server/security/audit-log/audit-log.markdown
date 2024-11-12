@@ -32,7 +32,7 @@ RavenDB does nothing with the audit logs except write them.
 It is important to understand that the audit logs are local. That is, if we have a database residing on node C which is removed by a command originating on node B, 
 the audit entry will be in the audit log of node B, not node C. 
 
-Also note that RavenDB writes connections to the audit log, not requests. This is done for performance and managability reasons. Otherwise, you'd have extremely large and unwieldy audit logs. 
+Also note that RavenDB writes connections to the audit log, not requests. This is done for performance and manageability reasons. Otherwise, you'd have extremely large and unwieldy audit logs. 
 
 With HTTP 1.1, a single TCP connection is used for many different requests. The only items you'll find in the audit log are the time of the TCP connection, the certificate being used 
 and the level of access granted to this certificate at the time of the connection. If you require more detailed logs (at the level of individual HTTP requests), 
