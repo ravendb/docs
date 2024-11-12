@@ -70,7 +70,7 @@
 | Parameters | Type | Description |
 | - | - | - |
 | **$indexName** | `?string` | Name of index to enable |
-| **clusterWide** | `bool` | `true` - Enable index on all database-group nodes<br>`false` - Enable index only on a single node (the preferred node) |
+| **$clusterWide** | `bool` | `true` - Enable index on all database-group nodes<br>`false` - Enable index only on a single node (the preferred node) |
 
 {PANEL/}
 

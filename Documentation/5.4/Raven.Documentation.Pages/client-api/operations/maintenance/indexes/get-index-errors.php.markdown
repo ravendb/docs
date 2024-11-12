@@ -37,7 +37,7 @@
 
 | Parameters | Type | Description |
 | - | - | - |
-| **\*$indexNames** | `array` | List of index names to get errors for |
+| **$indexNames** | `array` | List of index names to get errors for |
 
 | `$getIndexErrorsOp` operation Return value | Description |
 | - | - |
