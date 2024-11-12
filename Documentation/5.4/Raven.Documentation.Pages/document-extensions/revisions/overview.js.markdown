@@ -227,37 +227,6 @@ Read [here](../../document-extensions/revisions/revisions-and-other-features#rev
 
 {PANEL/}
 
-{PANEL: Revisions storage}
-
-{NOTE: }
-
-##### Revisions documents storage
----
-
-* The creation of a document revision stores a full version of the modified document in the revisions storage,
-  in the same **blittable JSON document** format as that of regular documents.
-
-* **Revisions compression**
-    * Revisions are compressed by default.  
-      Learn [here](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault)
-      how to toggle this database option on and off.
-    * Learn [here](../../server/storage/documents-compression) how to apply Document Compression to revisions.
-    * Individual fields are compressed as they are compressed in regular documents:  
-      any text field of more than 128 bytes is compressed.
-
-{NOTE/}
-{NOTE: }
-
-##### Revisions document extensions storage
----
-
-Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-time-series) about revisions and **time series**.  
-Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-counters) about revisions and **counters**.  
-Read [here](../../document-extensions/revisions/revisions-and-other-features#revisions-and-attachments) about revisions and **attachments**.
-
-{NOTE/}
-{PANEL/}
-
 {PANEL: Force revision creation}
 
 So far we've discussed the automatic creation of revisions when the feature is enabled.  
@@ -288,9 +257,34 @@ click the **Create Revision** button in the Revisions tab in the document view.
 
 ##### Force revision creation via the Client API
 
-To create a revision manually via the API, use the advanced session `force_revision_creation_for` method.
+To create a revision manually via the Client API, use the advanced session `forceRevisionCreationFor` method,  
+followed by a call to `saveChanges`.
 
-{CODE:python force_revision_creation_for@DocumentExtensions\Revisions\Revisions.py /}
+**Example**:
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Force_by_entity force_revision_creation_by_entity@documentExtensions\revisions\forceRevisionCreation.js /}
+{CODE-TAB:nodejs:Force_by_id force_revision_creation_by_id@documentExtensions\revisions\forceRevisionCreation.js /}
+{CODE-TABS/}
+
+**Syntax**:  
+
+{CODE:nodejs syntax_1@documentExtensions\revisions\forceRevisionCreation.js /}
+
+| Parameter    | Type     | Description                                                                                     |
+|--------------|----------|-------------------------------------------------------------------------------------------------|
+| **entity**   | `object` | The tracked entity for which you want to create a revision.                                     |
+| **id**       | `string` | The ID of the document for which you want to create a revision.                                 |
+| **strategy** | `string` | Defines the revision creation strategy.<br>Can be `"None"` or `"Before"`<br>Default: `"Before"` |
+
+**Strategy**:  
+
+`None`:  
+Do not force a revision
+
+`Before`:  
+Create a forced revision from the document currently in store BEFORE applying any changes made by the user. 
+The only exception is for a new document, where a revision will be created AFTER the update.
 
 {PANEL/}
 
