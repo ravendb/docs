@@ -90,8 +90,8 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 | **$reduceOutputIndex** | `?int` | This number will be part of the reduce results documents IDs |
 | **$patternForOutputReduceToCollectionReferences** | `?string` | Pattern for documents IDs which reference IDs of reduce results documents |
 | **$patternReferencesCollectionName** | `?string` | A collection name for the reference documents created based on provided pattern |
-| **$sourceType** | `?IndexSourceType` | An enum with the index source type<br>Can be `None`, `Documents`, `TimeSeries`, `Counters` |
-| **$type** | `?IndexType` | An enum with the index type<br>Can be `None`, `AutoMap`, `AutoMapReduce`, `Map`, `MapReduce`, `Faulty`, `JavaScriptMap`, `JavaScriptMapReduce` |
+| **$sourceType** | `?IndexSourceType` | Index source type<br>Can be `None`, `Documents`, `TimeSeries`, `Counters` |
+| **$type** | `?IndexType` | Index type<br>Can be `None`, `AutoMap`, `AutoMapReduce`, `Map`, `MapReduce`, `Faulty`, `JavaScriptMap`, `JavaScriptMapReduce` |
 
 {PANEL/}
 
