@@ -75,21 +75,23 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 
 | `IndexDefinition` parameter| Type | Description |
 | - |- | - |
-| **name** | `str` | Name of the index, a unique identifier |
-| **maps** | `Set[str]` | All the map functions for the index |
-| **reduce** | `str` | The index reduce function |
-| **deploymentMode** | `IndexDeploymentMode` | Deployment mode<br>(`parallel`, `rolling`) |
-| **state** | `IndexState` | State of index<br>(`normal`, `disabled`, `idle`, `error`) |
-| **priority** | `IndexPriority` | Priority of index<br>(`low`, `normal`, `high`) |
-| **lockMode** | `IndexLockMode` | Lock mode of index<br>(`unlock`, `lockedIgnore`, `lockedError`) |
-| **fields** | `Dict[str, IndexFieldOptions]` | _IndexFieldOptions_ per index field |
-| **additionalSources** | `Dict[str, str]` | Additional code files to be compiled with this index |
-| **additionalAssemblies** | `Set[AdditionalAssembly]` | Additional assemblies that are referenced |
-| **configuration** | `IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this dictionary |
-| **outputReduceToCollection** | `str` | A collection name for saving the reduce results as documents |
-| **reduceOutputIndex** | `int` | This number will be part of the reduce results documents IDs |
-| **patternForOutputReduceToCollectionReferences** | `str` | Pattern for documents IDs which reference IDs of reduce results documents |
-| **patternReferencesCollectionName** | `str` | A collection name for the reference documents created based on provided pattern |
+| **name** | `?string` | Name of the index, a unique identifier |
+| **$state** | `?IndexState` | State of index<br>(NORMAL, DISABLED, IDLE, ERROR) |
+| **$priority** | `?IndexPriority` | Priority of index<br>(LOW, NORMAL, HIGH) |
+| **$maps** | `?StringSet` | All the map functions for the index |
+| **$reduce** | `?string` | The index reduce function |
+| **$deploymentMode** | `?IndexDeploymentMode` | Deployment mode<br>(`parallel`, `rolling`) |
+| **$lockMode** | `?IndexLockMode` | Lock mode of index<br>(`Unlock`, `LockedIgnore`, `LockedError`) |
+| **$fields** | `?IndexFieldOptionsArray` | _IndexFieldOptions_ per index field |
+| **$additionalSources** | `?AdditionalSourcesArray` | Additional code files to be compiled with this index |
+| **$additionalAssemblies** | `?AdditionalAssemblySet` | Additional assemblies that are referenced |
+| **$configuration** | `?IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this dictionary |
+| **$outputReduceToCollection** | `?string` | A collection name for saving the reduce results as documents |
+| **$reduceOutputIndex** | `?int` | This number will be part of the reduce results documents IDs |
+| **$patternForOutputReduceToCollectionReferences** | `?string` | Pattern for documents IDs which reference IDs of reduce results documents |
+| **$patternReferencesCollectionName** | `?string` | A collection name for the reference documents created based on provided pattern |
+| **$sourceType** | `?IndexSourceType` | An enum with the index source type<br>Can be `None`, `Documents`, `TimeSeries`, `Counters` |
+| **$type** | `?IndexType` | An enum with the index type<br>Can be `None`, `AutoMap`, `AutoMapReduce`, `Map`, `MapReduce`, `Faulty`, `JavaScriptMap`, `JavaScriptMapReduce` |
 
 {PANEL/}
 
