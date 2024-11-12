@@ -62,7 +62,7 @@ will be sent to the other nodes. The executable specified in `Security.Certifica
 
 {PANEL:Security.Certificate.Change.Exec}
 
-A command or executable that replaces the old cluster certificate with the renewed cluster certificate. After `Security.Certificate.Change.Exec` distibutes the 
+A command or executable that replaces the old cluster certificate with the renewed cluster certificate. After `Security.Certificate.Change.Exec` distributes the 
 new certificate, this executable persists it locally at each follower node.
 
 - **Type**: `string`  
@@ -218,7 +218,7 @@ How far back we should retain audit log entries.
 
 Allow to specify well known certificate thumbprints that will be trusted by the server as cluster admins.
 
-- **Type**: `strings seperated by ;`
+- **Type**: `strings separated by ;`
 - **Example**: `297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb`
 - **Default**: `null`
 - **Scope**: Server-wide only
