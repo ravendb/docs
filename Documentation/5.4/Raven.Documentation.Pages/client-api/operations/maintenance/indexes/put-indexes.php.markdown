@@ -75,7 +75,7 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 
 | `IndexDefinition` parameter| Type | Description |
 | - |- | - |
-| **name** | `?string` | Name of the index, a unique identifier |
+| **$name** | `?string` | Name of the index, a unique identifier |
 | **$state** | `?IndexState` | State of index<br>(NORMAL, DISABLED, IDLE, ERROR) |
 | **$priority** | `?IndexPriority` | Priority of index<br>(LOW, NORMAL, HIGH) |
 | **$maps** | `?StringSet` | All the map functions for the index |
@@ -90,8 +90,8 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 | **$reduceOutputIndex** | `?int` | This number will be part of the reduce results documents IDs |
 | **$patternForOutputReduceToCollectionReferences** | `?string` | Pattern for documents IDs which reference IDs of reduce results documents |
 | **$patternReferencesCollectionName** | `?string` | A collection name for the reference documents created based on provided pattern |
-| **$sourceType** | `?IndexSourceType` | Index source type<br>Can be `None`, `Documents`, `TimeSeries`, `Counters` |
-| **$type** | `?IndexType` | Index type<br>Can be `None`, `AutoMap`, `AutoMapReduce`, `Map`, `MapReduce`, `Faulty`, `JavaScriptMap`, `JavaScriptMapReduce` |
+| **$sourceType** | `?IndexSourceType` | Index source type<br>(`None`, `Documents`, `TimeSeries`, `Counters`) |
+| **$type** | `?IndexType` | Index type<br>(`None`, `AutoMap`, `AutoMapReduce`, `Map`, `MapReduce`, `Faulty`, `JavaScriptMap`, `JavaScriptMapReduce`) |
 
 {PANEL/}
 
