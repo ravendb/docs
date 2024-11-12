@@ -14,8 +14,7 @@
 
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
-  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
-  <br>
+  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work) 
   * **Operation types**: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
@@ -256,6 +255,7 @@
 
 * **Revisions**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteRevisionsOperation](../../document-extensions/revisions/client-api/operations/delete-revisions)  
 
 * **Sorters**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  

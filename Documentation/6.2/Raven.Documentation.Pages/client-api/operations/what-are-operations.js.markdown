@@ -15,7 +15,6 @@
 * In this page:  
   * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
   * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
-  <br>
   * __Operation types__: 
       * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
       * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  

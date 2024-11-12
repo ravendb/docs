@@ -50,5 +50,11 @@
                 "Key": "client-api/operations/revisions/get-revisions"
             }
         ]
+    },
+    {
+        "Path": "delete-revisions.markdown",
+        "Name": "Delete Revisions",
+        "DiscussionId": "f447c943-de2f-4f55-bec4-625dd8e4094a",
+        "Mappings": []
     }
 ]
