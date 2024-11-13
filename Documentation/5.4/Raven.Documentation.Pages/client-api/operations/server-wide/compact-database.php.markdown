@@ -105,6 +105,14 @@ The following example will compact all indexes and documents.
 | - | - | - |
 | **$compactSettings** | `?CompactSettings` | Settings for the compact operation |
 
+| `$compactSettings` | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of database to compact. Mandatory param. |
+| **$documents** | `bool` | Indicates if documents should be compacted. Optional param. |
+| **$indexes** | `?StringArray` | List of index names to compact. Optional param. |
+| **$skipOptimizeIndexes** | `bool` | `true` - Skip Lucene's index optimization while compacting<br>`false` - Lucene's index optimization will take place while compacting |
+| | | **Note**: Either **$documents** or **$indexes** (or both) must be specified |
+
 {PANEL/}
 
 ## Related Articles
