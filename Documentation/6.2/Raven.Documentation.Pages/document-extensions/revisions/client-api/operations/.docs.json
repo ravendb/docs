@@ -56,5 +56,11 @@
         "Name": "Delete Revisions",
         "DiscussionId": "f447c943-de2f-4f55-bec4-625dd8e4094a",
         "Mappings": []
+    },
+    {
+        "Path": "revert-document-to-revision.markdown",
+        "Name": "Revert Document to Revision",
+        "DiscussionId": "4aacf518-a6b4-466f-a4fb-945f18c3f6e3",
+        "Mappings": []
     }
 ]
