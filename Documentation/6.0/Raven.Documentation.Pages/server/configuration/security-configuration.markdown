@@ -115,7 +115,7 @@ Note: it will only be triggered if [Security.Certificate.Path](../../server/conf
 
 {PANEL: Security.Certificate.Change.Exec.Arguments}
 
-The command line arguments for the [Security.Certificate.Change.Exec](../../../../server/configuration/security-configuration#security.certificate.change.exec) command or executable.
+The command line arguments for the [Security.Certificate.Change.Exec](../../server/configuration/security-configuration#security.certificate.change.exec) command or executable.
 
 - **Type**: `string`
 - **Default**: `null`

@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* [Authorization](../../../serve/security/authorization/security-clearance-and-permissions) controls who can access RavenDB and what operations they can perform.
+* [Authorization](../../../server/security/authorization/security-clearance-and-permissions) controls who can access RavenDB and what operations they can perform.
 
 * In addition, RavenDB provides an optional **Audit Log** to track who connects to the system and when.  
   Audit logs are available only when using a secure server.
