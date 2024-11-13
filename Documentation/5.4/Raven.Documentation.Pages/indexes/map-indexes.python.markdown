@@ -184,7 +184,7 @@ Index definition:
 
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:python:Query indexes_1_7@Indexes/Map.py /}
+{CODE-TAB:python:Query indexes_1_7_2@Indexes/Map.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/Query'
 where search(Query, 'John Doe')

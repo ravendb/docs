@@ -24,29 +24,23 @@
 
 {PANEL: Delete errors from all indexes}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync delete_errors_all@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TAB:csharp:Async delete_errors_all_async@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TABS/}
+{CODE:php delete_errors_all@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.php /}
 
 {PANEL/}
 
 {PANEL: Delete errors from specific indexes}
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync delete_errors_specific@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TAB:csharp:Async delete_errors_specific_async@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
-{CODE-TABS/}
+{CODE:php delete_errors_specific@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.php /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.cs /}
+{CODE:php syntax@ClientApi\Operations\Maintenance\Indexes\DeleteIndexErrors.php /}
 
 | Parameters | Type | Description |
 | - | - | - |
-| **indexNames** | `string[]` | List of index names to delete errors from.<br>An exception is thrown if any of the specified indexes does not exist. |
+| **$indexNames** | `StringArray`<br>`array`<br>`string` | List of index names to delete errors from.<br>An exception is thrown if any of the specified indexes does not exist. |
 
 {PANEL/}
 

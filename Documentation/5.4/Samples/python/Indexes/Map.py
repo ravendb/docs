@@ -382,7 +382,7 @@ class MapExample(ExampleBase):
                 )
                 # endregion
 
-                # region indexes_1_7
+                # region indexes_1_7_2
                 employees = list(
                     session.query_index_type(Employees_Query, Employees_Query.Result)
                     .search("query", "John Doe")
