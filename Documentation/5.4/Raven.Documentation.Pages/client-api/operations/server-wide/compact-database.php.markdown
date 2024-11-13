@@ -10,7 +10,7 @@
 
 * **During compaction the database will be offline**.  
   The operation is a executed asynchronously as a background operation and can be waited for 
-  using `wait_for_completion`.  
+  using `waitForCompletion()`.  
 
 * The operation will **compact the database on one node**.  
   To compact all database-group nodes, the command must be sent to each node separately.  
@@ -28,8 +28,10 @@
       * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
       * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
       * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
+      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database#compact-on-other-nodes)  
   * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
   * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
+  * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)  
 
 {NOTE/}
 
@@ -41,7 +43,7 @@
 
 The following example will compact only **documents** for the specified database.  
 
-{CODE:python compact_0@ClientApi\Operations\Server\Compact.py /}
+{CODE:php compact_0@ClientApi\Operations\Server\Compact.php /}
 
 ---
 
@@ -49,7 +51,7 @@ The following example will compact only **documents** for the specified database
 
 The following example will compact only specific indexes.
 
-{CODE:python compact_1@ClientApi\Operations\Server\Compact.py /}
+{CODE:php compact_1@ClientApi\Operations\Server\Compact.php /}
 
 ---
 
@@ -57,8 +59,18 @@ The following example will compact only specific indexes.
 
 The following example will compact all indexes and documents.  
 
-{CODE:python compact_2@ClientApi\Operations\Server\Compact.py /}
+{CODE:php compact_2@ClientApi\Operations\Server\Compact.php /}
 
+---
+
+#### Compact on other nodes:
+
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
+  `forNode` is used to execute the operation on a specific node.   
+
+{CODE:php compact_3@ClientApi\Operations\Server\Compact.php /}
+ 
 {PANEL/}
 
 {PANEL: Compaction triggers compression}
@@ -85,7 +97,23 @@ The following example will compact all indexes and documents.
 
 {PANEL/}
 
+{PANEL: Syntax}
 
+{CODE:csharp syntax@ClientApi\Operations\Server\Compact.cs /}
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$compactSettings** | `?CompactSettings` | Settings for the compact operation |
+
+| `$compactSettings` class parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of database to compact. Mandatory param. |
+| **$documents** | `bool` | Indicates if documents should be compacted. Optional param. |
+| **$indexes** | `?StringArray` | List of index names to compact. Optional param. |
+| **$skipOptimizeIndexes** | `bool` | `true` - Skip Lucene's index optimization while compacting<br>`false` - Lucene's index optimization will take place while compacting |
+| | | **Note**: Either **$documents** or **$indexes** (or both) must be specified |
+
+{PANEL/}
 
 ## Related Articles
 
