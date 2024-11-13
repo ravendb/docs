@@ -105,7 +105,7 @@ The following example will compact all indexes and documents.
 | - | - | - |
 | **$compactSettings** | `?CompactSettings` | Settings for the compact operation |
 
-| `$compactSettings` | Type | Description |
+| `$compactSettings` class parameters | Type | Description |
 | - | - | - |
 | **$databaseName** | `?string` | Name of database to compact. Mandatory param. |
 | **$documents** | `bool` | Indicates if documents should be compacted. Optional param. |
