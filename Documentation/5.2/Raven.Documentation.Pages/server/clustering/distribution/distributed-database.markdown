@@ -99,8 +99,8 @@ The _Dynamic Database Distribution_ feature can be toggled on and off with the f
 
 {PANEL: Sharding}
 
-Currently, RavenDB 4.x doesn't offer sharding as an out of the box solution.  
-It is on the development roadmap to be implemented in a future version. Track it [here](https://issues.hibernatingrhinos.com/issue/RavenDB-8115).  
+Currently, RavenDB **5.x** does not offer sharding as an out-of-the-box solution.  
+Sharding is supported starting from RavenDB **6.0**.
 {PANEL/}
 
 ## Related articles 
