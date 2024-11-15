@@ -170,14 +170,14 @@ Backup files that have already been created, are listed in the backups tab.
 
 * Open your portal's Backups tab, and choose the product whose database you want to restore.  
   Its backups will be shown, listed by the databases they've been created for.  
-* Click "Generate Backup Link" for the database you want to restore.  
+* Click "Generate Restore Link" for the database you want to restore.  
   The backup link window will open.
-  !["Backups List"](images\backup-and-restore-002-mandatory-backups-tab-list.png "Backups List")  
+  !["Backups List"](images/backup-and-restore-002-mandatory-backups-tab-list.png "Backups List")  
 
 ---
 
 ####Restore the Database  
-Clicking the **Generate Backup Link** button will show you a simple procedure. Follow it to restore your database.  
+Clicking the **Generate Restore Link** button will show you a simple procedure. Follow it to restore your database.  
 
 !["Backup Link"](images\backup-and-restore-003-backup-link-window.png "Backup Link")  
 
