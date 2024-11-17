@@ -1,12 +1,12 @@
 ﻿[
     {
         "Path": "/documents",
-        "Name": "Documents",
+        "Name": "Document Commands",
         "Mappings": []
     },
     {
         "Path": "/batches",
-        "Name": "Batches",
+        "Name": "Batch Commands",
         "Mappings": []
     }
 ]

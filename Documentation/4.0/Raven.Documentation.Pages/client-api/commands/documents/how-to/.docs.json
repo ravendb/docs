@@ -3,6 +3,12 @@
     "Path": "get-document-metadata-only.markdown",
     "Name": "...get document metadata only",
     "DiscussionId": "8c1f8ce8-f09e-4076-850f-c5bc9317633b",
-    "Mappings": []
+    "Mappings": [
+        {
+            "Version": 6.0,
+            "Key": "client-api/commands/documents/get"
+        }
+    ],
+     "LastSupportedVersion": "5.4"
   }
 ]
