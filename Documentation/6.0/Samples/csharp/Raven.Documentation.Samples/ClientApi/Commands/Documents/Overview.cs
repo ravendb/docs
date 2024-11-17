@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
             // Allocate a context from the store's context pool for executing the command
             using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
             {
-                // Define a Command
+                // Define a command
                 var cmd = new CreateSubscriptionCommand(store.Conventions,
                     new SubscriptionCreationOptions()
                 {
@@ -37,7 +37,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
             // Allocate a context from the store's context pool for executing the command
             using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
             {
-                // Define a Command
+                // Define a command
                 var cmd = new CreateSubscriptionCommand(store.Conventions,
                     new SubscriptionCreationOptions()
                 {
@@ -56,7 +56,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 #region execute_2
                 using (var session = store.OpenSession())
                 {
-                    // Define a Command
+                    // Define a command
                     var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
 
                     // Call 'Execute' on the session's request executor to run the command on the server
@@ -78,7 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 #region execute_2_async
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    // Define a Command
+                    // Define a command
                     var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
                     
                     // Call 'ExecuteAsync' on the session's request executor to run the command on the server

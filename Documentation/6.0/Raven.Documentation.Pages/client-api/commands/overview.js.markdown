@@ -13,7 +13,7 @@
      Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations).
    * **Commands**:  
      Commands are the lowest-level operations that communicate directly with the server.  
-     For example, a session’s _Load_ method internally translates to a _LoadOperation_, which eventually relies on a _GetDocumentCommand_ to fetch data from the server.
+     For example, a session’s _load_ method internally translates to a _loadOperation_, which eventually relies on a _getDocumentCommand_ to fetch data from the server.
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
@@ -30,10 +30,7 @@ This example shows executing a command using the **store context**.
 The store context is suitable for actions that are outside the scope of a specific session,  
 e.g. creating a subscription task.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Execute_command execute_1@ClientApi\Commands\Documents\Overview.cs /}
-{CODE-TAB:csharp:Execute_command_async execute_1_async@ClientApi\Commands\Documents\Overview.cs /}
-{CODE-TABS/}
+{CODE:nodejs execute_1@client-api\commands\documents\overview.js /}
 
 {PANEL/}
 
@@ -41,10 +38,7 @@ e.g. creating a subscription task.
 
 This example shows executing a command using the **session context**.  
 
-{CODE-TABS}
-{CODE-TAB:csharp:Execute_command execute_2@ClientApi\Commands\Documents\Overview.cs /}
-{CODE-TAB:csharp:Execute_command_async execute_2_async@ClientApi\Commands\Documents\Overview.cs /}
-{CODE-TABS/}
+{CODE:nodejs execute_2@client-api\commands\documents\overview.js /}
 
 {PANEL/}
 
