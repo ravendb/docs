@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "overview.markdown",
+        "Name": "Commands Overview",
+        "Mappings": []
+    },
+    {
         "Path": "/documents",
         "Name": "Document Commands",
         "Mappings": []
