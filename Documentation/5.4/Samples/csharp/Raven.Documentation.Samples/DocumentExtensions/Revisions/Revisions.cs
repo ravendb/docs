@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Operations.Revisions;
 using Raven.Client.Documents.Session;
 using Raven.Client.Json;
 using Raven.Documentation.Samples.Orders;
+using Xunit;
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -76,14 +75,14 @@ namespace Raven.Documentation.Samples.Server
                         .GetMetadataFor("users/1", start: 0, pageSize: 25);
 
                     // Get revisions by their change vectors
-                    User revison = session
+                    User revision = session
                         .Advanced
                         .Revisions
                         .Get<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
 
                     // Get a revision by its creation time
                     // If no revision was created at that precise time, get the first revision to precede it
-                    User revisonAtYearAgo = session
+                    User revisionAtYearAgo = session
                         .Advanced
                         .Revisions
                         .Get<User>("users/1", DateTime.Now.AddYears(-1));
@@ -101,9 +100,12 @@ namespace Raven.Documentation.Samples.Server
                 {
                     #region ForceRevisionCreationByEntity
                     // Force revision creation by entity
+                    // =================================
+                    
                     var company = new Company { 
-                            Name = "CompanyProfile" 
+                            Name = "CompanyName" 
                         };
+                    
                     session.Store(company);
                     companyId = company.Id;
                     session.SaveChanges();
@@ -111,6 +113,12 @@ namespace Raven.Documentation.Samples.Server
                     // Forcing the creation of a revision by entity can be performed 
                     // only when the entity is tracked, after the document is stored.
                     session.Advanced.Revisions.ForceRevisionCreationFor<Company>(company);
+                    
+                    // Call SaveChanges for the revision to be created
+                    session.SaveChanges();
+                    
+                    var revisionsCount = session.Advanced.Revisions.GetFor<Company>(companyId).Count;
+                    Assert.Equal(1, revisionsCount);
                     #endregion
                 }
 
@@ -118,11 +126,14 @@ namespace Raven.Documentation.Samples.Server
                 {
                     #region ForceRevisionCreationByID
                     // Force revision creation by ID
+                    // =============================
+                    
                     session.Advanced.Revisions.ForceRevisionCreationFor(companyId);
                     session.SaveChanges();
-                    #endregion
 
                     var revisionsCount = session.Advanced.Revisions.GetFor<Company>(companyId).Count;
+                    Assert.Equal(1, revisionsCount);
+                    #endregion
                 }
             }
         }
@@ -137,6 +148,36 @@ namespace Raven.Documentation.Samples.Server
             public string Phone { get; set; }
             public string Fax { get; set; }
         }
+        
+        private interface IFoo
+        {
+            #region syntax_1
+            // Available overloads:
+            // ====================
 
+            // Force revision creation by entity.
+            // Can be used with tracked entities only.
+            void ForceRevisionCreationFor<T>(T entity,
+                ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
+
+            // Force revision creation by document ID.
+            void ForceRevisionCreationFor(string id,
+                ForceRevisionStrategy strategy = ForceRevisionStrategy.Before);
+            #endregion
+            
+            #region syntax_2
+            public enum ForceRevisionStrategy
+            {
+                // Do not force a revision
+                None,
+                
+                // Create a forced revision from the document currently in store
+                // BEFORE applying any changes made by the user.
+                // The only exception is for a new document,
+                // where a revision will be created AFTER the update.
+                Before
+            }
+            #endregion
+        }
     }
 }
