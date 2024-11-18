@@ -3,7 +3,12 @@
         "Path": "overview.markdown",
         "Name": "Commands Overview",
         "DiscussionId": "77145453-b931-4323-a10f-62899c835b4d",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "client-api/how-to/use-low-level-commands"
+            }
+        ]
     },
     {
         "Path": "/documents",
