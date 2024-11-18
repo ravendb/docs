@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Commands;
+using Raven.Client.Documents.Session;
 using Raven.Client.Documents.Subscriptions;
+using Raven.Client.Http;
 using Raven.Documentation.Samples.Orders;
 using Sparrow.Json;
 
@@ -101,5 +104,19 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 #endregion
             }
         }
+    }
+    
+    public interface IExecuteInterface
+    {
+        #region execute_syntax
+        void Execute<TResult>(RavenCommand<TResult> command,
+                JsonOperationContext context,
+                SessionInfo sessionInfo = null);
+
+        Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
+                JsonOperationContext context,
+                SessionInfo sessionInfo = null,
+                CancellationToken token = default(CancellationToken));
+        #endregion
     }
 }

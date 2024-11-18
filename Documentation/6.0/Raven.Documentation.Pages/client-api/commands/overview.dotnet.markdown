@@ -36,6 +36,7 @@
     * [Execute command - using the Store](../../client-api/commands/overview#execute-command---using-the-store)
     * [Execute command - using the Session](../../client-api/commands/overview#execute-command---using-the-session)
     * [Available commands](../../client-api/commands/overview#available-commands)
+    * [Syntax](../../client-api/commands/overview#syntax)
 
 {NOTE/}
 
@@ -104,6 +105,12 @@ This example shows how to execute the low-level `GetDocumentsCommand` using the 
     * SeedIdentityForCommand  
     * SingleNodeBatchCommand  
     * WaitForRaftIndexCommand  
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:csharp execute_syntax@ClientApi\Commands\Documents\Overview.cs /}
 
 {PANEL/}
 

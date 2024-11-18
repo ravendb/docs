@@ -12,7 +12,7 @@ import net.ravendb.client.http.RavenCommand;
 public class UseLowLevelCommands {
 
     public interface IInterface {
-        //region Execute
+        //region syntax
         public <TResult> void execute(RavenCommand<TResult> command);
 
         public <TResult> void execute(RavenCommand<TResult> command, SessionInfo sessionInfo);

@@ -36,3 +36,11 @@ async function putDocumentsCommand() {
         //endregion
     }
 }
+
+{
+    //region execute_syntax
+    execute(command);
+    execute(command, sessionInfo);
+    execute(command, sessionInfo, executeOptions);
+    //endregion
+}

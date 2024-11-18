@@ -35,6 +35,7 @@
 * In this page:
     * [Examples](../../client-api/commands/overview#examples)  
     * [Available commands](../../client-api/commands/overview#available-commands)  
+    * [Syntax](../../client-api/commands/overview#syntax)  
 
 {NOTE/}
 
@@ -91,6 +92,12 @@
     * SeedIdentityForCommand
     * SingleNodeBatchCommand
     * WaitForRaftIndexCommand
+
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:java syntax@ClientApi\Commands\Documents\Overview.java /}
 
 {PANEL/}
 
