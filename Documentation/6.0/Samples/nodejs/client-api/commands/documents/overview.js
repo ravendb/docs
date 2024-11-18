@@ -13,7 +13,7 @@ async function putDocumentsCommand() {
             query: "from Orders"
         });
 
-        // Call 'execute' on the store's request executor to run the command on the server
+        // Call 'execute' on the store's Request Executor to run the command on the server
         // Pass the command
         await documentStore.getRequestExecutor().execute(cmd);
         //endregion
@@ -26,7 +26,7 @@ async function putDocumentsCommand() {
         const cmd = new GetDocumentsCommand(
             { conventions: documentStore.conventions, id: "orders/1-A" });
 
-        // Call 'execute' on the session's request executor to run the command on the server
+        // Call 'execute' on the session's Request Executor to run the command on the server
         // Pass the command
         await session.advanced.requestExecutor.execute(cmd);
 
