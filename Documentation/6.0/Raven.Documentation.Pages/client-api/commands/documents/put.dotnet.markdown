@@ -23,8 +23,8 @@
 {PANEL: Example}
 
 {CODE-TABS}
-{CODE-TAB:csharp:PutDocumentCommand put_document@ClientApi\Commands\Documents\Put.cs /}
-{CODE-TAB:csharp:PutDocumentCommand_async put_document_async@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TAB:csharp:Put_document put_document@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TAB:csharp:Put_document_async put_document_async@ClientApi\Commands\Documents\Put.cs /}
 {CODE-TABS/}
 
 {PANEL/}
@@ -33,11 +33,11 @@
 
 {CODE syntax_1@ClientApi\Commands\Documents\Put.cs /}
 
-| Parameter        | Type                        | Description                                                                                                                                                                                                                      |
-|------------------|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **id**           | `string`                    | Unique ID under which document will be stored.                                                                                                                                                                                   |
-| **changeVector** | `string`                    | The change-vector of the document you with to update,<br>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br>Pass `null` to skip the check. |
-| **document**     | `BlittableJsonReaderObject` | The document to store. Use:<br>`session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`.                                                                              |
+| Parameter        | Type                        | Description                                                                                                                                                                                                                                          |
+|------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**           | `string`                    | Unique ID under which document will be stored.                                                                                                                                                                                                       |
+| **changeVector** | `string`                    | The change-vector of the document you with to update,<br>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br>Pass `null` to skip the check and force the 'put'. |
+| **document**     | `BlittableJsonReaderObject` | The document to store. Use:<br>`session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`.                                                                                                  |
 
 {CODE syntax_2@ClientApi\Commands\Documents\Put.cs /}
 

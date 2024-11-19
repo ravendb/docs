@@ -25,13 +25,13 @@ async function putDocumentsCommand() {
         
         // Define the PutDocumentCommand
         // Pass the document ID, whether to make concurrency checks, and the json document to store
-        const putDocCmd = new PutDocumentCommand("categories/999", null, jsonDocument);
+        const command = new PutDocumentCommand("categories/999", null, jsonDocument);
         
         // Send the command to the server using the RequestExecutor
-        await documentStore.getRequestExecutor().execute(putDocCmd);
+        await documentStore.getRequestExecutor().execute(command);
 
         // Access the command result
-        const result = putDocCmd.result;
+        const result = command.result;
         const theDocumentCV = result.changeVector;
         const theDocumentID = result.id;
         
