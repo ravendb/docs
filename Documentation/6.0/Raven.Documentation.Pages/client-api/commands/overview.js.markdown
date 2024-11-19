@@ -27,8 +27,9 @@
         * Commands are responsible for sending the appropriate request to the server using a `Request Executor`,  
           and parsing the server's response.
 
-        * All commands can be executed using either the Store's _Request Executor_ or the Session's _Request Executor_,  
-          regardless of whether the command is session-related or not.
+      * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-store)
+        or the [Session's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-session),  
+        regardless of whether the command is session-related or not.
 
 * This layered structure lets you work at any level, depending on your needs.
 
