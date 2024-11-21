@@ -12,7 +12,7 @@
     },
     {
         "Path": "/batches",
-        "Name": "Batch Commands",
+        "Name": "Batching Commands",
         "Mappings": []
     }
 ]
