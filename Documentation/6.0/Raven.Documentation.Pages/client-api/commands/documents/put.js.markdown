@@ -13,17 +13,33 @@
 
 * In this page:
 
-   * [Example](../../../client-api/commands/documents/put#example)
+   * [Examples](../../../client-api/commands/documents/put#examples)
    * [Syntax](../../../client-api/commands/documents/put#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Example}
+{PANEL: Examples}
 
-{CODE:nodejs put@client-api\commands\documents\put.js /}
+{CONTENT-FRAME: }
 
+**Put document command - using the Store's request executor**:
+
+---
+
+{CODE:nodejs put_document_1@client-api\commands\documents\put.js /}
+
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Put document command - using the Session's request executor**:
+
+---
+
+{CODE:nodejs put_document_2@client-api\commands\documents\put.js /}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}

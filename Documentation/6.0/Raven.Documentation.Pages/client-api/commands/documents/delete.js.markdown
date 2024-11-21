@@ -17,14 +17,33 @@
 
 {PANEL: Examples}
 
-###### Delete a document:
+{CONTENT-FRAME: }
+
+**Delete document command - using the Store's request executor**:
+
+---
 
 {CODE:nodejs delete_document_1@client-api\commands\documents\delete.js /}
 
-###### Delete a document with concurrency check:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Delete document command - using the Session's request executor**:
+
+---
 
 {CODE:nodejs delete_document_2@client-api\commands\documents\delete.js /}
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Delete document command - with concurrency check**:
+
+---
+
+{CODE:nodejs delete_document_3@client-api\commands\documents\delete.js /}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}

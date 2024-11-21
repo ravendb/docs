@@ -5,17 +5,79 @@ using Raven.Client.Documents.Conventions;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 using Sparrow.Json;
+using Sparrow.Json.Parsing;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 {
     public class PutSamples
     {
-        public async Task Examples()
+        public async Task ExamplesWithStore()
+        {
+            #region put_document_1
+            using (var store = new DocumentStore())
+            using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+            {
+                // Define the document to 'put' as a blittable object
+                var blittableDocument = context.ReadObject(new DynamicJsonValue()
+                {
+                    ["@metadata"] = new DynamicJsonValue()
+                    {
+                        ["@collection"] = "Categories"
+                    },
+                    ["Name"] = "My category",
+                    ["Description"] = "My category description"
+                }, "categories/999");
+                
+                // Define the PutDocumentCommand
+                var command = new PutDocumentCommand(store.Conventions,
+                    "categories/999", null, blittableDocument);
+              
+                // Call 'Execute' on the Store Request Executor to send the command to the server
+                store.GetRequestExecutor().Execute(command, context);
+
+                // Access the command result
+                var putResult = command.Result;
+                var theDocumentID = putResult.Id;
+                var theDocumentCV = putResult.ChangeVector;
+            }
+            #endregion
+            
+            #region put_document_1_async
+            using (var store = new DocumentStore())
+            using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+            {
+                // Define the document to 'put' as a blittable object
+                var blittableDocument = context.ReadObject(new DynamicJsonValue()
+                {
+                    ["@metadata"] = new DynamicJsonValue()
+                    {
+                        ["@collection"] = "Categories"
+                    },
+                    ["Name"] = "My category",
+                    ["Description"] = "My category description"
+                }, "categories/999");
+                
+                // Define the PutDocumentCommand
+                var command = new PutDocumentCommand(store.Conventions,
+                    "categories/999", null, blittableDocument);
+              
+                // Call 'ExecuteAsync' on the Store Request Executor to send the command to the server
+                await store.GetRequestExecutor().ExecuteAsync(command, context);
+
+                // Access the command result
+                var putResult = command.Result;
+                var theDocumentID = putResult.Id;
+                var theDocumentCV = putResult.ChangeVector;
+            }
+            #endregion
+        }
+        
+        public async Task ExamplesWithSession()
         {
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
             {
-                #region put_document
+                #region put_document_2
                 // Create a new document entity
                 var doc = new Category
                 {
@@ -36,7 +98,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 var command = new PutDocumentCommand(store.Conventions,
                     "categories/999", null, blittableDocument);
 
-                // Call 'Execute' on the Request Executor to send the command to the server
+                // Call 'Execute' on the Session Request Executor to send the command to the server
                 session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
 
                 // Access the command result
@@ -49,7 +111,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
             using (var store = new DocumentStore())
             using (var asyncSession = store.OpenAsyncSession())
             {
-                #region put_document_async
+                #region put_document_2_async
                 // Create a new document entity
                 var doc = new Category
                 {
@@ -70,7 +132,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 var command = new PutDocumentCommand(store.Conventions,
                     "categories/999", null, blittableDocument);
 
-                // Call 'Execute' on the Request Executor to send the command to the server
+                // Call 'Execute' on the Session Request Executor to send the command to the server
                 await asyncSession.Advanced.RequestExecutor.ExecuteAsync(
                     command, asyncSession.Advanced.Context);
                 

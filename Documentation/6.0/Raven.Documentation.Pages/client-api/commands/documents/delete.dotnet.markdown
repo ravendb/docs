@@ -17,20 +17,42 @@
 
 {PANEL: Examples}
 
-###### Delete a document:
+{CONTENT-FRAME: }
+
+**Delete document command - using the Store's request executor**:
+
+---
 
 {CODE-TABS}
 {CODE-TAB:csharp:Delete_document delete_document_1@ClientApi\Commands\Documents\Delete.cs /}
 {CODE-TAB:csharp:Delete_document_async delete_document_1_async@ClientApi\Commands\Documents\Delete.cs /}
 {CODE-TABS/}
 
-###### Delete a document with concurrency check:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Delete document command - using the Session's request executor**:
+
+---
 
 {CODE-TABS}
 {CODE-TAB:csharp:Delete_document delete_document_2@ClientApi\Commands\Documents\Delete.cs /}
 {CODE-TAB:csharp:Delete_document_async delete_document_2_async@ClientApi\Commands\Documents\Delete.cs /}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Delete document command - with concurrency check**:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:csharp:Delete_document delete_document_3@ClientApi\Commands\Documents\Delete.cs /}
+{CODE-TAB:csharp:Delete_document_async delete_document_3_async@ClientApi\Commands\Documents\Delete.cs /}
+{CODE-TABS/}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}

@@ -9,13 +9,34 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 {
     public class DeleteSamples
     {
-        public async Task Examples()
+        public async Task ExamplesWithStore()
+        {
+            #region delete_document_1
+            using (var store = new DocumentStore())
+            using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+            {
+                var command = new DeleteDocumentCommand("employees/1-A", null);
+                store.GetRequestExecutor().Execute(command, context);
+            }
+            #endregion
+            
+            #region delete_document_1_async
+            using (var store = new DocumentStore())
+            using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+            {
+                var command = new DeleteDocumentCommand("employees/1-A", null);
+                await store.GetRequestExecutor().ExecuteAsync(command, context);
+            }
+            #endregion
+        }
+
+        public async Task ExamplesWithSession()
         {
             using (var store = new DocumentStore())
             {
                 using (var session = store.OpenSession())
                 {
-                    #region delete_document_1
+                    #region delete_document_2
                     var command = new DeleteDocumentCommand("employees/1-A", null);
                     session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
                     #endregion
@@ -23,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region delete_document_1_async
+                    #region delete_document_2_async
                     var command = new DeleteDocumentCommand("employees/1-A", null);
                     await asyncSession.Advanced.RequestExecutor.ExecuteAsync(command, asyncSession.Advanced.Context);
                     #endregion
@@ -31,7 +52,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 
                 using (var session = store.OpenSession())
                 {
-                    #region delete_document_2
+                    #region delete_document_3
                     // Load a document
                     var employeeDocument = session.Load<Employee>("employees/2-A");
                     var cv = session.Advanced.GetChangeVectorFor(employeeDocument);
@@ -59,7 +80,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                 
                 using (var asyncSession = store.OpenAsyncSession())
                 {
-                    #region delete_document_2_async
+                    #region delete_document_3_async
                     // Load a document
                     var employeeDocument = await asyncSession.LoadAsync<Employee>("employees/2-A");
                     var cv = asyncSession.Advanced.GetChangeVectorFor(employeeDocument);

@@ -9,12 +9,20 @@ async function deleteDocumentsCommand() {
         // Pass the document ID & whether to make a concurrency check
         const command = new DeleteDocumentCommand("employees/1-A", null);
 
-        // Send the command to the server using the RequestExecutor
+        // Send the command to the server using the Store's Request Executor
         await documentStore.getRequestExecutor().execute(command);
         //endregion
     }
     {
         //region delete_document_2
+        const command = new DeleteDocumentCommand("employees/1-A", null);
+
+        // Send the command to the server using the Session's Request Executor
+        await session.advanced.requestExecutor.execute(command);
+        //endregion
+    }
+    {
+        //region delete_document_3
         // Load a document
         const employeeDocument = await session.load('employees/2-A');
         const cv = session.advanced.getChangeVectorFor(employeeDocument);
@@ -27,7 +35,7 @@ async function deleteDocumentsCommand() {
         try  {
             // Try to delete the document with the previous change-vector
             const command = new DeleteDocumentCommand("employees/2-A", cv);
-            await documentStore.getRequestExecutor().execute(command);
+            await session.advanced.requestExecutor.execute(command);
         }
         catch (err) {
             // A concurrency exception is thrown 

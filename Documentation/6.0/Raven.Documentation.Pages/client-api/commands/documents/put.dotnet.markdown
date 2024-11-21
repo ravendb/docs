@@ -13,20 +13,39 @@
 
 * In this page:
 
-   * [Example](../../../client-api/commands/documents/put#example)
+   * [Examples](../../../client-api/commands/documents/put#examples)
    * [Syntax](../../../client-api/commands/documents/put#syntax)
 
 {NOTE/}
 
 ---
 
-{PANEL: Example}
+{PANEL: Examples}
+
+{CONTENT-FRAME: }
+
+**Put document command - using the Store's request executor**:
+
+---
 
 {CODE-TABS}
-{CODE-TAB:csharp:Put_document put_document@ClientApi\Commands\Documents\Put.cs /}
-{CODE-TAB:csharp:Put_document_async put_document_async@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TAB:csharp:Put_document put_document_1@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TAB:csharp:Put_document_async put_document_1_async@ClientApi\Commands\Documents\Put.cs /}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Put document command - using the Session's request executor**:
+
+---
+
+{CODE-TABS}
+{CODE-TAB:csharp:Put_document put_document_2@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TAB:csharp:Put_document_async put_document_2_async@ClientApi\Commands\Documents\Put.cs /}
+{CODE-TABS/}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}
