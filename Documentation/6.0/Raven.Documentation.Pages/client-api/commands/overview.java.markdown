@@ -55,7 +55,7 @@
 
 {PANEL: Available commands}
 
-* The Following low-level commands are available:
+* **The Following low-level commands are available**:
     * ConditionalGetDocumentsCommand
     * CreateSubscriptionCommand
     * [DeleteDocumentCommand](../../client-api/commands/documents/delete)
@@ -90,7 +90,7 @@
     * QueryCommand
     * QueryStreamCommand
     * SeedIdentityForCommand
-    * SingleNodeBatchCommand
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
     * WaitForRaftIndexCommand
 
 {PANEL/}

@@ -58,11 +58,13 @@ Transactional behavior with RavenDB is divided into two modes:
 
 * __Single requests__:  
 In this mode, a user can perform all requested operations (read and/or write) in a single request.  
-   
-  * _Multiple writes_:  
-  A batch of multiple write operations will be executed atomically in a single transaction via calling `SaveChanges()` which generates a single HTTP request to the database.
-   
-  * _Multiple reads & writes_:  
+
+  * __Multiple writes__:  
+  A batch of multiple write operations will be executed atomically in a single transaction when calling [SaveChanges()](../../client-api/session/saving-changes).
+  Multiple operations can also be executed in a single transaction using the low-level [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch).  
+  In both cases, a single HTTP request is sent to the database.
+
+  * __Multiple reads & writes__:  
   Performing interleaving reads and writes or conditional execution can be achieved by [running a patching script](../../client-api/operations/patching/single-document).  
   In the script you can read documents, make decisions based on their content and update or put document(s) within the scope of a single transaction.  
   If you only need to modify a document in a transaction, [JSON Patch syntax](../../client-api/operations/patching/json-patch-syntax) allows you to do that.

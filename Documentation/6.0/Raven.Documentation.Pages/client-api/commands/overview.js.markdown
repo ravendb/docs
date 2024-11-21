@@ -34,35 +34,41 @@
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
-    * [Execute command - using the Store](../../client-api/commands/overview#execute-command---using-the-store)
-    * [Execute command - using the Session](../../client-api/commands/overview#execute-command---using-the-session)
+    * [Execute command - using the Store Request Executor](../../client-api/commands/overview#execute-command---using-the-store-request-executor)
+    * [Execute command - using the Session Request Executor](../../client-api/commands/overview#execute-command---using-the-session-request-executor)
     * [Available commands](../../client-api/commands/overview#available-commands)
     * [Syntax](../../client-api/commands/overview#syntax)
 
 {NOTE/}
 ---
 
-{PANEL: Execute command - using the Store}
+{PANEL: Execute command - using the Store Request Executor}
 
-This example shows how to execute the low-level `CreateSubscriptionCommand` using the **Store**.  
+This example shows how to execute the low-level `CreateSubscriptionCommand` via the **Store**.  
 (For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples)).
 
 {CODE:nodejs execute_1@client-api\commands\documents\overview.js /}
 
 {PANEL/}
 
-{PANEL: Execute command - using the Session}
+{PANEL: Execute command - using the Session Request Executor}
 
-This example shows how to execute the low-level `GetDocumentsCommand` using the **Session**.  
+This example shows how to execute the low-level `GetDocumentsCommand` via the **Session**.  
 (For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities)).
 
 {CODE:nodejs execute_2@client-api\commands\documents\overview.js /}
+
+* Note that the transaction created for the HTTP request when executing the command  
+  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes) method,  
+  even if both are called within the same code block.
+
+* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support).
 
 {PANEL/}
 
 {PANEL: Available commands}
 
-* The Following low-level commands are available:
+* **The Following low-level commands are available**:
     * ConditionalGetDocumentsCommand
     * CreateSubscriptionCommand
     * [DeleteDocumentCommand](../../client-api/commands/documents/delete)
@@ -97,7 +103,7 @@ This example shows how to execute the low-level `GetDocumentsCommand` using the 
     * QueryCommand
     * QueryStreamCommand
     * SeedIdentityForCommand
-    * SingleNodeBatchCommand
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
     * WaitForRaftIndexCommand
 
 {PANEL/}
