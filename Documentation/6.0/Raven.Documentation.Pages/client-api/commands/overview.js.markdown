@@ -118,7 +118,7 @@ This example shows how to execute the low-level `GetDocumentsCommand` via the **
 
 ### Commands 
 
-- [Put document command](../../../client-api/commands/documents/put)  
-- [Get document command](../../../client-api/commands/documents/get)  
-- [Delete document command](../../../client-api/commands/documents/delete)
-- [Send multiple commands using batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+- [Put document command](../../client-api/commands/documents/put)  
+- [Get document command](../../client-api/commands/documents/get)  
+- [Delete document command](../../client-api/commands/documents/delete)
+- [Send multiple commands using batch](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
