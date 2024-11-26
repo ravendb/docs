@@ -49,7 +49,7 @@
 | Parameter        | Type     | Description                                                                                                                                                                                                                                          |
 |------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string` | Unique ID under which document will be stored.                                                                                                                                                                                                       |
-| **changeVector** | `string` | The change-vector of the document you with to update,<br>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br>Pass `null` to skip the check and force the 'put'. |
+| **changeVector** | `string` | The change-vector of the document you wish to update,<br>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br>Pass `null` to skip the check and force the 'put'. |
 | **document**     | `object` | The document to store.                                                                                                                                                                                                                               |
 
 {CODE:nodejs syntax_2@client-api\commands\documents\put.js /}
