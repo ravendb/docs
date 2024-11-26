@@ -28,7 +28,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                     Query = "from Orders" 
                 });
                 
-                // Call 'Execute' on the store's Request Executor to run the command on the server,
+                // Call 'Execute' on the store's Request Executor to send the command to the server,
                 // pass the command and the store context.
                 store.GetRequestExecutor().Execute(cmd, context);
             }
@@ -48,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                     Query = "from Orders" 
                 });
                 
-                // Call 'ExecuteAsync' on the store's Request Executor to run the command on the server,
+                // Call 'ExecuteAsync' on the store's Request Executor to send the command to the server,
                 // pass the command and the store context.
                 await store.GetRequestExecutor().ExecuteAsync(cmd, context);
             }
@@ -63,7 +63,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                     // Define a command
                     var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
 
-                    // Call 'Execute' on the session's Request Executor to run the command on the server
+                    // Call 'Execute' on the session's Request Executor to send the command to the server
                     // Pass the command and the 'Session.Advanced.Context'
                     session.Advanced.RequestExecutor.Execute(cmd, session.Advanced.Context);
                     
@@ -86,7 +86,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
                     // Define a command
                     var cmd = new GetDocumentsCommand(store.Conventions, "orders/1-A", null, false);
                     
-                    // Call 'ExecuteAsync' on the session's Request Executor to run the command on the server
+                    // Call 'ExecuteAsync' on the session's Request Executor to send the command to the server
                     // Pass the command and the 'Session.Advanced.Context'
                     await asyncSession.Advanced.RequestExecutor.ExecuteAsync(cmd, 
                         asyncSession.Advanced.Context);

@@ -215,8 +215,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
                     DocumentConventions conventions,
                     JsonOperationContext context, 
                     List<ICommandData> commands,
-                    BatchOptions options = null, 
-                    TransactionMode mode = TransactionMode.SingleNode)
+                    BatchOptions options = null)
             #endregion
             {
             }

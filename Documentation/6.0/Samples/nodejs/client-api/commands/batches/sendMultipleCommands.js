@@ -81,7 +81,6 @@ async function sendMultipleCommands() {
     //region syntax_1
     SingleNodeBatchCommand(conventions, commands);
     SingleNodeBatchCommand(conventions, commands, batchOptions);
-    SingleNodeBatchCommand(conventions, commands, batchOptions, transactionMode );
     //endregion
 
     //region syntax_2
