@@ -4,8 +4,8 @@
 {NOTE: }
 
 * Each document in a RavenDB database has a unique string associated with it, called an **identifier**.  
-  Every entity that you store, using either a [session](../session/what-is-a-session-and-how-does-it-work) 
-  or a [put document command](../commands/documents/put), is assigned such an identifier.  
+  Every entity that you store, using either a [session](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+  or a [put document command](../../client-api/commands/documents/put), is assigned such an identifier.  
 
 * RavenDB supports [several options](../../server/kb/document-identifier-generation) of storing a document and assigning 
   it an identifier.  
@@ -234,7 +234,7 @@ The commands API gives you full freedom in selecting the identifier generation s
 
 RavenDB ver. 4.2 and higher provides high-level [operations](../../client-api/operations/what-are-operations#operations-what-are-the-operations) 
 that you may set IDs with, in addition to the 
-low-level [commands](../../client-api/how-to/use-low-level-commands#client-api-how-to-use-low-level-commands) 
+low-level [commands](../../client-api/document-identifiers/working-with-document-identifiers#using-commands) 
 we have described above.  
 There is no operational difference between using operations and commands, since the high-level operations actually 
 execute low-level commands. However, using operations may produce a clearer, more concise code.  
