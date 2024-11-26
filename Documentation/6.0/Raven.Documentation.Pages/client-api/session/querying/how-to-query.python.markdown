@@ -50,25 +50,29 @@
 
 {PANEL: Queries always provide results using an index} 
 
-* Queries always use an index to provide fast results regardless of the size of your data.  
+* Queries always use an index to provide fast results regardless of the size of your data.
 
-* When a query reaches a RavenDB instance, the instance calls its **query optimizer** to analyze the query  
+* When a query reaches a RavenDB instance, the instance calls its query optimizer to analyze the query  
   and determine which index should be used to retrieve the requested data.
- 
-* Indexes allow to provide query results without scanning the entire dataset each and every time.  
-  Learn more about indexes in [indexes overview](../../../studio/database/indexes/indexes-overview). 
+
+* Indexes allow to provide query results without scanning the entire dataset each and every time.
+    * Learn more about indexes, their general concept, and the different **index types** in this [indexes overview](../../../studio/database/indexes/indexes-overview) article.
+    * You can choose the underlying **search engine** that will be used by the RavenDB indexes.  
+      Learn more in [selecting the search engine](../../../indexes/search-engine/corax#selecting-the-search-engine).
 
 {INFO: }
 
-We differentiate between the following **3 query scenarios**:  
+We differentiate between the following **3 query scenarios**:
 
-  * Index query  
-  * Dynamic query  
-  * Full collection query  
+1. [Index query](../../../client-api/session/querying/how-to-query#indexQuery)
+2. [Dynamic query](../../../client-api/session/querying/how-to-query#dynamicQuery)
+3. [Full collection query](../../../client-api/session/querying/how-to-query#collectionQuery)
 
-For each scenario, a different index type will be used.
+For each scenario, a different index type is used, as described below.
 
 {INFO/}
+
+---
 
 {NOTE: }
 
@@ -82,13 +86,11 @@ For each scenario, a different index type will be used.
 
 * Static indexes are defined by the user, as opposed to auto-indexes that are created by the server  
   when querying a collection with some filtering applied. See [Static-index vs Auto-index](../../../studio/database/indexes/indexes-overview#auto-indexes--vs--static-indexes).  
-  
 
 * Example RQL: &nbsp; `from index "Employees/ByFirstName" where FirstName == "Laura"`  
   See more examples in [querying an index](../../../indexes/querying/query-index).
 
 {NOTE/}
-
 {NOTE: }
 
 <a id="dynamicQuery" /> 
@@ -128,7 +130,6 @@ For each scenario, a different index type will be used.
   However, a static-index can be defined on [Time series](../../../document-extensions/timeseries/indexing) and [Counters](../../../document-extensions/counters/indexing).
 
 {NOTE/}
-
 {NOTE: }
 
 <a id="collectionQuery" /> 
@@ -158,7 +159,6 @@ For each scenario, a different index type will be used.
     See more examples [below](../../../client-api/session/querying/how-to-query#session.query).
 
 {NOTE/}
-
 {PANEL/}
 
 {PANEL: session.query}
