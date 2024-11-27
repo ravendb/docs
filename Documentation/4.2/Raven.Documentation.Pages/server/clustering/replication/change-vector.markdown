@@ -62,7 +62,7 @@ has been concurrently modified on different nodes during network partition to pr
 Every document in RavenDB has a corresponding change vector. 
 This change vector is updated by RavenDB every time the document is changed. 
 This happens when on document creation and 
-any modification such as `PUT`, `PATCH`, 'DELETE' or their bulk versions. 
+any modification such as `PUT`, `PATCH`, `DELETE` or their bulk versions. 
 A delete operation will also cause RavenDB to update the document change vector, 
 however, at that point, the change vector will belong to
 the document tombstone (since the document itself has already been deleted).
@@ -74,7 +74,7 @@ This is mostly used internally inside RavenDB for many purposes
 subscription has already seen, what was sent to an ETL destination, etc) 
 but can also be very useful for clients.
 
-In particular, the change vector is _guaranteed_ to change whenever the document changes and can be used as part of optimistic concurrency checks. A document modification can all specify an expected change vector for a document (with an empty change vector signifying that the document does not exists). In such a case, all operations in the 
+In particular, the change vector is _guaranteed_ to change whenever the document changes and can be used as part of optimistic concurrency checks. A document modification can all specify an expected change vector for a document (with an empty change vector signifying that the document does not exist). In such a case, all operations in the 
 transaction will be aborted and no changes will be applied to any of the documents modified in the transaction.
 
 {PANEL/}
