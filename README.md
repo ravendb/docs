@@ -99,7 +99,7 @@ In order to fix the missing language page, the related markdown file should be c
    Right click on the top `Documentation` folder, select "Add new solution folder", and create the `6.1` folder.  
    Right click on folder `6.1`, select "Add existing project", and add the `Raven.Documentation.Pages.csproj` file.  
    Right click on folder `6.1`, select "Add new solution folder", and create the `Samples` folder.  
-   Right click on folder `6.1\Samples`, select "Add new solution project, and create the `csharp` folder.  
+   Right click on folder `6.1\Samples`, select "Add new solution folder", and create the `csharp` folder.  
    Right click on folder `6.1\Samples\csharp`, select "Add new existing project", and add the `Raven.Documentation.Samples.csproj` file.  
 
 5. Open file `Models.cs` (under Raven.Documentation.Web.Core.ViewModels).  
