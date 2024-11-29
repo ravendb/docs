@@ -1,0 +1,110 @@
+[
+    {
+        "Path": "general-flow.markdown",
+        "Name": "General Flow",
+        "DiscussionId": "e7a797e8-83b9-4b53-b68f-8742adf6e78d",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/create-new-database/general-flow"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/create-new-database/general-flow"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/create-new-database/general-flow"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/create-new-database/general-flow"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/create-new-database/general-flow"
+            }
+        ]
+    },
+    {
+        "Path": "encrypted.markdown",
+        "Name": "Encrypted",
+        "DiscussionId": "a4e0bf2d-8c10-443c-a2c2-c504d0fe78a8",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/create-new-database/encrypted"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/create-new-database/encrypted"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/create-new-database/encrypted"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/create-new-database/encrypted"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/create-new-database/encrypted"
+            }
+        ]
+    },
+    {
+        "Path": "from-backup.markdown",
+        "Name": "From Backup",
+        "DiscussionId": "3bc87095-c8e6-4634-952d-6d0eff18f299",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/create-new-database/from-backup"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/create-new-database/from-backup"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/create-new-database/from-backup"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/create-new-database/from-backup"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/create-new-database/from-backup"
+            }
+        ]
+    },
+    {
+        "Path": "from-legacy-files.markdown",
+        "Name": "From Legacy Files",
+        "DiscussionId": "35c32df9-e097-4562-9efb-49c53bd00249",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/databases/create-new-database/from-legacy-files"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/databases/create-new-database/from-legacy-files"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/databases/create-new-database/from-legacy-files"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/databases/create-new-database/from-legacy-files"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/databases/create-new-database/from-legacy-files"
+            }
+        ]
+    }
+]

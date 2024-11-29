@@ -1,0 +1,25 @@
+[
+    {
+        "Path": "expiration.markdown",
+        "Name": "Document Expiration",
+        "DiscussionId": "27a7c957-d31a-4098-8c61-57b7b53f3b13",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/expiration"
+            }
+        ]
+    },
+    {
+        "Path": "refresh.markdown",
+        "Name": "Document Refresh",
+        "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
+        "Mappings": []
+    },
+    {
+        "Path": "archival.markdown",
+        "Name": "Data Archival",
+        "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
+        "Mappings": []
+    }
+]

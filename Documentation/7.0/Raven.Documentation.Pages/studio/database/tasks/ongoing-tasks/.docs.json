@@ -1,0 +1,74 @@
+[
+    {
+        "Path": "general-info.markdown",
+        "Name": "Overview",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "Mappings": []
+    },
+    {
+        "Path": "external-replication-task.markdown",
+        "Name": "External Replication Task",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "Mappings": []
+    },
+    {
+        "Path": "/hub-sink-replication",
+        "Name": "Hub/Sink Replication",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "Mappings": []
+    },
+    {
+        "Path": "subscription-task.markdown",
+        "Name": "Subscription Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "ravendb-etl-task.markdown",
+        "Name": "RavenDB ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "olap-etl-task.markdown",
+        "Name": "OLAP ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "elasticsearch-etl-task.markdown",
+        "Name": "Elasticsearch ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "azure-queue-storage-etl.markdown",
+        "Name": "Azure Queue Storage ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "kafka-etl-task.markdown",
+        "Name": "Kafka ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "kafka-queue-sink.markdown",
+        "Name": "Kafka Queue Sink",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "rabbitmq-etl-task.markdown",
+        "Name": "RabbitMQ ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
+        "Path": "rabbitmq-queue-sink.markdown",
+        "Name": "RabbitMQ Queue Sink",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    }
+]

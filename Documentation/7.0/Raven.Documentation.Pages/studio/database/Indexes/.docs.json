@@ -1,0 +1,56 @@
+[
+    {
+        "Path": "indexes-overview.markdown",
+        "Name": "Indexes Overview",
+        "DiscussionId": "872c4e77-4201-4eb9-b497-8c00c840273b",
+        "Mappings": []
+    },
+    {
+        "Path": "indexes-list-view.markdown",
+        "Name": "Index List View",
+        "DiscussionId": "9f8b585d-146f-4271-bc89-686aa9dc016d",
+        "Mappings": []
+    },
+    {
+        "Path": "create-map-index.markdown",
+        "Name": "Create Map Index",
+        "DiscussionId": "d15b1d7b-1e05-49f2-8a32-71240709219f",
+        "Mappings": []
+    },
+    {
+        "Path": "create-multi-map-index.markdown",
+        "Name": "Create Multi Map Index",
+        "DiscussionId": "8195bf6c-f557-4fda-b0d9-3336393c510c",
+        "Mappings": []
+    },
+    {
+        "Path": "create-map-reduce-index.markdown",
+        "Name": "Create Map-Reduce Index",
+        "DiscussionId": "4e962516-2f2f-4c71-856e-849b0a78bccc",
+        "Mappings": []
+    },
+    {
+        "Path": "map-reduce-visualizer.markdown",
+        "Name": "Map-Reduce Visualizer",
+        "DiscussionId": "4ac7b114-eeeb-4af5-8317-ca4144ee48e1",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-performance.markdown",
+        "Name": "Indexing Performance",
+        "DiscussionId": "b48853b6-1680-44e1-a10e-6d445e7ee9de",
+        "Mappings": []
+    },
+    {
+        "Path": "index-cleanup.markdown",
+        "Name": "Index Cleanup",
+        "DiscussionId": "f2e147c4-5780-477b-b355-6b16d667e0dc",
+        "Mappings": []
+    },
+    {
+        "Path": "index-history.markdown",
+        "Name": "Index History",
+        "DiscussionId": "2f9588ba-e7d2-4b6e-b8df-a42ab4df1eff",
+        "Mappings": []
+    }
+]

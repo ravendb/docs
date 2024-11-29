@@ -1,0 +1,62 @@
+﻿[
+    {
+        "Path": "/start",
+        "Name": "Getting Started",
+        "Mappings": []
+    },
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "/document-extensions",
+        "Name": "Document Extensions",
+        "Mappings": []
+    },
+    {
+        "Path": "/server",
+        "Name": "Server",
+        "Mappings": []
+    },
+    {
+        "Path": "/studio",
+        "Name": "Studio",
+        "Mappings": []
+    },
+    {
+        "Path": "/migration",
+        "Name": "Migration Guide",
+        "Mappings": []
+    },
+    {
+        "Path": "/integrations",
+        "Name": "Integrations",
+        "Mappings": []
+    },
+    {
+        "Path": "/glossary",
+        "Name": "Glossary",
+        "Mappings": []
+    },
+    {
+        "Path": "/users-issues",
+        "Name": "Users Issues",
+        "Mappings": []
+    },
+    {
+        "Path": "/cloud",
+        "Name": "Cloud",
+        "Mappings": []
+    },
+    {
+        "Path": "/sharding",
+        "Name": "Sharding",
+        "Mappings": []
+    }
+]

@@ -1,0 +1,108 @@
+[
+  {
+    "Path": "what-is-a-document-store.markdown",
+    "Name": "What is a Document Store",
+    "DiscussionId": "b1df2951-9715-4bbe-9424-a1987e92704b",
+    "Mappings": []
+  },
+  {
+    "Path": "creating-document-store.markdown",
+    "Name": "Creating Document Store",
+    "DiscussionId": "db65c1e7-51df-4f2e-a73b-367d3ec94061",
+    "Mappings": []
+  },
+  {
+    "Path": "setting-up-authentication-and-authorization.markdown",
+    "Name": "Setting up Authentication and Authorization",
+    "DiscussionId": "efd1a102-7dbb-4807-941a-0a263b6fc67b",
+    "Mappings": []
+  },
+  {
+    "Path": "setting-up-default-database.markdown",
+    "Name": "Setting up Default Database",
+    "DiscussionId": "cc7337e7-65cb-4833-9b85-2f5f58931c97",
+    "Mappings": []
+  },
+  {
+    "Path": "what-is-a-public-api.markdown",
+    "Name": "What is a Public API",
+    "DiscussionId": "20cc5db5-f42b-4c0b-9b4f-c1ded61db6b8",
+    "Mappings": []
+  },
+  {
+    "Path": "net-client-versions.markdown",
+    "Name": ".NET Client Versions",
+    "DiscussionId": "153ac599-9be2-40c2-bfae-51f03adee466",
+    "Mappings": []
+  },
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  },
+  {
+    "Path": "/operations",
+    "Name": "Operations",
+    "Mappings": []
+  },
+  {
+    "Path": "/bulk-insert",
+    "Name": "Bulk Insert",
+    "Mappings": []
+  },
+  {
+    "Path": "/data-subscriptions",
+    "Name": "Data Subscriptions",
+    "Mappings": []
+  },
+  {
+    "Path": "/changes",
+    "Name": "Changes API",
+    "Mappings": []
+  },
+  {
+    "Path": "/commands",
+    "Name": "Commands",
+    "Mappings": []
+  },
+  {
+    "Path": "/document-identifiers",
+    "Name": "Document Identifiers",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/security",
+    "Name": "Security",
+    "Mappings": []
+  },
+  {
+    "Path": "/smuggler",
+    "Name": "Smuggler",
+    "Mappings": []
+  },
+  {
+    "Path": "/cluster",
+    "Name": "Cluster Related",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  },
+  {
+    "Path": "/faq",
+    "Name": "FAQ",
+    "Mappings": []
+  },
+  {
+    "Path": "/rest-api",
+    "Name": "REST API",
+    "Mappings": []
+  }
+]

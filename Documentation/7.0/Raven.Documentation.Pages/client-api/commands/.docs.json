@@ -1,0 +1,18 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Commands Overview",
+        "DiscussionId": "77145453-b931-4323-a10f-62899c835b4d",
+        "Mappings": []
+    },
+    {
+        "Path": "/documents",
+        "Name": "Document Commands",
+        "Mappings": []
+    },
+    {
+        "Path": "/batches",
+        "Name": "Batching Commands",
+        "Mappings": []
+    }
+]
