@@ -116,7 +116,7 @@ In order to fix the missing language page, the related markdown file should be c
 
 7. Run `scripts/populateDocsJson.ps1` to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project.
 
-8. Open file `RountConfig.cs` (under Raven.Documentation.Web\App_Start).  
+8. Open file `RouteConfig.cs` (under Raven.Documentation.Web\App_Start).  
    Add the new version to the `RouteAvailableVersions` constant.  
 
 ## Changing document location between versions
