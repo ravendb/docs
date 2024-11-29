@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "include-explanations.markdown",
+    "Name": "Include Query Explanations",
+    "DiscussionId": "2d056281-2f65-4180-a3e1-a6348ec2d230",
+    "Mappings": []
+  },
+  {
+    "Path": "query-timings.markdown",
+    "Name": "Include Query Timings",
+    "DiscussionId": "873da629-f825-4378-bac9-87153227a41b",
+    "Mappings": []
+  }
+]

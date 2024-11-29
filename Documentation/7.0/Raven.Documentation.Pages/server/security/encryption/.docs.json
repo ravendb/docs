@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "encryption-at-rest.markdown",
+        "Name": "Encryption at Rest",
+        "DiscussionId": "fe8c2358-2b7f-403f-b9fa-11c441a3ea2b",
+        "Mappings": []
+    },
+    {
+        "Path": "database-encryption.markdown",
+        "Name": "Database Encryption",
+        "DiscussionId": "29ff6775-8ee9-4f24-a3b3-6f87255b3abc",
+        "Mappings": []
+    }
+]

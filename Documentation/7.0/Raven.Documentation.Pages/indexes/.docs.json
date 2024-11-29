@@ -1,0 +1,285 @@
+[
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "what-are-indexes.markdown",
+        "Name": "What are Indexes",
+        "DiscussionId": "0596da78-4dbb-45e4-b15a-5838ae94d595",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying"
+            }
+        ]
+    },
+    {
+        "Path": "creating-and-deploying.markdown",
+        "Name": "Creating and Deploying Indexes",
+        "DiscussionId": "e95822d1-563e-4470-9d41-c37bbc5e1757",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/defining-static-index"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-basics.markdown",
+        "Name": "Indexing Basics",
+        "DiscussionId": "fb0d8765-f1e9-4b4b-9b83-0e41f9e9326e",
+        "Mappings": []
+    },
+    {
+        "Path": "index-administration.markdown",
+        "Name": "Index Administration",
+        "DiscussionId": "fb0d8765-f1e9-4b4b-9b83-0e41f9e9326e",
+        "Mappings": []
+    },
+    {
+        "Path": "map-indexes.markdown",
+        "Name": "Map Indexes",
+        "DiscussionId": "87029c0c-4d79-4974-a1df-7ee00e2e084f",
+        "Mappings": []
+    },
+    {
+        "Path": "multi-map-indexes.markdown",
+        "Name": "Multi-Map Indexes",
+        "DiscussionId": "ba8db5d6-f4c6-4fdf-8a1e-f60379234db1",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "faq/indexing-across-entities"
+            }
+        ]
+    },
+    {
+        "Path": "map-reduce-indexes.markdown",
+        "Name": "Map-Reduce Indexes",
+        "DiscussionId": "816bd86a-70ee-4742-a9e1-98aefac49870",
+        "Mappings": []
+    },
+    {
+        "Path": "javascript-indexes.markdown",
+        "Name": "JavaScript Indexes",
+        "DiscussionId": "362ffb44-0792-45c6-befc-1d739fee4f6e",
+        "Mappings": []
+    },
+    {
+        "Path": "stale-indexes.markdown",
+        "Name": "Stale Indexes",
+        "DiscussionId": "e211a8ff-e10a-42a9-8116-f337b39f0bbf",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/stale-indexes"
+            }
+        ]
+    },
+    {
+        "Path": "sorting-and-collation.markdown",
+        "Name": "Sorting & Collation",
+        "DiscussionId": "3facb68f-7826-4f9a-9d6d-48a5c6850cd5",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/customizing-results-order"
+            },
+            {
+                "Version": 3.0,
+                "Key": "indexes/customizing-results-order"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-related-documents.markdown",
+        "Name": "Indexing Related Documents",
+        "DiscussionId": "6305805a-fc74-45af-a0a9-0c93b12f65f0",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/indexing-related-documents"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-nested-data.markdown",
+        "Name": "Indexing Nested Data",
+        "DiscussionId": "8dd0873a-83c2-4148-8710-b15951047700",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-hierarchical-data.markdown",
+        "Name": "Indexing Hierarchical Data",
+        "DiscussionId": "ac794130-106d-4be1-818a-eb3825df4adc",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/indexing-hierarchies"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-polymorphic-data.markdown",
+        "Name": "Indexing Polymorphic Data",
+        "DiscussionId": "5c611d47-13db-45c1-9222-042fddd76e8d",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/polymorphism"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-spatial-data.markdown",
+        "Name": "Indexing Spatial Data",
+        "DiscussionId": "35f83623-432c-493f-85e5-b3680dadee81",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/spatial-search"
+            },
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-attachments.markdown",
+        "Name": "Indexing Attachments",
+        "DiscussionId": "6b51906a-f480-48a0-ad5b-91fee56949cd",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-counters.markdown",
+        "Name": "Indexing Counters",
+        "DiscussionId": "439e9ec8-773a-4bdf-8bfa-bafa7a48ece6",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-time-series.markdown",
+        "Name": "Indexing Time Series",
+        "DiscussionId": "439e9ec8-773a-4bdf-8bfa-bafa7a48ece6",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-linq-extensions.markdown",
+        "Name": "Indexing LINQ Extensions",
+        "DiscussionId": "9582128c-557c-44c5-8176-fab6c4c669cd",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-compare-exchange-values.markdown",
+        "Name": "Indexing Compare Exchange Values",
+        "DiscussionId": "d4b5cd08-7c45-4dbb-9a83-c1536e3c5290",
+        "Mappings": []
+    },
+    {
+        "Path": "converting-to-json-and-accessing-metadata.markdown",
+        "Name": "Converting to JSON and Accessing Metadata",
+        "DiscussionId": "2fe7313c-df13-478b-acd3-08c5b4d21a1d",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
+            }
+        ]
+    },
+    {
+        "Path": "rolling-index-deployment.markdown",
+        "Name": "Rolling Index Deployment",
+        "DiscussionId": "61af6ada-f53d-4808-a440-ccaa13da12ab",
+        "Mappings": []
+    },
+    {
+        "Path": "index-throttling.markdown",
+        "Name": "Index Throttling",
+        "DiscussionId": "61af6ada-f53d-4808-a440-ccaa13da12ab",
+        "Mappings": []
+    },
+    {
+        "Path": "boosting.markdown",
+        "Name": "Boosting",
+        "DiscussionId": "091c36b1-719b-459e-bd92-0e810d1fec3d",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/boosting"
+            }
+        ]
+    },
+    {
+        "Path": "using-analyzers.markdown",
+        "Name": "Analyzers",
+        "DiscussionId": "24f00d9e-6992-4540-992c-8a3c8cbfa014",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/configuring-index-options"
+            }
+        ]
+    },
+    {
+        "Path": "storing-data-in-index.markdown",
+        "Name": "Storing Data in Index",
+        "DiscussionId": "f6253cda-deb9-43ea-9876-2f6a7c72215b",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#field-options"
+            }
+        ]
+    },
+    {
+        "Path": "using-term-vectors.markdown",
+        "Name": "Term Vectors",
+        "DiscussionId": "f669b1c3-8999-473d-b02a-9d6e4d412adf",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#term-vectors"
+            }
+        ]
+    },
+    {
+        "Path": "using-dynamic-fields.markdown",
+        "Name": "Dynamic Fields",
+        "DiscussionId": "21be330a-defa-4e2b-88fb-9256748debe0",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/dynamic-fields"
+            }
+        ]
+    },
+    {
+        "Path": "extending-indexes.markdown",
+        "Name": "Extending Indexes",
+        "DiscussionId": "27f1127f-ccde-4680-8cfe-d4f140b3098c",
+        "Mappings": []
+    },
+    {
+        "Path": "additional-assemblies.markdown",
+        "Name": "Additional Assemblies",
+        "DiscussionId": "ded1676d-362d-4aa3-8255-f5098cf6f02c",
+        "Mappings": []
+    },
+    {
+        "Path": "number-type-conversion.markdown",
+        "Name": "Numerical Type Conversion",
+        "DiscussionId": "e0345771-3f51-4e2e-8c7f-ec1b91e70761",
+        "Mappings": []
+    },
+    {
+        "Path": "/search-engine",
+        "Name": "Search Engine"
+    },
+    {
+        "Path": "/troubleshooting",
+        "Name": "Troubleshooting",
+        "Mappings": []
+    }
+]

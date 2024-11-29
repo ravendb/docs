@@ -1,0 +1,134 @@
+[
+    {
+        "Path": "query-index.markdown",
+        "Name": "Querying an Index",
+        "DiscussionId": "e9a86f6b-b231-4914-85fb-e1b0a62dc579",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "indexes/querying/basics"
+            }
+        ]
+    },
+    {
+        "Path": "filtering.markdown",
+        "Name": "Filtering",
+        "DiscussionId": "1ebf06c6-6688-4884-9a04-fdaa449192bc",
+        "Mappings": []
+    },
+    {
+        "Path": "exploration-queries.markdown",
+        "Name": "Exploration Queries",
+        "DiscussionId": "1ebf06c6-6688-4884-9a04-fdaa449192bc",
+        "Mappings": []
+    },
+    {
+        "Path": "paging.markdown",
+        "Name": "Paging",
+        "DiscussionId": "f59f48e7-3864-4f4d-84e6-ae5f427c9784",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/paging"
+            }
+        ]
+    },
+    {
+        "Path": "sorting.markdown",
+        "Name": "Sorting",
+        "DiscussionId": "d53324aa-a1f4-4ae7-a059-b7bf04344f6e",
+        "Mappings": []
+    },
+    {
+        "Path": "projections.markdown",
+        "Name": "Projections",
+        "DiscussionId": "da044934-b24c-4d0e-946a-0fdda4abf880",
+        "Mappings": []
+    },
+    {
+        "Path": "distinct.markdown",
+        "Name": "Distinct",
+        "DiscussionId": "a22cdcd5-da95-4c71-a9bf-d06142cc8892",
+        "Mappings": []
+    },
+    {
+        "Path": "searching.markdown",
+        "Name": "Full-Text Search",
+        "DiscussionId": "3d32f28e-80e6-482b-b46c-a36f3a4a29ce",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/searching"
+            }
+        ]
+    },
+    {
+        "Path": "intersection.markdown",
+        "Name": "Intersection",
+        "DiscussionId": "8595e72a-6986-4041-92ab-652bd3169f48",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ]
+    },
+    {
+        "Path": "suggestions.markdown",
+        "Name": "Suggestions",
+        "DiscussionId": "e4b05ae7-0e6c-4225-80a0-79a39ddadb83",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/suggestions"
+            }
+        ]
+    },
+    {
+        "Path": "spatial.markdown",
+        "Name": "Spatial",
+        "DiscussionId": "9da4a2dd-9a59-4858-9524-3a4cb04ca336",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
+        "Path": "faceted-search.markdown",
+        "Name": "Faceted Search",
+        "DiscussionId": "471f8569-81ba-49c1-86fd-6c42c068deed",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/faceted-search"
+            }
+        ]
+    },
+    {
+        "Path": "morelikethis.markdown",
+        "Name": "MoreLikeThis",
+        "DiscussionId": "5d2616c7-088d-4cab-8f53-aea7b28c321f",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/bundles/more-like-this"
+            }
+        ]
+    },
+    {
+        "Path": "highlighting.markdown",
+        "Name": "Highlighting",
+        "DiscussionId": "6d143af4-f3e3-4656-9f4d-78918c93318d",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "indexes/querying/highlights"
+            },
+            {
+                "Version": 4.0
+            }
+        ]
+    }
+]

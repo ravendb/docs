@@ -1,0 +1,94 @@
+[
+    {
+        "Path": "what-is-a-session-and-how-does-it-work.markdown",
+        "Name": "What is a Session and How Does it Work",
+        "DiscussionId": "374a8bfd-852e-49b3-9e8b-5f811c9f4998",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/understanding-session-object"
+            }
+        ]
+    },
+    {
+        "Path": "opening-a-session.markdown",
+        "Name": "Open a Session",
+        "DiscussionId": "801e52c0-18c2-44b5-b634-f8d57022e9f8",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/opening-a-session"
+            }
+        ]
+    },
+    {
+        "Path": "storing-entities.markdown",
+        "Name": "Storing Entities",
+        "DiscussionId": "9818f5a2-4cad-4a36-9b7a-8714ca4d31b0",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ]
+    },
+    {
+        "Path": "deleting-entities.markdown",
+        "Name": "Deleting Entities",
+        "DiscussionId": "80565382-4e3f-40da-8854-e4150f4b41be",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/deleting-documents"
+            }
+        ]
+    },
+    {
+        "Path": "loading-entities.markdown",
+        "Name": "Loading Entities",
+        "DiscussionId": "54f2ae49-5328-4ddd-8767-8284d9b8227c",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/loading-editing-existing-document"
+            }
+        ]
+    },
+    {
+        "Path": "updating-entities.markdown",
+        "Name": "Update Entities",
+        "DiscussionId": "54f2ae49-5328-4ddd-8767-8284d9b8227c",
+        "Mappings": []
+    },
+    {
+        "Path": "saving-changes.markdown",
+        "Name": "Saving changes",
+        "DiscussionId": "7cbb1af8-f0ac-4576-a483-f54b914a4a33",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ]
+    },
+    {
+        "Path": "/cluster-transaction",
+        "Name": "Cluster Transaction",
+        "Mappings": []
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    }
+]

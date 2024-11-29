@@ -1,0 +1,50 @@
+[
+    {
+        "Path": "overview-and-syntax.markdown",
+        "Name": "Overview and Syntax",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "choosing-query-range.markdown",
+        "Name": "Choosing Query Range",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "filtering.markdown",
+        "Name": "Filtering",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "aggregation-and-projections.markdown",
+        "Name": "Aggregating Values",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "statistics.markdown",
+        "Name": "Statistical Measures",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "using-indexes.markdown",
+        "Name": "Querying Time Series Indexes",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "gap-filling.markdown",
+        "Name": "Data Gap Filling",
+        "DiscussionId": "dd351532-ebf0-4fb3-affe-1349e7db6b2f",
+        "Mappings": []
+    },
+    {
+        "Path": "stream-timeseries.markdown",
+        "Name": "Streaming Time Series",
+        "DiscussionId": "c78ba6c3-570b-4a13-b63f-1b735c667b00",
+        "Mappings": []
+    }
+]
