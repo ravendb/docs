@@ -21,7 +21,7 @@
 * In this page:
     * [Understanding the role of analyzers](../indexes/using-analyzers#understanding-the-role-of-analyzers)
     * [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb)
-    * [Setting an analyzer for an index-field](../indexes/using-analyzers#setting-an-analyzer-for-an-index-field)
+    * [Setting an analyzer for index-field](../indexes/using-analyzers#setting-an-analyzer-for-index-field)
     * [RavenDB's default analyzers](../indexes/using-analyzers#ravendb)
     * [Disabling tokenization of index-field](../indexes/using-analyzers#disabling-tokenization-of-index-field)
     * [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)
@@ -307,6 +307,8 @@ All examples below use the following text:
     * Or specify your own custom analyzer (see [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)).
 
 * If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../indexes/using-analyzers#ravendb).
+
+* An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../studio/database/indexes/create-map-index#index-field-options).
 
 {CODE-TABS}
 {CODE-TAB:nodejs:AbstractIndexCreationTask setting_analyzers_1@indexes\analyzers.js /}
