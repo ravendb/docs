@@ -26,7 +26,7 @@
 {PANEL: Include timings in a query}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query timing@client-api\session\Querying\Debugging\includeQueryTimings.js /}
+{CODE-TAB:nodejs:Query timing@client-api\session\querying\debugging\includeQueryTimings.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -49,7 +49,7 @@ include timings()
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\session\Querying\Debugging\includeQueryTimings.js /}
+{CODE:nodejs syntax@client-api\session\querying\debugging\includeQueryTimings.js /}
 
 | Parameter           | Type                        | Description                                                                                                                                                                    |
 |---------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

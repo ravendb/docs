@@ -9,6 +9,9 @@ const session = documentStore.openSession();
     //endregion
 
     //region syntax_2
+    // The Explanations object:
+    // ========================
+    
     class Explanations {
         get explanations(): {
             [key: string]: string[]; // An explanations list per document ID key

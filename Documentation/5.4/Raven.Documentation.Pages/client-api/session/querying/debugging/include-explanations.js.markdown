@@ -23,7 +23,7 @@
 {PANEL: Include explanations in a query}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Query explain@client-api\session\Querying\Debugging\includeExplanations.js /}
+{CODE-TAB:nodejs:Query explain@client-api\session\querying\debugging\includeExplanations.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -48,13 +48,12 @@ include explanations()
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax@client-api\session\Querying\Debugging\includeExplanations.js /}
+{CODE:nodejs syntax@client-api\session\querying\debugging\includeExplanations.js /}
 
-| Parameters | Data type | Description |
-| - | - | - |
+| Parameter                | Type                            | Description                                                                                                                                                                    |
+|--------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **explanationsCallback** | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
 
-<small> **The Explanations object**: </small>
-{CODE:nodejs syntax_2@client-api\session\Querying\Debugging\includeExplanations.js /}
+{CODE:nodejs syntax_2@client-api\session\querying\debugging\includeExplanations.js /}
 
 {PANEL/}
