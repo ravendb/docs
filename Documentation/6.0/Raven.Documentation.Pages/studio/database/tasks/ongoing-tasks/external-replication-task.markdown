@@ -5,25 +5,23 @@
 
 * Schedule an **External Replication Task** in order to have a _live_ replica of your data in another database:  
   * In the same cluster if you want a live copy that won't be a client failover target.
-  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview), 
-    which can be used as a failover if the source cluster is down.  
-     * Note: External Replication task does _not_ create a backup of your data and indexes.  
-       See more in [Backup -vs- Replication](../../../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+  * In a separate RavenDB cluster [on local machines](../../../../start/getting-started) or [a cloud instance](../../../../cloud/cloud-overview),  
+    which can be used as a failover if the source cluster is down.
 
-* "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
+* "Live" means that the replica is up to date at all times.  
+  Any changes in the source database will be reflected in the replica once they occur.  
 
-* This ongoing task replicates one-way - from the source to the destination.
+* This ongoing task replicates **one-way**, from the source to the destination. For additional functionality,  
+  such as filtration and two-way (master-master) replication, consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
 
-* For additional functionality, such as filtration and two-way (master-master) replication,  
-  consider [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* To replicate between two separate, secure RavenDB servers,  
+  you need to [pass a client certificate](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide) from the source server to the destination.
 
-* To replicate between two separate, secure RavenDB servers, you need to [pass a client certificate](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide) from the source server to the destination.
+* External replication can be a comfortable means of data migration into a [sharded](../../../../sharding/overview) database.  
+  You can read more about this option in the sharding documentation [external replication](../../../../sharding/external-replication) and [migration](../../../../sharding/migration) sections.  
 
-* External replication can be a comfortable means of data migration 
-  into a [sharded](../../../../sharding/overview) database.  
-  You can read more about this option in the sharding documentation 
-  [external replication](../../../../sharding/external-replication) 
-  and [migration](../../../../sharding/migration) sections.  
+* The External Replication task **does _not_ create a backup** of your data and indexes.  
+  See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
 
 * In this page:  
   * [General Information about External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#general-information-about-external-replication-task)
@@ -46,6 +44,8 @@
     * [Counters](../../../../document-extensions/counters/overview)
     * [Time Series](../../../../document-extensions/timeseries/overview)
 
+---
+
 **What is _not_ being replicated:**  
 
   * Server and cluster level features:  
@@ -59,13 +59,21 @@
       * [Backup](../../../../studio/database/tasks/backup-task)
       * [Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
 
-{NOTE: Why are some cluster-level features not replicated?}
-To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
-RavenDB is designed so that data ownership is at the cluster level.  
-To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
+        {NOTE: }
 
-It is also best to ensure that each cluster defines policies, configurations, and ongoing tasks that are relevant to it.  
-{NOTE/}
+        **Why are cluster-level features not replicated?**
+
+        RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  
+        especially in scenarios where ACID transactions are critical.
+
+        This approach ensures that certain features, such as policies, configurations, and ongoing tasks,  
+        remain specific to each cluster, avoiding potential inconsistencies.
+
+        To explore this concept further, refer to the [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) blog post.
+
+        {NOTE/}
+
+---
 
 **Conflicts:**  
 

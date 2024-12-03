@@ -3,31 +3,32 @@
 
 {NOTE: }
 
-* Schedule an **External Replication Task** to have a _live_ replica of your data in another database:  
-  * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview), 
-    which can be used as a failover if the source cluster is down.  
-    {INFO: }
-    The External Replication task **does _not_ create a backup** of your data and indexes.  
-    See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
-    {INFO/}
-  * In the same cluster if you want a live copy that won't be a client failover target.
+* Schedule an **External Replication Task** to have a _live_ replica of your data in another database:
+    * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview),  
+      which can be used as a failover if the source cluster is down.
+    * In the same cluster if you want a live copy that won't be a client failover target.
 
-* "Live" means that the replica is up to date at all times. Any changes in the source database will be reflected in the replica once they occur.  
+* "Live" means that the replica is up to date at all times.  
+  Any changes in the source database will be reflected in the replica once they occur.
 
-* This ongoing task replicates one-way - from the source to the destination.
+* This ongoing task replicates **one-way**, from the source to the destination.  
+  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).
 
-* For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).  
+* To replicate between two separate, secure RavenDB servers,  
+  you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
 
-* To replicate between two separate, secure RavenDB servers, you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
+* The External Replication task **does _not_ create a backup** of your data and indexes.  
+  See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
 
-In this page: 
+---
 
-* [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
-* [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
-* [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
-* [Definition](../../server/ongoing-tasks/external-replication#definition)  
-* [Offline Behavior](../../server/ongoing-tasks/external-replication#offline-behavior)
-* [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
+* In this page: 
+  * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
+  * [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
+  * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
+  * [Definition](../../server/ongoing-tasks/external-replication#definition)  
+  * [Offline Behavior](../../server/ongoing-tasks/external-replication#offline-behavior)
+  * [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
 
 {NOTE/}
 
@@ -41,11 +42,13 @@ In this page:
    * [Counters](../../document-extensions/counters/overview)
    * [Time Series](../../document-extensions/timeseries/overview)
 
+---
+
 **What is _not_ being replicated:**  
 
   * Server and cluster level features:  
     * [Indexes](../../indexes/creating-and-deploying)  
-    * [Conflict resolver definitions](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
+    * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
     * [Compare-Exchange](../../client-api/operations/compare-exchange/overview)
     * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
     * [Identities](../../server/kb/document-identifier-generation#strategy--3)  
@@ -54,17 +57,28 @@ In this page:
       * [Backup](../../studio/database/tasks/backup-task)
       * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
 
-{NOTE: Why are cluster-level features not replicated?}
-To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
-RavenDB is designed so that data ownership is at the cluster level.  
-To learn more, see [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system).
-{NOTE/}
+        {NOTE: }
+
+        **Why are cluster-level features not replicated?**
+
+        RavenDB is designed with a cluster-level data ownership model to prevent conflicts between clusters,  
+        especially in scenarios where ACID transactions are critical.
+
+        This approach ensures that certain features, such as policies, configurations, and ongoing tasks,  
+        remain specific to each cluster, avoiding potential inconsistencies.
+
+        To explore this concept further, refer to the [Data Ownership in a Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system) blog post.
+
+        {NOTE/}
+
+---
 
 **Conflicts:**  
 
   * Two databases that have an External Replication task defined between them will detect and resolve document 
     [conflicts](../../server/clustering/replication/replication-conflicts) according to each database's conflict resolution policy.  
-  * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) on both the source and the target databases.  
+  * It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client) 
+    on both the source and the target databases.  
 
 {PANEL/}
 
