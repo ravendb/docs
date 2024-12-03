@@ -11,7 +11,14 @@
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
 * **To get the score details** and see how it was calculated,  
-  you can use `IncludeExplanations` when querying with a [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query). 
+  use method `IncludeExplanations`, which is available in the [IDocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) interface.
+
+    {INFO: }
+    * Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.  
+    * You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+    {INFO/}
+
+---
 
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
@@ -24,8 +31,9 @@
 {PANEL: Include explanations in a query}
 
 {CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery explain@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
-{CODE-TAB:csharp:DocumentQuery_async explain_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:Query explain_1@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:DocumentQuery explain_2@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:DocumentQuery_async explain_2_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where search(Name, "Syrup") or search(Name, "Lager")
@@ -53,12 +61,12 @@ include explanations()
 
 {CODE syntax@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 
-| Parameters | Data type | Description |
-| - | - | - |
+| Parameter        | Type           | Description                                                      |
+|------------------|----------------|------------------------------------------------------------------|
 | **explanations** | `Explanations` | An _out_ param that will be filled with the explanations results |
 
-| `Explanations` | |
-| - | - |
+| `Explanations`                           |                                                                                                                                |
+|------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `string[] GetExplanations(string docId)` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
 
 {PANEL/}

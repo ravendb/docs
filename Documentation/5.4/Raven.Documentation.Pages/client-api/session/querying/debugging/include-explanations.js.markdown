@@ -12,6 +12,13 @@
 
 * Use `includeExplanations` in your query **to get the score details** and see how it was calculated.  
 
+    {INFO: }
+    * Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.
+    * You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+    {INFO/}
+
+---
+
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  

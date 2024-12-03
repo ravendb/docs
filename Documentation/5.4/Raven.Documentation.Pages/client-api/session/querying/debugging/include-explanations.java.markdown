@@ -2,6 +2,15 @@
 
 `includeExplanations` allows to investigate details related to score assigned for each query result.
 
+{INFO: }
+
+* Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.
+* You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+
+{INFO/}
+
+---
+
 ## Syntax
 
 

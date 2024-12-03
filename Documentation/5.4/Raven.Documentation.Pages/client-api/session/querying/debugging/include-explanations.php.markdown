@@ -12,6 +12,13 @@
 
 * Use `includeExplanations` to get the score details and see how it was calculated.  
 
+    {INFO: }
+    * Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.
+    * You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+    {INFO/}
+
+---
+
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
@@ -56,9 +63,9 @@ If you intend to use the default options, just paste `null` instead of the optio
 
 {CODE:php syntax@ClientApi\Session\Querying\Debugging\IncludeExplanations.php /}
 
-| Parameters | Data type | Description |
-| - | - | - |
-| **$options** | `?ExplanationOptions` | This object is optional.<br>If you intend to use the default options, place `null` here. |
-| **&$explanations** | `Explanations` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
+| Parameter          | Type                  | Description                                                                                                                                                                                                                             |
+|--------------------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$options**       | `?ExplanationOptions` | This object is optional.<br>If you intend to use the default options, place `null` here.                                                                                                                                                |
+| **&$explanations** | `Explanations`        | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
 
 {PANEL/}
