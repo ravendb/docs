@@ -19,6 +19,9 @@
 
 ---
 
+* This article provides examples of including explanations when making a **dynamic-query**.  
+  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations).
+
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  

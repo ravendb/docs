@@ -28,18 +28,15 @@
 {PANEL: Include explanations when querying Map index}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_1@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:Query inc_1@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:Query_async inc_1_async@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:DocumentQuery inc_2@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:DocumentQuery_async inc_2_async@Indexes\Querying\IncludingExplanations.cs /}
+{CODE-TAB:nodejs:Map_index index_1@indexes\querying\includingExplanations.js /}
+{CODE-TAB:nodejs:Query inc_1@indexes\querying\includingExplanations.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/BySearchName"
-where search(Name, "Syrup Lager")
+where search(name, "Syrup Lager")
 include explanations()
 // Or:
 from index "Products/BySearchName"
-where search(Name, "Syrup") or search(Name, "Lager")
+where search(name, "Syrup") or search(name, "Lager")
 include explanations()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -49,16 +46,13 @@ include explanations()
 {PANEL: Include explanations when querying Map-Reduce index}
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_Reduce_index index_2@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:Query inc_3@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:Query_async inc_3_async@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:DocumentQuery inc_4@Indexes\Querying\IncludingExplanations.cs /}
-{CODE-TAB:csharp:DocumentQuery_async inc_4_async@Indexes\Querying\IncludingExplanations.cs /}
+{CODE-TAB:nodejs:Map_Reduce_index index_2@indexes\querying\includingExplanations.js /}
+{CODE-TAB:nodejs:Query inc_2@indexes\querying\includingExplanations.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "NumberOfUnitsOrdered/PerCategory"
-where NumberOfUnitsOrdered > 400
+where numberOfUnitsOrdered > 400
 include explanations($p0)
-{"p0" : { "GroupKey" : "Category" }}
+{"p0" : { "GroupKey": "category" }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -66,15 +60,15 @@ include explanations($p0)
 
 {PANEL: Syntax}
 
-{CODE syntax_1@Indexes\Querying\IncludingExplanations.cs /}
+{CODE:nodejs syntax_1@indexes\querying\includingExplanations.js /}
 
-| Parameter         | Type                 | Description                                                             |
-|-------------------|----------------------|-------------------------------------------------------------------------|
-| **explanations**  | `Explanations`       | An _out_ param that will be filled with the explanations results.       |
-| **options**       | `ExplanationOptions` | An object that specifies the GroupKey when querying a Map-Reduce index. |
+| Parameter                | Type                            | Description                                                                                                                                                                    |
+|--------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **explanationsCallback** | `(explanationsResults) => void` | <ul><li>A callback function with an output parameter.</li><li>The parameter passed to the callback will be filled with the `Explanations` object when query returns.</li></ul> |
+| **options**              | `object`                        | An object that specifies the group key when querying a Map-Reduce index.                                                                                                       |
 
-{CODE syntax_2@Indexes\Querying\IncludingExplanations.cs /}
-{CODE syntax_3@Indexes\Querying\IncludingExplanations.cs /}
+{CODE:nodejs syntax_2@indexes\querying\includingExplanations.js /}
+{CODE:nodejs syntax_3@indexes\querying\includingExplanations.js /}
 
 {PANEL/}
 

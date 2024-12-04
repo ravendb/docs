@@ -25,9 +25,9 @@ async function explain() {
     // Define an object that will receive the explanations results
     let explanationsResults;
 
-    const results = await session.query({ collection: "Products" })
+    const products = await session.query({ collection: "Products" })
          // Call includeExplanations, pass a callback function
-         // Output param 'explanationsResults' will be filled with explenations results when query returns 
+         // Output param 'explanationsResults' will be filled with explanations results when query returns 
         .includeExplanations(e => explanationsResults = e)
          // Define query criteria
          // i.e. search for docs containing Syrup -or- Lager in their Name field
@@ -36,6 +36,7 @@ async function explain() {
         .all();
 
     // Get the score details for a specific document from 'explanationsResults'
-    const scoreDetails = explanationsResults.explanations[productResults[0].id];
+    const id = session.advanced.getDocumentId(products[0]);
+    const scoreDetails = explanationsResults.explanations[id];
     //endregion
 }

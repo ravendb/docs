@@ -311,7 +311,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             #region syntax_3
             public sealed class ExplanationOptions
             {
-                // The GroupKey that was used to generate items (index-entries) in a Map-Reduce index 
+                // The group key that was used to group by the items in the Map-Reduce index
                 public string GroupKey { get; set; }
             }
             #endregion
