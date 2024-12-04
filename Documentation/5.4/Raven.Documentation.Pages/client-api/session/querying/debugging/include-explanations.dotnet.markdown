@@ -20,6 +20,9 @@
 
 ---
 
+* This article provides examples of including explanations when making a **dynamic-query**.  
+  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations).
+
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
@@ -32,6 +35,7 @@
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query explain_1@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:csharp:Query_async explain_1_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 {CODE-TAB:csharp:DocumentQuery explain_2@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 {CODE-TAB:csharp:DocumentQuery_async explain_2_async@ClientApi\Session\Querying\Debugging\IncludeExplanations.cs /}
 {CODE-TAB-BLOCK:sql:RQL}

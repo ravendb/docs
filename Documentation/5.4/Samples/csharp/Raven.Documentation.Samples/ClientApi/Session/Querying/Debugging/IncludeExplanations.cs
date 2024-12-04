@@ -34,7 +34,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                 using (var session = store.OpenSession())
                 {
                     #region explain_1
-                    var results = session.Query<Product>()
+                    var products = session
+                        .Query<Product>()
                          // Convert the IRavenQueryable to IDocumentQuery
                          // to be able to use 'IncludeExplanations'
                         .ToDocumentQuery()
@@ -44,14 +45,39 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                          // to continue building the query using LINQ
                         .ToQueryable()
                          // Define query criteria
-                         // i.e. search for docs containing Syrup -or- Lager in their Name field
+                         // e.g. search for docs containing Syrup -or- Lager in their Name field
                         .Search(x => x.Name, "Syrup Lager")
                          // Execute the query
                         .ToList();
 
                     // Get the score details for a specific document from the results
                     // Call GetExplanations on the resulting Explanations object
-                    string[] scoreDetails = explanations.GetExplanations(results[0].Id);
+                    string[] scoreDetails = explanations.GetExplanations(products[0].Id);
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region explain_1_async
+                    var products = await asyncSession
+                        .Query<Product>()
+                         // Convert the IRavenQueryable to IDocumentQuery
+                         // to be able to use 'IncludeExplanations'
+                        .ToAsyncDocumentQuery()
+                         // Call IncludeExplanations, provide an out param for the explanations results
+                        .IncludeExplanations(out Explanations explanations)
+                         // Convert back to IRavenQueryable
+                         // to continue building the query using LINQ
+                        .ToQueryable()
+                         // Define query criteria
+                         // e.g. search for docs containing Syrup -or- Lager in their Name field
+                        .Search(x => x.Name, "Syrup Lager")
+                         // Execute the query
+                        .ToListAsync();
+
+                    // Get the score details for a specific document from the results
+                    // Call GetExplanations on the resulting Explanations object
+                    string[] scoreDetails = explanations.GetExplanations(products[0].Id);
                     #endregion
                 }
                 
@@ -59,19 +85,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                 {
                     #region explain_2
                     // Query with `DocumentQuery`
-                    var results = session.Advanced.DocumentQuery<Product>()
-                        
+                    var products = session.Advanced
+                        .DocumentQuery<Product>()
                          // Call IncludeExplanations, provide an out param for the explanations results
                         .IncludeExplanations(out Explanations explanations)
                          // Define query criteria
-                         // i.e. search for docs containing Syrup -or- Lager in their Name field
+                         // e.g. search for docs containing Syrup -or- Lager in their Name field
                         .Search(x => x.Name, "Syrup Lager")
                          // Execute the query
                         .ToList();
 
                     // Get the score details for a specific document from the results
                     // Call GetExplanations on the resulting Explanations object
-                    string[] scoreDetails = explanations.GetExplanations(results[0].Id);
+                    string[] scoreDetails = explanations.GetExplanations(products[0].Id);
                     #endregion
                 }
 
@@ -79,19 +105,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Debugging
                 {
                     #region explain_2_async
                     // Query with `AsyncDocumentQuery`
-                    var results = await asyncSession.Advanced.AsyncDocumentQuery<Product>()
-                        
+                    var products = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
                          // Call IncludeExplanations, provide an out param for the explanations results
                         .IncludeExplanations(out Explanations explanations)
                          // Define query criteria
-                         // i.e. search for docs containing Syrup -or- Lager in their Name field
+                         // e.g. search for docs containing Syrup -or- Lager in their Name field
                         .Search(x => x.Name, "Syrup Lager")
                          // Execute the query
                         .ToListAsync();
 
                     // Get the score details for a specific document from the results
                     // Call GetExplanations on the resulting Explanations object
-                    string[] scoreDetails = explanations.GetExplanations(results[0].Id);
+                    string[] scoreDetails = explanations.GetExplanations(products[0].Id);
                     #endregion
                 }
             }
