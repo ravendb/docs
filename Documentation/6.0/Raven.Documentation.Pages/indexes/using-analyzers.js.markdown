@@ -344,17 +344,17 @@ All examples below use the following text:
 ---
 
 * When the indexing behavior is set to `Search` and no analyzer is specified for the index-field,  
-  RavenDB will use the Default Search Analyzer called `RavenStandardAnalyzer`.  
-  (This analyzer inherits from Lucene's _StandardAnalyzer_).
+  RavenDB will use the Default Search Analyzer.  
+  By default, this analyzer is the `RavenStandardAnalyzer` (inherits from Lucene's _StandardAnalyzer_).
+
+* To customize a different analyzer that will serve as your Default Search Analyzer,  
+  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration#indexing.analyzers.search.default) configuration key.
 
 * Using a search analyzer enables full-text search queries against the field.  
   Given the same sample text from above, _RavenStandardAnalyzer_ will produce the following tokens:  
   `[quick] [brown] [fox] [jumped] [over] [lazy] [dogs] [bob@hotmail.com] [123432]`
 
-  {CODE:nodejs use_search_analyzer@indexes\analyzers.js /}
-
-* To customize a different analyzer that will serve as your Default Search Analyzer,  
-  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration#indexing.analyzers.search.default) configuration key.
+{CODE:nodejs use_search_analyzer@indexes\analyzers.js /}
 
 {NOTE/}
 {NOTE: }
@@ -363,20 +363,20 @@ All examples below use the following text:
 
 ---
 
-* When the indexing behavior is set to `Exact`,  
-  RavenDB will use the Default Exact Analyzer called `KeywordAnalyzer`.
+* When the indexing behavior is set to `Exact`, RavenDB will use the Default Exact Analyzer.  
+  By default, this analyzer is the `KeywordAnalyzer`.
 
-* This analyzer treats the entire content of the index-field as a single token,
+* _KeywordAnalyzer_ treats the entire content of the index-field as a single token,
   preserving the original text's case and ensuring no transformations, such as case normalization or stemming, are applied.  
   The field's value is indexed exactly as provided, enabling precise, case-sensitive matching at query time.
+
+* To customize a different analyzer that will serve as your Default Exact Analyzer,  
+  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration#indexing.analyzers.exact.default) configuration key.
 
 * Given the same sample text from above, _KeywordAnalyzer_ will produce a single token:            
   `[The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.]`
 
-  {CODE:nodejs use_exact_analyzer@indexes\analyzers.js /}
-
-* To customize a different analyzer that will serve as your Default Exact Analyzer,  
-  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration#indexing.analyzers.exact.default) configuration key.
+{CODE:nodejs use_exact_analyzer@indexes\analyzers.js /}
 
 {NOTE/}
 {NOTE: }
@@ -386,18 +386,19 @@ All examples below use the following text:
 ---
 
 * When no indexing behavior is set and no analyzer is specified for the index-field,  
-  RavenDB will use the default custom analyzer called `LowerCaseKeywordAnalyzer`.
+  RavenDB will use the Default Analyzer.
+  By default, this analyzer is the `LowerCaseKeywordAnalyzer`.
 
-* This analyzer behaves like Lucene's _KeywordAnalyzer_, but additionally performs case normalization, converting all characters to lowercase.
+* _LowerCaseKeywordAnalyzer_ behaves like Lucene's _KeywordAnalyzer_, but additionally performs case normalization, converting all characters to lowercase.
   The entire content of the field is processed into a single, lowercased token.
+
+* To customize a different analyzer that will serve as your Default Analyzer,  
+  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration#indexing.analyzers.default) configuration key.
 
 * Given the same sample text from above, _LowerCaseKeywordAnalyzer_ will produce a single token:            
   `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-  {CODE:nodejs use_default_analyzer@indexes\analyzers.js /}
-
-* To customize a different analyzer that will serve as your Default Analyzer,  
-  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration#indexing.analyzers.default) configuration key.
+{CODE:nodejs use_default_analyzer@indexes\analyzers.js /}
 
 {NOTE/}
 {PANEL/}
