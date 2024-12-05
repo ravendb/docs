@@ -21,9 +21,9 @@
 * In this page:  
   * [Understanding the role of analyzers](../indexes/using-analyzers#understanding-the-role-of-analyzers)  
   * [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb)  
-  * [Setting an analyzer for index-field](../indexes/using-analyzers#setting-an-analyzer-for-index-field)  
+  * [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field)  
   * [RavenDB's default analyzers](../indexes/using-analyzers#ravendb)  
-  * [Disabling tokenization of index-field](../indexes/using-analyzers#disabling-tokenization-of-index-field)  
+  * [Disabling indexing for index-field](../indexes/using-analyzers#disabling-indexing-for-index-field)  
   * [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)
   * [Viewing the indexed terms](../indexes/using-analyzers#viewing-the-indexed-terms)
 
@@ -117,7 +117,7 @@ Learn more in [Sorting and Collation](../indexes/sorting-and-collation#collation
 * If needed, you can create your own [Customized Analyzers](../indexes/using-analyzers#creating-custom-analyzers).
 
 * To assign the analyzer of your choice to a specific index-field,
-  see: [Setting an analyzer for index-field](../indexes/using-analyzers#setting-an-analyzer-for-index-field).
+  see: [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field).
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
   RavenDB will use its [Default Analyzers](../indexes/using-analyzers#ravendb) to process and tokenize the content of a field.
@@ -297,7 +297,7 @@ All examples below use the following text:
 {NOTE/}
 {PANEL/}
 
-{PANEL: Setting an analyzer for index-field}
+{PANEL: Setting analyzer for index-field}
 
 * To explicitly set an analyzer that will process/tokenize the content of a specific index-field,  
   use the `Analyzers.Add()` method within the index definition for that field.
@@ -331,7 +331,7 @@ All examples below use the following text:
 * The available **Indexing Behavior** values are:  
     * `FieldIndexing.Exact` 
     * `FieldIndexing.Search`
-    * `FieldIndexing.No` - This behavior [disables field tokenization](../indexes/using-analyzers#disabling-tokenization-of-an-index-field).
+    * `FieldIndexing.No` - This behavior [disables field indexing](../indexes/using-analyzers#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
 
@@ -402,9 +402,9 @@ All examples below use the following text:
 {NOTE/}
 {PANEL/}
 
-{PANEL: Disabling tokenization of an index-field}
+{PANEL: Disabling indexing for index-field}
 
-* Use the `FieldIndexing.No` indexing behavior option to disable tokenization of a particular index-field.  
+* Use the `FieldIndexing.No` indexing behavior option to disable indexing of a particular index-field.  
   In this case:
     * No analyzer will process the field, and no terms will be generated from its content.
     * The field will not be available for querying.
