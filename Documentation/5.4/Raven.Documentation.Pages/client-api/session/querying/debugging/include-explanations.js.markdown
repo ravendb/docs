@@ -13,8 +13,8 @@
 * Use `includeExplanations` in your query **to get the score details** and see how it was calculated.  
 
     {INFO: }
-    * Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.
-    * You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+    * Including explanations is available only when using **Lucene** as the underlying search engine.
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
     {INFO/}
 
 ---

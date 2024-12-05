@@ -14,8 +14,8 @@
   use method `IncludeExplanations`, which is available in the [IDocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) interface.
 
     {INFO: }
-    * Including explanations is available only when using **Lucene** as the underlying search engine for auto-indexes.  
-    * You can set the search engine for auto-indexes using the [Indexing.Auto.SearchEngineType](../../../../server/configuration/indexing-configuration#indexing.auto.searchenginetype) configuration key.
+    * Including explanations is available only when using **Lucene** as the underlying search engine.  
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
     {INFO/}
 
 ---
