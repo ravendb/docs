@@ -11,7 +11,7 @@
   
     {INFO: }
     * Including explanations is available only when using **Lucene** as the underlying search engine for static-indexes.
-    * You can set the search engine for static-indexes using the [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype) configuration key.
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
     {INFO/}
 
 ---
