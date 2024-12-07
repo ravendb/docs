@@ -42,6 +42,12 @@
         "Mappings": []
     },
     {
+        "Path": "snowflake-etl-task.markdown",
+        "Name": "Snowflake ETL Task",
+        "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
+        "Mappings": []
+    },
+    {
         "Path": "azure-queue-storage-etl.markdown",
         "Name": "Azure Queue Storage ETL Task",
         "DiscussionId": "89c14b90-9ddd-426d-b0f4-60a49d5865c0",
