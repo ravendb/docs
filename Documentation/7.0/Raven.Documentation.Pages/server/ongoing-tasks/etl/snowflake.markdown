@@ -18,6 +18,7 @@
   * [Creating a Task](../../../server/ongoing-tasks/etl/snowflake#creating-a-task)  
   * [Snowflake warehouse setup](../../../server/ongoing-tasks/etl/snowflake#snowflake-warehouse-setup)  
   * [Snowflake Tables](../../../server/ongoing-tasks/etl/snowflake#snowflake-tables)  
+     * [Performance improvement suggestions](../../../server/ongoing-tasks/etl/snowflake#performance-improvement-suggestions)  
   * [Transformation Scripts](../../../server/ongoing-tasks/etl/snowflake#transformation-scripts)  
      * [`loadTo` Method](../../../server/ongoing-tasks/etl/snowflake#method)  
      * [Alternative Syntax](../../../server/ongoing-tasks/etl/snowflake#alternative-syntax)  
@@ -35,16 +36,32 @@
 
 {PANEL: Creating a Task}
 
-* To create a Snowflake ETL task using Studio, open the `Settings -> Ongoing Tasks` view 
-  and click **Snowflake ETL**.  
+A Snowflake ETL task can be created using **Code** or via **Studio**.
 
-    ![Add New Snowflake Task](images/snowflake_etl_new_task.png "Add New Snowflake Task")
+* To create the task using **Code:**
+   * Define a [Snowflake Connection String](https://github.com/snowflakedb/snowflake-connector-net/blob/master/doc/Connecting.md) 
+     and register it using the [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation) 
+     operation.  
+     Find an example [Here](../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-snowflake-connection-string).
+   * Define an **ETL Task**, associate it with your connection string, and run it using the 
+     [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl#add-etl-operation) operation.  
+     Find an example [Here](../../../client-api/operations/maintenance/etl/add-etl#add-snowflake-etl-task).  
 
-* Use the New Snowfake ETL view to define and save the new task.  
+* To create the task using **Studio**:
+  {INFO: }
+   Find [Here](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task) 
+   a **detailed look** at the creation of a Snowflake ETL task using Studio.  
+  {INFO/}
+  In short:
 
-    ![Define Snowflake Task](images/snowflake-etl-setup.png "Define Snowflake Task")
+   * Open the Studio `Settings -> Ongoing Tasks` view and click the **Snowflake ETL** option.  
+     
+        ![Add New Snowflake Task](images/snowflake_etl_new_task.png "Add New Snowflake Task")
 
-* Learn to define your Snowflake task [here](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task).  
+   * Use the New Snowfake ETL view to define and save the new task.  
+     
+        ![Define Snowflake Task](images/snowflake-etl-setup.png "Define Snowflake Task")
+
 
 {PANEL/}
 
@@ -67,17 +84,24 @@ The column does **not** have to be a table's primary key.
 
 ![Define Snowflake Tables](images/snowflake-etl-tables.png "Define Snowflake Tables")
 
-## Performance improvement suggestions
+{INFO: }
+### Performance improvement suggestions
 
-### Insert data directly
-The ETL process performs document updates by issuing DELETE and INSERT statements to the relational database.  
-If your system is _append-only_, you can boost the procedure's performance by instructing RavenDB to insert the 
-data directly, without running a set of DELETE statements first.  
+* **Insert data directly**:  
+  The ETL process performs document updates by issuing DELETE and INSERT statements 
+  to the relational database. If your system uses _append-only_, you can boost the 
+  ETL process performance by setting Insert Only Mode to insert the data directly 
+  without running a set of DELETE statements first.  
+    * Using code (take a look [here](../../../client-api/operations/maintenance/etl/add-etl#add-snowflake-etl-task)
+      to see the snowflake-table definition in its context):  
+      {CODE snowflake_insert-only@ClientApi\Operations\Maintenance\Etl\AddEtl.cs /}
+    * Using Studio: see [Define a Snowflake ETL Task](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task#define-a-snowflake-etl-task).  
 
----
+* **SQL tables indexes**:  
+  To improve performance, you can define SQL tables indexes at least for the column used 
+  to hold the document ID.
 
-### SQL tables indexes
-To improve performance, please define SQL tables indexes for at least the column used to hold the document ID.
+{INFO/}
 
 {PANEL/}
 
@@ -246,14 +270,18 @@ as part of the same transaction.
 
 {PANEL:Advanced Options}
 
-![Advanced options](images/snowflake-etl-advanced_01.png "Advanced options")
+#### Command timeout:
+You can set the number of seconds after which an SQL command will timeout.  
+Default: `null` (use provider default)  
 
-![Command timeout](images/snowflake-etl-advanced_02.png "Command timeout")
+* **Set using Code**:  
+  {CODE snowflake_command-timeout@ClientApi\Operations\Maintenance\Etl\AddEtl.cs /}
 
-**Command timeout**:  
-The number of seconds after which an SQL command will timeout.  
-This value overrides the value defined in the [`ETL.SQL.CommandTimeoutInSec`](../../../server/configuration/etl-configuration#etl.sql.commandtimeoutinsec) setting.  
-Default: ``null`` (use provider default)  
+* **Set via Studio**:  
+  
+    ![Advanced options](images/snowflake-etl-advanced_01.png "Advanced options")
+
+    ![Command timeout](images/snowflake-etl-advanced_02.png "Command timeout")
 
 {PANEL/}
 
