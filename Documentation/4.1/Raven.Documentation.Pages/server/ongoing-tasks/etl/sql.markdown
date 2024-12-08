@@ -28,7 +28,7 @@ for a given database where the destination is a relational database.
 ---
 
 {PANEL: Creating a Task}
-To create an SQL ETL task using Studio open `Settings -> Manage Ongoing Tasks`.
+To create an SQL ETL task using the Studio open `Settings -> Manage Ongoing Tasks`.
 
 ![Figure 1. Configure SQL ETL task](images/sql-etl-setup.png)
 
