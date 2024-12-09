@@ -14,7 +14,7 @@
     * [Add a Kafka connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-kafka-connection-string)  
     * [Add a RabbitMQ connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-rabbitmq-connection-string)  
     * [Add an Azure Queue Storage connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-azure-queue-storage-connection-string)  
-    * [Add an AWS SQS connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-aws-sqs-connection-string)  
+    * [Add an Amazon SQS connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-amazon-sqs-connection-string)  
     * [The PutConnectionStringOperation method](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#the%C2%A0putconnectionstringoperation%C2%A0method)
 
 {NOTE/}
@@ -121,9 +121,9 @@ Learn to add an Azure Queue Storage connection string in the [Add an Azure Queue
 
 {PANEL/}
 
-{PANEL: Add an AWS SQS connection string}
+{PANEL: Add an Amazon SQS connection string}
 
-AWS SQS connection strings are used by RavenDB [AWS SQS ETL Tasks](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs).  
+Amazon SQS connection strings are used by RavenDB [Amazon SQS ETL Tasks](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs).  
 Learn to add an SQS connection string in [this section](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-aws-sqs-connection-string).  
 
 {PANEL/}
@@ -132,13 +132,14 @@ Learn to add an SQS connection string in [this section](../../../../server/ongoi
 
 {CODE put_connection_string@ClientApi\Operations\Maintenance\ConnectionStrings\AddConnectionStrings.cs /}
 
-| Parameters           | Type                            | Description                                                                                                        |
-|----------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| **connectionString** | `RavenConnectionString`         | Object that defines the RavenDB connection string.                                                                 |
-| **connectionString** | `SqlConnectionString`           | Object that defines the SQL Connection string.                                                                     |
-| **connectionString** | `OlapConnectionString`          | Object that defines the OLAP connction string.                                                                     |
-| **connectionString** | `ElasticSearchConnectionString` | Object that defines the Elasticsearch connction string.                                                            |
-| **connectionString** | `QueueConnectionString`         | Object that defines the connection string for the Queue ETLs tasks (Kafka, RabbitMQ, and the Azure Queue Storage). |
+| Parameters           | Type                            | Description                                        |
+|----------------------|---------------------------------|----------------------------------------------------|
+| **connectionString** | `RavenConnectionString`         | Object that defines the RavenDB connection string. |
+| **connectionString** | `SqlConnectionString`           | Object that defines the SQL Connection string. |
+| **connectionString** | `SnowflakeConnectionString`     | Object that defines the Snowflake connction string. |
+| **connectionString** | `OlapConnectionString`          | Object that defines the OLAP connction string. |
+| **connectionString** | `ElasticSearchConnectionString` | Object that defines the Elasticsearch connction string. |
+| **connectionString** | `QueueConnectionString`         | Object that defines the connection string for the Queue ETLs tasks (Kafka, RabbitMQ, Azure Queue Storage, and Amazon SQS). |
 
 {CODE connection_string_class@ClientApi\Operations\Maintenance\ConnectionStrings\AddConnectionStrings.cs /}
 

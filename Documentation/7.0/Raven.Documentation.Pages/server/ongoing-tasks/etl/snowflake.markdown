@@ -67,8 +67,8 @@ A Snowflake ETL task can be created using **Code** or via **Studio**.
 
 {PANEL: Snowflake warehouse setup}
 
-Prior to running the ETL task, please create the warehouse destination tables that RavenDB 
-records are to be transferred to.  
+Prior to running the ETL task, please create the **destination tables** in the warehouse database 
+that RavenDB records are to be transferred to.  
 
 {PANEL/}
 
@@ -116,7 +116,7 @@ A transformation script is executed per document once the document is created or
 To load data to the destination table, call the `loadTo<TableName>()` method and pass it a user defined JavaScript object.  
 
 The name of the table that the document is inserted to is indicated as a part of the `loadTo` method name.  
-E.g., to write data into the warehouse `OrderLines` table, include use the following call in the script:
+E.g., to write data into the database `OrderLines` table, use the following call in the script:
 
 {CODE-BLOCK:javascript}
 loadToOrderLines({ ... });
@@ -193,7 +193,7 @@ var value = this['@metadata']['custom-metadata-key'];
 
 The `loadTo` method can be called as many times as needed by a single script.  
 The following script demonstrates this by looping through the `Lines` array of an `Order` document, 
-using consecutive `loadTo` calls to store each line's properties in the `OrderLines` warehouse table.  
+using consecutive `loadTo` calls to store each line's properties in the `OrderLines` database table.  
 The process is concluded with a final `loadTo` call, storing the lines' total cost in the `Orders` table.  
 
 {CODE-BLOCK:javascript}
