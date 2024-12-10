@@ -6,33 +6,14 @@
 * Amazon **SQS** (**S**imple **Q**ueue **S**ervice) is a distributed Message 
   Queue service (like Azure Queue Storage and others) that is widely used 
   for its scalability, durability, availability, and queueing methods:  
-   * **Standard queueing**, offering an enormous throughput but lacking 
-     the ability to ensure that messages would arrive in the same order 
-     they were sent or to prevent message duplication.  
-   * **FIFO queueing**, providing strict control over delivery order using 
-     a First-In-First-Out queue and ensuring the delivery of each message 
-     exactly once, in exchange for a much slower transfer rate than that of 
-     the Standard Queueing method.  
-
-       {INFO: }
-        Read more about Amazon SQS in the platform's [official documentation](https://docs.aws.amazon.com/sqs/).
-       {INFO/}
+   * **Standard queueing** for enormous throughput.  
+   * **FIFO queueing** to control delivery order and prevent message duplication.  
 
 * Create an **Amazon SQS ETL Task** to:
   * **Extract** data from a RavenDB database,  
   * **Transform** the data using one or more custom scripts,  
-  * and **Load** the resulting JSON object to an SQS destination in CloudEvent format.  
-
-* Utilizing such tasks allows RavenDB to act as an event producer in an Amazon SQS architecture.  
-
-* The loading of RavenDB messages to an SQS queue can automatically _trigger AWS 
-  [Lambda Functions](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)_, 
-  enabling economic processing and powerful workflows.  
-  Enqueueing RavenDB messages using SQS can also be _integrated with other AWS services_ 
-  such as [Amazon SNS](https://aws.amazon.com/sns/) to distribute message-related notifications 
-  and [Step Functions](https://aws.amazon.com/step-functions/) to manage and visualize your workflows.  
-
----
+  * and **Load** the resulting JSON object to an SQS destination in 
+    [CloudEvents]([CloudEvents messages](https://cloudevents.io) format.  
 
 {INFO: }
 This article focuses on the creation of an Amazon SQS ETL task using the Client API.  
@@ -41,6 +22,8 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
 {INFO/}
 
 * In this page:  
+  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#ravendb-etl-and-amazon-sqs)  
+      * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#queue-methods)
   * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-amazon-sqs-connection-string)  
       * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#authentication-methods)  
       * [Example](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#example)  
@@ -55,6 +38,65 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
 {NOTE/}
 
 ---
+
+{PANEL: RavenDB ETL and Amazon SQS}
+
+* Utilizing SQS ETL tasks allows RavenDB to take the role of an event producer in an Amazon SQS 
+  architecture, leveraging RavenDB's feature set and SQS` powerful message distribution capabilities.  
+
+* The loading of RavenDB messages to an SQS queue can automatically _trigger AWS 
+  [Lambda Functions](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)_, 
+  enabling economic processing and powerful workflows.  
+
+     Enqueueing RavenDB messages using SQS can also be _integrated with other AWS services_ 
+     such as [Amazon SNS](https://aws.amazon.com/sns/) to distribute message-related notifications 
+     and [Step Functions](https://aws.amazon.com/step-functions/) to manage and visualize your workflows.  
+
+{INFO: }
+Read more about Amazon SQS in the platform's [official documentation](https://docs.aws.amazon.com/sqs/).
+{INFO/}
+
+---
+
+#### Queue methods
+
+The data that ETL tasks handle is carefully selected and tailored for specific user needs.  
+Selecting which Queue Type Amazon SQS would use should also take into account the specific 
+nature of the transferred data.  
+
+* **Standard queueing** offers an extremely high transfer rate but lacks the ability to ensure 
+  that messages would arrive in the same order they were sent or prevent their duplication.  
+
+     {INFO: }
+      Use this method when quick delivery takes precedence over messages order and distinctness 
+      or the recepient can make up for them.  
+     {INFO/}
+
+* **FIFO queueing** controls delivery order using a First-In-First-Out queue and ensures 
+  the delivery of each message exactly once, in exchange for a much slower transfer rate 
+  than that of the Standard Queueing method.  
+   * Deduplication:  
+     FIFO queues automatically prevent duplicate messages within a _deduplication interval_.  
+     Interval default: 5 minutes  
+     Deduplication is achieved using a unique _Message Deduplication ID_ that is given to 
+     each message.  
+   * Message Grouping:  
+     Messages with the same _Message Group ID_ are processed in order.  
+     Each group is handled independently, allowing parallel processing across different message groups.  
+
+     {INFO: }
+      Use this method when throughput is not as important as the order and uniqueness of 
+      arriving messages.  
+     {INFO/}
+
+{WARNING: ETL message size -vs- Queue message size}
+Please be aware that the maximum size of an SQS queue message is 64 KB, while the 
+maximum size of an ETL message to the queue is 256 KB.  
+The significance of this difference is that when a maximum-size ETL message arrives 
+at its destination queue it may be charged for not 1 but 4 queue messages.  
+{WARNING/}
+
+{PANEL/}
 
 {PANEL: Add an Amazon SQS connection string}
 
