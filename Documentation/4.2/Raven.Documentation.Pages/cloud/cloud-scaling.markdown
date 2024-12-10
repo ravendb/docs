@@ -72,11 +72,6 @@ You can upscale or downscale only within the current Product Tier. The *Developm
 for example, can upscale to **Dev50**, but not to the Production Tier **PB10** configuration.  
 Your databases and data will be automatically migrated into your new configuration.
 
-{INFO: }
-Changing product type between **P** and **PB** configurations is not possible in **GCP**.
-{INFO/}
-
-
 {PANEL/}
 {PANEL: Scaling - Change Storage} 
 
