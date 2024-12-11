@@ -232,7 +232,17 @@ This is done by defining the `Type` and the `Value` properties for the data bein
    * **Type**:  
      The type specifies the SQL column type the value is loaded to.  
      The type should correspond to the data types used in the target relational database.  
-     If no type is specified, the column type will be detected automatically.
+
+     Supported enums for `Type` include:  
+       * _SqlDbType_ - see [Microsoft SQL Server](https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql)  
+       * _NpgsqlDbType_ - see [PostgreSQL](https://www.npgsql.org/doc/api/NpgsqlTypes.NpgsqlDbType.html)  
+       * _MySqlDbType_ - see [MySQL Data Types](https://dev.mysql.com/doc/refman/8.4/en/data-types.html)  
+       * _OracleDbType_ - see [Oracle Data Types](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Data-Types.html)  
+     
+     Some databases allow combining enum values using `|`.  
+     For example, using `Array | Double` for the Type is valid for PostgreSQL.  
+
+     If no type is specified, the column type will be detected automatically.  
 
    * **Value**:  
      The value contains the actual data to be loaded into the column.
@@ -258,13 +268,6 @@ var orderData = {
 // Load the data into the 'Orders' table
 loadToOrders(orderData);
 {CODE-BLOCK/}
-
-* Refer to the official documentation for detailed information on supported types for each relational database:
-
-   * [Microsoft SQL Server Data Types](https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql)
-   * [PostgreSQL Data Types](https://www.npgsql.org/doc/api/NpgsqlTypes.NpgsqlDbType.html) 
-   * [MySQL Data Types](https://dev.mysql.com/doc/refman/8.4/en/data-types.html)
-   * [Oracle Data Types](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Data-Types.html)
 
 ---
 
