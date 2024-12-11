@@ -111,7 +111,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 {NOTE: }
 
-##### When using&nbsp;`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
+##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
 ---
 
 Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
@@ -120,10 +120,11 @@ before they are sent to the search engine to retrieve matching documents.
 **However, in the following cases**:
 
 * When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search)
-* or when querying a static index that uses the default `StandardAnalyzer`
-* or when querying a static index that uses the `NGramAnalyzer`
+* or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers#using-the-default-search-analyzer)
+* or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
 
-the queried terms in the _Search_ method are processed with the **`LowerCaseKeywordAnalyzer`** before being sent to the search engine.
+the queried terms in the _Search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers#using-the-default-analyzer)  
+before being sent to the search engine.
 
 This analyzer does Not remove the `*`, so the terms are sent with `*`, as provided in the search terms.  
 For example:  
@@ -177,7 +178,7 @@ include explanations()
 ##### When using the Exact analyzer:
 ---
 
-When using the default Exact analyzer in your index (which is `KeywordAnalyzer`),
+When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers#using-the-default-exact-analyzer)),  
 then when querying the index, the wildcards in your search terms remain untouched.  
 The terms are sent to the search engine exactly as produced by the analyzer.
 
