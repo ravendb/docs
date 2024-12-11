@@ -2,6 +2,15 @@
 
 `includeExplanations` allows to investigate details related to score assigned for each query result.
 
+{INFO: }
+
+* Including explanations is available only when using **Lucene** as the underlying search engine.  
+* You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
+
+{INFO/}
+
+---
+
 ## Syntax
 
 

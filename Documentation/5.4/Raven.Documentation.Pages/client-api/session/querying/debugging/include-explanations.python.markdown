@@ -12,10 +12,18 @@
 
 * Use `include_explanations` to get the score details** and see how it was calculated.  
 
+    {INFO: }
+    * Including explanations is available only when using **Lucene** as the underlying search engine.
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
+    {INFO/}
+
+---
+
 * In this page:
     * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
     * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
     * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
+
 {NOTE/}
 
 ---
@@ -51,13 +59,13 @@ include explanations()
 
 {CODE:python syntax@ClientApi\Session\Querying\Debugging\IncludeExplanations.py /}
 
-| Parameters | Data type | Description |
-| - | - | - |
+| Parameter                 | Type                             | Description                                                                                                                                                                                                                             |
+|---------------------------|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **explanations_callback** | `Callable[[Explanations], None]` | <ul><li>A callback function (action) that takes `Explanations` as an argument. It will be called by the client with the resulting `Explanations`.</li> <li>You can interact with resulting Explanations inside your callback.</li></ul> |
-| **options** (Optional) | `ExplanationOptions` | Can be a `group_key` string |
+| **options** (Optional)    | `ExplanationOptions`             | Can be a `group_key` string                                                                                                                                                                                                             |
 
-| `Explanations` | |
-| - | - |
+| `Explanations`         |                                                                                                                                |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `Dict[str, List[str]]` | <ul><li>Pass the resulting document ID for which to get score details.</li><li>Returns a list with all explanations.</li></ul> |
 
 {PANEL/}
