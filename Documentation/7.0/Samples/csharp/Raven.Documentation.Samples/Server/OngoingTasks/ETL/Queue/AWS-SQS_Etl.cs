@@ -81,8 +81,8 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                    orderData.TotalCost += cost;
                                }
 
-                               // Load the object to the 'OrdersQueue' in Sqs
-                               // =========================================== 
+                               // Load the object to the 'OrdersQueue' ququq on the SQS destination
+                               // ================================================================= 
                                loadToOrdersQueue(orderData, {
                                    Id: id(this),
                                    Type: 'com.example.promotions',
@@ -90,8 +90,8 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                                });"
                 };
 
-                // Define the SQS ETL task:
-                // ========================================
+                // Define the SQS ETL task
+                // =======================
                 var etlTask = new QueueEtlConfiguration()
                 {
                     BrokerType = QueueBrokerType.AmazonSqs,
@@ -133,7 +133,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                     {
                         new()
                         {
-                            // The name of the Sqs queue  
+                            // The name of the SQS queue  
                             Name = "OrdersQueue",
 
                             // When set to 'true',
@@ -168,8 +168,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             #region queue_connection_string
             public class QueueConnectionString : ConnectionString
             {
-                // Set the broker type to QueueBrokerType.AmazonSqs
-                // for an SQS connection string
+                // Set to QueueBrokerType.AmazonSqs for an SQS connection string
                 public QueueBrokerType BrokerType { get; set; }
                 
                 // Configure this when setting a connection string for Kafka

@@ -90,8 +90,8 @@ nature of the transferred data.
      {INFO/}
 
 {WARNING: ETL message size -vs- Queue message size}
-Please be aware that the maximum size of an SQS queue message is 64 KB, while the 
-maximum size of an ETL message to the queue is 256 KB.  
+Please **be aware** that the maximum size of an SQS queue message is `64 KB`, while the 
+maximum size of an ETL message to the queue is `256 KB`.  
 The significance of this difference is that when a maximum-size ETL message arrives 
 at its destination queue it may be charged for not 1 but 4 queue messages.  
 {WARNING/}
@@ -141,7 +141,7 @@ by properties of the connection string it uses, as shown in the example below.
 * In this example, the Amazon SQS ETL Task will -  
   * Extract source documents from the "Orders" collection in RavenDB.  
   * Process each "Order" document using a defined script that creates a new `orderData` object.  
-  * Load the `orderData` object to the "OrdersQueue" on an SQS destination.  
+  * Load the `orderData` object to the "OrdersQueue" queue on an SQS destination.  
 * For more details about the script and the `loadTo` method, see the transromation script section below.  
 
 {CODE add_amazon_sqs_etl_task@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
@@ -166,15 +166,16 @@ by properties of the connection string it uses, as shown in the example below.
 
 {PANEL: The transformation script}
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of an Azure Queue Storage ETL script are similar to those of other ETL types.  
+The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of an Amazon SQS ETL script 
+are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
-and which Azure Queue to **load** it to.
+and which SQS Queue to **load** the data to.
 
 ---
 
 #### The loadTo method
 
-To specify which Azure queue to load the data into, use either of the following methods in your script.  
+To specify which SQS queue to load the data to, use either of the following methods in your script.  
 The two methods are equivalent, offering alternative syntax:
 
 * **`loadTo<QueueName>(obj, {attributes})`**
@@ -219,8 +220,8 @@ for (var i = 0; i < this.Lines.length; i++) {
     orderData.TotalCost += cost;
 }
 
-// Load the object to the "OrdersQueue" in Azure
-// =============================================
+// Load the object to the "OrdersQueue" queue on the SQS destination
+// =================================================================
 loadToOrdersQueue(orderData, {
     Id: id(this),
     Type: 'com.example.promotions',

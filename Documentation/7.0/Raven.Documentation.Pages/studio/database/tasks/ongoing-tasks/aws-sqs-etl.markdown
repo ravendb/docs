@@ -10,8 +10,7 @@
 
 * The Amazon SQS ETL task transfers **documents only**.  
   Document extensions like attachments, counters, time series, and revisions are not sent.  
-  The maximum message size in Amazon SQS is 64KB, documents larger than this won’t be loaded.
-  
+
 * This page explains how to create an Amazon SQS ETL task using Studio.  
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs) how to define 
   an Amazon SQS ETL task using the Client API.  .  
@@ -20,7 +19,8 @@
   * [Ongoing Tasks View](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#ongoing-tasks-view)  
   * [Define the Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#define-amazon-sqs-etl-task)  
   * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#add-or-edit-transformation-script)  
-
+  * [Comments](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#comments)  
+      * [ETL message size -vs- Queue message size](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#etl-message-size--vs--queue-message-size)  
 {NOTE/}
 
 ---
@@ -75,7 +75,7 @@
          ![Delete processed documents](images/sqs_delete-processed-docs.png "Delete processed documents")
 
     * `D.` **Test Connection**  
-      After defining the connection string, click to test the connection to the Azure storage account.  
+      After defining the connection string, click to test the connection to the SQS destination.  
 
 5. **Transform Scripts**  
    an ETL process can apply multiple transformation scripts to the data it handles.  
@@ -138,11 +138,22 @@
 
 {PANEL/}
 
+{PANEL: Comments}
+
+#### ETL message size -vs- Queue message size
+Please **be aware** that the maximum size of an SQS queue message is `64 KB`, while the 
+maximum size of an ETL message to the queue is `256 KB`.  
+The significance of this difference is that when a maximum-size ETL message arrives 
+at its destination queue it may be charged for not 1 but 4 queue messages.  
+
+{PANEL/}
+
 ## Related Articles
 
 ### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
+- [Amazon SQS ETL](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs)
 - [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
 - [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
 - [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
