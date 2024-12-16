@@ -7,7 +7,8 @@
   Learn more in the [Indexes overview](../indexes/what-are-indexes#indexes-overview) below.
 
 * This page provides a [Basic example](../indexes/what-are-indexes#basic-example) of creating, deploying, and querying an index.
-  Additional examples can be found in [Creating and deploying indexes](../indexes/creating-and-deploying), [Map Indexes](../indexes/map-indexes), and many other articles under the "Indexes" menu.
+  Additional examples can be found in [Creating and deploying indexes](../indexes/creating-and-deploying), [Map Indexes](../indexes/map-indexes),
+  and many other articles under the "Indexes" menu.
 
 * In this page:
     * [Indexes overview](../indexes/what-are-indexes#indexes-overview)
@@ -206,5 +207,6 @@ you can enable the option to show "raw index entries" instead of the matching do
 - [Studio Index List View](../studio/database/indexes/indexes-list-view)
 
 ### Sharding
+
 - [Indexing in a Sharded DB](../sharding/indexing)
 - [Querying in a Sharded DB](../sharding/querying)  

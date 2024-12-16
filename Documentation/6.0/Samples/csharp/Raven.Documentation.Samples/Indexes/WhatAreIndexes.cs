@@ -41,8 +41,8 @@ namespace Raven.Documentation.Samples.Indexes
             using (var store = new DocumentStore())
             {
                 #region indexes_2
-                // Deploy the index to server:
-                // ===========================
+                // Deploy the index to the server:
+                // ===============================
                 
                 new Employees_ByNameAndCountry().Execute(store);
                 #endregion
