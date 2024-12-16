@@ -12,6 +12,10 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
     {
         public void AddConnectionString()
         {
+            string SqsAccessKey = "SqsAccessKey";
+            string SqsSecretKey = "SqsSecretKey";
+            string SqsRegionName = "SqsRegionName";
+
             using (var store = new DocumentStore())
             {
                 #region add_sqs_connection_string
