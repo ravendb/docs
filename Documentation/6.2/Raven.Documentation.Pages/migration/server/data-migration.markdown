@@ -4,7 +4,6 @@
 {NOTE: }
 
 * In this page:
-    * [Replacing the binaries](../../migration/server/data-migration#replacing-the-binaries)
     * [Migration from RavenDB 5.x to 6.x](../../migration/server/data-migration#migration-from-ravendb-5.x-to-6.x)
     * [Migration from RavenDB 4.x to RavenDB 5.x and 6.x](../../migration/server/data-migration#migration-from-ravendb-4.x-to-ravendb-5.x-and-6.x)
     * [Migration from RavenDB 3.x](../../migration/server/data-migration#migration-from-ravendb-3.x)
@@ -13,27 +12,6 @@
 {NOTE/}
 
 ---
-
-{PANEL: Replacing the binaries}
-
-* Starting with RavenDB `6.2`, the `.exe` files are self-contained,  
-  bundling all necessary `.dll` files and dependencies into a single executable.
-
-* When migrating to `6.2`, ensure you first **remove ALL** previous binaries (DLL and EXE files),  
-  and then add the following `.exe` files from the update package:
-    * _Raven.Server.exe_
-    * _Raven.Debug.exe_
-    * _rvn.exe_
-
-{WARNING: }
-
-* Be cautious not to overwrite your `settings.json` (if it was customized), your server certificate,  
-  or any other configuration files you have added if they reside in your server directory.
-
-* Additionally, if you keep your [data directory](../../server/storage/directory-structure) under the server directory,  
-  make sure you don't delete or overwrite it.
-
-{WARNING/}
 
 {PANEL/}
 
