@@ -18,7 +18,6 @@
 {PANEL: Migration from RavenDB 5.x to 6.x}
 
 * RavenDB `6.x` supports in-place migration of data from RavenDB `5.x`.
-* During the first startup after [replacing the binaries](../../migration/server/data-migration#replacing-the-binaries) with the new ones, the data will migrate automatically.
 * RavenDB `5.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `5.x` license to a RavenDB `6.x` license,  
   please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license#upgrade-a-license-key-for-ravendb-6.x).
@@ -38,7 +37,6 @@ and the migrated data will no longer be accessible via RavenDB `5.x`.
   It is also possible to upgrade directly from version `4.x` to `6.x`,  
   but it is recommended to first upgrade RavenDB `4.x` to `5.x`, and then proceed from `5.x` to `6.x`.
   {INFO/}
-* During the first startup after [replacing the binaries](../../migration/server/data-migration#replacing-the-binaries) with the new ones, the data will migrate automatically.
 * RavenDB `4.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `4.x` license to a RavenDB `6.x` license,  
   please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license#upgrade-a-license-key-for-ravendb-6.x).
