@@ -6,9 +6,9 @@
 * **Document Revisions** are snapshots of documents that can be created manually or automatically when a document is created, modified, or deleted.
   Revisions can be used for data auditing, instant restoration after document corruption, and other purposes.
 
-* Learn more about document revisions in this [document revisions overview](../../../document-extensions/revisions/overview):  
-  * To define and enable revisions creation, see [revisions configuration](../../../document-extensions/revisions/overview#revisions-configuration).  
-  * A dynamic walkthrough demonstrating revisions management is available [here](../../../document-extensions/revisions/overview#how-it-works).  
+* Learn more about document revisions in this [document revisions overview](../../../../document-extensions/revisions/overview):  
+  * To define and enable revisions creation, see [revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration).  
+  * A dynamic walkthrough demonstrating revisions management is available [here](../../../../document-extensions/revisions/overview#how-it-works).  
 
 * This article provides an overview of the Studio views related to working with revisions, including:  
   * Viewing revisions
@@ -18,11 +18,11 @@
 ---
 
 * In this page:
-  * [Revisions Tab](../../../studio/database/document-extensions/revisions#revisions-tab)  
-  * [Revision inspection](../../../studio/database/document-extensions/revisions#revision-inspection)  
-  * [Revisions comparison](../../../studio/database/document-extensions/revisions#revisions-comparison)  
-  * [Revisions Bin](../../../studio/database/document-extensions/revisions#revisions-bin)  
-     * [Restoring revisions](../../../studio/database/document-extensions/revisions#restoring-revisions)  
+  * [Revisions Tab](../../../../studio/database/document-extensions/revisions/revisions#revisions-tab)  
+  * [Revision inspection](../../../../studio/database/document-extensions/revisions/revisions#revision-inspection)  
+  * [Revisions comparison](../../../../studio/database/document-extensions/revisions/revisions#revisions-comparison)  
+  * [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions#revisions-bin)  
+     * [Restoring revisions](../../../../studio/database/document-extensions/revisions/revisions#restoring-revisions)  
 
 {NOTE/}
 
@@ -37,14 +37,14 @@
 
 ![Revisions Tab](images/revisions/document-revisions.png "Revisions Tab")
 
-1. [Document View](../../../studio/database/documents/document-view) > **Revisions tab**  
+1. [Document View](../../../../studio/database/documents/document-view) > **Revisions tab**  
    Click to display the document's revisions tab.  
    Revisions are listed in the revisions tab by their creation time signatures.  
    The current number of revisions is displayed in the tab header.  
 2. **Create revision**  
    Click to manually create a new revision for this document from the Studio.  
    A new revision will be created if the document doesn't already have a revision for the latest content.  
-   [Learn here](../../../document-extensions/revisions/overview#force-revision-creation-via-the-client-api) about forcing the creation of a new revision via the Client API.  
+   [Learn here](../../../../document-extensions/revisions/overview#force-revision-creation-via-the-client-api) about forcing the creation of a new revision via the Client API.  
 3. **Revision timestamp**  
    Click to inspect this revision.  
 4. **Compare revision**  
@@ -114,7 +114,7 @@ Click the revision's comparison button to compare it with other revisions:
 * When a document is deleted:  
   * A "delete-revision" is created for the document, marking its deletion.
   * The "delete-revision" and all the document's revisions - whether automatically created due to the defined revisions configuration or manually created - are moved to the Revisions Bin.
-  * This applies regardless of whether a [revisions configuration](../../../document-extensions/revisions/overview#revisions-configuration) is enabled or disabled.
+  * This applies regardless of whether a [revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) is enabled or disabled.
 
 ![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
 
@@ -132,7 +132,7 @@ Click the revision's comparison button to compare it with other revisions:
    Click it to inspect the revisions created for this document,  
    known as "orphaned revisions" since their parent document has been deleted.
    ![Orphaned Revisions](images/revisions/orphaned-revisions.png "Orphaned Revisions")
-     * Revisions stored in the revisions bin can be [inspected](../../../studio/database/document-extensions/revisions#revision-inspection)
+     * Revisions stored in the revisions bin can be [inspected](../../../../studio/database/document-extensions/revisions/revisions#revision-inspection)
        and cloned just like the revisions of a live document.  
 5. **Change vector**  
    The change vector of the revision that was created for the document when it was deleted.  
@@ -157,18 +157,19 @@ including the delete-revision created when the old document was deleted and the 
 
 ### Document Extensions
 
-* [Document Revisions Overview](../../../document-extensions/revisions/overview)  
-* [Revert Revisions](../../../document-extensions/revisions/revert-revisions)  
-* [Revisions and Other Features](../../../document-extensions/revisions/revisions-and-other-features)  
+* [Document Revisions Overview](../../../../document-extensions/revisions/overview)  
+* [Revert Revisions](../../../../document-extensions/revisions/revert-revisions)  
+* [Revisions and Other Features](../../../../document-extensions/revisions/revisions-and-other-features)  
 
 ### Client API
 
-* [Revisions: API Overview](../../../document-extensions/revisions/client-api/overview)  
-* [Operations: Configuring Revisions](../../../document-extensions/revisions/client-api/operations/configure-revisions)  
-* [Session: Loading Revisions](../../../document-extensions/revisions/client-api/session/loading)  
-* [Session: Including Revisions](../../../document-extensions/revisions/client-api/session/including)  
-* [Session: Counting Revisions](../../../document-extensions/revisions/client-api/session/counting)  
+* [Revisions: API Overview](../../../../document-extensions/revisions/client-api/overview)  
+* [Operations: Configuring Revisions](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
+* [Session: Loading Revisions](../../../../document-extensions/revisions/client-api/session/loading)  
+* [Session: Including Revisions](../../../../document-extensions/revisions/client-api/session/including)  
+* [Session: Counting Revisions](../../../../document-extensions/revisions/client-api/session/counting)  
 
 ### Studio
 
-* [Settings: Document Revisions](../../../studio/database/settings/document-revisions)  
+* [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
+* [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions)  
