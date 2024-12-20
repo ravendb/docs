@@ -45,7 +45,7 @@
    ![Load Query](images/query-view-load-query.png "Load Query")  
    Hover over a query name to display its preview.  
    Click the query name or the preview **Load** button to load the query.  
-7. **Query Settings**  
+7. <a id="query-settings" /> **Query Settings**  
    Click to set query settings.  
    ![Query Settings](images/query-view-settings.png "Query Settings")  
      * a. **Cache enabled**  

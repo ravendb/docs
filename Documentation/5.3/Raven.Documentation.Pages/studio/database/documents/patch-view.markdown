@@ -49,7 +49,7 @@
    ![Load Patch](images/patch-view-load-patch.png "Load Patch")  
    Hover over a patch name to display its preview.  
    Click the patch name or the preview **Load** button to load the patch.  
-3. **Patch Settings**  
+3. <a id="patch-settings" /> **Patch Settings**  
    ![Patch Settings](images/patch-view-settings.png "Patch Settings")  
 
     * a. **Patch immediately**  
