@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.Indexes
         #region indexes_1
         // Define a static-index
         // Inherit from 'AbstractIndexCreationTask'
-        public class Orders_Totals : AbstractIndexCreationTask<Order>
+        public class Orders_ByTotal : AbstractIndexCreationTask<Order>
         {
             // ...
         }
@@ -27,29 +27,29 @@ namespace Raven.Documentation.Samples.Indexes
             using (var store = new DocumentStore())
             {
                 #region indexes_3
-                // Call 'Execute' directly on the index object
-                new Orders_Totals().Execute(store);
+                // Call 'Execute' directly on the index instance
+                new Orders_ByTotal().Execute(store);
                 #endregion
                 
                 #region indexes_4
-                // Call 'ExecuteAsync' directly on the index object
-                await new Orders_Totals().ExecuteAsync(store);
+                // Call 'ExecuteAsync' directly on the index instance
+                await new Orders_ByTotal().ExecuteAsync(store);
                 #endregion
 
                 #region indexes_5
                 // Call 'ExecuteIndex' on your store object
-                store.ExecuteIndex(new Orders_Totals());
+                store.ExecuteIndex(new Orders_ByTotal());
                 #endregion
                 
                 #region indexes_6
                 // Call 'ExecuteIndexAsync' on your store object
-                await store.ExecuteIndexAsync(new Orders_Totals());
+                await store.ExecuteIndexAsync(new Orders_ByTotal());
                 #endregion
 
                 #region indexes_7
                 var indexesToDeploy = new List<AbstractIndexCreationTask>
                 {
-                    new Orders_Totals(),
+                    new Orders_ByTotal(),
                     new Employees_ByLastName()
                 };
                 
@@ -62,7 +62,7 @@ namespace Raven.Documentation.Samples.Indexes
                 #region indexes_8
                 var indexesToDeploy = new List<AbstractIndexCreationTask>
                 {
-                    new Orders_Totals(),
+                    new Orders_ByTotal(),
                     new Employees_ByLastName()
                 };
                 
@@ -73,7 +73,7 @@ namespace Raven.Documentation.Samples.Indexes
                 #region indexes_9
                 var indexesToDeploy = new List<AbstractIndexCreationTask>
                 {
-                    new Orders_Totals(),
+                    new Orders_ByTotal(),
                     new Employees_ByLastName()
                 };
                 
@@ -84,7 +84,7 @@ namespace Raven.Documentation.Samples.Indexes
                 #region indexes_10
                 var indexesToDeploy = new List<AbstractIndexCreationTask>
                 {
-                    new Orders_Totals(),
+                    new Orders_ByTotal(),
                     new Employees_ByLastName()
                 };
                 
@@ -94,13 +94,13 @@ namespace Raven.Documentation.Samples.Indexes
                 */
                 
                 #region indexes_11
-                // Deploy ALL indexes from the assembly containing the `Orders_Totals` class
-                IndexCreation.CreateIndexes(typeof(Orders_Totals).Assembly, store);
+                // Deploy ALL indexes from the assembly containing the `Orders_ByTotal` class
+                IndexCreation.CreateIndexes(typeof(Orders_ByTotal).Assembly, store);
                 #endregion
                 
                 #region indexes_12
-                // Deploy ALL indexes from the assembly containing the `Orders_Totals` class
-                await IndexCreation.CreateIndexesAsync(typeof(Orders_Totals).Assembly, store);
+                // Deploy ALL indexes from the assembly containing the `Orders_ByTotal` class
+                await IndexCreation.CreateIndexesAsync(typeof(Orders_ByTotal).Assembly, store);
                 #endregion
 
                 using (var session = store.OpenSession())
@@ -119,9 +119,9 @@ namespace Raven.Documentation.Samples.Indexes
     public class CreatingWithCustomConfiguration
     {
         #region indexes_2
-        public class Orders_Totals : AbstractIndexCreationTask<Order>
+        public class Orders_ByTotal : AbstractIndexCreationTask<Order>
         {
-            public Orders_Totals()
+            public Orders_ByTotal()
             {
                 // ...
                 // Set an indexing configuration value for this index:
@@ -136,7 +136,7 @@ namespace Raven.Documentation.Samples.Indexes
         #region indexes_13
         // Define a static-index:
         // ======================
-        public class Orders_Totals : AbstractIndexCreationTask<Order>
+        public class Orders_ByTotal : AbstractIndexCreationTask<Order>
         {
             public class IndexEntry
             {
@@ -144,7 +144,9 @@ namespace Raven.Documentation.Samples.Indexes
                 public string Employee { get; set; }
                 public string Company { get; set; }
                 public decimal Total { get; set; }
-            }          public Orders_Totals()
+            }
+            
+            public Orders_ByTotal()
             {
                 Map = orders => from order in orders
                                 select new IndexEntry
@@ -176,14 +178,15 @@ namespace Raven.Documentation.Samples.Indexes
                 
                 // Deploy the index:
                 // =================
-                new Orders_Totals().Execute(store);
+                new Orders_ByTotal().Execute(store);
                 
                 using (IDocumentSession session = store.OpenSession())
                 {
                     // Query the index:
                     // ================
                     IList<Order> orders = session
-                        .Query<Orders_Totals.IndexEntry, Orders_Totals>()
+                        .Query<Orders_ByTotal.IndexEntry, Orders_ByTotal>()
+                         // Query for Order documents that have Total > 100
                         .Where(x => x.Total > 100)
                         .OfType<Order>()
                         .ToList();
@@ -214,7 +217,7 @@ namespace Raven.Documentation.Samples.Indexes
     public interface IFoo
     {
         #region syntax_1
-        // Call this method directly on the index object
+        // Call this method directly on the index instance
         void Execute(IDocumentStore store, DocumentConventions conventions = null, 
             string database = null);
 
@@ -231,7 +234,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
         
         #region syntax_2
-        // Call this method directly on the index object
+        // Call this method directly on the index instance
         Task ExecuteAsync(IDocumentStore store, DocumentConventions conventions = null,
             string database = null, CancellationToken token = default);
 

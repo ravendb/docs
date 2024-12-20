@@ -78,8 +78,8 @@
 * Static-index class names follow a single naming convention:  
   Each `_` in the class name is translated to `/` in the index name on the server.
 
-* In the above example, the index class name is `Orders_Totals`.  
-  The name of the index that will be generated on the server will be: `Orders/Totals`.  
+* In the above example, the index class name is `Orders_ByTotal`.  
+  The name of the index that will be generated on the server will be: `Orders/ByTotal`.  
 
 {NOTE/}
 {NOTE: }
@@ -112,7 +112,7 @@
 
 * Use `Execute()` or `ExecuteIndex()` to deploy a single index.
 
-* The following examples deploy index `Ordes/Totals` to the default database defined in your _DocumentStore_ object.
+* The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
 {CONTENT-FRAME: }
@@ -144,7 +144,7 @@
   If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
   in separate requests.
 
-* The following examples deploy indexes `Ordes/Totals` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
+* The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
 {CONTENT-FRAME: }
