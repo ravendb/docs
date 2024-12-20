@@ -1,5 +1,4 @@
 # Put Indexes Operation
-
  ---
 
 {NOTE: }
@@ -21,28 +20,37 @@
 
 {PANEL: Ways to deploy indexes - short summary }
 
-#### Static index:
+{NOTE: }
+
+##### Static-indexes:
 
 There are a few ways to deploy a static-index from the Client API:  
 
-  * Call `Execute()` on a specific index instance
-  * Call `IndexCreation.CreateIndexes()` to deploy multiple indexes
-  * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
-  * Learn more in [static indexes](../../../../indexes/creating-and-deploying#static-indexes)
+* The following methods are explained in section [Deploy a static-index](../../../../indexes/creating-and-deploying#deploy-a-static-index):
+  * Call `Execute()` on a specific index instance.
+  * Call `ExecuteIndex` or `ExecuteIndexes` on your _DocumentStore_ object.
+  * Call `IndexCreation.CreateIndexes()`.
 
-#### Auto index:  
+* Alternatively, you can execute the `PutIndexesOperation` maintenance operation on the _DocumentStore_, **as explained below**.
 
-  * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
-  * Learn more in [auto indexes](../../../../indexes/creating-and-deploying#auto-indexes)
+{NOTE/}
+{NOTE: }
 
+##### Auto-indexes:
+
+  * An auto-index is created by the server when making a filtering query that doesn't specify which index to use.
+    Learn more in [Creating auto indexes](../../../../indexes/creating-and-deploying#auto-indexes).
+
+{NOTE/}
 {PANEL/}
 
 {PANEL: Put indexes operation with IndexDefinition }
 
-Using `PutIndexesOperation` with **IndexDefinition** allows the following:  
+Using `PutIndexesOperation` with **IndexDefinition** allows you to:
 
-  * Choosing any name for the index.
-  * Setting low-level properties available in _IndexDefinition_.
+  * Choose any name for the index.  
+    This string-based name is specified when querying the index.
+  * Set low-level properties available in _IndexDefinition_.
 
 {CODE-TABS}
 {CODE-TAB:csharp:LINQ-index-Sync put_1@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
