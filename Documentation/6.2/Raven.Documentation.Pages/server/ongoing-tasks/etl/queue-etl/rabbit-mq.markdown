@@ -18,7 +18,7 @@
 ---
 
 * This article focuses on how to create a RabbitMQ ETL task using the Client API.  
-  To define a RabbitMQ ETL task from the Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task).  
+  To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)  
   For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).
 
 * In this page:
@@ -61,7 +61,7 @@ Before setting up the ETL task, define a connection string that the task will us
 
 {NOTE: }
 
-<a id="example-basic" /> __Example - basic__:
+<a id="example-basic" /> **Example - basic**:
 
 ---
 
@@ -76,7 +76,7 @@ Before setting up the ETL task, define a connection string that the task will us
 {NOTE/}
 {NOTE: }
 
-<a id="delete-processed-documents" /> __Example - delete processed documents__:
+<a id="delete-processed-documents" /> **Example - delete processed documents**:
 
 ---
 

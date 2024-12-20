@@ -4,13 +4,13 @@
 {NOTE: }
 
 * The RavenDB **Azure Queue Storage ETL task** -  
-   * **Extracts** selected data from RavenDB documents from specified collections.
+   * **Extracts** selected data from RavenDB documents of specified collections.
    * **Transforms** the data into JSON object.
    * Wraps the JSON objects as [CloudEvents messages](https://cloudevents.io) and **Loads** them to an Azure Queue Storage.
 
 * The Azure Queue Storage ETL task transfers **documents only**.  
   Document extensions like attachments, counters, time series, and revisions are not sent.  
-  The maximum message size in Azure Queue Storage is 64KB, documents larger than this won’t be loaded.
+  The maximum message size in Azure Queue Storage is 64KB, documents larger than this will not be loaded.
   
 * The Azure Queue Storage enqueues incoming messages at the tail of a queue. 
   [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cextensionv5&pivots=programming-language-csharp) 
@@ -18,7 +18,7 @@
  
 ---
 
-* This page explains how to create an Azure Queue Storage ETL task using the Studio.  
+* This page explains how to create an Azure Queue Storage ETL task using Studio.  
   [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue) how to define an Azure Queue Storage ETL task using the Client API.  
  
 * In this page:  

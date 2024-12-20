@@ -90,7 +90,7 @@ There are three authentication methods available:
 
 {NOTE: }
 
-<a id="example-basic" /> __Example__:
+<a id="example-basic" /> **Example**:
 
 ---
 
@@ -105,7 +105,7 @@ There are three authentication methods available:
 {NOTE/}
 {NOTE: }
 
-<a id="delete-processed-documents" /> __Delete processed documents__:
+<a id="delete-processed-documents" /> **Delete processed documents**:
 
 ---
 

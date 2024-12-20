@@ -22,5 +22,11 @@
         "Name": "Azure Queue Storage ETL",
         "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
         "Mappings": []
+    },
+    {
+        "Path": "aws-sqs.markdown",
+        "Name": "Amazon SQS ETL",
+        "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
+        "Mappings": []
     }
 ]

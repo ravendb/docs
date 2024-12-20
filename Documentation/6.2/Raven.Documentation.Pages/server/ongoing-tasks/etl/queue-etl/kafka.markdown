@@ -61,7 +61,7 @@ Before setting up the ETL task, define a connection string that the task will us
 
 {NOTE: }
 
-<a id="example-basic" /> __Example - basic__:
+<a id="example-basic" /> **Example - basic**:
 
 ---
 
@@ -76,7 +76,7 @@ Before setting up the ETL task, define a connection string that the task will us
 {NOTE/}
 {NOTE: }
 
-<a id="delete-processed-documents" /> __Example - delete processed documents__:
+<a id="delete-processed-documents" /> **Example - delete processed documents**:
 
 ---
 
