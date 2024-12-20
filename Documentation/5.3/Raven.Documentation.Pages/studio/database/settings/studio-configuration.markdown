@@ -63,21 +63,30 @@ In this page:
 {PANEL: About Auto-Indexes and the Studio}
 
 **What are Auto-Indexes**  
-When a query or patch cannot be answered by an existing index, RavenDB creates an [Auto-Index (Dynamic Index)](../../../indexes/creating-and-deploying#auto-indexes) 
-by default.  
 
-These indexes are dynamically maintained to change automatically in response to changing query demands.  
+* Auto-indexes are created when all of the following conditions are met:
+  * A query is issued without specifying an index (a [dynamic query](../../../client-api/session/querying/how-to-query#dynamicQuery)).
+  * The query includes a filtering condition. 
+  * No suitable auto-index exists that can satisfy the query.
+  * Creation of auto-indexes has not been disabled.
 
-After a certain amount of time that an index is not used [(30 minutes by default)](../../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin), the index goes into an [idle state](../../../studio/database/indexes/indexes-list-view#index-state)
-and deleted after a set time-period [(72 hours by default)](../../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs).
+* For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.  
+  If no suitable auto-index is found, RavenDB will either [create a new auto-index](../../../indexes/creating-and-deploying#auto-indexes) or optimize an existing auto-index.
 
-To provide for fast queries, indexes process information in the background.  
-If they are processing large datasets, each index can be demanding on I/O resources.
+* Note: dynamic queries can be issued either when [querying](../../../studio/database/queries/query-view#query-view) or when [patching](../../../studio/database/documents/patch-view#patch-configuration).
+
+* Auto-indexes are dynamically maintained to change automatically in response to changing query demands.  
+  After a certain amount of time that an auto-index is not used [(30 minutes by default)](../../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin),  
+  the index goes into an [idle state](../../../studio/database/indexes/indexes-list-view#index-state)
+  and deleted after a set time-period [(72 hours by default)](../../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs).
+
+* To provide for fast queries, indexes process information in the background.  
+  If they are processing large datasets, each index can be demanding on I/O resources.
 
 **Why disable Auto-Index in Studio queries or patches**  
 Some people use the Studio for one-time, ad-hoc queries and don't want a new index to start using resources.  
 In a playground database, it may be worth keeping auto-indexing active, even for random queries, because you want to be able to experiment. 
-On the other hand, disabling it in production can prevent expensive indexes from being created and running in the background.  
+On the other hand, disabling it in production can prevent expensive indexes from being created and running in the background.
 
 {PANEL/}
 
@@ -88,8 +97,8 @@ If you disabled Auto-Indexing in the Studio Database Configuration page, and
 you want a one-time Auto-Index set up to satisfy a Query or Patch,  
 temporarily allow Auto-Index in the Query or Patch settings interface.  
 
-* [Query Settings](../../../studio/database/queries/query-view#query-view)
-* [Patch Settings](../../../studio/database/documents/patch-view#patch-configuration)
+* [Query Settings](../../../studio/database/queries/query-view#query-settings)
+* [Patch Settings](../../../studio/database/documents/patch-view#patch-settings)
 
 Note: These settings only affect Auto-Indexing as a result of Queries or Patches done in the Studio.  
 They do not affect API-based Queries or Patches.  
