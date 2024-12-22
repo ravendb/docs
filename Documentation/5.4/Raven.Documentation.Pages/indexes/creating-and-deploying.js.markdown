@@ -181,7 +181,7 @@
 * Rolling deployment applies the index to one node at a time,  
   while Parallel deployment deploys the index on all nodes simultaneously.
 
-* Learn more in [Rolling index deployment](../ndexes/rolling-index-deployment).
+* Learn more in [Rolling index deployment](../indexes/rolling-index-deployment).
 
 {INFO/}
 
