@@ -102,9 +102,13 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
 #### Define the index
 
 * The first step is to define the index.  
-  One way to do this is by extending the `AbstractIndexCreationTask` class.
-* Other methods for defining an index are described in [Define a static index](../indexes/creating-and-deploying#define-a-static-index).
-  {CODE:java indexes_1@Indexes/WhatAreIndexes.java /}
+  One way to do this is by extending the `AbstractIndexCreationTask` class.  
+  Learn more in [Define a static-index using a custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask).
+* Other methods to create a static-index are:  
+  * [Creating a static-index using an Operation](../client-api/operations/maintenance/indexes/put-indexes)
+  * [Creating a static-index from the Studio](../studio/database/indexes/indexes-list-view)
+
+{CODE:java indexes_1@Indexes/WhatAreIndexes.java /}
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
@@ -112,9 +116,11 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
 #### Deploy the index
 
 * The next step is to deploy the index to the RavenDB server.  
-  Once deployed, the indexing process will start indexing documents.
-* More information on index deployment options can be found in [Deploy the static index](../indexes/creating-and-deploying#deploy-the-static-index).  
-  {CODE:java indexes_2@Indexes/WhatAreIndexes.java /}
+  One way to do this is by calling `execute()` on the index instance.
+* Additional methods for deploying static-indexes are described in [Deploy a static index](../indexes/creating-and-deploying#deploy-a-static-index).
+* Once deployed, the indexing process will start indexing documents.  
+
+{CODE:java indexes_2@Indexes/WhatAreIndexes.java /}
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
@@ -125,7 +131,8 @@ This allows querying for _Employee_ documents by any of the index-fields (`FullN
   In this example we query for _Employee_ documents, **filtering results based on index-fields** `LastName` and `Country`.
   The results will include only the _Employee_ documents that match the query predicate.
 * For detailed guidance on querying with an index, refer to the [Querying an index](../indexes/querying/query-index).
-  {CODE:java indexes_3@Indexes/WhatAreIndexes.java /}
+
+{CODE:java indexes_3@Indexes/WhatAreIndexes.java /}
 
 {CONTENT-FRAME/}
 {PANEL/}
@@ -145,6 +152,8 @@ which let you project the query results into selected fields instead of returnin
 
 ---
 
+#### Viewing the resulting documents:
+
 For example, the results shown in the following image are the **documents** that match the query predicate.
 
 ![Index query results - documents](images/index-query-results-1.png "Query results - Documents")
@@ -155,6 +164,8 @@ For example, the results shown in the following image are the **documents** that
 3. In this example, the `LastName`, `FirstName`, `Title`, etc., are the raw **document-fields**.
 
 ---
+
+#### Viewing the index-entries:
 
 If you wish to **view the index-entries** that compose the index itself,  
 you can enable the option to show "raw index entries" instead of the matching documents.
