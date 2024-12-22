@@ -5,7 +5,7 @@
 
 * The below **indexing configuration keys** can be modified via any of the following methods:
     * As explained in the [Config overview](../../server/configuration/configuration-options) article
-    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
+    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying#customizing-configuration)
     * Set a custom configuration per index from the [Studio](../../studio/database/indexes/create-map-index#configuration)
 
 {NOTE/}
