@@ -20,28 +20,37 @@
 
 {PANEL: Ways to deploy indexes - short summary }
 
-#### Static index:
+{NOTE: }
 
-There are a few ways to deploy a static-index from the Client API:  
+##### Static-indexes:
 
-  * Call `execute()` on a specific index instance
-  * Call `IndexCreation.createIndexes()` to deploy multiple indexes
-  * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
-  * Learn more in [static indexes](../../../../indexes/creating-and-deploying#static-indexes)
+There are a few ways to deploy a static-index from the Client API:
 
-#### Auto index:  
+* The following methods are explained in section [Deploy a static-index](../../../../indexes/creating-and-deploying#deploy-a-static-index):
+    * Call `execute()` on a specific index instance.
+    * Call `executeIndex()` or `executeIndexes()` on your _DocumentStore_ object.
+    * Call `IndexCreation.createIndexes()`.
 
-  * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
-  * Learn more in [auto indexes](../../../../indexes/creating-and-deploying#auto-indexes)
+* Alternatively, you can execute the `PutIndexesOperation` maintenance operation on the _DocumentStore_, **as explained below**.
 
+{NOTE/}
+{NOTE: }
+
+##### Auto-indexes:
+
+* An auto-index is created by the server when making a filtering query that doesn't specify which index to use.
+  Learn more in [Creating auto indexes](../../../../indexes/creating-and-deploying#auto-indexes).
+
+{NOTE/}
 {PANEL/}
 
 {PANEL: Put indexes operation with IndexDefinition }
 
-Using `PutIndexesOperation` with **IndexDefinition** allows the following:  
+Using `PutIndexesOperation` with **IndexDefinition** allows you to:
 
-  * Choosing any name for the index
-  * Setting low-level properties available in _IndexDefinition_
+  * Choose any name for the index.  
+    This string-based name is specified when querying the index.
+  * Set low-level properties available in _IndexDefinition_.
 
 {CODE-TABS}
 {CODE-TAB:nodejs:LINQ-index put_1@client-api\operations\maintenance\indexes\put.js /}
@@ -54,38 +63,38 @@ Using `PutIndexesOperation` with **IndexDefinition** allows the following:
 
 {CODE:nodejs syntax@client-api\operations\maintenance\indexes\put.js /}
 
-| Parameters | Type | Description |
-| - |- | - |
+| Parameter        | Type                   | Description                      |
+|------------------|------------------------|----------------------------------|
 | **indexesToAdd** | `...IndexDefinition[]` | Definitions of indexes to deploy |
 
 <a id="indexDefinition" />
 
-| `IndexDefinition` parameter | Type | Description |
-| - | - | - |
-| name | `string` | Name of the index, a unique identifier |
-| maps | `Set<string>` | All the map functions for the index |
-| reduce | `string` | The index reduce function |
-| deploymentMode | `object` | Deployment mode<br>(Parallel, Rolling) |
-| state | `object` | State of index<br>(Normal, Disabled, Idle, Error) |
-| priority | `object` | Priority of index<br>(Low, Normal, High) |
-| lockMode | `object` | Lock mode of index<br>(Unlock, LockedIgnore, LockedError) |
-| fields | `Record<string, object>` | _IndexFieldOptions_ per index field |
-| additionalSources | `Record<string, string>` | Additional code files to be compiled with this index |
-| additionalAssemblies | `object[]` | Additional assemblies that are referenced |
-| configuration | `object` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this Record&lt;string, string&gt; |
-| outputReduceToCollection | `string` | A collection name for saving the reduce results as documents |
-| reduceOutputIndex | `number` | This number will be part of the reduce results documents IDs |
-| patternForOutputReduceToCollectionReferences | `string` | Pattern for documents IDs which reference IDs of reduce results documents |
-| patternReferencesCollectionName | `string` | A collection name for the reference documents created based on provided pattern |
+| `IndexDefinition` parameter                  | Type                     | Description                                                                                                                                 |
+|----------------------------------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| name                                         | `string`                 | Name of the index, a unique identifier                                                                                                      |
+| maps                                         | `Set<string>`            | All the map functions for the index                                                                                                         |
+| reduce                                       | `string`                 | The index reduce function                                                                                                                   |
+| deploymentMode                               | `object`                 | Deployment mode<br>(Parallel, Rolling)                                                                                                      |
+| state                                        | `object`                 | State of index<br>(Normal, Disabled, Idle, Error)                                                                                           |
+| priority                                     | `object`                 | Priority of index<br>(Low, Normal, High)                                                                                                    |
+| lockMode                                     | `object`                 | Lock mode of index<br>(Unlock, LockedIgnore, LockedError)                                                                                   |
+| fields                                       | `Record<string, object>` | _IndexFieldOptions_ per index field                                                                                                         |
+| additionalSources                            | `Record<string, string>` | Additional code files to be compiled with this index                                                                                        |
+| additionalAssemblies                         | `object[]`               | Additional assemblies that are referenced                                                                                                   |
+| configuration                                | `object`                 | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this Record&lt;string, string&gt; |
+| outputReduceToCollection                     | `string`                 | A collection name for saving the reduce results as documents                                                                                |
+| reduceOutputIndex                            | `number`                 | This number will be part of the reduce results documents IDs                                                                                |
+| patternForOutputReduceToCollectionReferences | `string`                 | Pattern for documents IDs which reference IDs of reduce results documents                                                                   |
+| patternReferencesCollectionName              | `string`                 | A collection name for the reference documents created based on provided pattern                                                             |
 
-| `store.maintenance.send(putIndexesOp)` return value| Description |
-| - | - |
-| `object[]` | operation result per index |
+| `store.maintenance.send(putIndexesOp)` return value  | Description                |
+|------------------------------------------------------|----------------------------|
+| `object[]`                                           | operation result per index |
 
-| Operation result per index | Type | Description |
-| - | - | - |
-| index | `string` | Name of the index that was added |
-| raftCommandIndex | `long` | Index of raft command that was executed |
+| Operation result per index  | Type     | Description                             |
+|-----------------------------|----------|-----------------------------------------|
+| index                       | `string` | Name of the index that was added        |
+| raftCommandIndex            | `long`   | Index of raft command that was executed |
 
 {PANEL/}
 

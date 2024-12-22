@@ -6,9 +6,9 @@
 * This article explains how to create indexes in RavenDB.  
   For a general overview of indexes, see [What are indexes](../indexes/what-are-indexes).
 
-* You can either:  
-  * [create a Static-index](../indexes/creating-and-deploying#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
-  * let the RavenDB server [create an Auto-index](../indexes/creating-and-deploying#creating-auto-indexes) for you based on query patterns.
+* You can either:
+    * [create a Static-index](../indexes/creating-and-deploying#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
+    * let the RavenDB server [create an Auto-index](../indexes/creating-and-deploying#creating-auto-indexes) for you based on query patterns.
 
 * Static-indexes can be created:
     * using the Client API, as outlined in this article, or
@@ -17,18 +17,18 @@
 ---
 
 * In this page:
-  * [Static-indexes](../indexes/creating-and-deploying#static-indexes)
-      * [Define a static-index](../indexes/creating-and-deploying#define-a-static-index)
-      * [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index)
-          * [Deploy single index](../indexes/creating-and-deploying#deploy-single-index)
-          * [Deploy multiple indexes](../indexes/creating-and-deploying#deploy-multiple-indexes)
-          * [Deploy syntax](../indexes/creating-and-deploying#deploy-syntax)
-          * [Deployment behavior](../indexes/creating-and-deploying#deployment-behavior)
-      * [Creating a static-index - Example](../indexes/creating-and-deploying#create-a-static-index---example)
-      * [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation)
-  * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
-      * [Creating auto-indexes](../indexes/creating-and-deploying#creating-auto-indexes)
-      * [Disabling auto-indexes](../indexes/creating-and-deploying#disabling-auto-indexes)
+    * [Static-indexes](../indexes/creating-and-deploying#static-indexes)
+        * [Define a static-index](../indexes/creating-and-deploying#define-a-static-index)
+        * [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index)
+            * [Deploy single index](../indexes/creating-and-deploying#deploy-single-index)
+            * [Deploy multiple indexes](../indexes/creating-and-deploying#deploy-multiple-indexes)
+            * [Deploy syntax](../indexes/creating-and-deploying#deploy-syntax)
+            * [Deployment behavior](../indexes/creating-and-deploying#deployment-behavior)
+        * [Creating a static-index - Example](../indexes/creating-and-deploying#create-a-static-index---example)
+        * [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation)
+    * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+        * [Creating auto-indexes](../indexes/creating-and-deploying#creating-auto-indexes)
+        * [Disabling auto-indexes](../indexes/creating-and-deploying#disabling-auto-indexes)
 
 {NOTE/}
 
@@ -54,16 +54,12 @@
 ##### Define a static-index using a custom class
 ---
 
-* To define a static-index using a custom class inherit from `AbstractIndexCreationTask`.
+* To define a static-index using a custom class, extend the `AbstractJavaScriptIndexCreationTask` class.
 
 * This method is recommended over the [Creating an index using an operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation) method  
-  for its simplicity and the following advantages:  
-  * **Strongly-typed syntax**:  
-    Provides strong typing when defining the index, making it easier to work with.
-  * **Ease of querying**:  
-    Lets you use the index class name in a query, instead of hard-coding the index name.
+  for its simplified index definition, offering a straightforward way to define the index.
 
-    {CODE indexes_1@Indexes/Creating.cs /}
+    {CODE:nodejs indexes_1@indexes/creating.js /}
 
 * A complete example of creating a static-index is provided [below](../indexes/creating-and-deploying#create-a-static-index---example).
 
@@ -79,7 +75,7 @@
   Each `_` in the class name is translated to `/` in the index name on the server.
 
 * In the above example, the index class name is `Orders_ByTotal`.  
-  The name of the index that will be generated on the server will be: `Orders/ByTotal`.  
+  The name of the index that will be generated on the server will be: `Orders/ByTotal`.
 
 {NOTE/}
 {NOTE: }
@@ -91,7 +87,7 @@
 
 * Setting a configuration value within the index will override the matching indexing configuration values set at the server or database level.
 
-    {CODE indexes_2@Indexes/Creating.cs /}
+  {CODE:nodejs indexes_2@indexes/creating.js /}
 
 {NOTE/}
 {PANEL/}
@@ -99,7 +95,7 @@
 {PANEL: Deploy a static-index}
 
 * To begin indexing data, the index must be deployed to the server.
-* This section provides options for deploying indexes that inherit from `AbstractIndexCreationTask`.
+* This section provides options for deploying indexes that inherit from `AbstractJavaScriptIndexCreationTask`.
 * To create and deploy an index using the `IndexDefinition` class via `PutIndexesOperation`,  
   see [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation).
 
@@ -110,25 +106,19 @@
 ##### Deploy single index
 ---
 
-* Use `Execute()` or `ExecuteIndex()` to deploy a single index.
+* Use `execute()` or `executeIndex()` to deploy a single index.
 
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
 {CONTENT-FRAME: }
 
-{CODE-TABS}
-{CODE-TAB:csharp:Execute indexes_3@Indexes/Creating.cs /}
-{CODE-TAB:csharp:Execute_async indexes_4@Indexes/Creating.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_3@indexes/creating.js /}
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
-{CODE-TABS}
-{CODE-TAB:csharp:ExecuteIndex indexes_5@Indexes/Creating.cs /}
-{CODE-TAB:csharp:ExecuteIndex_async indexes_6@Indexes/Creating.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_4@indexes/creating.js /}
 
 {CONTENT-FRAME/}
 
@@ -138,10 +128,10 @@
 ##### Deploy multiple indexes
 ---
 
-* Use `ExecuteIndexes()` or `IndexCreation.CreateIndexes()` to deploy multiple indexes.
+* Use `executeIndexes()` or `IndexCreation.createIndexes()` to deploy multiple indexes.
 
-* The `IndexCreation.CreateIndexes` method attempts to create all indexes in a single request.  
-  If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
+* The `IndexCreation.createIndexes` method attempts to create all indexes in a single request.  
+  If it fails, it will repeat the execution by calling the `execute` method for each index, one by one,  
   in separate requests.
 
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
@@ -149,30 +139,12 @@
 
 {CONTENT-FRAME: }
 
-{CODE-TABS}
-{CODE-TAB:csharp:ExecuteIndexes indexes_7@Indexes/Creating.cs /}
-{CODE-TAB:csharp:ExecuteIndexes_async indexes_8@Indexes/Creating.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_5@indexes/creating.js /}
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
-{CODE-TABS}
-{CODE-TAB:csharp:CreateIndexes indexes_9@Indexes/Creating.cs /}
-{CODE-TAB:csharp:CreateIndexes_async indexes_10@Indexes/Creating.cs /}
-{CODE-TABS/}
-
-{CONTENT-FRAME/}
-{CONTENT-FRAME: }
-
-###### Deploy ALL indexes from an assembly
-
-The following overload allows you to deploy ALL indexes from a specified assembly:
-
-{CODE-TABS}
-{CODE-TAB:csharp:CreateIndexes indexes_11@Indexes/Creating.cs /}
-{CODE-TAB:csharp:CreateIndexes_async indexes_12@Indexes/Creating.cs /}
-{CODE-TABS/}
+{CODE:nodejs indexes_6@indexes/creating.js /}
 
 {CONTENT-FRAME/}
 
@@ -182,19 +154,15 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 ##### Deploy syntax
 ---
 
-{CODE-TABS}
-{CODE-TAB:csharp:Deploy_methods syntax_1@Indexes/Creating.cs /}
-{CODE-TAB:csharp:Deploy_methods_async syntax_2@Indexes/Creating.cs /}
-{CODE-TABS/}
+{CODE:nodejs syntax@indexes/creating.js /}
 
-| Parameter          | Type                                      | Description                                                                                                       |
-|--------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| **store**          | `IDocumentStore`                          | Your document store object.                                                                                       |
-| **conventions**    | `DocumentConventions`                     | The [Conventions](../client-api/configuration/conventions) used by the document store.                            |
-| **database**       | `string`                                  | The target database to deploy the index to. If not specified, the default database set on the store will be used. |
-| **index**          | `IAbstractIndexCreationTask`              | The index object to deploy.                                                                                       |
-| **indexes**        | `IEnumerable<IAbstractIndexCreationTask>` | A list of index objects to deploy.                                                                                |
-| **assemblyToScan** | `Assembly `                               | Deploy all indexes that are contained in this assembly.                                                           |
+| Parameter          | Type                  | Description                                                                                                       |
+|--------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------|
+| **store**          | `object`              | Your document store object.                                                                                       |
+| **conventions**    | `DocumentConventions` | The [Conventions](../client-api/configuration/conventions) used by the document store.                            |
+| **database**       | `string`              | The target database to deploy the index to. If not specified, the default database set on the store will be used. |
+| **index**          | `object`              | The index object to deploy.                                                                                       |
+| **indexes**        | `object[]`            | A list of index objects to deploy.                                                                                |
 
 {NOTE/}
 {NOTE: }
@@ -224,13 +192,13 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 
 * **If the index definition is updated**:
 
-  * RavenDB uses a **side-by-side strategy** for all index updates.
+    * RavenDB uses a **side-by-side strategy** for all index updates.
 
-  * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
-    The new index will replace the existing index once it becomes non-stale.
+    * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
+      The new index will replace the existing index once it becomes non-stale.
 
-  * If you want to swap the indexes immediately, you can do so through the Studio.  
-    For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
+    * If you want to swap the indexes immediately, you can do so through the Studio.  
+      For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
 
 * **If the index definition is unchanged**:
 
@@ -244,24 +212,23 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 
 {PANEL: Create a static-index - Example}
 
-{CODE indexes_13@Indexes/Creating.cs /}
+{CODE:nodejs indexes_7@indexes/creating.js /}
 
 {PANEL/}
 
 {PANEL: Create a static-index - using an Operation}
 
-* An index can also be defined and deployed using the [PutIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes) maintenance operation.  
+* An index can also be defined and deployed using the [PutIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes) maintenance operation.
 
 * When using this operation:
 
-  * Unlike the [naming convention](../indexes/creating-and-deploying#naming-convention) used with indexes inheriting from `AbstractIndexCreationTask`,  
-    you can choose any string-based name for the index.   
-    However, when querying, you must use that string-based name rather than the index class type.
+    * Unlike the [naming convention](../indexes/creating-and-deploying#naming-convention) used with indexes inheriting from `AbstractJavaScriptIndexCreationTask`,  
+      you can choose any string-based name for the index.   
+      However, when querying, you must use that string-based name rather than the index class type.
 
-  * You can also modify various low-level settings available in the [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition)
-    and [IndexDefinitionBuilder](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinitionbuilder) classes.
+    * You can also modify various low-level settings available in the [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition) class.
 
-* Consider using this operation only if inheriting from `AbstractIndexCreationTask` is not an option.  
+* Consider using this operation only if inheriting from `AbstractJavaScriptIndexCreationTask` is not an option.
 
 * For a detailed explanation and examples, refer to the dedicated article: [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes).
 
@@ -277,7 +244,7 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 
 * Indexes **created by the server** are called `dynamic` or `auto` indexes.
 
-* Auto-indexes are created when all of the following conditions are met:  
+* Auto-indexes are created when all of the following conditions are met:
     * A query is issued without specifying an index (a dynamic query).
     * The query includes a filtering condition.
     * No suitable auto-index exists that can satisfy the query.
@@ -304,15 +271,15 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 
 * For example, issuing the following query:
 
-    {CODE-TABS}
-    {CODE-TAB:csharp:Query indexes_14@Indexes/Creating.cs /}
-    {CODE-TAB-BLOCK:sql:RQL}
+  {CODE-TABS}
+  {CODE-TAB:nodejs:Query indexes_8@indexes/creating.js /}
+  {CODE-TAB-BLOCK:sql:RQL}
 from Employees
 where FirstName = "Robert" and LastName = "King"
-    {CODE-TAB-BLOCK/}
-    {CODE-TABS/}
+  {CODE-TAB-BLOCK/}
+  {CODE-TABS/}
 
-    will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
+  will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
 
 {NOTE/}
 {NOTE: }
@@ -335,7 +302,7 @@ where FirstName = "Robert" and LastName = "King"
 * An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
   or when resetting the index.
 
-* If not resumed, the idle auto-index will be deleted by the server after the time period defined in the 
+* If not resumed, the idle auto-index will be deleted by the server after the time period defined in the
   [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
   (72 hours by default).
 
@@ -344,9 +311,9 @@ where FirstName = "Robert" and LastName = "King"
 
 {PANEL: Disabling auto-indexes}
 
-**Why disable**:  
+**Why disable**:
 
-* Disabling auto-index creation prevents the accidental deployment of resource-consuming auto-indexes that may result from one-time, ad-hoc queries issued from the Studio.  
+* Disabling auto-index creation prevents the accidental deployment of resource-consuming auto-indexes that may result from one-time, ad-hoc queries issued from the Studio.
 * In production environments, disabling this feature helps avoid the creation and background execution of expensive indexes.
 
 **How to disable**:
@@ -357,9 +324,9 @@ where FirstName = "Robert" and LastName = "King"
 * Alternatively, you can disable auto-indexes from the Studio.  
   However, this will affect queries made only from the **Studio**.
 
-   * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../studio/database/queries/query-view#query-settings).
-   * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../studio/database/documents/patch-view#patch-settings).
-   * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches).
+    * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../studio/database/queries/query-view#query-settings).
+    * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../studio/database/documents/patch-view#patch-settings).
+    * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches).
 
 {PANEL/}
 
@@ -371,7 +338,7 @@ where FirstName = "Robert" and LastName = "King"
 
 ### Operations
 - [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes)
- 
+
 ### Querying
 - [Query Overview](../client-api/session/querying/how-to-query)
 - [Querying an Index](../indexes/querying/query-index)
@@ -382,7 +349,7 @@ where FirstName = "Robert" and LastName = "King"
 
 ---
 
-### Inside RavenDB 
+### Inside RavenDB
 - [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
 
 ---

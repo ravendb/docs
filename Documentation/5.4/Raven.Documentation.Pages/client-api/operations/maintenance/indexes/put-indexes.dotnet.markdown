@@ -28,7 +28,7 @@ There are a few ways to deploy a static-index from the Client API:
 
 * The following methods are explained in section [Deploy a static-index](../../../../indexes/creating-and-deploying#deploy-a-static-index):
   * Call `Execute()` on a specific index instance.
-  * Call `ExecuteIndex` or `ExecuteIndexes` on your _DocumentStore_ object.
+  * Call `ExecuteIndex()` or `ExecuteIndexes()` on your _DocumentStore_ object.
   * Call `IndexCreation.CreateIndexes()`.
 
 * Alternatively, you can execute the `PutIndexesOperation` maintenance operation on the _DocumentStore_, **as explained below**.
@@ -81,38 +81,38 @@ Using `PutIndexesOperation` with an IndexDefinition created from an **IndexDefin
 
 {CODE syntax@ClientApi\Operations\Maintenance\Indexes\Put.cs /}
 
-| Parameters | Type | Description |
-| - |- | - |
+| Parameter        | Type                       | Description                      |
+|------------------|----------------------------|----------------------------------|
 | **indexesToAdd** | `params IndexDefinition[]` | Definitions of indexes to deploy |
 
 <a id="indexDefinition" />
 
-| `IndexDefinition` parameter | Type | Description |
-| - | - | - |
-| Name | `string` | Name of the index, a unique identifier |
-| Maps | `HashSet<string>` | All the map functions for the index |
-| Reduce | `string` | The index reduce function |
-| DeploymentMode | `IndexDeploymentMode?` | Deployment mode<br>(Parallel, Rolling) |
-| State | `IndexState?` | State of index<br>(Normal, Disabled, Idle, Error) |
-| Priority | `IndexPriority?` | Priority of index<br>(Low, Normal, High) |
-| LockMode | `IndexLockMode?` | Lock mode of index<br>(Unlock, LockedIgnore, LockedError) |
-| Fields | `Dictionary<string, IndexFieldOptions>` | _IndexFieldOptions_ per index field |
-| AdditionalSources | `Dictionary<string, string>` | Additional code files to be compiled with this index |
-| AdditionalAssemblies | `HashSet<AdditionalAssembly>` | Additional assemblies that are referenced |
-| Configuration | `IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this dictionary |
-| OutputReduceToCollection | `string` | A collection name for saving the reduce results as documents |
-| ReduceOutputIndex | `long?` | This number will be part of the reduce results documents IDs |
-| PatternForOutputReduceToCollectionReferences | `string` | Pattern for documents IDs which reference IDs of reduce results documents |
-| PatternReferencesCollectionName | `string` | A collection name for the reference documents created based on provided pattern |
+| `IndexDefinition` parameter                  | Type                                    | Description                                                                                                               |
+|----------------------------------------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Name                                         | `string`                                | Name of the index, a unique identifier                                                                                    |
+| Maps                                         | `HashSet<string>`                       | All the map functions for the index                                                                                       |
+| Reduce                                       | `string`                                | The index reduce function                                                                                                 |
+| DeploymentMode                               | `IndexDeploymentMode?`                  | Deployment mode<br>(Parallel, Rolling)                                                                                    |
+| State                                        | `IndexState?`                           | State of index<br>(Normal, Disabled, Idle, Error)                                                                         |
+| Priority                                     | `IndexPriority?`                        | Priority of index<br>(Low, Normal, High)                                                                                  |
+| LockMode                                     | `IndexLockMode?`                        | Lock mode of index<br>(Unlock, LockedIgnore, LockedError)                                                                 |
+| Fields                                       | `Dictionary<string, IndexFieldOptions>` | _IndexFieldOptions_ per index field                                                                                       |
+| AdditionalSources                            | `Dictionary<string, string>`            | Additional code files to be compiled with this index                                                                      |
+| AdditionalAssemblies                         | `HashSet<AdditionalAssembly>`           | Additional assemblies that are referenced                                                                                 |
+| Configuration                                | `IndexConfiguration`                    | Can override [indexing configuration](../../../../server/configuration/indexing-configuration) by setting this dictionary |
+| OutputReduceToCollection                     | `string`                                | A collection name for saving the reduce results as documents                                                              |
+| ReduceOutputIndex                            | `long?`                                 | This number will be part of the reduce results documents IDs                                                              |
+| PatternForOutputReduceToCollectionReferences | `string`                                | Pattern for documents IDs which reference IDs of reduce results documents                                                 |
+| PatternReferencesCollectionName              | `string`                                | A collection name for the reference documents created based on provided pattern                                           |
 
-| `store.Maintenance.Send(putIndexesOp)` return value | Description |
-| - | - |
-| `PutIndexResult[]` | List of _PutIndexResult_ per index |
+| `store.Maintenance.Send(putIndexesOp)` return value   | Description                        |
+|-------------------------------------------------------|------------------------------------|
+| `PutIndexResult[]`                                    | List of _PutIndexResult_ per index |
 
-| `PutIndexResult` parameter | Type | Description |
-| - | - | - |
-| Index | `string` | Name of the index that was added |
-| RaftCommandIndex | `long` | Index of raft command that was executed |
+| `PutIndexResult` parameter  | Type     | Description                             |
+|-----------------------------|----------|-----------------------------------------|
+| Index                       | `string` | Name of the index that was added        |
+| RaftCommandIndex            | `long`   | Index of raft command that was executed |
 
 {PANEL/}
 
