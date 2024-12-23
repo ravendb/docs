@@ -63,7 +63,7 @@
   * [Kafka ETL](../../../server/ongoing-tasks/etl/queue-etl/kafka) - send data to a _Kafka message broker_  
   * [RabbitMQ ETL](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq) - send data to an _RabbitMQ exchange_  
   * [Azure Queue Storage ETL](../../../server/ongoing-tasks/etl/queue-etl/azure-queue) - send data to an _Azure Queue Storage message queue_  
-  * [AWS SQS ETL](../../../server/ongoing-tasks/etl/queue-etl/aws-sqs) - send data to an _AWS SQS message queue_  
+  * [Amazon SQS ETL](../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs) - send data to an _Amazon SQS message queue_  
 
 * All ETL tasks can be defined from the Client API or from the [Studio](../../../studio/database/tasks/ongoing-tasks/general-info).
 

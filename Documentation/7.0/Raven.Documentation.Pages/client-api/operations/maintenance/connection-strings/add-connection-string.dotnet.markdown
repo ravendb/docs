@@ -123,8 +123,8 @@ Learn to add an Azure Queue Storage connection string in the [Add an Azure Queue
 
 {PANEL: Add an Amazon SQS connection string}
 
-Amazon SQS connection strings are used by RavenDB [Amazon SQS ETL Tasks](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs).  
-Learn to add an SQS connection string in [this section](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-aws-sqs-connection-string).  
+Amazon SQS connection strings are used by RavenDB [Amazon SQS ETL Tasks](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs).  
+Learn to add an SQS connection string in [this section](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-connection-string).  
 
 {PANEL/}
 

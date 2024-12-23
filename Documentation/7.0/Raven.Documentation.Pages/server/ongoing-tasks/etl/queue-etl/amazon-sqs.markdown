@@ -12,28 +12,31 @@
 * Create an **Amazon SQS ETL Task** to:
   * **Extract** data from a RavenDB database,  
   * **Transform** the data using one or more custom scripts,  
-  * and **Load** the resulting JSON object to an SQS destination in 
-    [CloudEvents]([CloudEvents messages](https://cloudevents.io) format.  
+  * and **Load** the resulting JSON object to an SQS destination 
+    in [CloudEvents messages](https://cloudevents.io) format.  
 
 {INFO: }
 This article focuses on the creation of an Amazon SQS ETL task using the Client API.  
-To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl).  
+To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl).  
 For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).
 {INFO/}
 
 * In this page:  
-  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#ravendb-etl-and-amazon-sqs)  
-      * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#queue-methods)
-  * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-amazon-sqs-connection-string)  
-      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#authentication-methods)  
-      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#example)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#syntax)
-  * [Add an Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-amazon-sqs-etl-task)  
-      * [Example: Add SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#example-add-sqs-etl-task)  
-      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#delete-processed-documents)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#syntax-1)
-  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#the-transformation-script)
-      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#the-loadto-method)  
+  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#ravendb-etl-and-amazon-sqs)  
+  * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#queue-methods)  
+      * [Standard queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#standard-queueing)  
+      * [FIFO queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#fifo-queueing)  
+      * [Caution: ETL message size -vs- Queue message size](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#caution-etl-message-size--vs--queue-message-size)  
+  * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-connection-string)  
+      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#authentication-methods)  
+      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#example)  
+      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#syntax)
+  * [Add an Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-etl-task)  
+      * [Example: Add SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#example-add-sqs-etl-task)  
+      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#delete-processed-documents)  
+      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#syntax-1)
+  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-transformation-script)
+      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-loadto-method)  
 
 {NOTE/}
 
@@ -56,40 +59,60 @@ For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../
 Read more about Amazon SQS in the platform's [official documentation](https://docs.aws.amazon.com/sqs/).
 {INFO/}
 
----
+{PANEL/}
 
-#### Queue methods
+{PANEL: Queue methods}
 
 The data that ETL tasks handle is carefully selected and tailored for specific user needs.  
 Selecting which Queue Type Amazon SQS would use should also take into account the specific 
 nature of the transferred data.  
 
-* **Standard queueing** offers an extremely high transfer rate but lacks the ability to ensure 
-  that messages would arrive in the same order they were sent or prevent their duplication.  
+---
 
-     {INFO: }
-      Use this method when quick delivery takes precedence over messages order and distinctness 
-      or the recepient can make up for them.  
-     {INFO/}
+#### Standard queueing
 
-* **FIFO queueing** controls delivery order using a First-In-First-Out queue and ensures 
-  the delivery of each message exactly once, in exchange for a much slower transfer rate 
-  than that of the Standard Queueing method.  
-   * Deduplication:  
-     FIFO queues automatically prevent duplicate messages within a _deduplication interval_.  
-     Interval default: 5 minutes  
-     Deduplication is achieved using a unique _Message Deduplication ID_ that is given to 
-     each message.  
-   * Message Grouping:  
-     Messages with the same _Message Group ID_ are processed in order.  
-     Each group is handled independently, allowing parallel processing across different message groups.  
+Standard queueing offers an extremely high transfer rate but lacks the ability to ensure 
+that messages would arrive in the same order they were sent or prevent their duplication.  
 
-     {INFO: }
-      Use this method when throughput is not as important as the order and uniqueness of 
-      arriving messages.  
-     {INFO/}
+{INFO: }
+Use standard queueing when quick delivery takes precedence over messages order and 
+distinctness or the recepient can make up for them.  
+{INFO/}
 
-{WARNING: ETL message size -vs- Queue message size}
+---
+
+#### FIFO queueing
+
+FIFO queueing controls delivery order using a First-In-First-Out queue and ensures 
+the delivery of each message exactly once, in exchange for a much slower transfer rate 
+than that of the Standard Queueing method.  
+
+To load messages to a FIFO queue, add `.fifo` to the queue name while calling the 
+transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-loadto-method):  
+{CODE sqs_fifo@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
+
+* **Deduplication**:  
+  FIFO queues automatically prevent duplicate messages within a _deduplication interval_.  
+  Interval default: 5 minutes  
+  Deduplication is achieved by giving each message a _Message Deduplication ID_ 
+  with a unique **Change Vector**.  
+  If the change vector is longer than 128 characters (Amazon's restriction for 
+  a message deduplication ID) we will truncate the CV and add a `-{9-digit hash}`.  
+
+* **Message Grouping**:  
+  Messages with the same _Message Group ID_ are processed in order.  
+  Each group is handled independently, allowing parallel processing across different message groups.  
+
+  {INFO: }
+   Use this method when throughput is not as important as the order and uniqueness of 
+   arriving messages.  
+  {INFO/}
+
+---
+
+#### Caution: ETL message size -vs- Queue message size
+
+{WARNING: }
 Please **be aware** that the maximum size of an SQS queue message is `64 KB`, while the 
 maximum size of an ETL message to the queue is `256 KB`.  
 The significance of this difference is that when a maximum-size ETL message arrives 
@@ -111,7 +134,7 @@ by properties of the connection string it uses, as shown in the example below.
 
 #### Example
 
-{CODE add_sqs_connection_string@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
+{CODE add_sqs_connection_string@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
 
 * **Passwordless**  
   Defines whether to use a password or not.  
@@ -128,9 +151,9 @@ by properties of the connection string it uses, as shown in the example below.
 
 #### Syntax
 
-{CODE amazon_sqs_con_str_settings@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
-{CODE queue_connection_string@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /} 
-{CODE queue_broker_type@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
+{CODE amazon_sqs_con_str_settings@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
+{CODE queue_connection_string@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /} 
+{CODE queue_broker_type@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
 
 {PANEL/}
 
@@ -144,7 +167,7 @@ by properties of the connection string it uses, as shown in the example below.
   * Load the `orderData` object to the "OrdersQueue" queue on an SQS destination.  
 * For more details about the script and the `loadTo` method, see the transromation script section below.  
 
-{CODE add_amazon_sqs_etl_task@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
+{CODE add_amazon_sqs_etl_task@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
 
 ---
 
@@ -154,13 +177,13 @@ by properties of the connection string it uses, as shown in the example below.
 * To do this, set the optional `Queues` property in the ETL configuration with the list of SQS queues for which 
   processed documents are to be deleted.
 
-{CODE sqs_delete_documents@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
+{CODE sqs_delete_documents@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
 
 ---
 
 #### Syntax
 
-{CODE etl_configuration@Server\OngoingTasks\ETL\Queue\AWS-SQS_Etl.cs /}
+{CODE etl_configuration@Server\OngoingTasks\ETL\Queue\amazon-sqs_etl.cs /}
 
 {PANEL/}
 
@@ -178,15 +201,34 @@ and which SQS Queue to **load** the data to.
 To specify which SQS queue to load the data to, use either of the following methods in your script.  
 The two methods are equivalent, offering alternative syntax:
 
-* **`loadTo<QueueName>(obj, {attributes})`**
+* **`loadTo<QueueName>(obj, {attributes})`**  
+      {CODE-BLOCK:csharp}
+loadToOrdersQueue(orderData, {
+      Id: id(this),
+      Type: 'com.example.promotions',
+      Source: '/promotion-campaigns/summer-sale'
+      }
+      {CODE-BLOCK/}
     * Here the target is specified as part of the function name.
     * The target _&lt;QueueName&gt;_ in this syntax is Not a variable and cannot be used as one,  
       it is simply a string literal of the target's name.
 
-* **`loadTo('QueueName', obj, {attributes})`**
-    * Here the target is passed as an argument to the method.
-    * Separating the target name from the `loadTo` command makes it possible to include symbols like `'-'` and `'.'` in target names.
-      This is not possible when the `loadTo<QueueName>` syntax is used because including special characters in the name of a JavaScript function makes it invalid.
+* **`loadTo('QueueName', obj, {attributes})`**  
+{CODE-BLOCK:csharp}
+      loadTo('OrdersQueue', orderData, {
+      Id: id(this),
+      Type: 'com.example.promotions',
+      Source: '/promotion-campaigns/summer-sale'
+      }
+      {CODE-BLOCK/}
+    * Here the target is passed as an argument to the method.  
+    * Separating the target name from the `loadTo` command makes it possible to include symbols 
+      like `'-'` and `'.'` in target names.  
+      This is not possible when the `loadTo<QueueName>` syntax is used because including special 
+      characters in the name of a JavaScript function makes it invalid.  
+    * To deliver messages to a [FIFO queue](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#fifo-queueing), 
+      use this format and add `.fifo` to the queue name.  
+      `loadTo('QueueName.fifo', obj, {attributes})`
 
    | Parameter      | Type   | Description                                                                                                                      |
    |----------------|--------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -242,7 +284,7 @@ loadToOrdersQueue(orderData, {
 
 ### Studio
 
-- [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl)
+- [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl)
 - [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)
 - [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)
 - [Studio: Azure Queue Storage ETL Task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl)

@@ -18,7 +18,7 @@
   * [Add Kafka ETL task](../../../../client-api/operations/maintenance/etl/add-etl#add-kafka-etl-task)  
   * [Add RabbitMQ ETL task](../../../../client-api/operations/maintenance/etl/add-etl#add-rabbitmq-etl-task)  
   * [Add Azure Queue Storage ETL task](../../../../client-api/operations/maintenance/etl/add-etl#add-azure-queue-storage-etl-task)
-  * [Add AWS SQS ETL task](../../../../client-api/operations/maintenance/etl/add-etl#add-aws-sqs-etl-task)
+  * [Add Amazon SQS ETL task](../../../../client-api/operations/maintenance/etl/add-etl#add-amazon-sqs-etl-task)
   * [Syntax](../../../../client-api/operations/maintenance/etl/add-etl#syntax)
 
 {NOTE/}
@@ -130,14 +130,14 @@ The following example adds an Elasticsearch ETL task:
 
 {PANEL/}
 
-{PANEL: Add AWS SQS ETL task}
+{PANEL: Add Amazon SQS ETL task}
 
-* Learn about the AWS SQS ETL task in the **[AWS SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs)** article.  
-   * [This section](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-aws-sqs-connection-string) 
+* Learn about the AWS SQS ETL task in the **[Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs)** article.  
+   * [This section](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-connection-string) 
      shows how to define a connection string to the SQS destination.  
-   * [This section](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#add-an-aws-sqs-etl-task) 
+   * [This section](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-etl-task) 
      shows how to run an ETL task that uses the defined connection string.  
-* To learn how to manage the task from Studio, see **[Studio: AWS SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl)**.  
+* To learn how to manage the task from Studio, see **[Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl)**.  
 
 {PANEL/}
 

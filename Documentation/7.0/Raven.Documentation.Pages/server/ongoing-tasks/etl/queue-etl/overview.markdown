@@ -10,7 +10,7 @@
   * **Apache Kafka**
   * **RabbitMQ**
   * **Azure Queue Storage**
-  * **AWS SQS**
+  * **Amazon SQS**
 
 * This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#queue-etl-tasks) within a RavenDB database.
 
@@ -43,9 +43,9 @@ RavenDB produces messages to broker queues via the following Queue ETL tasks:
 * **Azure Queue Storage ETL Task**  
   You can define an Azure Queue Storage ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl) 
   or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue).  
-* **AWS SQS ETL Task**  
-  You can define an AWS SQS ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs).  
+* **Amazon SQS ETL Task**  
+  You can define an Amazon SQS ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl) 
+  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs).  
 
 ---
 
