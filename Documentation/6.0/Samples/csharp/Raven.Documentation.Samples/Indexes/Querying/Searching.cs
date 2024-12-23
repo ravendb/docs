@@ -8,8 +8,9 @@ using Raven.Client.Documents.Operations.Analyzers;
 using Raven.Client.Documents.Queries;
 using Raven.Documentation.Samples.Orders;
 using Xunit;
+using AnalyzerDefinition = Raven.Client.Documents.Indexes.Analysis.AnalyzerDefinition;
 
-namespace Raven.Documentation.Samples.Indexes.Querying
+namespace Raven.Documentation.Samples.Indexes2.Querying
 {
     public class Searching
     {
