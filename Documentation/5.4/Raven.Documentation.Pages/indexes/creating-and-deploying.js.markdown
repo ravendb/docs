@@ -111,16 +111,8 @@
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
-{CONTENT-FRAME: }
-
 {CODE:nodejs indexes_3@indexes/creating.js /}
-
-{CONTENT-FRAME/}
-{CONTENT-FRAME: }
-
 {CODE:nodejs indexes_4@indexes/creating.js /}
-
-{CONTENT-FRAME/}
 
 {NOTE/}
 {NOTE: }
@@ -137,16 +129,8 @@
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
-{CONTENT-FRAME: }
-
 {CODE:nodejs indexes_5@indexes/creating.js /}
-
-{CONTENT-FRAME/}
-{CONTENT-FRAME: }
-
 {CODE:nodejs indexes_6@indexes/creating.js /}
-
-{CONTENT-FRAME/}
 
 {NOTE/}
 {NOTE: }

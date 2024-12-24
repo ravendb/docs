@@ -115,22 +115,15 @@
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
-{CONTENT-FRAME: }
-
 {CODE-TABS}
 {CODE-TAB:csharp:Execute indexes_3@Indexes/Creating.cs /}
 {CODE-TAB:csharp:Execute_async indexes_4@Indexes/Creating.cs /}
 {CODE-TABS/}
 
-{CONTENT-FRAME/}
-{CONTENT-FRAME: }
-
 {CODE-TABS}
 {CODE-TAB:csharp:ExecuteIndex indexes_5@Indexes/Creating.cs /}
 {CODE-TAB:csharp:ExecuteIndex_async indexes_6@Indexes/Creating.cs /}
 {CODE-TABS/}
-
-{CONTENT-FRAME/}
 
 {NOTE/}
 {NOTE: }
@@ -147,22 +140,16 @@
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
-{CONTENT-FRAME: }
-
 {CODE-TABS}
 {CODE-TAB:csharp:ExecuteIndexes indexes_7@Indexes/Creating.cs /}
 {CODE-TAB:csharp:ExecuteIndexes_async indexes_8@Indexes/Creating.cs /}
 {CODE-TABS/}
-
-{CONTENT-FRAME/}
-{CONTENT-FRAME: }
 
 {CODE-TABS}
 {CODE-TAB:csharp:CreateIndexes indexes_9@Indexes/Creating.cs /}
 {CODE-TAB:csharp:CreateIndexes_async indexes_10@Indexes/Creating.cs /}
 {CODE-TABS/}
 
-{CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
 ###### Deploy ALL indexes from an assembly
