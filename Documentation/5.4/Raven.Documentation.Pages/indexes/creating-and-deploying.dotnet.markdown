@@ -35,65 +35,55 @@
 <a id="static-indexes" />
 {PANEL: Define a static-index}
 
-{NOTE: }
+{CONTENT-FRAME: }
 
 ##### Static-indexes
 ---
 
 * Indexes that are explicitly **created by the user** are called `static` indexes.
-
 * Static-indexes can perform calculations, data conversions, and other processes behind the scenes.  
   This reduces the workload at query time by offloading these costly operations to the indexing phase.
-
 * To query with a static-index, you must explicitly specify the index in the query definition.  
   For more details, see [Querying an index](../indexes/querying/query-index).
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Define a static-index using a custom class
 ---
 
 * To define a static-index using a custom class inherit from `AbstractIndexCreationTask`.
-
 * This method is recommended over the [Creating an index using an operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation) method  
   for its simplicity and the following advantages:  
   * **Strongly-typed syntax**:  
     Provides strong typing when defining the index, making it easier to work with.
   * **Ease of querying**:  
     Lets you use the index class name in a query, instead of hard-coding the index name.
-
-    {CODE indexes_1@Indexes/Creating.cs /}
-
+{CODE indexes_1@Indexes/Creating.cs /}
 * A complete example of creating a static-index is provided [below](../indexes/creating-and-deploying#create-a-static-index---example).
 
----
-
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Naming convention
 ---
 
 * Static-index class names follow a single naming convention:  
   Each `_` in the class name is translated to `/` in the index name on the server.
-
 * In the above example, the index class name is `Orders_ByTotal`.  
   The name of the index that will be generated on the server will be: `Orders/ByTotal`.  
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Customizing configuration
 ---
 
 * You can set various [indexing configuration](../server/configuration/indexing-configuration) values within the index definition.
-
 * Setting a configuration value within the index will override the matching indexing configuration values set at the server or database level.
+{CODE indexes_2@Indexes/Creating.cs /}
 
-    {CODE indexes_2@Indexes/Creating.cs /}
-
-{NOTE/}
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Deploy a static-index}
@@ -105,13 +95,12 @@
 
 ---
 
-{NOTE: }
+{CONTENT-FRAME: }
 
 ##### Deploy single index
 ---
 
 * Use `Execute()` or `ExecuteIndex()` to deploy a single index.
-
 * The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
@@ -125,18 +114,16 @@
 {CODE-TAB:csharp:ExecuteIndex_async indexes_6@Indexes/Creating.cs /}
 {CODE-TABS/}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Deploy multiple indexes
 ---
 
 * Use `ExecuteIndexes()` or `IndexCreation.CreateIndexes()` to deploy multiple indexes.
-
 * The `IndexCreation.CreateIndexes` method attempts to create all indexes in a single request.  
   If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
   in separate requests.
-
 * The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
   See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
 
@@ -150,11 +137,11 @@
 {CODE-TAB:csharp:CreateIndexes_async indexes_10@Indexes/Creating.cs /}
 {CODE-TABS/}
 
-{CONTENT-FRAME: }
+---
 
 ###### Deploy ALL indexes from an assembly
 
-The following overload allows you to deploy ALL indexes from a specified assembly:
+* The following overload allows you to deploy ALL indexes from a specified assembly:
 
 {CODE-TABS}
 {CODE-TAB:csharp:CreateIndexes indexes_11@Indexes/Creating.cs /}
@@ -162,9 +149,7 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 {CODE-TABS/}
 
 {CONTENT-FRAME/}
-
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME: }
 
 ##### Deploy syntax
 ---
@@ -183,50 +168,43 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 | **indexes**        | `IEnumerable<IAbstractIndexCreationTask>` | A list of index objects to deploy.                                                                                |
 | **assemblyToScan** | `Assembly `                               | Deploy all indexes that are contained in this assembly.                                                           |
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Deployment behavior
 ---
 
 {INFO: }
 
-##### Deployment mode:
+###### Deployment mode:
 ---
 
 * When your database spans multiple nodes,  
   you can choose between **Rolling** index deployment or **Parallel** index deployment.
-
 * Rolling deployment applies the index to one node at a time,  
   while Parallel deployment deploys the index on all nodes simultaneously.
-
 * Learn more in [Rolling index deployment](../indexes/rolling-index-deployment).
 
 {INFO/}
 
 {SAFE: }
 
-##### When the index you are deploying already exists on the server:
+###### When the index you are deploying already exists on the server:
 ---
 
 * **If the index definition is updated**:
-
-  * RavenDB uses a **side-by-side strategy** for all index updates.
-
-  * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
-    The new index will replace the existing index once it becomes non-stale.
-
-  * If you want to swap the indexes immediately, you can do so through the Studio.  
-    For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
-
+    * RavenDB uses a side-by-side strategy for all index updates.
+    * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
+      The new index will replace the existing index once it becomes non-stale.
+    * If you want to swap the indexes immediately, you can do so through the Studio.  
+      For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
 * **If the index definition is unchanged**:
-
     * If the definition of the index being deployed is identical to the one on the server,  
       the existing index will not be overwritten.
     * The indexed data will remain intact, and the indexing process will not restart.
 
 {SAFE/}
-{NOTE/}
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Create a static-index - Example}
@@ -257,40 +235,33 @@ The following overload allows you to deploy ALL indexes from a specified assembl
 <a id="auto-indexes" />
 {PANEL: Creating auto-indexes}
 
-{NOTE: }
+{CONTENT-FRAME: }
 
 ##### Auto-indexes creation
 ---
 
 * Indexes **created by the server** are called `dynamic` or `auto` indexes.
-
 * Auto-indexes are created when all of the following conditions are met:  
     * A query is issued without specifying an index (a dynamic query).
     * The query includes a filtering condition.
     * No suitable auto-index exists that can satisfy the query.
     * Creation of auto-indexes has not been disabled.
-
 * For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
   If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
   (Static-indexes are not taken into account when determining which auto-index should handle the query).
-
 * Note: dynamic queries can be issued either when [querying](../studio/database/queries/query-view#query-view) or when [patching](../studio/database/documents/patch-view#patch-configuration).
-
 * Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
   For more details, see [Query a collection - with filtering (dynamic query)](../client-api/session/querying/how-to-query#dynamicQuery).
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Naming convention
 ---
 
 * Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
-
 * Their name also includes the name of the queried collection and a list of fields used in the query predicate to filter matching results.
-
 * For example, issuing the following query:
-
     {CODE-TABS}
     {CODE-TAB:csharp:Query indexes_14@Indexes/Creating.cs /}
     {CODE-TAB-BLOCK:sql:RQL}
@@ -298,11 +269,10 @@ from Employees
 where FirstName = "Robert" and LastName = "King"
     {CODE-TAB-BLOCK/}
     {CODE-TABS/}
-
     will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 ##### Auto-index idle state
 ---
@@ -311,22 +281,18 @@ where FirstName = "Robert" and LastName = "King"
   Specifically, if the time difference between the last time the auto-index was queried
   and the last time a query was made on the database (using any index) exceeds the configured threshold (30 minutes by default),
   the auto-index will be marked as `idle`.
-
 * This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
   as well as for databases that were just restored from a snapshot or a backup.
-
 * To set the time before marking an index as idle, use the
   [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
   Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
-
 * An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
   or when resetting the index.
-
 * If not resumed, the idle auto-index will be deleted by the server after the time period defined in the 
   [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
   (72 hours by default).
 
-{NOTE/}
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Disabling auto-indexes}
