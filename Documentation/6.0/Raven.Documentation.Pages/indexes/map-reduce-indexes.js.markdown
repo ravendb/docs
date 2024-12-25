@@ -160,7 +160,7 @@ The map-reduce output documents are configured with these properties of
 | - | - | - |
 | **outputReduceToCollection** | `string` | Collection name for the output documents. |
 | **patternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<outputReduceToCollection>/References`. |
-| **patternForOutputReduceToCollectionReferences** | `string` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
+| **patternForOutputReduceToCollectionReferences** | `string` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation) or [AbstractJavaScriptIndexCreationTask](../indexes/creating-and-deploying#define-a-static-index-using-a-custom-class). |
 
 ### Examples
 

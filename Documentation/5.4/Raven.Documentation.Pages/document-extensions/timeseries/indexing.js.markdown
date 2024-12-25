@@ -166,7 +166,7 @@ abstract class AbstractRawJavaScriptTimeSeriesIndexCreationTask
 class TimeSeriesIndexDefinition extends IndexDefinition
 {CODE-BLOCK/}
 
-While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular [`IndexDefinition`](../../indexes/creating-and-deploying#using-maintenance-operations) class from which it inherits,
+While `TimeSeriesIndexDefinition` is currently functionally equivalent to the regular [`IndexDefinition`](../../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition) class from which it inherits,
 it is recommended to use `TimeSeriesIndexDefinition` when creating a time series index definition in case additional functionality is added in future versions of RavenDB.
 
 ---

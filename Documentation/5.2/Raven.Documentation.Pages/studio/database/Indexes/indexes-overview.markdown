@@ -59,72 +59,78 @@
 {NOTE: }
 
 #### 1. Index Definition
+---
 
 * **The index definition** tells RavenDB how to index the data.  
 
-* It specifies the fields to be indexed and how those fields should be indexed (i.e. allowing a full-text-search option).  
-  These fields can be specified explicitly or defined dynamically supporting any document structure.  
+* It specifies which fields to index and defines how they should be indexed,  
+  e.g., configuring a field for full-text search, selecting the analyzer to use, etc.  
+  These fields can be specified explicitly or defined dynamically supporting any document structure.
 
-* The index definition is created by the client (**Static-Index**), or by the server Query Optimizer(**Auto-Index**).  
+* The index definition is created by the client (**Static-Index**), or by the server (**Auto-Index**).  
 
 * Note: Data from related documents can also be indexed using 'LoadDocument'.  
   Learn more in [Indexing Related Documents](../../../indexes/indexing-related-documents).  
-{NOTE/}
 
+{NOTE/}
 {NOTE: }
 
 #### 2. Indexing Process
+---
 
-* **Indexing** is the process of indexing the data, iterating over the documents, and creating a map  
-  between the terms indexed and the actual documents that contain them.  
+* **Indexing** is the process of iterating over the raw documents, indexing their data as defined by the index definition,
+  and building a map between the indexed terms and the raw documents that contain them.
 
-* Indexing is a background operation, it is scheduled to occur in an async manner upon any document change.  
-  e.g. A document write operation doesn't wait for the index to complete processing -  
-  The write operation is completed as soon as the transaction is written to disk.  
+* Indexing is a background operation, it is scheduled to occur in an async manner upon any document change.
+  Once defined and deployed, an index will initially process the entire dataset.  
+  After that, the index will only process documents that were modified, added or deleted.
 
-* An index is considered [Stale](../../../indexes/stale-indexes) if it had not yet processed all of the data.  
+* A document write operation doesn't wait for the index to complete processing -  
+  the write operation is completed as soon as the transaction is written to disk.  
+  However, a write operation can wait for the indexing process to finish before acknowledging the write by using method `WaitForIndexesAfterSaveChanges`.
 
-* A query can request that results are returned only when the index is up-to-date  
-  by using method `WaitForNonStaleResults`.  
-  A write operation can wait for the indexing process to finish before acknowledging the write  
-  by using method `WaitForIndexesAfterSaveChanges`.  
-  See: [Understanding Eventual Consistency](../../../users-issues/understanding-eventual-consistency).
+* An index is considered [Stale](../../../indexes/stale-indexes) if it has not yet processed all the data.  
+  A query can request that results are returned only when the index is up-to-date by using method `WaitForNonStaleResults`.
+  Learn more in: [Understanding Eventual Consistency](../../../users-issues/understanding-eventual-consistency).
 
 * The async indexing process works with hard resets, shutdowns, and the like.  
   If the database was restarted _after_ a document was modified but _before_ it was indexed,  
   the indexing process will just pick up from where it left off and complete the work.  
 
 * Each index is assigned a dedicated thread, thus no indexing process can interfere with any other.  
-  By default, indexing threads start with a lower priority than request-processing threads.  
+  By default, indexing threads start with a lower priority than request-processing threads.
   The indexing-thread priority can be set higher and RavenDB will update this at the operating system level.  
 
 * Indexing can be **throttled** to delay indexing tasks by a pre-set time period.  
-  Throttling is helpful when sufficient server resources need to remain available 
-  for users while heavy-duty indexing tasks are due.  
+  Throttling is helpful when sufficient server resources need to remain available for users while heavy-duty indexing tasks are due.
   See: [Index Throttling](../../../indexes/index-throttling)  
 
 {NOTE/}
-
 {NOTE: }
 
 #### 3. Indexed Data
+---
 
-* The resulting output of 'step 2' (the indexing process) is also referred to as an Index.  
-  Queries operate on **indexed data** to get documents result.  
+* The resulting output of the indexing process from 'step 2' above is also referred to as an 'Index'.  
 
-* Note: The full document is _not_ stored in the index - only the document ID.  
-  Upon a query match, we load the document itself from the document storage.  
+* **Index-Entries**  
+  During the indexing process, an _index-entry_ is created for each raw document that is processed.  
+  Usually a single _index-entry_ is created per raw document, unless working with a [fanout index](../../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
 
-* **Index Entry**  
-  _Index-Entries_ are all of the document fields that are requested to be indexed, as defined in the index definition.  
-
-* **Term**  
-  The index-entries values are broken into _Terms_ according to the specified analyzer used in the index definition.  
-  _Term_ is the actual indexed value that is stored in the index.  
+* **Index-Fields and Terms**  
+  Each _index-entry_ contains the _index-fields_ that were defined in the index definition.  
+  Each _index-field_ contains _terms_ that are generated from the data in the raw documents.   
+  
+    The _terms_ generated depend on the [analyzer](../../../indexes/using-analyzers) used, and they are the actual indexed values that are stored in the index.  
+    When querying the index, you can retrieve the original documents and filter the results based on these _terms_.
 
 * **Stored Data**  
-  In addition to the _Terms_, some document [fields can be stored directly](../../../indexes/storing-data-in-index) in the index data.  
+  In addition to the _terms_, some document [fields can be stored directly](../../../indexes/storing-data-in-index) in the index data.  
   This allows for query results to be fetched from the index itself instead of loading the original document.  
+
+    Note: The full document is _not_ stored in the index - only the document ID.  
+    Upon a query match, we load the document itself from the document storage.
+
 {NOTE/}
 {PANEL/}
 
@@ -134,7 +140,8 @@ Indexes in RavenDB are split across the following multiple axes:
 
 {NOTE: }
 
-### Auto Indexes -vs- Static Indexes
+#### Auto Indexes -vs- Static Indexes
+---
 
 * **Auto Indexes**:  
   * Auto-indexes are created by the server.  
@@ -152,10 +159,10 @@ Indexes in RavenDB are split across the following multiple axes:
     as the indexed data can be a computed value. 
 
 {NOTE/}
-
 {NOTE: }
 
-### Map Indexes -vs- Map-Reduce Indexes
+#### Map Indexes -vs- Map-Reduce Indexes
+---
 
 * **Map Indexes**:  
   [Map indexes](../../../studio/database/indexes/create-map-index) are simple indexes.  
@@ -166,11 +173,12 @@ Indexes in RavenDB are split across the following multiple axes:
   [Map-Reduce indexes](../../../studio/database/indexes/create-map-reduce-index) allow performing complex data aggregation.  
   The _Map_ stage is similar to a regular Map-Index, defining what data should be indexed.  
   The _Reduce_ stage operates on the Map results, specifying how the data should be grouped and aggregated.  
-{NOTE/}
 
+{NOTE/}
 {NOTE: }
 
-### Single-Collection Indexes -vs- Multi-Collection Indexes
+#### Single-Collection Indexes -vs- Multi-Collection Indexes
+---
 
 * **Single-Collection Indexes**:  
   Index definition contains only one Map function defined on a specific collection.  
@@ -178,6 +186,7 @@ Indexes in RavenDB are split across the following multiple axes:
 * **Multi-Collection Indexes**:  
   Data from several collections can be indexed (each in a different Map) and the results are united in a single index.  
   The only requirement is that all the Map definitions have the same output shape.  
+
 {NOTE/}
 {PANEL/}
 
