@@ -15,6 +15,11 @@
         "Path": "revisions.markdown",
         "Name": "Revisions",
         "DiscussionId": "19d1538e-bb89-4887-8a9d-e6b8dce5d6cf",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 7.0,
+                "Key": "studio/database/document-extensions/revisions/revisions"
+            }
+        ]
     }
 ]
