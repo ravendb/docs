@@ -8,7 +8,7 @@ using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.ETL.Queue;
 namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
 {
-    public class AwsSqsEtl
+    public class AmazonSqsEtl
     {
         public void AddConnectionString()
         {
@@ -116,6 +116,49 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
             }
         }
 
+        public void AmazonSqsUseFifo()
+        {
+            using (var store = new DocumentStore())
+            {
+                Transformation transformation = new Transformation
+                {
+                    // Input collections
+                    Collections = { "Orders" },
+
+                    ApplyToAllDocuments = false,
+
+                    // Transformation script
+                    Name = "scriptName",
+                    
+                    #region sqs_fifo                    
+                    Script = @"// Create an orderData object
+                               // ==========================
+                               var orderData = {
+                                   Id: id(this), // property with RavenDB document ID
+                                   OrderLinesCount: this.Lines.length,
+                                   TotalCost: 0
+                               };
+
+                               for (var i = 0; i < this.Lines.length; i++) {
+                                   var line = this.Lines[i];
+                                   var cost = (line.Quantity * line.PricePerUnit) * ( 1 - line.Discount);
+                                   orderData.TotalCost += cost;
+                               }
+
+                               // Load the object to the FIFO 'Orders' ququq on the SQS destination
+                               // ================================================================= 
+                               loadTo('orders.fifo', orderData, {
+                                   Id: id(this),
+                                   Type: 'com.github.users',
+                                   Source: '/registrations/direct-signup'
+                               });"
+                    #endregion
+
+                };
+            }
+        }
+        
+
         public void DeleteProcessedDocuments()
         {
             using (var store = new DocumentStore())
@@ -184,7 +227,7 @@ namespace Raven.Documentation.Samples.Server.OngoingTasks.ETL.Queue
                 // Configure this when setting a connection string for Azure Queue Storage
                 public AzureQueueStorageConnectionSettings AzureQueueStorageConnectionSettings { get; set; }
 
-                // Configure this when setting a connection string for AWS SQS
+                // Configure this when setting a connection string for Amazon SQS
                 public AmazonSqsConnectionSettings AmazonSqsConnectionSettings { get; set; }
             }
             #endregion

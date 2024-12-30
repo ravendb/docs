@@ -24,7 +24,7 @@
         "Mappings": []
     },
     {
-        "Path": "aws-sqs.markdown",
+        "Path": "amazon-sqs.markdown",
         "Name": "Amazon SQS ETL",
         "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
         "Mappings": []

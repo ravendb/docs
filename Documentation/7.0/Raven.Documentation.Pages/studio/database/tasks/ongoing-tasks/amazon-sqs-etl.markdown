@@ -12,15 +12,15 @@
   Document extensions like attachments, counters, time series, and revisions are not sent.  
 
 * This page explains how to create an Amazon SQS ETL task using Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs) how to define 
+  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs) how to define 
   an Amazon SQS ETL task using the Client API.  .  
  
 * In this page:  
-  * [Ongoing Tasks View](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#ongoing-tasks-view)  
-  * [Define the Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#define-amazon-sqs-etl-task)  
-  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#add-or-edit-transformation-script)  
-  * [Comments](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#comments)  
-      * [ETL message size -vs- Queue message size](../../../../studio/database/tasks/ongoing-tasks/aws-sqs-etl#etl-message-size--vs--queue-message-size)  
+  * [Ongoing Tasks View](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#ongoing-tasks-view)  
+  * [Define the Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#define-amazon-sqs-etl-task)  
+  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#add-or-edit-transformation-script)  
+  * [Comments](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#comments)  
+      * [ETL message size -vs- Queue message size](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#etl-message-size--vs--queue-message-size)  
 {NOTE/}
 
 ---
@@ -69,7 +69,7 @@
       **Passwordless** requires the machine to be pre-authorized and can only be used in self-hosted mode.  
     * `C.` **Advanced**  
       Click to open per-queue advanced options.  
-      Use this option to determine whether to [delete documents](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs#delete-processed-documents) 
+      Use this option to determine whether to [delete documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#delete-processed-documents) 
       from the database after they are processed.  
 
          ![Delete processed documents](images/sqs_delete-processed-docs.png "Delete processed documents")
@@ -153,7 +153,7 @@ at its destination queue it may be charged for not 1 but 4 queue messages.
 ### Server
 
 - [ETL Basics](../../../../server/ongoing-tasks/etl/basics)
-- [Amazon SQS ETL](../../../../server/ongoing-tasks/etl/queue-etl/aws-sqs)
+- [Amazon SQS ETL](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs)
 - [Queue ETL Overview](../../../../server/ongoing-tasks/etl/queue-etl/overview)
 - [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka)
 - [RabbitMQ ETL](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq)
