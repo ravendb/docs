@@ -21,5 +21,17 @@
         "Name": "Customizing Data Files Locations",
         "DiscussionId": "6f4d2198-4a11-42d0-8629-43ffb5251332",
         "Mappings": []
+    },
+    {
+        "Path": "documents-compression.markdown",
+        "Name": "Documents Compression",
+        "DiscussionId": "ba60259c-2f0f-4bac-a99d-e5c136612311",
+        "Mappings": []
+    },
+    {
+        "Path": "transaction-mode.markdown",
+        "Name": "Transaction Mode",
+        "DiscussionId": "e9b28886-1d69-4260-8d93-b1d3c4c178be",
+        "Mappings": []
     }
 ]

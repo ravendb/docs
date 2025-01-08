@@ -101,4 +101,3 @@ __Raven.voron file__
 
 - [Customize Data Location](../../server/storage/customizing-raven-data-files-locations)
 - [Storage Engine](../../server/storage/storage-engine)
-- [Transaction Mode](../../server/storage/transaction-mode)

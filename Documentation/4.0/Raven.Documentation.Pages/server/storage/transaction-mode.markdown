@@ -1,6 +1,14 @@
 # Storage: Transaction Mode
+---
 
-Voron storage engine can work in one of the following transactions modes: _Safe_, _Lazy_ or _Danger_.
+{NOTE: }
+
+* The Voron storage engine can operate in one of the following transaction modes: _Safe_, _Lazy_, or _Danger_.
+
+* The _Lazy_ and _Danger_ modes are available only up to RavenDB **5.4**.  
+  Starting from version **6.0**, Voron will work in the default _Safe_ mode only.
+
+{NOTE/}
 
 ## Safe
 

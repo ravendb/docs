@@ -88,7 +88,6 @@ ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Data
 
 - [Directory Structure](directory-structure)
 - [Storage Engine](../../server/storage/storage-engine)
-- [Transaction Mode](../../server/storage/transaction-mode)
 
 ### Installation
 
