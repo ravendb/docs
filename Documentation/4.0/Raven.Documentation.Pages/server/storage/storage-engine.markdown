@@ -63,7 +63,6 @@ The storage hardware / file system must support:
 ### Storage
 
 - [Directory Structure](../../server/storage/directory-structure)
-- [Transaction Mode](../../server/storage/transaction-mode)
 
 ### Configuration
 

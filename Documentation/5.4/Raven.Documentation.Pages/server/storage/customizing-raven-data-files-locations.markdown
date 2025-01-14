@@ -249,7 +249,6 @@ Add the script to the _settings.json_ file as follows:
 
 - [Directory Structure](directory-structure)
 - [Storage Engine](../../server/storage/storage-engine)
-- [Transaction Mode](../../server/storage/transaction-mode)
 
 ### Installation
 
