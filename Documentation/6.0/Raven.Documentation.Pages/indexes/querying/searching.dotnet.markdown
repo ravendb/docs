@@ -23,7 +23,7 @@
   * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
   * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
   * [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards)
-      * [When using StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingor)
+      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
       * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
       * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
 
@@ -100,7 +100,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   [analyzer](../../indexes/using-analyzers) used in the index.
 
 * Note the different behavior in the following cases, as described below:  
-  * [When using StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingor)
+  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
   * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
   * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
 
@@ -111,7 +111,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 {NOTE: }
 
-##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
+##### When using&nbsp;`RavenStandardAnalyzer`&nbsp;or`StandardAnalyzer`&nbsp;or&nbsp;`NGramAnalyzer`:
 ---
 
 Usually, the same analyzer used to tokenize field content at **indexing time** is also used to process the terms provided in the **full-text search query**
@@ -121,6 +121,7 @@ before they are sent to the search engine to retrieve matching documents.
 
 * When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search)
 * or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers#using-the-default-search-analyzer)
+* or when querying a static index that uses the [StandardAnalyzer](../../indexes/using-analyzers#analyzers-that-remove-common-stop-words)
 * or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
 
 the queried terms in the _Search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers#using-the-default-analyzer)  

@@ -84,7 +84,7 @@ The search terms sent to the search engine are solely based on the transformatio
 
 Note the different behavior in the following cases:  
 
-* **When using `StandardAnalyzer` or `NGramAnalyzer`**:  
+* **When using `RavenStandardAnalyzer` or `StandardAnalyzer` or `NGramAnalyzer`**:  
   The queried terms in the _Search_ method are processed with the `LowerCaseKeywordAnalyzer` before being sent to the search engine.
 * **When using a custom analyzer**:  
   The queried terms in the _Search_ method are processed according to the custom analyzer's logic.
