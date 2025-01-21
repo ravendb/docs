@@ -41,17 +41,20 @@
 {PANEL: Why choose RavenDB as your vector database}
 
 ##### An integrated solution:  
-RavenDB provides an integrated solution that combines high-performance NoSQL capabilities with advanced vector indexing and querying features,
-enabling efficient storage and management of high-dimensional vector data.
+
+* RavenDB provides an integrated solution that combines high-performance NoSQL capabilities with advanced vector indexing and querying features,
+  enabling efficient storage and management of high-dimensional vector data.
 
 ##### Data privacy and ownership:  
-With RavenDB, your data remains private. 
-There's no need to integrate with external vector databases, keeping your sensitive data secure within your own infrastructure.
+
+* With RavenDB, your data remains private. 
+  There's no need to integrate with external vector databases, keeping your sensitive data secure within your own infrastructure.
 
 ##### AI integration:  
-You can use RavenDB as the vector database for your AI-powered applications, including large language models (LLMs).
-This eliminates the need to transfer data to expensive external services for vector similarity search,
-providing a cost-effective and efficient solution for vector-based operations.
+
+* You can use RavenDB as the vector database for your AI-powered applications, including large language models (LLMs).
+  This eliminates the need to transfer data to expensive external services for vector similarity search,
+  providing a cost-effective and efficient solution for vector-based operations.
 
 ##### Multiple field types in indexes:  
 
