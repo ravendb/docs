@@ -579,7 +579,7 @@ It determines how many nodes in the graph the algorithm explores while searching
 
 {PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfEdges}
 
-The default number of edges that will be created between vectors during vector indexing.
+The default number of edges that will be created for a vector during vector indexing
 
 - **Type**: `int`
 - **Default**: `12`
