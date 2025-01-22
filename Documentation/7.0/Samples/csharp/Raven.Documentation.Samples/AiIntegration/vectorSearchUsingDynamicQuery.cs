@@ -1,0 +1,773 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes.Vector;
+using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Queries.Vector;
+using Raven.Client.Documents.Session;
+using Raven.Documentation.Samples.Orders;
+
+namespace Raven.Documentation.Samples.AiIntegration
+{
+    public class VectorSearchUsingDynamicQuery
+    {
+        public async Task Examples()
+        {
+            using (var store = new DocumentStore())
+            {
+                // Examples for textual content
+                // ============================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_1
+                    var similarProducts = session.Query<Product>()
+                         // Perform a vector search
+                         // Call the 'VectorSearch' method
+                        .VectorSearch(
+                            // Call 'WithText'
+                            // Specify the document field in which to search for similar values
+                            field => field.WithText(x => x.Name),
+                            // Call 'ByText' 
+                            // Provide the search term to compare against
+                            searchTerm => searchTerm.ByText("italian food"),
+                            // Optionally, specify the minimum similarity level
+                            0.82f,
+                            // Optionally, specify the number of candidates for the search
+                            20)
+                         // Waiting for not-stale results is not mandatory
+                         // but will assure results are not stale
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_1_async
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name), 
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.82f,
+                            20)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_2
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.82f,
+                            20)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_2_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.82f,
+                            20)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_3
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
+                           where vector.search(embedding.text(Name), 'italian food', 0.82, 20)")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_3_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the document field 'Name' with 'embedding.text' to indicate the source data type
+                           where vector.search(embedding.text(Name), 'italian food', 0.82, 20)")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                // Examples for numerical content
+                // ==============================
+                
+                #region sample_data
+                using (var session = store.OpenSession())
+                {
+                    var movie1 = new Movie()
+                    {
+                        Title = "Hidden Figures",
+                        Id = "movies/1",
+                    
+                        // Embedded vector represented as float values
+                        TagsEmbeddedAsSingle = new RavenVector<float>(new float[]
+                        {
+                            6.599999904632568f, 7.699999809265137f
+                        }),
+                        
+                        // Embedded vector encoded in Base64 format
+                        TagsEmbeddedAsBase64 = new List<string>()
+                        {
+                            "zczMPc3MTD6amZk+", "mpmZPs3MzD4AAAA/"
+                        },
+                        
+                        // Array of embedded vectors quantized to Int8
+                        TagsEmbeddedAsInt8 = new sbyte[][]
+                        {
+                            // Use RavenDB's quantization methods to convert float vectors to Int8
+                            VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f }),
+                            VectorQuantizer.ToInt8(new float[] { 0.3f, 0.4f })
+                        },
+                    };
+                
+                    var movie2 = new Movie()
+                    {
+                        Title = "The Shawshank Redemption",
+                        Id = "movies/2",
+                    
+                        TagsEmbeddedAsSingle =new RavenVector<float>(new float[]
+                        {
+                            8.800000190734863f, 9.899999618530273f
+                        }),
+                        TagsEmbeddedAsBase64 = new List<string>() {"zcxMPs3MTD9mZmY/", "zcxMPpqZmT4zMzM/"},
+                        TagsEmbeddedAsInt8 = new sbyte[][]
+                        {
+                            VectorQuantizer.ToInt8(new float[] { 0.5f, 0.6f }),
+                            VectorQuantizer.ToInt8(new float[] { 0.7f, 0.8f })
+                        }
+                    };
+                
+                    session.Store(movie1);
+                    session.Store(movie2);
+                    session.SaveChanges();
+                }
+                #endregion
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_4
+                    var similarMovies = session.Query<Movie>()
+                         // Perform a vector search
+                         // Call the 'VectorSearch' method
+                        .VectorSearch(
+                            // Call 'WithEmbedding', specify:
+                            // * The source field that contains the embedding in the document
+                            // * The source embedding type
+                            field => field.WithEmbedding(
+                                x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
+                            // Call 'ByEmbedding'
+                            // Provide the vector to compare against
+                            searchVector => searchVector.ByEmbedding(
+                                new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+                            // Optionally, specify the minimum similarity level
+                            0.85f,
+                            // Optionally, specify the number of candidates for the search
+                            10)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_4_async
+                    var similarMovies = await asyncSession.Query<Movie>()
+                        .VectorSearch(
+                            field => field.WithEmbedding(
+                                x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
+                            searchVector => searchVector.ByEmbedding(
+                                new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+                            0.85f,
+                            10)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region vs_5
+                    var similarMovies = session.Advanced
+                        .DocumentQuery<Movie>()
+                        .VectorSearch(
+                            field => field.WithEmbedding(
+                                x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
+                            searchVector => searchVector.ByEmbedding(
+                                new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+                            0.85f,
+                            10)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_5_async
+                    var similarMovies = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Movie>()
+                        .VectorSearch(
+                            field => field.WithEmbedding(
+                                x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
+                            searchVector => searchVector.ByEmbedding(
+                                new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
+                            0.85f,
+                            10)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+               
+                using (var session = store.OpenSession())
+                {
+                    #region vs_6
+                    var similarProducts = session.Advanced
+                        .RawQuery<Movie>(@"
+                            from 'Movies' 
+                            where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
+                            {'p0': { '@vector': [6.599999904632568, 7.699999809265137] }}")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_6_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Movie>(@"
+                            from 'Movies' 
+                            where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
+                            {'p0': { '@vector': [6.599999904632568, 7.699999809265137] }}")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_7
+                    var similarMovies = session.Query<Movie>()
+                        .VectorSearch(
+                            // Call 'WithEmbedding', specify:
+                            // * The source field that contains the embeddings in the document
+                            // * The source embedding type
+                            field => field.WithEmbedding(
+                                x => x.TagsEmbeddedAsInt8, VectorEmbeddingType.Int8),
+                            // Call 'ByEmbedding'
+                            // Provide the vector to compare against
+                            // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
+                            searchVector => searchVector.ByEmbedding(
+                                // The provided vector MUST be in the same format as was stored in your document
+                                // Call 'VectorQuantizer.ToInt8' to transform the rawData to Int8 format  
+                                VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_8
+                    var similarMovies = session.Query<Movie>()
+                        .VectorSearch(
+                            // Call 'WithBase64'
+                            // Specify the source field that contains the embeddings in the document
+                            field => field.WithBase64(x => x.TagsEmbeddedAsBase64),
+                            // Call 'ByBase64'
+                            // Provide the Base64 string that represents the vector to query against
+                            searchVector => searchVector.ByBase64("zczMPc3MTD6amZk+"))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                // Examples for exact search
+                // =========================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_9
+                    var similarProducts = session.Query<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"),
+                            // Optionally, set the 'isExact' param to true to perform an Exact search
+                            isExact: true)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_9_async
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name), 
+                            searchTerm => searchTerm.ByText("italian food"),
+                            isExact: true)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_10
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"),
+                            isExact: true)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_10_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"),
+                            isExact: true)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_11
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the query with the 'exact()' method
+                           where exact(vector.search(embedding.text(Name), 'italian food'))")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_11_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the query with the 'exact()' method
+                           where exact(vector.search(embedding.text(Name), 'italian food'))")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                // Examples for combined search
+                // ============================
+                
+                 using (var session = store.OpenSession())
+                {
+                    #region vs_12
+                    var similarProducts = session.Query<Product>()
+                         // Perform a regular search
+                        .Where(x => x.PricePerUnit > 20)
+                         // Perform a vector search
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_12_async
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .Where(x => x.PricePerUnit > 20)
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_13
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Product>()
+                         // Perform a vector search
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"))
+                         // Perform a regular search
+                        .WhereGreaterThan(x => x.PricePerUnit, 20)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_13_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("italian food"))
+                        .WhereGreaterThan(x => x.PricePerUnit, 20)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_14
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                           from 'Products'
+                           where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
+                           { 'p0' : 20.0, 'p1' : 'italian food' }")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_14_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                           from 'Products'
+                           where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
+                           { 'p0' : 20.0, 'p1' : 'italian food' }")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                // Examples for qunatization
+                // =========================
+                
+                // Text => Int8
+                using (var session = store.OpenSession())
+                {
+                    #region vs_15
+                    var similarProducts = session.Query<Product>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source text field for the embeddings
+                                .WithText(x => x.Name)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Int8),
+                            searchTerm => searchTerm
+                                // Provide the search term for comparison
+                                .ByText("italian food"))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_15_async
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source text field for the embeddings
+                                .WithText(x => x.Name)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Int8),
+                            searchTerm => searchTerm
+                                // Provide the search term for comparison
+                                .ByText("italian food"))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_16
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source text field for the embeddings
+                                .WithText(x => x.Name)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Int8), 
+                            searchTerm => searchTerm
+                                // Provide the search term for comparison
+                                .ByText("italian food"))
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_16_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source text field for the embeddings
+                                .WithText(x => x.Name)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Int8),
+                            searchTerm => searchTerm
+                                // Provide the search term for comparison
+                                .ByText("italian food"))
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_17
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the 'Name' field with 'embedding.text_i8'
+                           where vector.search(embedding.text_i8(Name), $p0)
+                           { 'p0' : 'italian food' }")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_17_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                           from 'Products'
+                           // Wrap the 'Name' field with 'embedding.text_i8'
+                           where vector.search(embedding.text_i8(Name), $p0)
+                           { 'p0' : 'italian food' }")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                /// F32 => Binary
+                using (var session = store.OpenSession())
+                {
+                    #region vs_18
+                    var similarMovies = session.Query<Movie>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source field and its type   
+                                .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Binary),
+                            searchVector => searchVector
+                                // Provide the vector to use for comparison
+                                .ByEmbedding(new RavenVector<float>(new float[]
+                                {
+                                    6.599999904632568f, 7.699999809265137f
+                                })))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_18_async
+                    var similarMovies = await asyncSession.Query<Movie>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source field and its type   
+                                .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Binary),
+                            searchVector => searchVector
+                                // Provide the vector to use for comparison
+                                .ByEmbedding(new RavenVector<float>(new float[]
+                                {
+                                    6.599999904632568f, 7.699999809265137f
+                                })))
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_19
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Movie>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source field and its type   
+                                .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Binary),
+                            searchVector => searchVector
+                                // Provide the vector to use for comparison
+                                .ByEmbedding(new RavenVector<float>(new float[]
+                                {
+                                    6.599999904632568f, 7.699999809265137f
+                                })))
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_19_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Movie>()
+                        .VectorSearch(
+                            field => field
+                                // Specify the source field and its type   
+                                .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
+                                // Set the quantization type for the generated embeddings
+                                .TargetQuantization(VectorEmbeddingType.Binary),
+                            searchVector => searchVector
+                                // Provide the vector to use for comparison
+                                .ByEmbedding(new RavenVector<float>(new float[]
+                                {
+                                    6.599999904632568f, 7.699999809265137f
+                                })))
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_20
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                           from 'Movies'
+                           // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
+                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
+                           { 'p0' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_20_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                           from 'Movies'
+                           // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
+                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
+                           { 'p0' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+            }
+        }
+        
+        private interface IFoo // todo...
+        {
+            #region syntax
+             // todo...
+            #endregion
+        }
+    }
+}
+
+#region movie_class
+// Sample class representing a document with various formats of numerical vectors
+public class Movie
+{
+    public string Id { get; set; }
+    public string Title { get; set; }
+    
+    // This field will hold numerical vector data - Not quantized
+    public RavenVector<float> TagsEmbeddedAsSingle { get; set; }
+    
+    // This field will hold numerical vector data - Quantized to Int8
+    public sbyte[][] TagsEmbeddedAsInt8 { get; set; }
+    
+    // This field will hold numerical vector data - Encoded in Base64 format
+    public List<string> TagsEmbeddedAsBase64 { get; set; }
+}
+#endregion
+
+/*
+#region sample_document
+{
+    "Title": "Hidden Figures",
+    
+    "TagsEmbeddedAsSingle": {
+        "@vector": [
+            6.599999904632568,
+            7.699999809265137
+        ]
+    },
+    
+    "TagsEmbeddedAsInt8": [
+        [
+            64,
+            127,
+            -51,
+            -52,
+            76,
+            62
+        ],
+        [
+            95,
+            127,
+            -51,
+            -52,
+            -52,
+            62
+        ]
+    ],
+    
+    "TagsEmbeddedAsBase64": [
+        "zczMPc3MTD6amZk+",
+        "mpmZPs3MzD4AAAA/"
+    ],
+    
+    "@metadata": {
+        "@collection": "Movies"
+    }
+}
+#endregion
+*/
+

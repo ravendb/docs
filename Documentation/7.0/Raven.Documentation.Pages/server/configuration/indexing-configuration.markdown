@@ -568,8 +568,12 @@ The default number of candidates (potential neighboring vectors) that RavenDB ev
 
 {PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying}
 
-The default number of vectors that are evaluated during a vector search query.  
-It determines how many nodes in the graph the algorithm explores while searching for the nearest neighbors.  
+* The default maximum number of vectors that we will return from a graph search.  
+* The number of the resulting documents that correspond to these vectors may be:  
+  * lower than this number - when multiple vectors originated from the same document.
+  * higher than this number - when the same vector is shared between multiple documents.
+
+---
 
 - **Type**: `int`
 - **Default**: `16`
@@ -579,7 +583,7 @@ It determines how many nodes in the graph the algorithm explores while searching
 
 {PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfEdges}
 
-The default number of edges that will be created for a vector during vector indexing
+The default number of edges that will be created for a vector during vector indexing.
 
 - **Type**: `int`
 - **Default**: `12`
@@ -589,7 +593,7 @@ The default number of edges that will be created for a vector during vector inde
 
 {PANEL: Indexing.Corax.VectorSearch.OrderByScoreAutomatically}
 
-Order by score automatically when vector.search is inside query.
+Order by score automatically when `vector.search` is inside a query.
 
 - **Type**: `bool`
 - **Default**: `true`

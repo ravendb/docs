@@ -73,6 +73,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 * **Textual input**:  
   RavenDB uses the [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model to embed **textual input** from your documents into 384-dimensional dense vectors.
   This highly efficient sentence-transformer model ensures precise and compact vector representations.
+  (Integration with other external transformer models is planned for the future).
 
 * **Numerical arrays input**:  
   Documents in RavenDB can contain numerical arrays with **pre-made embeddings** created elsewhere.  
@@ -85,16 +86,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for embeddings when creating the index.  
-  Choose the format that best fits your needs:  
-  * `Single` (32-bit floating point per dimension):  
-     Provides precise vector representations.  
-     Cosine similarity is used for searching and matching.  
-  * `Int8` (8-bit integer per dimension):  
-     Reduces storage requirements while maintaining good performance.  
-     Cosine similarity is used for searching and matching.  
-  * `Binary` (1-bit per dimension):  
-     Minimizes storage usage, suitable for use cases where binary representation suffices.  
-     Hamming distance is used for searching and matching.
+  Learn more in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
 
 {PANEL/}
 
