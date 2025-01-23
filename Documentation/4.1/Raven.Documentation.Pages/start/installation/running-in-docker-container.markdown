@@ -185,5 +185,4 @@ For more detailed information on how to use and setup RavenDB on Docker, please 
 
 ### Setup Examples
 
-- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
 

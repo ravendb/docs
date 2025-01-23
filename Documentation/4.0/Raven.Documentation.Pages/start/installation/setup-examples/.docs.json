@@ -10,11 +10,5 @@
     "Name": "AWS Linux VM",
     "DiscussionId": "4b49aee1-9637-42a0-b3b2-f65480a03cd6",
     "Mappings": []
-  },
-  {
-    "Path": "aws-docker-linux-vm.markdown",
-    "Name": "Docker on AWS EC2 Linux VM",
-    "DiscussionId": "176020b8-1083-4012-97a7-8905bfec8060",
-    "Mappings": []
   }
 ]

@@ -1,0 +1,34 @@
+﻿[
+    {
+        "Path": "compute.markdown",
+        "Name": "Compute",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+
+    {
+        "Path": "licensing.markdown",
+        "Name": "Licensing",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+
+    {
+        "Path": "networking.markdown",
+        "Name": "Networking",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "security.markdown",
+        "Name": "Security",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "storage.markdown",
+        "Name": "Storage",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    }
+]

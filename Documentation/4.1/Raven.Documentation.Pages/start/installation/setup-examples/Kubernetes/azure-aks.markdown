@@ -161,6 +161,5 @@ kubectl delete sts ravendb
 ### Installation
 
 - [Setup Wizard](../../../../start/installation/setup-wizard)
-- [Setup Examples: Docker (AWS ECS)](../../../../start/installation/setup-examples/aws-docker-linux-vm)
 - [Setup Examples: Windows VM (AWS)](../../../../start/installation/setup-examples/aws-windows-vm)
 - [Setup Examples: Linux VM (AWS)](../../../../start/installation/setup-examples/aws-linux-vm)

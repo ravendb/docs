@@ -53,5 +53,10 @@
         "Path": "/licensing",
         "Name": "Licensing",
         "Mappings": []
+    },
+    {
+        "Path": "/containers",
+        "Name": "Containers",
+        "Mappings": []
     }
 ]

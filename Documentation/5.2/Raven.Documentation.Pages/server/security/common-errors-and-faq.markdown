@@ -533,7 +533,6 @@ To figure out what the new limit should be, look at the exception thrown by Rave
 
 - [AWS Windows VM](../../start/installation/setup-examples/aws-windows-vm)
 - [AWS Linux VM](../../start/installation/setup-examples/aws-linux-vm)
-- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
 
 ### Security
 

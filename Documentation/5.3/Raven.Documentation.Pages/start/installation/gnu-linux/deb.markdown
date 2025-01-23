@@ -294,4 +294,3 @@ WantedBy=multi-user.target
 - [Running as a Service](../../../start/installation/running-as-service)
 - [Setup Example - AWS Windows VM](../../../start/installation/setup-examples/aws-windows-vm)
 - [Setup Example - AWS Linux VM](../../../start/installation/setup-examples/aws-linux-vm)
-- [Setup Example - Docker on AWS Linux VM](../../../start/installation/setup-examples/aws-docker-linux-vm)

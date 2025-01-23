@@ -11,7 +11,7 @@
 * To conform with these changes, installing RavenDB `6.0` or higher 
   in a system that already hosts RavenDB `5.x` or lower requires 
   the migration procedure explained below.  
-* Read [here](../../start/installation/running-in-docker-container) more about running a RavenDB Docker image.  
+* Read [here](../../start/containers/image-usage) more about running a RavenDB Docker image.  
 
 * In this page:  
   * [Changes Made In RavenDB `6.0` And Up](../../migration/server/docker#changes-made-in-ravendb-6.0-and-up)  
