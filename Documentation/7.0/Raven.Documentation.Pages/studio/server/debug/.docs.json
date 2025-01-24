@@ -1,0 +1,19 @@
+[
+  {
+    "Path": "/advanced",
+    "Name": "Advanced",
+    "Mappings": []
+  },
+  {
+    "Path": "admin-js-console.markdown",
+    "Name": "Admin JS Console",
+    "DiscussionId": "78429d65-399b-4ea4-8a22-00902db402ec",
+    "Mappings": []
+  },
+  {
+    "Path": "admin-logs.markdown",
+    "Name": "Admin Logs",
+    "DiscussionId": "66b444a0-4925-4b13-a684-1e0841ae460a",
+    "Mappings": []
+  }
+]

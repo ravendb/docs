@@ -6,11 +6,11 @@
 
 * This article describes database configuration settings. 
 
-* After editing & saving a configuration key, the change will only take effect __after__ the database is reloaded.  
+* After editing & saving a configuration key, the change will only take effect **after** the database is reloaded.  
   See [How to reload the database](../../studio/database/settings/database-settings#how-to-reload-the-database).
 
 {WARNING: }
-__Warning__:  
+**Warning**:  
 Do not modify the database settings unless you are an expert and know what you're doing.  
 {WARNING/}
 
