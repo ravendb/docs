@@ -1,0 +1,13 @@
+[
+  {
+    "Path": "cluster-observer.markdown",
+    "Name": "Cluster Observer",
+    "DiscussionId": "9476512e-7551-4a41-ab79-934670f52a77",
+    "Mappings": [
+      {
+        "Version": 4.0,
+        "Key": "studio/server/cluster/cluster-observer"
+      }
+    ]
+  }
+]
