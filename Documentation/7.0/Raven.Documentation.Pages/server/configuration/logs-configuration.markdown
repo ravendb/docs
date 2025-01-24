@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* The following configuration keys allow you to control logging behvior in a RavenDB server.  
+* The following configuration keys allow you to control logging behavior in a RavenDB server.  
   To learn more about RavenDB's logging see the [Logging article](../../server/troubleshooting/logging).  
 
 * In this page:
@@ -44,7 +44,7 @@ or provide a path to an XML configuration file whose content overrides these set
 
 {PANEL: Logs.Path}
 
-A path to the folder that RavenDB server log files are stored at.  
+A path to the folder where RavenDB server log files are stored.  
 By default, it is the `Logs` folder under the server folder.  
 
 - **Type**: `string`
@@ -70,7 +70,7 @@ Log entries will be added from the set `MinLevel`and up.
 
 {PANEL: Logs.Internal.Path}
 
-The path to a folder that NLog internal-usage logs are written to.  
+The path to a folder that NLog internal usage logs are written to.  
 This can be used when NLog needs to be debugged, for example.  
 
 - **Type**: `PathSetting`
@@ -129,7 +129,7 @@ Can be used to make certain that logs are collected in many small files rather t
 
 {PANEL: Logs.MaxArchiveDays}
 
-The maximal number of days that an archived log file is kept.  
+The maximum number of days that an archived log file is kept.  
 
 - **Type**: `int`
 - **Default**: `3`
@@ -139,7 +139,7 @@ The maximal number of days that an archived log file is kept.
 
 {PANEL: Logs.MaxArchiveFiles}
 
-The maximal number of archived log files to keep.  
+The maximum number of archived log files to keep.  
 Set this value to the number of days after which log files will be deleted,  
 or set it to `null` to refrain from removing log files.  
 

@@ -92,7 +92,7 @@ before it is archived and logging is directed to a new file.
 
 {PANEL: Security.AuditLog.MaxArchiveDays}
 
-The maximal number of days that an archived audit log file is kept.  
+The maximum number of days that an archived audit log file is kept.  
 
 - **Type**: `int`
 - **Default**: `3`
@@ -396,7 +396,7 @@ This duration takes precedence over the default duration setting.
 
 {PANEL: Security.WellKnownCertificates.Admin}
 
-Specify well known certificate thumbprints that will be trusted by the server as cluster admins.
+Specify well-known certificate thumbprints that will be trusted by the server as cluster admins.
 
 - **Type**: `string[]` or `string with thumbprints values separated by ;`
 - **Example**: `"297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb"`
@@ -462,7 +462,7 @@ EXPERT ONLY:
 Determines whether RavenDB will consider memory lock error to be catastrophic.
 This is used with encrypted databases to ensure that temporary buffers are never written to disk and are locked to memory.
 
-Setting this to true is Not recommended and should be done only after proper security analysis has been performed.
+Setting this to true is **not** recommended and should be done only after proper security analysis has been performed.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -475,7 +475,7 @@ Setting this to true is Not recommended and should be done only after proper sec
 EXPERT ONLY:
 
 Defines a list of supported TLS Cipher Suites.  
-Values must be semicolon separated.
+Values must be semicolon-separated.
 
 - **Type**: `TlsCipherSuite[]`
 - **Example**: `TLS_RSA_WITH_RC4_128_MD5;TLS_RSA_WITH_RC4_128_SHA`

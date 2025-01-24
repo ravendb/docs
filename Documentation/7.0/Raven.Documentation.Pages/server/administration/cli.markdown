@@ -76,7 +76,7 @@ ravendb> info
 
 Online display of memory usage by RavenDB. You can separate into Working Set, Native Mem, 
 Managed Mem, and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware 
-not to hit Ctrl+C / Break to avoid unintended a shutdown of the server).
+not to hit Ctrl+C / Break to avoid an unintended shutdown of the server).
 
 {CODE-BLOCK:plain}
 ravendb> stats

@@ -50,7 +50,7 @@ RavenDB versions up to `6.2` output log data to files on the server machine, and
 optionally stream it to the server console.  
 
 From version `7.0` on, RavenDB incorporates the [NLog](https://nlog-project.org) 
-logging framework. The logging process is hardly changed, but the integration with 
+logging framework. The logging process has hardly changed, but the integration with 
 NLog now allows RavenDB to log more versatile data to many additional destinations 
 via [NLog plugins](https://nlog-project.org/config/).  
 Available logging destinations include, among others, log aggregators like 
@@ -76,7 +76,7 @@ is integrated with.
      the values set by internal configuration keys.  
    * [Using an external configuration file](../../server/troubleshooting/logging#configuring-and-using-nlog)  
 
-* To **determine whether to use an NLog configuraion file or internal configuration keys**,  
+* To **determine whether to use an NLog configuration file or internal configuration keys**,  
   set the [Logs.ConfigPath](../../server/configuration/logs-configuration#logs.configpath) 
   configuration key with -  
    - a [path](../../server/troubleshooting/logging#use-external-config-file) 
@@ -112,8 +112,8 @@ RavenDB versions up to `6.2` support proprietary **logging modes**.
 
 | Available logging Mode | Description |
 | ------------- | ----------- |
-| `Operations` | High level info for operational users |
-| `Information` | Low level debug info |
+| `Operations` | High-level info for operational users |
+| `Information` | Low-level debug info |
 | `None` | Logging is disabled |
 
 ---
@@ -174,9 +174,9 @@ E.g. -
      [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration key.  
    - [Learn how to log to additional destinations](../../server/troubleshooting/logging#configuring-and-using-nlog)  
 * **NLog configuration file defaults**  
-  The **default values** given to logging attributes in the 
+  The **default values** given to settings in the 
   [NLog configuration file template](../../server/troubleshooting/logging#an-available-template) 
-  we provide are **identical** to those given to internal configuration keys.  
+  are **identical** to those given to internal configuration keys.  
    - [The list of logging configuration keys and their default values](../../server/configuration/logs-configuration)  
 
 {PANEL/}
@@ -198,7 +198,7 @@ log [on|off] [http-]<on|off> [info|debug] [no-console]
 {CODE-BLOCK/}
 
 #### Example:
-To temporarily change logging level to `debug`, issue this command in the server cnosole:  
+To temporarily change the logging level to `debug`, issue this command in the server console:  
 {CODE-BLOCK:plain}
 ravendb> log debug
 {CODE-BLOCK/}
@@ -272,9 +272,9 @@ property, with the plugin's version you want to use as a value.
 {INFO: Other Nuget-related configuration keys}
 
 * [Logs.NuGet.PackagesPath](../../server/configuration/logs-configuration#logs.nuget.packagespath)  
-  Use this key to set the path that NuGet packages are downloaded to.  
+  Use this key to select the path to which NuGet packages are downloaded.  
 * [Logs.NuGet.PackageSourceUrl](../../server/configuration/logs-configuration#logs.nuget.packagesourceurl)  
-  Use this key to set the default location that NuGet packages are downloaded from.  
+  Use this key to set the default location from which NuGet packages are downloaded.  
 * [Logs.NuGet.AllowPreReleasePackages](../../server/configuration/logs-configuration#logs.nuget.allowprereleasepackages)  
   Use this key to determine whether RavenDB is allowed to use pre-release versions of NuGet packages.  
 {INFO/}
@@ -365,15 +365,13 @@ for this destination.
     layout="${longdate:universalTime=true}|${level:uppercase=true}|${threadid}|
             ${event-properties:item=Resource}|${event-properties:item=Component}|
             ${logger}|${message:withexception=true}|${event-properties:item=Data}">  
+...
 <label name="app" layout="layout" />
+
 {CODE-BLOCK/}
 
 {INFO: }
-
-* Consult the information provided by plugin creators to learn which properties 
-  are expected and how to set them so the plugin and your destination would be able 
-  to receive and process your data.  
-* [For a thorough guide of using Grafana Loki with RavenDB]()  
+[For a complete guide to using Grafana Loki with RavenDB]()  
 {INFO/}
 
 {CONTENT-FRAME/}
@@ -382,8 +380,8 @@ for this destination.
 
 {PANEL: Studio: Admin Logs}
 
-Another option that allows you to see the debug logging without the need to restart the server is 
-Studio's Admin Logs, available in: `Manage Server -> Admin Logs`.
+Another way to view debug (or any other level) logs without having to restart 
+the server, is Studio's [Admin Logs view](../../studio/server/debug/admin-logs).  
 
 {PANEL/}
 
