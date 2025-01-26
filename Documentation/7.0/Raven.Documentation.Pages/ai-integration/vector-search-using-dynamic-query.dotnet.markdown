@@ -141,12 +141,12 @@
   Refer to [quantization options](../todo..) for examples that specify the destination quantization.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:Query vs_1@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:Query_async vs_1_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery vs_2@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery_async vs_2_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery vs_3@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery_async vs_3_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query vs_1@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query_async vs_1_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery vs_2@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery_async vs_2_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery vs_3@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery_async vs_3_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
     {CODE-TAB-BLOCK:sql:RQL}
 // Query the Products collection
 from "Products"
@@ -188,9 +188,9 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
 #### Sample data:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Class movie_class@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Sample_data sample_data@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Sample_document sample_document@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Class movie_class@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Sample_data sample_data@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Sample_document sample_document@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TABS/}
 
 ---
@@ -205,12 +205,12 @@ These examples search for Movie documents with vectors similar to the one provid
   which contains numerical data in **floating-point format**. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_4@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_4_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_5@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_5_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_6@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_6_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_4@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_4_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_5@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_5_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_6@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_6_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // The source document field type is interpreted as 'Single' by default
@@ -227,7 +227,7 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
   which contains numerical data that is already quantized in **_Int8_ format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_7@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_7@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the source document field name with 'embedding.i8' to indicate the source data type
@@ -244,7 +244,7 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $p0)
   which contains numerical data represented in **_Base64_ format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_8@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_8@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 where vector.search(TagsEmbeddedAsBase64, $p0)
@@ -268,12 +268,12 @@ where vector.search(TagsEmbeddedAsBase64, $p0)
   Setting the param is similar for both text and numerical content searches.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:Query vs_9@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:Query_async vs_9_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery vs_10@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery_async vs_10_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery vs_11@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery_async vs_11_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query vs_9@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query_async vs_9_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery vs_10@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery_async vs_10_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery vs_11@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery_async vs_11_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
     {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // Wrap the vector.search query with the 'exact()' method
@@ -337,12 +337,12 @@ The available quantization options are:
   * The generated embeddings will use the _Int8_ format.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_15@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_15_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_16@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_16_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_17@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_17_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_15@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_15_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_16@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_16_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_17@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_17_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // Wrap the 'Name' field with 'embedding.text_i8'
@@ -359,12 +359,12 @@ where vector.search(embedding.text_i8(Name), $p0)
     * The generated embeddings will use the _Binary_ format.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_18@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_18_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_19@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_19_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_20@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_20_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_18@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_18_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_19@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_19_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_20@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_20_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
@@ -431,12 +431,12 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
   `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
 
   {CODE-TABS}
-  {CODE-TAB:csharp:Query vs_12@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:Query_async vs_12_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:DocumentQuery vs_13@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:DocumentQuery_async vs_13_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:RawQuery vs_14@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:RawQuery_async vs_14_async@AiIntegration\vectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:Query vs_12@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:Query_async vs_12_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:DocumentQuery vs_13@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:DocumentQuery_async vs_13_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery vs_14@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery_async vs_14_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
   {CODE-TAB-BLOCK:sql:RQL}
   from "Products"
   where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
@@ -449,6 +449,14 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 {PANEL: Syntax}
 
 todo...
+
+provide syntax for:
+
+public static class VectorQuantizer
+public static sbyte[] ToInt8(float[] rawEmbedding)
+public static byte[] ToInt1(ReadOnlySpan<float> rawEmbedding)
+
+INFO: RavenDB.Client provides quantizers. Other quantizers may not be compatible.
 
 {PANEL/}
 

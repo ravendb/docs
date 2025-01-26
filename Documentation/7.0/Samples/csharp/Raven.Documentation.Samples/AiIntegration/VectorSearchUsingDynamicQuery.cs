@@ -130,7 +130,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             6.599999904632568f, 7.699999809265137f
                         }),
                         
-                        // Embedded vector encoded in Base64 format
+                        // Embedded vectors encoded in Base64 format
                         TagsEmbeddedAsBase64 = new List<string>()
                         {
                             "zczMPc3MTD6amZk+", "mpmZPs3MzD4AAAA/"
