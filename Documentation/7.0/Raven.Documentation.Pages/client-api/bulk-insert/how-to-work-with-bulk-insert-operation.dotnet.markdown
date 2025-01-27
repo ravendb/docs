@@ -118,15 +118,20 @@ Here we create a bulk insert operation and insert a million documents of type `E
 
 The following options can be configured for BulkInsert.
 
-### `CompressionLevel`
+#### `CompressionLevel`:
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
 | **Optimal** | `string` | Compression level to be used when compressing static files. |
-| **Fastest** | `string` | Compression level to be used when compressing HTTP responses with `GZip` or `Deflate`. |
-| **NoCompression**<br>(Default) | `string` | Does not compress. |
+| **Fastest**<br>(Default)| `string` | Compression level to be used when compressing HTTP responses with `GZip` or `Deflate`. |
+| **NoCompression** | `string` | Does not compress. |
 
-### `SkipOverwriteIfUnchanged`
+{INFO: Default compression level}
+For RavenDB versions up to `6.2`, bulk-insert compression is Disabled (`NoCompression`) by default.  
+For RavenDB versions from `7.0` on, bulk-insert compression is Enabled (set to `Fastest`) by default.  
+{INFO/}
+
+#### `SkipOverwriteIfUnchanged`:
 
 Prevents overriding documents when the inserted document and the existing one are similar.  
 
