@@ -63,7 +63,8 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 * An index can combine different field types, e.g., standard fields, spatial fields, full-text search fields,  
   and **vector-fields**, allowing queries to retrieve data from all these field types.
-  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights efficiently.
+  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights efficiently.  
+  An example is available in [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types).
 
 * Document attachments can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
   further extending the versatility of your data processing and search capabilities.
@@ -85,7 +86,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
   are indexed and searched for using the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) algorithm.
 
 * **Optimize storage via quantization**:  
-  RavenDB allows you to select the quantization format for embeddings when creating the index.  
+  RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
   Learn more in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
 
 {PANEL/}
@@ -101,7 +102,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 - [Vector search using a dynamic query](../ai-integration/vector-search-using-dynamic-query.markdown)
 - [Vector search using a static index](../ai-integration/vector-search-using-static-index.markdown)
-- [Source data types for vector search](../ai-integration/source-data-tuypes-for-vector-search)
+- [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
 
 ### Server
 

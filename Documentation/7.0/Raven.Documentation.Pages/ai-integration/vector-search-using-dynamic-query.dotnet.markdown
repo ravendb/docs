@@ -4,7 +4,7 @@
 {NOTE: }
 
 * This article explains how to run a vector search using a **dynamic query**.  
-  To learn how to run a vector search using a static-index, see [vector search using static-index](../ai-integration/vector-search-using-static-index).
+  To learn how to run a vector search using a static-index, see [vector search using a static-index](../ai-integration/vector-search-using-static-index).
 
 * In this page:
   * [What is a vector search](../ai-integration/vector-search-using-dynamic-query#what-is-a-vector-search)
@@ -17,10 +17,7 @@
   * [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search)
   * [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options)
   * [Querying vector fields and regular data in the same query](../ai-integration/vector-search-using-dynamic-query#querying-vector-fields-and-regular-data-in-the-same-query)
-  * [Syntax]()
-  
-[//]: # (  * Soft delete... maybe in the index article ???)
-[//]: # (  * cannot be used in subscriptions)
+  * [Syntax](../ai-integration/vector-search-using-dynamic-query#syntax)
     
 {NOTE/}
 
@@ -30,7 +27,7 @@
 
 * Vector search is a method for finding documents based on their **contextual similarity** to the search item provided in a given query.
  
-* Your data is converted into vectors, known as embeddings, and stored in a multidimensional space.  
+* Your data is converted into vectors, known as **embeddings**, and stored in a multidimensional space.  
   Unlike traditional keyword-based searches, which rely on exact matches,
   vector search identifies vectors closest to your query vector and retrieves the corresponding documents.
 
@@ -39,20 +36,27 @@
 {PANEL: Dynamic vector search query - Overview}
 
 * To make a **dynamic vector search query**:  
-  * From the Client API - use method `VectorSearch()`
-  * In RQL - use `vector.search()`
+  * From the Client API - use method `VectorSearch()`, examples are provided later in this article
+  * In RQL - use method `vector.search()`
 
-* When executing a dynamic vector search query, RavenDB creates a Corax [auto-index](../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) to process the query,  
+* The **source data types** that can be used for vector search is detailed in [Data types for vector search](../ai-integration/data-types-for-vector-search).
+
+* Note: Vector search queries cannot be used with [subscription queries](../client-api/data-subscriptions/creation/api-overview#subscription-query).
+
+* When executing a dynamic vector search query, RavenDB creates a Corax [Auto-index](../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) to process the query,  
   and the results are retrieved from that index.    
-    {INFO: }
-    * Only [Corax indexes](../indexes/search-engine/corax) support vector search.
-    * Even if your default auto-index engine is set to Lucene (via [Indexing.Auto.SearchEngineType](../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
-      performing a vector search using a dynamic query will create a new auto-index based on Corax.
-    {INFO/}
+     {INFO: }
+     * Only [Corax indexes](../indexes/search-engine/corax) support vector search.
+     * Even if your default auto-index engine is set to Lucene (via [Indexing.Auto.SearchEngineType](../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
+       performing a vector search using a dynamic query will create a new auto-index based on Corax.
+     {INFO/}
 
 ---
 
-### Creating embeddings for the auto-index:
+{CONTENT-FRAME: }
+
+#### Creating embeddings for the Auto-index
+---
 
 * **Creating embeddings from TEXTUAL content**:  
   When querying over textual data, for each document in the queried collection,  
@@ -60,24 +64,29 @@
   The embedding is created using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) sentence-transformer model.  
 
 * **Creating embeddings from NUMERICAL arrays**:  
-  When querying over pre-made numerical arrays that are already in a vector format,
+  When querying over pre-made numerical arrays that are already in vector format,  
   RavenDB will use them without transformation (unless further quantization is applied).
     {WARNING: }
-      * To avoid index errors, ensure that the dimensionality of these numerical arrays (i.e., their length) is consistent across all your source documents for the field you are querying.
-      * If you wish to enforce such consistency, perform a vector search using a [static-index](../todo..) instead of a dynamic query.
+    To avoid index errors, ensure that the dimensionality of these numerical arrays (i.e., their length)  
+    is consistent across all your source documents for the field you are querying.  
+    If you wish to enforce such consistency -  
+    perform a vector search using a [static-index](../ai-integration/vector-search-using-static-index) instead of a dynamic query.
     {WARNING/} 
 
-    * **Quantizing the embeddings**:  
-      The embeddings are quantized based on the parameters specified in the query.  
-      Learn more about quantization in [Quantization options](../todo..).
+* **Quantizing the embeddings**:  
+  The embeddings are quantized based on the parameters specified in the query.  
+  Learn more about quantization in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
 
-    * **Indexing the embeddings**:  
-      RavenDB indexes the embeddings on the server using the [HNSW algorithm](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world).
-      This algorithm organizes embeddings into a high-dimensional graph structure, enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queries.
+* **Indexing the embeddings**:  
+  RavenDB indexes the embeddings on the server using the [HNSW algorithm](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world).  
+  This algorithm organizes embeddings into a high-dimensional graph structure,  
+  enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queries.
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+#### Retrieving results
 ---
-
-### Retrieving results:
 
 * **Processing the query**:  
   To ensure consistent comparisons, the **search term** is transformed into an embedding vector using the same method as the document fields.
@@ -90,19 +99,19 @@
   You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically) configuration key.  
   In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../client-api/session/querying/sort-query-results).
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+#### The dynamic query parameters
 ---
 
-### The dynamic query parameters: 
-
-[//]: # (// go to syntax ???)
-
-* **Source data type**  
-  RavenDB supports performing a vector search on TEXTUAL values or NUMERICAL arrays.  
-  Refer to [source data types](../todo) for all data types that are supported for vector search.
+* **Source data format**  
+  RavenDB supports performing vector search on TEXTUAL values or NUMERICAL arrays.  
+  the source data can be formatted as `Text`, `Single`, `Int8`, or `Binary`.
 
 * **Target quantization**  
   You can specify the quantization encoding for the embeddings that will be created from source data.  
-  Learn more about quantization in [Quantization options](../todo..).  
+  Learn more about quantization in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).  
 
 * **Minimum similarity**  
   You can specify the minimum similarity to use when searching for related vectors.  
@@ -128,8 +137,9 @@
     * _Exact search_:   
       Perform a thorough scan of the vectors to find the actual closest vectors,  
       offering better accuracy but at a higher computational cost.  
-      Learn more in [Exact serach](../ai-integration/vector-search-using-dynamic-query#exact-search).
+      Learn more in [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search).
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Vector search on TEXT}
@@ -215,7 +225,6 @@ These examples search for Movie documents with vectors similar to the one provid
 from "Movies"
 // The source document field type is interpreted as 'Single' by default
 where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
-// The vector to compare against must be exactly as stored in your JSON document
 {"p0" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -232,7 +241,6 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 from "Movies"
 // Wrap the source document field name with 'embedding.i8' to indicate the source data type
 where vector.search(embedding.i8(TagsEmbeddedAsInt8), $p0)
-// The vector to compare against must be exactly as stored in your JSON document
 {"p0" : [64, 127, -51, -52, 76, 62] }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -247,6 +255,9 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $p0)
 {CODE-TAB:csharp:Query vs_8@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
+// * Wrap the source document field name using 'embedding.xx' to specify
+//   the source data type from which the Base64 string was generated.
+// * If the document field is Not wrapped, 'single' is assumed as the default source type. 
 where vector.search(TagsEmbeddedAsBase64, $p0)
 {"p0" : "zczMPc3MTD6amZk+" }
 {CODE-TAB-BLOCK/}
@@ -448,7 +459,6 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 
 {PANEL: Syntax}
 
-todo...
 
 provide syntax for:
 
@@ -456,7 +466,6 @@ public static class VectorQuantizer
 public static sbyte[] ToInt8(float[] rawEmbedding)
 public static byte[] ToInt1(ReadOnlySpan<float> rawEmbedding)
 
-INFO: RavenDB.Client provides quantizers. Other quantizers may not be compatible.
 
 {PANEL/}
 
@@ -466,7 +475,7 @@ INFO: RavenDB.Client provides quantizers. Other quantizers may not be compatible
 
 - [RavenDB as a vector database](../ai-integration/ravendb-as-vector-database)
 - [Vector search using a static index](../ai-integration/vector-search-using-static-index)
-- [Source data types for vector search](../ai-integration/source-data-tuypes-for-vector-search)
+- [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
 
 ### Querying
 

@@ -3,9 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes.Vector;
-using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Queries.Vector;
-using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.AiIntegration
@@ -30,7 +28,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Specify the document field in which to search for similar values
                             field => field.WithText(x => x.Name),
                             // Call 'ByText' 
-                            // Provide the search term to compare against
+                            // Provide the term for the similarity comparison
                             searchTerm => searchTerm.ByText("italian food"),
                             // Optionally, specify the minimum similarity level
                             0.82f,
@@ -181,7 +179,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             field => field.WithEmbedding(
                                 x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
                             // Call 'ByEmbedding'
-                            // Provide the vector to compare against
+                            // Provide the vector for the similarity comparison
                             searchVector => searchVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
                             // Optionally, specify the minimum similarity level
@@ -280,11 +278,11 @@ namespace Raven.Documentation.Samples.AiIntegration
                             field => field.WithEmbedding(
                                 x => x.TagsEmbeddedAsInt8, VectorEmbeddingType.Int8),
                             // Call 'ByEmbedding'
-                            // Provide the vector to compare against
+                            // Provide the vector for the similarity comparison
                             // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
                             searchVector => searchVector.ByEmbedding(
                                 // The provided vector MUST be in the same format as was stored in your document
-                                // Call 'VectorQuantizer.ToInt8' to transform the rawData to Int8 format  
+                                // Call 'VectorQuantizer.ToInt8' to transform the rawData to the Int8 format  
                                 VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();
@@ -296,9 +294,11 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #region vs_8
                     var similarMovies = session.Query<Movie>()
                         .VectorSearch(
-                            // Call 'WithBase64'
-                            // Specify the source field that contains the embeddings in the document
-                            field => field.WithBase64(x => x.TagsEmbeddedAsBase64),
+                            // Call 'WithBase64', specify:
+                            // * The source field that contains the embeddings in the document
+                            // * The source embedding type
+                            //   (the type from which the Base64 string was constructed)
+                            field => field.WithBase64(x => x.TagsEmbeddedAsBase64, VectorEmbeddingType.Single),
                             // Call 'ByBase64'
                             // Provide the Base64 string that represents the vector to query against
                             searchVector => searchVector.ByBase64("zczMPc3MTD6amZk+"))
@@ -478,7 +478,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #endregion
                 }
                 
-                // Examples for qunatization
+                // Examples for quantization
                 // =========================
                 
                 // Text => Int8

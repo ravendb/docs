@@ -49,7 +49,7 @@
 Use when precision is critical.  
 
 `float[]` - A single vector of numerical values representing raw embedding data.  
-`foat[][]`- An array of vectors, where each entry is a separate embedding vector.  
+`float[][]`- An array of vectors, where each entry is a separate embedding vector.  
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
