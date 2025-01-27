@@ -4,13 +4,13 @@
 {NOTE: }
 
 * The following configuration keys allow you to control logging behavior in a RavenDB server.  
-  To learn more about RavenDB's logging see the [Logging article](../../server/troubleshooting/logging).  
+  To learn more about RavenDB's logging see [Logging](../../server/troubleshooting/logging).  
 
 * In this page:
    * [Logs.ConfigPath](../../server/configuration/logs-configuration#logs.configpath)  
    * [Logs.Path](../../server/configuration/logs-configuration#logs.path)  
    * [Logs.MinLevel](../../server/configuration/logs-configuration#logs.minlevel)  
-   * [server/configuration/logs-configuration#logs.minlevel](../../server/configuration/logs-configuration#logs.internal.path)  
+   * [Logs.Internal.Path](../../server/configuration/logs-configuration#logs.internal.path)  
    * [Logs.Internal.Level](../../server/configuration/logs-configuration#logs.internal.level)  
    * [Logs.Internal.LogToStandardOutput](../../server/configuration/logs-configuration#logs.internal.logtostandardoutput)  
    * [Logs.Internal.LogToStandardError](../../server/configuration/logs-configuration#logs.internal.logtostandarderror)  

@@ -16,7 +16,7 @@
 
 * **Numerous logging destinations**  
   Starting with RavenDB version `7.0` RavenDB outputs all log data through 
-  [NLog](https://nlog-project.org), a widely used `.Net` logging framework 
+  [NLog](https://nlog-project.org), a widely used `.NET` logging framework 
   capable of streaming logged data to various destinations using a large 
   number of available [NLog plugins](https://nlog-project.org/config/).  
 
@@ -112,7 +112,7 @@ RavenDB versions up to `6.2` support proprietary **logging modes**.
 
 | Available logging Mode | Description |
 | ------------- | ----------- |
-| `Operations` | High-level info for operational users |
+| `Operations` | High-level info for operational use |
 | `Information` | Low-level debug info |
 | `None` | Logging is disabled |
 
@@ -138,26 +138,45 @@ From version `7.0` on, RavenDB's **logging levels** are NLog-compliant.
 When migrating from an older version to `7.0` or higher, RavenDB **is** capable 
 of understanding the old version's _logging mode_ configuration and translate 
 it to the equivalent NLog level.  
-Logging will therefore continue uninterrupted and there's no rush to modify the 
+
+| **Logging mode (RavenDB ≤ `6.2`)** | **Equivalent NLog level (RavenDB ≥ `7.0`)** | 
+| :----------: | :----: |
+| Operations | Info |
+| Information | Debug |
+
+<br>
+
+Logging will therefore continue uninterrupted, there's no rush to modify the 
 logging level right after migration.  
 
-You _will_ need to modify these settings, however, if you want to utilize one of the 
-newer logging levels, or if you want to transfer data to additional destinations via 
-NLog plugins.  
-If this is the case, e.g. if your existing [settings.json](../../server/configuration/configuration-options#settings.json) 
-currently defines -  
-{CODE-BLOCK:plain}
+You **will** need to modify these settings, however, if you want to use NLog features.  
+
+* To use an NLog logging level like `Warn`, for example, you will need to modify 
+  `settings.json` accordingly.  
+  {CODE-TABS}
+{CODE-TAB-BLOCK:plain:settings.json}
 ...
-"Logs.Mode": "Operations",
+"Logs.MinLevel": "Warn",
 ...
-{CODE-BLOCK/}
-You will need to explicitly change this value to an NLog level.  
-E.g. -  
-{CODE-BLOCK:plain}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+* And to output log data to a destination like a log aggragation tool through an 
+  NLog plugin, you will need to start using an 
+  [NLog configuration file](../../server/troubleshooting/logging#configuring-and-using-nlog), 
+  and subsequently modify any NLog settings you want to change, including the logging 
+  level, in this file.  
+  {CODE-TABS}
+{CODE-TAB-BLOCK:plain:nlog.config}
+<rules>
 ...
-"Logs.MinLevel": "Info",
+<logger ruleName="log_aggregator_1" 
+        name="*" minlevel="Warn" writeTo="agg" />
 ...
-{CODE-BLOCK/}
+</rules>
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 {CONTENT-FRAME/}
 
 {PANEL/}
