@@ -30,7 +30,9 @@ The orchestration simplifies the deployment and maintenance of systems built usi
 Orchestrators also simplify cluster scaling by design and enable self-healing by automatically recovering application containers across available nodes (instances or machines).
 
 
-### Difficulties
+{PANEL: Difficulties}
+
+Hosting a database in containerized environment brings many difficulties and challenges, that developers need to face.
 
 #### Statefulness in a Stateless World
 Containers are inherently stateless and designed to be ephemeral, but RavenDB, as a database, requires durable storage for its data.  
@@ -52,6 +54,8 @@ Containerized RavenDB instances may be challenging to analyze without direct acc
 This security detail restricts traditional debugging tools and complicates problem resolution.
 It sometimes requires the usage of container host tooling, which can be not sufficient or even available in serverless regime.
 Effective management of RavenDB in such environments requires a solid understanding of the database and the orchestration platform.
+{PANEL/}
+
 
 ## 2. What We Offer
 

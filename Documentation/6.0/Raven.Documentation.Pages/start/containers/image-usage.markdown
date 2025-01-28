@@ -90,7 +90,7 @@ To learn about statefullness and storing RavenDB data in a containers, or if you
 #### **Advanced Networking**
 To read more on RavenDB networking containerized environment, go to Containers > Requirements > Networking.
 
-#### **FAQ**
+{PANEL: FAQ}
 
 **Q: I use Docker Compose or automated installation. How do I disable the setup wizard?**
 A: Set the `Setup.Mode` configuration option to `None` like so:
@@ -130,8 +130,8 @@ A: Mount the configuration file as a Docker volume and use the `--config-path` a
 
 {CODE-BLOCK:bash}
 docker run -v /path/to/settings.json:/etc/ravendb/settings.json \
-  -e RAVEN_ARGS='--config-path /etc/ravendb/settings.json' \
-  ravendb/ravendb
+-e RAVEN_ARGS='--config-path /etc/ravendb/settings.json' \
+ravendb/ravendb
 {CODE-BLOCK/}
 
 Alternatively, pass the custom `settings.json` content via the `RAVENDB_SETTINGS` environment variable.
@@ -144,5 +144,7 @@ docker exec -it CONTAINER_ID /var/lib/ravendb/Server/rvn admin-channel
 {CODE-BLOCK/}
 
 This will connect you to the RavenDB admin console, where you can manage the server interactively.
+
+{PANEL/}
 
 ---

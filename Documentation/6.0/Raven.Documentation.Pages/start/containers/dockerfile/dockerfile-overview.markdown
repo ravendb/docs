@@ -93,6 +93,7 @@ RUN apt install /opt/ravendb.deb -y \
 {CODE-BLOCK/}
 
 This section installs RavenDB:
+
 1. The `COPY` command transfers the `.deb` package (RavenDB’s installation file) into the container at `/opt/ravendb.deb`.
 2. The `RUN` command installs the package using `apt`, cleans up unnecessary files to reduce the image size - removes cached OS package lists (`/var/lib/apt/lists/*`).
 
@@ -127,6 +128,7 @@ VOLUME /var/lib/ravendb/data /etc/ravendb
 {CODE-BLOCK/}
 
 `VOLUME` specifies directories to be mounted as volumes. These are:
+
 - `/var/lib/ravendb/data`: For database files.
 - `/etc/ravendb`: For configuration and security-related files.
 
