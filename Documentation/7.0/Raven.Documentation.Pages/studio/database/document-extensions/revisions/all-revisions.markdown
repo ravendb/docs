@@ -40,14 +40,30 @@
 
 ![All Revisions](images/revisions/all-revisions.png "All Revisions")
 
-1. **Remove revisions**  
-   Click to remove selected revisions (see below).  
-   {WARNING: }
-    Please **be aware** that removing revisions is an **irrevocable operation**.  
-   {WARNING/}
+1. <a id="remove-revisions" />**Remove revisions**  
+   Click to delete 
+   [selected revisions](../../../../studio/database/document-extensions/revisions/all-revisions#select-revision-column).  
+   * **Removing regular revisions**:  
+     Use the **Remove revisions** button to remove revisions indicating the 
+     **creation** or the **modification** of documents.
+     {WARNING: }
+      Please **be aware** that removing revisions is an **irrevocable operation**.  
+     {WARNING/}
+   * **Removing deletion revisions**:  
+     Revisions that indicate the **deletion** of documents **cannot** be removed 
+     from this view, but only from the 
+     [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions#revisions-bin) 
+     view.  
+   * Revisions can also be deleted [using the client API](../../../../document-extensions/revisions/client-api/operations/delete-revisions).  
+   * Removing revisions from a [secure server](../../../../server/security/overview) 
+     is allowed only when the certificate used by the client that attempts the operation 
+     has an [Admin](../../../../server/security/authorization/security-clearance-and-permissions#section) 
+     or higher security clearance.  
+
 
 2. **Info Hub**  
    Click for information about this view.  
+
 3. **Filter by Collection**  
    Click to select the collection whose revisions you want to list and manage.  
 
@@ -65,10 +81,13 @@
     * Filter by **Deleted** to list revisions that indicate the **deletion** of documents.  
     
          ![Deleted revisions](images/revisions/all-revisions_deleted.png "Deleted revisions")
-      
-5. **Revision Selection Column**  
+
+5. <a id="select-revision-column" />**Revision Selection Column**  
    Select revisions that you want to remove.  
-   To remove the selected revisions, click the **Remove revisions** buttin (see above).  
+   To remove the selected revisions, click the 
+   [Remove revisions](../../../../studio/database/document-extensions/revisions/all-revisions#remove-revisions) 
+   button.  
+
 6. **Revision Data**  
    Browse for revisions' **ID**, **Collection**, **ETag**, 
    **Change Vector**, **Last Modification** data, and **Flags**.  
