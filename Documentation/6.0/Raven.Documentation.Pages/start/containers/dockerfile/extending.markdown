@@ -4,7 +4,7 @@ Some custom setups solutions may lead you to a necessity of building over our Do
 This article explains in detail, how it works.
 
 
-For detailed Dockerfile guide, visit Containers > Dockerfile > Overview
+For detailed Dockerfile guide, visit [Containers > Dockerfile > Overview](./dockerfile-overview)
 
 ## Extending the Existing `ravendb/ravendb` Image
 
@@ -20,7 +20,7 @@ This approach involves using `FROM ravendb/ravendb` to build upon the official i
 
 ##### **Dockerfile Example for Extension**
 
-```docker
+{CODE-BLOCK:bash}
 # Use the official RavenDB image as the base
 FROM ravendb/ravendb:7.0-ubuntu-latest
 
@@ -38,21 +38,24 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Replace the CMD (optional!)
 COPY my-run-raven.sh /usr/lib/ravendb/scripts/run-raven.sh
 CMD ["/bin/bash", "/usr/lib/ravendb/scripts/run-raven.sh"]
-```
+{CODE-BLOCK/}
 
 ##### Building for Multiple Platforms
 
 Use BuildX if you need to build for multiple architectures (e.g., x64, arm64):
 
-```bash
+{CODE-BLOCK:bash}
 docker buildx build --platform linux/amd64,linux/arm64 -t my-ravendb .
-```
+{CODE-BLOCK/}
 
 ##### Tips
 You can:
+
 - Add scripts that configure or extend RavenDB's behavior (e.g., preloading data or setting specific configurations). Ensure scripts are executable (chmod +x).
 - Pass custom values or configurations via ENV directives or at runtime using docker run -e.
 - Customize HEALTHCHECK to match your deployment’s requirements, ensuring RavenDB is responding as expected.
+
+
 ---
 
 ## Customizing the RavenDB Dockerfile
@@ -75,30 +78,31 @@ You can do the same thing in Docker using `-e` argument without tinkering with t
 
 ###### Replace the Entry Script
 Copy and use a custom `run-raven.sh` script:
-```docker
+{CODE-BLOCK:bash}
 COPY my-run-raven.sh /usr/lib/ravendb/scripts/run-raven.sh
 CMD ["/bin/bash", "/usr/lib/ravendb/scripts/run-raven.sh"]
-```
+{CODE-BLOCK/}
 
 
-##### Entry Script ([run-raven.sh)](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/run-raven.sh)
+## Entry Script ([run-raven.sh)](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/run-raven.sh)
 
 This script initializes and runs the RavenDB server.
 It's designed to work for anyone, so in some scenarios you may want to chisel it down a bit, modify, or completely replace, which we'll cover next.
 Key responsibilities include:
 
 ###### Legacy Data Migration
-```bash
+{CODE-BLOCK:bash}
 /usr/lib/ravendb/scripts/link-legacy-datadir.sh
-```
+{CODE-BLOCK/}
+
 This script was created to handle legacy data volumes, that were working with RavenDB before 6.0.
 The data had different directory structure inside Linux back then, so we needed to migrate them properly after update to 6.0+.
 
 ###### Command Construction
 Constructs the RavenDB server start command using arguments and environment variables:
-```bash
+{CODE-BLOCK:bash}
 COMMAND="/usr/lib/ravendb/server/Raven.Server"
-```
+{CODE-BLOCK/}
 
 ###### Certificate Checks
 Ensures proper certificate configuration for secure HTTPS connections.
@@ -114,7 +118,7 @@ Handles termination signals to cleanly stop the server.
 ###### Database Auto-Creation
 Calls a utility script to create the database if the `RAVEN_DATABASE` environment variable is set.
 
-#### Replacing run-raven.sh
+## Replacing run-raven.sh
 
 Replacing allows full control of the startup process for both extending and modifying approaches. The only requirement is that **the script must ultimately run the RavenDB server**. Everything else is optional and can be customized to fit your specific needs. Some ideas include:
 
@@ -129,9 +133,9 @@ Define and set variables like `RAVEN_ServerUrl` to match your deployment require
 ###### Handles Shutdown Gracefully
 
 Use signal trapping for smooth termination of the server:
-```bash
+{CODE-BLOCK:bash}
 trap 'kill -TERM "$COMMANDPID"' TERM INT
-```
+{CODE-BLOCK/}
 
 ###### Custom Operations
 Add database initialization or additional setup scripts as needed.
@@ -140,7 +144,7 @@ Add database initialization or additional setup scripts as needed.
 
 ##### **Example Custom Script**
 
-```bash
+{CODE-BLOCK:bash}
 # Custom startup script for RavenDB
 
 echo "Starting custom RavenDB setup..."
@@ -160,6 +164,6 @@ COMMANDPID=$!
 # Handle shutdown gracefully
 trap 'kill -TERM "$COMMANDPID"' TERM INT
 wait $COMMANDPID
-```
+{CODE-BLOCK/}
 
 ---

@@ -18,4 +18,4 @@ This command reads the license.json file, formats it into a single-line JSON str
 
 In most cases, using an environment variable is sufficient, especially in isolated or development environments. For production or sensitive setups, a secret vault can further enhance security. Regardless of the method, the container must have consistent access to the license.
 
-For **detailed guidance** on licensing RavenDB in containerized environments, including examples, **refer to our documentation**: [Licensing RavenDB in Docker](https://ravendb.net/docs/start/licensing/license-under-docker).
+For **detailed guidance** on licensing RavenDB in containerized environments, including examples, **refer to our documentation**: [Licensing RavenDB in Docker](../../licensing/license-under-docker).

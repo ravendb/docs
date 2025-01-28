@@ -5,6 +5,7 @@ Whether you're deploying on-premises, in virtual machines, or in managed Kuberne
 ## **Container Runtime**
 
 RavenDB requires a container runtime capable of running the Docker image. This includes common runtimes such as:
+
 - Docker
 - Podman
 - containerd
@@ -25,19 +26,18 @@ To achieve optimal performance, allocate resources according to your workload:
 
 ## **Deployment Options**
 
-### **On-Premise** machines
+#### On-Premise machines
 Deploy RavenDB containers on **your physical servers**.
 It provides full control over your hardware and networking.
 It's suitable for environments with existing infrastructure.
 
 All you need is one of the container runtimes, and a kernel.
 
-### Virtual Machines (VMs)
+#### Virtual Machines (VMs)
 **Cloud-based or self-hosted VMs**. It's scalable and flexible, while maintaining control over resources.
-
 AWS EC2, Azure Virtual Machines, or private data centers.
 
-### **Kubernetes**
+#### Kubernetes
 Run RavenDB in managed Kubernetes clusters to simplify container orchestration and scalability.
 This option supports dynamic workloads with features like autoscaling and node group management.
 
@@ -49,6 +49,7 @@ Kubernetes always increases the cost of a solution by far, but the power it offe
 ## **ARM Architecture Support**
 
 RavenDB supports **ARM64**, allowing deployments on cost-efficient architectures.
+
 - AWS Graviton instances.
 - Azure Ampere-based virtual machines.
 - Google Cloud Tau T2A instances.
