@@ -156,6 +156,12 @@
         "Mappings": []
     },
     {
+        "Path": "vector-search.markdown",
+        "Name": "Vector Search Query",
+        "DiscussionId": "e4a6050a-218c-488f-9e54-ac5ccbb9cf6f",
+        "Mappings": []
+    },
+    {
         "Path": "/text-search",
         "Name": "Text Search",
         "Mappings": []
