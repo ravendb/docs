@@ -883,12 +883,5 @@ namespace Raven.Documentation.Samples.AiIntegration
                 }
             }
         }
-        
-        private interface IFoo // todo...
-        {
-            #region syntax
-             // todo...
-            #endregion
-        }
     }
 }

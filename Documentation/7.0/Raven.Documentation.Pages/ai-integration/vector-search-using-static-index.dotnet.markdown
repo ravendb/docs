@@ -21,7 +21,6 @@
     * [Indexing vector data - NUMERICAL](../ai-integration/vector-search-using-static-index#indexing-vector-data---numerical)
     * [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types)
     * [Define a vector field in the Studio](../ai-integration/vector-search-using-static-index#define-a-vector-field-in-the-studio)
-    * [Syntax](../ai-integration/vector-search-using-static-index#syntax)
 
 {NOTE/}
 
@@ -279,10 +278,6 @@ or vector.search(VectorFromText, $p2, 0.8)
 1. Click "Configure Vector Field"
 2. Enter the vector field name
 3. Customize the vector field's properties as needed.
-
-{PANEL/}
-
-{PANEL: Syntax}
 
 {PANEL/}
 

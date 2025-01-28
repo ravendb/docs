@@ -459,13 +459,74 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 
 {PANEL: Syntax}
 
+`VectorSearch`:  
 
-provide syntax for:
+{CODE:csharp syntax_1@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 
-public static class VectorQuantizer
-public static sbyte[] ToInt8(float[] rawEmbedding)
-public static byte[] ToInt1(ReadOnlySpan<float> rawEmbedding)
+| Parameter                 | Type                                                                                                                                 | Description                                                                                                                         |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| **embeddingFieldFactory** | `Func<IVectorFieldFactory<T>, IVectorEmbeddingTextField>`<br><br>`Func<IVectorFieldFactory<T>, IVectorEmbeddingField>`               | Factory creating embedding vector field for indexing purposes.                                                                      |
+| **embeddingFieldFactory** | `Func<IVectorFieldFactory<T>, IVectorField>`                                                                                         | Factory using existing, already indexed vector field.                                                                               |
+| **embeddingValueFactory** | `Action<IVectorEmbeddingTextFieldValueFactory>`<br>`Action<IVectorEmbeddingFieldValueFactory>`<br>`Action<IVectorFieldValueFactory>` | Factory preparing queried data to be used in vector search.                                                                         |
+| **minimumSimilarity**     | `float?`                                                                                                                             | Minimum similarity between the queried value and the indexed value for the vector search to match.                                  |
+| **numberOfCandidates**    | `int?`                                                                                                                               | Number of candidate nodes for the HNSW algorithm.<br>Higher values improve accuracy but require more computation.                   |
+| **isExact**               | `bool`                                                                                                                               | `false` - vector search will be performed in an approximate manner.<br>`true` - vector search will be performed in an exact manner. |
 
+
+The default value for `minimumSimilarity` is defined by this configuration key:  
+[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+
+The default value for `numberOfCandidates` is defined by this configuration key:  
+[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
+
+---
+
+`IVectorFieldFactory`:
+
+{CODE:csharp syntax_2@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+
+| Parameter                       | Type                          | Description                                                                            |
+|---------------------------------|-------------------------------|----------------------------------------------------------------------------------------|
+| **documentFieldName**           | `string`                      | The name of the document field containing<br>text / embedding / base64 encoded data.   |
+| **indexFieldName**              | `string`                      | The name of the index-field that vector search will be performed on.                   |
+| **propertySelector**            | `Expression<Func<T, object>>` | Path to the document field containing<br>text / embedding /base64 encoded data.        |
+| **indexPropertySelector**       | `Expression<Func<T, object>>` | Path to the index-field containing indexed data.                                       |
+| **storedEmbeddingQuantization** | `VectorEmbeddingType`         | Quantization format of the stored embeddings.<br>Default: `VectorEmbeddingType.Single` |
+
+---
+
+`IVectorEmbeddingTextField`:
+
+{CODE:csharp syntax_3@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+
+| Parameter                       | Type                  | Description                             |
+|---------------------------------|-----------------------|-----------------------------------------|
+| **targetEmbeddingQuantization** | `VectorEmbeddingType` | The desired target quantization format. |
+
+{CODE:csharp syntax_4@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+
+---
+
+`IVectorEmbeddingTextFieldValueFactory`:
+
+{CODE:csharp syntax_5@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+
+---
+
+`RavenVector`:  
+RavenVector is RavenDB's dedicated data type for storing and querying numerical embeddings.  
+Learn more in [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector)
+
+{CODE:csharp syntax_6@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+
+---
+
+`VectorQuanitzer`:   
+RavenDB provides the following quantizer methods.  
+Use them to transform your raw data to the dezired format.  
+Other quantizers may not be compatible.  
+
+{CODE:csharp syntax_7@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 
 {PANEL/}
 

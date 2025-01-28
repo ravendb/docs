@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Numerics;
 using System.Threading.Tasks;
+using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes.Vector;
+using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Queries.Vector;
 using Raven.Documentation.Samples.Orders;
 
@@ -397,9 +403,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                  using (var session = store.OpenSession())
                 {
                     #region vs_12
-                    var similarProducts = session.Query<Product>()
-                         // Perform a regular search
-                        .Where(x => x.PricePerUnit > 20)
+                    var similarProducts = Queryable.Where(session.Query<Product>(), x => x.PricePerUnit > 20)
                          // Perform a vector search
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
@@ -412,8 +416,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region vs_12_async
-                    var similarProducts = await asyncSession.Query<Product>()
-                        .Where(x => x.PricePerUnit > 20)
+                    var similarProducts = await Queryable.Where(asyncSession.Query<Product>(), x => x.PricePerUnit > 20)
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
                             searchTerm => searchTerm.ByText("italian food"))
@@ -701,11 +704,118 @@ namespace Raven.Documentation.Samples.AiIntegration
             }
         }
         
-        private interface IFoo // todo...
+        private interface IFoo 
         {
-            #region syntax
-             // todo...
+            #region syntax_1
+            public IRavenQueryable<T> VectorSearch<T>(
+                Func<IVectorFieldFactory<T>, IVectorEmbeddingTextField> textFieldFactory,
+                Action<IVectorEmbeddingTextFieldValueFactory> textValueFactory,
+                float? minimumSimilarity = null,
+                int? numberOfCandidates = null,
+                bool isExact = false);
+
+            public IRavenQueryable<T> VectorSearch<T>(
+                Func<IVectorFieldFactory<T>, IVectorEmbeddingField> embeddingFieldFactory,
+                Action<IVectorEmbeddingFieldValueFactory> embeddingValueFactory,
+                float? minimumSimilarity = null,
+                int? numberOfCandidates = null,
+                bool isExact = false);
+            
+            public IRavenQueryable<T> VectorSearch<T>(
+                Func<IVectorFieldFactory<T>, IVectorField> embeddingFieldFactory,
+                Action<IVectorFieldValueFactory> embeddingValueFactory,
+                float? minimumSimilarity = null,
+                int? numberOfCandidates = null,
+                bool isExact = false);
             #endregion
+            
+            #region syntax_2
+            public interface IVectorFieldFactory<T>
+            {
+                // Methods for the dynamic query:
+                public IVectorEmbeddingTextField WithText(string documentFieldName);
+                public IVectorEmbeddingTextField WithText(Expression<Func<T, object>> propertySelector);
+                public IVectorEmbeddingField WithEmbedding(string documentFieldName, 
+                    VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
+                public IVectorEmbeddingField WithEmbedding(Expression<Func<T, object>> propertySelector,
+                    VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
+                public IVectorEmbeddingField WithBase64(string documentFieldName,
+                    VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
+                public IVectorEmbeddingField WithBase64(Expression<Func<T, object>> propertySelector,
+                    VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
+                
+                // Methods for querying a static index:
+                public IVectorField WithField(string indexFieldName);
+                public IVectorField WithField(Expression<Func<T, object>> indexPropertySelector);
+            }
+            #endregion
+            
+            #region syntax_3
+            public interface IVectorEmbeddingTextField
+            {
+                public IVectorEmbeddingTextField TargetQuantization(
+                    VectorEmbeddingType targetEmbeddingQuantization);
+            }
+
+            public interface IVectorEmbeddingField
+            {
+                public IVectorEmbeddingField TargetQuantization(
+                    VectorEmbeddingType targetEmbeddingQuantization);
+            }
+            #endregion
+            
+            #region syntax_4
+            public enum VectorEmbeddingType
+            {
+                Single,
+                Int8,
+                Binary,
+                Text
+            }
+            #endregion
+            
+            #region syntax_5
+            public interface IVectorEmbeddingTextFieldValueFactory
+            {
+                // Defines the queried text
+                public void ByText(string text);
+            }
+            public interface IVectorEmbeddingFieldValueFactory
+            {
+                // Define the queried embedding:
+                // =============================
+                
+                // 'embeddings' is an Enumerable containing embedding values.
+                public void ByEmbedding<T>(IEnumerable<T> embedding) where T : unmanaged, INumber<T>;
+                
+                // 'emeddings' is an array containing embedding values.
+                public void ByEmbedding<T>(T[] embedding) where T : unmanaged, INumber<T>;
+                
+                // Defines queried embedding in base64 format.
+                // 'base64Embedding' is encoded as base64 string.
+                public void ByBase64(string base64Embedding);
+                
+                // 'embedding` is a `RavenVector` containing embedding values.
+                public void ByEmbedding<T>(RavenVector<T> embedding) where T : unmanaged, INumber<T>;
+            }
+            #endregion
+            
+            #region syntax_6
+            public class RavenVector<T>()
+            {
+                public T[] Embedding { get; set; }
+            } 
+            #endregion
+            
+            /*
+            #region syntax_7
+            public static class VectorQuantizer
+            {
+                public static sbyte[] ToInt8(float[] rawEmbedding);
+                public static byte[] ToInt1(ReadOnlySpan<float> rawEmbedding);
+            }
+            #endregion
+            */
         }
     }
 }
