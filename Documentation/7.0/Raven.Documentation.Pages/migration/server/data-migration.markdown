@@ -22,8 +22,8 @@ Starting with version `7.0`, RavenDB incorporates the
 [NLog logging frmework](../../server/troubleshooting/logging) and writes all log 
 data through it.  
 
-Logging settings applied to earlier RavenDB versions are respected by RavenDB `7.x`, 
-and logging should continue by them after the migration without interference.  
+Logging settings applied in earlier RavenDB versions are respected by RavenDB `7.x`, 
+and logging should continue by these settings without interference after the migration.  
 
 If you want to use NLog-specific features, though, you will have to address a different set 
 of settings that NLog requires.  
@@ -38,16 +38,16 @@ You can [learn more here about migration and the new logging system](../../serve
 From RavenDB `7.0` on, the default HTTP compression algorithm is `Zstd`.  
 Earlier versions used `Gzip`.  
 
-* If your current server is of version `6.0` or higher, the compression algorithm 
-  will present no problem, you can connect it to a server of version `7.0` and migrate 
-  your data.  
+* If your current server version is `6.0` or higher, the compression algorithm 
+  will present no problem while connecting it to a server of version `7.0` and 
+  migrating your data.  
 
-* If your current server is of version `5.4` or earlier, attempting to connect 
-  a server that uses the `Zstd` compression algorith will fail.  
-  For the connection to succeed you need to:  
-   1. Temporarily switch the target server `7.0` algorithm to `Gzip`.  
-      Do this by defining a RAVEN_HTTP_COMPRESSION_ALGORITHM environment variable 
-      with a `Gzip` value on the server machine and restarting the server.  
+* If your current server version is `5.4` or earlier, attempting to connect it 
+  to a server that uses the `Zstd` compression algorithm will fail.  
+  For the connection to succeed, you need to:  
+   1. Temporarily switch the target version `7.0` server compression algorithm to `Gzip`.  
+      Do this by defining a `RAVEN_HTTP_COMPRESSION_ALGORITHM` environment variable on 
+      the `7.0` server machine and setting its value to `Gzip`, and restarting the server.  
    2. Connect your current server to the new server and perform the migration.  
    3. When the new server is updated, remove the environment variable and restart the server.  
 
@@ -57,7 +57,7 @@ Earlier versions used `Gzip`.
 
 {PANEL: Migration from RavenDB 5.x to 6.x}
 
-* RavenDB `6.x` supports in-place migration of data from RavenDB `5.x`.
+* RavenDB `6.x` supports in-place data migration from RavenDB `5.x`.
 * RavenDB `5.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `5.x` license to a RavenDB `6.x` license,  
   please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license#upgrade-a-license-key-for-ravendb-6.x).
@@ -72,10 +72,11 @@ and the migrated data will no longer be accessible via RavenDB `5.x`.
 
 {PANEL: Migration from RavenDB 4.x to RavenDB 5.x and 6.x}
 
-* RavenDB `5.x` supports in-place migration of data from RavenDB `4.x`.
+* RavenDB `5.x` supports in-place data migration from RavenDB `4.x`.
   {INFO: }
-  It is also possible to upgrade directly from version `4.x` to `6.x`,  
-  but it is recommended to first upgrade RavenDB `4.x` to `5.x`, and then proceed from `5.x` to `6.x`.
+  Upgrading directly from version `4.x` to `6.x` is possible,  
+  but it is recommended to upgrade RavenDB `4.x` to `5.x` first,  
+  and then proceed with an upgrade from version `5.x` to `6.x`.
   {INFO/}
 * RavenDB `4.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `4.x` license to a RavenDB `6.x` license,  

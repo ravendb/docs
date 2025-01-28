@@ -721,7 +721,7 @@
 
 * Set the `UseCompression` convention to true in order to accept the **response** in compressed format and the automatic decompression of the HTTP response content.
 
-* A gzip compression is always applied when sending content in an HTTP request.
+* A `Gzip` compression is always applied when sending content in an HTTP request.
  
 * DEFAULT: `true`  
 

@@ -122,7 +122,8 @@
 
 ---
 
-* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method that will be used when storing a document without explicitly specifying its `Id`.
+* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method 
+  used when storing a document without explicitly specifying its `Id`.
 
 * You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../client-api/configuration/identifier-generation/type-specific) convention.
 
@@ -161,7 +162,7 @@
   Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention to disable automatic  
   atomic writes with cluster write transactions.
 
-* When set to `true`, will only consider explicitly added compare exchange values to validate cluster wide transactions.
+* When set to `true`, will only consider explicitly-added compare exchange values to validate cluster-wide transactions.
 
 * DEFAULT: `false`
 
@@ -254,7 +255,7 @@
 
 * Use the `FindClrTypeName` convention to define a function that returns the CLR type name from a given type.
 
-* DEFAULT: The entity's full name with the assembly name is returned.
+* DEFAULT: Return the entity's full name, including the assembly name.
 
 {CODE FindClrTypeNameSyntax@ClientApi\Configuration\Conventions.cs /}
 
@@ -280,8 +281,8 @@
 
 ---
 
-* Use the `FindCollectionName` convention to define a function that will customize the collection name  
-  from given type.
+* Use the `FindCollectionName` convention to define a function that will customize 
+  the collection name from a given type.
 
 * DEFAULT: The collection name will be the plural form of the type name.
 
@@ -443,7 +444,7 @@
 
 ---
 
-* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically-generated document IDs.
+* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically generated document IDs.
 
 * DEFAULT: `/` (forward slash)
 
@@ -495,7 +496,7 @@
     * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching).
 
 * Note: RavenDB also supports Aggressive Caching.  
-  Learn more about that in article [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching).
+  Learn more about this in the [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching) article.
 
 {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
 {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
@@ -597,7 +598,7 @@
 
 * Use the `RequestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
 
-* DEFAULT: `null` (the default HTTP client timout will be applied - 12h)
+* DEFAULT: `null` (the default HTTP client timeout will be applied - 12h)
 
 {CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE RequestTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
@@ -699,7 +700,7 @@
 ---
 
 * Use the `TransformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
-  customize the document ID prefix from the the collection name.
+  customize the document ID prefix from the collection name.
 
 * DEFAULT:  
   By default, the document id prefix is determined as follows:
@@ -719,7 +720,7 @@
 ---
 
 * When setting the `UseHttpCompression` convention to `true`,  
-  then gzip compression will be used when sending content of HTTP request.
+  then `Gzip` compression will be used when sending content of HTTP request.
 
 * When the convention is set to `false`, content will not be compressed.
 
@@ -749,7 +750,7 @@
 
 ---
 
-* Use this convention to set the HTTP compression algorhitm 
+* Use this convention to set the HTTP compression algorithm 
   (see [UseHttpDecompression](../../client-api/configuration/conventions#usehttpcompression) above).  
 
 * DEFAULT: `Zstd`
@@ -772,8 +773,9 @@
 * When setting the `UseOptimisticConcurrency` convention to `true`,  
   Optimistic Concurrency checks will be applied for all sessions opened from the Document Store.
 
-* Learn more about Optimistic Concurrency and the various ways to enable it in article  
-  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency).
+* Learn more about Optimistic Concurrency and the various ways to enable it in the 
+  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency) 
+  article.  
 
 * DEFAULT: `false`
 

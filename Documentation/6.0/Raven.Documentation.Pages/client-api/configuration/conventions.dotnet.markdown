@@ -718,7 +718,7 @@
 ---
 
 * When setting the `UseHttpCompression` convention to `true`,  
-  then gzip compression will be used when sending content of HTTP request.
+  then `Gzip` compression will be used when sending content of HTTP request.
 
 * When the convention is set to `false`, content will not be compressed.
 

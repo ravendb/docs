@@ -2,7 +2,7 @@
 ---
 
 {NOTE: }
-The features listed in this page were available in former RavenDB versions.  
+The features listed on this page were available in former RavenDB versions.  
 In RavenDB `7.0.x`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 

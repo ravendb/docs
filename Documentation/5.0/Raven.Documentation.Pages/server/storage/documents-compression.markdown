@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* The **Documents Compression** feature uses the Zstd compression algorithm to 
+* The **Documents Compression** feature uses the `Zstd` compression algorithm to 
   continuously create a more efficient data model with better compression ratios.  
 
 * RavenDB will compress documents in selected collections or in all collections when storing those documents.  
@@ -41,7 +41,7 @@ level, to eliminate these cross-document duplications. RavenDB continuously insp
 documents as they change to retrain the algorithm and maintain the most efficient 
 compression model. In many datasets, this can reduce the storage space by more than 50%.  
 
-The Zstd algorithm is trained by each compression operation and continuously improves 
+The `Zstd` algorithm is trained by each compression operation and continuously improves 
 its compression ratio.  
 
 Reading and querying compressed large datasets is usually at least as fast as reading 

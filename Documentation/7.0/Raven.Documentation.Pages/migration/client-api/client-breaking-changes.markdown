@@ -2,13 +2,13 @@
 ---
 
 {NOTE: }
-The features listed in this page were available in former RavenDB versions.  
+The features listed on this page were available in former RavenDB versions.  
 In RavenDB `7.0`, they are either unavailable or their behavior is inconsistent 
 with their behavior in previous versions.  
 
 * In this page:
    * [Creating a subscription with a predicate is done with dedicated class and functions](../../migration/client-api/client-breaking-changes#creating-a-subscription-with-a-predicate-is-done-with-dedicated-class-and-functions)  
-   * [HTTP-Compression algorithm is now `zstd` by default](../../migration/client-api/client-breaking-changes#http-compression-algorithm-is-now-zstd-by-default)  
+   * [HTTP-Compression algorithm is now `Zstd` by default](../../migration/client-api/client-breaking-changes#http-compression-algorithm-is-now-zstd-by-default)  
    * [Bulk-insert Compression is now Enabled by default](../../migration/client-api/client-breaking-changes#bulk-insert-compression-is-now-enabled-by-default)  
    * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/client-breaking-changes#removed-irrelevant-singlenodebatchcommand-parameters)  
    * [Removed obsolete methods](../../migration/client-api/client-breaking-changes#removed-obsolete-methods)  
@@ -22,7 +22,7 @@ with their behavior in previous versions.
 
 RavenDB versions earlier than `7.0` allow the creation of a data subscription using the 
 `create` method with both a query and a predicate.  
-To prevent errors and confusions that this duplicity may cause, RavenDB now requires the 
+To prevent errors and confusion that this duplicity may cause, RavenDB now requires the 
 usage of dedicated class and methods for the creation of a subscription with a predicate.  
 
 {CONTENT-FRAME: `SingleNodeBatchCommand` signature:}
@@ -68,8 +68,8 @@ public sealed class PredicateSubscriptionCreationOptions : ISubscriptionCreation
 
 {PANEL/}
 
-{PANEL: HTTP-Compression algorithm is now `zstd` by default}
-From RavenDB `7.0` on, the default HTTP compression algorithm is `zstd` 
+{PANEL: HTTP-Compression algorithm is now `Zstd` by default}
+From RavenDB `7.0` on, the default HTTP compression algorithm is `Zstd` 
 (instead of `Gzip`, used in earlier versions).  
 
 {CONTENT-FRAME: To switch the HTTP-compression algorithm:}
@@ -80,7 +80,7 @@ convention.
 {CONTENT-FRAME/}
 
 {WARNING: }
-If you migrate from an earlier RavenDB version to vertion `7.0` or higher, 
+If you migrate from an earlier RavenDB version to version `7.0` or higher, 
 please note the [potential significance of this change](../../migration/client-api/client-migration#client-migration-to-ravendb-7.x).  
 {WARNING/}
 
@@ -130,7 +130,7 @@ public SingleNodeBatchCommand
 {PANEL/}
 
 {PANEL: Removed obsolete methods}
-The following methods are no longer in use and have been removed from RavenDB `7.0`.  
+The following methods are no longer used and have been removed from RavenDB `7.0`.  
 
 * `NextPageStart`  
   {CODE-BLOCK:csharp }
