@@ -1,8 +1,5 @@
 # Dockerfile overview
 
-Let's go through [our Dockerfile](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/Dockerfile.x64
-), to explain all of its quirks:
-
 Let's familiarize ourselves with [RavenDB Dockerfile](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/Dockerfile.x64
 ).
 
