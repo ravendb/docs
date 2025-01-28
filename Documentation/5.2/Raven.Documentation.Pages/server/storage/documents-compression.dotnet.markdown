@@ -3,16 +3,16 @@
 
 {NOTE: }
 
-* The __Documents Compression__ feature employs the [Zstd compression algorithm](https://github.com/facebook/zstd)  
+* The **Documents Compression** feature employs the [Zstd compression algorithm](https://github.com/facebook/zstd)  
   to achieve more efficient data storage with constantly improving compression ratios.  
 
 * Documents compression can be set for all collections, selected collections, and revisions.  
   Default compression settings are [configurable](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault).  
 
 * When turned on, compression will be applied to:  
-  * __New documents__:  
+  * **New documents**:  
       * A new document that is saved will be compressed.  
-  * __Existing documents__:  
+  * **Existing documents**:  
       * Existing documents that are modified and saved will be compressed.  
       * Existing documents that are Not modified will only be compressed when executing the    
         [compact database operation](../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).  
@@ -59,14 +59,14 @@
 
 * The following table summarizes the differences between Compression and Compaction:
 
-| __Compression__ | |
+| **Compression** | |
 | - | - |
-| Action: | Reduce storage space using the Zstd compression algorithm |
-| Items that can be compressed: | __-__ Documents in collections that are configured for compression<br>__-__ Revisions for all collections |
+| Action: | Reduce storage space using the `Zstd` compression algorithm |
+| Items that can be compressed: | **-** Documents in collections that are configured for compression<br>**-** Revisions for all collections |
 | Triggered by: | The server |
-| Triggered when: | Compression feature is configured,<br> __and__ when either of the following occurs for the configured collections:<br>&nbsp;&nbsp;&nbsp;__-__ Storing new documents<br>&nbsp;&nbsp;&nbsp;__-__ Modifying & saving existing documents<br>&nbsp;&nbsp;&nbsp;__-__ Compact operation is triggered, existing documents will be compressed |
+| Triggered when: | Compression feature is configured,<br> **and** when either of the following occurs for the configured collections:<br>&nbsp;&nbsp;&nbsp;**-** Storing new documents<br>&nbsp;&nbsp;&nbsp;**-** Modifying & saving existing documents<br>&nbsp;&nbsp;&nbsp;**-** Compact operation is triggered, existing documents will be compressed |
 
-| __Compaction__ | |
+| **Compaction** | |
 | - | - |
 | Action: | Remove empty gaps on disk that still occupy space after deletes |
 | Items that can be compacted: | Documents and/or indexes on the specified database |

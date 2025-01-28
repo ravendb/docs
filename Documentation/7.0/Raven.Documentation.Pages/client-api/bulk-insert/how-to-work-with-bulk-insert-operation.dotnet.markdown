@@ -5,7 +5,7 @@
 * `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
 * It is an optimized time-saving approach with a few 
   [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#limitations) 
-  like the possibility that interruptions will occure during the operation.  
+  like the possibility that interruptions will occur during the operation.  
 
 In this page:
 
@@ -80,7 +80,7 @@ The following methods can be used when creating a bulk insert.
 
 ### Limitations
 
-* BulkInsert is designed to efficiently push high quantities of data.  
+* BulkInsert is designed to efficiently push large volumes of data.  
   Data is therefore streamed and **processed by the server in batches**.  
   Each batch is fully transactional, but there are no transaction guarantees between the batches 
   and the operation as a whole is non-transactional.  
@@ -96,10 +96,10 @@ The following methods can be used when creating a bulk insert.
    * **If you need full transactionality**, using [session](../../client-api/session/what-is-a-session-and-how-does-it-work) 
      may be a better option.  
      Note that if `session` is used all of the data is processed in a single transaction, so the 
-     server must have sufficient resources to handle the entire data-set included in the transaction.  
+     server must have sufficient resources to handle the entire data set included in the transaction.  
 * Bulk insert is **not thread-safe**.  
   A single bulk insert should not be accessed concurrently.  
-   * The use of multiple bulk inserts concurrently on the same client is supported.  
+   * Using multiple bulk inserts concurrently on the same client is supported.  
    * Usage in an async context is also supported.
 
 ### Example
@@ -118,20 +118,25 @@ Here we create a bulk insert operation and insert a million documents of type `E
 
 The following options can be configured for BulkInsert.
 
-### `CompressionLevel`
+#### `CompressionLevel`:
 
 | Parameter | Type | Description |
 | ------------- | ------------- | ----- |
 | **Optimal** | `string` | Compression level to be used when compressing static files. |
-| **Fastest** | `string` | Compression level to be used when compressing HTTP responses with `GZip` or `Deflate`. |
-| **NoCompression**<br>(Default) | `string` | Does not compress. |
+| **Fastest**<br>(Default)| `string` | Compression level to be used when compressing HTTP responses with `GZip` or `Deflate`. |
+| **NoCompression** | `string` | Does not compress. |
 
-### `SkipOverwriteIfUnchanged`
+{INFO: Default compression level}
+For RavenDB versions up to `6.2`, bulk-insert compression is Disabled (`NoCompression`) by default.  
+For RavenDB versions from `7.0` on, bulk-insert compression is Enabled (set to `Fastest`) by default.  
+{INFO/}
 
-Prevents overriding documents when the inserted document and the existing one are similar.  
+#### `SkipOverwriteIfUnchanged`:
+
+Use this option to avoid overriding documents when the inserted document and the existing one are similar.  
 
 Enabling this flag can exempt the server of many operations triggered by document-change, 
-like re-indexation and subscription or ETL-tasks updatess.  
+like re-indexation and subscription or ETL-tasks updates.  
 There is a slight potential cost in the additional comparison that has to be made between 
 the existing documents and the ones that are being inserted. 
 

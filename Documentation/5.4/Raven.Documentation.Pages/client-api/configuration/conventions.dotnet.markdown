@@ -64,7 +64,7 @@
 
 * The conventions set on a Document Store will apply to ALL [sessions](../../client-api/session/what-is-a-session-and-how-does-it-work) and [operations](../../client-api/operations/what-are-operations) associated with that store.
  
-* Customizing the conventions can only be set __before__ calling `DocumentStore.Initialize()`.  
+* Customizing the conventions can only be set **before** calling `DocumentStore.Initialize()`.  
   Trying to do so after calling _Initialize()_ will throw an exception.
 
 {CODE conventions_1@ClientApi\Configuration\Conventions.cs /}
@@ -449,7 +449,7 @@
 
 ---
 
-* Configure the __load balance behavior__ by setting the following conventions:
+* Configure the **load balance behavior** by setting the following conventions:
   * `LoadBalanceBehavior`
   * `LoadBalancerPerSessionContextSelector`
   * `LoadBalancerContextSeed`
@@ -473,7 +473,7 @@
     | 64-bit    | Lower than or equal to 3GB <br> Greater than 3GB and Lower than or equal to 6GB <br> Greater than 6GB | 64MB <br> 128MB <br> 512MB |
     | 32-bit    |                                                                                                       | 32MB                       |
 
-* __Disabling Caching__:  
+* **Disabling Caching**:  
 
     * To disable caching globally, set `MaxHttpCacheSize` to zero.  
     * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching).   
@@ -516,7 +516,7 @@
 * By default, when saving an entity, the naming convention used by the client is reflected in the JSON document properties on the server-side.  
   This default serialization behavior can be customized to facilitate language interoperability.
  
-* __Example__:  
+* **Example**:  
     
     Set `CustomizeJsonSerializer` and `PropertyNameConverter` to serialize an entity's properties as camelCase from a C# client:
 
@@ -568,7 +568,7 @@
 
 ---
 
-* Configure the __read request behavior__ by setting the `ReadBalanceBehavior` convention.
+* Configure the **read request behavior** by setting the `ReadBalanceBehavior` convention.
 
 * Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) article.
 
@@ -719,9 +719,9 @@
 
 ---
 
-* Set the `UseCompression` convention to true in order to accept the __response__ in compressed format and the automatic decompression of the HTTP response content.
+* Set the `UseCompression` convention to true in order to accept the **response** in compressed format and the automatic decompression of the HTTP response content.
 
-* A gzip compression is always applied when sending content in an HTTP request.
+* A `Gzip` compression is always applied when sending content in an HTTP request.
  
 * DEFAULT: `true`  
 

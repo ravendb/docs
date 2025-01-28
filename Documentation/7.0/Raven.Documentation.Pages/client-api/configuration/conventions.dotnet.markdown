@@ -50,6 +50,7 @@
       [TransformTypeCollectionNameToDocumentIdPrefix](../../client-api/configuration/conventions#transformtypecollectionnametodocumentidprefix)  
       [UseHttpCompression](../../client-api/configuration/conventions#usehttpcompression)  
       [UseHttpDecompression](../../client-api/configuration/conventions#usehttpdecompression)  
+      [HttpCompressionAlgorithm](../../client-api/configuration/conventions#httpcompressionalgorithm)  
       [UseOptimisticConcurrency](../../client-api/configuration/conventions#useoptimisticconcurrency)  
       [WaitForIndexesAfterSaveChangesTimeout](../../client-api/configuration/conventions#waitforindexesaftersavechangestimeout)  
       [WaitForNonStaleResultsTimeout](../../client-api/configuration/conventions#waitfornonstaleresultstimeout)  
@@ -74,7 +75,7 @@
 
 {PANEL: Conventions:}
 
-{NOTE: }
+{CONTENT-FRAME: }
 
 #### AddIdFieldToDynamicObjects
 
@@ -87,8 +88,8 @@
 
 {CODE AddIdFieldToDynamicObjectsSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### AggressiveCache.Duration
 
@@ -100,8 +101,8 @@
 
 {CODE AggressiveCacheDurationSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### AggressiveCache.Mode
 
@@ -114,14 +115,15 @@
 
 {CODE AggressiveCacheModeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### AsyncDocumentIdGenerator
 
 ---
 
-* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method that will be used when storing a document without explicitly specifying its `Id`.
+* Use the `AsyncDocumentIdGenerator` convention to define the document ID generator method 
+  used when storing a document without explicitly specifying its `Id`.
 
 * You can override this global ID generator for specific object types using the [RegisterAsyncIdConvention](../../client-api/configuration/identifier-generation/type-specific) convention.
 
@@ -132,8 +134,8 @@
 {CODE AsyncDocumentIdGenerator@ClientApi\Configuration\Conventions.cs /}
 {CODE AsyncDocumentIdGeneratorSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### CreateHttpClient
 
@@ -149,8 +151,8 @@
 {CODE CreateHttpClient@ClientApi\Configuration\Conventions.cs /}
 {CODE CreateHttpClientSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### DisableAtomicDocumentWritesInClusterWideTransaction
 
@@ -160,14 +162,14 @@
   Use the `DisableAtomicDocumentWritesInClusterWideTransaction` convention to disable automatic  
   atomic writes with cluster write transactions.
 
-* When set to `true`, will only consider explicitly added compare exchange values to validate cluster wide transactions.
+* When set to `true`, will only consider explicitly-added compare exchange values to validate cluster-wide transactions.
 
 * DEFAULT: `false`
 
 {CODE DisableAtomicDocumentWritesInClusterWideTransactionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### DisableTcpCompression
 
@@ -179,8 +181,8 @@
 
 {CODE DisableTcpCompressionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### DisableTopologyCache
 
@@ -201,8 +203,8 @@
 
 {CODE DisableTopologyCacheSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### DisableTopologyUpdates
 
@@ -215,8 +217,8 @@
 
 {CODE DisableTopologyUpdatesSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### DisposeCertificate
 
@@ -229,8 +231,8 @@
 
 {CODE DisposeCertificateSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindClrType
 
@@ -244,8 +246,8 @@
 {CODE FindClrType@ClientApi\Configuration\Conventions.cs /}
 {CODE FindClrTypeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindClrTypeName
 
@@ -253,12 +255,12 @@
 
 * Use the `FindClrTypeName` convention to define a function that returns the CLR type name from a given type.
 
-* DEFAULT: The entity's full name with the assembly name is returned.
+* DEFAULT: Return the entity's full name, including the assembly name.
 
 {CODE FindClrTypeNameSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindClrTypeNameForDynamic
 
@@ -272,23 +274,23 @@
 {CODE FindClrTypeNameForDynamic@ClientApi\Configuration\Conventions.cs /}
 {CODE FindClrTypeNameForDynamicSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindCollectionName
 
 ---
 
-* Use the `FindCollectionName` convention to define a function that will customize the collection name  
-  from given type.
+* Use the `FindCollectionName` convention to define a function that will customize 
+  the collection name from a given type.
 
 * DEFAULT: The collection name will be the plural form of the type name.
 
 {CODE FindCollectionName@ClientApi\Configuration\Conventions.cs /}
 {CODE FindCollectionNameSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindCollectionNameForDynamic
 
@@ -302,8 +304,8 @@
 {CODE FindCollectionNameForDynamic@ClientApi\Configuration\Conventions.cs /}
 {CODE FindCollectionNameForDynamicSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindIdentityProperty
 
@@ -317,8 +319,8 @@
 {CODE FindIdentityProperty@ClientApi\Configuration\Conventions.cs /}
 {CODE FindIdentityPropertySyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindIdentityPropertyNameFromCollectionName
 
@@ -332,8 +334,8 @@
 {CODE FindIdentityPropertyNameFromCollectionName@ClientApi\Configuration\Conventions.cs /}
 {CODE FindIdentityPropertyNameFromCollectionNameSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindProjectedPropertyNameForIndex
 
@@ -349,8 +351,8 @@
 
 {CODE FindProjectedPropertyNameForIndexSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindPropertyNameForDynamicIndex
 
@@ -365,8 +367,8 @@
 {CODE FindPropertyNameForDynamicIndex@ClientApi\Configuration\Conventions.cs /}
 {CODE FindPropertyNameForDynamicIndexSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FindPropertyNameForIndex
 
@@ -383,8 +385,8 @@
 {CODE FindPropertyNameForIndex@ClientApi\Configuration\Conventions.cs /}
 {CODE FindPropertyNameForIndexSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### FirstBroadcastAttemptTimeout
 
@@ -402,8 +404,8 @@
 {CODE FirstBroadcastAttemptTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE FirstBroadcastAttemptTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### HttpClientType
 
@@ -419,8 +421,8 @@
 {CODE HttpClientType@ClientApi\Configuration\Conventions.cs /}
 {CODE HttpClientTypeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### HttpVersion
 
@@ -435,14 +437,14 @@
 
 {CODE HttpVersionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### IdentityPartsSeparator
 
 ---
 
-* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically-generated document IDs.
+* Use the `IdentityPartsSeparator` convention to set the default **ID separator** for automatically generated document IDs.
 
 * DEFAULT: `/` (forward slash)
 
@@ -455,8 +457,8 @@
 
 {CODE IdentityPartsSeparatorSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### LoadBalanceBehavior
 #### LoadBalancerPerSessionContextSelector
@@ -471,8 +473,8 @@
 
 * Learn more in the dedicated [Load balance behavior](../../client-api/configuration/load-balance/load-balance-behavior) article.
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### MaxHttpCacheSize
 
@@ -494,14 +496,14 @@
     * To disable caching per session, see: [Disable caching per session](../../client-api/session/configuration/how-to-disable-caching).
 
 * Note: RavenDB also supports Aggressive Caching.  
-  Learn more about that in article [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching).
+  Learn more about this in the [Setup aggressive caching](../../client-api/how-to/setup-aggressive-caching) article.
 
 {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
 {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
 {CODE MaxHttpCacheSizeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### MaxNumberOfRequestsPerSession
 
@@ -513,8 +515,8 @@
 
 {CODE MaxNumberOfRequestsPerSessionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### Modify serialization of property name
 
@@ -539,8 +541,8 @@
   {CODE FirstChar@ClientApi\Configuration\Conventions.cs /}
   {CODE SerializationSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### OperationStatusFetchMode
 
@@ -557,8 +559,8 @@
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
 {CODE OperationStatusFetchModeSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### PreserveDocumentPropertiesNotFoundOnModel
 
@@ -576,8 +578,8 @@
 
 {CODE PreserveDocumentPropertiesNotFoundOnModelSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{NOCONTENT-FRAMETE/}
+{CONTENT-FRAME: }
 
 #### ReadBalanceBehavior
 
@@ -587,8 +589,8 @@
 
 * Learn more in the dedicated [Read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) article.
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### RequestTimeout
 
@@ -596,13 +598,13 @@
 
 * Use the `RequestTimeout` convention to define the global request timeout value for all `RequestExecutors` created per database.
 
-* DEFAULT: `null` (the default HTTP client timout will be applied - 12h)
+* DEFAULT: `null` (the default HTTP client timeout will be applied - 12h)
 
 {CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE RequestTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### ResolveTypeFromClrTypeName
 
@@ -616,8 +618,8 @@
 {CODE ResolveTypeFromClrTypeName@ClientApi\Configuration\Conventions.cs /}
 {CODE ResolveTypeFromClrTypeNameSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### SaveEnumsAsIntegers
 
@@ -630,8 +632,8 @@
 
 {CODE SaveEnumsAsIntegersSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### SecondBroadcastAttemptTimeout
 
@@ -646,8 +648,8 @@
 {CODE SecondBroadcastAttemptTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE SecondBroadcastAttemptTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### SendApplicationIdentifier
 
@@ -662,8 +664,8 @@
 
 {CODE SendApplicationIdentifierSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### ShouldIgnoreEntityChanges
 
@@ -673,8 +675,8 @@
 
 * Learn more in [Customize tracking in conventions](../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions).
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### TopologyCacheLocation
 
@@ -690,15 +692,15 @@
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
 {CODE TopologyCacheLocationSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### TransformTypeCollectionNameToDocumentIdPrefix
 
 ---
 
 * Use the `TransformTypeCollectionNameToDocumentIdPrefix` convention to define a function that will  
-  customize the document ID prefix from the the collection name.
+  customize the document ID prefix from the collection name.
 
 * DEFAULT:  
   By default, the document id prefix is determined as follows:
@@ -710,8 +712,8 @@
 
 {CODE TransformTypeCollectionNameToDocumentIdPrefixSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### UseHttpCompression
 
@@ -726,8 +728,8 @@
 
 {CODE UseHttpCompressionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### UseHttpDecompression
 
@@ -740,8 +742,29 @@
 
 {CODE UseHttpDecompressionSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+
+{CONTENT-FRAME: }
+
+#### HttpCompressionAlgorithm
+
+---
+
+* Use this convention to set the HTTP compression algorithm 
+  (see [UseHttpDecompression](../../client-api/configuration/conventions#usehttpcompression) above).  
+
+* DEFAULT: `Zstd`
+  {INFO: Default compression algorithm}
+   In RavenDB versions up to `6.2`, HTTP compression is set to `Gzip` by default.  
+   In RavenDB versions from `7.0` on, the default has changed and is now `Zstd`.  
+  {INFO/}
+
+{CODE HttpCompressionAlgorithm@ClientApi\Configuration\Conventions.cs /}
+
+{CONTENT-FRAME/}
+
+
+{CONTENT-FRAME: }
 
 #### UseOptimisticConcurrency
 
@@ -750,15 +773,16 @@
 * When setting the `UseOptimisticConcurrency` convention to `true`,  
   Optimistic Concurrency checks will be applied for all sessions opened from the Document Store.
 
-* Learn more about Optimistic Concurrency and the various ways to enable it in article  
-  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency).
+* Learn more about Optimistic Concurrency and the various ways to enable it in the 
+  [how to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency) 
+  article.  
 
 * DEFAULT: `false`
 
 {CODE UseOptimisticConcurrencySyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### WaitForIndexesAfterSaveChangesTimeout
 
@@ -772,8 +796,8 @@
 {CODE WaitForIndexesAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE WaitForIndexesAfterSaveChangesTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### WaitForNonStaleResultsTimeout
 
@@ -787,8 +811,8 @@
 {CODE WaitForNonStaleResultsTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE WaitForNonStaleResultsTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
-{NOTE: }
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
 #### WaitForReplicationAfterSaveChangesTimeout
 
@@ -802,7 +826,7 @@
 {CODE WaitForReplicationAfterSaveChangesTimeout@ClientApi\Configuration\Conventions.cs /}
 {CODE WaitForReplicationAfterSaveChangesTimeoutSyntax@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE/}
+{CONTENT-FRAME/}
 {PANEL/}
 
 ## Related Articles

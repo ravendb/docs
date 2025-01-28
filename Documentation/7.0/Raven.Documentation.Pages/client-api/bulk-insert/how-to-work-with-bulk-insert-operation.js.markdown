@@ -5,7 +5,7 @@ This is an optimized time-saving approach with few drawbacks that will be descri
 
 ## Syntax
 
-{CODE:nodejs bulk_inserts_1@ClientApi\BulkInsert\bulkInserts.js /}
+{CODE:nodejs bulk_inserts_1@client-api\BulkInsert\bulkInserts.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -39,7 +39,7 @@ There are a couple limitations to the API:
 
 Here we create a bulk insert operation and insert a million documents of type Employee
 
-{CODE:nodejs bulk_inserts_4@ClientApi\BulkInsert\bulkInserts.js /}
+{CODE:nodejs bulk_inserts_4@client-api\BulkInsert\bulkInserts.js /}
 
 ## Related articles
 
