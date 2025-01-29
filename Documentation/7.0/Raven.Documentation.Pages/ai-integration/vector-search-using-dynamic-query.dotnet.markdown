@@ -39,7 +39,7 @@
   * From the Client API - use method `VectorSearch()`, examples are provided later in this article
   * In RQL - use method `vector.search()`
 
-* The **source data types** that can be used for vector search is detailed in [Data types for vector search](../ai-integration/data-types-for-vector-search).
+* The **source data types** that can be used for vector search are detailed in [Data types for vector search](../ai-integration/data-types-for-vector-search).
 
 * Note: Vector search queries cannot be used with [subscription queries](../client-api/data-subscriptions/creation/api-overview#subscription-query).
 
@@ -186,12 +186,14 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
 * Note the usage of RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), which is highly optimized for reading and writing arrays to disk.
   Learn more about the source data types suitable for vector search in [Data types for vector search](../ai-integration/data-types-for-vector-search).
 
-* Unlike vector searches on text, where RavenDB transforms text into an embedding vector,  
-  numerical vector searches require your source data to already be in an embedding vector format.
+* Unlike vector searches on text, where RavenDB transforms the raw text into an embedding vector,  
+  numerical vector searches require your source data to already be in an embedding vector format.  
 
-* If your raw data is in a float format, you can request further quantization of the embeddings that will be indexed in the auto-index.
+* If your raw data is in a _float_ format, you can request further quantization of the embeddings that will be indexed in the auto-index.
   See an example of this in: [Quantiztion options](../ai-integration/vector-search-using-dynamic-query#quantization-options).  
-  Raw data that is already formatted as _Int8_ or _Binary_ cannot be quantized to lower-form (e.g. Int8 -> Int1).
+
+* Raw data that is already formatted as _Int8_ or _Binary_ **cannot** be quantized to lower-form (e.g. Int8 -> Int1).  
+  When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../ai-integration/vector-search-using-dynamic-query#section-1).
 
 ---
 
@@ -255,7 +257,7 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $p0)
 {CODE-TAB:csharp:Query vs_8@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
-// * Wrap the source document field name using 'embedding.xx' to specify
+// * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
 // * If the document field is Not wrapped, 'single' is assumed as the default source type. 
 where vector.search(TagsEmbeddedAsBase64, $p0)
@@ -302,8 +304,8 @@ Quantization is a technique that reduces the precision of numerical data.
 It converts high-precision values, such as 32-bit floating-point numbers, into lower-precision formats like 8-bit integers or binary representations.
 
 The quantization process, applied to each dimension (or item) in the numerical array, 
-serves as a form of compression by reducing the bit size used to represent each value in the vector.
-For example, transitioning from 32-bit floats to 8-bit integers significantly reduces data size while preserving the vector's essential structure.
+serves as a form of compression by reducing the number of bits used to represent each value in the vector.
+For example, transitioning from 32-bit floats to 8-bit integers significantly reduces data size while preserving the vector's essential structure.  
 
 Although it introduces some precision loss, quantization minimizes storage requirements and optimizes memory usage.
 It also reduces computational overhead, making operations like similarity searches faster and more efficient.
@@ -437,7 +439,7 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 * You can perform a vector search and a regular search in the same query.  
   A single auto-index will be created for both search predicates.
 
-* In the following example, rsults will include Product documents with content similar to "Italian food" in their _Name_ field and a _PricePerUnit_ above 20.
+* In the following example, results will include Product documents with content similar to "Italian food" in their _Name_ field and a _PricePerUnit_ above 20.
   The following auto-index will be generated:  
   `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
 
@@ -513,7 +515,7 @@ The default value for `numberOfCandidates` is defined by this configuration key:
 
 ---
 
-`RavenVector`:  
+#### `RavenVector`:  
 RavenVector is RavenDB's dedicated data type for storing and querying numerical embeddings.  
 Learn more in [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector)
 
@@ -521,7 +523,7 @@ Learn more in [RavenVector](../ai-integration/data-types-for-vector-search#raven
 
 ---
 
-`VectorQuanitzer`:   
+#### `VectorQuanitzer`:   
 RavenDB provides the following quantizer methods.  
 Use them to transform your raw data to the dezired format.  
 Other quantizers may not be compatible.  
