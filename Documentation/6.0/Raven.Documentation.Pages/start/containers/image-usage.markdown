@@ -7,7 +7,7 @@ RavenDB offers official images based on Ubuntu and Windows NanoServer.
 
 First, let's describe basic development usage of our images.
 We'll **focus on basics**, not going *too deep* into security, networking and storage.
-For detailed instructions on how to spin up your production, you can read our guides for specific container/orchestration platforms - search through our [articles](https://ravendb.net/articles), or go *deep* with our [RavenDB Containers Docs](https://ravendb.net/docs/start/containers) that also addresses containerized RavenDB [production requirements](./requirements).
+For detailed instructions on how to spin up your production, you can read our guides for specific container/orchestration platforms - search through our [articles](https://ravendb.net/articles), or go *deep* with our [RavenDB Containers Docs](.) that also addresses containerized RavenDB [production requirements](./requirements).
 
 To quickly try out RavenDB, you can run the following command:
 
