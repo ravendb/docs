@@ -148,7 +148,7 @@
 
 * Since this query does not specify a target quantization format,
   the generated embedding vectors will be encoded in the default _Single_ format (single-precision floating-point quantization).  
-  Refer to [quantization options](../todo..) for examples that specify the destination quantization.
+  Refer to [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options) for examples that specify the destination quantization.
 
     {CODE-TABS}
     {CODE-TAB:csharp:Query vs_1@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
@@ -183,14 +183,14 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
   The _Movie_ class includes various formats of numerical vector data.  
   Note: This sample data is minimal to keep the examples simple.
 
-* Note the usage of RavenDB's dedicated data type, [RavenVector](../todo), which is highly optimized for reading and writing arrays to disk.
-  Learn more about the source data types suitable for vector search in [source data types...](../todo..).
+* Note the usage of RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), which is highly optimized for reading and writing arrays to disk.
+  Learn more about the source data types suitable for vector search in [Data types for vector search](../ai-integration/data-types-for-vector-search).
 
 * Unlike vector searches on text, where RavenDB transforms text into an embedding vector,  
   numerical vector searches require your source data to already be in an embedding vector format.
 
 * If your raw data is in a float format, you can request further quantization of the embeddings that will be indexed in the auto-index.
-  See an example of this in: [quantiztion....](../todo..).  
+  See an example of this in: [Quantiztion options](../ai-integration/vector-search-using-dynamic-query#quantization-options).  
   Raw data that is already formatted as _Int8_ or _Binary_ cannot be quantized to lower-form (e.g. Int8 -> Int1).
 
 ---

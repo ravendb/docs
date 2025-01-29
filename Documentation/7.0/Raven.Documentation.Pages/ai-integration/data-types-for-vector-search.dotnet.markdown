@@ -6,7 +6,7 @@
 * Data for vector search can be stored in several data type formats, as outlined below.
 
 * Text and numerical data that is Not pre-quantized can be further quantized in the generated embeddings.  
-  Learn more in [Quantization options](../todo..).
+  Learn more in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
 
 * In this page:
   * [Supported data types for vector search](../ai-integration/data-types-for-vector-search#supported-data-types-for-vector-search)

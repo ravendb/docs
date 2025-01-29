@@ -25,7 +25,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
   Words, phrases, entire documents, images, audio, and other types of data can all be vectorized.
 
 * The raw data is converted into embeddings using [transformers](https://huggingface.co/docs/transformers).  
-  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called **quantization**.
+  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../ai-integration/vector-search-using-dynamic-query#quantization-options).
 
 **Indexing embeddings and semantic searching**:  
 
@@ -78,7 +78,7 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 * **Numerical arrays input**:  
   Documents in RavenDB can contain numerical arrays with **pre-made embeddings** created elsewhere.  
-  Use RavenDB's dedicated data type, [RavenVector](../todo..), to store these embeddings in your document entities.  
+  Use RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), to store these embeddings in your document entities.  
   This type is highly optimized to reduce storage space and enhance the speed of reading arrays from disk.
 
 * **HNSW algorithm usage**:  
