@@ -12,7 +12,6 @@ If you are looking for a broader understanding of RavenDB's storage mechanisms, 
 - [Storage Engine](../../../server/storage/storage-engine)
 - [Directory Structure](../../../server/storage/directory-structure)
 
----
 
 ## **Why Storage Matters for RavenDB Containers**
 
@@ -24,7 +23,6 @@ Without proper configuration:
 - Performance may degrade due to suboptimal storage setups.
 - Inconsistent behavior can arise during scaling, updates or failover operations.
 
----
 
 ## **Requirements**
 

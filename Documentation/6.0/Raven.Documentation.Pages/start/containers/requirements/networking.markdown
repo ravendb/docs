@@ -7,7 +7,6 @@ As a database that relies on both HTTP and TCP protocols for communication,
 proper network configuration is essential to ensure healthy cluster node-to-node communication and client connectivity.
 This article outlines the specific networking requirements and configurations for RavenDB in containerized environments.
 
----
 
 ## **Key Networking Concepts for RavenDB**
 

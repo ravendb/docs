@@ -62,7 +62,7 @@ You can:
 
 If your use case requires more extensive customization, you can modify the Dockerfile directly to create a tailored image.
 
-##### Possibilities of modifications
+#### Possibilities of modifications
 
 ###### Change the Base Image
 Replace `FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-jammy` with another OS, such as `debian:buster` or `alpine:latest`.
@@ -84,7 +84,7 @@ CMD ["/bin/bash", "/usr/lib/ravendb/scripts/run-raven.sh"]
 {CODE-BLOCK/}
 
 
-## Entry Script ([run-raven.sh)](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/run-raven.sh)
+## Entry Script ([run-raven.sh](https://github.com/ravendb/ravendb/blob/v6.2/docker/ravendb-ubuntu/run-raven.sh))
 
 This script initializes and runs the RavenDB server.
 It's designed to work for anyone, so in some scenarios you may want to chisel it down a bit, modify, or completely replace, which we'll cover next.

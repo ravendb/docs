@@ -42,9 +42,8 @@ Run RavenDB in managed Kubernetes clusters to simplify container orchestration a
 This option supports dynamic workloads with features like autoscaling and node group management.
 
 You should be able to deploy a **node group** to match your computing needs. Many providers are offering such service - EKS, AKS, GKE, etc.
-Kubernetes always increases the cost of a solution by far, but the power it offers is often unmatched.
+Kubernetes always increases the cost of a solution **by far**, but the power it offers is often unmatched.
 
----
 
 ## **ARM Architecture Support**
 
