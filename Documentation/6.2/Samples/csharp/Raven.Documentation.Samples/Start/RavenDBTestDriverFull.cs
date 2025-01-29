@@ -10,7 +10,7 @@ namespace RavenDBTestDriverFullExample
 
     public class RavenDBTestDriver : RavenTestDriver
     {
-        public RavenDBTestDriver()
+        static RavenDBTestDriver()
         {
             // ConfigureServer() must be set before calling GetDocumentStore()
             // and can only be set once per test run.
