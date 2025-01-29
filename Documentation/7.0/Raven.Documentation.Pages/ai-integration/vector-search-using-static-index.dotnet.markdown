@@ -169,7 +169,8 @@ Results will include _Product_ documents where the `Name` field is similar to th
 {CODE-TAB:csharp:RawQuery_async query_3_async@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByVector/Text"
-where vector.search(VectorFromText, "italian food", 0.82, 20)
+// Wrap the 'vector.search' query with 'exact()' to perform an exact search
+where exact(vector.search(VectorFromText, "italian food", 0.82, 20))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -251,7 +252,7 @@ This allows you to query across all fields using various predicates.
 {CODE-TAB:csharp:IndexDefinition index_12@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
 
-Execute a query that combines predicates (using `OR`) across all index-field types:  
+Execute a query that combines predicates across all index-field types:  
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery query_10@AiIntegration\VectorSearchUsingStaticIndex.cs /}

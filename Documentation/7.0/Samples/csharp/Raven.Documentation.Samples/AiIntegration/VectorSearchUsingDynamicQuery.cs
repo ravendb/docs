@@ -288,7 +288,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
                             searchVector => searchVector.ByEmbedding(
                                 // The provided vector MUST be in the same format as was stored in your document
-                                // Call 'VectorQuantizer.ToInt8' to transform the rawData to the Int8 format  
+                                // Call 'VectorQuantizer.ToInt8' to transform the raw data to the Int8 format  
                                 VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();
