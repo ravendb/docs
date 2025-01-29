@@ -7,7 +7,7 @@ RavenDB offers official images based on Ubuntu and Windows NanoServer.
 
 First, let's describe basic development usage of our images.
 We'll **focus on basics**, not going *too deep* into security, networking and storage.
-For detailed instructions on how to spin up your production, you can read our guides for specific container/orchestration platforms - **deployment articles**, or go *deep* with **https://ravendb.net/docs/start/containers** knowledge-base.
+For detailed instructions on how to spin up your production, you can read our guides for specific container/orchestration platforms - search through our [articles](https://ravendb.net/articles), or go *deep* with our [RavenDB Containers Docs](https://ravendb.net/docs/start/containers) that also addresses containerized RavenDB [production requirements](./requirements).
 
 To quickly try out RavenDB, you can run the following command:
 
@@ -85,10 +85,10 @@ docker run -v /path/to/config:/etc/ravendb \
   ravendb/ravendb:ubuntu-latest
 {CODE-BLOCK/}
 
-To learn about statefullness and storing RavenDB data in a containers, or if you run into trouble, visit Containers > Requirements > Storage documentation page.
+To learn about statefullness and storing RavenDB data in a containers, or if you run into trouble, visit [Containers > Requirements > Storage](./requirements/storage).
 
 #### **Advanced Networking**
-To read more on RavenDB networking containerized environment, go to Containers > Requirements > Networking.
+To read more on RavenDB networking containerized environment, go to [Containers > Requirements > Networking](./requirements/networking).
 
 {PANEL: FAQ}
 
