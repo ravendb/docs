@@ -117,9 +117,7 @@ To license RavenDB under Linux, pass a license **file** rather than a **director
 ## Related Articles
 
 ### Installation
-- [Running in a Docker Container](../../start/installation/running-in-docker-container)  
+- [Running in a Container](../../start/containers/overview)  
 - [Running as a Service](../../start/installation/running-as-service)  
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)  
 
-### Setup Examples
-- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)  

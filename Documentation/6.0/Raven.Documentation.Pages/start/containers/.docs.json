@@ -1,0 +1,50 @@
+﻿[
+
+    {
+        "Path": "overview.markdown",
+        "Name": "General Guide",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "start/installation/running-in-docker-container"
+            },
+            {
+                "Version": 5.1,
+                "Key": "start/installation/running-in-docker-container"
+            },
+            {
+                "Version": 5.0,
+                "Key": "start/installation/running-in-docker-container"
+            },
+            {
+                "Version": 4.2,
+                "Key": "start/installation/running-in-docker-container"
+            },
+            {
+                "Version": 4.1,
+                "Key": "start/installation/running-in-docker-container"
+            },
+            {
+                "Version": 4.0,
+                "Key": "start/installation/running-in-docker-container"
+            }
+        ]
+    },
+    {
+        "Path": "image-usage.markdown",
+        "Name": "Docker Images",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "/dockerfile",
+        "Name": "Dockerfile",
+        "Mappings": []
+    },
+    {
+        "Path": "/requirements",
+        "Name": "Requirements",
+        "Mappings": []
+    }
+]

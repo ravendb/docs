@@ -1,0 +1,21 @@
+﻿[
+
+    {
+        "Path": "guide.markdown",
+        "Name": "Start",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "dockerfile-overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
+        "Path": "extending.markdown",
+        "Name": "Extending & Tuning",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    }
+]

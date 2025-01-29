@@ -101,7 +101,7 @@ machine restarts), this simple step will be done after initial secure installati
 
 {NOTE: Running in a Docker container}
 
-If you are interested in hosting the server in a Docker container, please read our [dedicated article](../start/installation/running-in-docker-container).
+If you are interested in hosting the server in a Docker container, please read our [dedicated knowledge base](../start/containers/overview).
 
 {NOTE/}
 
@@ -111,7 +111,6 @@ If you are interested in hosting the server on a VM, please refer to
 
 - [AWS Windows VM](../start/installation/setup-examples/aws-windows-vm)
 - [AWS Linux VM](../start/installation/setup-examples/aws-linux-vm)
-- [Docker on AWS Linux VM](../start/installation/setup-examples/aws-docker-linux-vm)
 
 {NOTE/}
 
@@ -332,7 +331,7 @@ select Name
 ### Installation
 - [Setup Wizard](../start/installation/setup-wizard)  
 - [System Requirements](../start/installation/system-requirements)  
-- [Running in a Docker Container](../start/installation/running-in-docker-container)  
+- [Running in a Container](../start/containers/overview)  
 
 ### Session
 - [Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)  

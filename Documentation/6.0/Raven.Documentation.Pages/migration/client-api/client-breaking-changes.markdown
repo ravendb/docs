@@ -150,7 +150,7 @@ var backupResult = (ShardedBackupResult)result;
 ### Installation
 - [Setup Wizard](../../start/installation/setup-wizard)  
 - [System Requirements](../../start/installation/system-requirements)  
-- [Running in a Docker Container](../../start/installation/running-in-docker-container)  
+- [Running in a Container](../../start/containers/overview)  
 
 ### Session
 - [Introduction](../../client-api/session/what-is-a-session-and-how-does-it-work)  

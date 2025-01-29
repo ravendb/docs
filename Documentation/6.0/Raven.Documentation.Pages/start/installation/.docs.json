@@ -29,12 +29,6 @@
         "Mappings": []
     },
     {
-        "Path": "running-in-docker-container.markdown",
-        "Name": "Running in a Docker Container",
-        "DiscussionId": "eda38daa-a361-4114-9519-0684a7e1bda2",
-        "Mappings": []
-    },
-    {
         "Path": "upgrading-to-new-version.markdown",
         "Name": "Upgrading to a New Version",
         "DiscussionId": "57129334-7cc2-41b8-b0d3-3bcce5cdca3f",
