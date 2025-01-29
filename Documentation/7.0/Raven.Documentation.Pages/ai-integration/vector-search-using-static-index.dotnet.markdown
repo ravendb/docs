@@ -169,7 +169,7 @@ Results will include _Product_ documents where the `Name` field is similar to th
 {CODE-TAB:csharp:RawQuery_async query_3_async@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByVector/Text"
-// Wrap the 'vector.search' query with 'exact()' to perform an exact search
+// Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
 where exact(vector.search(VectorFromText, "italian food", 0.82, 20))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

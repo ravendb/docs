@@ -40,7 +40,7 @@
   Ensure that all vectors within this field across all documents in the collection have the **same dimension**.  
   All vectors indexed in same vector space must maintain consistent dimensionality.
 
-* In addition to the native types described below, we highly recommended using [RavenVector](../../ai-integration/data-types-for-vector-search#ravenvector)  
+* In addition to the native types described below, we highly recommended using [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector)  
   for efficient storage and fast queries when working with numerical embeddings.
 
 {CONTENT-FRAME: }
@@ -57,8 +57,10 @@ Use when precision is critical.
 **Pre-quantized data**:   
 Use when you prioritize storage efficiency and query speed.  
 
-`byte[] / sbyte[]` - A single pre-quantized embedding vector in the Int8 quantization format.   
+`byte[] / sbyte[]` - A single pre-quantized embedding vector in the _Int8_ or _binary_ quantization format.  
 `byte[][] / sbyte[][]` - An array of pre-quantized embedding vectors.  
+
+When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../ai-integration/vector-search-using-dynamic-query#section-1).
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }

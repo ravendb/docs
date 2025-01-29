@@ -583,7 +583,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = session.Advanced
                         .RawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
-                            // Wrap the 'vector.search' query with 'exact()' to perform an exact search
+                            // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
                             where exact(vector.search(VectorFromText, 'italian food', 0.82, 20))")
                         .WaitForNonStaleResults()
                         .ToList();
@@ -596,7 +596,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
-                            // Wrap the 'vector.search' query with 'exact()' to perform an exact search
+                            // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
                             where exact(vector.search(VectorFromText, 'italian food', 0.82, 20))")
                         .WaitForNonStaleResults()
                         .ToListAsync();
