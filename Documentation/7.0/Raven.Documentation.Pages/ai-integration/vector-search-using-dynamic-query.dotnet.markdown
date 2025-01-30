@@ -147,7 +147,7 @@
 * The following example searches for Product documents where the _'Name'_ field is similar to the search term `"italian food"`.
 
 * Since this query does not specify a target quantization format,
-  the generated embedding vectors will be encoded in the default _Single_ format (single-precision floating-point quantization).  
+  the generated embedding vectors will be encoded in the default _Single_ format (single-precision floating-point).  
   Refer to [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options) for examples that specify the destination quantization.
 
     {CODE-TABS}
@@ -396,7 +396,7 @@ The following methods are available for performing a vector search via RQL:
 
 {CONTENT-FRAME: }
 
-  `embedding.text`: Encodes text into 32-bit floating-point values.  
+  `embedding.text`: Encodes text into 32-bit floating-point values. => Store/index the text in a 32-bit floating-point format without quantization ?? Maciej ??  
   `embedding.text_i8`: Encodes text into 8-bit integers.  
   `embedding.text_i1`: Encodes text into binary.  
   
@@ -451,12 +451,44 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
   {CODE-TAB:csharp:RawQuery vs_14@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
   {CODE-TAB:csharp:RawQuery_async vs_14_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
   {CODE-TAB-BLOCK:sql:RQL}
-  from "Products"
-  where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
-  { "p0" : 20.0, "p1" : "italian food" }
+from "Products"
+// The filtering condition:
+where (PricePerUnit > $p0)
+// The vector search here will execute with the default similarity (0.75f)
+// and the default NumberOfCandidates (16)
+and (vector.search(embedding.text(Name), $p1))
+{ "p0" : 35.0, "p1" : "italian food" }
   {CODE-TAB-BLOCK/}
   {CODE-TABS/}
 
+{INFO: }
+
+**Impact of _NumberOfCandidates_ on query results**:  
+
+* When combining a vector search with a filtering condition, the filter applies only to the documents retrieved within the `NumberOfCandidates` param limit.
+  Increasing or decreasing _NumberOfCandidates_ can affect the query results.
+  A larger _NumberOfCandidates_ increases the pool of documents considered,
+  improving the chances of finding results that match both the vector search and the filter condition.
+
+* For example, in the above query, the vector search executes with the default params: Similarity `0.75f` and NumberOfCandidates `16`.
+  Running this query on RavenDB's sample data returns **2** documents. 
+
+* However, if you increase _NumberOfCandidates_, the query will retrieve more candidate documents before applying the filtering condition.
+  If you run the following query:
+
+    {CODE-TABS}
+    {CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+where (PricePerUnit > $p0)
+// Run vector search with default similarity and NumberOfCandidates 25
+and (vector.search(embedding.text(Name), $p1, null, 25))
+{ "p0" : 35.0, "p1" : "italian food" }
+    {CODE-TAB-BLOCK/}
+    {CODE-TABS/}
+
+    now the query returns **4** documents instead of **2**.
+
+{INFO/}
 {PANEL/}
 
 {PANEL: Syntax}
@@ -525,7 +557,7 @@ Learn more in [RavenVector](../ai-integration/data-types-for-vector-search#raven
 
 #### `VectorQuanitzer`:   
 RavenDB provides the following quantizer methods.  
-Use them to transform your raw data to the dezired format.  
+Use them to transform your raw data to the desired format.  
 Other quantizers may not be compatible.  
 
 {CODE:csharp syntax_7@AiIntegration\VectorSearchUsingDynamicQuery.cs /}

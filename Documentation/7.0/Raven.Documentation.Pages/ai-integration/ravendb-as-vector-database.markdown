@@ -29,8 +29,9 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 **Indexing embeddings and semantic searching**:  
 
-* The embedding vectors are indexed and stored in a vector space. Their positions in the space reflect relationships and characteristics of the data.
-  The distance between two embeddings in the vector space correlates with the semantic similarity of their original inputs. 
+* The embedding vectors are indexed and stored in a vector space.
+  Their positions reflect relationships and characteristics of the data as determined by the model that generated them.
+  The distance between two embeddings in the vector space correlates with the semantic similarity of their original inputs within that model's context.
   
 * Vectors representing similar data are positioned close to each other in the vector space.  
   This is achieved using algorithms such as [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world), which is designed for indexing and querying embeddings.
@@ -48,10 +49,10 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 * RavenDB provides an integrated solution that combines high-performance NoSQL capabilities with advanced vector indexing and querying features,
   enabling efficient storage and management of high-dimensional vector data.
 
-##### Data privacy and ownership:  
+##### Reduced infrastructure complexity:
 
-* With RavenDB, your data remains private. 
-  There's no need to integrate with external vector databases, keeping your sensitive data secure within your own infrastructure.
+* RavenDB's built-in vector search eliminates the need for external vector databases,  
+  simplifying your infrastructure and reducing maintenance overhead.
 
 ##### AI integration:  
 
@@ -61,9 +62,8 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 
 ##### Multiple field types in indexes:  
 
-* An index can combine different field types, e.g., standard fields, spatial fields, full-text search fields,  
-  and **vector-fields**, allowing queries to retrieve data from all these field types.
-  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights efficiently.  
+* An index can consist of multiple index-fields, each having a distinct type, such as a standard field, a spatial field, a full-text search field, or a **vector field**.
+  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.
   An example is available in [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types).
 
 * Document attachments can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
@@ -72,12 +72,13 @@ rather than relying on exact keyword matches. This is achieved using embeddings.
 ##### Built-in embedding support:
 
 * **Textual input**:  
-  RavenDB uses the [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model to embed **textual input** from your documents into 384-dimensional dense vectors.
-  This highly efficient sentence-transformer model ensures precise and compact vector representations.
-  (Integration with other external transformer models is planned for the future).
+  RavenDB enables vector search on **textual input**, allowing you to retrieve results based on contextual similarity, rather than exact word matches. 
+  It does this by automatically converting raw text into dense numerical embeddings using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model,
+  which transforms text into 384-dimensional vectors that capture semantic meaning.
+  When querying with a phrase, RavenDB generates an embedding for the search term using that same model and compares it against indexed embeddings.
 
 * **Numerical arrays input**:  
-  Documents in RavenDB can contain numerical arrays with **pre-made embeddings** created elsewhere.  
+  Documents in RavenDB can also contain numerical arrays with **pre-made embeddings** created elsewhere.  
   Use RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), to store these embeddings in your document entities.  
   This type is highly optimized to reduce storage space and enhance the speed of reading arrays from disk.
 

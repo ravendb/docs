@@ -400,11 +400,13 @@ namespace Raven.Documentation.Samples.AiIntegration
                 // Examples for combined search
                 // ============================
                 
-                 using (var session = store.OpenSession())
+                using (var session = store.OpenSession())
                 {
                     #region vs_12
-                    var similarProducts = Queryable.Where(session.Query<Product>(), x => x.PricePerUnit > 20)
-                         // Perform a vector search
+                    var similarProducts = session.Query<Product>()
+                         // Perform a filtering condition:
+                        .Where(x => x.PricePerUnit > 35)
+                         // Perform a vector search:
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
                             searchTerm => searchTerm.ByText("italian food"))
@@ -416,7 +418,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region vs_12_async
-                    var similarProducts = await Queryable.Where(asyncSession.Query<Product>(), x => x.PricePerUnit > 20)
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .Where(x => x.PricePerUnit > 35)
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
                             searchTerm => searchTerm.ByText("italian food"))
@@ -430,12 +433,10 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #region vs_13
                     var similarProducts = session.Advanced
                         .DocumentQuery<Product>()
-                         // Perform a vector search
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
                             searchTerm => searchTerm.ByText("italian food"))
-                         // Perform a regular search
-                        .WhereGreaterThan(x => x.PricePerUnit, 20)
+                        .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -449,7 +450,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
                             searchTerm => searchTerm.ByText("italian food"))
-                        .WhereGreaterThan(x => x.PricePerUnit, 20)
+                        .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -462,7 +463,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .RawQuery<Product>(@"
                            from 'Products'
                            where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
-                           { 'p0' : 20.0, 'p1' : 'italian food' }")
+                           { 'p0' : 35.0, 'p1' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -475,7 +476,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncRawQuery<Product>(@"
                            from 'Products'
                            where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
-                           { 'p0' : 20.0, 'p1' : 'italian food' }")
+                           { 'p0' : 35.0, 'p1' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
