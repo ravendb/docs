@@ -12,6 +12,7 @@
      * [Creating embeddings for the auto-index](../ai-integration/vector-search-using-dynamic-query#creating-embeddings-for-the-auto-index)
      * [Retrieving results](../ai-integration/vector-search-using-dynamic-query#retrieving-results)
      * [The dynamic query parameters](../ai-integration/vector-search-using-dynamic-query#the-dynamic-query-parameters)
+     * [Corax auto-indexes](../ai-integration/vector-search-using-dynamic-query#corax-auto-indexes)
   * [Vector search on TEXT](../ai-integration/vector-search-using-dynamic-query#vector-search-on-text)
   * [Vector search on NUMERICAL content](../ai-integration/vector-search-using-dynamic-query#vector-search-on-numerical-content)
   * [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search)
@@ -43,13 +44,8 @@
 
 * Note: Vector search queries cannot be used with [subscription queries](../client-api/data-subscriptions/creation/api-overview#subscription-query).
 
-* When executing a dynamic vector search query, RavenDB creates a Corax [Auto-index](../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) to process the query,  
+* When executing a dynamic vector search query, RavenDB creates a [Corax auto-index](.././ai-integration/vector-search-using-dynamic-query#corax-auto-indexes) to process the query,  
   and the results are retrieved from that index.    
-     {INFO: }
-     * Only [Corax indexes](../indexes/search-engine/corax) support vector search.
-     * Even if your default auto-index engine is set to Lucene (via [Indexing.Auto.SearchEngineType](../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
-       performing a vector search using a dynamic query will create a new auto-index based on Corax.
-     {INFO/}
 
 ---
 
@@ -139,6 +135,34 @@
       offering better accuracy but at a higher computational cost.  
       Learn more in [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search).
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+#### Corax auto-indexes
+---
+
+* Only [Corax indexes](../indexes/search-engine/corax) support vector search.
+
+* Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
+  performing a vector search using a dynamic query will create a new auto-index based on Corax.
+
+* Normally, new dynamic queries extend existing [auto-indexes](../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) if they require additional fields.  
+  However, a dynamic query with a vector search will not extend an existing Lucene-based auto-index.
+
+    {NOTE: }
+    For example, suppose you have an existing **Lucene**-based auto-index on the Employees collection: e.g.:  
+    `Auto/Employees/ByFirstName`.  
+
+    Now, you run a query that:  
+
+      * searches for Employees by _LastName_ (a regular text search)
+      * and performs a vector search over the _Notes_ field.
+
+    The following new **Corax**-based auto-index will be created:  
+    `Auto/Employees/ByLastNameAndVector.search(embedding.text(Notes))`,  
+    and the existing **Lucene** index on Employees will not be deleted or extended.    
+    {NOTE/}
+ 
 {CONTENT-FRAME/}
 {PANEL/}
 
@@ -390,21 +414,37 @@ where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
 
 ---
 
-#### Quantization methods in RQL:
+#### Field configuration methods in RQL:  
 
 The following methods are available for performing a vector search via RQL:
 
 {CONTENT-FRAME: }
 
-  `embedding.text`: Encodes text into 32-bit floating-point values. => Store/index the text in a 32-bit floating-point format without quantization ?? Maciej ??  
-  `embedding.text_i8`: Encodes text into 8-bit integers.  
-  `embedding.text_i1`: Encodes text into binary.  
-  
-  `embedding.f32_i8`: Converts 32-bit floating-point values to 8-bit integers.  
-  `embedding.f32_i1`: Converts 32-bit floating-point values to binary.  
-    
-  `embedding.i8`: Indicates that the source data is already quantized as Int8  (cannot be further quantized).  
-  `embedding.i1`: Indicates that the source data is already quantized as binary (cannot be further quantized).  
+* `embedding.text`:  
+  Generates embeddings from text as multi-dimensional vectors with 32-bit floating-point values,  
+  without applying quantization.  
+
+* `embedding.text_i8`:  
+  Generates embeddings from text as multi-dimensional vectors with 8-bit integer values.
+
+* `embedding.text_i1`:   
+  Generates embeddings from text as multi-dimensional vectors in a binary format.  
+
+---
+
+* `embedding.f32_i8`:  
+  Converts multi-dimensional vectors with 32-bit floating-point values into vectors with 8-bit integer values.  
+
+* `embedding.f32_i1`:  
+  Converts multi-dimensional vectors with 32-bit floating-point values into vectors in a binary format.  
+
+--- 
+
+* `embedding.i8`:  
+  Indicates that the source data is already quantized as Int8  (cannot be further quantized).  
+
+* `embedding.i1`:  
+  Indicates that the source data is already quantized as binary (cannot be further quantized).  
 
 {CONTENT-FRAME/}
 

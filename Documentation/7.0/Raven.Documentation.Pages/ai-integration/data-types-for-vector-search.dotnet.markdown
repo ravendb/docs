@@ -58,7 +58,7 @@ Use when precision is critical.
 **Pre-quantized data**:   
 Use when you prioritize storage efficiency and query speed.  
 
-`byte[] / sbyte[]` - A single pre-quantized embedding vector in the _Int8_ or _binary_ quantization format.  
+`byte[] / sbyte[]` - A single pre-quantized embedding vector in the _Int8_ or _Binary_ quantization format.  
 `byte[][] / sbyte[][]` - An array of pre-quantized embedding vectors.  
 
 When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../ai-integration/vector-search-using-dynamic-query#section-1).
@@ -75,14 +75,10 @@ Use when embedding data needs to be represented as a compact and easily serializ
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
-**Additional types**:  
+**Using lists**:  
 
-* While arrays `(float[])` are the most direct representation of numerical embeddings,  
-  you can also use lists (`List<T>` or `List<T[]>`) for dynamic sizing in your application code.
-
-* You can use types such as `double` or `int` as the underlying data types.  
-  However, while supported, these are generally less suitable for vector search,  
-  as embeddings typically use `float` for a balanced trade-off between precision and efficiency in similarity search.
+While arrays (`float[]`) are the most direct representation of numerical embeddings,  
+you can also use lists (for example, `List<float>` or `List<float[]>`) for dynamic sizing in your application code.
 
 {CONTENT-FRAME/}
 {PANEL/}
@@ -100,10 +96,9 @@ RavenVector<float>;       // A single vector of floating-point values.
 List<RavenVector<float>>; // A collection of float-based vectors.
 RavenVector<sbyte>;       // A single pre-quantized vector in Int8 format (8-bit signed integer).
 List<RavenVector<sbyte>>; // A collection of sbyte-based vectors.
+RavenVector<byte>;        // A single pre-quantized vector in Binary format (8-bit unsigned integer).
+List<RavenVector<byte>>;  // A collection of byte-based vectors.
 {CODE-BLOCK/}
-
-Other numerical types, such as _byte_, _int_, or _double_, can also be used with `RavenVector`.  
-However, _float_ and _sbyte_ are typically preferred for embeddings due to their efficiency.  
 
 ---
 

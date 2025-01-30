@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Vector search enables you to retrieve data based on **semantic and contextual relevance**, rather than relying on exact keyword matches.
+* Vector search enables you to retrieve data based on **contextual relevance**, rather than relying on exact keyword matches.
  
 * In addition to its other capabilities, RavenDB serves as a **vector database** that allows you to efficiently store, index, and search vector representations.
   
