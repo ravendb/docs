@@ -52,27 +52,34 @@ From the debug menu, click **Admin Logs**.
 
 {PANEL: Logs on this view}
 
-Use these controls to select the log entries you want to display.  
-You can control the logging level and apply powerful filters.  
+**Use these controls to**:  
+
+* Adjust [monitor controls](../../../studio/server/debug/admin-logs#monitor-controls).  
+* Set the [minimal logging level](../../../studio/server/debug/admin-logs#set-displayed-logs-minimum-level) 
+  from which log entries are displayed.  
+* Create [additional filters](../../../studio/server/debug/admin-logs#set-displayed-logs-filters) 
+  to select the precise data that you want to view.  
+* [Export the displayed log data](../../../studio/server/debug/admin-logs#export-displayed-logs-data) 
+  to files.  
 
 ![Logs on this view](images/admin-logs_logs-on-this-view.png "Logs on this view")
 
 1. **🔻** **Active Filters**  
    A lit funnel symbol indicates that filters were created and are now active.  
    See **Settings** below to learn what filters do and how to create and remove them.  
-2. **Min level**  
+2. <a id="set-displayed-logs-minimum-level" />**Min level**  
    The minimal [logging level](../../../server/troubleshooting/logging#logging-levels) 
    from which log entries are displayed on this view.  
    Selecting `Warn` (warning), for example, will display log entries from this level 
    on, including `Warn`, `Error`, and `Fatal`.  
-3. **Action buttons**  
+3. <a id="monitor-controls" />**Monitor controls**  
     * **Pause** - Pause log entries streaming to the display  
     * **Clear** - Clear the displayed log  
     * **Monitor (tail -f)** - Enable to automatically scroll the log's tail when an 
       entry is added.  
       Clicking an entry and expanding its details automatically disables this option.  
-4. **Export**  
-   Expand all log entries and export the log in JSON format.  
+4. <a id="export-displayed-logs-data" />**Export**  
+   Expand all log entries and export the log to file in JSON format.  
 5. **Settings**  
    Click to create and apply **filters** to select log entries of interest.  
    Be aware that your filters select log entries from the remaining data 
@@ -84,7 +91,7 @@ You can control the logging level and apply powerful filters.
         Once at least one filter has been defined, a **default filter** can also be created.  
         The default filter determines how log entries should be handled when they either 
         **match no filter**, or all the filters they do match apply a **Neutral** action.  
-      * **B.** **Filters**  
+      * <a id="set-displayed-logs-filters" />**B.** **Filters**  
         Use this section to define filters and to view and remove existing filters.  
          * **Minimum Level** - Log entries are selected from this level on.  
          * **Maximum level** - log entries are selected up to this level.  
@@ -118,8 +125,14 @@ You can control the logging level and apply powerful filters.
 
 {PANEL: Logs on disk}
 
-Use these controls to adjust RavenDB's [logging](../../../server/troubleshooting/logging) 
-to files on your disk.  
+**Use these controls to**:  
+
+* Set the [minimal logging level](../../../studio/server/debug/admin-logs#define-logs-on-disk-minimum-level) 
+  from which log entries are stored in log files on the server disk.  
+* Create [additional filters](../../../studio/server/debug/admin-logs#define-logs-on-disk-filters) 
+  to select the precise data that you want to log.  
+* [Download existing log files](../../../studio/server/debug/admin-logs#download-log-files) 
+  from the server disk by a date range of your choice.  
 
 ![Logs on disk](images/admin-logs_logs-on-disk.png "Logs on disk")
 
@@ -131,7 +144,7 @@ to files on your disk.
    The minimal logging level from which log entries are stored in log files.  
    Use **Settings** (see below) to set the minimal logging level.  
 
-3. **Download**  
+3. <a id="download-log-files" />**Download**  
    Download log entries from the server in a single compressed file of plain text *.log files.  
    ![Logs on disk - Download](images/admin-logs_logs-on-disk_download.png "Logs on disk - Download")
 
@@ -159,7 +172,7 @@ to files on your disk.
 
       ![Logs on disk - Settings](images/admin-logs_logs-on-disk_settings.png "Logs on disk - Settings")
       
-      * **Minumum Level**  
+      * <a id="define-logs-on-disk-minimum-level" />**Minumum Level**  
         The minimal [logging level](../../../server/troubleshooting/logging#logging-levels) 
         from which log entries will be stored in log files.  
         Selecting `Warn` (warning), for example, will store log entries from this level 
@@ -172,7 +185,7 @@ to files on your disk.
         Once at least one filter has been defined, a **default filter** can also be applied.  
         The default filter determines how log entries should be handled when they either 
         **match no filter**, or all the filters they do match apply a **Neutral** action.  
-      * **C.** **Filters**  
+      * <a id="define-logs-on-disk-filters" />**C.** **Filters**  
         Use this section to define filters and to view and remove existing filters.  
          * **Minimum Level** - Log entries are selected from this level on.  
          * **Maximum level** - log entries are selected up to this level.  
@@ -189,7 +202,7 @@ to files on your disk.
          * **Condition**  
            An expression to evaluate log entries by.  
            Hover over the info `ⓘ` symbol for a few examples.  
-           Find more information about NLog filter conditions [here](github.com/NLog/NLog/wiki/When-filter#conditions).  
+           Find more information about NLog filter conditions [here](https://github.com/NLog/NLog/wiki/When-filter#conditions).  
 
          * **🗑️** **Trash bin**  
            Click to remove this filter.  
