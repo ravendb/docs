@@ -131,7 +131,7 @@ Can be used to make certain that logs are collected in many small files rather t
 
 The maximum number of days that an archived log file is kept.  
 
-- **Type**: `int`
+- **Type**: `int?`
 - **Default**: `3`
 - **Scope**: Server-wide only
 
@@ -143,7 +143,7 @@ The maximum number of archived log files to keep.
 Set this value to the number of days after which log files will be deleted,  
 or set it to `null` to refrain from removing log files.  
 
-- **Type**: `int`
+- **Type**: `int?`
 - **Default**: `null`
 - **Min Value**: `0`
 - **Scope**: Server-wide only
