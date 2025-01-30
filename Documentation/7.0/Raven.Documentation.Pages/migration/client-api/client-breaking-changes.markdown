@@ -7,7 +7,7 @@ In RavenDB `7.0`, they are either unavailable or their behavior is inconsistent
 with their behavior in previous versions.  
 
 * In this page:
-   * [Creating a subscription with a predicate is done with dedicated class and functions](../../migration/client-api/client-breaking-changes#creating-a-subscription-with-a-predicate-is-done-with-dedicated-class-and-functions)  
+   * [Subscription creation overload modification](../../migration/client-api/client-breaking-changes#subscription-creation-overload-modification)  
    * [HTTP-Compression algorithm is now `Zstd` by default](../../migration/client-api/client-breaking-changes#http-compression-algorithm-is-now-zstd-by-default)  
    * [Bulk-insert Compression is now Enabled by default](../../migration/client-api/client-breaking-changes#bulk-insert-compression-is-now-enabled-by-default)  
    * [Removed irrelevant `SingleNodeBatchCommand` parameters](../../migration/client-api/client-breaking-changes#removed-irrelevant-singlenodebatchcommand-parameters)  
@@ -18,69 +18,35 @@ with their behavior in previous versions.
 
 ---
 
-{PANEL: Creating a subscription with a predicate is done with dedicated class and functions}
+{PANEL: Subscription creation overload modification}
 
-RavenDB versions earlier than `7.0` allow the creation of a data subscription using the 
-`create` method with both a query and a predicate.  
-To prevent errors and confusion that this duplicity may cause, RavenDB now requires the 
-usage of dedicated class and methods for the creation of a subscription with a predicate.  
+* In RavenDB versions earlier than **7.0**, the `Create<T>` method overload that accepted a predicate also allowed specifying a query through `SubscriptionCreationOptions`, 
+  which could cause errors and confusion.
+* To eliminate this ambiguity, starting from **7.0**, the `Create<T>` overload for predicate-based subscriptions now accepts `PredicateSubscriptionCreationOptions`,
+  which no longer includes a `Query` property.
+* Refer to the [Subscription creation API overview](../../client-api/data-subscriptions/creation/api-overview) for the complete list of available `Create` method overloads.
 
-{CONTENT-FRAME: `SingleNodeBatchCommand` signature:}
 {CODE-TABS}
-{CODE-TAB-BLOCK:plain:Sync}
-public string Create<T>
-    (Expression<Func<T, bool>> predicate,
-     PredicateSubscriptionCreationOptions options = null,
-     string database = null){CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:plain:Async}
-public Task<string> CreateAsync<T>
-    (Expression<Func<T, bool>> predicate,
-     PredicateSubscriptionCreationOptions options = null,
-     string database = null,
-     CancellationToken token = default)
-{CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:plain:Class}
-public sealed class PredicateSubscriptionCreationOptions : ISubscriptionCreationOptions
-{
-    public string Name { get; set; }
-    public string ChangeVector { get; set; }
-    public string MentorNode { get; set; }
-    public bool Disabled { get; set; }
-    public bool PinToMentorNode { get; set; }
-    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
-
-    internal SubscriptionCreationOptions ToSubscriptionCreationOptions()
-    {
-        return new SubscriptionCreationOptions
-        {
-            Name = Name,
-            ChangeVector = ChangeVector,
-            MentorNode = MentorNode,
-            PinToMentorNode = PinToMentorNode,
-            Disabled = Disabled,
-            ArchivedDataProcessingBehavior = ArchivedDataProcessingBehavior
-        };
-    }
-}
-{CODE-TAB-BLOCK/}
+{CODE-TAB:csharp:7.0_and_up create_1@migration\migration.cs /}
+{CODE-TAB:csharp:up_to_6.2 create_2@migration\migration.cs /}
 {CODE-TABS/}
-{CONTENT-FRAME/}
 
 {PANEL/}
 
 {PANEL: HTTP-Compression algorithm is now `Zstd` by default}
-From RavenDB `7.0` on, the default HTTP compression algorithm is `Zstd` 
-(instead of `Gzip`, used in earlier versions).  
+From RavenDB `7.0` on, the default HTTP compression algorithm is `Zstd` (instead of `Gzip`, used in earlier versions).  
 
 {CONTENT-FRAME: To switch the HTTP-compression algorithm:}
+
 Clients can switch to a different HTTP-Compression algorithm using `DocumentStore`'s 
-[DocumentConventions.HttpCompressionAlgorithm](../../client-api/configuration/conventions#httpcompressionalgorithm) 
-convention.  
+[DocumentConventions.HttpCompressionAlgorithm](../../client-api/configuration/conventions#httpcompressionalgorithm) convention.  
+
 {CODE SwitchCompressionAlgorithm@migration\migration.cs /}
+
 {CONTENT-FRAME/}
 
 {WARNING: }
-If you migrate from an earlier RavenDB version to version `7.0` or higher, 
+If you migrate from an earlier RavenDB version to version `7.0` or higher,  
 please note the [potential significance of this change](../../migration/client-api/client-migration#client-migration-to-ravendb-7.x).  
 {WARNING/}
 
@@ -95,22 +61,24 @@ Compression is now [Enabled by default for bulk-insert operations](../../client-
 {CODE-BLOCK/}
 
 {CONTENT-FRAME: To switch the bulk-insert state:}
-Clients can switch to a different bulk-insert compression state using `Store`'s 
-[BulkInsertOptions.CompressionLevel](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoptions) 
-option.  
+
+Clients can switch to a different bulk-insert compression state using `Store`'s
+[BulkInsertOptions.CompressionLevel](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoptions) option.  
+
 {CODE switchBulkInsertState@migration\migration.cs /}
+
 {CONTENT-FRAME/}
 
 {PANEL/}
 
 {PANEL: Removed irrelevant `SingleNodeBatchCommand` parameters}
-We removed from 
-[SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)'s 
-definition parameters that are used mainly internally and left only ones that are relevant to the user.  
+
+We removed from [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)'s
+definition the parameters that are mainly used internally and kept only those relevant to the user.
 
 {CONTENT-FRAME: `SingleNodeBatchCommand` signature:}
 {CODE-TABS}
-{CODE-TAB-BLOCK:plain:7.0_and_on}
+{CODE-TAB-BLOCK:plain:7.0_and_up}
 public SingleNodeBatchCommand
     (DocumentConventions conventions, 
      IList<ICommandData> commands, 
@@ -130,6 +98,7 @@ public SingleNodeBatchCommand
 {PANEL/}
 
 {PANEL: Removed obsolete methods}
+
 The following methods are no longer used and have been removed from RavenDB `7.0`.  
 
 * `NextPageStart`  
@@ -139,7 +108,8 @@ The following methods are no longer used and have been removed from RavenDB `7.0
 
 * `GenerateEntityIdOnTheClient`  
   {CODE-BLOCK:csharp }
-   public GenerateEntityIdOnTheClient(DocumentConventions conventions, Func<object, string> generateId)
+   public GenerateEntityIdOnTheClient(DocumentConventions conventions,
+                                      Func<object, string> generateId)
   {CODE-BLOCK/}
 
 * `InMemoryDocumentSessionOperations.GenerateId`  
@@ -156,8 +126,7 @@ The following methods are no longer used and have been removed from RavenDB `7.0
 
 {PANEL: `FromEtl` is now internal}
 The `CounterBatch` class `FromEtl` property is now **internal**.  
-`FromEtl` is used internally to get or set a value indicating whether a counters batch 
-originated from an ETL process.
+`FromEtl` is used internally to get or set a value indicating whether a counters batch originated from an ETL process.
 {PANEL/}
 
 ## Related Articles

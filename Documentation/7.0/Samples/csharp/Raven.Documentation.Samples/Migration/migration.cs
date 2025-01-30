@@ -1,32 +1,15 @@
 ﻿using System;
-using System.Linq;
 using Raven.Client.Documents;
-using Xunit;
-using Xunit.Abstractions;
-using System.Collections.Generic;
-using Raven.Client.Documents.Operations.TimeSeries;
-using Raven.Client.Documents.Commands.Batches;
-using PatchRequest = Raven.Client.Documents.Operations.PatchRequest;
-using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Queries;
-using Raven.Client;
-using System.Threading.Tasks;
-using Raven.Client.Documents.Session.TimeSeries;
-using Raven.Client.Documents.Session;
-using Raven.Client.Documents.Linq;
-using static Raven.Client.Documents.BulkInsert.BulkInsertOperation;
 using Raven.Client.Documents.BulkInsert;
-using Raven.Client.Documents.Queries.TimeSeries;
-using Raven.Client.Documents.Indexes.TimeSeries;
-using Raven.Client.Documents.Operations.Indexes;
-using Raven.Client.ServerWide.Operations;
-using Raven.Client.ServerWide;
-using Raven.Client.Documents.Session.Loaders;
 using Raven.Client.Documents.Conventions;
 using Raven.Client.Http;
 using System.IO.Compression;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Raven.Client.Documents.DataArchival;
 
-namespace Documentation.Samples.DocumentExtensions.TimeSeries
+namespace Documentation.Samples.Migration
 {
     public class migration
     {
@@ -37,14 +20,12 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
                 #region SwitchCompressionAlgorithm
                 var DocumentConventions = new DocumentConventions
                 {
-                    // Switch HTTP compresion algorithm
+                    // Switch HTTP compression algorithm
                     HttpCompressionAlgorithm = HttpCompressionAlgorithm.Gzip
                 };
                 #endregion
             }
         }
-
-
 
         public void switchBulkInsertState()
         {
@@ -60,7 +41,61 @@ namespace Documentation.Samples.DocumentExtensions.TimeSeries
             }
         }
 
+        public interface ISubscriptionCreationOverloadsNew
+        {
+            #region create_1
+            // The create overload using a predicate:
+            // ======================================
+            string Create<T>(Expression<Func<T, bool>> predicate = null,
+                PredicateSubscriptionCreationOptions options = null,
+                string database = null);
+
+            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+                PredicateSubscriptionCreationOptions options = null,
+                string database = null,
+                CancellationToken token = default);
+            
+            // The options class:
+            // ==================
+            public sealed class PredicateSubscriptionCreationOptions
+            {
+                public string Name { get; set; }
+                public string ChangeVector { get; set; }
+                public string MentorNode { get; set; }
+                public bool Disabled { get; set; }
+                public bool PinToMentorNode { get; set; }
+                public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+            }
+            #endregion
+        }
+
+        public interface ISubscriptionCreationOverloadsOld
+        {
+            #region create_2
+            // The create overload using a predicate:
+            // ======================================
+            string Create<T>(Expression<Func<T, bool>> predicate = null,
+                SubscriptionCreationOptions options = null,
+                string database = null);
+
+            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+                SubscriptionCreationOptions options = null,
+                string database = null,
+                CancellationToken token = default);
+            
+            // The options class:
+            // ==================
+            public class SubscriptionCreationOptions
+            {
+                public string Name { get; set; }
+                public string Query { get; set; }
+                public string ChangeVector { get; set; }
+                public string MentorNode { get; set; }
+                public virtual bool Disabled { get; set; }
+                public virtual bool PinToMentorNode { get; set; }
+                public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior { get; set; }
+            }
+            #endregion
+        }
     }
 }
-
-
