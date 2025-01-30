@@ -94,8 +94,21 @@ before it is archived and logging is directed to a new file.
 
 The maximum number of days that an archived audit log file is kept.  
 
-- **Type**: `int`
+- **Type**: `int?`
 - **Default**: `3`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Security.AuditLog.MaxArchiveFiles}
+
+The maximum number of archived audit log files to keep.  
+Set this value to the number of days after which audit log files will be deleted,  
+or set it to `null` to refrain from removing audit log files.  
+
+- **Type**: `int?`
+- **Default**: `null`
+- **Min Value**: `0`
 - **Scope**: Server-wide only
 
 {PANEL/}

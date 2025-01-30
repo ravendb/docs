@@ -192,6 +192,14 @@ You **will** need to modify these settings, however, if you want to use NLog fea
    - To store log files in a different path, set the 
      [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration key.  
    - [Learn how to log to additional destinations](../../server/troubleshooting/logging#configuring-and-using-nlog)  
+* **Default time standard**  
+  The default time standard used for log entries is `UTC`.  
+  Changing this configuration is now available only using the NLog configuration file.  
+  {CODE-TABS}
+{CODE-TAB-BLOCK:plain:nlog.config}
+layout="${longdate:universalTime=true}..."
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 * **NLog configuration file defaults**  
   The **default values** given to settings in the 
   [NLog configuration file template](../../server/troubleshooting/logging#an-available-template) 

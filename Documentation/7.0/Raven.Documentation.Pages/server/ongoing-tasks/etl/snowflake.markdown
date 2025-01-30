@@ -263,8 +263,19 @@ To check whether an attachment exists, use the `hasAttachment(name)` function.
 
 {PANEL:Transaction Processing}
 
-All records created in a single ETL run, one per each `loadTo` call, are sent in a single batch and processed 
-as part of the same transaction.  
+* All records created in a single ETL run, one per each `loadTo` call, are sent in a single batch and processed 
+  as part of the same transaction.  
+
+* The ETL task will issue an SQL `INSERT` statement with each document it loads to the warehouse database.  
+  The transaction is handled as an atomic unit, and the inserted documents will be stored in the warehouse 
+  database using a `COMMIT` statement **only when the transaction completes**.  
+  {NOTE: }
+  If the ETL task is interrupted while the transaction is underway, e.g. due to a server failover or because 
+  the task was restarted for some other reason, the transaction will be rolled back and the ETL task will 
+  process the interrupted batch from scratch, starting right after the last `COMMIT`.  
+  This may cause a delay for users of the destination database, who see incoming documents only when they are 
+  stored in the database when transactions complete.  
+  {NOTE/}
 
 {PANEL/}
 
