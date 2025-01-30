@@ -170,7 +170,10 @@ Allow installation of NuGet prerelease packages.
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
-- **Alias:** `Indexing.NuGetAllowPreleasePackages`
+- **Aliases:**   
+     * `Indexing.NuGetAllowPreleasePackages`
+     * `Indexing.NuGet.AllowPreReleasePackages`
+     * `Indexing.NuGet.AllowPreleasePackages`
 
 {PANEL/}
 
@@ -181,6 +184,7 @@ Default NuGet source URL.
 - **Type**: `string`
 - **Default**: `https://api.nuget.org/v3/index.json`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.NuGet.PackageSourceUrl`
 
 {PANEL/}
 
@@ -191,6 +195,7 @@ Location of NuGet packages cache.
 - **Type**: `string`
 - **Default**: `Packages/NuGet`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.NuGet.PackagesPath`
 
 {PANEL/}
 
