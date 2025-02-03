@@ -40,6 +40,11 @@
         "Mappings": []
     },
     {
+        "Path": "/ai-integration",
+        "Name": "AI Integration",
+        "Mappings": []
+    },
+    {
         "Path": "/glossary",
         "Name": "Glossary",
         "Mappings": []

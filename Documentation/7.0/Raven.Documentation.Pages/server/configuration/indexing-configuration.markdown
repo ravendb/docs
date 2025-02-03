@@ -15,12 +15,13 @@
 * In this page:  
   * Server-wide scope:  
     [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration#indexing.cleanupintervalinmin)  
+    [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.maxnumberofthreadsforlocalembeddingsgeneration)  
     [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.globalscratchspacelimitinmb)  
     [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration#indexing.maxnumberofconcurrentlyrunningindexes)  
     [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenexceedingscratchspacelimitinsec)  
-    [Indexing.NuGet.AllowPreReleasePackages](../../server/configuration/indexing-configuration#indexing.nuget.allowprereleasepackages)  
-    [Indexing.NuGet.PackageSourceUrl](../../server/configuration/indexing-configuration#indexing.nuget.packagesourceurl)  
-    [Indexing.NuGet.PackagesPath](../../server/configuration/indexing-configuration#indexing.nuget.packagespath)  
+    [Indexing.NuGetAllowPreReleasePackages](../../server/configuration/indexing-configuration#indexing.nugetallowprereleasepackages)  
+    [Indexing.NuGetPackageSourceUrl](../../server/configuration/indexing-configuration#indexing.nugetpackagesourceurl)  
+    [Indexing.NuGetPackagesPath](../../server/configuration/indexing-configuration#indexing.nugetpackagespath)  
     [Indexing.QueryClauseCache.ExpirationScanFrequencyInSec](../../server/configuration/indexing-configuration#indexing.queryclausecache.expirationscanfrequencyinsec)  
     [Indexing.QueryClauseCache.RepeatedQueriesCount](../../server/configuration/indexing-configuration#indexing.queryclausecache.repeatedqueriescount)  
     [Indexing.QueryClauseCache.SizeInMb](../../server/configuration/indexing-configuration#indexing.queryclausecache.sizeinmb)  
@@ -52,6 +53,11 @@
     [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb)  
     [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
     [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior)  
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofedges)  
+    [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically)  
     [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.encrypted.transactionsizelimitinmb)  
     [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration#indexing.indexemptyentries)  
     [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull)  
@@ -101,6 +107,26 @@ Time (in minutes) between auto-index cleanup.
 
 {PANEL/}
 
+{PANEL: Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration}
+
+* Maximum number of threads that will be used for generating embedding from text locally.
+
+* The default value, which is determined based on the number of processors cores,  
+  is set by the constructor of class `IndexingConfiguration`:
+
+  * If the machine has 2 or fewer processor cores, only 1 thread is used.
+  * For machines with up to 8 cores, 2 threads are used.
+  * For machines with up to 16 cores, 4 threads are used.
+  * For machines with more than 16 cores, the value is set to 6 threads.
+
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
 {PANEL: Indexing.GlobalScratchSpaceLimitInMb}
 
 * Maximum amount of scratch space in megabytes that we allow to use for all index storages per server.
@@ -137,34 +163,39 @@ Max time to wait in seconds when forcing the storage environment flush and sync 
 
 {PANEL/}
 
-{PANEL: Indexing.NuGet.AllowPreReleasePackages}
+{PANEL: Indexing.NuGetAllowPreReleasePackages}
 
 Allow installation of NuGet prerelease packages.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
-- **Alias:** `Indexing.NuGet.AllowPreleasePackages`
+- **Aliases:**   
+     * `Indexing.NuGetAllowPreleasePackages`
+     * `Indexing.NuGet.AllowPreReleasePackages`
+     * `Indexing.NuGet.AllowPreleasePackages`
 
 {PANEL/}
 
-{PANEL: Indexing.NuGet.PackageSourceUrl}
+{PANEL: Indexing.NuGetPackageSourceUrl}
 
 Default NuGet source URL.
 
 - **Type**: `string`
 - **Default**: `https://api.nuget.org/v3/index.json`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.NuGet.PackageSourceUrl`
 
 {PANEL/}
 
-{PANEL: Indexing.NuGet.PackagesPath}
+{PANEL: Indexing.NuGetPackagesPath}
 
 Location of NuGet packages cache.
 
 - **Type**: `string`
 - **Default**: `Packages/NuGet`
 - **Scope**: Server-wide only
+- **Alias:** `Indexing.NuGet.PackagesPath`
 
 {PANEL/}
 
@@ -413,7 +444,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 {PANEL/}
 
-{PANEL:Indexing.Analyzers.Default}
+{PANEL: Indexing.Analyzers.Default}
 
 [Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for fields.
 
@@ -423,7 +454,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 {PANEL/}
 
-{PANEL:Indexing.Analyzers.Exact.Default}
+{PANEL: Indexing.Analyzers.Exact.Default}
 
 [Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for exact fields.
 
@@ -514,7 +545,68 @@ when a static index is requested to index a complex JSON object.
 
 {PANEL/}
 
-{PANEL:Indexing.Encrypted.TransactionSizeLimitInMb}
+{PANEL: Indexing.Corax.VectorSearch.DefaultMinimumSimilarity}
+
+* The default minimum similarity to use when making a vector search query.  
+
+* Values can be between `0.0f` and `1.0f`.  
+  A value closer to `1.0f` requires higher similarity between vectors,  
+  while a value closer to `0.0f` allows for less similarity.
+
+---
+
+- **Type**: `float`
+- **Default**: `0.75f`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing}
+
+The default number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.
+
+- **Type**: `int`
+- **Default**: `16`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying}
+
+* The default maximum number of vectors that we will return from a graph search.  
+* The number of the resulting documents that correspond to these vectors may be:  
+  * lower than this number - when multiple vectors originated from the same document.
+  * higher than this number - when the same vector is shared between multiple documents.
+
+---
+
+- **Type**: `int`
+- **Default**: `16`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.VectorSearch.DefaultNumberOfEdges}
+
+The default number of edges that will be created for a vector during vector indexing.
+
+- **Type**: `int`
+- **Default**: `12`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.VectorSearch.OrderByScoreAutomatically}
+
+Order by score automatically when `vector.search` is inside a query.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Encrypted.TransactionSizeLimitInMb}
 
 * Transaction size limit in megabytes for _encrypted_ databases, after which an index will stop and complete the current batch.
 

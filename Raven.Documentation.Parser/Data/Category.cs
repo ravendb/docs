@@ -82,6 +82,10 @@ namespace Raven.Documentation.Parser.Data
 
         [Prefix("document-extensions")]
         [Description("Document Extensions")]
-        DocumentExtensions
+        DocumentExtensions,
+        
+        [Prefix("ai-integration")]
+        [Description("AI Integration")]
+        AiIntegration
     }
 }

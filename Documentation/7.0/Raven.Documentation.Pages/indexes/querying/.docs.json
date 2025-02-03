@@ -63,6 +63,12 @@
         ]
     },
     {
+        "Path": "vector-search.markdown",
+        "Name": "Vector Search",
+        "DiscussionId": "fa77045b-dcc9-4561-aa86-daf93dda1c3e",
+        "Mappings": []
+    },
+    {
         "Path": "intersection.markdown",
         "Name": "Intersection",
         "DiscussionId": "8595e72a-6986-4041-92ab-652bd3169f48",
