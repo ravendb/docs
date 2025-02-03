@@ -250,8 +250,8 @@ These examples search for Movie documents with vectors similar to the one provid
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // The source document field type is interpreted as 'Single' by default
-where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
-{"p0" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
+where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
+{ "queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -266,8 +266,8 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the source document field name with 'embedding.i8' to indicate the source data type
-where vector.search(embedding.i8(TagsEmbeddedAsInt8), $p0)
-{"p0" : [64, 127, -51, -52, 76, 62] }
+where vector.search(embedding.i8(TagsEmbeddedAsInt8), $queryVector)
+{ "queryVector" : [64, 127, -51, -52, 76, 62] }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -284,8 +284,8 @@ from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
 //   the source data type from which the Base64 string was generated.
 // * If the document field is Not wrapped, 'single' is assumed as the default source type. 
-where vector.search(TagsEmbeddedAsBase64, $p0)
-{"p0" : "zczMPc3MTD6amZk+" }
+where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
+{ "queryVectorBase64" : "zczMPc3MTD6amZk+" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -383,8 +383,8 @@ The available quantization options are:
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // Wrap the 'Name' field with 'embedding.text_i8'
-where vector.search(embedding.text_i8(Name), $p0)
-{ "p0" : "italian food" }
+where vector.search(embedding.text_i8(Name), $searchTerm)
+{ "searchTerm" : "italian food" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -405,8 +405,8 @@ where vector.search(embedding.text_i8(Name), $p0)
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
-where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
-{ "p0" : { "@vector" : [6.599999904632568,7.699999809265137] }}
+where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)
+{ "queryVector" : { "@vector" : [6.599999904632568,7.699999809265137] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -467,8 +467,8 @@ For example, the following RQL will use the floating-point values as they are, w
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // No wrapping
-where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
-{"p0" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
+where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
+{"queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -493,11 +493,11 @@ where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
   {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // The filtering condition:
-where (PricePerUnit > $p0)
+where (PricePerUnit > $minPrice)
 // The vector search here will execute with the default similarity (0.75f)
 // and the default NumberOfCandidates (16)
-and (vector.search(embedding.text(Name), $p1))
-{ "p0" : 35.0, "p1" : "italian food" }
+and (vector.search(embedding.text(Name), $searchTerm))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
   {CODE-TAB-BLOCK/}
   {CODE-TABS/}
 
@@ -519,10 +519,10 @@ and (vector.search(embedding.text(Name), $p1))
     {CODE-TABS}
     {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
-where (PricePerUnit > $p0)
+where (PricePerUnit > $minPrice)
 // Run vector search with default similarity and NumberOfCandidates 25
-and (vector.search(embedding.text(Name), $p1, null, 25))
-{ "p0" : 35.0, "p1" : "italian food" }
+and (vector.search(embedding.text(Name), $searchTerm, null, 25))
+{ "minPrice" : 35.0, "searchTerm" : "italian food" }
     {CODE-TAB-BLOCK/}
     {CODE-TABS/}
 

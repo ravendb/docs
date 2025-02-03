@@ -205,8 +205,8 @@ Execute a vector search using the index:
 {CODE-TAB:csharp:RawQuery_async query_6_async@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Movies/ByVector/Single"
-where vector.search(VectorFromSingle, $p0)
-{ "p0" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
+where vector.search(VectorFromSingle, $queryVector)
+{ "queryVector" : { "@vector" : [6.599999904632568, 7.699999809265137] }}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -233,8 +233,8 @@ Execute a vector search using the index:
 {CODE-TAB:csharp:RawQuery_async query_9_async@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Movies/ByVector/Int8"
-where vector.search(VectorFromInt8Arrays, $p0)
-{ "p0" : [64, 127, -51, -52, 76, 62] }
+where vector.search(VectorFromInt8Arrays, $queryVector)
+{ "queryVector" : [64, 127, -51, -52, 76, 62] }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -261,10 +261,10 @@ Execute a query that combines predicates across all index-field types:
 {CODE-TAB:csharp:RawQuery_async query_11_async@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByMultipleFields"
-where PricePerUnit > $p0
-or search(Name, $p1)
-or vector.search(VectorFromText, $p2, 0.8)
-{ "p0" : 200, "p1" : "Alice", "p2": "italian" }
+where PricePerUnit > $minPrice
+or search(Name, $searchTerm1)
+or vector.search(VectorFromText, $searchTerm2, 0.8)
+{ "minPrice" : 200, "searchTerm1" : "Alice", "searchTerm2": "italian" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

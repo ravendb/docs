@@ -70,7 +70,7 @@
 ##### Multiple field types in indexes:  
 
 * An index can consist of multiple index-fields, each having a distinct type, such as a standard field, a spatial field, a full-text search field, or a **vector field**.
-  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.
+  This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.  
   An example is available in [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types).
 
 * Document attachments can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 

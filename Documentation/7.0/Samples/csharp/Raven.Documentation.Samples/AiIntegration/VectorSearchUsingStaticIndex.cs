@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.Vector;
-using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Queries.Vector;
 using Raven.Documentation.Samples.Orders;
@@ -686,8 +685,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = session.Advanced
                         .RawQuery<Product>(@"
                             from index 'Movies/ByVector/Single'
-                            where vector.search(VectorFromSingle, $p0)
-                            { 'p0' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(VectorFromSingle, $queryVector)
+                            { 'queryVector' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -699,8 +698,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                             from index 'Movies/ByVector/Single'
-                            where vector.search(VectorFromSingle, $p0)
-                            { 'p0' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(VectorFromSingle, $queryVector)
+                            { 'queryVector' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -789,8 +788,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = session.Advanced
                         .RawQuery<Movie>(@"
                             from index 'Movies/ByVector/Int8'
-                            where vector.search(VectorFromInt8Arrays, $p0)
-                            { 'p0' : [64, 127, -51, -52, 76, 62] }")
+                            where vector.search(VectorFromInt8Arrays, $queryVector)
+                            { 'queryVector' : [64, 127, -51, -52, 76, 62] }")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -802,8 +801,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = await asyncSession.Advanced
                         .AsyncRawQuery<Movie>(@"
                             from index 'Movies/ByVector/Int8'
-                            where vector.search(VectorFromInt8Arrays, $p0)
-                            { 'p0' : [64, 127, -51, -52, 76, 62] }")
+                            where vector.search(VectorFromInt8Arrays, $queryVector)
+                            { 'queryVector' : [64, 127, -51, -52, 76, 62] }")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -860,10 +859,10 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var results = session.Advanced
                         .RawQuery<Product>(@"
                             from index 'Products/ByMultipleFields'
-                            where PricePerUnit > $p0
-                            or search(Name, $p1)
-                            or vector.search(VectorFromText, $p2, 0.8)
-                            { 'p0' : 200, 'p1' : 'Alice', 'p2': 'italian' }")
+                            where PricePerUnit > $minPrice
+                            or search(Name, $searchTerm1)
+                            or vector.search(VectorFromText, $searchTerm2, 0.8)
+                            { 'minPrice' : 200, 'searchTerm1' : 'Alice', 'searchTerm2': 'italian' }")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -875,10 +874,10 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var results = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                             from index 'Products/ByMultipleFields'
-                            where PricePerUnit > $p0
-                            or search(Name, $p1)
-                            or vector.search(VectorFromText, $p2, 0.8)
-                            { 'p0' : 200, 'p1' : 'Alice', 'p2': 'italian' }")
+                            where PricePerUnit > $minPrice
+                            or search(Name, $searchTerm1)
+                            or vector.search(VectorFromText, $searchTerm2, 0.8)
+                            { 'minPrice' : 200, 'searchTerm1' : 'Alice', 'searchTerm2': 'italian' }")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion

@@ -253,8 +253,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = session.Advanced
                         .RawQuery<Movie>(@"
                             from 'Movies' 
-                            where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
-                            {'p0': { '@vector': [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
+                            { 'queryVector' : { '@vector': [6.599999904632568, 7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -266,8 +266,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Advanced
                         .AsyncRawQuery<Movie>(@"
                             from 'Movies' 
-                            where vector.search(TagsEmbeddedAsSingle, $p0, 0.85, 10)
-                            {'p0': { '@vector': [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
+                            { 'queryVector' : { '@vector': [6.599999904632568, 7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -462,8 +462,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = session.Advanced
                         .RawQuery<Product>(@"
                            from 'Products'
-                           where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
-                           { 'p0' : 35.0, 'p1' : 'italian food' }")
+                           where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))
+                           { 'minPrice' : 35.0, 'searchTerm' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -475,8 +475,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                            from 'Products'
-                           where (PricePerUnit > $p0) and (vector.search(embedding.text(Name), $p1))
-                           { 'p0' : 35.0, 'p1' : 'italian food' }")
+                           where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))
+                           { 'minPrice' : 35.0, 'searchTerm' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -567,8 +567,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .RawQuery<Product>(@"
                            from 'Products'
                            // Wrap the 'Name' field with 'embedding.text_i8'
-                           where vector.search(embedding.text_i8(Name), $p0)
-                           { 'p0' : 'italian food' }")
+                           where vector.search(embedding.text_i8(Name), $searchTerm)
+                           { 'searchTerm' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -581,8 +581,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncRawQuery<Product>(@"
                            from 'Products'
                            // Wrap the 'Name' field with 'embedding.text_i8'
-                           where vector.search(embedding.text_i8(Name), $p0)
-                           { 'p0' : 'italian food' }")
+                           where vector.search(embedding.text_i8(Name), $searchTerm)
+                           { 'searchTerm' : 'italian food' }")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -682,8 +682,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .RawQuery<Product>(@"
                            from 'Movies'
                            // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
-                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
-                           { 'p0' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
+                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)
+                           { 'queryVector' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -696,8 +696,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncRawQuery<Product>(@"
                            from 'Movies'
                            // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
-                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $p0)
-                           { 'p0' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
+                           where vector.search(embedding.f32_i1(TagsEmbeddedAsSingle), $queryVector)
+                           { 'queryVector' : { '@vector' : [6.599999904632568,7.699999809265137] }}")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
