@@ -29,19 +29,23 @@ read the section related to NLog in the [migration page](../../migration/server/
 The following properties are no longer in use, and have been removed from RavenDB `7.0`.  
 
 * `ServerOptions`'s `AcceptEula` property is no longer used,  
-  Please use `{nameof(Licensing)}.{nameof(LicensingOptions.EulaAccepted)}` instead.  
-  {CODE-BLOCK:csharp }
-   public bool AcceptEula
-  {CODE-BLOCK/}
+  Please use `Licensing.EulaAccepted` instead.  
+
+     {CODE-BLOCK:csharp }
+     // Removed 
+public bool AcceptEula
+     {CODE-BLOCK/}
 
 * The `MemoryInfoResult` struct no longer includes these classes:  
    - `MemoryUsageIntervals`  
      {CODE-BLOCK:csharp }
-     public sealed class MemoryUsageIntervals  
+     // Removed 
+public sealed class MemoryUsageIntervals  
      {CODE-BLOCK/}
    - `MemoryUsageLowHigh`  
      {CODE-BLOCK:csharp }
-     public sealed class MemoryUsageLowHigh  
+     // Removed 
+public sealed class MemoryUsageLowHigh  
      {CODE-BLOCK/}
 
 {PANEL/}

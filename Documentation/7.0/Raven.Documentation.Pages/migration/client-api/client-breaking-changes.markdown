@@ -27,7 +27,7 @@ with their behavior in previous versions.
 * Refer to the [Subscription creation API overview](../../client-api/data-subscriptions/creation/api-overview) for the complete list of available `Create` method overloads.
 
 {CODE-TABS}
-{CODE-TAB:csharp:7.0_and_up create_1@migration\migration.cs /}
+{CODE-TAB:csharp:7.0_and_on create_1@migration\migration.cs /}
 {CODE-TAB:csharp:up_to_6.2 create_2@migration\migration.cs /}
 {CODE-TABS/}
 
@@ -78,7 +78,7 @@ definition the parameters that are mainly used internally and kept only those re
 
 {CONTENT-FRAME: `SingleNodeBatchCommand` signature:}
 {CODE-TABS}
-{CODE-TAB-BLOCK:plain:7.0_and_up}
+{CODE-TAB-BLOCK:plain:7.0_and_on}
 public SingleNodeBatchCommand
     (DocumentConventions conventions, 
      IList<ICommandData> commands, 
