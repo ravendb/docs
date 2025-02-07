@@ -1,9 +1,46 @@
 [
     {
-        "Path": "server-dashboard.markdown",
-        "Name": "Server Dashboard",
+        "Path": "manage-server.markdown",
+        "Name": "Manage Server",
         "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 5.4,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 5.3,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 5.2,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/server-dashboard"
+            },
+            {
+                "Version": 4.0,
+                "Key": "studio/server/server-dashboard"
+            }
+        ]
     },
     {
         "Path": "client-configuration.markdown",

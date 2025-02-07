@@ -9,7 +9,7 @@
 
 * Use Studio to manage your RavenDB 
   [cluster](../studio/cluster/cluster-dashboard/cluster-dashboard-overview), 
-  [servers](../studio/server/server-overview), 
+  [servers](../studio/server/manage-server), 
   and [databases](../studio/database/databases-list-view). 
   You can observe, modify, and create [indexes](../studio/database/indexes/indexes-overview), 
   issue [queries](../studio/database/queries/query-view), 
@@ -22,10 +22,11 @@
   and much more.
 
 * In this page:  
-  * [Accessing Studio After Setup](../studio/overview#the-cluster-dashboard)  
-  * [Manage Your RavenDB Server](../studio/overview#manage-your-server)  
-  * [Manage Your Databases](../studio/overview#manage-your-databases)  
-  * [Header and Footer Areas](../studio/overview#header-and-footer-areas)  
+   * [Accessing Studio After Setup](../studio/overview#accessing-studio-after-setup)  
+   * [The Cluster Dashboard](../studio/overview#the-cluster-dashboard)  
+   * [Manage Your Server](../studio/overview#manage-your-server)  
+   * [Manage Your Databases](../studio/overview#manage-your-databases)  
+   * [Header and Footer Areas](../studio/overview#header-and-footer-areas)  
 {NOTE/}
 
 ---
