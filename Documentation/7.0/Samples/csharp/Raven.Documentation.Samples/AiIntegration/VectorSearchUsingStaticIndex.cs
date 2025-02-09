@@ -617,7 +617,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                  // Call 'WithField'
                                  // Specify the index-field in which to search for similar values
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                  // Call 'ByEmbedding'   
                                  // Provide the vector for the similarity comparison
                                 .ByEmbedding(
@@ -636,7 +636,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .Customize(x => x.WaitForNonStaleResults())
@@ -653,7 +653,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .WaitForNonStaleResults()
@@ -670,7 +670,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .WaitForNonStaleResults()
@@ -717,7 +717,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                  // Call 'WithField'
                                  // Specify the index-field in which to search for similar values
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                  // Call 'ByEmbedding'   
                                  // Provide the vector for the similarity comparison
                                  // (Note: provide a single vector)
@@ -739,7 +739,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .Customize(x => x.WaitForNonStaleResults())
@@ -756,7 +756,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .WaitForNonStaleResults()
@@ -773,7 +773,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .WaitForNonStaleResults()

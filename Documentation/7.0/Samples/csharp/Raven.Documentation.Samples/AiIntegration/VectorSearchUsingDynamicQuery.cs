@@ -186,7 +186,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
                             // Call 'ByEmbedding'
                             // Provide the vector for the similarity comparison
-                            searchVector => searchVector.ByEmbedding(
+                            queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
                             // Optionally, specify the minimum similarity level
                             0.85f,
@@ -204,7 +204,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field.WithEmbedding(
                                 x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-                            searchVector => searchVector.ByEmbedding(
+                            queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
                             0.85f,
                             10)
@@ -221,7 +221,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field.WithEmbedding(
                                 x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-                            searchVector => searchVector.ByEmbedding(
+                            queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
                             0.85f,
                             10)
@@ -238,7 +238,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field.WithEmbedding(
                                 x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single),
-                            searchVector => searchVector.ByEmbedding(
+                            queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
                             0.85f,
                             10)
@@ -286,7 +286,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Call 'ByEmbedding'
                             // Provide the vector for the similarity comparison
                             // (provide a single vector from the vector list in the TagsEmbeddedAsInt8 field)
-                            searchVector => searchVector.ByEmbedding(
+                            queryVector => queryVector.ByEmbedding(
                                 // The provided vector MUST be in the same format as was stored in your document
                                 // Call 'VectorQuantizer.ToInt8' to transform the raw data to the Int8 format  
                                 VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
@@ -307,7 +307,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             field => field.WithBase64(x => x.TagsEmbeddedAsBase64, VectorEmbeddingType.Single),
                             // Call 'ByBase64'
                             // Provide the Base64 string that represents the vector to query against
-                            searchVector => searchVector.ByBase64("zczMPc3MTD6amZk+"))
+                            queryVector => queryVector.ByBase64("zczMPc3MTD6amZk+"))
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();
                     #endregion
@@ -599,7 +599,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
                                 // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
-                            searchVector => searchVector
+                            queryVector => queryVector
                                 // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                 {
@@ -620,7 +620,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
                                 // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
-                            searchVector => searchVector
+                            queryVector => queryVector
                                 // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                 {
@@ -642,7 +642,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
                                 // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
-                            searchVector => searchVector
+                            queryVector => queryVector
                                 // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                 {
@@ -664,7 +664,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
                                 // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
-                            searchVector => searchVector
+                            queryVector => queryVector
                                 // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                 {
