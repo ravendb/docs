@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* RavenDB's **Management Studio** is installed along with the server, and can 
+* RavenDB's **Management Studio** is installed along with the server and can 
   be accessed via any modern browser.  
   Access Studio using the server's URL, including its port number. E.g.: `http://localhost:8080` 
 
@@ -23,6 +23,9 @@
 
 * In this page:  
    * [Accessing Studio After Setup](../studio/overview#accessing-studio-after-setup)  
+      * [Connecting to an Unsecure server](../studio/overview#connecting-to-an-unsecure-server)  
+      * [Connecting to a Secure server](../studio/overview#connecting-to-a-secure-server)  
+         * [Where should the certificate be located](../studio/overview#where-should-the-certificate-be-located)  
    * [The Cluster Dashboard](../studio/overview#the-cluster-dashboard)  
    * [Manage Your Server](../studio/overview#manage-your-server)  
    * [Manage Your Databases](../studio/overview#manage-your-databases)  
@@ -30,36 +33,56 @@
 {NOTE/}
 
 ---
+
 {PANEL: Accessing Studio After Setup}
 
-Studio can be operated using a browser, to connect and manage RavenDB.  
+Studio, the server's GUI, is installed along with the server. You can connect to it 
+using your browser to access and manage the server.  
 
-To connect a [secure server](../start/installation/setup-wizard#select-setup-mode), the browser is required to own a **client certificate** with 
-[admin privileges](../server/security/authentication/client-certificate-usage).  
-Trying to connect a secure server without a certificate 
+{INFO: Secure and Unsecure servers}
+When a RavenDB server runs for the first time, it presents its user with 
+a [setup wizard](../start/installation/setup-wizard#select-setup-mode).  
+You can use this wizard to select whether to install a **Secure** server 
+(with a [Let's Encrypt](../start/installation/setup-wizard#secure-setup-with-a-free-let) 
+or a [self-obtained](../start/installation/setup-wizard#secure-setup-with-your-own-certificate) 
+certificate) or an [Unsecure](../start/installation/setup-wizard#unsecure-setup) server.  
+{INFO/}
+
+Connecting your browser to Studio is **different** when the server you attempt to access 
+is secure and when it isn't.  
+
+## Connecting to an Unsecure server:
+
+When connecting to an [unsecure](../start/installation/setup-wizard#unsecure-setup) 
+server, **no certificate** is required and Studio can be directly connected using 
+the server's URL.  
+{WARNING: }
+Please be aware that using an unsecure server is **not** recommended except for 
+experiments in a development environment.  
+{WARNING/}
+
+## Connecting to a Secure server:
+
+To connect to a **secure server**, the browser is required to own a **client certificate** 
+with [admin privileges](../server/security/authentication/client-certificate-usage).  
+Trying to connect to a secure server without a certificate 
 [will fail](../server/security/common-errors-and-faq#authentication-error-occurred-using-edge).  
 
-{NOTE: }
-A certificate is **not** required when accessing an [unsecure](../start/installation/setup-wizard#unsecure-setup) 
-RavenDB server (normally used only during development).  
-{NOTE/}
+#### Where should the certificate be located?
 
-Different browsers look for certificates in different locations.  
-**Edge** looks for certificates in the OS root store.  
-**Firefox** looks for certificates in the browser's root store.  
-**Chrome** (version 105 and up) looks for certificates in the [browser's root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
+Certificates must be installed where the browser can find them.  
 
-It is therefore important to install your certificate where your browser can find it.  
+* If you generate a [Let's Encrypt](../start/installation/setup-wizard#secure-setup-with-a-free-let) 
+  certificate during setup, the certificate will be automatically registered in the browser's default 
+  location. This location is browser-specific:  
+  **Edge** looks for certificates in the OS root store.  
+  **Firefox** looks for certificates in the browser's root store.  
+  **Chrome** version 105 and up also looks for certificates in the [browser's root store](https://blog.chromium.org/2022/09/announcing-launch-of-chrome-root-program.html).  
 
-* You can generate your certificate [during setup](../start/installation/setup-wizard#secure-setup-with-a-free-let).  
-  The Let's Encrypt certificates that are generated this way are automatically registered 
-  where the browsers mentioned above can find them.  
-
-* You can also obtain your certificate [elsewhere](../start/installation/setup-wizard#secure-setup-with-your-own-certificate).  
-  If you use a self-signed certificate, you must make sure it is properly registered 
-  where your browser can find it.  
+* If you obtain the certificate [elsewhere](../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
+  you need to ensure that it is properly registered where your browser can find it.  
   {NOTE: }
-  To register such certificate for Firefox or Chrome, you may need to 
+  To register a certificate for Firefox or Chrome, you may need to 
   [explicitly import the certificate](../server/security/common-errors-and-faq#authentication-error-occurred-using-chrome) 
   into the browser's root store.  
   {NOTE/}
@@ -76,7 +99,7 @@ It is therefore important to install your certificate where your browser can fin
   You can use it to set your cluster, create a first database, or learn about basic database features.  
 * The dashboard is [fully customizable](../studio/cluster/cluster-dashboard/cluster-dashboard-customize), 
   allowing you to easily add, remove, and rearrange your diagnostics widgets so any visit 
-  to this view would instantly reveal precisely the information you're interested in.  
+  to this view would reveal precisely the information you're interested in.  
 
 {INFO: }
 [Learn more about the cluster dashboard](../studio/cluster/cluster-dashboard/cluster-dashboard-overview)  
