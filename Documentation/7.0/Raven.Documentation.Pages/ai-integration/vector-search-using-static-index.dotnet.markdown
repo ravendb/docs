@@ -155,8 +155,6 @@ It indexes embeddings generated from the textual data in the `Name` field of all
 {CODE-TAB:csharp:IndexDefinition index_3@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
 
----
-
 Execute a vector search using the index:  
 Results will include _Product_ documents where the `Name` field is similar to the search term `"italian food"`.
 
@@ -184,7 +182,7 @@ The examples in this section use the [sample data provided in the dynamic query 
 
 ---
 
-The following index defines a vector field named `VectorFromSingle `.  
+The following index defines a vector field named `VectorFromSingle`.  
 It indexes embeddings generated from the numerical data in the `TagsEmbeddedAsSingle` field of all _Movie_ documents.
 The raw numerical data in the source documents is in **32-bit floating-point format**.
 
@@ -289,6 +287,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 - [RavenDB as a vector database](../ai-integration/ravendb-as-vector-database)
 - [Vector search using a dynamic query](../ai-integration/vector-search-using-dynamic-query)
 - [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
+- [Indexing attachment for vector search](../ai-integration/indexing-attachments-for-vector-search)
 
 ### Querying
 
