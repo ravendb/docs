@@ -168,7 +168,8 @@ Results will include _Product_ documents where the `Name` field is similar to th
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByVector/Text"
 // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
-where exact(vector.search(VectorFromText, "italian food", 0.82, 20))
+where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))
+{ "searchTerm" : "italian food" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
