@@ -3,7 +3,13 @@
         "Path": "server-dashboard.markdown",
         "Name": "Server Dashboard",
         "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
-        "Mappings": []
+        "LastSupportedVersion": "6.0",
+        "Mappings": [
+            {
+                "Version": 6.2,
+                "Key": "studio/server/manage-server"
+            }
+        ]
     },
     {
         "Path": "client-configuration.markdown",

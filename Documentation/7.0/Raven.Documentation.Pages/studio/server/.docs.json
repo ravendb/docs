@@ -1,7 +1,7 @@
 [
     {
-        "Path": "server-dashboard.markdown",
-        "Name": "Server Dashboard",
+        "Path": "manage-server.markdown",
+        "Name": "Manage Server",
         "DiscussionId": "45fb3691-9d09-4957-bce9-1dbef89b5a34",
         "Mappings": []
     },
