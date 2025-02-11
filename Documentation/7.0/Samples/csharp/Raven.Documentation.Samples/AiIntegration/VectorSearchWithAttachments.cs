@@ -540,7 +540,22 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .Customize(x => x.WaitForNonStaleResults())
                         .OfType<Company>()
                         .ToList();
-                        #endregion
+                    #endregion
+                    
+                    #region extract_attachment_content
+                    // Extract text from the attachment of the first resulting document
+                    // ================================================================
+                    
+                    // Retrieve the attachment stream
+                    var company = relevantCompanies[0];
+                    var attachmentResult =  session.Advanced.Attachments.Get(company, "description.txt");
+                    var attStream = attachmentResult.Stream;
+                
+                    // Read the attachment content into memory and decode it as a UTF-8 string
+                    var ms = new MemoryStream();
+                    attStream.CopyTo(ms);
+                    string attachmentText = Encoding.UTF8.GetString(ms.ToArray());
+                    #endregion
                 }
                 
                 using (var asyncSession = store.OpenAsyncSession())

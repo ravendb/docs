@@ -94,6 +94,10 @@ where vector.search(VectorFromAttachment, $searchTerm, 0.8)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+You can now extract the text from the attachments of the resulting documents:
+
+{CODE:csharp extract_attachment_content@AiIntegration\VectorSearchWithAttachments.cs /}
+
 {PANEL/}
 
 {PANEL: Indexing NUMERICAL attachments}
