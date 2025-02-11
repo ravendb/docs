@@ -71,7 +71,7 @@ enabling vector search on text or numerical data that is stored in the attachmen
   This applies to all _Company_ documents that contain an attachment with that name.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_1@AiIntegration\VectorSearchWithAttachments.cs /}
+{CODE-TAB:csharp:LINQ_index index_1@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:JS_index index_2@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:IndexDefinition index_3@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:Storing_text_attachments store_attachments_1@AiIntegration\VectorSearchWithAttachments.cs /}
@@ -108,7 +108,7 @@ where vector.search(VectorFromAttachment, $searchTerm, 0.8)
 * Each attachment contains raw numerical data in 32-bit floating-point format.  
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_4@AiIntegration\VectorSearchWithAttachments.cs /}
+{CODE-TAB:csharp:LINQ_index index_4@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:IndexDefinition index_5@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:Storing_numerical_attachments store_attachments_2@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TABS/}
@@ -167,7 +167,7 @@ where vector.search(VectorFromAttachment, $queryVector)
 * It indexes embeddings generated from the numerical data stored in ALL attachments of all _Company_ documents.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_7@AiIntegration\VectorSearchWithAttachments.cs /}
+{CODE-TAB:csharp:LINQ_index index_7@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:IndexDefinition index_8@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TAB:csharp:Storing_numerical_attachments store_attachments_4@AiIntegration\VectorSearchWithAttachments.cs /}
 {CODE-TABS/}

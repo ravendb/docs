@@ -150,7 +150,7 @@ The following index defines a **vector field** named `VectorfromText`.
 It indexes embeddings generated from the textual data in the `Name` field of all _Product_ documents.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_1@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_1@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_2@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_3@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -187,7 +187,7 @@ It indexes embeddings generated from the numerical data in the `TagsEmbeddedAsSi
 The raw numerical data in the source documents is in **32-bit floating-point format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_4@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_4@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_5@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_6@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -215,7 +215,7 @@ It indexes embeddings generated from the numerical arrays in the `TagsEmbeddedAs
 The raw numerical data in the source documents is in **Int8 (8-bit integers) format**. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_7@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_7@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_8@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_9@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -245,7 +245,7 @@ A _'regular'_ field, a _'vector'_ field, and a field configured for [full-text s
 This allows you to query across all fields using various predicates.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_10@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_10@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_11@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_12@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
