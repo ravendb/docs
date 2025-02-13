@@ -13,7 +13,6 @@ This guide provides a comprehensive overview of running RavenDB in containers. I
 3. [What We Require](#what-we-require)
 4. [Benefits](#benefits)
 
----
 
 ## 1. Core concepts
 
@@ -82,7 +81,6 @@ Detailed documentation of hosting RavenDB in container environments - [Container
 #### Technical Support
 Professional & community support scoped at deploying RavenDB in containers - [Support Page](https://ravendb.net/support)
 
----
 
 ## 3. What We Require
 
