@@ -94,7 +94,7 @@ Click the revision's comparison button to compare it with other revisions:
 ![Revision Comparison](images/revisions/revision-comparison.png "Revision Comparison")
 
 1. **Exit revisions compare mode**  
-   Click to exit the comparison window and return to the revisions tTab in the Document View.  
+   Click to exit the comparison window and return to the revisions tab in the Document View.  
 2. **Compare with**  
    Click to select a revision to compare with.  
    ![Compare-with Drop List](images/revisions/compare-with-drop-list.png "Compare-with Drop List")
@@ -129,9 +129,8 @@ Click the revision's comparison button to compare it with other revisions:
    making them irrecoverable.
 4. **Deleted document ID**  
    This is the ID of the document that was deleted.  
-   Click it to inspect the revisions created for this document,  
-   known as "orphaned revisions" since their parent document has been deleted.
-   ![Orphaned Revisions](images/revisions/orphaned-revisions.png "Orphaned Revisions")
+   Click it to inspect the revisions created for this document.
+   ![Revisions of a deleted document](images/revisions/orphaned-revisions.png "Revisions of a deleted document")
      * Revisions stored in the revisions bin can be [inspected](../../../studio/database/document-extensions/revisions#revision-inspection)
        and cloned just like the revisions of a live document.  
 5. **Change vector**  

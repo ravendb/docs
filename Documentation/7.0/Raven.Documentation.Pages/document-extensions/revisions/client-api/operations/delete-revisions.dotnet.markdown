@@ -78,17 +78,17 @@ No exception is thrown if a change vector doesn’t match any revision.
 {CONTENT-FRAME: }
 
 Avoid deleting a "Delete Revision" using the `DeleteRevisionsOperation` operation.  
-Consider the following scenario:
+Consider the following scenario:  
+ 
+  1. A document that has revisions is deleted.
+   
+  2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions-bin).
 
-1. A document that has revisions is deleted.
-
-2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).
-
-3. The revisions of this deleted document remain accessible via the Revisions Bin.
-
-4. If you remove this "Delete Revision" by providing its change vector to `DeleteRevisionsOperation`,  
-   the "Delete Revision" will be removed from the Revisions Bin, causing the associated revisions to become orphaned.  
-   As a result, you will no longer have access to these revisions.
+  3. The revisions of this deleted document remain accessible via the Revisions Bin.
+   
+  4. If you remove this "Delete Revision" by providing its change vector to `DeleteRevisionsOperation`,  
+     the "Delete Revision" will be removed from the Revisions Bin, causing the associated revisions to become orphaned.  
+     However, you will still be able to access these orphaned revisions from the [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions) view.
 
 {CONTENT-FRAME/}
 {PANEL/}

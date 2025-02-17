@@ -256,6 +256,7 @@
 * **Revisions**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteRevisionsOperation](../../document-extensions/revisions/client-api/operations/delete-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsBinCleanerOperation](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api)  
 
 * **Sorters**:   
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
