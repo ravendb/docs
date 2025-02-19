@@ -17,18 +17,18 @@
 
 Let's consider a case where we have a T-Shirt class:
 
-{CODE:python intersection_1@Indexes\Querying\Intersection.py /}
+{CODE:php intersection_1@Indexes\Querying\Intersection.php /}
 
 We will fill our database with a few records:
 
-{CODE:python intersection_3@Indexes\Querying\Intersection.py /}
+{CODE:php intersection_3@Indexes\Querying\Intersection.php /}
 
 Now we can use the `intersect` method to return all the T-shirts that are 
 manufactured by `Raven` and contain both `Small Blue` and `Large Gray` types.
 
 {CODE-TABS}
-{CODE-TAB:python:Query intersection_4@Indexes\Querying\Intersection.py /}
-{CODE-TAB:python:Index intersection_2@Indexes\Querying\Intersection.py /}
+{CODE-TAB:php:Query intersection_4@Indexes\Querying\Intersection.php /}
+{CODE-TAB:php:Index intersection_2@Indexes\Querying\Intersection.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
 where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large') 

@@ -37,9 +37,9 @@ where intersect(manufacturer = 'Raven', color = 'Blue' and size = 'Small', color
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-The above query will return `tshirts/1` and `tshirts/4` as a result.  
-The document `tshirts/2` will not be included because it is not manufactured by `Raven`, 
-and `tshirts/3` is not available in `Small Blue` so it does not match **all** the sub-queries. 
+The above query will return `tshirts/1` and `tshirts/4`, that match **all** sub-queries.  
+`tshirts/2` will not be included in the results because it is not manufactured by `Raven`, 
+and `tshirts/3` will not be included because it is not available in `Small Blue`.  
 
 {PANEL/}
 

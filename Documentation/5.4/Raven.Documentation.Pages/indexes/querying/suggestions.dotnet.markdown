@@ -14,13 +14,12 @@
   Find the Suggestions API methods listed [here](../../client-api/session/querying/how-to-work-with-suggestions#syntax).
 
 * In this page:
-
-    * [Configure the index for suggestions](../../indexes/querying/suggestions#configure-the-index-for-suggestions)
-    * [The index terms](../../indexes/querying/suggestions#the-index-terms)
-    * [Suggest terms - for single term](../../indexes/querying/suggestions#suggest-terms---for-single-term)
-    * [Suggest terms - for multiple terms](../..//indexes/querying/suggestions#suggest-terms---for-multiple-terms)
-    * [Suggest terms - for multiple fields](../..//indexes/querying/suggestions#suggest-terms---for-multiple-fields)
-    * [Suggest terms - customize options and display name](../..//indexes/querying/suggestions#suggest-terms---customize-options-and-display-name)
+   * [Configure the index for suggestions](../../indexes/querying/suggestions#configure-the-index-for-suggestions)
+   * [The index terms](../../indexes/querying/suggestions#the-index-terms)
+   * [Suggest terms - for a single term](../../indexes/querying/suggestions#suggest-terms---for-a-single-term)
+   * [Suggest terms - for multiple terms](../../indexes/querying/suggestions#suggest-terms---for-multiple-terms)
+   * [Suggest terms - for multiple fields](../../indexes/querying/suggestions#suggest-terms---for-multiple-fields)
+   * [Suggest terms - customize options and display name](../../indexes/querying/suggestions#suggest-terms---customize-options-and-display-name)
 
 {NOTE/}
 
@@ -66,7 +65,7 @@ these are the terms generated for the above index `Products/ByName`:
 
 {PANEL/}
 
-{PANEL: Suggest terms - for single term}
+{PANEL: Suggest terms - for a single term}
 
 Based on the Northwind sample data,  
 the following query on the index `Products/ByName` from above has no resulting documents,  
