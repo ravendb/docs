@@ -583,7 +583,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .RawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
                             // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
-                            where exact(vector.search(VectorFromText, 'italian food', 0.82, 20))")
+                            where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))")
+                        .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -596,7 +597,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncRawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
                             // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
-                            where exact(vector.search(VectorFromText, 'italian food', 0.82, 20))")
+                            where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))")
+                        .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -617,7 +619,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                  // Call 'WithField'
                                  // Specify the index-field in which to search for similar values
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                  // Call 'ByEmbedding'   
                                  // Provide the vector for the similarity comparison
                                 .ByEmbedding(
@@ -636,7 +638,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .Customize(x => x.WaitForNonStaleResults())
@@ -653,7 +655,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .WaitForNonStaleResults()
@@ -670,7 +672,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromSingle),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })))
                         .WaitForNonStaleResults()
@@ -683,10 +685,13 @@ namespace Raven.Documentation.Samples.AiIntegration
                 {
                     #region query_6
                     var similarMovies = session.Advanced
-                        .RawQuery<Product>(@"
+                        .RawQuery<Movie>(@"
                             from index 'Movies/ByVector/Single'
-                            where vector.search(VectorFromSingle, $queryVector)
-                            { 'queryVector' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(VectorFromSingle, $queryVector)")
+                        .AddParameter("queryVector", new RavenVector<float>(new float[]
+                         {
+                             6.599999904632568f, 7.699999809265137f
+                         }))
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -696,10 +701,13 @@ namespace Raven.Documentation.Samples.AiIntegration
                 {
                     #region query_6_async
                     var similarMovies = await asyncSession.Advanced
-                        .AsyncRawQuery<Product>(@"
+                        .AsyncRawQuery<Movie>(@"
                             from index 'Movies/ByVector/Single'
-                            where vector.search(VectorFromSingle, $queryVector)
-                            { 'queryVector' : { '@vector' : [6.599999904632568, 7.699999809265137] }}")
+                            where vector.search(VectorFromSingle, $queryVector)")
+                        .AddParameter("queryVector", new RavenVector<float>(new float[]
+                         {
+                             6.599999904632568f, 7.699999809265137f
+                         }))
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -717,7 +725,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                  // Call 'WithField'
                                  // Specify the index-field in which to search for similar values
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                  // Call 'ByEmbedding'   
                                  // Provide the vector for the similarity comparison
                                  // (Note: provide a single vector)
@@ -739,7 +747,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .Customize(x => x.WaitForNonStaleResults())
@@ -756,7 +764,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .WaitForNonStaleResults()
@@ -773,7 +781,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .VectorSearch(
                             field => field
                                 .WithField(x => x.VectorFromInt8Arrays),
-                            searchTerm => searchTerm
+                            queryVector => queryVector
                                 .ByEmbedding(
                                     VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f })))
                         .WaitForNonStaleResults()
@@ -788,8 +796,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = session.Advanced
                         .RawQuery<Movie>(@"
                             from index 'Movies/ByVector/Int8'
-                            where vector.search(VectorFromInt8Arrays, $queryVector)
-                            { 'queryVector' : [64, 127, -51, -52, 76, 62] }")
+                            where vector.search(VectorFromInt8Arrays, $queryVector)")
+                        .AddParameter("queryVector", VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f }))
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -801,8 +809,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = await asyncSession.Advanced
                         .AsyncRawQuery<Movie>(@"
                             from index 'Movies/ByVector/Int8'
-                            where vector.search(VectorFromInt8Arrays, $queryVector)
-                            { 'queryVector' : [64, 127, -51, -52, 76, 62] }")
+                            where vector.search(VectorFromInt8Arrays, $queryVector)")
+                        .AddParameter("queryVector", VectorQuantizer.ToInt8(new float[] { 0.1f, 0.2f }))
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -861,8 +869,10 @@ namespace Raven.Documentation.Samples.AiIntegration
                             from index 'Products/ByMultipleFields'
                             where PricePerUnit > $minPrice
                             or search(Name, $searchTerm1)
-                            or vector.search(VectorFromText, $searchTerm2, 0.8)
-                            { 'minPrice' : 200, 'searchTerm1' : 'Alice', 'searchTerm2': 'italian' }")
+                            or vector.search(VectorFromText, $searchTerm2, 0.8)")
+                        .AddParameter("minPrice", 200)
+                        .AddParameter("searchTerm1", "Alice")
+                        .AddParameter("searchTerm2", "italian")
                         .WaitForNonStaleResults()
                         .ToList();
                     #endregion
@@ -876,8 +886,10 @@ namespace Raven.Documentation.Samples.AiIntegration
                             from index 'Products/ByMultipleFields'
                             where PricePerUnit > $minPrice
                             or search(Name, $searchTerm1)
-                            or vector.search(VectorFromText, $searchTerm2, 0.8)
-                            { 'minPrice' : 200, 'searchTerm1' : 'Alice', 'searchTerm2': 'italian' }")
+                            or vector.search(VectorFromText, $searchTerm2, 0.8)")
+                        .AddParameter("minPrice", 200)
+                        .AddParameter("searchTerm1", "Alice")
+                        .AddParameter("searchTerm2", "italian")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion

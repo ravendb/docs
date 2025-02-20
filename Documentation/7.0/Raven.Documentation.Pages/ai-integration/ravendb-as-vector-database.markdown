@@ -73,7 +73,7 @@
   This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.  
   An example is available in [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types).
 
-* Document attachments can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
+* Document [attachments](../ai-integration/indexing-attachments-for-vector-search) can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
   further extending the versatility of your data processing and search capabilities.
 
 ##### Built-in embedding support:

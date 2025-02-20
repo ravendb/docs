@@ -18,6 +18,12 @@
         "Mappings": []
     },
     {
+        "Path": "indexing-attachments-for-vector-search.markdown",
+        "Name": "Indexing Attachments for Vector Search",
+        "DiscussionId": "7510d989-4925-4e7d-8c48-c3608c09506c",
+        "Mappings": []
+    },
+    {
         "Path": "data-types-for-vector-search.markdown",
         "Name": "Data Types for Vector Search",
         "DiscussionId": "251b7f9e-06a8-4a67-8707-4a87ee9e5d7d",

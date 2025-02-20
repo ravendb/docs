@@ -150,12 +150,10 @@ The following index defines a **vector field** named `VectorfromText`.
 It indexes embeddings generated from the textual data in the `Name` field of all _Product_ documents.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_1@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_1@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_2@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_3@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
-
----
 
 Execute a vector search using the index:  
 Results will include _Product_ documents where the `Name` field is similar to the search term `"italian food"`.
@@ -170,7 +168,8 @@ Results will include _Product_ documents where the `Name` field is similar to th
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByVector/Text"
 // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
-where exact(vector.search(VectorFromText, "italian food", 0.82, 20))
+where exact(vector.search(VectorFromText, $searchTerm, 0.82, 20))
+{ "searchTerm" : "italian food" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -184,12 +183,12 @@ The examples in this section use the [sample data provided in the dynamic query 
 
 ---
 
-The following index defines a vector field named `VectorFromSingle `.  
+The following index defines a vector field named `VectorFromSingle`.  
 It indexes embeddings generated from the numerical data in the `TagsEmbeddedAsSingle` field of all _Movie_ documents.
 The raw numerical data in the source documents is in **32-bit floating-point format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_4@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_4@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_5@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_6@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -217,7 +216,7 @@ It indexes embeddings generated from the numerical arrays in the `TagsEmbeddedAs
 The raw numerical data in the source documents is in **Int8 (8-bit integers) format**. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_7@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_7@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_8@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_9@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -247,7 +246,7 @@ A _'regular'_ field, a _'vector'_ field, and a field configured for [full-text s
 This allows you to query across all fields using various predicates.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Map_index index_10@AiIntegration\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:LINQ_index index_10@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:JS_index index_11@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TAB:csharp:IndexDefinition index_12@AiIntegration\VectorSearchUsingStaticIndex.cs /}
 {CODE-TABS/}
@@ -289,6 +288,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 - [RavenDB as a vector database](../ai-integration/ravendb-as-vector-database)
 - [Vector search using a dynamic query](../ai-integration/vector-search-using-dynamic-query)
 - [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
+- [Indexing attachment for vector search](../ai-integration/indexing-attachments-for-vector-search)
 
 ### Querying
 
