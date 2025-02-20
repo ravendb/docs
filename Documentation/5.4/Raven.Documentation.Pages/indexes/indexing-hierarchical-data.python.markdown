@@ -89,9 +89,9 @@ where Authors == "Moon"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-**Query the index using the Studio**:
+**Query the index using Studio**:
 
-  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
+  * Query the index from Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
      
       !["List of Indexes view"](images/list-of-indexes-view.png "List of Indexes view")
 
