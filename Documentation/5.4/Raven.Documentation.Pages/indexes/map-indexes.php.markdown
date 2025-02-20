@@ -3,11 +3,10 @@
 
 {NOTE: }
 
-* `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions 
-  that indicate which fields from the documents should be indexed.  
+* `Map` indexes, sometimes referred to as simple indexes, contain one or more mapping functions 
+  to indicate which document fields should be indexed.  
 * After indexing, documents can be searched by the indexed fields.  
-* The mapping functions are **LINQ-based functions** or  **JavaScript functions** (when using 
-  JavaScript indexes); they can be considered the **core** of indexes.  
+* The mapping functions can be considered the **core** of indexes.  
 
 * In This Page:  
    * [Indexing single fields](../indexes/map-indexes#indexing-single-fields)
@@ -22,7 +21,7 @@
 * Indexing fields from [related documents](../indexes/indexing-related-documents)  
 * Aggregating data with [Map-Reduce indexes](../indexes/map-reduce-indexes)  
 * Indexing multiple collections with [Multi-Map indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
-* [Running calculations and storing the results in the index to reduce query time](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)  
+* [Running calculations and storing the results in the index to reduce query time](https://demo.ravendb.net/demos/python/static-indexes/store-fields-in-index)  
 
 {INFO/}
 
@@ -41,18 +40,19 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
    {NOTE/}
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Index indexes_1@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_1@Indexes/JavaScript.php /}
 {CODE-TABS/}
 
-You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying) article before proceeding.
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`.  
+This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, 
+you can read [this](../indexes/creating-and-deploying) article before proceeding.
 
-- The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
+- The next step is to create the indexing function itself. This is done by setting the `map` property with our function in a **parameterless constructor**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-Query-syntax indexes_2@Indexes/Map.cs /}
-{CODE-TAB:csharp:LINQ-Method-syntax indexes_3@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_2@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Query indexes_2@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript javaScriptindexes_2@Indexes/JavaScript.php /}
 {CODE-TABS/}
 
 - The final step is to [deploy it](../indexes/creating-and-deploying) to the server 
@@ -61,35 +61,35 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
   If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying#auto-indexes).
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_4@Indexes/Map.cs /}
+{CODE-TAB:php:Query indexes_4@Indexes/Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Our final index looks like:
+This is how our final index looks like:
 
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_6@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_6@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Index indexes_6@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_6@Indexes/JavaScript.php /}
 {CODE-TABS/}
 
 {INFO:Field Types}
 
 Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
 
-For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+For example, if our `Employee` has a property named `Age` that is an `int`, the following indexing function...
 
 {CODE-TABS}
-{CODE-TAB-BLOCK:csharp:LINQ-syntax}
+{CODE-TAB-BLOCK:php:Function}
 from employee in docs.Employees
 select new
 {
 	Age = employee.Age
 }
 {CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:csharp:JavaScript-syntax}
+{CODE-TAB-BLOCK:php:JavaScript-syntax}
 map('Employees', function(employee)
 {
     return {
@@ -106,14 +106,14 @@ map('Employees', function(employee)
 Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
 
 {CODE-TABS}
-{CODE-TAB-BLOCK:csharp:LINQ-syntax}
+{CODE-TAB-BLOCK:php:Function}
 from employee in docs.Employees
 select new
 {
 	Age = employee.Age.ToString()
 }
 {CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:csharp:JavaScript-syntax}
+{CODE-TAB-BLOCK:php:JavaScript-syntax}
 map('Employees', function(employee)
 {
     return {
@@ -129,7 +129,7 @@ map('Employees', function(employee)
 
 You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
 
-{CODE-BLOCK:csharp}
+{CODE-BLOCK:php}
 from employee in docs.Employees
 select new
 {
@@ -146,50 +146,21 @@ The part you should pay attention to is `docs.Employees`. This syntax indicates 
 
 {PANEL: Combining multiple fields}
 
-Since each index contains a LINQ function, you can combine multiple fields into one.
+Since each index contains a function, you can combine multiple fields into one.
 
-#### Example I
+#### Example
 Index definition:  
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_7@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_7@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Function indexes_7@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_7@Indexes/JavaScript.php /}
 {CODE-TABS/}
   
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
+{CODE-TAB:php:Query indexes_8@Indexes/Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'
 where FullName = 'Robert King'
-{CODE-TAB-BLOCK/}
-{CODE-TABS/}
-
----
-
-#### Example II
-
-{INFO: Information}
-
-In this example, the index field `Query` combines all values from various Employee fields into one. 
-The default Analyzer on fields is changed to enable `Full-Text Search` operations. The matches no longer need to be exact.
-
-You can read more about analyzers and `Full-Text Search` [here](../indexes/using-analyzers).
-
-{INFO/}
-
-Index definition: 
-{CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1_6@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_6@Indexes/JavaScript.cs /}
-{CODE-TABS/}
-
-Query the index:  
-{CODE-TABS}
-{CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:sql:RQL}
-from index 'Employees/Query'
-where search(Query, 'John Doe')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -202,14 +173,13 @@ You can do it by indexing `Birthday` from `Employee`, then specify the year in `
 
 Index definition:  
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1_2@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_2@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Index_Definition indexes_1_2@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_1_2@Indexes/JavaScript.php /}
 {CODE-TABS/}
   
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_5_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_5_2@Indexes/Map.cs /}
+{CODE-TAB:php:Query indexes_5_1@Indexes/Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByBirthday '
 where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
@@ -220,14 +190,13 @@ RavenDB gives you the ability **to extract field data and to index by it**. A di
 
 Index definition:  
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1_0@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_0@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Index_Definition indexes_1_0@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_1_0@Indexes/JavaScript.php /}
 {CODE-TABS/}
 
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_6_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_6_2@Indexes/Map.cs /}
+{CODE-TAB:php:Query indexes_6_1@Indexes/Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByYearOfBirth'
 where YearOfBirth = 1963
@@ -238,9 +207,9 @@ where YearOfBirth = 1963
 
 {PANEL: Filtering data within fields}
 
-In the examples above, `where` is used in the query to filter the results.  
+In the examples above, `where_equals` is used in the query to filter the results.  
 If you consistently want to filter with the same filtering conditions, 
-you can use `where` in the index definition to narrow the index terms that the query must scan.  
+you can use `where_equals` in the index definition to narrow the index terms that the query must scan.  
 
 This can save query-time but narrows the terms available to query.
 
@@ -250,12 +219,12 @@ For logic that has to do with special import rules that only apply to the USA
 `where` can be used to filter the Companies collection `Address.Country` field.  
 Thus, we only index documents `where company.Address.Country == "USA"` . 
 
-Index definition (LINQ Syntax):
-{CODE indexes_1_6@Indexes\Map.cs /}
+Index definition:
+{CODE:php indexes_1_6@Indexes\Map.php /}
 
 Query the index:
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_query_1_6@Indexes\Map.cs /}
+{CODE-TAB:php:Query indexes_query_1_6@Indexes\Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies_ByAddress_Country'
 {CODE-TAB-BLOCK/}
@@ -270,12 +239,12 @@ Imagine a seed company that needs to categorize its customers by latitude-based 
 They can create a different index for each zone and filter their customers in the index with  
 `where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)` .
 
-Index definition (LINQ Syntax):
-{CODE indexes_1_7@Indexes\Map.cs /}
+Index definition:
+{CODE:php indexes_1_7@Indexes\Map.php /}
 
 Query the index:
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_query_1_7@Indexes\Map.cs /}
+{CODE-TAB:php:Query indexes_query_1_7@Indexes\Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies_ByAddress_Latitude'
 {CODE-TAB-BLOCK/}
@@ -290,14 +259,13 @@ If your document contains nested data, e.g. `Employee` contains `Address`, you c
 
 Index definition:  
 {CODE-TABS}
-{CODE-TAB:csharp:LINQ-syntax indexes_1_4@Indexes/Map.cs /}
-{CODE-TAB:csharp:JavaScript-syntax javaScriptindexes_1_4@Indexes/JavaScript.cs /}
+{CODE-TAB:php:Index_Definition indexes_1_4@Indexes/Map.php /}
+{CODE-TAB:php:JavaScript-syntax javaScriptindexes_1_4@Indexes/JavaScript.php /}
 {CODE-TABS/}
 
 Query the index:  
 {CODE-TABS}
-{CODE-TAB:csharp:Query indexes_7_1@Indexes/Map.cs /}
-{CODE-TAB:csharp:DocumentQuery indexes_7_2@Indexes/Map.cs /}
+{CODE-TAB:php:Query indexes_7_1@Indexes/Map.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByCountry'
 where Country = 'USA'
@@ -338,9 +306,9 @@ determines whether missing fields in documents are indexed with the value `null`
 
 ### Code Walkthrough
 
-- [Static Indexes Overview](https://demo.ravendb.net/demos/csharp/static-indexes/static-indexes-overview)
-- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
-- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
-- [Project Index Results](https://demo.ravendb.net/demos/csharp/static-indexes/project-index-results)
-- [Store Fields in Index](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+- [Static Indexes Overview](https://demo.ravendb.net/demos/python/static-indexes/static-indexes-overview)
+- [Map Index](https://demo.ravendb.net/demos/python/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/python/static-indexes/map-reduce-index)
+- [Project Index Results](https://demo.ravendb.net/demos/python/static-indexes/project-index-results)
+- [Store Fields in Index](https://demo.ravendb.net/demos/python/static-indexes/store-fields-in-index)
 

@@ -14,7 +14,7 @@
    * [Indexing partial field data](../indexes/map-indexes#indexing-partial-field-data)
    * [Filtering data within fields](../indexes/map-indexes#filtering-data-within-fields)
    * [Indexing nested data](../indexes/map-indexes#indexing-nested-data)
-   * [Indexing Missing Fields](../indexes/map-indexes#indexing-missing-Fields)
+   * [Indexing Missing Fields](../indexes/map-indexes#indexing-missing-fields)
 
 {INFO: Also see:}
 
