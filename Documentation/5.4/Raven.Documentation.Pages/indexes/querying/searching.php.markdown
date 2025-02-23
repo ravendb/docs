@@ -32,19 +32,20 @@
 
 #### The index:
 
-{CODE:python index_1@Indexes\Querying\Searching.py/}
+{CODE:php index_1@Indexes\Querying\Searching.php/}
 
 ---
 
 #### Query with Search:
 
-* Use `Search` to make a full-text search when querying the index.  
+* Use `search` to make a full-text search when querying the index.  
 
 * Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 {CODE-TABS}
-{CODE-TAB:python:Query search_1@Indexes\Querying\Searching.py /}
+{CODE-TAB:php:Query search_1@Indexes\Querying\Searching.php /}
+{CODE-TAB:php:documentQuery search_3@Indexes\Querying\Searching.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByNotes"
 where search(EmployeeNotes, "French")
@@ -57,14 +58,15 @@ where search(EmployeeNotes, "French")
 
 #### The index:
 
-{CODE:python index_2@Indexes\Querying\Searching.py/}
+{CODE:php index_2@Indexes\Querying\Searching.php/}
 
 ---
 
 #### Sample query:
 
 {CODE-TABS}
-{CODE-TAB:python:Query search_4@Indexes\Querying\Searching.py /}
+{CODE-TAB:php:Query search_4@Indexes\Querying\Searching.php /}
+{CODE-TAB:php:documentQuery search_6@Indexes\Querying\Searching.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByEmployeeData"
 where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
@@ -75,7 +77,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 {PANEL: Boosting search results}
 
-* In order to prioritize results, you can provide a boost value to the searched terms.  
+* To prioritize results, you can provide a boost value to the searched terms.  
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  

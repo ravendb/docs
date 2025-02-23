@@ -33,7 +33,7 @@
 * See the following sample index:  
   (This index will be used in the examples ahead).
 
-{CODE:python suggestions_index_1@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_index_1@Indexes\Querying\Suggestions.php /}
 
 {NOTE: }
 
@@ -71,14 +71,15 @@ Based on the Northwind sample data,
 the following query on the index `Products/ByName` from above has no resulting documents,  
 since the term `chokolade` does Not exist in the index terms for index-field `ProductName`.
 
-{CODE:python suggestions_2@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_2@Indexes\Querying\Suggestions.php /}
 
 If you suspect that the term `chokolade` in the query criteria is written incorrectly,  
 you can ask RavenDB to suggest similar terms from the index, as follows:
 
 {CODE-TABS}
-{CODE-TAB:python:Query suggestions_3@Indexes\Querying\Suggestions.py /}
-{CODE-TAB:python:Query_overload suggestions_5@Indexes\Querying\Suggestions.py /}
+{CODE-TAB:php:Query1 suggestions_3@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:Query2 suggestions_5@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:documentQuery suggestions_6@Indexes\Querying\Suggestions.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query for terms from index-field 'ProductName' that are similar to 'chokolade'
 from index "Products/ByName" 
@@ -86,15 +87,16 @@ select suggest(ProductName, "chokolade")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE:python suggestions_7@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_7@Indexes\Querying\Suggestions.php /}
 
 {PANEL/}
 
 {PANEL: Suggest terms - for multiple terms}
 
 {CODE-TABS}
-{CODE-TAB:python:Query suggestions_8@Indexes\Querying\Suggestions.py /}
-{CODE-TAB:python:Query_overload suggestions_10@Indexes\Querying\Suggestions.py /}
+{CODE-TAB:php:Query1 suggestions_8@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:Query2 suggestions_10@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:documentQuery suggestions_11@Indexes\Querying\Suggestions.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query for terms from index-field 'ProductName' that are similar to 'chokolade' OR 'syrop'
 from index "Products/ByName" select suggest(ProductName, $p0)
@@ -102,16 +104,17 @@ from index "Products/ByName" select suggest(ProductName, $p0)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE:python suggestions_12@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_12@Indexes\Querying\Suggestions.php /}
 
 {PANEL/}
 
 {PANEL: Suggest terms - for multiple fields}
 
 {CODE-TABS}
-{CODE-TAB:python:Query suggestions_13@Indexes\Querying\Suggestions.py /}
-{CODE-TAB:python:Query_overload suggestions_15@Indexes\Querying\Suggestions.py /}
-{CODE-TAB:python:The_index suggestions_index_2@Indexes\Querying\Suggestions.py /}
+{CODE-TAB:php:Query1 suggestions_13@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:Query2 suggestions_15@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:documentQuery suggestions_16@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:The_index suggestions_index_2@Indexes\Querying\Suggestions.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query for suggested terms 
 // from index-field 'CompanyName' AND from index-field 'ContactName'
@@ -120,15 +123,16 @@ select suggest(CompanyName, "chese"), suggest(ContactName, "frank")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE:python suggestions_17@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_17@Indexes\Querying\Suggestions.php /}
 
 {PANEL/}
 
 {PANEL: Suggest terms - customize options and display name}
 
 {CODE-TABS}
-{CODE-TAB:python:Query suggestions_18@Indexes\Querying\Suggestions.py /}
-{CODE-TAB:python:Query_overload suggestions_20@Indexes\Querying\Suggestions.py /}
+{CODE-TAB:php:Query1 suggestions_18@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:Query2 suggestions_20@Indexes\Querying\Suggestions.php /}
+{CODE-TAB:php:documentQuery suggestions_21@Indexes\Querying\Suggestions.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 // Query for suggested terms - customize options and display name
 from index "Products/ByName"
@@ -140,7 +144,7 @@ select suggest(
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{CODE:python suggestions_22@Indexes\Querying\Suggestions.py /}
+{CODE:php suggestions_22@Indexes\Querying\Suggestions.php /}
 
 {PANEL/}
 
