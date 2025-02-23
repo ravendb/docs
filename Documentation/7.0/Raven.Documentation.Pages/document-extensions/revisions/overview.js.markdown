@@ -269,13 +269,13 @@ followed by a call to `saveChanges`.
 **Example**:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Force_by_entity force_revision_creation_by_entity@documentExtensions\revisions\forceRevisionCreation.js /}
-{CODE-TAB:nodejs:Force_by_id force_revision_creation_by_id@documentExtensions\revisions\forceRevisionCreation.js /}
+{CODE-TAB:nodejs:Force_by_entity force_revision_creation_by_entity@document-extensions\revisions\forceRevisionCreation.js /}
+{CODE-TAB:nodejs:Force_by_id force_revision_creation_by_id@document-extensions\revisions\forceRevisionCreation.js /}
 {CODE-TABS/}
 
 **Syntax**:  
 
-{CODE:nodejs syntax_1@documentExtensions\revisions\forceRevisionCreation.js /}
+{CODE:nodejs syntax_1@document-extensions\revisions\forceRevisionCreation.js /}
 
 | Parameter    | Type     | Description                                                                                     |
 |--------------|----------|-------------------------------------------------------------------------------------------------|
