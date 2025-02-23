@@ -178,10 +178,10 @@ Let's play with revisions a little to get a taste of its advantages.
      ![Revision for Document Modification](images\revisions_modify-document.png "Revision for Document Modification")
 
 5. **Delete the document**.  
-   Though you deleted the document, its **audit trail** is **not lost**: all revisions were moved to the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin),  
-   including a new revision (called "Delete-Revision"), created to indicate that the document was deleted.
-
-     To see the "orphaned" revisions (whose parent document was deleted):  
+   Though you deleted the document, its **audit trail** is **not lost**: all its revisions are moved to the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin),  
+   including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
+       
+     To see the revisions created for the document before it was deleted:
      * Open the `Documents > Revisions Bin` section in the Studio  
      * Click the deleted document's ID
 

@@ -179,7 +179,7 @@ Let's play with revisions a little to get a taste of its advantages.
 
 5. **Delete the document**.  
    Though you deleted the document, its **audit trail** is **not lost**: all its revisions are moved to the [Revisions Bin](../../studio/database/document-extensions/revisions/revisions-bin),  
-   including a new revision (called "Delete-Revision"), created to indicate that the document was deleted.
+   including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
      
      To see the revisions created for the document before it was deleted:  
      * Open the `Documents > Revisions Bin` section in the Studio  
