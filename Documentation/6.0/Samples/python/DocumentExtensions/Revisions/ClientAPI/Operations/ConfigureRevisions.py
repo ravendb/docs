@@ -29,7 +29,7 @@ class ConfigRevisions(ExampleBase):
                     # ------------------------
                     # * A revision will be created anytime a document is modified or deleted.
                     # * Revisions of a deleted document can be accessed in the Revisions Bin view.
-                    # * At least 100 of the latest revisions will be kept.
+                    # * Only the latest 100 revisions will be kept. Older ones will be discarded.
                     # * Older revisions will be removed if they exceed 7 days on next revision creation.
                     # * A maximum of 15 revisions will be deleted each time a document is updated,
                     #   until the defined '# of revisions to keep' limit is reached.

@@ -21,9 +21,14 @@
 
 * In RavenDB, revisions can be created automatically or manually, as explained in this [overview](../../../../document-extensions/revisions/overview).
 
-* Regardless of how revisions are created or whether [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) is enabled,
-  deleting a document that **has** revisions will always create a `"Delete Revision"`.
-  If you delete a document that does Not have revisions, a "Delete Revision" will be created only if the revisions configuration is set and enabled.
+* **When deleting a document that has revisions**:  
+  Deleting a document that has revisions will always create a `"Delete Revision"`.  
+  This occurs regardless of whether the revisions were created automatically or manually,  
+  or if the [Revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) is enabled.
+
+* **When deleting a document that does Not have revisions**:  
+  If you delete a document that does not have revisions, a "Delete Revision" will be created only if the revisions configuration is set and enabled.
+  In that case, another revision will be created to capture the document’s state at the time of deletion.
 
 * This "Delete Revision" marks the document's deletion and is stored in the **Revisions Bin**.  
   In addition, all the revisions that were created over time for the deleted document are also moved to the Revisions Bin.
@@ -81,10 +86,10 @@ Clicking the `orders/829-A` ID from the above list will open the following view:
 
 1. This is the ID of the deleted document.
 2. The "DELETE REVISION" label indicates that you are viewing a "Delete Revision".
-3. This text appears for a "Delete Revision," displaying the time when the document was removed.  
+3. This text appears for a "Delete Revision," displaying the time when the document was removed.
    The flags include the `DeleteRevision` flag, confirming it is a "Delete Revision."
-4. The timestamp of the "Delete Revision". 
-5. These are the revisions that were created for the document before it was deleted.  
+4. The timestamp of the "Delete Revision", indicating when the document was deleted.
+5. These are the revisions that were created for the document before it was deleted.
    You can click on each one to view and manage it like any other revision,  
    e.g., clone it or compare it with other revisions. 
 
@@ -96,7 +101,8 @@ Clicking the `orders/829-A` ID from the above list will open the following view:
   To restore them, create a new document with the **exact same ID** as the deleted document.  
 
 * When a new document is created with the same ID:  
-  * The revisions of the deleted document are retrieved from the Revisions Bin and associated with the new document.
+  * The revisions of the deleted document are retrieved from the Revisions Bin and associated with the new document.  
+    This occurs even if the [Revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) is not defined or enabled for this document collection at the time.
   * These revisions are removed from the Revisions Bin once restored.
   * The "Delete Revision" that marked the original document's deletion will also be removed from the Revisions Bin  
     and will now appear in the new document’s revision history.
@@ -105,7 +111,8 @@ Clicking the `orders/829-A` ID from the above list will open the following view:
 
 1. The ID of the deleted document that was recreated.
 2. The content of the newly created document.
-3. This is the latest revision, indicating the creation of the new document.
+3. If the [Revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration)
+   is defined and enabled for the document collection at the time of creating the new document, a new revision marking its creation will be generated.
 4. This is the "Delete Revision" that marked the deletion of the original document.   
    This revision is now part of the new document's revision history.
 6. These are the revisions of the deleted document that are now restored.

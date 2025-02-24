@@ -88,7 +88,7 @@ Consider the following scenario:
 
 4. If you remove this "Delete Revision" by providing its change vector to `DeleteRevisionsOperation`,  
    the "Delete Revision" will be removed from the Revisions Bin, causing the associated revisions to become orphaned.  
-   As a result, you will no longer have access to these revisions.
+   As a result, you will no longer have access to these revisions via the Revisions Bin.
 
 {CONTENT-FRAME/}
 {PANEL/}

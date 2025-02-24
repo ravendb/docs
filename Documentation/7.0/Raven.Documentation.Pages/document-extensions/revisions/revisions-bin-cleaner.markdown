@@ -36,9 +36,6 @@ ALL the revisions associated with the deleted document are **permanently deleted
     * **Frequency** - How often the cleaner runs.
     * **Entries age to keep** - The cleaner deletes revision entries older than this value.
 
-* The delete action runs in batches. The batch size (hard-coded) depends on whether the machine is 32-bit or higher.
-  Older entries are deleted first.
-
 * The cleaner task can be managed from:  
   * The [Revisions bin cleaner view](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-studio) in the Studio
   * The [Client API](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api).

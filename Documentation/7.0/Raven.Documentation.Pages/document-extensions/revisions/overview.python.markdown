@@ -181,11 +181,16 @@ Let's play with revisions a little to get a taste of its advantages.
    Though you deleted the document, its **audit trail** is **not lost**: all its revisions were moved to the [Revisions Bin](../../studio/database/document-extensions/revisions/revisions-bin),  
    including a new revision (called "Delete Revision"), created to indicate that the document was deleted.
 
-      To see the revisions created for the document before it was deleted:  
-      * Open the `Documents > Revisions Bin` section in the Studio  
-      * Click the deleted document's ID  
+     {INFO: }
+     * A "Delete Revision" is created only if the deleted document has revisions.
+     * If a document has no revisions, a "Delete Revision" will be created only if the Revisions Configuration is set and enabled for its collection.
+     {INFO/}
 
-      ![Revisions Bin](images\revisions-5.png "Revisions Bin")
+     To see the revisions created for the document before it was deleted:  
+     * Open the `Documents > Revisions Bin` section in the Studio  
+     * Click the deleted document's ID  
+
+     ![Revisions Bin](images\revisions-5.png "Revisions Bin")
 
 6. **Restore the document**.  
    Even after a document is deleted, you can still restore it from one of its revisions.  
