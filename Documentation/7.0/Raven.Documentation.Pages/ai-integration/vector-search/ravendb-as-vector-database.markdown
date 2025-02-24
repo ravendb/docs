@@ -4,8 +4,8 @@
 {NOTE: }
 
 * In this page:
-    * [What is a vector database](../ai-integration/ravendb-as-vector-database#what-is-a-vector-database)
-    * [Why choose RavenDB as your vector database](../ai-integration/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
+    * [What is a vector database](../../ai-integration/vector-search/ravendb-as-vector-database#what-is-a-vector-database)
+    * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
     
 {NOTE/}
 
@@ -32,7 +32,7 @@
   Words, phrases, entire documents, images, audio, and other types of data can all be vectorized.
 
 * The raw data is converted into embeddings using [transformers](https://huggingface.co/docs/transformers).  
-  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../ai-integration/vector-search-using-dynamic-query#quantization-options).
+  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
 
 **Indexing embeddings and searching**:  
 
@@ -71,9 +71,9 @@
 
 * An index can consist of multiple index-fields, each having a distinct type, such as a standard field, a spatial field, a full-text search field, or a **vector field**.
   This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.  
-  An example is available in [Indexing multiple field types](../ai-integration/vector-search-using-static-index#indexing-multiple-field-types).
+  An example is available in [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index#indexing-multiple-field-types).
 
-* Document [attachments](../ai-integration/indexing-attachments-for-vector-search) can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
+* Document [attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search) can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
   further extending the versatility of your data processing and search capabilities.
 
 ##### Built-in embedding support:
@@ -86,7 +86,7 @@
 
 * **Numerical arrays input**:  
   Documents in RavenDB can also contain numerical arrays with **pre-made embeddings** created elsewhere.  
-  Use RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), to store these embeddings in your document entities.  
+  Use RavenDB's dedicated data type, [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search#ravenvector), to store these embeddings in your document entities.  
   This type is highly optimized to reduce storage space and enhance the speed of reading arrays from disk.
 
 * **HNSW algorithm usage**:  
@@ -95,7 +95,7 @@
 
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
-  Learn more in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
+  Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
 
 {PANEL/}
 
@@ -103,15 +103,15 @@
 
 ### Client API
 
-- [RQL](../client-api/session/querying/what-is-rql) 
-- [Query overview](../client-api/session/querying/how-to-query)
+- [RQL](../../client-api/session/querying/what-is-rql) 
+- [Query overview](../../client-api/session/querying/how-to-query)
 
 ### Vector Search
 
-- [Vector search using a dynamic query](../ai-integration/vector-search-using-dynamic-query.markdown)
-- [Vector search using a static index](../ai-integration/vector-search-using-static-index.markdown)
-- [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
+- [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.markdown)
+- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.markdown)
+- [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
 
 ### Server
 
-- [indexing configuration](../server/configuration/indexing-configuration)
+- [indexing configuration](../../server/configuration/indexing-configuration)
