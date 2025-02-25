@@ -75,6 +75,22 @@ No exception is thrown if a change vector doesn’t match any revision.
 {CODE-TAB:csharp:Async delete_revisions_4_async@DocumentExtensions\Revisions\ClientAPI\Operations\DeleteRevisions.cs /}
 {CODE-TABS/}
 
+{CONTENT-FRAME: }
+
+Avoid deleting a "Delete Revision" using the `DeleteRevisionsOperation` operation.  
+Consider the following scenario:
+
+1. A document that has revisions is deleted.
+
+2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).
+
+3. The revisions of this deleted document remain accessible via the Revisions Bin.
+
+4. If you remove this "Delete Revision" by providing its change vector to `DeleteRevisionsOperation`,  
+   the "Delete Revision" will be removed from the Revisions Bin, causing the associated revisions to become orphaned.  
+   As a result, you will no longer have access to these revisions via the Revisions Bin.
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}

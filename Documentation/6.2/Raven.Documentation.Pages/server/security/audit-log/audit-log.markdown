@@ -73,6 +73,7 @@
   * **Revisions**:  
     Deleting revisions  
     Modifying revisions settings  
+    Modifying revisions bin cleaner settings  
   * **Ongoing tasks**:  
     Adding or updating an ETL task  
     Adding or updating a Kafka Sink or a RabbitMQ Sink task  

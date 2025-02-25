@@ -1,31 +1,37 @@
 [
-    {
-        "Path": "revisions.markdown",
-        "Name": "Revisions",
-        "DiscussionId": "19d1538e-bb89-4887-8a9d-e6b8dce5d6cf",
-        "Mappings": [
-            {
-                "Version": 6.2,
-                "Key": "studio/database/document-extensions/revisions"
-            },
-            {
-                "Version": 6.0,
-                "Key": "studio/database/document-extensions/revisions"
-            },
-            {
-                "Version": 5.4,
-                "Key": "studio/database/document-extensions/revisions"
-            },
-            {
-                "Version": 5.3,
-                "Key": "studio/database/document-extensions/revisions"
-            }
-        ]
-    },
-    {
-        "Path": "all-revisions.markdown",
-        "Name": "All Revisions",
-        "DiscussionId": "19d1538e-bb89-4887-8a9d-e6b8dce5d6cf",
-        "Mappings": []
-    }
+  {
+    "Path": "revisions.markdown",
+    "Name": "Viewing Document Revisions",
+    "DiscussionId": "19d1538e-bb89-4887-8a9d-e6b8dce5d6cf",
+    "Mappings": [
+      {
+        "Version": 6.2,
+        "Key": "studio/database/document-extensions/revisions"
+      },
+      {
+        "Version": 6.0,
+        "Key": "studio/database/document-extensions/revisions"
+      },
+      {
+        "Version": 5.4,
+        "Key": "studio/database/document-extensions/revisions"
+      },
+      {
+        "Version": 5.3,
+        "Key": "studio/database/document-extensions/revisions"
+      }
+    ]
+  },
+  {
+    "Path": "all-revisions.markdown",
+    "Name": "All Revisions",
+    "DiscussionId": "19d1538e-bb89-4887-8a9d-e6b8dce5d6cf",
+    "Mappings": []
+  },
+  {
+    "Path": "revisions-bin.markdown",
+    "Name": "Revisions Bin",
+    "DiscussionId": "e044e08c-ba48-4b71-9ee5-dc1203439f7e",
+    "Mappings": []
+  }
 ]

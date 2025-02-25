@@ -1,4 +1,4 @@
-# Document Extensions: Revisions
+# Viewing Document Revisions
 ---
 
 {NOTE: }
@@ -10,25 +10,22 @@
   * To define and enable revisions creation, see [revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration).  
   * A dynamic walkthrough demonstrating revisions management is available [here](../../../../document-extensions/revisions/overview#how-it-works).  
 
-* This article provides an overview of the Studio views related to working with revisions, including:  
-  * Viewing revisions
-  * Comparing revisions
-  * Viewing revisions for deleted documents (Revisions Bin)
+* This article provides an overview of how to view and compare revisions of a specific document.  
+  * To see all revisions in the database, go to the [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions) view.  
+  * To access revisions of deleted documents, go to the [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions-bin) view.    
 
 ---
 
 * In this page:
-  * [Revisions Tab](../../../../studio/database/document-extensions/revisions/revisions#revisions-tab)  
+  * [Revisions tab](../../../../studio/database/document-extensions/revisions/revisions#revisions-tab)  
   * [Revision inspection](../../../../studio/database/document-extensions/revisions/revisions#revision-inspection)  
   * [Revisions comparison](../../../../studio/database/document-extensions/revisions/revisions#revisions-comparison)  
-  * [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions#revisions-bin)  
-     * [Restoring revisions](../../../../studio/database/document-extensions/revisions/revisions#restoring-revisions)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Revisions Tab}
+{PANEL: Revisions tab}
 
 * Located within the Document View,  
   the Revisions Tab displays the full trail of all revisions created for the document.
@@ -44,17 +41,16 @@
 2. **Create revision**  
    Click to manually create a new revision for this document from the Studio.  
    A new revision will be created if the document doesn't already have a revision for the latest content.  
+   This option is available even if a [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) is not defined or enabled.  
    [Learn here](../../../../document-extensions/revisions/overview#force-revision-creation-via-the-client-api) about forcing the creation of a new revision via the Client API.  
 3. **Revision timestamp**  
-   Click to inspect this revision.  
-4. **Compare revision**  
-   Click to compare this revision with the current live version of the document and with other revisions.  
+   Click the timestamp to inspect this revision and view its content.
+4. **Compare**  
+   Click to compare the document's current version with its previous revision.
 
 {PANEL/}
 
 {PANEL: Revision inspection}
-
-Click the revision timestamp to inspect the revision's contents:
 
 ![Click to Inspect](images/revisions/click-revision.png "Click to Inspect")
 
@@ -63,93 +59,55 @@ Click the revision timestamp to inspect the revision's contents:
 The revision will be visible in the Document View,  
 but file editing will Not be available since revisions cannot be modified.
 
-![Revision Inspection](images/revisions/revision-inspection.png "Revision Inspection")
+![View the revision content](images/revisions/revision-inspection.png "View the revision content")
 
-1. **Revision**  
-   The REVISION label indicates that you are viewing a revision and not 
-   the parent document.  
-2. **Clone**  
-   Click to create a document that copies the revision's contents.  
+1. **Parent document ID**  
+   This is the ID of the revision's parent document.
+2. **Revision label**  
+   The REVISION label indicates that you are viewing a revision, not the parent document.
+3. **Revision content**  
+   The revision’s content is displayed in read-only mode.
+4. **Clone**  
+   Click to create a document that copies the revision's content.  
    {INFO: }
-   * Cloning the revision will open the 'new document view' with this revision's contents.  
+   * Cloning the revision will open the 'new document view' with this revision's content.  
    * You can then save the clone under a new name to create a new document.  
    * Saving the clone with the exact same ID as the revision's parent document will revert the document to this revision.  
    {INFO/}
-3. **See the current document**  
-   Click to return to the revision's parent document view.  
-4. **Revision contents**  
-   The content of the revision is displayed in read-only mode.
+5. **Delete**  
+   Click to delete this revision. **This action cannot be undone**.
+6. **See the current document**  
+   Click to return to the parent document view.
+7. **Compare**  
+   Click to compare this revision with other revisions.
 
 {PANEL/}
 
 
 {PANEL: Revisions comparison}
 
-Click the revision's comparison button to compare it with other revisions:
-
-![Click to Compare](images/revisions/click-to-compare.png "Click to Compare")
+![Click to Compare](images/revisions/click-to-compare.png "Click to compare")
 
 ---
 
-![Revision Comparison](images/revisions/revision-comparison.png "Revision Comparison")
+![Revision Comparison](images/revisions/revision-comparison.png "Revision comparison")
 
-1. **Exit revisions compare mode**  
-   Click to exit the comparison window and return to the revisions tTab in the Document View.  
-2. **Compare with**  
-   Click to select a revision to compare with.  
-   ![Compare-with Drop List](images/revisions/compare-with-drop-list.png "Compare-with Drop List")
-3. **Left-hand revision**  
-   The left-hand view displays the revision selected in the revisions tab.  
-4. **Right-hand revision**  
-  The right-hand view displays the revision selected using the "Compare with" drop-down list.  
-5. **Summary line**  
-  This line summarizes the differences found between the two revisions.  
-
-{PANEL/}
-
-{PANEL: Revisions Bin}
-
-* This view displays the revisions of deleted documents.
-
-* When a document is deleted:  
-  * A "delete-revision" is created for the document, marking its deletion.
-  * The "delete-revision" and all the document's revisions - whether automatically created due to the defined revisions configuration or manually created - are moved to the Revisions Bin.
-  * This applies regardless of whether a [revisions configuration](../../../../document-extensions/revisions/overview#revisions-configuration) is enabled or disabled.
-
-![Revisions Bin](images/revisions/revisions-bin.png "Revisions Bin")
-
-1. **Revisions Bin**  
-   Click to open the Revisions Bin view.  
-   Each item listed in the Revisions Bin view references all the revisions created for a deleted document.  
-2. **Selection boxes**  
-   Check to select items.  
-3. **Delete**  
-   Click to remove selected items.  
-   Deleting revisions from the Revisions Bin will permanently dispose of these revisions,  
-   making them irrecoverable.
-4. **Deleted document ID**  
-   This is the ID of the document that was deleted.  
-   Click it to inspect the revisions created for this document,  
-   known as "orphaned revisions" since their parent document has been deleted.
-   ![Orphaned Revisions](images/revisions/orphaned-revisions.png "Orphaned Revisions")
-     * Revisions stored in the revisions bin can be [inspected](../../../../studio/database/document-extensions/revisions/revisions#revision-inspection)
-       and cloned just like the revisions of a live document.  
-5. **Change vector**  
-   The change vector of the revision that was created for the document when it was deleted.  
-6. **Deletion date**  
-   The date/time when the document was deleted.  
-
----
-
-### Restoring revisions
-
-Giving a **new document** the ID of a deleted document whose revisions are kept in the Revisions Bin,  
-will restore the revisions from the bin and add them to the new document.  
-
-Opening the document's revisions tab will display the whole audit trail,
-including the delete-revision created when the old document was deleted and the revision created when the new document was created.  
-
-![Restored Revisions](images/revisions/restored-revisions.png "Restored Revisions")
+1. **See the current document**  
+   Click to return to the parent document view.  
+   **Exit**  
+   Click to exit the comparison window and return to the revision view.  
+2. **Previous commit**  
+   When 'Previous commit' is selected, the older revision will automatically be set to the revision preceding the selected one.  
+   **Manual**  
+   When 'Manual' is selected, you can choose any two revisions to compare from the dropdown (#5).  
+3. **Older revision**  
+   The older of the two revisions. 
+4. **Newer revision**  
+   The newer of the two revisions.  
+5. **Select revision**  
+    Select another revision for comparison from this dropdown.  
+6. **Summary line**   
+   A summary of the differences between the two revisions.
 
 {PANEL/}
 
@@ -173,3 +131,4 @@ including the delete-revision created when the old document was deleted and the 
 
 * [Settings: Document Revisions](../../../../studio/database/settings/document-revisions)  
 * [All Revisions](../../../../studio/database/document-extensions/revisions/all-revisions)  
+* [Revisions Bin](../../../../studio/database/document-extensions/revisions/revisions-bin)  
