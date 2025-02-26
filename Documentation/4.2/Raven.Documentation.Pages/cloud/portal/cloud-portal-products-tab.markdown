@@ -14,7 +14,7 @@ and [Production](../../cloud/cloud-overview#the-production-tier).
   * [View the Cluster Health](../../cloud/portal/cloud-portal-products-tab#view-the-cluster-health)  
   * [Managing an Existing Product](../../cloud/portal/cloud-portal-products-tab#managing-an-existing-product)  
      - [Change Instance Type and Storage](../../cloud/portal/cloud-portal-products-tab#change-instance-type-and-storage)  
-     - [Security: Your Certificate and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-and-allowed-ips)  
+     - [Security: Your Certificate, Audit Logs and Allowed IPs](../../cloud/portal/cloud-portal-products-tab#security-your-certificate-audit-logs-and-allowed-ips)  
      - [Manage features](#manage-features)
      - [Nodes: Additional product nodes](../../cloud/portal/cloud-portal-products-tab#nodes-additional-product-nodes)
      - [Maintenance and Danger Zones: Terminate and Restart your Instance](../../cloud/portal/cloud-portal-products-tab#maintenance-and-danger-zones-terminate-and-restart-your-instance)  
