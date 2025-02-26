@@ -65,6 +65,12 @@
         "Mappings": []
     },
     {
+        "Path": "cloud-aws-marketplace.markdown",
+        "Name": "AWS Marketplace",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
+    },
+    {
         "Path": "cloud-maintenance-troubleshooting.markdown",
         "Name": "Maintenance & Troubleshooting",
         "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
