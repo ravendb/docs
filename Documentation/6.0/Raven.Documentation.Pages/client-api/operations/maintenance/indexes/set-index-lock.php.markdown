@@ -16,7 +16,6 @@
 * Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
-
 * In this page:
     * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
     * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
@@ -30,19 +29,22 @@
 
 {PANEL: Lock modes}
 
-* **Unlocked** - when lock mode is set to `Unlock`:  
+* **Unlocked** - when lock mode is set using `unlock()`:  
   * Any change to the index definition will be applied.  
   * If the new index definition differs from the one stored on the server,  
-    the index will be updated and the data will be re-indexed using the new index definition.  
+    the index will be updated and the data will be re-indexed using the new index definition.
+  * The index can be deleted.
  
-* **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
+* **Locked (ignore)** - when lock mode is set using `lockedIgnore()`:  
   * Index definition changes will Not be applied.  
   * Modifying the index definition will return successfully and no error will be raised,  
     however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
  
-* **Locked (error)** - when lock mode is set to `LockedError`:  
+* **Locked (error)** - when lock mode is set using `lockedError()`:  
   * Index definitions changes will Not be applied.  
-  * An exception will be thrown upon trying to modify the index.  
+  * An exception will be thrown upon trying to modify the index.
+  * The index cannot be deleted. Attempting to do so will result in an exception.
 
 {PANEL/}
 
@@ -53,7 +55,7 @@ Consider the following scenario:
 * Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
-  However, if the index lock mode is _'Unlock'_, the next time your application will start,  
+  However, if the index lock mode is `unlock`, the next time your application will start,  
   it will reset the index definition back to the original version.
 
 * Locking the index allows to make changes to the running index and prevents the application  
@@ -62,41 +64,42 @@ Consider the following scenario:
 
   1. Run your application  
   2. Modify the index definition on the server (from Studio, or from another application),  
-     and then set this index lock mode to `LockedIgnore`.  
+     and then set this index lock mode to `lockedIgnore`.  
   3. A side-by-side replacement index is created on the server.  
      It will index your dataset according to the **new** definition.  
   4. At this point, if any instance of your original application is started,  
      the code that defines and deploys the index upon startup will have no effect  
-     since the index is 'locked'.  
+     since the index is locked.  
   5. Once the replacement index is done indexing, it will replace the original index.  
 
 {PANEL/}
 
 {PANEL: Set lock mode - single index}
 
-{CODE:nodejs set_lock_single@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:php set_lock_single@ClientApi\Operations\Maintenance\Indexes\SetLockMode.php /}
 
 {PANEL/}
 
 {PANEL: Set lock mode - multiple indexes}
 
-{CODE:nodejs set_lock_multiple@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:php set_lock_multiple@ClientApi\Operations\Maintenance\Indexes\SetLockMode.php /}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:php syntax_1@ClientApi\Operations\Maintenance\Indexes\SetLockMode.php /}
 
 | Parameters | Type | Description |
 |- | - | - |
-| **indexName** | string | Index name for which to set lock mode |
-| **mode** | `"Unlock"` /<br> `"LockedIgnore"` /<br> `"LockedError"` | Lock mode to set |
-| **parameters** | parameters object | List of indexes + lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
+| **$mode** | `?IndexLockMode` | Lock mode to set |
+| **$indexName** | `?string` | Index names to set lock mode for |
+| **$parameters** | `?Parameters` | Index lock parameters |
 
-{CODE:nodejs syntax_2@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE:php syntax_2@ClientApi\Operations\Maintenance\Indexes\SetLockMode.php /}
 
 {PANEL/}
+
 
 ## Related Articles
 

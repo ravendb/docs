@@ -16,7 +16,6 @@
 * Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
-
 * In this page:
     * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
     * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
@@ -34,15 +33,18 @@
   * Any change to the index definition will be applied.  
   * If the new index definition differs from the one stored on the server,  
     the index will be updated and the data will be re-indexed using the new index definition.  
+  * The index can be deleted.
  
 * **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
   * Index definition changes will Not be applied.  
   * Modifying the index definition will return successfully and no error will be raised,  
     however, no change will be made to the index definition on the server.
- 
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
+
 * **Locked (error)** - when lock mode is set to `LockedError`:  
   * Index definitions changes will Not be applied.  
-  * An exception will be thrown upon trying to modify the index.  
+  * An exception will be thrown upon trying to modify or delete the index.  
+  * The index cannot be deleted. Attempting to do so will result in an exception.
 
 {PANEL/}
 
@@ -74,27 +76,35 @@ Consider the following scenario:
 
 {PANEL: Set lock mode - single index}
 
-{CODE:nodejs set_lock_single@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync set_lock_single@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
+{CODE-TAB:csharp:Async set_lock_single_async@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
 {PANEL: Set lock mode - multiple indexes}
 
-{CODE:nodejs set_lock_multiple@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync set_lock_multiple@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
+{CODE-TAB:csharp:Async set_lock_multiple_async@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 
 {PANEL: Syntax}
 
-{CODE:nodejs syntax_1@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE syntax_1@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
 
 | Parameters | Type | Description |
 |- | - | - |
 | **indexName** | string | Index name for which to set lock mode |
-| **mode** | `"Unlock"` /<br> `"LockedIgnore"` /<br> `"LockedError"` | Lock mode to set |
-| **parameters** | parameters object | List of indexes + lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
+| **mode** | `IndexLockMode` | Lock mode to set |
+| **parameters** | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br>An exception is thrown if any of the specified indexes do not exist. |
 
-{CODE:nodejs syntax_2@client-api\operations\maintenance\indexes\setLockMode.js /}
+{CODE syntax_2@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
+
+{CODE syntax_3@ClientApi\Operations\Maintenance\Indexes\SetLockMode.cs /}
 
 {PANEL/}
 
