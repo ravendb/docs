@@ -15,7 +15,6 @@
    * [Revisions and Replication](../../document-extensions/revisions/revisions-and-other-features#revisions-and-replication)
    * [Revisions and ETL](../../document-extensions/revisions/revisions-and-other-features#revisions-and-etl)
    * [Revisions and Backup](../../document-extensions/revisions/revisions-and-other-features#revisions-and-backup)  
-   * [Revisions and Data Subscriptions](../../document-extensions/revisions/revisions-and-other-features#revisions-and-data-subscriptions)
    * [Revisions Import and Export](../../document-extensions/revisions/revisions-and-other-features#revisions-import-and-export)
 
 {NOTE/}
@@ -215,17 +214,11 @@ Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-cont
 
 {PANEL/}
 
-{PANEL: Revisions and Data Subscriptions}
-
-* Learn about revisions and data subscriptions [here](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).  
-
-{PANEL/}
-
 {PANEL: Revisions Import and Export}
 
 * Revisions can be imported and exported with a `.ravendbdump` file:
-    * Using the Client API
-    * From the [import](../../studio/database/tasks/import-data/import-data-file#import-options) and [export](../../studio/database/tasks/export-database#export-options) views in the Studio  
+   * Using the Client API
+   * From the [import](../../studio/database/tasks/import-data/import-data-file#import-options) and [export](../../studio/database/tasks/export-database#export-options) views in the Studio  
 
 * Revisions can be imported when migrating data from another [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb#step-#4:-set-import-options).
 
@@ -253,8 +246,3 @@ Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-cont
 
 * [Settings: Document Revisions](../../studio/database/settings/document-revisions)  
 * [Document Extensions: Revisions](../../studio/database/document-extensions/revisions)  
-
-### Data Subscriptions
-
-* [What Are Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)  
-* [Revisions and Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  

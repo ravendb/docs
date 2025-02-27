@@ -11,7 +11,6 @@
   * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
   * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
   * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler)  
   * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
   * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  

@@ -11,14 +11,14 @@
 * In this page:  
 
   * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
-     * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
-     * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
-     * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+     * [`get` usage](../../document-extensions/counters/retrieve-counter-values#usage)  
+     * [`get` example](../../document-extensions/counters/retrieve-counter-values#example)  
+     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values#syntax)
 
   * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
-     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
-     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-example)  
-     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+     * [`get_all` usage](../../document-extensions/counters/retrieve-counter-values#usage-1)  
+     * [`get_all` example](../../document-extensions/counters/retrieve-counter-values#example-1)  
+     * [`get_all` Syntax](../../document-extensions/counters/retrieve-counter-values#syntax-1)  
 
 {NOTE/}
 
@@ -26,24 +26,24 @@
 
 {PANEL: Get a single Counter's value}
 
-#### Get usage:  
+#### `get` usage:  
 
 * Open a session
 * Create an instance of `counters_for`.
     * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
 * Call `counters_for.get` to retrieve the current value of a single Counter.
 
 ---
 
-#### Get example:  
+#### `get` example:  
 
 {CODE:python counters_region_Get@DocumentExtensions\Counters\Counters.py /}
 
 ---
 
-#### Get syntax:  
+#### `get` syntax:  
 
 {CODE:python Get-definition@DocumentExtensions\Counters\Counters.py /}
 
@@ -61,24 +61,24 @@
 
 ---
 
-#### GetAll usage: 
+#### `get_all` usage: 
 
 * Open a session.  
 * Create an instance of `counters_for`.
     * Either pass `counters_for` an explicit document ID, -or-
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
 * Call `counters_for.get_all` to retrieve the names and values of all counters associated with the document.
 
 ---
 
-#### GetAll example:  
+#### `get_all` example:  
 
 {CODE:python counters_region_GetAll@DocumentExtensions\Counters\Counters.py /}
 
 ---
 
-#### GetAll syntax:  
+#### `get_all` syntax:  
 
 {CODE:python GetAll-definition@DocumentExtensions\Counters\Counters.py /}
 
