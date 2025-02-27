@@ -2,79 +2,76 @@
 ---
 
 {NOTE: }
-The features listed on this page were available in former RavenDB versions 
-and are unavailable in RavenDB `6.x`, or their behavior is inconsistent with 
-their behavior in previous versions.  
+The features listed on this page were available in former RavenDB versions and are unavailable in RavenDB `6.x`,  
+or their behavior is inconsistent with their behavior in previous versions.  
 
 * In this page:
-   * [Breaking Changes](../../migration/client-api/client-breaking-changes#breaking-changes)  
-   * [Breaking Changes in a Sharded Database](../../migration/client-api/client-breaking-changes#breaking-changes-in-a-sharded-database)  
+   * [Breaking changes](../../migration/client-api/client-breaking-changes#breaking-changes)  
+   * [Breaking changes in a sharded database](../../migration/client-api/client-breaking-changes#breaking-changes-in-a-sharded-database)  
    * [Additional breaking changes](../../migration/client-api/client-breaking-changes#additional-breaking-changes)  
 
 {NOTE/}
 
-{PANEL: Breaking Changes}
+{PANEL: Breaking changes}
 
 * **Include from a Non-tracking session**  
-  A non-tracking session will now throw the below exception if an 'Include' operation is 
-  registered in it, to indicate that the operation is forbidden from a non-tracking session 
-  and warn about its expected results.  
-  `"This session does not track any entities, because of that registering includes is forbidden  
-  to avoid false expectations when later load operations are performed on those and no requests 
-  are being sent to the server. Please avoid any 'Include' operations during non-tracking session 
-  actions like load or query."`
+  A non-tracking session will now throw the following exception if an 'Include' operation is used in it,  
+  to indicate that the operation is forbidden in a non-tracking session and to warn about its expected results.
 
-* **Type Changes**  
+        "This session does not track any entities, because of that registering includes is forbidden
+        to avoid false expectations when later load operations are performed on those and no requests
+        are being sent to the server.
+        Please avoid any 'Include' operations during non-tracking session actions like load or query."
+  
+* **Type changes**  
   Many methods related to paging information (Skip, Take, PageSize, TotalResults, etc.) that used the `int` type in former RavenDB versions now use `long`, 
-  e.g. `QueryStatistics.TotalResults`
+  e.g. [QueryStatistics.TotalResults](../../client-api/session/querying/how-to-get-query-statistics#syntax).
 
 * **Indexing**  
-  The default value of the 
-  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved) 
-  configuration option is now `true`  
+  The default value of the
+  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved)
+  configuration option is now `true`.  
 
 * **Facets**  
- `FacetOptions` were removed from `RangeFacet`  
+ `FacetOptions` were removed from [RangeFacet](../../indexes/querying/faceted-search#syntax).  
 
 * **Obsolete entities removed**  
-  Many obsolete attributes, properties, and methods were removed from the public API 
+  Many obsolete attributes, properties, and methods were removed from the public API. 
 
-* A `DisposeCertificate` convention has been added to prevent/allow the disposal of 
-  `DocumentStore.Certificate` when the store is disposed of, to help users mitigate the 
-  X509Certificate2 leak.  
-  More info [here](https://snede.net/the-most-dangerous-constructor-in-net/).  
+* **Certificate disposal**  
+  The [DisposeCertificate](../../client-api/configuration/conventions#disposecertificate) convention has been introduced
+  to prevent or allow the disposal of `DocumentStore.Certificate` when the store is disposed,
+  helping users mitigate the [X509Certificate2 leak](https://snede.net/the-most-dangerous-constructor-in-net/).
 
 * **Serialization**  
-  Only **Public** fields are serialized/deserialized when doing a projection. 
-  Private fields are **not** serialized/deserialized.  
+  Only _Public_ fields are serialized/deserialized when projecting query results.  
+  _Private_ fields are **not** serialized/deserialized.  
 
-* **`DefaultAsyncHiLoIdGenerator` is replaced with `AsyncHiLoIdGenerator`**  
+* **HiLo ID generator**  
+  `DefaultAsyncHiLoIdGenerator` is replaced with `AsyncHiLoIdGenerator`  
   {CODE-BLOCK: csharp}
   public AsyncHiLoIdGenerator(string tag, DocumentStore store, string dbName, char identityPartsSeparator)
   {CODE-BLOCK/}
 
-
 {PANEL/}
 
-{PANEL: Breaking Changes in a Sharded Database}
+{PANEL: Breaking changes in a sharded database}
 
-### Unsupported Features  
+#### Unsupported features:  
 
 RavenDB 6.0 introduces [sharding](../../sharding/overview).  
-Features that are currently unavailable under a sharded database 
-(but remain available in regular databases) are listed in the 
-sharding [unsupported features](../../sharding/unsupported) page.  
-Attempting to use these features when the database is sharded will normally 
-throw a `NotSupportedInShardingException` exception.  
+Features that are currently unavailable under a sharded database (but remain available in regular databases)
+are listed in the sharding [unsupported features](../../sharding/unsupported) page.  
+Attempting to use these features when the database is sharded will normally throw a `NotSupportedInShardingException` exception.  
 
 ---
 
-### Casting Smuggler Results  
+#### Casting smuggler results:  
 
 The result sets returned by Smuggler and features that use it (import, export, Backup 
-and Restore) are sharding-specific and should not be cast using a non-sharded type.  
+and Restore) are sharding-specific and should not be cast to a non-sharded type.  
 
-The following code, for example, **will fail** when the database is sharded.  
+For example, the following code **will fail** when the database is sharded.  
 {CODE-BLOCK: csharp}
 var operation = await store.Maintenance.SendAsync(new BackupOperation(config));
 var result = await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(60));
@@ -98,10 +95,10 @@ var backupResult = (ShardedBackupResult)result;
 
 ---
 
-### Endpoints
+#### Endpoints:
 
 * `GET /databases/*/revisions/bin`  
-  Pass `start` instead of `etag`  
+  Pass `start` instead of `etag`.  
   We now fetch from the last entry backward rather than from a specific etag.  
   {INFO: }
   `GetRevisionsBinEntryCommand`  
@@ -110,8 +107,8 @@ var backupResult = (ShardedBackupResult)result;
   {INFO/}
 
 * `GET /databases/*/indexes/terms`  
-  The `Terms` field of the returned results is now `List<String>` instead of `HashSet<String>`
-  {CODE-BLOCK: JSON}
+  The `Terms` field of the returned results is now `List<String>` instead of `HashSet<String>`.
+  {CODE-BLOCK: csharp}
   public class TermsQueryResult
   {
      public List<string> Terms { get; set; }
@@ -121,7 +118,7 @@ var backupResult = (ShardedBackupResult)result;
   {CODE-BLOCK/}
 
 * `GET database/*/debug/documents/get-revisions`  
-  Operation parameter changed from `etag` to `start`  
+  Operation parameter changed from `etag` to `start`.  
 
 {PANEL/}
 
