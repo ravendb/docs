@@ -4,21 +4,21 @@
 {NOTE: }
 
 * This article explains how to run a vector search using a **dynamic query**.  
-  To learn how to run a vector search using a static-index, see [vector search using a static-index](../ai-integration/vector-search-using-static-index).
+  To learn how to run a vector search using a static-index, see [vector search using a static-index](../../ai-integration/vector-search/vector-search-using-static-index).
 
 * In this page:
-  * [What is a vector search](../ai-integration/vector-search-using-dynamic-query#what-is-a-vector-search)
-  * [Dynamic vector search query - Overview](../ai-integration/vector-search-using-dynamic-query#dynamic-vector-search-query---overview)
-     * [Creating embeddings for the auto-index](../ai-integration/vector-search-using-dynamic-query#creating-embeddings-for-the-auto-index)
-     * [Retrieving results](../ai-integration/vector-search-using-dynamic-query#retrieving-results)
-     * [The dynamic query parameters](../ai-integration/vector-search-using-dynamic-query#the-dynamic-query-parameters)
-     * [Corax auto-indexes](../ai-integration/vector-search-using-dynamic-query#corax-auto-indexes)
-  * [Vector search on TEXT](../ai-integration/vector-search-using-dynamic-query#vector-search-on-text)
-  * [Vector search on NUMERICAL content](../ai-integration/vector-search-using-dynamic-query#vector-search-on-numerical-content)
-  * [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search)
-  * [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options)
-  * [Querying vector fields and regular data in the same query](../ai-integration/vector-search-using-dynamic-query#querying-vector-fields-and-regular-data-in-the-same-query)
-  * [Syntax](../ai-integration/vector-search-using-dynamic-query#syntax)
+  * [What is a vector search](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-a-vector-search)
+  * [Dynamic vector search query - Overview](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search-query---overview)
+     * [Creating embeddings for the auto-index](../../ai-integration/vector-search/vector-search-using-dynamic-query#creating-embeddings-for-the-auto-index)
+     * [Retrieving results](../../ai-integration/vector-search/vector-search-using-dynamic-query#retrieving-results)
+     * [The dynamic query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query#the-dynamic-query-parameters)
+     * [Corax auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query#corax-auto-indexes)
+  * [Vector search on TEXT](../../ai-integration/vector-search/vector-search-using-dynamic-query#vector-search-on-text)
+  * [Vector search on NUMERICAL content](../../ai-integration/vector-search/vector-search-using-dynamic-query#vector-search-on-numerical-content)
+  * [Exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query#exact-search)
+  * [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options)
+  * [Querying vector fields and regular data in the same query](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-vector-fields-and-regular-data-in-the-same-query)
+  * [Syntax](../../ai-integration/vector-search/vector-search-using-dynamic-query#syntax)
     
 {NOTE/}
 
@@ -40,11 +40,11 @@
   * From the Client API - use method `VectorSearch()`, examples are provided later in this article
   * In RQL - use method `vector.search()`
 
-* The **source data types** that can be used for vector search are detailed in [Data types for vector search](../ai-integration/data-types-for-vector-search).
+* The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search).
 
-* Note: Vector search queries cannot be used with [subscription queries](../client-api/data-subscriptions/creation/api-overview#subscription-query).
+* Note: Vector search queries cannot be used with [subscription queries](../../client-api/data-subscriptions/creation/api-overview#subscription-query).
 
-* When executing a dynamic vector search query, RavenDB creates a [Corax auto-index](.././ai-integration/vector-search-using-dynamic-query#corax-auto-indexes) to process the query,  
+* When executing a dynamic vector search query, RavenDB creates a [Corax auto-index](../../ai-integration/vector-search/vector-search-using-dynamic-query#corax-auto-indexes) to process the query,  
   and the results are retrieved from that index.    
 
 ---
@@ -66,12 +66,12 @@
     To avoid index errors, ensure that the dimensionality of these numerical arrays (i.e., their length)  
     is consistent across all your source documents for the field you are querying.  
     If you wish to enforce such consistency -  
-    perform a vector search using a [static-index](../ai-integration/vector-search-using-static-index) instead of a dynamic query.
+    perform a vector search using a [static-index](../../ai-integration/vector-search/vector-search-using-static-index) instead of a dynamic query.
     {WARNING/} 
 
 * **Quantizing the embeddings**:  
   The embeddings are quantized based on the parameters specified in the query.  
-  Learn more about quantization in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).
+  Learn more about quantization in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
 
 * **Indexing the embeddings**:  
   RavenDB indexes the embeddings on the server using the [HNSW algorithm](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world).  
@@ -87,13 +87,13 @@
 * **Processing the query**:  
   To ensure consistent comparisons, the **search term** is transformed into an embedding vector using the same method as the document fields.
   The server will search for the most similar vectors in the indexed vector space,
-  taking into account all the [query parameters](../ai-integration/vector-search-using-dynamic-query#the-dynamic-query-parameters) described below.  
+  taking into account all the [query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query#the-dynamic-query-parameters) described below.  
   The documents that correspond to the resulting vectors are then returned to the client. 
 
 * **Search results**:  
   By default, the resulting documents will be ordered by their score.
-  You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically) configuration key.  
-  In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../client-api/session/querying/sort-query-results).
+  You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically) configuration key.  
+  In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results).
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
@@ -107,7 +107,7 @@
 
 * **Target quantization**  
   You can specify the quantization encoding for the embeddings that will be created from source data.  
-  Learn more about quantization in [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options).  
+  Learn more about quantization in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).  
 
 * **Minimum similarity**  
   You can specify the minimum similarity to use when searching for related vectors.  
@@ -116,7 +116,7 @@
   while a value closer to `0.0f` allows for less similarity.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
 
 * **Number of candidates**  
   You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -125,7 +125,7 @@
     * higher than the number of candidates - when the same vector is shared between multiple documents.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
 
 * **Search method**
     * _Approximate Nearest-Neighbor search_ (Default):   
@@ -133,7 +133,7 @@
     * _Exact search_:   
       Perform a thorough scan of the vectors to find the actual closest vectors,  
       offering better accuracy but at a higher computational cost.  
-      Learn more in [Exact search](../ai-integration/vector-search-using-dynamic-query#exact-search).
+      Learn more in [Exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query#exact-search).
 
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
@@ -141,12 +141,12 @@
 #### Corax auto-indexes
 ---
 
-* Only [Corax indexes](../indexes/search-engine/corax) support vector search.
+* Only [Corax indexes](../../indexes/search-engine/corax) support vector search.
 
-* Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
+* Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)),  
   performing a vector search using a dynamic query will create a new auto-index based on Corax.
 
-* Normally, new dynamic queries extend existing [auto-indexes](../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) if they require additional fields.  
+* Normally, new dynamic queries extend existing [auto-indexes](../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index) if they require additional fields.  
   However, a dynamic query with a vector search will not extend an existing Lucene-based auto-index.
 
     {NOTE: }
@@ -172,15 +172,15 @@
 
 * Since this query does not specify a target quantization format,
   the generated embedding vectors will be encoded in the default _Single_ format (single-precision floating-point).  
-  Refer to [Quantization options](../ai-integration/vector-search-using-dynamic-query#quantization-options) for examples that specify the destination quantization.
+  Refer to [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options) for examples that specify the destination quantization.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:Query vs_1@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:Query_async vs_1_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery vs_2@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery_async vs_2_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery vs_3@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery_async vs_3_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query vs_1@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query_async vs_1_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery vs_2@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery_async vs_2_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery vs_3@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery_async vs_3_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
     {CODE-TAB-BLOCK:sql:RQL}
 // Query the Products collection
 from "Products"
@@ -207,26 +207,26 @@ where vector.search(embedding.text(Name), "italian food", 0.82, 20)
   The _Movie_ class includes various formats of numerical vector data.  
   Note: This sample data is minimal to keep the examples simple.
 
-* Note the usage of RavenDB's dedicated data type, [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector), which is highly optimized for reading and writing arrays to disk.
-  Learn more about the source data types suitable for vector search in [Data types for vector search](../ai-integration/data-types-for-vector-search).
+* Note the usage of RavenDB's dedicated data type, [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search#ravenvector), which is highly optimized for reading and writing arrays to disk.
+  Learn more about the source data types suitable for vector search in [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search).
 
 * Unlike vector searches on text, where RavenDB transforms the raw text into an embedding vector,  
   numerical vector searches require your source data to already be in an embedding vector format.  
 
 * If your raw data is in a _float_ format, you can request further quantization of the embeddings that will be indexed in the auto-index.
-  See an example of this in: [Quantiztion options](../ai-integration/vector-search-using-dynamic-query#quantization-options).  
+  See an example of this in: [Quantiztion options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).  
 
 * Raw data that is already formatted as _Int8_ or _Binary_ **cannot** be quantized to lower-form (e.g. Int8 -> Int1).  
-  When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../ai-integration/vector-search-using-dynamic-query#section-1).
+  When storing data in these formats in your documents, you should use [RavenDB’s vector quantizer methods](../../ai-integration/vector-search/vector-search-using-dynamic-query#section-1).
 
 ---
 
 #### Sample data:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Class movie_class@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Sample_data sample_data@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Sample_document sample_document@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Class movie_class@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Sample_data sample_data@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Sample_document sample_document@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TABS/}
 
 ---
@@ -241,12 +241,12 @@ These examples search for Movie documents with vectors similar to the one provid
   which contains numerical data in **floating-point format**. 
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_4@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_4_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_5@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_5_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_6@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_6_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_4@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_4_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_5@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_5_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_6@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_6_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // The source document field type is interpreted as 'Single' by default
@@ -262,7 +262,7 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
   which contains numerical data that is already quantized in **_Int8_ format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_7@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_7@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the source document field name with 'embedding.i8' to indicate the source data type
@@ -278,7 +278,7 @@ where vector.search(embedding.i8(TagsEmbeddedAsInt8), $queryVector)
   which contains numerical data represented in **_Base64_ format**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_8@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_8@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // * Wrap the source document field name using 'embedding.<format>' to specify
@@ -305,12 +305,12 @@ where vector.search(TagsEmbeddedAsBase64, $queryVectorBase64)
   Setting the param is similar for both text and numerical content searches.
 
     {CODE-TABS}
-    {CODE-TAB:csharp:Query vs_9@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:Query_async vs_9_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery vs_10@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:DocumentQuery_async vs_10_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery vs_11@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-    {CODE-TAB:csharp:RawQuery_async vs_11_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query vs_9@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:Query_async vs_9_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery vs_10@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:DocumentQuery_async vs_10_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery vs_11@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+    {CODE-TAB:csharp:RawQuery_async vs_11_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
     {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // Wrap the vector.search query with the 'exact()' method
@@ -374,12 +374,12 @@ The available quantization options are:
   * The generated embeddings will use the _Int8_ format.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_15@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_15_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_16@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_16_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_17@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_17_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_15@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_15_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_16@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_16_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_17@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_17_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // Wrap the 'Name' field with 'embedding.text_i8'
@@ -396,12 +396,12 @@ where vector.search(embedding.text_i8(Name), $searchTerm)
     * The generated embeddings will use the _Binary_ format.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query vs_18@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:Query_async vs_18_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery vs_19@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:DocumentQuery_async vs_19_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery vs_20@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-{CODE-TAB:csharp:RawQuery_async vs_20_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query vs_18@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:Query_async vs_18_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery vs_19@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:DocumentQuery_async vs_19_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery vs_20@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+{CODE-TAB:csharp:RawQuery_async vs_20_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Movies"
 // Wrap the 'TagsEmbeddedAsSingle' field with 'embedding.f32_i1'
@@ -484,12 +484,12 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
   `Auto/Products/ByPricePerUnitAndVector.search(embedding.text(Name))`.
 
   {CODE-TABS}
-  {CODE-TAB:csharp:Query vs_12@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:Query_async vs_12_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:DocumentQuery vs_13@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:DocumentQuery_async vs_13_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:RawQuery vs_14@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
-  {CODE-TAB:csharp:RawQuery_async vs_14_async@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:Query vs_12@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:Query_async vs_12_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:DocumentQuery vs_13@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:DocumentQuery_async vs_13_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery vs_14@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery_async vs_14_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
   {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 // The filtering condition:
@@ -535,7 +535,7 @@ and (vector.search(embedding.text(Name), $searchTerm, null, 25))
 
 `VectorSearch`:  
 
-{CODE:csharp syntax_1@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_1@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 | Parameter                 | Type                                                                                                                                 | Description                                                                                                                         |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
@@ -548,16 +548,16 @@ and (vector.search(embedding.text(Name), $searchTerm, null, 25))
 
 
 The default value for `minimumSimilarity` is defined by this configuration key:  
-[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
 
 The default value for `numberOfCandidates` is defined by this configuration key:  
-[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
+[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
 
 ---
 
 `IVectorFieldFactory`:
 
-{CODE:csharp syntax_2@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_2@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 | Parameter                       | Type                          | Description                                                                            |
 |---------------------------------|-------------------------------|----------------------------------------------------------------------------------------|
@@ -571,27 +571,27 @@ The default value for `numberOfCandidates` is defined by this configuration key:
 
 `IVectorEmbeddingTextField`:
 
-{CODE:csharp syntax_3@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_3@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 | Parameter                       | Type                  | Description                             |
 |---------------------------------|-----------------------|-----------------------------------------|
 | **targetEmbeddingQuantization** | `VectorEmbeddingType` | The desired target quantization format. |
 
-{CODE:csharp syntax_4@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_4@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 ---
 
 `IVectorEmbeddingTextFieldValueFactory`:
 
-{CODE:csharp syntax_5@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_5@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 ---
 
 #### `RavenVector`:  
 RavenVector is RavenDB's dedicated data type for storing and querying numerical embeddings.  
-Learn more in [RavenVector](../ai-integration/data-types-for-vector-search#ravenvector)
+Learn more in [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search#ravenvector)
 
-{CODE:csharp syntax_6@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_6@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 ---
 
@@ -600,7 +600,7 @@ RavenDB provides the following quantizer methods.
 Use them to transform your raw data to the desired format.  
 Other quantizers may not be compatible.  
 
-{CODE:csharp syntax_7@AiIntegration\VectorSearchUsingDynamicQuery.cs /}
+{CODE:csharp syntax_7@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
 
 {PANEL/}
 
@@ -608,11 +608,11 @@ Other quantizers may not be compatible.
 
 ### Vector Search
 
-- [RavenDB as a vector database](../ai-integration/ravendb-as-vector-database)
-- [Vector search using a static index](../ai-integration/vector-search-using-static-index)
-- [Data types for vector search](../ai-integration/data-tuypes-for-vector-search)
+- [RavenDB as a vector database](../../ai-integration/vector-search/ravendb-as-vector-database)
+- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
+- [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
 
 ### Querying
 
-- [Query overview](../client-api/session/querying/how-to-query)
-- [Full-text search](../client-api/session/querying/text-search/full-text-search)
+- [Query overview](../../client-api/session/querying/how-to-query)
+- [Full-text search](../../client-api/session/querying/text-search/full-text-search)
