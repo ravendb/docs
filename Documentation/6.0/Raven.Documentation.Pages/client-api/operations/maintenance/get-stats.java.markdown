@@ -4,10 +4,10 @@
 
 {NOTE: }
 
-* Statistics about your database and collections can be retrieved.
+* Statistics can be retrieved for the database and for collections.
 
-* By default, you get stats for the database defined in your Document Store.   
-  To get database and collection stats for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).
+* By default, statistics are retrieved for the database defined in the Document Store.   
+  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).
 
 * In this page:
     * [Get collection stats](../../../client-api/operations/maintenance/get-stats#get-collection-stats)
