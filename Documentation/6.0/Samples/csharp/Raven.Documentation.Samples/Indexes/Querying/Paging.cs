@@ -282,7 +282,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                              // Call Distinct to remove duplicate projected results
                             .Distinct()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                              // Define how many items to return
                             .Take(pageSize)
                             .ToList();
@@ -334,7 +334,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                              // Call Distinct to remove duplicate projected results
                             .Distinct()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                             .Take(pageSize)
                             .ToListAsync();
                         
@@ -381,7 +381,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                              // Call Distinct to remove duplicate projected results
                             .Distinct()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                             .Take(pageSize)
                             .ToList();
                         
@@ -423,7 +423,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             .Statistics(out QueryStatistics stats)
                             .OfType<Order>()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                             .Take(pageSize)
                             .ToList();
                         
@@ -465,7 +465,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             .Statistics(out QueryStatistics stats)
                             .OfType<Order>()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                             .Take(pageSize)
                             .ToListAsync();
                         
@@ -507,7 +507,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                             .Statistics(out QueryStatistics stats)
                             .OfType<Order>()
                              // Add the number of skipped results to the "start location"  
-                            .Skip((pageNumber * pageSize) + (int)skippedResults)
+                            .Skip((pageNumber * pageSize) + skippedResults)
                             .Take(pageSize)
                             .ToList();
                         
