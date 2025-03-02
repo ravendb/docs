@@ -33,16 +33,19 @@
 * **Unlocked** - when lock mode is set to `Unlock`:  
   * Any change to the index definition will be applied.  
   * If the new index definition differs from the one stored on the server,  
-    the index will be updated and the data will be re-indexed using the new index definition.  
+    the index will be updated and the data will be re-indexed using the new index definition.
+  * The index can be deleted.
  
 * **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
   * Index definition changes will Not be applied.  
   * Modifying the index definition will return successfully and no error will be raised,  
     however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
  
 * **Locked (error)** - when lock mode is set to `LockedError`:  
   * Index definitions changes will Not be applied.  
-  * An exception will be thrown upon trying to modify the index.  
+  * An exception will be thrown upon trying to modify the index.
+  * The index cannot be deleted. Attempting to do so will result in an exception.
 
 {PANEL/}
 
