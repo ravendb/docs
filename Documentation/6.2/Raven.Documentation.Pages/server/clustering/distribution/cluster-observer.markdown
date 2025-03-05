@@ -2,8 +2,9 @@
 ---
 
 {NOTE: }
-
-* The primary goal of the `Cluster Observer` is to maintain the [Replication Factor](../../../server/clustering/distribution/distributed-database#replication-factor) of each database in the cluster.  
+ 
+* The primary goal of the **Cluster Observer** is to monitor the health of each database in the cluster  
+  and adjust its topology to maintain the desired [Replication Factor](../../../server/clustering/distribution/distributed-database#replication-factor).
 
 * This observer is always running on the [Leader](../../../server/clustering/rachis/cluster-topology#leader) node.
 
@@ -34,11 +35,17 @@
       We create a database with a replication factor of 3 and define an ETL task.
     
     * The newly created database will be distributed automatically to three of the cluster nodes.  
-      Let's assume it is distributed to B, C and E (so the database group is [B,C,E]),  
+      Let's assume it is distributed to B, C, and E (so the database group is [B,C,E]),  
       and the cluster decides that node C is responsible for performing the ETL task.
-    
-    * If node C goes offline or is not reachable, the Observer will notice it and relocate the database from node C to another available node.
-      Meanwhile, the ETL task will fail over to another available node from the Database Group.  
+ 
+    * If node C goes offline or becomes unreachable, the Cluster Observer detects the issue.
+      Initially:
+      * After the duration specified in the [Cluster.TimeBeforeMovingToRehabInSec](../../../server/configuration/cluster-configuration#cluster.timebeforemovingtorehabinsec) configuration,  
+        the observer moves node C to rehab mode, allowing time for recovery.
+      * The ETL task fails over to another available node in the Database Group.
+   
+    * If node C remains offline beyond the period specified in the [Cluster.TimeBeforeAddingReplicaInSec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec) configuration,
+      the observer begins replicating the database to another node in the Database Group as a last resort.
     
     {NOTE/}
 
