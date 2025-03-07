@@ -13,14 +13,14 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 | Parameter             | Type     | Description                                                                                                           |
 |-----------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
-| __docId__             | string   | The ID of the document that holds the counters                                                                        |
-| __counter__           | string   | The name of the counter to get                                                                                        |
-| __counters__          | string[] | The list of counter names to get                                                                                     |
-| __returnFullResults__ | boolean  | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
+| **docId**             | string   | The ID of the document that holds the counters                                                                        |
+| **counter**           | string   | The name of the counter to get                                                                                        |
+| **counters**          | string[] | The list of counter names to get                                                                                     |
+| **returnFullResults** | boolean  | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 
 {INFO: }
 
-__The full results flag:__  
+**The full results flag:**  
 
 If RavenDB is running in a distributed cluster, and the database resides on several nodes,  
 then a counter can have a different *local* value on each database node.  
@@ -43,8 +43,8 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 
 {PANEL: Examples}
 
-Assume we have a document `users/1` that holds 3 counters -  
-_"Likes"_, _"Dislikes"_ and _"Downloads"_ -  with values 10, 20 and 30 (respectively)
+Assume we have a `users/1` document that holds 3 counters:  
+`Likes`, `Dislikes` and `Downloads` -  with values 10, 20 and 30 (respectively)
 
 ---
 

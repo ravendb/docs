@@ -19,17 +19,17 @@
 
 {PANEL: Get all revisions}
 
-{CODE:python getAllRevisions@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.py /}
+{CODE:php getAllRevisions@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.php /}
 
 {PANEL/}
 
 {PANEL: Paging results}
 
 * Get and process revisions, one page at a time:
-  {CODE:python getRevisionsWithPaging@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.py /}
+  {CODE:php getRevisionsWithPaging@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.php /}
 
 * The document ID, start & page size can be wrapped in a `Parameters` object:
-  {CODE:python getRevisionsWithPagingParams@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.py /}
+  {CODE:php getRevisionsWithPagingParams@DocumentExtensions\Revisions\ClientAPI\Operations\GetRevisions.php /}
 
 {PANEL/}
 
@@ -37,10 +37,10 @@
 
 | Parameter | Type | Description |
 | - | - | - |
-| **id** | `str` | ID of the document to get revisions for |
+| **id** | `string` | ID of the document to get revisions for |
 | **start** | `int` | Revision number to start from |
-| **page_size** | `int` | Number of revisions to get |
-| **parameters** | `Parameters` | An object that wraps `id`, `start`, and `page_size` |
+| **pageSize** | `int` | Number of revisions to get |
+| **parameters** | `Parameters` | An object that wraps `id`, `start`, and `pageSize` |
 
 {PANEL/}
 
