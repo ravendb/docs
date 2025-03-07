@@ -4,12 +4,17 @@ namespace RavenDB\Samples\DocumentExtensions\Counters;
 
 use DateTime;
 use RavenDB\Documents\DocumentStore;
+use RavenDB\Documents\Session\SessionDocumentCountersInterface;
 use RavenDB\Documents\Smuggler\DatabaseItemType;
 use RavenDB\Documents\Smuggler\DatabaseItemTypeSet;
 use RavenDB\Type\StringList;
 
 interface IFoo
 {
+    # region CountersFor-definition
+    public function countersFor(string|object $idOrEntity): SessionDocumentCountersInterface;
+    # endregion
+
     # region Increment-definition
     public function increment(?string $counter, int $delta = 1): void;
     # endregion

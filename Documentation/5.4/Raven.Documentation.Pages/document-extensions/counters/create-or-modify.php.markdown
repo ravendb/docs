@@ -46,6 +46,14 @@
 
 {PANEL: Syntax}
 
+{CODE:php CountersFor-definition@DocumentExtensions\Counters\Counters.php /}
+
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **idOrEntity** | `string` or `object`| The object to create or modify counters for |
+
+---
+
 {CODE:php Increment-definition@DocumentExtensions\Counters\Counters.php /}
 
 | Parameter        | Type  | Description     |

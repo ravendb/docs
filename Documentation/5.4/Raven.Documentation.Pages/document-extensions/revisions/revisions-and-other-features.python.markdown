@@ -223,9 +223,8 @@ Revisions are [backed up](../../server/ongoing-tasks/backup-overview#backup-cont
 
 {PANEL: Revisions Import and Export}
 
-* Revisions can be imported and exported with a `.ravendbdump` file:
-    * Using the Client API
-    * From the [import](../../studio/database/tasks/import-data/import-data-file#import-options) and [export](../../studio/database/tasks/export-database#export-options) views in the Studio  
+* Revisions can be imported and exported with a `.ravendbdump` file 
+  from the [import](../../studio/database/tasks/import-data/import-data-file#import-options) and [export](../../studio/database/tasks/export-database#export-options) views in the Studio  
 
 * Revisions can be imported when migrating data from another [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb#step-#4:-set-import-options).
 

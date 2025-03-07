@@ -5,15 +5,29 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 {PANEL: Syntax}
 
+#### `GetCountersOperation`
+
+Use `GetCountersOperation` to get counters.  
+Find usage examples below for getting a single counter, multiple counters, or all document counters. 
+{CODE:php get_counter_constructor@ClientApi\Operations\Counters\Counters.php /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | The ID of the document that holds the counters |
+| **counter** | `string` or `StringArray` or `array` or `null` | The name or names array of the counter/s to get, <br>or `null` for all document counters |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
+
+---
+
 #### Get Single Counter
 
-{CODE:csharp get_single_counter@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_single_counter@ClientApi\Operations\Counters\Counters.php /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **docId** | string | The ID of the document that holds the counters |
 | **counter** | string | The name of the counter to get |
-| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 
 {INFO: }
 
@@ -30,24 +44,24 @@ In order to get the counter values per database node, set the `returnFullResults
 
 #### Get Multiple Counters 
 
-{CODE:csharp get_multiple_counters@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_multiple_counters@ClientApi\Operations\Counters\Counters.php /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **docId** | string | The ID of the document that holds the counters |
-| **counters** | string[] | The names of the counters to get |
-| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+| **counters** | `StringArray` or `array` | The names of the counters to get |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 
 ---
 
 #### Get All Counters of a Document 
 
-{CODE:csharp get_all_counters@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_all_counters@ClientApi\Operations\Counters\Counters.php /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **docId** | string | The ID of the document that holds the counters |
-| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
+| **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 
 {PANEL/}
 
@@ -55,9 +69,9 @@ In order to get the counter values per database node, set the `returnFullResults
 
 The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
 
-{CODE:csharp counters_detail@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php counters_detail@ClientApi\Operations\Counters\Counters.php /}
 
-{CODE:csharp counter_detail@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php counter_detail@ClientApi\Operations\Counters\Counters.php /}
 
 {PANEL/}
 
@@ -68,7 +82,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #1 : Get single counter
 
-{CODE:csharp get_counters1@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_counters1@ClientApi\Operations\Counters\Counters.php /}
 
 #### Result:
 
@@ -88,7 +102,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #2 : Get multiple counters 
 
-{CODE:csharp get_counters2@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_counters2@ClientApi\Operations\Counters\Counters.php /}
 
 #### Result:
 
@@ -114,7 +128,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #3 : Get all counters 
 
-{CODE:csharp get_counters3@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_counters3@ClientApi\Operations\Counters\Counters.php /}
 
 #### Result:
 
@@ -146,7 +160,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #4 : Include full values in the result
 
-{CODE:csharp get_counters4@ClientApi\Operations\Counters\Counters.cs /}
+{CODE:php get_counters4@ClientApi\Operations\Counters\Counters.php /}
 
 #### Result:
 
