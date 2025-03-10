@@ -17,7 +17,7 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 {INFO: }
 
-__Return Full Results flag__:  
+**Return Full Results flag**:  
 
 If RavenDB is running in a distributed cluster, and the database resides on several nodes,
 a counter can have a different *local* value on each database node, and the total counter value is the
@@ -63,8 +63,8 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 
 {PANEL: Examples}
 
-Assume we have a document "users/1" that holds 3 counters -  
-_"likes"_, _"dislikes"_ and _"downloads"_ -  with values 10, 20 and 30 (respectively)
+Assume we have a `users/1` document that holds 3 counters:  
+`likes`, `dislikes` and `downloads` -  with values 10, 20 and 30 (respectively)
 
 ### Example #1 : Get single counter
 

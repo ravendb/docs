@@ -3,14 +3,14 @@
 
 {NOTE: }
 
-* Use the `counters_for.delete` method to remove a specific Counter from a document.
+* Use the `countersFor.delete` method to remove a specific Counter from a document.
 
 * All the document's Counters are deleted when the document itself is deleted.  
 
-* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
 
 * In this page:
-    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
+    * [`delete` usage](../../document-extensions/counters/delete#delete-usage)
     * [Example](../../document-extensions/counters/delete#example)
     * [Syntax](../../document-extensions/counters/delete#syntax)
 
@@ -18,21 +18,21 @@
 
 ---
 
-{PANEL: `delete ` usage}
+{PANEL: `delete` usage}
 
 **Flow**:  
 
 * Open a session.  
-* Create an instance of `counters_for`.  
-    * Either pass `counters_for` an explicit document ID, -or-  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
     * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
       e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
-* Call `document_counters.delete`.
-* Call `session.save_changes` for the changes to take effect.  
+* Call `documentCounters.delete`.
+* Call `session.saveChanges` for the changes to take effect.  
 
 **Note**:
 
-* A Counter you deleted will be removed only after the execution of `save_changes()`.  
+* A Counter you deleted will be removed only after the execution of `saveChanges()`.  
 * `delete` will **not** generate an error if the Counter doesn't exist.
 * Deleting a document deletes all its Counters as well.
 
@@ -40,11 +40,11 @@
 
 {PANEL: Syntax}
 
-{CODE:python Delete-definition@DocumentExtensions\Counters\Counters.py /}
+{CODE:php Delete-definition@DocumentExtensions\Counters\Counters.php /}
 
 | Parameter     | Type   | Description    |
 |---------------|--------|----------------|
-| **counter** | `str` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
+| **counter** | `string` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
 
 {PANEL/}
 
