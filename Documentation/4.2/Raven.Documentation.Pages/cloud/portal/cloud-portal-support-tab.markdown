@@ -26,12 +26,13 @@ The root selection is between submitting a support request regarding a **general
 !["Figure 2 - Support General Message"](images\portal-support-general-question-cloud-support.png "Figure 2 - Support General Message")
 
    **1**. Select to raise a general question.  
-   **2**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
-   **3**. Enter your support request title.  
-   **4**. Enter your question.  
-   **5**. Submit your support request.
+   **2**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
+   **3**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **4**. Enter your support request title.  
+   **5**. Enter your question.  
+   **6**. Submit your support request.
 
-You can read more about the *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
+You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
 
 ---
 
@@ -41,14 +42,15 @@ You can read more about the *Response time* types in the [Support](../../cloud/c
     
    **1**. Select to raise a Product-related question.  
    **2**. Select the product you relate to.  
-   **3**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
-   **4**. Select the issue category.  
-   **5**. Select the option associated with the instance restart action.  
-   **6**. Enter your support request title.  
-   **7**. Enter your question.  
-   **8**. Submit your support request.
+   **3**. Select the issue severity: *Minor*, *Normal*, or *Critical*.  
+   **4**. Select the expected response time: *Standard*, *Next business day*, or *Within 2 hours*.  
+   **5**. Select the issue category.  
+   **6**. Select the option associated with the instance restart action.  
+   **7**. Enter your support request title.  
+   **8**. Enter your question.  
+   **9**. Submit your support request.
 
-You can read more about the *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
+You can read more about the *Severity* and *Response time* types in the [Support](../../cloud/cloud-support#response-time-types) page.
 
 ---
 
