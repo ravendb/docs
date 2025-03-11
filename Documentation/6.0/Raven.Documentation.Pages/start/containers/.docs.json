@@ -38,6 +38,12 @@
         "Mappings": []
     },
     {
+        "Path": "deployment-guides.markdown",
+        "Name": "Deployment Guides",
+        "DiscussionId": "72d5af53-f78e-4af6-8113-e3c58f40a6b4",
+        "Mappings": []
+    },
+    {
         "Path": "/dockerfile",
         "Name": "Dockerfile",
         "Mappings": []
