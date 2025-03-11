@@ -89,7 +89,7 @@ depending on the cloud provider in question. Pick either to change your current 
 The performance of **Standard** Disks is always the same, regardless of Disk size.
 The parameters are **3000 IOPS** and **125 MB/s** of **Throughput**.
 
-For **Premium** Disks, the **IOPS** parameter is set to **500** by default. The **Throughput** parameter is always the same and equals **1000 MB/s**.
+For **Premium** Disks, the **IOPS** parameter is set to **500** by default. The **Throughput** parameter is based on the number of IOPS you have with the maximum of 4000MB/s.
 
 ---
 
