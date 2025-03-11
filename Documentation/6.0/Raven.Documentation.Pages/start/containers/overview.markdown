@@ -74,7 +74,7 @@ Automatic RavenDB cluster deployment in Kubernetes.
 - [GitHub](https://github.com/ravendb/helm-charts)
 
 #### Deployment Articles & Guides
-Step-by-step guides for containerized and orchestrated setups - [Visit Articles Page](https://ravendb.net/articles)
+Step-by-step guides for containerized and orchestrated setups - [View Deployment Guides](./deployment-guides) or [Visit Articles Page](https://ravendb.net/articles)
 
 #### Containers Knowledge Base
 Detailed documentation of hosting RavenDB in container environments - [Containers Documentation](.)
