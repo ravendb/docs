@@ -12,10 +12,9 @@
   * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
   * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
   * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`
   * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
   * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
 {NOTE/}
 
 ---
@@ -38,17 +37,12 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 ###Counters and Queries  
 
-Create queries **using code**, or send the server **raw queries** for execution.  
+Send the server **raw queries** for execution.  
 
-* Either way, you can query Counters **by name** but **not by value**.  
+* You can query Counters **by name** but **not by value**.  
   This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
 * Counter values **can** be [projected](../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
-  This way a client can get Counter values from a query without downloading whole documents.  
-
-* Use [session.query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
-   * **Returned Counter Value**: **Accumulated**  
-     A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-     {CODE:python counters_region_query@DocumentExtensions\Counters\Counters.py /}
+  This way a client can get counter values from a query without downloading whole documents.  
 
 * Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
@@ -63,16 +57,15 @@ Create queries **using code**, or send the server **raw queries** for execution.
         
     `counter` and `counterRaw` samples:  
     {CODE-TABS}
-    {CODE-TAB:python:counter counters_region_rawqueries_counter@DocumentExtensions\Counters\Counters.py /}
-    {CODE-TAB:python:counterRaw counters_region_rawqueries_counterRaw@DocumentExtensions\Counters\Counters.py /}
+    {CODE-TAB:php:counter counters_region_rawqueries_counter@DocumentExtensions\Counters\Counters.php /}
+    {CODE-TAB:php:counterRaw counters_region_rawqueries_counterRaw@DocumentExtensions\Counters\Counters.php /}
     {CODE-TABS/}
 
 ---
 
 ###Counters and Revisions  
 
-A [document revision](../../document-extensions/revisions/overview) stores all the document Counters' 
-names and values when the revision was created.  
+A document revision stores all the document Counters' names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  
   A revision stores a Counter's value as a single sum, with no specification of the Counter's value on each node.  
@@ -104,7 +97,7 @@ Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) rela
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of Smuggler.  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
@@ -128,11 +121,6 @@ Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) rela
       * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
-* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
-    Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
-    Documents will **not** be delivered in reaction to Counter Value modification.  
-
-
 {NOTE: }
 ###Counters and Other Features: Summary
 
@@ -153,11 +141,9 @@ and how the various features handle Counter values.
 | [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
 | [LINQ Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | _Accumulated_ |
 | [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler) | _No trigger_ | _Distributed_ |
 | [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
 | [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br> _Countrer Value Modification_ | _Distributed_ |
 | [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_ | |
 | [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
 | [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
@@ -177,8 +163,8 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `include_counter` and `include_counters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:python:IncludeCounter counters_region_load_include1@DocumentExtensions\Counters\Counters.py /}
-    {CODE-TAB:python:IncludeCounters counters_region_load_include2@DocumentExtensions\Counters\Counters.py /}
+    {CODE-TAB:php:IncludeCounter counters_region_load_include1@DocumentExtensions\Counters\Counters.php /}
+    {CODE-TAB:php:IncludeCounters counters_region_load_include2@DocumentExtensions\Counters\Counters.php /}
     {CODE-TABS/}
 
 * **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
@@ -187,44 +173,9 @@ so it can be immediately retrieved when needed with no additional remote calls.
 
     `include_counter` and `include_counters` usage samples:  
     {CODE-TABS}
-    {CODE-TAB:python:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\Counters.py /}
-    {CODE-TAB:python:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\Counters.py /}
+    {CODE-TAB:php:IncludeCounter counters_region_query_include_single_Counter@DocumentExtensions\Counters\Counters.php /}
+    {CODE-TAB:php:IncludeCounters counters_region_query_include_multiple_Counters@DocumentExtensions\Counters\Counters.php /}
     {CODE-TABS/}
-
----
-
-###Counters Bulk-Insert  
-`store.bulk_insert` is RavenDB's high-performance data insertion operation.  
-Use its `counters_for` interface's `increment` method to add or update counters with great speed.  
-
-* Syntax  
-
-   * `counters_for`
-     {CODE:python CountersFor-definition@DocumentExtensions\Counters\BulkInsert.py /}
-
-       | Parameters | Type | Description |
-       |:-------------|:-------------|:-------------|
-       | **id** | `str` | Document ID |
-
-   * `Increment`
-     {CODE:python Increment-definition@DocumentExtensions\Counters\BulkInsert.py /}
-
-       | Parameters | Type | Description |
-       |:-------------|:-------------|:-------------|
-       | **name** | `str` | Counter Name |
-       | **delta** | `int` | Default: 1L |
-
-* Usage Flow  
-
-   * Create a `store.bulk_insert` instance.  
-   * Pass the instance's `counters_for` interface, the document ID  
-   * Call `increment` as many times as you like. Pass it -  
-     The Counter Name and Value (delta to be added).
-
-* Usage Sample  
-  In this sample, we attach a counter to all User documents.
-  {CODE:python bulk-insert-counters@DocumentExtensions\Counters\BulkInsert.py /}  
-
 
 {PANEL/}
 
