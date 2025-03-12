@@ -24,12 +24,13 @@ After getting your cert, start tuning the server to leverage it for security.
 
 ## Providing a certificate
 RavenDB needs to get its server certificate. You can configure its retrieval from one of these origins:
+
 - Path - A .pfx certificate stored under a path reachable for a container.
-  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.Certificate.Path](../../../server/configuration/security-configuration#security.certificate.path).
+  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.Certificate.Path](../../../server/configuration/security-configuration#security.certificate.path)
 
 - Script - A script that returns your certificate by any means.
   You can obtain it from container environmental variables, secured vault, secret, etc.
-  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration#security.certificate.load.exec).
+  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration#security.certificate.load.exec)
 
 These configuration options can be passed to RavenDB by settings.json, environmental variables, or command line arguments.
 See more here: [Configuration Options](../../../server/configuration/configuration-options)
@@ -50,13 +51,14 @@ Also, you need to provide us with an email that you will use for the Let's Encry
 
 #### Manual
 To configure manual certificate replacement and updates, write scripts to supply RavenDB configuration:
-- [Security.Certificate.Renew.Exec](../../../server/configuration/security-configuration#security.certificate.renew.exec)
-- [Security.Certificate.Change.Exec](../../../server/configuration/security-configuration#security.certificate.change.exec)
+
+- [Security.Certificate.Renew.Exec](../../../server/configuration/security-configuration#security.certificate.renew.exec) 
+- [Security.Certificate.Change.Exec](../../../server/configuration/security-configuration#security.certificate.change.exec) 
 
 It will allow RavenDB to execute your routines, which should:
 
-- check if the certificate is ready to renew and do so if needed, then return it (**Renew**)
-- replace the old certificate (**Change**)
+- check if the certificate is ready to renew and do so if needed, then return it (**Renew**) 
+- replace the old certificate (**Change**) 
 
 To learn about manual certificate replacement, read this article: [Certificate Renewal And Rotation](../../../server/security/authentication/certificate-renewal-and-rotation)
 
