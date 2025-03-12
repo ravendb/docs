@@ -26,11 +26,11 @@ After getting your cert, start tuning the server to leverage it for security.
 RavenDB needs to get its server certificate. You can configure its retrieval from one of these origins:
 
 - Path - A .pfx certificate stored under a path reachable for a container.
-  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.C**e**rtificate.Path](../../../server/configuration/security-configuration#security.certificate.path). 
+  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.Certificate.Path](../../../server/configuration/security-configuration#security.certificate.path)
 
 - Script - A script that returns your certificate by any means.
   You can obtain it from container environmental variables, secured vault, secret, etc.
-  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration#security.certificate.load.exec). 
+  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration#security.certificate.load.exec)
 
 These configuration options can be passed to RavenDB by settings.json, environmental variables, or command line arguments.
 See more here: [Configuration Options](../../../server/configuration/configuration-options)
