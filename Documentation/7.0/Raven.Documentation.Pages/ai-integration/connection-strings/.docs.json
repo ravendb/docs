@@ -1,0 +1,50 @@
+[
+    {
+        "Path": "connection-strings-overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "7bb127d8-37b3-416b-978b-275de7d329f1",
+        "Mappings": []
+    },
+    {
+        "Path": "azure-open-ai.markdown",
+        "Name": "Azure OpenAI",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "google-ai.markdown",
+        "Name": "Google AI",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "hugging-face.markdown",
+        "Name": "Hugging Face",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "ollama.markdown",
+        "Name": "Ollama",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "open-ai.markdown",
+        "Name": "OpenAI",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "mistral-ai.markdown",
+        "Name": "Mistral AI",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    },
+    {
+        "Path": "embedded.markdown",
+        "Name": "bge-micro-v2 (Embedded)",
+        "DiscussionId": "07be1cb5-67b6-4f6b-9795-39bbf5c3a44a",
+        "Mappings": []
+    }
+]

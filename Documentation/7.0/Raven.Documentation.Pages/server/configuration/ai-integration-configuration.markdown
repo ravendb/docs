@@ -3,11 +3,10 @@
 
 {NOTE: }
 
-* The following configuration keys apply to integrating AI-powered embeddings generation.
+* The following configuration keys apply to integrating **AI-powered embeddings generation**:
  
-* Embeddings can be generated from your document content via [AI-powered tasks](../../todo) and stored in a dedicated collection in the database.
-  
-* When performing vector searches, embeddings are also generated from the search term to compare against the stored vectors.
+  * Embeddings can be generated from your document content via [AI-powered tasks](../../todo) and stored in a dedicated collection in the database.  
+  * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.
 
 * In this page:
    * [Ai.Embeddings.Generation.Querying.Batching.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.maxbatchsize)  

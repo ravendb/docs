@@ -3,5 +3,10 @@
         "Path": "/vector-search",
         "Name": "Vector Search",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "/connection-strings",
+        "Name": "Connection Strings",
+        "Mappings": []
+    },
 ]
