@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* In RavenDB, you can define [Embeddings Generation Tasks](../../todo..) that generate embeddings from the content of your documents.
+* In RavenDB, you can define [Embeddings Generation Tasks](../../ai-integration/generating-embeddings/overview) that generate embeddings from the content of your documents.
   These embeddings are stored in a dedicated collection within the database and enable vector search on your document content.
 
 * Each embeddings generation task must define a **connection string** to an embedding provider.  
@@ -124,9 +124,13 @@
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
-### AI Integration
+### Embeddings Generation
 
-- [Embeddings generation task](../../todo..)
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
+
 - [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
 - [Google AI](../../ai-integration/connection-strings/google-ai)
 - [Hugging Face](../../ai-integration/connection-strings/hugging-face)

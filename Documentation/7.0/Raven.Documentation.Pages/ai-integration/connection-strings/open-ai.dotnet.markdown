@@ -4,7 +4,7 @@
 {NOTE: }
 
 * This article explains how to define a connection string to the [OpenAI Service](https://platform.openai.com/docs/guides/embeddings),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../todo..) with the OpenAI's API.
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with the OpenAI's API.
 
 * In this page:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/open-ai#define-the-connection-string---from-the-studio)
@@ -82,7 +82,11 @@
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
-### AI Integration
+### Embeddings Generation
+
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
 
 - [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
-- [Embeddings generation task](../../todo..)

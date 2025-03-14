@@ -5,7 +5,7 @@
 
 * This article explains how to define a connection string to the [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.  
   This model is embedded within RavenDB, enabling RavenDB to seamlessly handle its  
-  [embeddings generation tasks](../../todo..) without requiring an external AI service.
+  [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) without requiring an external AI service.
 
 * In this page:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-studio)
@@ -53,7 +53,11 @@
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
-### AI Integration
+### Embeddings Generation
+
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
 
 - [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
-- [Embeddings generation task](../../todo..)

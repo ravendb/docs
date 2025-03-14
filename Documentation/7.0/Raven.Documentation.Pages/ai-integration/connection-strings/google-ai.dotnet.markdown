@@ -4,7 +4,7 @@
 {NOTE: }
 
 * This article explains how to define a connection string to [Google AI](https://ai.google.dev/gemini-api/docs/embeddings),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../todo..) with Google's AI services.
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with Google's AI services.
 
 * This configuration supports **Google AI embeddings** only and is Not compatible with Vertex AI.
 
@@ -71,7 +71,11 @@
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
-### AI Integration
+### Embeddings Generation
+
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
 
 - [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
-- [Embeddings generation task](../../todo..)

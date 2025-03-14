@@ -4,7 +4,7 @@
 {NOTE: }
 
 * This article explains how to define a connection string to the [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../todo..) with your Azure environment.
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with your Azure environment.
 
 * In this page:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/azure-open-ai#define-the-connection-string---from-the-studio)
@@ -72,7 +72,11 @@
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index)
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
-### AI Integration
+### Embeddings Generation
+
+- [Generating embeddings - overview](../../ai-integration/generating-embeddings/overview)
+- [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+
+### AI Connection Strings
 
 - [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
-- [Embeddings generation task](../../todo..)

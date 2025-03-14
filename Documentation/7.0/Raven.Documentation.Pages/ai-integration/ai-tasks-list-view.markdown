@@ -56,7 +56,7 @@
 
 ### Embeddings Generation
 
-- [Embeddings generation - overview](../ai-integration/generating-embeddings/overview)
+- [Generating embeddings - overview](../ai-integration/generating-embeddings/overview)
 - [Embeddings generation task](../ai-integration/generating-embeddings/embeddings-generation-task)
 
 ### Connection Strings
