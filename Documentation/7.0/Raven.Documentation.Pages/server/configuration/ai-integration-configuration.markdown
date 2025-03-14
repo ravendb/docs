@@ -11,14 +11,11 @@
 * In this page:
    * [Ai.Embeddings.Generation.Querying.Batching.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.maxbatchsize)  
    * [Ai.Embeddings.Generation.Querying.Batching.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.maxconcurrentbatches)  
-   * [Ai.Embeddings.Generation.Querying.Batching.MaxRetries](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.maxretries)  
-   * [Ai.Embeddings.Generation.Querying.Batching.RetryDelayInMs](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.retrydelayinms)  
-   * [Ai.Embeddings.Generation.Querying.Batching.TimeoutInMs](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.batching.timeoutinms)  
    * [Ai.Embeddings.Generation.Querying.Caching.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.querying.caching.maxbatchsize)  
-   * [Ai.Embeddings.Generation.Task.FallbackModeStrategy](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.fallbackmodestrategy)  
    * [Ai.Embeddings.Generation.Task.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.maxbatchsize)  
    * [Ai.Embeddings.Generation.Task.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.maxfallbacktimeinsec)  
-   * [Ai.Embeddings.Generation.Task.RetryDelayInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.retrydelayinsec)    
+   * [Ai.Embeddings.Generation.Task.RetryDelayInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.retrydelayinsec)  
+   * [Ai.Embeddings.Generation.Task.RetryStrategy](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.retrystrategy)
 
 
 {NOTE/}
@@ -48,40 +45,6 @@ Higher values may improve throughput but can increase resource usage and may tri
 
 {PANEL/}
 
-{PANEL: Ai.Embeddings.Generation.Querying.Batching.MaxRetries}
-
-The maximum number of retry attempts for failed query embedding generation requests before giving up.  
-Retries are performed using an exponential backoff strategy, where the wait time between attempts increases exponentially.
-
-- **Type**: `int`
-- **Default**: `3`
-- **Scope**: Server-wide or per database
-
-{PANEL/}
-
-{PANEL: Ai.Embeddings.Generation.Querying.Batching.RetryDelayInMs}
-
-The **base delay** (in milliseconds) between retry attempts for failed query embedding requests.  
-Actual delay increases exponentially with each retry attempt.  
-For example, with a base delay of 200ms, retries would occur after 200ms, 400ms, 800ms, etc.
-
-- **Type**: `int`
-- **Default**: `200`
-- **Scope**: Server-wide or per database
-
-{PANEL/}
-
-{PANEL:Ai.Embeddings.Generation.Querying.Batching.TimeoutInMs}
-
-The time (in milliseconds) to wait for additional query embedding requests before sending the current batch to the AI provider.
-Lower values decrease latency for query embedding generation but may reduce throughput.
-
-- **Type**: `int`
-- **Default**: `200`
-- **Scope**: Server-wide or per database
-
-{PANEL/}
-
 {PANEL: Ai.Embeddings.Generation.Querying.Caching.MaxBatchSize}
 
 * Maximum number of embeddings generated from query terms during vector searches that can be stored in the embeddings cache collection in a single batch operation. 
@@ -93,22 +56,6 @@ Lower values decrease latency for query embedding generation but may reduce thro
 - **Type**: `int`
 - **Default**: `128`
 - **Scope**: Server-wide or per database
-
-{PANEL/}
-
-{PANEL: Ai.Embeddings.Generation.Task.FallbackModeStrategy}
-
-* The strategy to use for retry intervals when embeddings generation fails.  
-  Determines how the delay between retries increases after a connection failure or failed embedding request.
-
-* When set to `Linear` - fixed intervals are used between retries, e.g., 15s, 30s, 60s, ...  
-  When set to `Exponential` - the wait time increases exponentially after each failure, e.g., 15s, 225s, 3375s, ...
-
----
-
-- **Type**: `"Linear"` or `"Exponential"`
-- **Default**: `"Exponential"`
-- **Scope**:  Server-wide or per database
 
 {PANEL/}
 
@@ -139,14 +86,31 @@ Once this time expires, the system will retry the connection automatically.
 * The **base delay** (in seconds) before retrying a failed embeddings generation task.  
   This applies to both connection failures and failures of individual embedding requests.
  
-* The actual wait time between retry attempts depends on the configured [FallbackModeStrategy](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.fallbackmodestrategy).  
+* The actual wait time between retry attempts depends on the configured [Retry Strategy](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.retrystrategy).  
   When using the `Linear` strategy, the delay increases linearly with each retry attempt (e.g., 15s, 30s, 45s).  
-  When using the `Exponential` strategy, the delay increases exponentially with each retry attempt (e.g., 15s, 225s, 3375s).
+  When using the `Exponential` strategy, the delay increases exponentially with each retry attempt (e.g., 15s, 60s, 120s, 240s).
 
 ---
 
 - **Type**: `int`
 - **Default**: `15`
+- **Scope**:  Server-wide or per database
+
+{PANEL/}
+
+{PANEL: Ai.Embeddings.Generation.Task.RetryStrategy}
+
+* The strategy to use for retry intervals when embeddings generation fails.  
+  Determines how the delay between retries increases after a connection failure or failed embedding request.
+
+* When set to `Linear` - fixed intervals are used between retries, e.g., 15s, 30s, 60s, ...  
+  When set to `Exponential` - the wait time increases exponentially after each failure, e.g., 15s, 60s, 120s, 240s ...  
+  (with base 15s).
+
+---
+
+- **Type**: `"Linear"` or `"Exponential"`
+- **Default**: `"Exponential"`
 - **Scope**:  Server-wide or per database
 
 {PANEL/}
