@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "ab7788df-2f50-4d44-bcf5-a00efeb4258c",
+        "Mappings": []
+    },
+    {
+        "Path": "embeddings-generation-task.markdown",
+        "Name": "Embeddings Generation Task",
+        "DiscussionId": "3f3d5bed-c477-49dc-a217-c9f51d902e57",
+        "Mappings": []
+    }
+]
