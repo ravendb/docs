@@ -10,7 +10,8 @@
 * In this page:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-studio)
   * [Define the connection string - from the Client API](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-client-api)
-    
+  * [Syntax](../../ai-integration/connection-strings/embedded#syntax)
+
 {NOTE/}
 
 ---
@@ -38,6 +39,12 @@
 
 {PANEL/}
 
+{PANEL: Syntax}
+
+{CODE:csharp embedded_settings@AiIntegration\ConnectionStrings\connectionStrings.cs /}
+
+{PANEL/}
+
 ## Related Articles
 
 ### Vector Search
@@ -48,5 +55,5 @@
 
 ### AI Integration
 
-- [Connection strings - overview](../../client-api/session/querying/how-to-query)
-- [Embedding generation tasks](../../todo..)
+- [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
+- [Embeddings generation task](../../todo..)

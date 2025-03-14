@@ -67,5 +67,5 @@
 
 ### AI Integration
 
-- [Connection strings - overview](../../client-api/session/querying/how-to-query)
-- [Embedding generation tasks](../../todo..)
+- [Connection strings - overview](../../ai-integration/connection-strings/connection-strings-overview)
+- [Embeddings generation task](../../todo..)

@@ -171,7 +171,15 @@ public class CreateConnectionStrings
     }
 }
 
+/*
 #region azure_open_ai_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public AzureOpenAiSettings AzureOpenAiSettings { get; set; }
+}
+
 public class AzureOpenAiSettings
 {
     public string ApiKey { get; set; }
@@ -183,6 +191,13 @@ public class AzureOpenAiSettings
 #endregion
 
 #region google_ai_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public GoogleSettings GoogleSettings { get; set; }
+}
+
 public class GoogleSettings
 {
     public string ApiKey { get; set; }
@@ -199,6 +214,13 @@ public enum GoogleAIVersion
 #endregion
 
 #region hugging_face_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public HuggingFaceSettings HuggingFaceSettings { get; set; }
+}
+
 public class HuggingFaceSettings
 {
     public string ApiKey { get; set; }
@@ -208,6 +230,13 @@ public class HuggingFaceSettings
 #endregion
 
 #region ollama_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public OllamaSettings OllamaSettings { get; set; }
+}
+
 public class OllamaSettings
 {
     public string Uri { get; set; }
@@ -216,6 +245,13 @@ public class OllamaSettings
 #endregion
 
 #region open_ai_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public OpenAiSettings OpenAiSettings { get; set; }
+}
+
 public class OpenAiSettings
 {
     public string ApiKey { get; set; }
@@ -228,6 +264,13 @@ public class OpenAiSettings
 #endregion
 
 #region mistral_ai_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public MistralAiSettings MistralAiSettings { get; set; }
+}
+
 public class MistralAiSettings
 {
     public string ApiKey { get; set; }
@@ -235,3 +278,13 @@ public class MistralAiSettings
     public string Model { get; set; }
 }
 #endregion
+
+#region embedded_settings
+public class AiConnectionString
+{
+    public string Name { get; set; }
+    public string Identifier { get; set; }
+    public EmbeddedSettings EmbeddedSettings { get; set; }
+}
+#endregion
+*/

@@ -6,7 +6,7 @@
 * In RavenDB, you can define [Embeddings Generation Tasks](../../todo..) that generate embeddings from the content of your documents.
   These embeddings are stored in a dedicated collection within the database and enable vector search on your document content.
 
-* Each embedding generation task must define a **connection string** to an embedding provider.  
+* Each embeddings generation task must define a **connection string** to an embedding provider.  
   This connection string specifies where the embeddings will be generated,
   allowing RavenDB to integrate with external services such as Azure OpenAI, OpenAI, Hugging Face, Google AI, Mistral AI, or RavenDB's embedded model (bge-micro-v2).
 
@@ -61,7 +61,7 @@
    Click "Regenerate" to automatically create an identifier based on the connection string name.
 
 4. **Connector**  
-   Select an embedding generation provider from the dropdown menu.  
+   Select an embeddings generation provider from the dropdown menu.  
    This will open a popup where you can configure the connection details.  
    Configuration details for each provider are explained in the following articles:
    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
@@ -74,7 +74,6 @@
 
 5. Once you complete all configurations for the selected provider in the popup view,  
    save the connection string definition.
-
 
 {PANEL/}
 
@@ -127,7 +126,7 @@
 
 ### AI Integration
 
-- [Embedding generation tasks](../../todo..)
+- [Embeddings generation task](../../todo..)
 - [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
 - [Google AI](../../ai-integration/connection-strings/google-ai)
 - [Hugging Face](../../ai-integration/connection-strings/hugging-face)
