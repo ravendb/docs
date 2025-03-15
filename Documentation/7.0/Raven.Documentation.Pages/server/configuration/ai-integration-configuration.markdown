@@ -5,7 +5,7 @@
 
 * The following configuration keys apply to integrating **AI-powered embeddings generation**:
  
-  * Embeddings can be generated from your document content via [AI-powered tasks](../../todo) and stored in a dedicated collection in the database.  
+  * Embeddings can be generated from your document content via [AI-powered tasks](../../ai-integration/generating-embeddings/overview) and stored in a dedicated collection in the database.  
   * When performing vector search queries, embeddings are also generated from the search term to compare against the stored vectors.
 
 * In this page:
@@ -24,7 +24,7 @@
 
 {PANEL: Ai.Embeddings.Generation.Querying.Batching.MaxBatchSize}
 
-The maximum number of query embedding requests to include in a single batch sent to the AI provider.  
+The maximum number of query embedding requests to include in a single batch sent to the embeddings generation service.
 Optimal values depend on the provider's rate limits and pricing model.
 
 - **Type**: `int`
@@ -62,7 +62,7 @@ Higher values may improve throughput but can increase resource usage and may tri
 {PANEL: Ai.Embeddings.Generation.Task.MaxBatchSize}
 
 The maximum number of documents processed in a single batch by an embeddings generation task.  
-Higher values may improve throughput but require more resources and higher limits from the AI service.
+Higher values may improve throughput but can increase latency and require more resources and higher limits from the embeddings generation service.
 
 - **Type**: `int?`
 - **Default**: `128`
@@ -72,7 +72,7 @@ Higher values may improve throughput but require more resources and higher limit
 
 {PANEL: Ai.Embeddings.Generation.Task.MaxFallbackTimeInSec}
 
-The maximum time (in seconds) the embeddings generation task remains suspended (fallback mode) following a connection failure to the AI provider.
+The maximum time (in seconds) the embeddings generation task remains suspended (fallback mode) following a connection failure to the embeddings generation service.
 Once this time expires, the system will retry the connection automatically.
 
 - **Type**: `int`

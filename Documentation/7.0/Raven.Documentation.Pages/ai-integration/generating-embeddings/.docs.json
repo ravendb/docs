@@ -7,8 +7,14 @@
     },
     {
         "Path": "embeddings-generation-task.markdown",
-        "Name": "Embeddings Generation Task",
+        "Name": "The Embeddings Generation Task",
         "DiscussionId": "3f3d5bed-c477-49dc-a217-c9f51d902e57",
+        "Mappings": []
+    },
+    {
+        "Path": "embedding-collections.markdown",
+        "Name": "The Embedding Collections",
+        "DiscussionId": "e30bb559-624a-4760-89a2-20715720d2c9",
         "Mappings": []
     }
 ]

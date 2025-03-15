@@ -3,11 +3,11 @@
 
 {NOTE: }
 
-* RavenDB can serve as a vector database, see [why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database).
+* RavenDB can serve as a vector database, see [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database).
 
 * To perform a **vector search**, your database must contain vectors embeddings:
   
-  * You can store your own pre-generated embeddings in RavenDB, see [storing numerical data](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data).  
+  * You can store your own pre-generated embeddings in RavenDB, see [Storing numerical data](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data).  
   
   * Or, configure **Embeddings Generation Tasks** in the database to automatically create embeddings  
     from the content of your documents using external service providers, as explained below.
@@ -16,7 +16,7 @@
 
 * In this page:
   * [Embeddings generation - overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
-  * [Creating an embeddings generation task](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
+  * [Creating an embeddings generation task](../../ai-integration/generating-embeddings/overview#creating-an-embeddings-generation-task)
   * [Monitoring the tasks](../../ai-integration/generating-embeddings/overview#monitoring-the-tasks)
 
 {NOTE/}
@@ -27,7 +27,7 @@
 
 {CONTENT-FRAME: }
 
-The general flow is:
+Embeddings generation process flow:
 
 ---
 
@@ -45,8 +45,9 @@ The general flow is:
   If quantization was defined in the task, RavenDB applies it to the embeddings before storing them.
 
 * **Embeddings are stored in your database**:  
-  * Each embedding is stored as an attachment in a [dedicated collection](../../todo..).  
-  * RavenDB also maintains an [embeddings cache](), allowing reuse of embeddings for the same source content and reducing provider calls.
+  * Each embedding is stored as an attachment in a [dedicated collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collection).  
+  * RavenDB also maintains an [embeddings cache](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection),
+    allowing reuse of embeddings for the same source content and reducing provider calls.
     Cached embeddings expire after a configurable duration.
 
 * **Perform vector search:**  
@@ -76,13 +77,20 @@ The general flow is:
   * bge-micro-ve (a local embedded model within RavenDB)
 
 {CONTENT-FRAME/}
+
+![flow chart](images/flow1.png)
+
+![flow chart](images/flow2.png)
+
+![flow chart](images/flow3.png)
+
 {PANEL/}
 
 {PANEL: Creating an embeddings generation task}
 
 * An embeddings generation tasks can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../ai-integration/ai-tasks-list-view).
-    * The **Client API** - see this example - todo... [embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)... todo..
+    * The **Client API** - see this example - TODO... [embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)... TODO..
 
 ---
 
@@ -96,7 +104,7 @@ The general flow is:
 
      ![Add ai task 2](images/add-ai-task-2.png "Add a new Embeddings Generation Task")
 
-* See the complete details of the task configuration in the [Embeddings Generation Task](../../todo) article.
+* See the complete details of the task configuration in the [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task) article.
 
 {PANEL/}
 
@@ -121,6 +129,7 @@ The general flow is:
 ### Embeddings Generation
 
 - [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)
+- [The Embedding Collections](../../ai-integration/generating-embeddings/embedding-collections)
 
 ### AI Connection Strings
 
