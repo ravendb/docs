@@ -90,7 +90,7 @@
 ---
 
 * **Define quantization and expiration -  
-  for the generated embeddings**:
+  for the generated embeddings from the source documents**:
 
     ![Create embeddings generation task - quantization and expiration](images/add-ai-task-5.png)
 
@@ -111,7 +111,7 @@
 
 ---
 
-* **Define quantization and expiration -  
+* **Define chunking method & expiration -  
   for the embedding generated from a search term in a vector search query**:
 
     ![Create embeddings generation task - for the query](images/add-ai-task-6.png)
@@ -133,6 +133,25 @@
 
 {PANEL: Configuring an embeddings generation task - from the Client API}
 
+{CONTENT-FRAME: }
+
+**Define an embeddings generation task - configure source using PATHS**:
+
+{CODE:csharp create_embeddings_task_1@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
+
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+**Define an embeddings generation task - configure source using SCRIPT**:
+
+* The configuration is the same as in the example above, except that the `EmbeddingsPathConfigurations` object  
+  is replaced with the following `EmbeddingsTransformation` definition.
+
+* See the [syntax](../../ai-integration/generating-embeddings/embeddings-generation-task#syntax) section below for all available options that can be used in the script.
+
+{CODE:csharp create_embeddings_task_2@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Chunking methods and tokens}
@@ -173,6 +192,8 @@
 {PANEL/}
 
 {PANEL: Syntax}
+
+{CODE:csharp syntax@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
 
 {PANEL/}
 
