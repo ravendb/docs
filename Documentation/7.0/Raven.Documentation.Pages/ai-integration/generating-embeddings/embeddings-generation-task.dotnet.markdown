@@ -288,6 +288,8 @@ html.strip(htmlText, maxTokensPerChunk);
 
 {PANEL: Syntax}
 
+#### The embeddings generation task configuration:
+
 {CODE:csharp syntax_1@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
 
 | Parameter                                | Type                               | Description                                                                                                                                                                                                                        |
@@ -302,6 +304,12 @@ html.strip(htmlText, maxTokensPerChunk);
 | **EmbeddingsCacheForQueryingExpiration** | `TimeSpan `                        | The expiration period for documents in the embedding cache collection that contain embeddings generated from search terms in vector search queries.                                                                                |
 
 {CODE:csharp syntax_2@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
+
+---
+
+#### Deploying the embeddings generation task:
+
+{CODE:csharp syntax_3@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
 
 {PANEL/}
 

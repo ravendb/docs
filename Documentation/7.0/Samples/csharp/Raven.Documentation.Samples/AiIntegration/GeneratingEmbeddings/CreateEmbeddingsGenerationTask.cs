@@ -188,7 +188,7 @@ public class EmbeddingPathConfiguration
 
 public class ChunkingOptions
 {
-    public ChunkingMethod ChunkingMethod { get; set; }
+    public ChunkingMethod ChunkingMethod { get; set; } // Default is PlainTextSplit
     public int MaxTokensPerChunk { get; set; } = 512;
 }
 
@@ -214,6 +214,10 @@ public enum VectorEmbeddingType
     Binary,
     Text
 }
+#endregion
+
+#region syntax_3
+public AddEmbeddingsGenerationOperation(EmbeddingsGenerationConfiguration configuration);
 #endregion
 */
 
