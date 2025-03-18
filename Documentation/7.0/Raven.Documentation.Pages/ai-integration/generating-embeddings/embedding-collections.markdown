@@ -166,7 +166,7 @@
 
     ![The embeddings cache - attachments](images/embeddings-cache-3.png)
 
-    * In this collection, the attachment name consists only of the hash:  
+    * In the cache collection, the attachment name consists only of the hash:  
       `<hash-created-from-property-content>`
 
 {PANEL/}

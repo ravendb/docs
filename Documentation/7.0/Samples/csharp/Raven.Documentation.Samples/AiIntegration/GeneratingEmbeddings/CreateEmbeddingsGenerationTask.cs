@@ -9,11 +9,14 @@ public class CreateEmbeddingsGenerationTask
 {    
     public async Task Examples()
     {
+        // This example shows using PATHS:
+        // ===============================
+        
         using (var store = new DocumentStore())
         {
             #region create_embeddings_task_1
-            // Define a connection string:
-            // ===========================
+            // Define a connection string that will be used in the task definition:
+            // ====================================================================
             
             var connectionString = new AiConnectionString
             {
@@ -91,60 +94,56 @@ public class CreateEmbeddingsGenerationTask
             #endregion
         }
         
+        // This example shows using a SCRIPT:
+        // ==================================
+        
         using (var store = new DocumentStore())
         {
-            // Define a connection string:
-            // ===========================
-            
             var connectionString = new AiConnectionString
             {
-                // Connection string name & identifier
                 Name = "ConnectionStringToOpenAI", 
                 Identifier = "id-for-open-ai-connection-string",
         
-                // OpenAI connection settings
                 OpenAiSettings = new OpenAiSettings(
                     apiKey: "your-api-key",
                     endpoint: "https://api.openai.com/v1",
                     model: "text-embedding-3-small")
             };
             
-            // Deploy the connection string to the server:
-            // ===========================================
             var putConnectionStringOp = 
                 new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(putConnectionStringOp);
             
-            
-            // Define the embeddings generation task:
-            // ======================================
             var embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration
             {
-                // General info:
                 Name = "GetEmbeddingsFromOpenAI",
                 Identifier = "id-for-task-open-ai",
                 ConnectionStringName = "ConnectionStringToOpenAI",
                 Disabled = false,
                 
                 #region create_embeddings_task_2
-                // Embeddings source & chunking methods - using SCRIPT configuration:
+                // Source collection:
                 Collection = "Categories",
+                
+                // Use 'EmbeddingsTransformation':
                 EmbeddingsTransformation = new EmbeddingsTransformation()
                 {
-                    Script = @"embeddings.generate({
-                                   Name: text.split(this.Name, 2048),
-                                   Description: text.splitLines(this.Description, 2048)
-                             });"
+                    // Define the script:
+                    Script = 
+                        @"embeddings.generate({
+
+                            // Process the document 'Name' field using method text.split()
+                            Name: text.split(this.Name, 2048),
+
+                            // Process the document 'Description' field using method text.splitLines()
+                            Description: text.splitLines(this.Description, 2048)
+                        });"
                 },
                 #endregion
                 
-                // Quantization & expiration -
-                // for embeddings generated from source documents:
                 Quantization = VectorEmbeddingType.Single,
                 EmbeddingsCacheExpiration = TimeSpan.FromDays(90),
                 
-                // Chunking method and expiration -
-                // for the embeddings generated from search term in vector search query:
                 ChunkingOptionsForQuerying = new()
                 {
                     ChunkingMethod = ChunkingMethod.PlainTextSplit,
@@ -154,8 +153,6 @@ public class CreateEmbeddingsGenerationTask
                 EmbeddingsCacheForQueryingExpiration = TimeSpan.FromDays(14)
             };
             
-            // Deploy the connection string to the server:
-            // ===========================================
             var addEmbeddingsGenerationTaskOp =
                 new AddEmbeddingsGenerationOperation(embeddingsTaskConfiguration);
             var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationTaskOp);
@@ -164,10 +161,10 @@ public class CreateEmbeddingsGenerationTask
 }
 
 /*
-#region syntax
+#region syntax_1
 // The 'EmbeddingsGenerationConfiguration' class inherits from 'EtlConfiguration'
-// and provides specialized configurations for the embeddings tasks:
-// ==============================================================================
+// and provides the following specialized configurations for the embeddings generation task:
+// =========================================================================================
 
 public class EmbeddingsGenerationConfiguration : EtlConfiguration<AiConnectionString>
 {
@@ -180,7 +177,9 @@ public class EmbeddingsGenerationConfiguration : EtlConfiguration<AiConnectionSt
     public TimeSpan EmbeddingsCacheExpiration { get; set; } = TimeSpan.FromDays(90);
     public TimeSpan EmbeddingsCacheForQueryingExpiration { get; set; } = TimeSpan.FromDays(14);
 }
+#endregion
 
+#region syntax_2
 public class EmbeddingPathConfiguration
 {
     public string Path { get; set; }
@@ -217,3 +216,5 @@ public enum VectorEmbeddingType
 }
 #endregion
 */
+
+
