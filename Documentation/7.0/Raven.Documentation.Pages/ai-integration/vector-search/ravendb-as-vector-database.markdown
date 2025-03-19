@@ -83,7 +83,7 @@
      
      **Embeddings can be automatically generated** from textual content within your documents by defining  
      [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview).
-     These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, or Mistral AI**.
+     These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, or Mistral AI**.
      If no task is specified, embeddings will be generated using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
    
      When querying with a phrase, RavenDB generates an embedding for the search term using the same model applied to the document data
