@@ -49,7 +49,7 @@
 ![create connection string](images/create-connection-string.png "Create connection string")
 
 1. **Name**  
-   Enter a name for the connection string.
+   Enter a unique name for the connection string.
 
 2. **Identifier**  
    Enter a unique identifier for the connection string.  

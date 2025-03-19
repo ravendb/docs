@@ -23,7 +23,7 @@
       * [Indexing pre-made text-embeddings](../../ai-integration/vector-search/vector-search-using-static-index#indexing-pre-made-text-embeddings)
     * [Indexing vector data - NUMERICAL](../../ai-integration/vector-search/vector-search-using-static-index#indexing-vector-data---numerical)
     * [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index#indexing-multiple-field-types)
-    * [Define a vector field in the Studio](../../ai-integration/vector-search/vector-search-using-static-index#define-a-vector-field-in-the-studio)
+    * [Configure the vector field in the Studio](../../ai-integration/vector-search/vector-search-using-static-index#configure-the-vector-field-in-the-studio)
 
 {NOTE/}
 
@@ -337,15 +337,26 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 
 {PANEL/}
 
-{PANEL: Define a vector field in the Studio}
+{PANEL: Configure the vector field in the Studio}
 
   ![Add vector field](images/add-vector-field-1.png "Add vector field")
 
   ![Customize vector field](images/add-vector-field-2.png "Customize vector field")
 
-1. Click "Configure Vector Field"
-2. Enter the vector field name
-3. Customize the vector field's properties as needed.
+1. **Vector field name**  
+   Enter the name of the vector field to customize.
+2. **Configure Vector Field**  
+   Click this button to customize the field.
+3. **Dimensions**  
+   For numerical input only - define the size of the array from your source document.
+4. **Edges**  
+   The number of edges that will be created for a vector during indexing.
+5. **Source embedding type**  
+   The format of the source embeddings (Text, Single, Int8, or Binary).
+6. **Candidates for indexing**  
+   The number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.
+7. **Destination embedding type**  
+   The quantization format for the embeddings that will be generated (Text, Single, Int8, or Binary).
 
 {PANEL/}
 
