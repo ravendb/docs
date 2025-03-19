@@ -5,12 +5,11 @@
 
 * RavenDB can serve as a vector database, see [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database).
 
-* To perform a **vector search**, your database must contain vectors embeddings:
-  
-  * You can store your own pre-generated embeddings in RavenDB, see [Storing numerical data](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data).  
-  
-  * Or, configure **Embeddings Generation Tasks** in the database to automatically create embeddings  
-    from the content of your documents using external service providers, as explained below.
+* Vector search can be performed on:   
+   * Raw text stored in your documents.   
+   * Pre-made embeddings that you created yourself and stored using these [data types](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data).  
+   * Pre-made embeddings that are automatically generated from your document content by RavenDB's tasks  
+     using external service providers, as explained below.
 
 ---
 
@@ -51,9 +50,12 @@ Embeddings generation process flow:
     Cached embeddings expire after a configurable duration.
 
 * **Perform vector search:**  
-  Once the embeddings are stored, you can perform vector searches on your document content.  
-  The query search term needs to be converted to an embedding as well to compare against stored vectors.  
-  If no matching embedding for the search term is found in the cache, a request is sent to the provider to generate one.
+  Once the embeddings are stored, you can perform vector searches on your document content by:  
+  * Running a [dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
+  * Defining a [static index](../../ai-integration/vector-search/vector-search-using-static-index#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
+  
+     The query search term is converted to an embedding as well to compare against stored vectors.  
+     If no matching embedding for the search term is found in the cache, a request is sent to the provider to generate one.
 
 * **Continuous processing**:  
   * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info) that process documents as they change.  
