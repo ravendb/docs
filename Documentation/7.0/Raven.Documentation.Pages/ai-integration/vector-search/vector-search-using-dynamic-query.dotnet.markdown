@@ -38,19 +38,28 @@
 
 {PANEL: Dynamic vector search query - Overview}
 
-* To make a **dynamic vector search query**:  
-  * From the Client API - use method `VectorSearch()`, examples are provided later in this article
-  * In RQL - use method `vector.search()`
+{CONTENT-FRAME: }
 
-* The **source data types** that can be used for vector search are detailed in [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search).
-
-* Note: Vector search queries cannot be used with [subscription queries](../../client-api/data-subscriptions/creation/api-overview#subscription-query).
-
-* When executing a dynamic vector search query, RavenDB creates a [Corax auto-index](../../ai-integration/vector-search/vector-search-using-dynamic-query#corax-auto-indexes) to process the query,  
-  and the results are retrieved from that index.    
-
+#### Overview
 ---
 
+* A dynamic vector search query can be performed on:  
+  * Raw text stored in your documents.
+  * Pre-made embeddings that you created yourself and stored using these [Data types](../../ai-integration/vector-search/data-types-for-vector-search).
+  * Pre-made embeddings that are automatically generated from your document content  
+    by RavenDB's [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview) using external service providers.
+
+* Note: Vector search queries cannot be used with [Subscription queries](../../client-api/data-subscriptions/creation/api-overview#subscription-query).
+
+* When executing a dynamic vector search query, RavenDB creates a [Corax Auto-Index](../../ai-integration/vector-search/vector-search-using-dynamic-query#corax-auto-indexes) to process the query,  
+  and the results are retrieved from that index.    
+
+* To make a **dynamic vector search query**:
+    * From the Client API - use method `VectorSearch()`
+    * In RQL - use method `vector.search()`
+    * Examples are provided below
+
+{CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
 #### Creating embeddings for the Auto-index
@@ -77,7 +86,7 @@
     To avoid index errors, ensure that the dimensionality of these numerical arrays (i.e., their length)  
     is consistent across all your source documents for the field you are querying.  
     If you wish to enforce such consistency -  
-    perform a vector search using a [static-index](../../ai-integration/vector-search/vector-search-using-static-index) instead of a dynamic query.
+    perform a vector search using a [Static-index](../../ai-integration/vector-search/vector-search-using-static-index) instead of a dynamic query.
     {WARNING/} 
 
 * **Quantizing the embeddings**:  

@@ -79,13 +79,11 @@
 ##### Built-in embedding support:
 
 * **Textual input**:  
-  RavenDB enables vector search on textual input, allowing you to retrieve documents based on contextual similarity rather than exact word matches. 
-     
-     **Embeddings can be automatically generated** from textual content within your documents by defining  
-     [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview).
-     These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, or Mistral AI**.
-     If no task is specified, embeddings will be generated using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
-   
+  Embeddings can be automatically generated from textual content within your documents by defining  
+  [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview).
+  These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, or Mistral AI**.
+  If no task is specified, embeddings will be generated using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
+  
      When querying with a phrase, RavenDB generates an embedding for the search term using the same model applied to the document data
      and compares it against the indexed embeddings.
 
@@ -101,6 +99,11 @@
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
   Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
+
+* **Perform vector search**:  
+  Leverage RavenDB's [Auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query)
+  and [Static indexes](../../ai-integration/vector-search/vector-search-using-static-index) to perform a vector search,  
+  retrieving documents based on contextual similarity rather than exact word matches.
 
 {PANEL/}
 
