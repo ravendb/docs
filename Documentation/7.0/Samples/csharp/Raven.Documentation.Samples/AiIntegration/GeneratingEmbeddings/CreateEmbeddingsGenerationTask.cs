@@ -94,8 +94,8 @@ public class CreateEmbeddingsGenerationTask
             #endregion
         }
         
-        // This example shows using a SCRIPT:
-        // ==================================
+        // This example shows using a SCRIPT - using chunking methods:
+        // ===========================================================
         
         using (var store = new DocumentStore())
         {
@@ -156,6 +156,34 @@ public class CreateEmbeddingsGenerationTask
             var addEmbeddingsGenerationTaskOp =
                 new AddEmbeddingsGenerationOperation(embeddingsTaskConfiguration);
             var addAiIntegrationTaskResult = store.Maintenance.Send(addEmbeddingsGenerationTaskOp);
+        }
+        
+        // This example shows using a SCRIPT - without chunking methods:
+        // =============================================================
+        
+        using (var store = new DocumentStore())
+        {
+            var embeddingsTaskConfiguration = new EmbeddingsGenerationConfiguration
+            {
+                Name = "GetEmbeddingsFromOpenAI",
+                Identifier = "id-for-task-open-ai",
+                ConnectionStringName = "ConnectionStringToOpenAI",
+                Disabled = false,
+                
+                #region create_embeddings_task_3
+                Collection = "Categories",
+                EmbeddingsTransformation = new EmbeddingsTransformation()
+                {
+                    Script = 
+                        @"embeddings.generate({
+
+                            // Use the content of the document field as is, without any chunking
+                            Name: this.Name,
+                            Description: this.Description
+                        });"
+                },
+                #endregion
+            };
         }
     }
 }

@@ -165,6 +165,12 @@
 
      {CODE:csharp create_embeddings_task_2@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
 
+---
+
+* While less recommended, it is also possible to use the content of the source field as is, without chunking.
+
+     {CODE:csharp create_embeddings_task_3@AiIntegration\GeneratingEmbeddings\CreateEmbeddingsGenerationTask.cs /}
+
 {CONTENT-FRAME/}
 {PANEL/}
 
@@ -190,7 +196,7 @@
 ---
 
 **Available chunking methods**:  
-RavenDB offers different chunking methods that can be applied per source type.  
+RavenDB offers several chunking methods that can be applied per source type.  
 These methods determine how input text is split before being sent to the provider.  
 
 {CONTENT-FRAME: }
