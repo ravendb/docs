@@ -14,7 +14,9 @@
 ---
 
 * In this page:
-  * [Embeddings generation - overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
+  * [Overview](../../ai-integration/generating-embeddings/overview#overview)
+     * [Embeddings generation process flow](../../ai-integration/generating-embeddings/overview#embeddings-generation-process-flow)
+     * [Supported providers](../../ai-integration/generating-embeddings/overview#supported-providers)
   * [Creating an embeddings generation task](../../ai-integration/generating-embeddings/overview#creating-an-embeddings-generation-task)
   * [Monitoring the tasks](../../ai-integration/generating-embeddings/overview#monitoring-the-tasks)
 
@@ -26,7 +28,7 @@
 
 {CONTENT-FRAME: }
 
-Embeddings generation process flow:
+#### Embeddings generation process flow
 
 ---
 
@@ -68,6 +70,9 @@ Embeddings generation process flow:
 {CONTENT-FRAME/}
 {CONTENT-FRAME: }
 
+#### Supported providers
+---
+
 * The following service providers are supported for auto-generating embeddings using tasks:
 
   * Azure Open AI
@@ -76,7 +81,7 @@ Embeddings generation process flow:
   * Ollama
   * OpenAI
   * Mistral AI
-  * bge-micro-ve (a local embedded model within RavenDB)
+  * bge-micro-v2 (a local embedded model within RavenDB)
 
 {CONTENT-FRAME/}
 
@@ -92,7 +97,7 @@ Embeddings generation process flow:
 
 * An embeddings generation tasks can be created from:
     * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../ai-integration/ai-tasks-list-view).
-    * The **Client API** - see this example - TODO... [embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task)... TODO..
+    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-client-api)
 
 ---
 
