@@ -11,7 +11,7 @@
   It is recommended to first refer to this [Overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
   to understand the embeddings generation process flow.
 
-* In this page:
+* In this article:
     * [Configuring an embeddings generation task - from the Studio](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio)
     * [Configuring an embeddings generation task - from the Client API](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-client-api)
       * [Define source using PATHS](../../ai-integration/generating-embeddings/embeddings-generation-task#configure-an-embeddings-generation-task---define-source-using-paths)

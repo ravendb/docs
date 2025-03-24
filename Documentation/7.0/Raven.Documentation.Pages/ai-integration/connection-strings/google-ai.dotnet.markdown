@@ -8,7 +8,7 @@
 
 * This configuration supports **Google AI embeddings** only and is Not compatible with Vertex AI.
 
-* In this page:
+* In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/google-ai#define-the-connection-string---from-the-studio)
   * [Define the connection string - from the Client API](../../ai-integration/connection-strings/google-ai#define-the-connection-string---from-the-client-api)
   * [Syntax](../../ai-integration/connection-strings/google-ai#syntax) 

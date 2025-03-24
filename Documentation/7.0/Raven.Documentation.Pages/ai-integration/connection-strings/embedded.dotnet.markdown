@@ -7,7 +7,7 @@
   This model is embedded within RavenDB, enabling RavenDB to seamlessly handle its  
   [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) without requiring an external AI service.
 
-* In this page:
+* In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-studio)
   * [Define the connection string - from the Client API](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-client-api)
   * [Syntax](../../ai-integration/connection-strings/embedded#syntax)

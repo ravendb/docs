@@ -12,7 +12,7 @@
 
 ---
 
-* In this page:
+* In this article:
   * [AI Tasks - list view](../ai-integration/ai-tasks-list-view#ai-tasks---list-view)
 
 {NOTE/}

@@ -9,7 +9,7 @@
 * **Prior to this article**, refer to the [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index) article for general knowledge about  
   indexing a vector field.
 
-* In this page:
+* In this article:
     * [Overview](../../ai-integration/vector-search/indexing-attachments-for-vector-search#overview)
     * [Indexing TEXT attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search#indexing-text-attachments)
     * [Indexing NUMERICAL attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search#indexing-numerical-attachments)

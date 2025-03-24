@@ -17,7 +17,7 @@
 
 ---
 
-* In this page:
+* In this article:
     * [The embeddings collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collection)
     * [The embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection)
     
@@ -83,7 +83,7 @@
   4. **Source properties & their hash**:  
      This section contains properties from the source document that were converted into embeddings.  
      Each property includes a hash derived from its content:  
-     `<property-name>: [<hash-created-from-conent>, ...]`
+     `<property-name>: [<hash-created-from-content>, ...]`
   5. **Attachment flag**  
      Indicates that the document includes attachments, which store the embeddings.  
      The next image shows the embedding attachments in the document's properties pane.

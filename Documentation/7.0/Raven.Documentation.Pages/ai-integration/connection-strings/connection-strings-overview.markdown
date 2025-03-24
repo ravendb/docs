@@ -19,7 +19,7 @@
 
 ---
 
-* In this page:
+* In this article:
   * [The AI Connection Strings view](../../ai-integration/connection-strings/connection-strings-overview#the-ai-connection-strings-view)
   * [Creating an AI connection string](../../ai-integration/connection-strings/connection-strings-overview#creating-an-ai-connection-string)
     

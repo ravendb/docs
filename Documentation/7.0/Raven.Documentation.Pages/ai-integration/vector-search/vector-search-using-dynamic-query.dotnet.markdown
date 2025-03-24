@@ -6,7 +6,7 @@
 * This article explains how to run a vector search using a **dynamic query**.  
   To learn how to run a vector search using a static-index, see [vector search using a static-index](../../ai-integration/vector-search/vector-search-using-static-index).
 
-* In this page:
+* In this article:
   * [What is a vector search](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-a-vector-search)
   * [Dynamic vector search query - Overview](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search-query---overview)
      * [Creating embeddings for the auto-index](../../ai-integration/vector-search/vector-search-using-dynamic-query#creating-embeddings-for-the-auto-index)

@@ -6,7 +6,7 @@
 * This article explains how to define a connection string to [Ollama](https://ollama.com/blog/embedding-models),  
   enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with your Ollama setup.
 
-* In this page:
+* In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/ollama#define-the-connection-string---from-the-studio)
   * [Define the connection string - from the Client API](../../ai-integration/connection-strings/ollama#define-the-connection-string---from-the-client-api)
   * [Syntax](../../ai-integration/connection-strings/ollama#syntax) 

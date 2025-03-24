@@ -11,7 +11,7 @@
 
 * The vector search feature is only supported by indexes that use the [Corax search engine](../../indexes/search-engine/corax).
 
-* In this page:
+* In this article:
     * [Indexing a vector field - Overview](../../ai-integration/vector-search/vector-search/vector-search-using-static-index#indexing-a-vector-field---overview)
        * [Defining a vector field in a static index](../../ai-integration/vector-search/vector-search-using-static-index#defining-a-vector-field-in-a-static-index)
        * [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index#parameters-defined-at-index-definition)

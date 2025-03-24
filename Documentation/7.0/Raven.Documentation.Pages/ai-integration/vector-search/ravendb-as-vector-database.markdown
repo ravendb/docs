@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* In this page:
+* In this article:
     * [What is a vector database](../../ai-integration/vector-search/ravendb-as-vector-database#what-is-a-vector-database)
     * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
     

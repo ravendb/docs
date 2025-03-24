@@ -13,7 +13,7 @@
 
 ---
 
-* In this page:
+* In this article:
   * [Embeddings generation - overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
      * [Embeddings generation - process flow](../../ai-integration/generating-embeddings/overview#embeddings-generation---process-flow)
      * [Supported providers](../../ai-integration/generating-embeddings/overview#supported-providers)
