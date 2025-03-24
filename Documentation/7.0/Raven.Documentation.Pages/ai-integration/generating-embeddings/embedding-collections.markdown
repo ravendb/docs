@@ -37,7 +37,7 @@
 {CODE-BLOCK:json}
 {
     "identifier-of-task-1": {
-        "@quantization": "<quantization-format>", // Shown only if embeddings are Quantized
+        "@quantization": "<quantization-type>", // Shown only if embeddings are Quantized
         "Property1": [
             "A hash created from the 1st text chunk of Property1's content",
             "A hash created from the 2nd text chunk of Property1's content",   
@@ -81,9 +81,9 @@
   3. **Task identifier**  
      The identifier of the task that generated the embeddings for the listed properties.  
   4. **Source properties & their hash**:  
-     This section contains properties from the source document that were converted into embeddings.  
-     Each property includes a hash derived from its content:  
-     `<property-name>: [<hash-created-from-content>, ...]`
+     This section contains properties from the source document whose content was converted into embeddings.  
+     Each property contains an array of hashes derived from text chunks created from the property's content:  
+     `<property-name>: [<hash-created-from-text-chunk-1>, <hash-created-from-text-chunk-2>, ...]`
   5. **Attachment flag**  
      Indicates that the document includes attachments, which store the embeddings.  
      The next image shows the embedding attachments in the document's properties pane.
@@ -93,11 +93,11 @@
   * Each attachment contains a single embedding.
   
   * The attachment name follows this format:  
-    `<task-identifier>_<property-name>_<hash-created-from-property-content>`
+    `<task-identifier>_<property-name>_<hash-of-text-chunk-from-property-content>`
   
   * If the embeddings were [Quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task,
     the format includes the quantization type:  
-    `<task-identifier>_<property-name>_<hash-created-from-property-content>_<quantization-format>`
+    `<task-identifier>_<property-name>_<hash-of-text-chunk-from-property-content>_<quantization-type>`
 
 {PANEL/}
 
@@ -115,7 +115,7 @@
   **The document ID includes**:  
   * The [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview#creating-an-ai-connection-string),
     which specifies the provider and model that generated the embedding.
-  * A hash generated from the content of the source document property that was embedded.
+  * A hash generated from a text chunk - either from a source document property or from a search term.
   * If the embedding was quantized by the task, the document ID also includes the quantization type.
 
 {CONTENT-FRAME/}
@@ -130,7 +130,7 @@
 * This applies both when generating embeddings for source document content and when performing a vector search that requires an embedding for the search term.  
 
 * To find a matching embedding, RavenDB:  
-   1. **Generates a hash** from the text content that requires embedding.  
+   1. **Generates a hash** from the chunked text content that requires embedding.  
    2. **Identifies the provider** the user is working with, based on the specified connection string.  
    3. **Compares these values** (the connection string identifier and the hash) with those stored in the cache collection.  
       (Each document in `@embeddings-cache` has an ID that includes these two components).  
@@ -179,7 +179,8 @@
      The document ID includes the connection string identifier, which specifies the provider that generated the embedding.
 
   3. **Hash**  
-     The document ID includes a hash created from the text chunk of the source document property's content.
+     The document ID includes a hash created from a text chunk -  
+     either from a source document property or from a search term in a vector search query.
 
 ---
 
@@ -189,11 +190,11 @@
 
   1. **Document ID**  
      The document ID follows this format:  
-     `embeddings-cache/<connection-string-identifier>/<hash-created-from-property-content>`
+     `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>`
         
         If the embedding was [Quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task,
         the format includes the quantization type:  
-        `embeddings-cache/<connection-string-identifier>/<hash-created-from-property-content>/<quantization-format>`
+        `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>/<quantization-type>`
  
    2. **Expiration time**  
       The document is removed when the expiration time is reached.
@@ -205,7 +206,7 @@
     ![The embeddings cache - attachments](images/embeddings-cache-3.png)
 
     * In the cache collection, the attachment name consists only of the hash:  
-      `<hash-created-from-property-content>`
+      `<hash-of-text-chunk-from-property-or-search-term>`
 
 {PANEL/}
 
