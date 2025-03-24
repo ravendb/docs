@@ -58,13 +58,14 @@
   Once the embeddings are stored, you can perform vector searches on your document content by:  
   * Running a [dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
   * Defining a [static index](../../ai-integration/vector-search/vector-search-using-static-index#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
-  
-     The query search term is converted to an embedding as well to compare against stored vectors.  
-     If no matching embedding for the search term is found in the cache, a request is sent to the provider to generate one.
+
+      The query search term is split into chunks, and each chunk is looked up in the cache.  
+      If not found, RavenDB requests an embedding from the provider and caches it.  
+      The embedding (cached or newly created) is then used to compare against stored vectors. 
 
 * **Continuous processing**:  
   * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info) that process documents as they change.  
-    Before contacting the provider after a document change, the system first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
+    Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
   * The text is sent to the providers in batches. The batch size is configurable, see the  
     [Ai.Embeddings.Generation.Task.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.generation.task.maxbatchsize) configuration key.  
   * A failed embeddings generation task will retry after the duration set in the 
@@ -85,6 +86,7 @@
     * OpenAI
     * Mistral AI
     * bge-micro-v2 (a local embedded model within RavenDB)
+    * Other providers that have an OpenAI-compatible API
 
 {CONTENT-FRAME/}
 
