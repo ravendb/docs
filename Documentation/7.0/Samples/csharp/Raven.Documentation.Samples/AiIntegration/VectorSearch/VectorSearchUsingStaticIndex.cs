@@ -341,7 +341,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     new VectorOptions()
                     {
                        // Vector options can be customized
-                       // in the same wat as the above index example.
+                       // in the same way as the above index example.
                     });
                 
                 // The index MUST use the Corax search engine 
@@ -1023,7 +1023,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                                 .ByText("candy"),
                             // Optionally, specify the minimum similarity value
                             minimumSimilarity: 0.75f,
-                            // Optionally, specify the number candidates for querying
+                            // Optionally, specify the number of candidates for querying
                             numberOfCandidates: 20,
                             // Optionally, specify whether the vector search should use the 'exact search method'
                             isExact: true)

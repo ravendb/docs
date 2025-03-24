@@ -67,7 +67,7 @@
   1. **Collection**  
      Enter or select the source document collection from the dropdown.
   2. **Embeddings source**  
-     Select `Paths` to define the source content specifying document properties.
+     Select `Paths` to define the source content by specifying document properties.
   3. **Source Text Path**  
      Enter the property name from the document that contains the text for embedding generation.
   4. **Chunking Method**  
@@ -108,7 +108,7 @@
      The default initial period is `90` days. This period may be extended when the source documents change.  
      Learn more in [The embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection).
   3. **Regenerate embeddings**  
-     This toggle is visible only when editing an exiting task.  
+     This toggle is visible only when editing an existing task.  
      Toggle ON to regenerate embeddings for all documents in the collection, as specified by the _Paths_ or _Script_.
 
 ---

@@ -61,7 +61,7 @@ public class CreateEmbeddingsGenerationTask
                     },
                     new EmbeddingPathConfiguration()
                     {
-                        Path = "Desription", 
+                        Path = "Description", 
                         ChunkingOptions = new()
                         {
                             ChunkingMethod = ChunkingMethod.PlainTextSplitLines,
@@ -132,10 +132,12 @@ public class CreateEmbeddingsGenerationTask
                     Script = 
                         @"embeddings.generate({
 
-                            // Process the document 'Name' field using method text.split()
+                            // Process the document 'Name' field using method text.split().
+                            // The text content will be split into chunks of up to 2048 tokens.
                             Name: text.split(this.Name, 2048),
 
-                            // Process the document 'Description' field using method text.splitLines()
+                            // Process the document 'Description' field using method text.splitLines().
+                            // The text content will be split into chunks of up to 2048 tokens.
                             Description: text.splitLines(this.Description, 2048)
                         });"
                 },

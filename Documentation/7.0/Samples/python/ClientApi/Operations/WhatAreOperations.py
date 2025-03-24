@@ -118,7 +118,7 @@ class WhatAreOperations(ExampleBase):
             delete_by_query_op = DeleteByQueryOperation("from Products where Discontinued = true")
 
             # Execute the operation
-            # Send returns an 'Operation' object that can be 'killed'
+            # Send_async returns an 'Operation' object that can be 'killed'
             operation = store.operations.send_async(delete_by_query_op)
 
             # Call 'kill' to abort operation

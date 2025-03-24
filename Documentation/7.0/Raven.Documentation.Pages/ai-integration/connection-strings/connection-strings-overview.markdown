@@ -67,7 +67,7 @@
    Click "Regenerate" to automatically create an identifier based on the connection string name.
 
 4. **Connector**  
-   Select an embeddings generation provider from the dropdown menu.  
+   Select an AI provider from the dropdown menu.  
    This will open a popup where you can configure the connection details.  
    Configuration details for each provider are explained in the following articles:
    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)

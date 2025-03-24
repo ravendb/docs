@@ -34,7 +34,7 @@
 5. **Endpoint** (optional)  
    Enter the Hugging Face endpoint for generating embeddings from text.  
    If not specified, the default endpoint is used.  
-   (`https://api-inference.huggingface.co/pipeline/feature-extraction`)
+   (`https://api-inference.huggingface.co/`)
 
 6. **Model**  
    Specify the Hugging Face text embedding model to use.

@@ -170,7 +170,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         }
         
         #region wait_timeout_ex
-        public void WaitForCompletionWithTimout(
+        public void WaitForCompletionWithTimeout(
             TimeSpan timeout,
             DocumentStore documentStore)
         {
@@ -195,7 +195,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             }
             catch (TimeoutException e)
             {
-                // The operation did Not finish within the specified timeframe
+                // The operation did not finish within the specified timeframe
             }
         }
         #endregion
@@ -226,7 +226,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             }
             catch (TimeoutException e)
             {
-                // The operation did Not finish at cancellation time
+                // The operation did not finish at cancellation time
             }
         }
         #endregion
@@ -295,7 +295,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         }
         
         #region wait_timeout_ex_async
-        public async Task WaitForCompletionWithTimoutAsync(
+        public async Task WaitForCompletionWithTimeoutAsync(
             TimeSpan timeout,
             DocumentStore documentStore)
         {

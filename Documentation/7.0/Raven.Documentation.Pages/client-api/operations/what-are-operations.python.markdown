@@ -7,7 +7,7 @@
 * The RavenDB Client API is built with the notion of layers.  
   At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store)**
   and the **[session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
-  They in turn are built on top of the lower-level **Operations** and **Commands** API.
+  They, in turn, are built on top of the lower-level **Operations** and **Commands** API.
 
 * **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
   directly to the server via DocumentStore Operations instead of using the higher-level Session API.
@@ -29,13 +29,13 @@
 
 {PANEL: Why use operations}
 
-* Operations provide **management functionality** that is Not available in the context of the session, for example:
+* Operations provide **management functionality** that is not available in the context of the session, for example:
     * Create/delete a database
     * Execute administrative tasks
     * Assign permissions
     * Change server configuration, and more.
 
-* The operations are executed on the DocumentStore and are Not part of the session transaction.
+* The operations are executed on the DocumentStore and are not part of the session transaction.
 
 * There are some client tasks, such as patching documents, that can be carried out either via the Session 
   ([session.advanced.patch()](../../client-api/operations/patching/single-document#array-manipulation))
@@ -75,7 +75,7 @@
   See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
 
 * To execute a common operation request,  
-  use the `send` method on the `operations` property in the DocumentStore.
+  use the `send` method on the `operations` property of the DocumentStore.
 
 #### Example:
 

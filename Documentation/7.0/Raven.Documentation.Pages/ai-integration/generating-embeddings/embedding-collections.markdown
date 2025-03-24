@@ -90,7 +90,7 @@
 
     ![The embeddings document - attachments](images/embeddings-collection-2.png)
 
-  * Each attachment contains a singe embedding.
+  * Each attachment contains a single embedding.
   
   * The attachment name follows this format:  
     `<task-identifier>_<property-name>_<hash-created-from-property-content>`

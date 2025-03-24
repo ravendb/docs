@@ -2,15 +2,15 @@
 
 The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work)**.
 
-They in turn, are built on top of the notion of Operations and Commands.
+They, in turn, are built on top of the notion of Operations and Commands.
 
-Operations are an encapsulation of a set of low level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
+Operations are an encapsulation of a set of low-level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
 
 They are available in the DocumentStore under the **operations**, **maintenance**, and **maintenance().server** methods.
 
 {PANEL:Common Operations}
 
-Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based) or removal of documents by using queries (more can be read [here](../../client-api/operations/common/delete-by-query)).  
+Common operations include set-based operations for [Patching](../../client-api/operations/patching/set-based) or removal of documents by using queries (more can be read [here](../../client-api/operations/common/delete-by-query)).  
 There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment) and [Counters](../../client-api/operations/counters/counter-batch).
 
 ### How to Send an Operation
@@ -103,7 +103,7 @@ Maintenance operations include operations for changing the configuration at runt
 
 {PANEL:Server Operations}
 
-These type of operations contain various administrative and miscellaneous configuration operations.
+These types of operations contain various administrative and miscellaneous configuration operations.
 
 ### How to Send an Operation
 

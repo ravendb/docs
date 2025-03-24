@@ -4,8 +4,11 @@
 {NOTE: }
 
 * This article explains how to define a connection string to the [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.  
-  This model is embedded within RavenDB, enabling RavenDB to seamlessly handle its  
+  This model, designed exclusively for embeddings generation, is embedded within RavenDB, enabling RavenDB to seamlessly handle its
   [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) without requiring an external AI service.
+
+* Running the model locally consumes processor resources and will impact RavenDB's overall performance,  
+  depending on your workload and usage patterns.
 
 * In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/embedded#define-the-connection-string---from-the-studio)

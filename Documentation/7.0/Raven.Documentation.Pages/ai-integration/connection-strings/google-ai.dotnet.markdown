@@ -6,7 +6,7 @@
 * This article explains how to define a connection string to [Google AI](https://ai.google.dev/gemini-api/docs/embeddings),  
   enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with Google's AI services.
 
-* This configuration supports **Google AI embeddings** only and is Not compatible with Vertex AI.
+* This configuration supports **Google AI provider** only and is not compatible with Vertex AI.
 
 * In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/google-ai#define-the-connection-string---from-the-studio)

@@ -88,6 +88,6 @@ async function operations() {
 
     //region wait_kill_syntax
     await waitForCompletion();
-    await kill()
+    await kill();
     //endregion
 }

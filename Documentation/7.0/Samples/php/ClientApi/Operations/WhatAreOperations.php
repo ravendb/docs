@@ -47,7 +47,7 @@ interface SendSyntaxInterface
     /**
      * Wait for operation completion.
      *
-     * It throws TimoutException if $duration is set and operation execution time elapses duration interval.
+     * It throws TimeoutException if $duration is set and operation execution time elapses duration interval.
      *
      * Usage:
      *   - waitForCompletion(): void;               // It will wait until operation is finished

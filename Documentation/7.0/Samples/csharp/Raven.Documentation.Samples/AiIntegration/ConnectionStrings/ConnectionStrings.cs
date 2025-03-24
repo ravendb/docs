@@ -22,7 +22,7 @@ public class CreateConnectionStrings
                 // Azure OpenAI connection settings
                 AzureOpenAiSettings = new AzureOpenAiSettings(
                     apiKey: "your-api-key",
-                    endpoint: "https://your-resourse-name.openi.azure.com",
+                    endpoint: "https://your-resource-name.openai.azure.com",
                     model: "text-embedding-3-small",
                     deploymentName: "your-deployment-name")
             };
@@ -69,7 +69,7 @@ public class CreateConnectionStrings
                 // Hugging Face connection settings
                 HuggingFaceSettings = new HuggingFaceSettings(
                     apiKey: "your-api-key",
-                    endpoint: "https://api-inference.huggingface.co/pipeline/feature-extraction",
+                    endpoint: "https://api-inference.huggingface.co/",
                     model: "sentence-transformers/all-MiniLM-L6-v2")
             };
             
@@ -91,7 +91,7 @@ public class CreateConnectionStrings
                 
                 // Ollama connection settings
                 OllamaSettings = new OllamaSettings(
-                    uri: "http://localhost:11434/api/embed",
+                    uri: "http://localhost:11434/",
                     model: "mxbai-embed-large")
             };
             
