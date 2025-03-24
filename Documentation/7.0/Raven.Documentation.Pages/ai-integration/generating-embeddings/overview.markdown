@@ -88,11 +88,9 @@
 
 {CONTENT-FRAME/}
 
-![flow chart](images/flow1.png)
+![flow chart](images/embeddings-generation-task-flow.png)
 
-![flow chart](images/flow2.png)
-
-![flow chart](images/flow3.png)
+![flow chart](images/vector-search-flow.png)
 
 {PANEL/}
 
