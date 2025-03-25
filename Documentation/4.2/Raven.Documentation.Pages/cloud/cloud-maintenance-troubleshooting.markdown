@@ -40,7 +40,7 @@ This dashboard has two separated sections:
 ## Incidents History
 
 The *RavenDB Cloud* monitoring system tracks incidents and cluster performance.  
-This section lets you analyse your cluster incidents for a selected *time period*, *cluster node*, *severity* and *category*.
+This section lets you analyse your cluster incidents for a selected *time period*, *cluster node*, *severity*, *category* and *event status*.
 
 !["Cluster Health: Incidents History section"](images\cluster-health-incidents-history.png "Cluster Health: Incidents History section")
 
