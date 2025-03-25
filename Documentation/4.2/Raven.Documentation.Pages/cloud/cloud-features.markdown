@@ -117,7 +117,7 @@ You will be taken to the *Monitoring Configuration View*, which is divided into 
 !["Monitoring Configuration View OpenTelemetry"](images/product-features-monitoring-configuration-opentelemetry.png "Monitoring Configuration View OpenTelemetry")
 
 {INFO: Availability }
-OpenTelemetry feature is available only for *RavenDB* **6.0 and newer**.
+OpenTelemetry feature is available only for *RavenDB* **6.2 and newer**.
 {INFO/}
 
 ### SNMP Monitoring IPs
