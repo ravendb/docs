@@ -159,3 +159,17 @@ You can edit Autoscaling parameters by clicking on **Edit** button.
 !["Autoscaling Edit Configuration"](images/product-features-autocaling-configuration-edit.png "Autoscaling Edit Configuration")
 
 {PANEL/}
+
+{PANEL: AI Embeddings }
+
+*RavenDB Cloud* provides an integrated solution that combines high-performance NoSQL capabilities with advanced vector
+indexing and querying features, enabling efficient storage and management of high-dimensional vector data.
+
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/ai-integration).
+
+{INFO: Availability }
+This feature is available only for *RavenDB* **7.0 and newer**.
+{INFO/}
+
+{PANEL/}
