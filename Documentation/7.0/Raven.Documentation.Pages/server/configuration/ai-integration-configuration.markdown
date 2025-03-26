@@ -13,7 +13,6 @@
    * [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches)  
    * [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.maxfallbacktimeinsec)  
 
-
 {NOTE/}
 
 ---
@@ -31,12 +30,13 @@ Higher values may improve throughput but can increase latency and require more r
 
 {PANEL: Ai.Embeddings.MaxConcurrentBatches}
 
-The maximum number of query embedding batches that can be processed concurrently.  
+The maximum number of **query embedding batches** that can be processed concurrently.  
 This setting controls the degree of parallelism when sending query embedding requests to AI providers.  
 Higher values may improve throughput but can increase resource usage and may trigger rate limits.
 
 - **Type**: `int`
 - **Default**: `4`
+- **Min value**: `1`
 - **Scope**: Server-wide or per database
 
 {PANEL/}

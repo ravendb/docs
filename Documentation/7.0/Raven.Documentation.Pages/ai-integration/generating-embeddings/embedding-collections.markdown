@@ -8,60 +8,61 @@
 
 * The server creates the following dedicated collections,  
   which contain documents that reference the embedding attachments:  
-  * **Embeddings Collection**
+  * **Embeddings Collections**
   * **Embeddings Cache Collection**
 
 * This article describes these custom-designed collections.  
-  It is recommended to first refer to this [overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
+  It is recommended to first refer to this [Overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
   to understand the embeddings generation process flow.
 
 ---
 
 * In this article:
-    * [The embeddings collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collection)
+    * [The embeddings collections](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collections)
     * [The embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection)
     
 {NOTE/}
 
 ---
 
-{PANEL: The embeddings collection}
+{PANEL: The embeddings collections}
 
 * RavenDB creates a separate embeddings collection for each source collection from which embeddings are generated.
   The naming format for these collections is: `<source-collection-name>/embeddings`.
 
-* Each document in the embeddings collection references ALL embeddings generated from the content of the corresponding document in the source collection by any defined embeddings generation task.
+* Each document in the embeddings collection references ALL embeddings generated from
+  the content of the corresponding document in the source collection by any defined embeddings generation task.
 
 * The document structure in the embeddings collection is:
 
 {CODE-BLOCK:json}
 {
-    "identifier-of-task-1": {
-        "@quantization": "<quantization-type>", // Shown only if embeddings are Quantized
-        "Property1": [
-            "A hash created from the 1st text chunk of Property1's content",
-            "A hash created from the 2nd text chunk of Property1's content",   
-            "A hash created from the 3rd text chunk of Property1's content", 
-            "..."
-        ],
-        "Property2": [
-            "A hash created from the 1st text chunk of Property2's content",
-            "..."
-        ]
-    },
-    "identifier-of-task-2": {
-        "Property3": [
-            "A hash created from the 1st text chunk of Property3's content",
-            "..."
-        ]
-    },
-    "Other-tasks...": {
-        ...
-    },
-    "@metadata": {
-        "@collection": "<source-collection-name>/embeddings",
-        "@flags": "HasAttachments"
-    }
+  "identifier-of-task-1": {
+     "@quantization": "<quantization-type>",
+     "Property1": [
+       "Hash of the embedding vector generated for 1st text chunk of Property1's content",
+       "Hash of the embedding vector generated for 2nd text chunk of Property1's content",   
+       "Hash of the embedding vector generated for 3rd text chunk of Property1's content", 
+       "..."
+     ],
+     "Property2": [
+       "Hash of the embedding vector generated for 1st text chunk of Property2's content",
+       "..."
+     ]
+  },
+  "identifier-of-task-2": {
+    "Property3": [
+      "Hash of the embedding vector generated for 1st text chunk of Property3's content",
+      "..."
+    ]
+  },
+  "Other-tasks...": {
+     ...
+  },
+  "@metadata": {
+     "@collection": "<source-collection-name>/embeddings",
+     "@flags": "HasAttachments"
+  }
 }
 {CODE-BLOCK/}
 
@@ -79,25 +80,28 @@
   2. **Document ID**  
      Each document ID in this collection follows the format: `<source-document-name>/embeddings`  
   3. **Task identifier**  
-     The identifier of the task that generated the embeddings for the listed properties.  
-  4. **Source properties & their hash**:  
+     The identifier of the task that generated the embeddings for the listed properties.
+  4. **Quantization type**  
+     The quantization method applied by the task when generating the embeddings.  
+  5. **Source properties & their hashes**:  
      This section contains properties from the source document whose content was converted into embeddings.  
-     Each property contains an array of hashes derived from text chunks created from the property's content:  
-     `<property-name>: [<hash-created-from-text-chunk-1>, <hash-created-from-text-chunk-2>, ...]`
-  5. **Attachment flag**  
+     Each property holds an array of Base64 hashes.
+     Each hash is derived from the content of an embedding vector generated for a text chunk from the property's content:  
+     `<property-name>: [`  
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<hash-of-the-embedding-vector-for-text-chunk-1>,`  
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<hash-of-the-embedding-vector-for-text-chunk-2>,`  
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`...`  
+     `]`  
+  6. **Attachment flag**  
      Indicates that the document includes attachments, which store the embeddings.  
      The next image shows the embedding attachments in the document's properties pane.
 
     ![The embeddings document - attachments](images/embeddings-collection-2.png)
 
-  * Each attachment contains a single embedding.
-  
-  * The attachment name follows this format:  
-    `<task-identifier>_<property-name>_<hash-of-text-chunk-from-property-content>`
-  
-  * If the embeddings were [Quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task,
-    the format includes the quantization type:  
-    `<task-identifier>_<property-name>_<hash-of-text-chunk-from-property-content>_<quantization-type>`
+  * Each attachment contains a **single embedding**.
+
+  * The **attachment name** is the Base64 hash derived from the content of the embedding vector stored in the attachment:  
+    `<hash-of-the-embedding-vector-content>`
 
 {PANEL/}
 
@@ -105,17 +109,20 @@
 
 {CONTENT-FRAME: }
 
+####  Cache contents
+---
+
 * In addition to creating embeddings collections for each source collection,  
   RavenDB creates and maintains a single **embeddings cache collection** named: `@embeddings-cache`.
 
-* This collection references all embeddings generated by all providers for all source collections.   
-  It includes embeddings generated from source documents as well as embeddings generated from search terms in vector search queries.
+* This cache collection contains embeddings generated by all providers,  
+  both from source documents and from search terms used in vector search queries.
 
-* Each document in the `@embeddings-cache` collection references a **single attachment** containing an embedding vector.
+* Each document in the `@embeddings-cache` collection references a **single attachment** that contains a single embedding vector.
   **The document ID includes**:  
   * The [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview#creating-an-ai-connection-string),
     which specifies the provider and model that generated the embedding.
-  * A hash generated from a text chunk - either from a source document property or from a search term.
+  * A Base64 hash generated from a text chunk value - either from a source document property or from a search term.
   * If the embedding was quantized by the task, the document ID also includes the quantization type.
 
 {CONTENT-FRAME/}
@@ -158,11 +165,16 @@
 #### Expiration policy
 ---
 
-* Each document in this cache collection has an expiration date.
+* **The expiration date**:  
+  Each document in this cache collection is created with an expiration date, which is set according to the expiration period defined in the embeddings generation task.
   Once the expiration date is reached, the document is automatically deleted (provided that [document expiration](../../studio/database/settings/document-expiration) is enabled).
 
-* When a source document (from which embeddings were generated) is modified,
-  RavenDB extends the expiration date of the relevant document in this cache if the remaining time is less than one-third of the original duration.
+* **Extending the expiration period**:  
+  * When a source document (from which embeddings were generated) is modified - even if the change is not to a property used for embeddings -
+    RavenDB checks the expiration of the matching document in the cache collection.
+    If the remaining time is less than half of the original duration, RavenDB extends the expiration by the period defined in the task.
+  * When you make a vector search query and an embedding generated from a chunk of the search term already exists in the cache,
+    RavenDB also extends the expiration of the matching document by the period defined in the query settings of the embeddings generation task.
 
 {CONTENT-FRAME/}
 
@@ -179,7 +191,7 @@
      The document ID includes the connection string identifier, which specifies the provider that generated the embedding.
 
   3. **Hash**  
-     The document ID includes a hash created from a text chunk -  
+     The document ID includes a Base64 hash created from a text chunk -  
      either from a source document property or from a search term in a vector search query.
 
 ---
@@ -192,8 +204,9 @@
      The document ID follows this format:  
      `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>`
         
-        If the embedding was [Quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task,
-        the format includes the quantization type:  
+        If the embedding was [quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task
+        using a type other than _Single_ (e.g., _Int8_ or _Binary_),  
+        the ID format includes the quantization type:  
         `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>/<quantization-type>`
  
    2. **Expiration time**  
@@ -205,7 +218,7 @@
 
     ![The embeddings cache - attachments](images/embeddings-cache-3.png)
 
-    * In the cache collection, the attachment name consists only of the hash:  
+    * The name of the attachment is the hash string:  
       `<hash-of-text-chunk-from-property-or-search-term>`
 
 {PANEL/}
