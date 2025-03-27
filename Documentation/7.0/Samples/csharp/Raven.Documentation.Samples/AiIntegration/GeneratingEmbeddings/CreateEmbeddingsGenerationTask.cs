@@ -179,10 +179,18 @@ public class CreateEmbeddingsGenerationTask
                     Script = 
                         @"embeddings.generate({
 
-                            // Use the content of the document field as is, without any chunking
+                            // No chunking method is specified here
                             Name: this.Name,
                             Description: this.Description
-                        });"
+                        });",
+                    
+                    // Specify the default chunking method and max tokens per chunk
+                    // to use in the script
+                    ChunkingOptions = new ChunkingOptions()
+                    {
+                        ChunkingMethod = ChunkingMethod.PlainTextSplit,
+                        MaxTokensPerChunk = 2048
+                    } 
                 },
                 #endregion
             };
@@ -235,6 +243,7 @@ public enum ChunkingMethod
 public class EmbeddingsTransformation
 {
     public string Script { get; set; }
+    public ChunkingOptions ChunkingOptions {get; set;}
 }
 
 public enum VectorEmbeddingType
