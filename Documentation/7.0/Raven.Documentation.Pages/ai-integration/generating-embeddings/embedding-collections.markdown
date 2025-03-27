@@ -28,7 +28,7 @@
 {PANEL: The embeddings collections}
 
 * RavenDB creates a separate embeddings collection for each source collection from which embeddings are generated.
-  The naming format for these collections is: `<source-collection-name>/embeddings`.
+  The naming format for these collections is: `@embeddings/<source-collection-name>`.
 
 * Each document in the embeddings collection references ALL embeddings generated from
   the content of the corresponding document in the source collection by any defined embeddings generation task.
@@ -71,14 +71,14 @@
 * For example:  
   In this [task definition](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio),
   an embeddings generation task is defined on the `Categories` collection.  
-  This creates the `Categories/embeddings` collection, where a document will look as follows:
+  This creates the `@embeddings/Categories` collection, where a document will look as follows:
 
     ![The embeddings document](images/embeddings-collection-1.png)
 
   1. **Collection name**   
-     The unique name of the embeddings collection: `Categories/embeddings`.
+     The unique name of the embeddings collection: `@embeddings/Categories`.
   2. **Document ID**  
-     Each document ID in this collection follows the format: `<source-document-name>/embeddings`  
+     Each document ID in this collection follows the format: `embeddings/<source-document-name>`  
   3. **Task identifier**  
      The identifier of the task that generated the embeddings for the listed properties.
   4. **Quantization type**  
