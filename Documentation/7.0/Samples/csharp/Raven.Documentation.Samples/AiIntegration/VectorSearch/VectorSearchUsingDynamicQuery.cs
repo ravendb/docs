@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Call 'ByText' 
                             // Provide the term for the similarity comparison
                             searchTerm => searchTerm.ByText("italian food"),
-                            // Optionally, specify the minimum similarity level
+                            // It is recommended to specify the minimum similarity level
                             0.82f,
                             // Optionally, specify the number of candidates for the search
                             20)
@@ -188,7 +188,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Provide the vector for the similarity comparison
                             queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-                            // Optionally, specify the minimum similarity level
+                            // It is recommended to specify the minimum similarity level
                             0.85f,
                             // Optionally, specify the number of candidates for the search
                             10)
@@ -417,7 +417,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                          // Perform a vector search:
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();
                     #endregion
@@ -430,7 +431,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .Where(x => x.PricePerUnit > 35)
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToListAsync();
                     #endregion
@@ -443,7 +445,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .DocumentQuery<Product>()
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToList();
@@ -457,7 +460,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncDocumentQuery<Product>()
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToListAsync();
@@ -470,7 +474,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = session.Advanced
                         .RawQuery<Product>(@"
                             from 'Products'
-                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))")
+                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
                         .AddParameter("minPrice", 35.0)
                         .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
@@ -484,7 +488,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                             from 'Products'
-                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))")
+                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
                         .AddParameter("minPrice", 35.0)
                         .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
@@ -717,7 +721,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Call 'ByText' 
                             // Provide the search term for the similarity comparison
                             searchTerm => searchTerm.ByText("candy"),
-                            // Optionally, specify the minimum similarity level
+                            // It is recommended to specify the minimum similarity level
                             0.75f)
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();

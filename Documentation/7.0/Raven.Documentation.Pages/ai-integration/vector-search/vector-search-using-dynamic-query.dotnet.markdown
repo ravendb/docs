@@ -131,12 +131,14 @@
 
 * **Minimum similarity**  
   You can specify the minimum similarity to use when searching for related vectors.  
-  Can be a value between `0.0f` and `1.0f`.  
-  A value closer to `1.0f` requires higher similarity between vectors,  
-  while a value closer to `0.0f` allows for less similarity.
+  The value can be between `0.0f` and `1.0f`.  
+    * A value closer to `1.0f` requires higher similarity between vectors,  
+      while a value closer to `0.0f` allows for less similarity.
+    * **Important**: To filter out less relevant results when performing vector search queries,  
+      it is recommended to explicitly specify the minimum similarity level at query time.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
 
 * **Number of candidates**  
   You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -555,9 +557,7 @@ where vector.search(TagsEmbeddedAsSingle, $queryVector, 0.85, 10)
 from "Products"
 // The filtering condition:
 where (PricePerUnit > $minPrice)
-// The vector search here will execute with the default similarity (0.75f)
-// and the default NumberOfCandidates (16)
-and (vector.search(embedding.text(Name), $searchTerm))
+and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))
 { "minPrice" : 35.0, "searchTerm" : "italian food" }
   {CODE-TAB-BLOCK/}
   {CODE-TABS/}
@@ -571,7 +571,7 @@ and (vector.search(embedding.text(Name), $searchTerm))
   A larger _NumberOfCandidates_ increases the pool of documents considered,
   improving the chances of finding results that match both the vector search and the filter condition.
 
-* For example, in the above query, the vector search executes with the default params: Similarity `0.75f` and NumberOfCandidates `16`.
+* For example, in the above query, the vector search executes with: Similarity `0.75f` and NumberOfCandidates `16`.
   Running this query on RavenDB's sample data returns **2** documents. 
 
 * However, if you increase _NumberOfCandidates_, the query will retrieve more candidate documents before applying the filtering condition.
@@ -581,8 +581,8 @@ and (vector.search(embedding.text(Name), $searchTerm))
     {CODE-TAB-BLOCK:sql:RQL}
 from "Products"
 where (PricePerUnit > $minPrice)
-// Run vector search with default similarity and NumberOfCandidates 25
-and (vector.search(embedding.text(Name), $searchTerm, null, 25))
+// Run vector search with similarity 0.75 and NumberOfCandidates 25
+and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
 { "minPrice" : 35.0, "searchTerm" : "italian food" }
     {CODE-TAB-BLOCK/}
     {CODE-TABS/}

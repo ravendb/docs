@@ -556,7 +556,7 @@ when a static index is requested to index a complex JSON object.
 ---
 
 - **Type**: `float`
-- **Default**: `0.75f`
+- **Default**: `0f`
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
