@@ -87,17 +87,38 @@ This feature is available only for *RavenDB* **6.0 and newer**.
 
 {PANEL: Monitoring }
 
-*RavenDB Cloud* allows you to monitor your *RavenDB Cloud* instances via *SNMP* protocol. *SNMP* is a widely used
-network
-management protocol that allows for the collection and organization of information about managed devices on IP networks.
+*RavenDB Cloud* allows you to monitor your *RavenDB Cloud* instances via *SNMP* and *OpenTelemetry* protocols.
+
+*SNMP* is a widely used
+network management protocol that allows for the collection and organization of information about managed devices on IP
+networks.
+*RavenDB Cloud* leverages the *OpenTelemetry SDK* to send metrics data via the *OpenTelemetry* Protocol, allowing
+seamless
+data collection and analysis by an OpenTelemetry retriever.
 
 ## Configuration
 
-Click **Configure** Button in *Monitoring* feature row in order to configure this feature.
-You will see Monitoring Configuration View. You can edit SNMP Monitoring IPs in the first section.
-The second section displays SNMPv3 Monitoring credentials.
+Click the **Configure** button in the *Monitoring* feature row to configure this feature.
+You will be taken to the *Monitoring Configuration View*, which is divided into two tabs:
 
-!["Monitoring Configuration View"](images/product-features-monitoring-configuration.png "Monitoring Configuration View")
+1. SNMP Configuration Tab:
+
+   - In the first section, you can edit SNMP Monitoring IPs.
+
+   - In the second section, you can view and update SNMPv3 Monitoring credentials.
+
+2. OpenTelemetry Configuration Tab:
+
+   - Select which Meters should be collected.
+
+   - Specify where these Meters should be sent.
+
+!["Monitoring Configuration View SNMP"](images/product-features-monitoring-configuration.png "Monitoring Configuration View SNMP")
+!["Monitoring Configuration View OpenTelemetry"](images/product-features-monitoring-configuration-opentelemetry.png "Monitoring Configuration View OpenTelemetry")
+
+{INFO: Availability }
+OpenTelemetry feature is available only for *RavenDB* **6.2 and newer**.
+{INFO/}
 
 ### SNMP Monitoring IPs
 
@@ -127,6 +148,18 @@ SNMP Monitoring IPs entries
 are [CIDR ranges](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)
 that define networks from which the connection is allowed.
 {INFO/}
+
+### OpenTelemetry Configuration
+
+{WARNING: Product Restart }
+Your product will be restarted automatically (node by node) to apply settings needed for feature to work properly.
+{WARNING/}
+
+This section allows you to select meters and specify where these should be sent using the *OpenTelemetry* protocol.
+
+You can read step by step OpenTelemetry & Grafana configuration [here](https://ravendb.net/articles/grafana-cloud-configuration-with-opentelemetry).
+
+!["Edit OpenTelemetry"](images/product-features-monitoring-edit-opentelemetry.png "Edit OpenTelemetry")
 
 {PANEL/}
 
