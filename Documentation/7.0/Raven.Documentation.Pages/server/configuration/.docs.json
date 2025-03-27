@@ -12,6 +12,12 @@
         "Mappings": []
     },
     {
+        "Path": "ai-integration-configuration.markdown",
+        "Name": "AI Integration Configuration",
+        "DiscussionId": "42b9b0c6-9b12-4af9-bee8-d5db2cac4244",
+        "Mappings": []
+    },
+    {
         "Path": "backup-configuration.markdown",
         "Name": "Backup Options",
         "DiscussionId": "dbee505a-ac58-4e24-9993-c4e822a47916",
@@ -36,18 +42,6 @@
         "Mappings": []
     },
     {
-        "Path": "etl-configuration.markdown",
-        "Name": "ETL Configuration",
-        "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
-        "Mappings": []
-    },
-    {
-        "Path": "queue-sink-configuration.markdown",
-        "Name": "Queue Sink Configuration",
-        "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
-        "Mappings": []
-    },
-    {
         "Path": "embedded-configuration.markdown",
         "Name": "Embedded Configuration",
         "DiscussionId": "a6a148d2-c4fa-47c6-aa1c-3fad81e64000",
@@ -57,6 +51,12 @@
                 "Key": "server/configuration/testing-configuration"
             }
         ]
+    },
+    {
+        "Path": "etl-configuration.markdown",
+        "Name": "ETL Configuration",
+        "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
+        "Mappings": []
     },
     {
         "Path": "http-configuration.markdown",
@@ -110,6 +110,12 @@
         "Path": "query-configuration.markdown",
         "Name": "Query Configuration",
         "DiscussionId": "a70af9a0-53cd-4d98-9cff-a592d0ceca86",
+        "Mappings": []
+    },
+    {
+        "Path": "queue-sink-configuration.markdown",
+        "Name": "Queue Sink Configuration",
+        "DiscussionId": "c98467b2-7072-4ca0-ac72-b775dc8ac67f",
         "Mappings": []
     },
     {

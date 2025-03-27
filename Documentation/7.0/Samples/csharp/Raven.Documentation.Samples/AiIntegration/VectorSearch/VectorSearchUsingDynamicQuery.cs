@@ -18,7 +18,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         {
             using (var store = new DocumentStore())
             {
-                // Examples for textual content
+                // Examples for TEXTUAL content
                 // ============================
                 
                 using (var session = store.OpenSession())
@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Call 'ByText' 
                             // Provide the term for the similarity comparison
                             searchTerm => searchTerm.ByText("italian food"),
-                            // Optionally, specify the minimum similarity level
+                            // It is recommended to specify the minimum similarity level
                             0.82f,
                             // Optionally, specify the number of candidates for the search
                             20)
@@ -117,7 +117,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #endregion
                 }
                 
-                // Examples for numerical content
+                // Examples for NUMERICAL content
                 // ==============================
                 
                 #region sample_data
@@ -188,7 +188,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Provide the vector for the similarity comparison
                             queryVector => queryVector.ByEmbedding(
                                 new RavenVector<float>(new float[] { 6.599999904632568f, 7.699999809265137f })),
-                            // Optionally, specify the minimum similarity level
+                            // It is recommended to specify the minimum similarity level
                             0.85f,
                             // Optionally, specify the number of candidates for the search
                             10)
@@ -417,7 +417,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                          // Perform a vector search:
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToList();
                     #endregion
@@ -430,7 +431,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .Where(x => x.PricePerUnit > 35)
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToListAsync();
                     #endregion
@@ -443,7 +445,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .DocumentQuery<Product>()
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToList();
@@ -457,7 +460,8 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncDocumentQuery<Product>()
                         .VectorSearch(
                             field => field.WithText(x => x.Name),
-                            searchTerm => searchTerm.ByText("italian food"))
+                            searchTerm => searchTerm.ByText("italian food"),
+                            0.75f, 16)
                         .WhereGreaterThan(x => x.PricePerUnit, 35)
                         .WaitForNonStaleResults()
                         .ToListAsync();
@@ -470,7 +474,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = session.Advanced
                         .RawQuery<Product>(@"
                             from 'Products'
-                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))")
+                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
                         .AddParameter("minPrice", 35.0)
                         .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
@@ -484,7 +488,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Advanced
                         .AsyncRawQuery<Product>(@"
                             from 'Products'
-                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm))")
+                            where (PricePerUnit > $minPrice) and (vector.search(embedding.text(Name), $searchTerm, 0.75, 16))")
                         .AddParameter("minPrice", 35.0)
                         .AddParameter("searchTerm", "italian food")
                         .WaitForNonStaleResults()
@@ -520,12 +524,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarProducts = await asyncSession.Query<Product>()
                         .VectorSearch(
                             field => field
-                                // Specify the source text field for the embeddings
                                 .WithText(x => x.Name)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Int8),
                             searchTerm => searchTerm
-                                // Provide the search term for comparison
                                 .ByText("italian food"))
                         .Customize(x => x.WaitForNonStaleResults())
                         .ToListAsync();
@@ -539,12 +540,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .DocumentQuery<Product>()
                         .VectorSearch(
                             field => field
-                                // Specify the source text field for the embeddings
                                 .WithText(x => x.Name)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Int8), 
                             searchTerm => searchTerm
-                                // Provide the search term for comparison
                                 .ByText("italian food"))
                         .WaitForNonStaleResults()
                         .ToList();
@@ -558,12 +556,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncDocumentQuery<Product>()
                         .VectorSearch(
                             field => field
-                                // Specify the source text field for the embeddings
                                 .WithText(x => x.Name)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Int8),
                             searchTerm => searchTerm
-                                // Provide the search term for comparison
                                 .ByText("italian food"))
                         .WaitForNonStaleResults()
                         .ToListAsync();
@@ -626,12 +621,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                     var similarMovies = await asyncSession.Query<Movie>()
                         .VectorSearch(
                             field => field
-                                // Specify the source field and its type   
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
                             queryVector => queryVector
-                                // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                  {
                                      6.599999904632568f, 7.699999809265137f
@@ -648,12 +640,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .DocumentQuery<Movie>()
                         .VectorSearch(
                             field => field
-                                // Specify the source field and its type   
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
                             queryVector => queryVector
-                                // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                  {
                                      6.599999904632568f, 7.699999809265137f
@@ -670,12 +659,9 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncDocumentQuery<Movie>()
                         .VectorSearch(
                             field => field
-                                // Specify the source field and its type   
                                 .WithEmbedding(x => x.TagsEmbeddedAsSingle, VectorEmbeddingType.Single)
-                                // Set the quantization type for the generated embeddings
                                 .TargetQuantization(VectorEmbeddingType.Binary),
                             queryVector => queryVector
-                                // Provide the vector to use for comparison
                                 .ByEmbedding(new RavenVector<float>(new float[]
                                  {
                                      6.599999904632568f, 7.699999809265137f
@@ -714,6 +700,104 @@ namespace Raven.Documentation.Samples.AiIntegration
                             {
                                 6.599999904632568f, 7.699999809265137f
                             }))
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_21
+                    var similarCategories = session.Query<Category>()
+                        .VectorSearch(
+                            field => field
+                                 // Call 'WithText'
+                                 // Specify the document field in which to search for similar values
+                                .WithText(x => x.Name)
+                                 // Call 'UsingTask'
+                                 // Specify the identifier of the task that generated
+                                 // the embeddings for the Name field
+                                .UsingTask("id-for-task-open-ai"),
+                            // Call 'ByText' 
+                            // Provide the search term for the similarity comparison
+                            searchTerm => searchTerm.ByText("candy"),
+                            // It is recommended to specify the minimum similarity level
+                            0.75f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_21_async
+                    var similarCategories = await asyncSession.Query<Category>()
+                        .VectorSearch(
+                            field => field
+                                .WithText(x => x.Name)
+                                .UsingTask("id-for-task-open-ai"),
+                            searchTerm => searchTerm.ByText("candy"),
+                            0.75f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_22
+                    var similarCategories = session.Advanced
+                        .DocumentQuery<Category>()
+                        .VectorSearch(
+                            field => field
+                                .WithText(x => x.Name)
+                                .UsingTask("id-for-task-open-ai"),
+                            searchTerm => searchTerm.ByText("candy"),
+                            0.75f)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_22_async
+                    var similarCategories = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Category>()
+                        .VectorSearch(
+                            field => field
+                                .WithText(x => x.Name)
+                                .UsingTask("id-for-task-open-ai"),
+                            searchTerm => searchTerm.ByText("candy"),
+                            0.75f)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_23
+                    var similarCategories = session.Advanced
+                        .RawQuery<Category>(@"
+                            from 'Categories'
+                            // Specify the identifier of the task that generated the embeddings inside 'ai.task'
+                            where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)")
+                        .AddParameter("searchTerm", "candy")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_23_async
+                    var similarCategories = await asyncSession.Advanced
+                        .AsyncRawQuery<Category>(@"
+                            from 'Categories'
+                            // Specify the identifier of the task that generated the embeddings inside 'ai.task'
+                            where vector.search(embedding.text(Name, ai.task('id-for-task-open-ai')), $searchTerm, 0.75)")
+                        .AddParameter("searchTerm", "candy")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
@@ -772,6 +856,9 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 public IVectorEmbeddingTextField TargetQuantization(
                     VectorEmbeddingType targetEmbeddingQuantization);
+                
+                public IVectorEmbeddingTextField UsingTask(
+                    string embeddingsGenerationTaskIdentifier);
             }
 
             public interface IVectorEmbeddingField
@@ -805,7 +892,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                 // 'embeddings' is an Enumerable containing embedding values.
                 public void ByEmbedding<T>(IEnumerable<T> embedding) where T : unmanaged, INumber<T>;
                 
-                // 'emeddings' is an array containing embedding values.
+                // 'embeddings' is an array containing embedding values.
                 public void ByEmbedding<T>(T[] embedding) where T : unmanaged, INumber<T>;
                 
                 // Defines queried embedding in base64 format.

@@ -313,6 +313,72 @@ namespace Raven.Documentation.Samples.AiIntegration
             }
         }
         #endregion
+        
+        #region index_13
+        public class Categories_ByPreMadeTextEmbeddings :
+            AbstractIndexCreationTask<Category, Categories_ByPreMadeTextEmbeddings.IndexEntry>
+        {
+            public class IndexEntry()
+            {
+                // This index-field will hold the text embeddings
+                // that were pre-made by the Embeddings Generation Task
+                public object VectorFromTextEmbeddings { get; set; }
+            }
+    
+            public Categories_ByPreMadeTextEmbeddings()
+            {
+                Map = categories => from category in categories
+                    select new IndexEntry
+                    {
+                        // Call 'LoadVector' to create a VECTOR FIELD. Pass:
+                        // * The document field name to be indexed (as a string) 
+                        // * The identifier of the task that generated the embeddings
+                        //   for the 'Name' field
+                        VectorFromTextEmbeddings = LoadVector("Name", "id-for-task-open-ai")
+                    };
+
+                VectorIndexes.Add(x => x.VectorFromTextEmbeddings,
+                    new VectorOptions()
+                    {
+                       // Vector options can be customized
+                       // in the same way as the above index example.
+                    });
+                
+                // The index MUST use the Corax search engine 
+                SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
+            }
+        }
+        #endregion
+        
+        #region Index_14
+        public class Categories_ByPreMadeTextEmbeddings_JS : AbstractJavaScriptIndexCreationTask
+        {
+            public Categories_ByPreMadeTextEmbeddings_JS()
+            {
+                Maps = new HashSet<string>()
+                {
+                    $@"map('Categories', function (category) {{
+                           return {{
+                               VectorFromTextEmbeddings:
+                                   loadVector('Name', 'id-for-task-open-ai')
+                           }};
+                     }})"
+                };
+            
+                Fields = new();
+                Fields.Add("VectorFromTextEmbeddings", new IndexFieldOptions()
+                {
+                    Vector = new VectorOptions()
+                    {
+                        // Vector options can be customized
+                        // in the same way as the above index example.
+                    }
+                });
+        
+                SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
+            }
+        }
+        #endregion
 
         public void IndexDefinitionExamples()
         {
@@ -488,13 +554,54 @@ namespace Raven.Documentation.Samples.AiIntegration
                 store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
                 #endregion
             }
+            
+            using (var store = new DocumentStore())
+            {
+                #region Index_15
+                var indexDefinition = new IndexDefinition
+                {
+                    Name = "Categories/ByPreMadeTextEmbeddings",
+                    Maps = new HashSet<string>
+                    {
+                        @"
+                          from category in docs.Categories
+                          select new 
+                          {
+                              VectorFromTextEmbeddings = LoadVector(""Name"", ""id-for-task-open-ai"")
+                          }"
+                    },
+                    
+                    Fields = new Dictionary<string, IndexFieldOptions>()
+                    {
+                        {
+                            "VectorFromTextEmbeddings",
+                            new IndexFieldOptions()
+                            {
+                                Vector = new VectorOptions()
+                                {
+                                    // Vector options can be customized
+                                    // in the same way as the above index example.
+                                }
+                            }
+                        }
+                    },
+                    
+                    Configuration = new IndexConfiguration()
+                    {
+                        ["Indexing.Static.SearchEngineType"] = "Corax"
+                    }
+                };
+
+                store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
+                #endregion
+            }
         }
         
         public async Task QueryExamples()
         {
             using (var store = new DocumentStore())
             {
-                // Query for textual content
+                // Query for TEXTUAL content
                 // =========================
                 
                 using (var session = store.OpenSession())
@@ -604,7 +711,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #endregion
                 }
                 
-                // Query for numerical content
+                // Query for NUMERICAL content
                 // ===========================
                 
                 using (var session = store.OpenSession())
@@ -890,6 +997,116 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AddParameter("minPrice", 200)
                         .AddParameter("searchTerm1", "Alice")
                         .AddParameter("searchTerm2", "italian")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                // Query for TEXTUAL content from PRE-MADE embeddings generated by tasks
+                // =====================================================================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_12
+                    var similarCategories = session
+                        .Query<Categories_ByPreMadeTextEmbeddings.IndexEntry, Categories_ByPreMadeTextEmbeddings>()
+                        // Perform a vector search
+                        // Call the 'VectorSearch' method
+                        .VectorSearch(
+                            field => field
+                                // Call 'WithField'
+                                // Specify the index-field in which to search for similar values
+                                .WithField(x => x.VectorFromTextEmbeddings),
+                            searchTerm => searchTerm
+                                // Call 'ByText'
+                                // Provide the search term for the similarity comparison
+                                .ByText("candy"),
+                            // Optionally, specify the minimum similarity value
+                            minimumSimilarity: 0.75f,
+                            // Optionally, specify the number of candidates for querying
+                            numberOfCandidates: 20,
+                            // Optionally, specify whether the vector search should use the 'exact search method'
+                            isExact: true)
+                        // Waiting for not-stale results is not mandatory
+                        // but will assure results are not stale
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .OfType<Category>()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_12_async
+                    var similarCategories = await asyncSession
+                        .Query<Categories_ByPreMadeTextEmbeddings.IndexEntry, Categories_ByPreMadeTextEmbeddings>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromTextEmbeddings),
+                            searchTerm => searchTerm
+                                .ByText("candy"), 0.75f, 20, isExact: true)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .OfType<Category>()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_13
+                    var similarCategories = session.Advanced
+                        .DocumentQuery<Categories_ByPreMadeTextEmbeddings.IndexEntry, Categories_ByPreMadeTextEmbeddings>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromTextEmbeddings),
+                            searchTerm => searchTerm
+                                .ByText("candy"), 0.75f, 20, isExact: true)
+                        .WaitForNonStaleResults()
+                        .OfType<Category>()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_13_async
+                    var similarCategories = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Categories_ByPreMadeTextEmbeddings.IndexEntry, Categories_ByPreMadeTextEmbeddings>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromTextEmbeddings),
+                            searchTerm => searchTerm
+                                .ByText("candy"),
+                            0.75f, 20, isExact: true)
+                        .WaitForNonStaleResults()
+                        .OfType<Category>()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_14
+                    var similarCategories = session.Advanced
+                        .RawQuery<Category>(@"
+                            from index 'Categories/ByPreMadeTextEmbeddings'
+                            // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
+                            where exact(vector.search(VectorFromTextEmbeddings, $searchTerm, 0.75, 20))")
+                        .AddParameter("searchTerm", "candy")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_14_async
+                    var similarCategories = await asyncSession.Advanced
+                        .AsyncRawQuery<Category>(@"
+                            from index 'Categories/ByPreMadeTextEmbeddings'
+                            // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
+                            where exact(vector.search(VectorFromTextEmbeddings, $searchTerm, 0.75, 20))")
+                        .AddParameter("searchTerm", "candy")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion

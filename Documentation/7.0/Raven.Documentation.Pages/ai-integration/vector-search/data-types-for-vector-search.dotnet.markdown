@@ -9,7 +9,7 @@
 * Text and numerical data that is not pre-quantized can be further quantized in the generated embeddings.  
   Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
 
-* In this page:
+* In this article:
   * [Supported data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search#supported-data-types-for-vector-search)
       * [Textual data](../../ai-integration/vector-search/data-types-for-vector-search#textual-data)
       * [Numerical data](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data) 

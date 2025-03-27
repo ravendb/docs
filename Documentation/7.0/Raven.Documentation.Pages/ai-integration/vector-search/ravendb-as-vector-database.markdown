@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* In this page:
+* In this article:
     * [What is a vector database](../../ai-integration/vector-search/ravendb-as-vector-database#what-is-a-vector-database)
     * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
     
@@ -63,7 +63,7 @@
 
 ##### AI integration:  
 
-* You can use RavenDB as the vector database for your AI-powered applications, including large language models (LLMs).
+* You can use RavenDB as the **vector database** for your AI-powered applications, including large language models (LLMs).
   This eliminates the need to transfer data to expensive external services for vector similarity search,
   providing a cost-effective and efficient solution for vector-based operations.
 
@@ -79,10 +79,13 @@
 ##### Built-in embedding support:
 
 * **Textual input**:  
-  RavenDB enables vector search on **textual input**, allowing you to retrieve results based on contextual similarity, rather than exact word matches. 
-  It does this by automatically converting raw text into dense numerical embeddings using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model,
-  which transforms text into 384-dimensional vectors that capture semantic meaning.
-  When querying with a phrase, RavenDB generates an embedding for the search term using that same model and compares it against indexed embeddings.
+  Embeddings can be automatically generated from textual content within your documents by defining  
+  [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview).
+  These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, or Mistral AI**.
+  If no task is specified, embeddings will be generated using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
+  
+     When querying with a phrase, RavenDB generates an embedding for the search term using the same model applied to the document data
+     and compares it against the indexed embeddings.
 
 * **Numerical arrays input**:  
   Documents in RavenDB can also contain numerical arrays with **pre-made embeddings** created elsewhere.  
@@ -96,6 +99,11 @@
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
   Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
+
+* **Perform vector search**:  
+  Leverage RavenDB's [Auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query)
+  and [Static indexes](../../ai-integration/vector-search/vector-search-using-static-index) to perform a vector search,  
+  retrieving documents based on contextual similarity rather than exact word matches.
 
 {PANEL/}
 
