@@ -120,7 +120,7 @@ The following keywords and methods are available in RQL:
     - [spatial.disjoint()](../../../indexes/querying/spatial)
     - [spatial.intersects()](../../../indexes/querying/spatial)
     - [moreLikeThis()](../../../client-api/session/querying/how-to-use-morelikethis)
-    - [vector.search()](../../../ai-integration/vector-search-using-dynamic-query)
+    - [vector.search()](../../../ai-integration/vector-search/vector-search-using-dynamic-query)
 - [ORDER BY](../../../client-api/session/querying/what-is-rql#order-by)
     - [ASC | ASCENDING](../../../indexes/querying/sorting#basics)
     - [DESC | DESCENDING](../../../indexes/querying/sorting#basics)

@@ -330,7 +330,7 @@ from "Employees" where FirstName = "Robert"
    * [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
    * ToListAsync
    * ToArrayAsync
-   * [VectorSearch](../../../ai-integration/vector-search-using-dynamic-query)
+   * [VectorSearch](../../../ai-integration/vector-search/vector-search-using-dynamic-query)
 
 {PANEL/}
 
