@@ -35,7 +35,7 @@
    * Select the Google AI API version to use.
    * If not specified, `V1_Beta` is used. Learn more in [API versions explained](https://ai.google.dev/gemini-api/docs/api-versions).
 
-5. **API Key**  
+5. **API key**  
    Enter the API key used to authenticate requests to Google's AI services.
 
 6. **Model**  

@@ -28,7 +28,7 @@
 3. **Connector**  
    Select **Mistral AI** from the dropdown menu.
 
-4. **API Key**  
+4. **API key**  
    Enter the API key used to authenticate requests to Mistral AI's API.
 
 5. **Endpoint**  

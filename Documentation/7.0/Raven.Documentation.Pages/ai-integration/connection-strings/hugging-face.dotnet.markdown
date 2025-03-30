@@ -28,7 +28,7 @@
 3. **Connector**  
    Select **Hugging Face** from the dropdown menu.
 
-4. **API Key**  
+4. **API key**  
    Enter the API key used to authenticate requests to Hugging Face's text embedding services.
 
 5. **Endpoint** (optional)  
