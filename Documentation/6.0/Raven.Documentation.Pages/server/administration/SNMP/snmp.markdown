@@ -430,6 +430,29 @@ curl -X POST \
 | <a id="5.1.9.2" /> 5.1.9.2 | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
 | <a id="5.1.10" /> 5.1.10   | Number of faulted databases                                                                      |
 
+| OID                            | Metric (Ongoing tasks)                                             |
+|--------------------------------|--------------------------------------------------------------------| 
+| <a id="5.1.11.1" /> 5.1.11.1   | Number of enabled ongoing tasks for all databases                  |
+| <a id="5.1.11.2" /> 5.1.11.2   | Number of active ongoing tasks for all databases                   |
+| <a id="5.1.11.3" /> 5.1.11.3   | Number of enabled external replication tasks for all databases     |
+| <a id="5.1.11.4" /> 5.1.11.4   | Number of active external replication tasks for all databases      |
+| <a id="5.1.11.5" /> 5.1.11.5   | Number of enabled RavenDB ETL tasks for all databases              |
+| <a id="5.1.11.6" /> 5.1.11.6   | Number of active RavenDB ETL tasks for all databases               |
+| <a id="5.1.11.7" /> 5.1.11.7   | Number of enabled SQL ETL tasks for all databases                  |
+| <a id="5.1.11.8" /> 5.1.11.8   | Number of active SQL ETL tasks for all databases                   |
+| <a id="5.1.11.9" /> 5.1.11.9   | Number of enabled OLAP ETL tasks for all databases                 |
+| <a id="5.1.11.10" /> 5.1.11.10 | Number of active OLAP ETL tasks for all databases                  |
+| <a id="5.1.11.11" /> 5.1.11.11 | Number of enabled Elasticsearch ETL tasks for all databases        |
+| <a id="5.1.11.12" /> 5.1.11.12 | Number of active Elasticsearch ETL tasks for all databases         |
+| <a id="5.1.11.13" /> 5.1.11.13 | Number of enabled Queue ETL tasks for all databases                |
+| <a id="5.1.11.14" /> 5.1.11.14 | Number of active Queue ETL tasks for all databases                 |
+| <a id="5.1.11.15" /> 5.1.11.15 | Number of enabled Backup tasks for all databases                   |
+| <a id="5.1.11.16" /> 5.1.11.16 | Number of active Backup tasks for all databases                    |
+| <a id="5.1.11.17" /> 5.1.11.17 | Number of enabled Subscription tasks for all databases             |
+| <a id="5.1.11.18" /> 5.1.11.18 | Number of active Subscription tasks for all databases              |
+| <a id="5.1.11.19" /> 5.1.11.19 | Number of enabled Pull Replication As Sink tasks for all databases |
+| <a id="5.1.11.20" /> 5.1.11.20 | Number of active Pull Replication As Sink tasks for all databases  |
+
 {PANEL/}
 
 ## Related Articles
