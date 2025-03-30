@@ -27,6 +27,10 @@ public class CreateConnectionStrings
                     deploymentName: "your-deployment-name")
             };
             
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.AzureOpenAiSettings.EmbeddingsMaxConcurrentBatches = 10;
+            
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(operation);
@@ -49,6 +53,10 @@ public class CreateConnectionStrings
                     model: "text-embedding-004",
                     aiVersion: GoogleAIVersion.V1)
             };
+            
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.GoogleSettings.EmbeddingsMaxConcurrentBatches = 10;
             
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
@@ -73,6 +81,10 @@ public class CreateConnectionStrings
                     model: "sentence-transformers/all-MiniLM-L6-v2")
             };
             
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.HuggingFaceSettings.EmbeddingsMaxConcurrentBatches = 10;
+            
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(operation);
@@ -94,6 +106,10 @@ public class CreateConnectionStrings
                     uri: "http://localhost:11434/",
                     model: "mxbai-embed-large")
             };
+            
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.OllamaSettings.EmbeddingsMaxConcurrentBatches = 10;
             
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
@@ -118,6 +134,10 @@ public class CreateConnectionStrings
                     model: "text-embedding-3-small")
             };
             
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.OpenAiSettings.EmbeddingsMaxConcurrentBatches = 10;
+            
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(operation);
@@ -141,6 +161,10 @@ public class CreateConnectionStrings
                     model: "mistral-embed")
             };
             
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.MistralAiSettings.EmbeddingsMaxConcurrentBatches = 10;
+            
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(operation);
@@ -163,6 +187,10 @@ public class CreateConnectionStrings
                 EmbeddedSettings = new EmbeddedSettings()
             };
             
+            // Optionally, override the default maximum number of query embedding batches
+            // that can be processed concurrently 
+            connectionString.EmbeddedSettings.EmbeddingsMaxConcurrentBatches = 10;
+            
             // Deploy the connection string to the server
             var operation = new PutConnectionStringOperation<AiConnectionString>(connectionString);
             var putConnectionStringResult = store.Maintenance.Send(operation);
@@ -180,13 +208,18 @@ public class AiConnectionString
     public AzureOpenAiSettings AzureOpenAiSettings { get; set; }
 }
 
-public class AzureOpenAiSettings
+public class AzureOpenAiSettings : AbstractAiSettings
 {
     public string ApiKey { get; set; }
     public string Endpoint { get; set; }
     public string Model { get; set; }
     public string DeploymentName { get; set; }
     public int? Dimensions { get; set; }
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 
@@ -198,7 +231,7 @@ public class AiConnectionString
     public GoogleSettings GoogleSettings { get; set; }
 }
 
-public class GoogleSettings
+public class GoogleSettings : AbstractAiSettings
 {
     public string ApiKey { get; set; }
     public string Model { get; set; }
@@ -211,6 +244,11 @@ public enum GoogleAIVersion
     V1, // Represents the "v1" version of the Google AI API
     V1_Beta // Represents the "v1beta" version of the Google AI API
 }
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
+}
 #endregion
 
 #region hugging_face_settings
@@ -221,11 +259,16 @@ public class AiConnectionString
     public HuggingFaceSettings HuggingFaceSettings { get; set; }
 }
 
-public class HuggingFaceSettings
+public class HuggingFaceSettings : AbstractAiSettings
 {
     public string ApiKey { get; set; }
     public string Endpoint { get; set; }
     public string Model { get; set; }
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 
@@ -237,10 +280,15 @@ public class AiConnectionString
     public OllamaSettings OllamaSettings { get; set; }
 }
 
-public class OllamaSettings
+public class OllamaSettings : AbstractAiSettings
 {
     public string Uri { get; set; }
     public string Model { get; set; }
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 
@@ -252,7 +300,7 @@ public class AiConnectionString
     public OpenAiSettings OpenAiSettings { get; set; }
 }
 
-public class OpenAiSettings
+public class OpenAiSettings : AbstractAiSettings
 {
     public string ApiKey { get; set; }
     public string Endpoint { get; set; }
@@ -260,6 +308,11 @@ public class OpenAiSettings
     public int? Dimensions { get; set; }
     public string OrganizationId { get; set; }
     public string ProjectId { get; set; }
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 
@@ -271,11 +324,16 @@ public class AiConnectionString
     public MistralAiSettings MistralAiSettings { get; set; }
 }
 
-public class MistralAiSettings
+public class MistralAiSettings : AbstractAiSettings
 {
     public string ApiKey { get; set; }
     public string Endpoint { get; set; }
     public string Model { get; set; }
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 
@@ -285,6 +343,15 @@ public class AiConnectionString
     public string Name { get; set; }
     public string Identifier { get; set; }
     public EmbeddedSettings EmbeddedSettings { get; set; }
+}
+
+public class EmbeddedSettings : AbstractAiSettings
+{
+}
+
+public class AbstractAiSettings
+{
+    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 */

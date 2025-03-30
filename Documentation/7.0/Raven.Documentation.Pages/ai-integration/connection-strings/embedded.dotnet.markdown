@@ -32,7 +32,13 @@
 3. **Connector**  
    Select **Embedded (bge-micro-v2)** from the dropdown menu.
 
-4. Click **Save** to store the connection string or **Cancel** to discard changes.
+4. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
+
+5. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 {PANEL/}
 

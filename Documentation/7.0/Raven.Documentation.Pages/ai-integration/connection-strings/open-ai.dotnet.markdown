@@ -32,10 +32,10 @@
    Enter the API key used to authenticate requests to OpenAI's API.
 
 5. **Endpoint**  
-   Enter the OpenAI endpoint for generating embeddings from text.
+   Select or enter the OpenAI endpoint for generating embeddings from text.
 
 6. **Model**  
-   Specify the OpenAI text embedding model to use.
+   Select or enter the OpenAI text embedding model to use.
 
 7. **Organization ID** (optional)  
    * Set the organization ID to use for the `OpenAI-Organization` request header.
@@ -56,9 +56,15 @@
      Supported only by _text-embedding-3_ and later models.
    * If not specified, the model's default dimensionality is used.
 
-10. Click **Test Connection** to confirm the connection string is set up correctly.
+10. **Max concurrent query batches**: (optional)
+    * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+      Requests to generate such query embeddings via the AI provider are sent in batches.
+    * This parameter defines the maximum number of these batches that can be processed concurrently.  
+      You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
 
-11. Click **Save** to store the connection string or **Cancel** to discard changes.
+11. Click **Test Connection** to confirm the connection string is set up correctly.
+
+12. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 {PANEL/}
 

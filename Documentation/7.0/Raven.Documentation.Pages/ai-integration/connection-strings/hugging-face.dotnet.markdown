@@ -32,16 +32,22 @@
    Enter the API key used to authenticate requests to Hugging Face's text embedding services.
 
 5. **Endpoint** (optional)  
-   Enter the Hugging Face endpoint for generating embeddings from text.  
+   Select or enter the Hugging Face endpoint for generating embeddings from text.  
    If not specified, the default endpoint is used.  
    (`https://api-inference.huggingface.co/`)
 
 6. **Model**  
    Specify the Hugging Face text embedding model to use.
 
-7. Click **Test Connection** to confirm the connection string is set up correctly.
+7. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
 
-8. Click **Save** to store the connection string or **Cancel** to discard changes.
+8. Click **Test Connection** to confirm the connection string is set up correctly.
+
+9. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 {PANEL/}
 

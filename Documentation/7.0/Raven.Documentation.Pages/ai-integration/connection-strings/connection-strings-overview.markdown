@@ -37,7 +37,7 @@
 
 3. Click **"Add new"** to create a new connection string.
 
-4. View the list of all AI connection strings.
+4. View the list of all AI connection strings that have been defined.
 
 5. Edit or delete a connection string.  
    Only connection strings that are not in use by a task can be deleted.
@@ -68,7 +68,7 @@
 
 4. **Connector**  
    Select an AI provider from the dropdown menu.  
-   This will open a popup where you can configure the connection details.  
+   This will open a dialog where you can configure the connection details.  
    Configuration details for each provider are explained in the following articles:
    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
    * [Google AI](../../ai-integration/connection-strings/google-ai)
@@ -78,7 +78,7 @@
    * [Mistral AI](../../ai-integration/connection-strings/mistral-ai)
    * [Embedded model (bge-micro-v2)](../../ai-integration/connection-strings/embedded)
 
-5. Once you complete all configurations for the selected provider in the popup view,  
+5. Once you complete all configurations for the selected provider in the dialog,  
    save the connection string definition.
 
 {PANEL/}
