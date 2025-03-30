@@ -126,6 +126,11 @@
   where you can track processing duration, batch sizes, and overall progress.  
   Learn more about the functionality of the stats view in the [Ongoing Tasks Stats](../../studio/database/stats/ongoing-tasks-stats/overview) article.
 
+* The number of embeddings generation tasks across all databases can also be monitored using [SNMP](../../server/administration/SNMP/snmp).  
+  The following SNMP OIDs provide relevant metrics:
+  * [5.1.11.25](../../server/administration/SNMP/snmp#5.1.11.25) – Total number of enabled embeddings generation tasks.
+  * [5.1.11.26](../../server/administration/SNMP/snmp#5.1.11.26) – Total number of active embeddings generation tasks.
+
 {PANEL/}
 
 ## Related Articles
