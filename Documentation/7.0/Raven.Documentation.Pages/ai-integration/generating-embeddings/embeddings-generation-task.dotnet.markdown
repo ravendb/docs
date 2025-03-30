@@ -282,13 +282,13 @@ These methods determine how input text is split before being sent to the provide
 // =================================
 
 // Plain text methods:
-text.split(text, maxTokensPerLine);
-text.splitLines(text, maxTokensPerLine);
-text.splitParagraphs(lines, maxTokensPerLine);
+text.split(text, maxTokensPerChunk);
+text.splitLines(text, maxTokensPerChunk);
+text.splitParagraphs(lines, maxTokensPerChunk);
 
 // Markdown methods:
 markdown.splitLines(text, maxTokensPerLine);
-markdown.splitParagraphs(lines, maxTokensPerLine);
+markdown.splitParagraphs(lines, maxTokensPerChunk);
 
 // HTML processing:
 html.strip(htmlText, maxTokensPerChunk);
@@ -300,8 +300,7 @@ html.strip(htmlText, maxTokensPerChunk);
 | **text**              | `string`   | A plain text or markdown string to split.           |
 | **lines**             | `string[]` | An array of text lines to split into chunks.        |
 | **htmlText**          | `string`   | A string containing HTML content to process.        |
-| **maxTokensPerLine**  | `number`   | The maximum tokens allowed per line or chunk.       |
-| **maxTokensPerChunk** | `number`   | The maximum tokens per chunk (used in `html.strip`) |
+| **maxTokensPerLine**  | `number`   | The maximum tokens allowed per chunk.               |
 
 {PANEL/}
 
