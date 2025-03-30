@@ -28,12 +28,14 @@
     [Security.MasterKey.Exec](../../server/configuration/security-configuration#security.masterkey.exec)  
     [Security.MasterKey.Exec.Arguments](../../server/configuration/security-configuration#security.masterkey.exec.arguments)  
     [Security.MasterKey.Exec.TimeoutInSec](../../server/configuration/security-configuration#security.masterkey.exec.timeoutinsec)  
+  * Certificate and issuer validation:  
+    [Security.WellKnownIssuerHashes.Admin](../../server/configuration/security-configuration#security.wellknownissuerhashes.admin)  
+    [Security.WellKnownIssuers.Admin](../../server/configuration/security-configuration#security.wellknownissuers.admin)  
   * Other:  
     [Security.UnsecuredAccessAllowed](../../server/configuration/security-configuration#security.unsecuredaccessallowed)
     [Security.DoNotConsiderMemoryLockFailureAsCatastrophicError](../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror)  
     [Security.DisableHttpsRedirection](../../server/configuration/security-configuration#security.disablehttpsredirection)  
     [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin)  
-    [Security.WellKnownIssuers.Admin](../../server/configuration/security-configuration#security.wellknownissuers.admin)  
     [Security.TlsCipherSuites](../../server/configuration/security-configuration#security.tlsciphersuites)  
   
 {NOTE/}
@@ -260,6 +262,14 @@ Allow to specify well known certificate thumbprints that will be trusted by the 
 - **Example**: `297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb`
 - **Default**: `null`
 - **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL: Security.WellKnownIssuerHashes.Admin}
+
+OBSOLETE.  
+This is no longer supported or used.  
+Use [Security.WellKnownIssuers.Admin](../../server/configuration/security-configuration#security.wellknownissuers.admin) instead.
 
 {PANEL/}
 
