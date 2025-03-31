@@ -28,16 +28,15 @@
 
 {PANEL: Enabling PostgreSQL support}
 
----
-
 ### License
 
-* Your RavenDB license determines which features are available.  
-* Visit Studio's **About** page to find which features are included in your license.  
-
-     !["PostgreSQL and Power BI support"](images/about-license.png "PostgreSQL and Power BI support")
-
-* If your current license doesn't include the PostgreSQL support, acquire [one that does](https://ravendb.net/buy).  
+* Your RavenDB license determines which features are available for your server.  
+* Visit Studio's [About](../../start/licensing/licensing-overview#manage-license-view) 
+  page to find which features are included in your license.  
+* PostgreSQL is enabled for all licenses.  
+* To [use Power BI with RavenDB as its PostgreSQL server](../../integrations/postgresql-protocol/power-bi), 
+  your license must explicitly enable Power BI.  
+  If your current license doesn't include Power BI Support, you can acquire one that does [here](https://ravendb.net/buy).  
 
 ---
 
@@ -48,13 +47,12 @@
   {CODE-BLOCK:json}
 "Integrations.PostgreSQL.Enabled": true
   {CODE-BLOCK/}
-* If your license includes the **PostgreSQL Protocol Support** but not 
-  **Power BI Support**, enable RavenDB's [Experimental Features](../../server/configuration/core-configuration#features.availability) 
+* PostgreSQL is an experimental feature. To enable it, enable RavenDB's 
+  [Experimental Features](../../server/configuration/core-configuration#features.availability) 
   by adding this line to your server's `settings.json` file:  
   {CODE-BLOCK:json}
 "Features.Availability": "Experimental"
   {CODE-BLOCK/}  
-  If your license allows both features, you do **not** need to enable Experimental Features.  
 
 ---
 

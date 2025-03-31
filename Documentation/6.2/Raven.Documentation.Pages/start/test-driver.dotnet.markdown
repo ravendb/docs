@@ -216,9 +216,11 @@ will be able to use up to 9 cores and run way faster.
      may therefore miss out on much of their system's potential.  
    * If the configuration option is set to **`false`**, **no exception will be thrown** 
      even if a license cannot be validated.  
-   * `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` is set by default to `true` 
-     since RavenDB version `6.2`, so a `LicenseExpiredException` exception **would** be thrown 
+   * Since RavenDB version `6.2`, `TestServerOptions.Licensing.ThrowOnInvalidOrMissingLicense` 
+     is set by default to `true` so a `LicenseExpiredException` exception **would** be thrown 
      if the embedded server used by TestDriver fails to validate a license.  
+     Users that prefer that no exception would be thrown if an unlicensed embedded server 
+     is used, can explicitly set the configuration option to **`false`**.  
 
 * Additional `TestServerOptions.Licensing` configuration options are available as well, 
   you can read about them [here](../server/embedded#licensing-options).  
