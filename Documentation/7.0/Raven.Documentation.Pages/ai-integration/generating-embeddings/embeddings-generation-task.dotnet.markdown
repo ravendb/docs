@@ -287,7 +287,7 @@ text.splitLines(text, maxTokensPerChunk);
 text.splitParagraphs(lines, maxTokensPerChunk);
 
 // Markdown methods:
-markdown.splitLines(text, maxTokensPerLine);
+markdown.splitLines(text, maxTokensPerChunk);
 markdown.splitParagraphs(lines, maxTokensPerChunk);
 
 // HTML processing:
@@ -295,12 +295,12 @@ html.strip(htmlText, maxTokensPerChunk);
 
 {CODE-BLOCK/}
 
-| Parameter             | Type       | Description                                         |
-|-----------------------|------------|-----------------------------------------------------|
-| **text**              | `string`   | A plain text or markdown string to split.           |
-| **lines**             | `string[]` | An array of text lines to split into chunks.        |
-| **htmlText**          | `string`   | A string containing HTML content to process.        |
-| **maxTokensPerLine**  | `number`   | The maximum tokens allowed per chunk.               |
+| Parameter             | Type       | Description                                  |
+|-----------------------|------------|----------------------------------------------|
+| **text**              | `string`   | A plain text or markdown string to split.    |
+| **lines**             | `string[]` | An array of text lines to split into chunks. |
+| **htmlText**          | `string`   | A string containing HTML content to process. |
+| **maxTokensPerChunk** | `number`   | The maximum tokens allowed per chunk.        |
 
 {PANEL/}
 
