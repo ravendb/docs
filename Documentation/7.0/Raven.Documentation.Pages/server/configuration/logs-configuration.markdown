@@ -81,6 +81,7 @@ or set it to `null` to keep log files indefinitely.
 {PANEL: Logs.MaxArchiveFiles}
 
 The maximum number of archived log files to keep.  
+Set to `null` to keep log files indefinitely.
 
 - **Type**: `int?`
 - **Default**: `null`

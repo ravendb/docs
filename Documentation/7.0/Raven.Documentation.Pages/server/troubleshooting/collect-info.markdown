@@ -157,11 +157,12 @@ before downloading the existing log files, as described below.
 
 Perform the following for each node in your cluster:
 
-![download logs](images/download-logs.png "Download logs")
+![download logs](images/download-logs-1.png "Download logs")
+![download logs](images/download-logs-2.png "Download logs")
 
 {NOTE: }
 
-1. Navigate to __Manage Server > Admin Logs__ and click 'Download Logs'.
+1. Navigate to __Manage Server > Admin Logs__ and click 'Download Logs' in the "Logs on disk" section.
 
 2. Either check 'Use minimum' to retrieve logs information from the time the server was started,  
    or enter a specific (local) time.
@@ -182,9 +183,9 @@ avoiding potential loss due to the retention configuration.
 
 * The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration.
 
-* Logs deletion time is controlled by the following configurations:
-  * [Retention time in hours](../../server/configuration/logs-configuration#logs.retentiontimeinhrs)
-  * [Retention time in megabytes](../../server/configuration/logs-configuration#logs.retentionsizeinmb)
+* Logs deletion is controlled by the following configurations:
+  * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration#logs.maxarchivedays)
+  * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration#logs.maxarchivefiles)
 
 {INFO/} 
 
