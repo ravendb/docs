@@ -80,6 +80,7 @@ __Before sending the debug package zip file__, perform the following checks:
 
 {PANEL/}
 
+
 {PANEL: Enable logs for ongoing issues}
 
 If the issue you encounter is still **ongoing**, enable the following logs on disk (if they are not already enabled)  
@@ -87,70 +88,45 @@ before downloading the existing log files, as described below.
 
 ![Admin logs view](images/admin-logs-view.png "Open settings from the Admin Logs view")
 
-1. Navigate to **Manage Server > Admin Logs** 
+1. Navigate to **Manage Server > Admin Logs**
 
 2. Click **Settings** in the "Logs on disk" section.  
    The following Settings dialog will open:
 
 ![Settings logs on disk](images/settings-logs-on-disk.png "The settings dialog")
 
+---
+
+### Server logs:
+  ![Server logs](images/server-logs.png)
+
+---
+
+### Microsoft logs:
+  ![Microsoft logs](images/microsoft-logs.png)
+
+---
+
+### Traffic watch logs:
+  ![Traffic watch logs 1](images/traffic-watch-logs.png)
+
+---
+
 {WARNING: }
 
-* Be aware that all logs' settings will reset to their default values after a server restart.
-* To maintain a specific setting after a restart, follow the instructions provided for each log type below.
+Be aware that all log settings will reset to their default values after a server restart.  
+To preserve your settings after a restart, you can either:
+
+  * In each log dialog, save the settings to the `settings.json` file by checking the checkbox in the UI:  
+    (Scroll down in the Traffic watch logs dialog to see this option)  
+    ![Save to settings.json](images/save-to-settings-json.png)
+
+  * Or set the relevant configuration key, as described in this [configuration overview](../../server/configuration/configuration-options):
+    * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration#logs.minlevel) configuration key.  
+    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration#logs.microsoft.minlevel) configuration key.
+    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration#trafficwatch.mode) configuration key.
 
 {WARNING/}
-
----
-
-* ### Server logs:
-
-    ![Server logs](images/server-logs.png "Set server logs")
-
-  1. **Set minimum level**:  
-     * Set the Current Minimum Level to `Debug`.  
-       Only log entries with level _Debug_ and up will be recorded.
-  2. **Persist settings**  
-     * Check this checkbox to save the defined minimum level to the `settings.json` file.   
-     * Or set the [Logs.MinLevel](../../server/configuration/logs-configuration#logs.minlevel) configuration key yourself, as explained in this [configuration overview](../../server/configuration/configuration-options).
-  3. **Save**:  
-     Click Save to apply this setting.
-  
----
-
-* ### Microsoft logs:
-
-    ![Microsoft logs](images/microsoft-logs.png "Set Microsoft logs")
-
-  1. **Microsoft logs**:
-     * This is an advanced option, set it only if requested by the support team.
-     * Set the Current Minimum Level to `Debug`.  
-       Microsoft log entries at the _Debug_ level and above will be included in the server logs.
-  2. **Persist settings**
-     * Check this checkbox to save the defined minimum level to the `settings.json` file.
-     * Or set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration#logs.microsoft.minlevel) configuration key yourself, as explained in this [configuration overview](../../server/configuration/configuration-options).
-  3. **Save**:  
-     Click Save to apply this setting.
-
----
-
-* ### Traffic watch logs:
-
-    ![Traffic watch logs 1](images/traffic-watch-logs-1.png)
-
-    Scroll down for more options:
-
-    ![Traffic watch logs 2](images/traffic-watch-logs-2.png "Enable traffic watch logs")
-
-  1. **Traffic Watch logs**:  
-     * Turn on the 'Enable' toggle to start logging Traffic Watch entries to the server logs.
-     * Leave all other options in their default state.
-  2. **Persist settings**
-     * Check this checkbox to save the defined minimum level to the `settings.json` file.  
-     * Or set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration#trafficwatch.mode) configuration key to `ToLogFile` yourself, as explained in this [configuration overview](../../server/configuration/configuration-options).
-  3. **Save**:  
-     Click Save to apply this setting.
- 
 {PANEL/}
 
 {PANEL: Download logs}
