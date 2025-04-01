@@ -21,6 +21,12 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
       * [Access metrics via SNMP agents](../../../server/administration/snmp/snmp#access-metrics-via-snmp-agents)
       * [Access metrics via HTTP](../../../server/administration/snmp/snmp#access-metrics-via-http)
   * [List of OIDs](../../../server/administration/snmp/snmp#list-of-oids)
+      * [Server OIDs](../../../server/administration/snmp/snmp#server-oids)
+      * [Cluster OIDs](../../../server/administration/snmp/snmp#cluster-oids)
+      * [Database OIDs](../../../server/administration/snmp/snmp#database-oids)
+      * [Index OIDs](../../../server/administration/snmp/snmp#index-oids)
+      * [General OIDs](../../../server/administration/snmp/snmp#general-oids)
+      * [Ongoing tasks OIDs](../../../server/administration/snmp/snmp#ongoing-tasks-oids)
 
 {NOTE/}
 
@@ -252,6 +258,8 @@ curl -X POST \
 
 {NOTE/}
 
+<a id="server-oids" />
+
 | OID                                            | Metric (Server)                                                                                                                                                                                                                                                                |
 |------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <a id="1.1.1" /> 1.1.1                         | Server URL                                                                                                                                                                                                                                                                     |
@@ -341,6 +349,8 @@ curl -X POST \
 | <a id="1.17.3" /> 1.17.3                       | Value of the '/proc/sys/kernel/threads-max' parameter                                                                                                                                                                                                                          |
 | <a id="1.17.4" /> 1.17.4                       | Number of current threads                                                                                                                                                                                                                                                      |
 
+<a id="cluster-oids" />
+
 | OID                    | Metric (Cluster)   |
 |------------------------|--------------------| 
 | <a id="3.1.1" /> 3.1.1 | Current node tag   |
@@ -348,6 +358,8 @@ curl -X POST \
 | <a id="3.2.1" /> 3.2.1 | Cluster term       |
 | <a id="3.2.2" /> 3.2.2 | Cluster index      |
 | <a id="3.2.3" /> 3.2.3 | Cluster ID         |
+
+<a id="database-oids" />
 
 | OID                                | Metric (Database)                                                        |
 |------------------------------------|--------------------------------------------------------------------------| 
@@ -393,6 +405,8 @@ curl -X POST \
 | <a id="5.2.D.6.1" /> 5.2.`D`.6.1   | Number of writes (documents, attachments, counters, timeseries)          |
 | <a id="5.2.D.6.2" /> 5.2.`D`.6.2   | Number of bytes written (documents, attachments, counters, timeseries)   |
 
+<a id="index-oids" />
+
 | OID                                      | Metric (Index)                                 |
 |------------------------------------------|------------------------------------------------| 
 | <a id="5.2.D.4.I.1" /> 5.2.`D`.4.`I`.1   | Indicates if index exists                      |
@@ -411,24 +425,28 @@ curl -X POST \
 | <a id="5.2.D.4.I.15" /> 5.2.`D`.4.`I`.15 | Number of reduces per second (one minute rate) |
 | <a id="5.2.D.4.I.16" /> 5.2.`D`.4.`I`.16 | Index type                                     |
 
-| OID                        | Metric (General)                                                                                 |
-|----------------------------|--------------------------------------------------------------------------------------------------| 
-| <a id="5.1.1" /> 5.1.1     | Number of all databases                                                                          |
-| <a id="5.1.2" /> 5.1.2     | Number of loaded databases                                                                       |
-| <a id="5.1.3" /> 5.1.3     | Time since oldest backup                                                                         |
-| <a id="5.1.4" /> 5.1.4     | Number of disabled databases                                                                     |
-| <a id="5.1.5" /> 5.1.5     | Number of encrypted databases                                                                    |
-| <a id="5.1.6" /> 5.1.6     | Number of databases for current node                                                             |
-| <a id="5.1.7.1" /> 5.1.7.1 | Number of indexes in all loaded databases                                                        |
-| <a id="5.1.7.2" /> 5.1.7.2 | Number of stale indexes in all loaded databases                                                  |
-| <a id="5.1.7.3" /> 5.1.7.3 | Number of error indexes in all loaded databases                                                  |
-| <a id="5.1.7.4" /> 5.1.7.4 | Number of faulty indexes in all loaded databases                                                 | 
-| <a id="5.1.8.1" /> 5.1.8.1 | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
-| <a id="5.1.8.2" /> 5.1.8.2 | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
-| <a id="5.1.8.3" /> 5.1.8.3 | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
-| <a id="5.1.9.1" /> 5.1.9.1 | Number of writes (documents, attachments, counters, timeseries) in all loaded databases          |
-| <a id="5.1.9.2" /> 5.1.9.2 | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
-| <a id="5.1.10" /> 5.1.10   | Number of faulted databases                                                                      |
+<a id="general-oids" />
+
+| OID                            | Metric (General)                                                                                 |
+|--------------------------------|--------------------------------------------------------------------------------------------------| 
+| <a id="5.1.1" /> 5.1.1         | Number of all databases                                                                          |
+| <a id="5.1.2" /> 5.1.2         | Number of loaded databases                                                                       |
+| <a id="5.1.3" /> 5.1.3         | Time since oldest backup                                                                         |
+| <a id="5.1.4" /> 5.1.4         | Number of disabled databases                                                                     |
+| <a id="5.1.5" /> 5.1.5         | Number of encrypted databases                                                                    |
+| <a id="5.1.6" /> 5.1.6         | Number of databases for current node                                                             |
+| <a id="5.1.7.1" /> 5.1.7.1     | Number of indexes in all loaded databases                                                        |
+| <a id="5.1.7.2" /> 5.1.7.2     | Number of stale indexes in all loaded databases                                                  |
+| <a id="5.1.7.3" /> 5.1.7.3     | Number of error indexes in all loaded databases                                                  |
+| <a id="5.1.7.4" /> 5.1.7.4     | Number of faulty indexes in all loaded databases                                                 | 
+| <a id="5.1.8.1" /> 5.1.8.1     | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
+| <a id="5.1.8.2" /> 5.1.8.2     | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
+| <a id="5.1.8.3" /> 5.1.8.3     | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
+| <a id="5.1.9.1" /> 5.1.9.1     | Number of writes (documents, attachments, counters, timeseries) in all loaded databases          |
+| <a id="5.1.9.2" /> 5.1.9.2     | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
+| <a id="5.1.10" /> 5.1.10       | Number of faulted databases                                                                      |
+
+<a id="ongoing-tasks-oids" />
 
 | OID                            | Metric (Ongoing tasks)                                             |
 |--------------------------------|--------------------------------------------------------------------| 
@@ -452,6 +470,12 @@ curl -X POST \
 | <a id="5.1.11.18" /> 5.1.11.18 | Number of active Subscription tasks for all databases              |
 | <a id="5.1.11.19" /> 5.1.11.19 | Number of enabled Pull Replication As Sink tasks for all databases |
 | <a id="5.1.11.20" /> 5.1.11.20 | Number of active Pull Replication As Sink tasks for all databases  |
+| <a id="5.1.11.21" /> 5.1.11.21 | Number of enabled Queue Sink tasks for all databases               |
+| <a id="5.1.11.22" /> 5.1.11.22 | Number of active Queue Sink tasks for all databases                |
+| <a id="5.1.11.23" /> 5.1.11.23 | Number of enabled Snowflake ETL tasks for all databases            |
+| <a id="5.1.11.24" /> 5.1.11.24 | Number of active Snowflake ETL tasks for all databases             |
+| <a id="5.1.11.25" /> 5.1.11.25 | Number of enabled Embeddings Generation tasks for all databases    |
+| <a id="5.1.11.26" /> 5.1.11.26 | Number of active Embeddings Generation tasks for all databases     |
 
 {PANEL/}
 

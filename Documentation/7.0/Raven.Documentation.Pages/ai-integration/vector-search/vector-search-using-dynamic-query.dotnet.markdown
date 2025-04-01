@@ -138,7 +138,7 @@
       it is recommended to explicitly specify the minimum similarity level at query time.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
 
 * **Number of candidates**  
   You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -147,7 +147,7 @@
     * higher than the number of candidates - when the same vector is shared between multiple documents.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity).
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
 
 * **Search method**
     * _Approximate Nearest-Neighbor search_ (Default):   
