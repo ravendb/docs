@@ -10,7 +10,7 @@
       * Entries can be exported to a file for further analysis.
   * **Logs on disk settings** 
       * Define settings that determine which log entries are written to disk. 
-      * Stored log files from remote servers can be downloaded by date range.
+      * Log files located on a server can be downloaded by date range.
   
 * **Powerful filters** can be applied both to the live log stream and to the stored log files,  
   allowing you to refine the displayed or logged entries based on criteria such as the entry content,  
