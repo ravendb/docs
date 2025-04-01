@@ -11,7 +11,7 @@ Traffic Watch logging mode.
 Possible values:
 
 - `Off`
-- `TologFile`
+- `ToLogFile`
 
 {PANEL/}
 
