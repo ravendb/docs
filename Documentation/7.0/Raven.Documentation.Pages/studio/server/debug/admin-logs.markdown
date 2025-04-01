@@ -23,6 +23,7 @@
   * [Logs on this view](../../../studio/server/debug/admin-logs#logs-on-this-view)  
   * [Logs on disk](../../../studio/server/debug/admin-logs#logs-on-disk)  
   * [Log stream](../../../studio/server/debug/admin-logs#log-stream)  
+  * [Syntax for filter conditions](../../../studio/server/debug/admin-logs#syntax-for-filter-conditions)  
 
 {NOTE/}
 
@@ -226,7 +227,7 @@ From the debug menu, click **Admin Logs**.
      Toggle to expand or collapse a structured, easy to read layout of all log entries content.  
   3. **Display settings**  
      Set the maximum number of log entries displayed in this view.  
-        ![Display settings](images/admin-logs_display-settings.png)  
+        ![Display settings](images/admin-logs_display-settings.png "Display settings")  
   4. **Log entry**  
         * Each log entry follows this pipe-separated (|) pattern:  
           `<Timestamp>|<Level>|<ThreadId>|<Resource>|<Component>|<Logger>|<Message>|<Data>`  
@@ -239,16 +240,29 @@ From the debug menu, click **Admin Logs**.
             * **Logger** - The full class name of the originating [logger](../../../server/troubleshooting/logging#your-own-loggers).
             * **Message** - Event description + exception details (if any).
             * **Data** - Additional JSON context.
-        * Click a log entry to expand or collapse its details:
-          ![Log entry](images/admin-logs_log-entry.png "Log entry details")
-        * The format of these log entries is defined by the following default layout string used **internally**:  
-          `"${longdate:universalTime=true}|${level:uppercase=true}|${threadid}|${event-properties:item=Resource}|${event-properties:item=Component}|${logger}|${message:withexception=true}|${event-properties:item=Data}"`
-        * You can apply **filter conditions** to one or more of these fields to control which log entries are included or excluded. 
-          Conditions can be simple comparisons or more complex expressions. For example:  
-            * `contains('${event-properties:item=Resource}', 'DB1') and exception != null`  
-              Matches entries where the _Resource_ contains `DB1` and an exception is present.
-            * `length(message) > 200`  
-              Matches entries where the length of the message exceeds 200 characters.
+        * Click a log entry to expand or collapse its details:     
+          ![Log entry](images/admin-logs_log-entry.png "Log entry details")       
+
+{PANEL/}
+
+{PANEL:  Syntax for filter conditions}
+
+* The structure of each log entry is defined **internally** by the following default layout string:
+  `"${longdate:universalTime=true}|${level:uppercase=true}|${threadid}|${event-properties:item=Resource}|${event-properties:item=Component}|${logger}|${message:withexception=true}|${event-properties:item=Data}"`
+
+* You can apply filter conditions to one or more of these fields to determine whether a log entry should be included or excluded from the logs.
+
+* Conditions can be simple or complex. For example:
+  * `contains('${event-properties:item=Resource}', 'DB1') and exception != null`  
+    Matches entries where the _Resource_ contains _DB1_ and an exception is present.  
+  * `length(message) > 200`  
+    Matches entries where the length of the message exceeds 200 characters.  
+  * `contains('${event-properties:item=Component}', 'MyIndex')`  
+    Matches entries associated with index _MyIndex_.  
+  * `logger == 'Voron.Impl.Journal.WriteAheadJournal'`  
+    Matches entries from a specific logger.  
+
+* Learn more in [NLog conditions](https://github.com/NLog/NLog/wiki/When-filter#conditions).
 
 {PANEL/}
 
