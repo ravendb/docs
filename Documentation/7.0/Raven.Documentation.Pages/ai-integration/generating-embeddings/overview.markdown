@@ -66,7 +66,7 @@
 * **Continuous processing**:  
   * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info) that process documents as they change.  
     Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
-  * The text is sent to the providers in batches.  
+  * The requests to generate embeddings from the source text are sent to the provider in batches.  
     The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.maxbatchsize) configuration key.  
   * A failed embeddings generation task will retry after the duration set in the  
     [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.maxfallbacktimeinsec) configuration key.

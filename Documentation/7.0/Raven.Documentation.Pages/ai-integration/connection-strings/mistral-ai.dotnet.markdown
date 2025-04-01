@@ -28,18 +28,24 @@
 3. **Connector**  
    Select **Mistral AI** from the dropdown menu.
 
-4. **API Key**  
+4. **API key**  
    Enter the API key used to authenticate requests to Mistral AI's API.
 
 5. **Endpoint**  
-   Enter the Mistral AI endpoint for generating embeddings from text.
+   Select or enter the Mistral AI endpoint for generating embeddings from text.
 
 6. **Model**  
-   Specify the Mistral AI text embedding model to use.
+   Select or enter the Mistral AI text embedding model to use.
 
-7. Click **Test Connection** to confirm the connection string is set up correctly.
+7. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
 
-8. Click **Save** to store the connection string or **Cancel** to discard changes.
+8. Click **Test Connection** to confirm the connection string is set up correctly.
+
+9. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 {PANEL/}
 

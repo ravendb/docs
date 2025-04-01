@@ -32,22 +32,28 @@
    Select **Google AI** from the dropdown menu.
 
 4. **AI Version** (optional)  
-   * Enter the Google AI API version to use.
+   * Select the Google AI API version to use.
    * If not specified, `V1_Beta` is used. Learn more in [API versions explained](https://ai.google.dev/gemini-api/docs/api-versions).
 
-5. **API Key**  
+5. **API key**  
    Enter the API key used to authenticate requests to Google's AI services.
 
 6. **Model**  
-   Specify the Google AI text embedding model to use.
+   Select or enter the Google AI text embedding model to use.
 
 7. **Dimensions** (optional)  
    * Specify the number of dimensions for the output embeddings.  
    * If not specified, the model's default dimensionality is used.
 
-8. Click **Test Connection** to confirm the connection string is set up correctly.
+8. **Max concurrent query batches**: (optional)
+   * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
+     Requests to generate such query embeddings via the AI provider are sent in batches.
+   * This parameter defines the maximum number of these batches that can be processed concurrently.  
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
 
-9. Click **Save** to store the connection string or **Cancel** to discard changes.
+9. Click **Test Connection** to confirm the connection string is set up correctly.
+
+10. Click **Save** to store the connection string or **Cancel** to discard changes.
 
 {PANEL/}
 
