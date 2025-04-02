@@ -1,10 +1,13 @@
-# Connection String to OpenAI
+# Connection String to OpenAI and Compatible Providers
 ---
 
 {NOTE: }
 
 * This article explains how to define a connection string to the [OpenAI Service](https://platform.openai.com/docs/guides/embeddings),  
   enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with the OpenAI's API.
+
+* Use this connection string format to connect RavenDB to **any OpenAI-compatible provider** offering a similar API for embedding generation.
+  As long as the provider follows the OpenAI API format, RavenDB will be able to generate and query vector embeddings using the connection string defined here.
 
 * In this article:
   * [Define the connection string - from the Studio](../../ai-integration/connection-strings/open-ai#define-the-connection-string---from-the-studio)
@@ -29,13 +32,14 @@
    Select **OpenAI** from the dropdown menu.
 
 4. **API key**  
-   Enter the API key used to authenticate requests to OpenAI's API.
+   Enter the API key used to authenticate requests to OpenAI or any OpenAI-compatible provider.
 
 5. **Endpoint**  
-   Select or enter the OpenAI endpoint for generating embeddings from text.
+   Select or enter the endpoint used to generate embeddings from text.  
+   This can be an endpoint provided by OpenAI or any OpenAI-compatible provider.
 
 6. **Model**  
-   Select or enter the OpenAI text embedding model to use.
+   Select or enter the text embedding model to use, as provided by OpenAI or any OpenAI-compatible provider.
 
 7. **Organization ID** (optional)  
    * Set the organization ID to use for the `OpenAI-Organization` request header.

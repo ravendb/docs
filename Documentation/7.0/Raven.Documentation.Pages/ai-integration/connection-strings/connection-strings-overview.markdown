@@ -8,7 +8,8 @@
 
 * Each embeddings generation task must define a **connection string** to an embedding provider.  
   This connection string specifies where the embeddings will be generated,
-  allowing RavenDB to integrate with external services such as Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, Mistral AI, or RavenDB's embedded model (bge-micro-v2).
+  allowing RavenDB to integrate with external services such as OpenAI, Azure OpenAI, and any other OpenAI-compatible providers,  
+  as well as Hugging Face, Google AI, Ollama, Mistral AI, or RavenDB’s embedded model (bge-micro-v2).
 
 * While each task can have only one connection string, you can define multiple connection strings in your database to support different providers or configurations.  
   A single connection string can also be reused across multiple tasks in the database.
