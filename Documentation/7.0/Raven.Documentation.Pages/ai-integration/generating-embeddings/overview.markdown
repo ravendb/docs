@@ -79,7 +79,7 @@
 
 * The following service providers are supported for auto-generating embeddings using tasks:
 
-    * [OpenAI & compatible providers](../../ai-integration/connection-strings/open-ai)
+    * [OpenAI & OpenAI-compatible providers](../../ai-integration/connection-strings/open-ai)
     * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
     * [Google AI](../../ai-integration/connection-strings/google-ai)
     * [Hugging Face](../../ai-integration/connection-strings/hugging-face)

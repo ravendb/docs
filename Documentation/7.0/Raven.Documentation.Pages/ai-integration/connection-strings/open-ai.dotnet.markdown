@@ -1,4 +1,4 @@
-# Connection String to OpenAI and Compatible Providers
+# Connection String to OpenAI and <br> OpenAI-Compatible Providers
 ---
 
 {NOTE: }
