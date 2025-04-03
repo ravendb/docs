@@ -79,14 +79,13 @@
 
 * The following service providers are supported for auto-generating embeddings using tasks:
 
-    * Azure Open AI
-    * Google AI
-    * Hugging Face
-    * Ollama
-    * OpenAI
-    * Mistral AI
-    * bge-micro-v2 (a local embedded model within RavenDB)
-    * Other providers that have an OpenAI-compatible API
+    * [OpenAI & OpenAI-compatible providers](../../ai-integration/connection-strings/open-ai)
+    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
+    * [Google AI](../../ai-integration/connection-strings/google-ai)
+    * [Hugging Face](../../ai-integration/connection-strings/hugging-face)
+    * [Ollama](../../ai-integration/connection-strings/ollama)
+    * [Mistral AI](../../ai-integration/connection-strings/mistral-ai)
+    * [bge-micro-v2](../../ai-integration/connection-strings/embedded) (a local embedded model within RavenDB)
 
 {CONTENT-FRAME/}
 
