@@ -58,7 +58,7 @@
 {CODE-TAB:csharp:DocumentQuery query_2@Indexes/Metadata.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByMetadata/AccessViaValue"
-where HasCounters = false
+where HasCounters == true
 order by LastModified desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

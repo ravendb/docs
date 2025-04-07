@@ -18,8 +18,10 @@
 
 ---
 
-* In this article:  
-   * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
+* In this article:
+    * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
+
 
 {NOTE/}
 
@@ -27,10 +29,70 @@
 
 {PANEL: Indexing metadata properties}
 
-{CODE:python index_1@Indexes/Metadata.py /}
+* Use the `MetadataFor` method to access a document's metadata within the index definition,  
+  as shown in the example below.
 
-{CODE:python query_1@Indexes/Metadata.py /}
+* You can retrieve metadata values using one of two syntaxes: a generic method or an indexer.
 
+    * **Access using the generic `Value<T>()` method** - returns the metadata value cast to the specified type.  
+      This approach ensures type safety and is recommended when you know the expected type (e.g., _DateTime_).
+
+    * **Access using the indexer syntax with a string key** - returns the raw object.  
+      You can cast the value manually if needed.
+
+---
+
+* The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
+
+{CODE-TABS}
+{CODE-TAB:python:LINQ_Index_accessMetadataViaValue index_1@Indexes/Metadata.py /}
+{CODE-TAB:python:LINQ_Index_accessMetadataViaIndexer index_2@Indexes/Metadata.py /}
+{CODE-TABS/}
+
+* Query for documents based on metadata values:  
+  Retrieve documents that have counters and order them by their last modified timestamp.
+
+{CODE-TABS}
+{CODE-TAB:python:Query query_1@Indexes/Metadata.py /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByMetadata/AccessViaValue"
+where has_counters == true
+order by last_modified desc
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Metadata properties that can be indexed}
+
+* The following are the **predefined metadata properties that can be indexed**:  
+   * `@archive-at`  
+   * `@attachments`  
+   * `@change-vector`  
+   * `@collection`  
+   * `@counters`  
+   * `@etag`  
+   * `@expires`  
+   * `@id`  
+   * `@last-modified`  
+   * `@refresh`  
+   * `@timeseries`  
+   * `Raven-Clr-Type`  
+
+* You can add custom metadata properties to any document as needed.  
+  These custom properties can be indexed just like the predefined ones.
+
+---
+
+{WARNING: }
+
+Note:
+
+* The `@attachments` metadata property can only be indexed using a **Lucene** index.
+* The **Corax** search engine does not support indexing complex JSON properties.  
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+
+{WARNING/}
 {PANEL/}
 
 ## Related articles

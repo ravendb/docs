@@ -29,9 +29,11 @@ namespace Raven.Documentation.Samples.Indexes
                     {
                         // Access metadata properties using generic method
                         LastModified = metadata.Value<DateTime>(
+                            // Specify the Client API Constant corresponding to '@last-modified'
                             Raven.Client.Constants.Documents.Metadata.LastModified),
                         
                         HasCounters =  metadata.Value<object>(
+                            // Specify the Client API Constant corresponding to '@counters'
                             Raven.Client.Constants.Documents.Metadata.Counters) != null
                     };
             }
@@ -57,10 +59,12 @@ namespace Raven.Documentation.Samples.Indexes
                     select new IndexEntry()
                     {
                         // Access metadata properties using indexer
-                        LastModified = 
+                        LastModified =
+                            // Specify the Client API Constant corresponding to '@last-modified'
                             (DateTime)metadata[Raven.Client.Constants.Documents.Metadata.LastModified],
 
                         HasCounters = 
+                            // Specify the Client API Constant corresponding to '@counters'
                             metadata[Raven.Client.Constants.Documents.Metadata.Counters] != null
                     };
             }
