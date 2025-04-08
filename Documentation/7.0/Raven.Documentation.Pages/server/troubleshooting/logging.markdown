@@ -398,7 +398,10 @@ for this destination.
 {CODE-BLOCK/}
 
 {INFO: }
-[For a complete guide to using Grafana Loki with RavenDB]()  
+
+For a complete guide to integrating RavenDB 7.0 logs with **Grafana Cloud** using **NLog and Loki**,
+see [this article](https://ravendb.net/articles/sending-your-ravendb-7-0-logs-to-grafana-cloud).
+
 {INFO/}
 
 {CONTENT-FRAME/}

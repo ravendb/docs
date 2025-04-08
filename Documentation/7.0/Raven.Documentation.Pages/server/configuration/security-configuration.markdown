@@ -8,7 +8,7 @@
 
 * In this page:
   * Security.AuditLog:  
-    [Security.AuditLog.EnableArchiveFileCompression, Security.AuditLog.Compress](../../server/configuration/security-configuration#security.auditlog.enablearchivefilecompression,-security.auditlog.compress)  
+    [Security.AuditLog.EnableArchiveFileCompression](../../server/configuration/security-configuration#security.auditlog.enablearchivefilecompression)  
     [Security.AuditLog.FolderPath](../../server/configuration/security-configuration#security.auditlog.folderpath)  
     [Security.AuditLog.ArchiveAboveSizeInMb](../../server/configuration/security-configuration#security.auditlog.archiveabovesizeinmb)  
     [Security.AuditLog.MaxArchiveDays](../../server/configuration/security-configuration#security.auditlog.maxarchivedays)
@@ -57,13 +57,14 @@
 
 ---
 
-{PANEL: Security.AuditLog.EnableArchiveFileCompression, Security.AuditLog.Compress}
+{PANEL: Security.AuditLog.EnableArchiveFileCompression}
 
 Determines whether to compress the audit log files.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
+- **Alias:** `Security.AuditLog.Compress`
 
 {PANEL/}
 
