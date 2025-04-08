@@ -19,9 +19,10 @@
 
 ---
 
-* In this page:
+* In this article:
   * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
   * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
   * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
   * [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards)
       * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
@@ -72,6 +73,41 @@ where search(employeeNotes, "French")
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByEmployeeData"
 where (search(employeeData, "Manager") or search(employeeData, "French Spanish", and))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Indexing all fields for FTS (using AsJson)}
+
+* To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method, 
+  which is available when using **a C# LINQ string** that is assigned to the `this.map` property in the Node.js index class,
+  as shown in the example below.
+
+* This approach makes the index robust to changes in the document schema.  
+  By calling `.Select(x => x.Value)` on the result of `AsJson(...)`,
+  the index automatically includes values from ALL existing and newly added properties
+  and there is no need to update the index when the document structure changes.
+
+* {INFO: }
+  This indexing method is supported only when using **Lucene** as the indexing engine.
+  {INFO/}
+
+---
+
+#### The index:
+
+{CODE:nodejs index_6@Indexes\Querying\searching.js/}
+
+---
+
+#### Sample query:
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query search_6@Indexes\Querying\searching.js/}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByAllValues"
+where search(AllValues, "tofu")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

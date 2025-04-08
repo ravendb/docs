@@ -133,7 +133,7 @@ class Searching(ExampleBase):
                 # region search_5
                 products = list(
                     session.query_index_type(Products_ByAllValues, Products_ByAllValues.IndexEntry)
-                    .where_equals("all_values", "tofu")
+                    .search("all_values", "tofu")
                     .of_type(Product)
                 )
                 

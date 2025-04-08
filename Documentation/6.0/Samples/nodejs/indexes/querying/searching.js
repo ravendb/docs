@@ -114,6 +114,30 @@ class Employees_ByFirstName_usingExactAnalyzer extends AbstractJavaScriptIndexCr
 }
 //endregion
 
+//region index_6
+// Extend the index class from 'AbstractCsharpIndexCreationTask':
+class Products_ByAllValues extends AbstractCsharpIndexCreationTask {
+    constructor () {
+        super();
+
+        // Using a C# LINQ string:  
+        this.map = `docs.Products.Select(product => new {
+                        AllValues = this.AsJson(product).Select(x => x.Value)
+                    })`;
+
+        // Configure the index-field for FTS:
+        // Set 'Search' on index-field 'AllValues'
+        this.index("AllValues", "Search");
+
+        // Note:
+        // Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
+
+        // Set the search engine type to Lucene:
+        this.searchEngineType = "Lucene";
+    }
+}
+//endregion
+
 async function searching() {
     const session = store.openSession();
     
@@ -235,6 +259,20 @@ async function searching() {
         
         assert.ok(explanation.includes(expectedVal),
             `'${explanation}' does not contain '${expectedVal}.'`);
+        //endregion
+    }
+
+    {
+        //region search_6
+        const products = await session
+            .query({ indexName: "Products/ByAllValues" })
+            .search("AllValues", "tofu")
+            .all();
+
+        // * Results will contain all Product documents that have 'tofu'
+        //   in ANY of their fields.
+        //
+        // * Search is case-insensitive since the default analyzer is used.        
         //endregion
     }
 

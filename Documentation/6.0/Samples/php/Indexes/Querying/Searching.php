@@ -115,7 +115,7 @@ class Searching
             try {
                 # region search_7
                 $results = $session->query(Products_ByAllValues_IndexEntry::class, Products_ByAllValues::class)
-                        ->whereEquals("allValues", "tofu")
+                        ->search("allValues", "tofu")
                         ->ofType(Product::class)
                         ->toList();
                         

@@ -76,9 +76,9 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 {PANEL: Indexing all fields for FTS (using AsJson)}
 
-* To search across ALL fields in a document without defining each one explicitly,
-  use the `AsJson` method **inside the C# LINQ string** assigned to the `self.map` property in the Python index class.  
-  This method will extract all property values and index them in a single searchable field.
+* To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method,
+  which is available in the **C# LINQ string** that is assigned to the `self.map` property in the Python index class,
+  as shown in the example below.
 
 * This approach makes the index robust to changes in the document schema.  
   By calling `.Select(x => x.Value)` on the result of `AsJson(...)`,
@@ -94,6 +94,8 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 #### The index:
 
 {CODE:python index_3@Indexes\Querying\Searching.py/}
+
+---
 
 #### Sample query:
 

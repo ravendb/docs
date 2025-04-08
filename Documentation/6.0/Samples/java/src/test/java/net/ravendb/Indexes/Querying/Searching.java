@@ -236,7 +236,7 @@ public class Searching {
                 //region search_22
                 List<Product> results = session
                     .query(Products_ByAllValues.IndexEntry.class, Products_ByAllValues.class)
-                    .whereEquals("allValues", "tofu")
+                    .search("allValues", "tofu")
                     .ofType(Product.class)
                     .toList();
                     
