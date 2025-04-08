@@ -5,7 +5,6 @@ from ravendb.documents.indexes.definitions import FieldIndexing
 
 from examples_base import ExampleBase, Employee
 
-
 # region index_1
 class Employees_ByNotes(AbstractIndexCreationTask):
     # The IndexEntry class defines the index-fields
@@ -28,9 +27,8 @@ class Employees_ByNotes(AbstractIndexCreationTask):
 
         # Note:
         # If no analyzer is set then the default 'RavenStandardAnalyzer' is used.
-
-
 # endregion
+
 # region index_2
 class Employees_ByEmployeeData(AbstractIndexCreationTask):
     class IndexEntry:
@@ -58,11 +56,35 @@ class Employees_ByEmployeeData(AbstractIndexCreationTask):
         self._index("employee_data", FieldIndexing.SEARCH)
 
         # Note:
-        # Since no analyzer is set then the default 'RavenStandardAnalyzer' is used.
-
-
+        # Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
 # endregion
 
+# region index_3
+class Products_ByAllValues(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, all_values: str = None):
+            self.all_values = all_values
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "docs.Products.Select(product => new { "
+            # Use the 'AsJson' method to convert the document into a JSON-like structure
+            # and call 'Select' to extract only the values of each property
+            "    all_values = this.AsJson(product).Select(x => x.Value) "
+            "})"
+        )
+        
+        # Configure the index-field for FTS:
+        # Set 'FieldIndexing.SEARCH' on index-field 'all_values'
+        self._index("all_values", FieldIndexing.SEARCH)
+        
+        # Note:
+        # Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
+        
+        # Set the search engine type to Lucene:
+        self.search_engine_type = SearchEngineType.LUCENE
+# endregion
 
 class Searching(ExampleBase):
     def setUp(self):
@@ -106,5 +128,17 @@ class Searching(ExampleBase):
                 #   ('French' AND 'Spanish' in any of the 4 document-fields that were indexed)
 
                 # * Search is case-insensitive since the default analyzer is used
+                # endregion
 
+                # region search_5
+                products = list(
+                    session.query_index_type(Products_ByAllValues, Products_ByAllValues.IndexEntry)
+                    .where_equals("all_values", "tofu")
+                    .of_type(Product)
+                )
+                
+                # * Results will contain all Product documents that have 'tofu'
+                #   in ANY of their fields.
+                #
+                # * Search is case-insensitive since the default analyzer is used.
                 # endregion
