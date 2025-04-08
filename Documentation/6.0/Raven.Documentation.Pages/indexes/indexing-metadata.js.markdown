@@ -18,8 +18,9 @@
 
 ---
 
-* In this article:  
-   * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
+* In this article:
+    * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
 
 {NOTE/}
 
@@ -27,10 +28,56 @@
 
 {PANEL: Indexing metadata properties}
 
+* Use the `getMetadata` method to access a document’s metadata, as shown in the example below.
+
+* The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
+
 {CODE:nodejs index_1@indexes/metadata.js /}
 
-{CODE:nodejs query_1@indexes/metadata.js /}
+* Query for documents based on metadata values:  
+  Retrieve documents that have counters and order them by their last modified timestamp.
 
+{CODE-TABS}
+{CODE-TAB:nodejs:Query query_1@indexes/metadata.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByMetadata"
+where HasCounters == true
+order by LastModified desc
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Metadata properties that can be indexed}
+
+* The following are the **predefined metadata properties that can be indexed**:
+    * `@archive-at`
+    * `@attachments`
+    * `@change-vector`
+    * `@collection`
+    * `@counters`
+    * `@etag`
+    * `@expires`
+    * `@id`
+    * `@last-modified`
+    * `@refresh`
+    * `@timeseries`
+    * `Raven-Clr-Type`
+
+* You can add custom metadata properties to any document as needed.  
+  These custom properties can be indexed just like the predefined ones.
+
+---
+
+{WARNING: }
+
+Note:
+
+* The `@attachments` metadata property can only be indexed using a **Lucene** index.
+* The **Corax** search engine does not support indexing complex JSON properties.  
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+
+{WARNING/}
 {PANEL/}
 
 ## Related articles

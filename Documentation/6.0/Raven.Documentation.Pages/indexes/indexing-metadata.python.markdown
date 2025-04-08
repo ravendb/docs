@@ -22,31 +22,31 @@
     * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
     * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
 
-
 {NOTE/}
 
 ---
 
 {PANEL: Indexing metadata properties}
 
-* Use the `MetadataFor` method to access a document's metadata within the index definition,  
-  as shown in the example below.
+* Use the `MetadataFor` method to access a document’s metadata **inside the C# LINQ string** that defines the index mapping
+  (the string assigned to `self.map` in the Python index class), as shown in the example below.
 
-* You can retrieve metadata values using one of two syntaxes: a generic method or an indexer.
+* You can retrieve metadata values using one of two C# syntaxes:
 
-    * **Access using the generic `Value<T>()` method** - returns the metadata value cast to the specified type.  
-      This approach ensures type safety and is recommended when you know the expected type (e.g., _DateTime_).
-
-    * **Access using the indexer syntax with a string key** - returns the raw object.  
-      You can cast the value manually if needed.
+  * **Generic method syntax**  
+    Use `Value<T>()` to retrieve and cast the metadata value to the expected type.  
+    This is type-safe and preferred when the type is known (e.g., _DateTime_).  
+  * **Indexer syntax**  
+    Use `metadata["key"]` to retrieve the raw object.  
+    You can cast it manually if needed.  
 
 ---
 
 * The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
 
 {CODE-TABS}
-{CODE-TAB:python:LINQ_Index_accessMetadataViaValue index_1@Indexes/Metadata.py /}
-{CODE-TAB:python:LINQ_Index_accessMetadataViaIndexer index_2@Indexes/Metadata.py /}
+{CODE-TAB:python:Index_accessMetadataViaValue index_1@Indexes/Metadata.py /}
+{CODE-TAB:python:Index_accessMetadataViaIndexer index_2@Indexes/Metadata.py /}
 {CODE-TABS/}
 
 * Query for documents based on metadata values:  

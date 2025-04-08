@@ -34,7 +34,7 @@ public class Metadata {
                 "    Product = Product, " +
                 "    Metadata = this.MetadataFor(product) " +
                 "}).Select(this0 => new { " +
-                "    LastModified = this0.metadata.Value<DateTime>(\"Last-Modified\") " +
+                "    LastModified = this0.metadata.Value<DateTime>(\"@last-modified\") " +
                 "})";
         }
     }

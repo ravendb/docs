@@ -40,7 +40,7 @@ class Products_ByMetadata_AccessViaIndexer(AbstractIndexCreationTask):
                     
                    select new 
                    {
-                       last_modified = (DateTime)metadata["@last_modified"],
+                       last_modified = (DateTime)metadata["@last-modified"],
                        has_counters = metadata["@counters"] != null 
                    }; 
                    """

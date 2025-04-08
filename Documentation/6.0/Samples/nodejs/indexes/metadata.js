@@ -1,23 +1,27 @@
 import { 
     DocumentStore,
-    AbstractIndexCreationTask
+    AbstractJavaScriptIndexCreationTask
 } from "ravendb";
 
 const store = new DocumentStore();
 
-class Product { }
-class DateTime{}
-
 //region index_1
-class Products_WithMetadata extends AbstractIndexCreationTask {
-    constructor() {
+class Products_ByMetadata extends AbstractJavaScriptIndexCreationTask {
+    constructor () {
         super();
-        this.map = "docs.Products.Select(product => new {\n" +
-            "    Product = product,\n" +
-            "    Metadata = this.MetadataFor(product)\n" +
-            "}).Select(this_0 => new {\n" +
-            "       LastModified = this_0.Metadata.Value<DateTime>(\'Last-Modified'\)\n"+
-            "   })";
+
+        const { getMetadata } = this.mapUtils();
+
+        this.map("Products", product => {
+            // Call 'getMetadata' to access the metadata object
+            var metadata = getMetadata(product);
+
+            return {
+                // Define the index fields
+                LastModified: metadata['@last-modified'],
+                HasCounters: !!metadata['@counters']
+            };
+        });
     }
 }
 //endregion
@@ -26,12 +30,12 @@ async function example() {
     
     const session = store.openSession();
 
-        //region query_1
-        const results = await session
-            .query({ indexName: "Products/WithMetadata" })
-            .orderByDescending("LastModified")
-            .ofType(Product)
-            .all();
-        //endregion
+    //region query_1
+    const productsWithCounters = await session
+        .query({ indexName: "Products/ByMetadata" })
+        .whereEquals("HasCounters", true)
+        .orderByDescending("LastModified")
+        .all();
+    //endregion
 }
 
