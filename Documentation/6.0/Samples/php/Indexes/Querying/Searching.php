@@ -110,6 +110,23 @@ class Searching
             } finally {
                 $session->close();
             }
+        
+            $session = $store->openSession();
+            try {
+                # region search_7
+                $results = $session->query(Products_ByAllValues_IndexEntry::class, Products_ByAllValues::class)
+                        ->whereEquals("allValues", "tofu")
+                        ->ofType(Product::class)
+                        ->toList();
+                        
+                // * Results will contain all Product documents that have 'tofu'
+                //   in ANY of their fields.
+                //
+                // * Search is case-insensitive since the default analyzer is used.
+                # endregion
+            } finally {
+                $session->close();
+            }
         } finally {
             $store->close();
         }
@@ -209,6 +226,42 @@ class Employees_ByEmployeeData extends AbstractIndexCreationTask
 
         // Note:
         // Since no analyzer is set then the default 'RavenStandardAnalyzer' is used.
+    }
+}
+# endregion
+
+# region index_3
+class Products_ByAllValues_IndexEntry
+{
+    public ?string $allValues = null;
+    public function getAllValues(): ?string
+    {
+        return $this->allValues;
+    }
+    public function setAllValues(?string $allValues): void
+    {
+        $this->allValues = $allValues
+    }
+}
+
+class Products_ByAllValues extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new { " .
+            # Use the 'AsJson' method to convert the document into a JSON-like structure
+            # and call 'Select' to extract only the values of each property
+            "    allValues = this.AsJson(product).Select(x => x.Value) " .
+            "})";
+
+        # Configure the index-field for FTS:
+        # Set 'FieldIndexing::search' on index-field 'allValues'
+        $this->index("allValues", FieldIndexing::search());
+        
+        # Set the search engine type to Lucene:
+        $this->setSearchEngineType(SearchEngineType::lucene());
     }
 }
 # endregion

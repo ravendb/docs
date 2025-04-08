@@ -97,7 +97,13 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
 
 #### Sample query:
 
-{CODE:python search_5@Indexes\Querying\Searching.py/}
+{CODE-TABS}
+{CODE-TAB:python:Query search_5@Indexes\Querying\Searching.py/}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByAllValues"
+where search(all_values, "tofu")
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 {PANEL/}
 
