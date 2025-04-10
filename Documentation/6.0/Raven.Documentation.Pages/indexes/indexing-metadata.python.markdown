@@ -28,8 +28,8 @@
 
 {PANEL: Indexing metadata properties}
 
-* Use the `MetadataFor` method to access a document’s metadata **inside the C# LINQ string** that defines the index mapping
-  (the string assigned to `self.map` in the Python index class), as shown in the example below.
+* To access a document's metadata, use the `MetadataFor` method, which is available in the **C# LINQ string**
+  that is assigned to the `self->map` property in the PHP index class, as shown in the example below.
 
 * You can retrieve metadata values using one of two C# syntaxes:
 

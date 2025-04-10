@@ -9,33 +9,80 @@ use RavenDB\Documents\Indexes\FieldIndexing;
 use RavenDB\Samples\Infrastructure\Orders\Product;
 
 # region index_1
-class Products_WithMetadata_Result
+class Products_ByMetadata_AccessViaValue_IndexEntry
 {
     public ?DateTime $lastModified = null;
-
     public function getLastModified(): ?DateTime
     {
         return $this->lastModified;
     }
-
     public function setLastModified(?DateTime $lastModified): void
     {
         $this->lastModified = $lastModified;
     }
+
+    public ?bool $hasCounters = null;
+    public function getHasCounters(): ?bool
+    {
+        return $this->hasCounters;
+    }
+    public function setHasCounters(?bool $hasCounters): void
+    {
+        $this->hasCounters = $hasCounters;
+    }
 }
 
-class Products_WithMetadata extends AbstractIndexCreationTask
+class Products_ByMetadata_AccessViaValue extends AbstractIndexCreationTask
 {
     public function __construct()
     {
         parent::__construct();
 
-        $this->map = "docs.Products.Select(product => new { " .
-            "    Product = Product, " .
-            "    Metadata = this.MetadataFor(product) " .
-            "}).Select(this0 => new { " .
-            "    LastModified = this0.metadata.Value\<DateTime\>(\"@last-modified\") " .
-            "})";
+        $this->map = "from product in docs.Products\n" .
+                     "let metadata = MetadataFor(product)\n" .
+                     "select new { " .
+                     "    lastModified = metadata.Value<DateTime>(\"@last-modified\"), " .
+                     "    hasCounters = metadata.Value<object>(\"@counters\") != null " .
+                     "}";
+    }
+}
+# endregion
+
+# region index_2
+class Products_ByMetadata_AccessViaIndexer_IndexEntry
+{
+    public ?DateTime $lastModified = null;
+    public function getLastModified(): ?DateTime
+    {
+        return $this->lastModified;
+    }
+    public function setLastModified(?DateTime $lastModified): void
+    {
+        $this->lastModified = $lastModified;
+    }
+
+    public ?bool $hasCounters = null;
+    public function getHasCounters(): ?bool
+    {
+        return $this->hasCounters;
+    }
+    public function setHasCounters(?bool $hasCounters): void
+    {
+        $this->hasCounters = $hasCounters;
+    }
+}
+
+class Products_ByMetadata_AccessViaIndexer extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from product in docs.Products " .
+                     "let metadata = MetadataFor(product) " .
+                     "select new {\n" .
+                     "    lastModified = (DateTime)metadata[\"@last-modified\"],\n" .
+                     "    hasCounters = metadata[\"@counters\"] != null }";
     }
 }
 # endregion
@@ -51,8 +98,12 @@ class Metadata
             try {
                 # region query_1
                 $results = $session
-                    ->query(Products_WithMetadata_Result::class, Products_WithMetadata::class)
-                    ->orderByDescending("LastModified")
+                    ->query(
+                            Products_ByMetadata_AccessViaValue_IndexEntry::class,
+                            Products_ByMetadata_AccessViaValue::class
+                        )
+                    ->whereEquals("hasCounters", true)
+                    ->orderByDescending("lastModified")
                     ->ofType(Product::class)
                     ->toList();
                 # endregion

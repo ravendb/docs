@@ -42,7 +42,7 @@ class Products_ByMetadata_AccessViaIndexer(AbstractIndexCreationTask):
                    {
                        last_modified = (DateTime)metadata["@last-modified"],
                        has_counters = metadata["@counters"] != null 
-                   }; 
+                   } 
                    """
 # endregion
 
