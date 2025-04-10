@@ -81,7 +81,7 @@ where (search(employeeData, "Manager") or search(employeeData, "French Spanish",
 {PANEL: Indexing all fields for FTS (using AsJson)}
 
 * To search across ALL fields in a document without defining each one explicitly, use the `AsJson` method, 
-  which is available when using **a C# LINQ string** that is assigned to the `this.map` property in the Node.js index class,
+  which is available when using **a C# LINQ string** that is assigned to the `map` property in the Node.js index class,
   as shown in the example below.
 
 * This approach makes the index robust to changes in the document schema.  

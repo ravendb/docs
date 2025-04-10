@@ -29,7 +29,7 @@
 {PANEL: Indexing metadata properties}
 
 * To access a document's metadata, use the `MetadataFor` method, which is available in the **C# LINQ string**
-  that is assigned to the `$this->map` property in the PHP index class, as shown in the example below.
+  that is assigned to the `map` property in the PHP index class, as shown in the example below.
 
 * You can retrieve metadata values using one of two C# syntaxes:
 
