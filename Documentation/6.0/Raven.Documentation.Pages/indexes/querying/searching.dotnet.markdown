@@ -18,9 +18,10 @@
 
 ---
 
-* In this page:
+* In this article:
   * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
   * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
   * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
   * [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards)
       * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
@@ -75,6 +76,42 @@ where search(EmployeeNotes, "French")
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Employees/ByEmployeeData"
 where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish", and))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Indexing all fields for FTS (using AsJson)}
+
+* To search across ALL fields in a document without defining each one explicitly,
+  use the `AsJson` method in the _Map_ function to extract all property values and index them in a single searchable field.
+
+* This approach makes the index robust to changes in the document schema.  
+  By calling `.Select(x => x.Value)` on the result of `AsJson(...)`, 
+  the index automatically includes values from ALL existing and newly added properties 
+  and there is no need to update the index when the document structure changes.
+
+* {INFO: }
+  This indexing method is supported only when using **Lucene** as the indexing engine.
+  {INFO/}
+
+---
+
+#### The index:
+
+{CODE:csharp index_6@Indexes\Querying\Searching.cs/}
+
+---
+
+#### Sample query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query search_16@Indexes\Querying\Searching.cs /}
+{CODE-TAB:csharp:Query_async search_17@Indexes\Querying\Searching.cs /}
+{CODE-TAB:csharp:DocumentQuery search_18@Indexes\Querying\Searching.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByAllValues"
+where search(AllValues, "tofu")
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

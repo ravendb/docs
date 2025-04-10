@@ -141,10 +141,15 @@
     "Path": "converting-to-json-and-accessing-metadata.markdown",
     "Name": "Converting to JSON and accessing Metadata",
     "DiscussionId": "4566869a-8fa4-49a0-8875-0b82ddb45ed7",
+    "LastSupportedVersion": "5.4",
     "Mappings": [
       {
-        "Version": 2.0,
+        "Version": 2.5,
         "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
+      },
+      {
+        "Version": 6.0,
+        "Key": "indexes/indexing-metadata"
       }
     ]
   },

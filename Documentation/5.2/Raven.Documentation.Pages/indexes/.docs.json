@@ -191,12 +191,8 @@
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "DiscussionId": "2fe7313c-df13-478b-acd3-08c5b4d21a1d",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
-            }
-        ]
+        "LastSupportedVersion": "5.4",
+        "Mappings": []
     },
     {
         "Path": "rolling-index-deployment.markdown",
