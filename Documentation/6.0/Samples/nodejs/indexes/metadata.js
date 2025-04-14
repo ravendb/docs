@@ -14,7 +14,7 @@ class Products_ByMetadata extends AbstractJavaScriptIndexCreationTask {
 
         this.map("Products", product => {
             // Call 'getMetadata' to access the metadata object
-            var metadata = getMetadata(product);
+            const metadata = getMetadata(product);
 
             return {
                 // Define the index fields
