@@ -6,7 +6,7 @@
 * The license key is in JSON format.  
   It is sent to the email address that was provided when obtaining the license.  
 
-* There are a few __license types__ available, see below.  
+* There are a few **license types** available, see below.  
 
 * Each license has a specific date on which it will expire.  
   To renew your license see [renew license](../../start/licensing/renew-license).   
@@ -26,7 +26,7 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 {INFO/}
 
 {NOTE: }
-__Developer__  
+**Developer**  
 
   * The developer license is for development use only and isn't applicable for commercial use.  
     You must upgrade this license before going into production.   
@@ -41,28 +41,28 @@ __Developer__
 {NOTE/}
 
 {NOTE: }
-__Community__  
+**Community**  
 
   * A basic production-grade license.
   * Community licenses last for one year and can be renewed every year.  
 {NOTE/}
 
 {NOTE: }
-__Professional__  
+**Professional**  
 
   * A standard production-grade license.  
   * Extended automatically if the server has access to RavenDB's License Server.  
 {NOTE/}
 
 {NOTE: }
-__Enterprise__  
+**Enterprise**  
 
   * A high-performance, fully-featured production-grade license.  
   * Extended automatically if the server has access to RavenDB's License Server.  
 {NOTE/}
 
 {NOTE: }
-__ISV Licenses__
+**ISV Licenses**
 
 * ISV licenses are commercial licenses that allow you to redistribute RavenDB with your software  
   for on-premise installation and use by your customers.  
@@ -82,23 +82,23 @@ __ISV Licenses__
 * Go to the About page to see the version, license, and support info.
 
 #### 2. &nbsp; Version
-* __Current version__:  
+* **Current version**:  
   Specifies the current Server and Studio client versions used.  
   Knowing the version is important as documentation, features, and patches are version sensitive.
-* __Send Feedback__:  
+* **Send Feedback**:  
   You can send RavenDB feedback about any issues you've encountered.
-* __Latest version info__:  
+* **Latest version info**:  
   Specifies whether you are using the latest Server version.  
   If you need to upgrade to a new version see [upgrading instructions](../../start/installation/upgrading-to-new-version).  
 
 #### 3. &nbsp; License Information  
-* __Type__:  
+* **Type**:  
   Specifies which license type you're using.  
-* __Expires__:  
+* **Expires**:  
   Specifies the date on which the license will expire.  
-* __Available features__:  
+* **Available features**:  
   The features included with this license are listed.  
-* <a id="license-server" /> __License Server__:  
+* <a id="license-server" /> **License Server**:  
   Notifies if there is an active connection to RavenDB's License Server.  
   If you aren't connected, it is usually either because a firewall is blocking the connection,  
   or your server is running offline.  
@@ -114,9 +114,9 @@ __ISV Licenses__
 * Specifies the support options available under your current support plan.
 
 #### 6. &nbsp; Links
-* __Access__:  
+* **Access**:  
   Click to select RavenDB Community Discussions in GitHub, or Google Groups archive.
-* __Upgrade__:  
+* **Upgrade**:  
   Click to go to the RavenDB support options page.
 
 

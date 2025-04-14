@@ -12,8 +12,8 @@
   * You have an active connection to RavenDB's License Server (api.ravendb.net).  
   * [DisableAutoUpdate](../../server/configuration/license-configuration#license.disableautoupdate) is set to false.  
 
-* If changes were made to your current license and you want to __apply immediately__,    
-  then you can __force the update from Studio__.  
+* If changes were made to your current license and you want to **apply immediately**,    
+  then you can **force the update from Studio**.  
   This action also requires an active connection to the [License Server](../../start/licensing/licensing-overview#license-server).
 
 * In this page:

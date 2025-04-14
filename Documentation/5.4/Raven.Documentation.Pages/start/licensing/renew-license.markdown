@@ -59,6 +59,14 @@ Copy the new license key from the mail and proceed with one of the following opt
 
 * The **Developer** and **Community** licenses are renewed from Studio,  
   the 'Renew' button is available only for those license types.  
+    {NOTE: }
+  
+     - Servers using a Community license are **required to run the latest major version**.  
+       E.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, 
+       you will be required to upgrade RavenDB to version `7.0`.  
+     - Running a major version older than the latest with a Community license will **block your server's access to Studio**.  
+     - This requirement does not apply to licenses other than _Community_.  
+  {NOTE/}
 
 * They can be renewed when there are less than 30 days remaining on your current license.
 
@@ -68,11 +76,9 @@ Copy the new license key from the mail and proceed with one of the following opt
    Navigate to the _About_ page in Studio  
 
 2. **Renew**  
-   Click the _RENEW LICENSE_ button  
-
+   Click the _Renew License_ button  
 
    * ![Renew License](images/renew-2.png "Renew and Submit")  
-   
 
 3. **Renew**  
   Click to renew the current license.  

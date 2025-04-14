@@ -33,15 +33,15 @@
 
 You can activate the license from Studio:  
 
-![Register License Button](images/register-license-button.png "Register license Button")
+![Register License](images/register-1.png "Register license")
 
 1. **About**  
-   Click to open Studio _About_ view
+   Navigate to the _About_ page in Studio
    
 2. **Activate**  
-   Click the _Register Kicense_ button
+   Click the _REGISTER LICENSE_ button
 
-![Register License Form](images/register-license-form.png "Register license Form")
+![Register License](images/register-2.png "Register license")
 
 {PANEL/}
 
