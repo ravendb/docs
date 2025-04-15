@@ -10,6 +10,9 @@
    * Easily select RavenDB collections and retrieve chosen data.  
    * Query RavenDB using [RQL](../../client-api/session/querying/what-is-rql).  
 
+* To use RavenDB with Power BI, your [license](../../integrations/postgresql-protocol/overview#license) 
+  must explicitly enable **Power BI** Support.  
+
 * In this page:  
    * [Using RavenDB From Power BI Desktop](../../integrations/postgresql-protocol/power-bi#using-ravendb-from-power-bi-desktop)  
       * [Connect to RavenDB](../../integrations/postgresql-protocol/power-bi#connect-to-ravendb)  

@@ -131,7 +131,7 @@ can access a sharded database without any alterations.
 
 That said, shard-specific operations are also available:  
 a client can, for example, track the shard where a document is stored and query that shard.  
-The Studio can be used to relocate ([reshard](../sharding/resharding)) documents from one shard to another.  
+Studio can be used to relocate ([reshard](../sharding/resharding)) documents from one shard to another.  
 
 !["Studio Document View"](images/overview_document-view.png "Studio Document View")
 

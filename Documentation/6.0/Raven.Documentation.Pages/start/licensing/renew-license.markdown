@@ -4,12 +4,12 @@
 
 {NOTE: }
 
-* When your license __expires__ the Studio is blocked.  
+* When your license **expires** Studio is blocked.  
   Client API operations and other RavenDB features will continue to work.  
   However, any usage of expired RavenDB licenses is outside the license agreement  
   and doesn't comply with the [EULA terms](https://ravendb.net/terms).  
 
-* __Renew your license__ as described below.  
+* **Renew your license** as described below.  
 
 * In this page:
     * [Renew commercial licenses](../../start/licensing/renew-license#renew-commercial-licenses)
@@ -21,10 +21,10 @@
 
 {PANEL: Renew commercial licenses}
 
-* This section relates to all commercial licenses: __Professional__, __Enterprise__, and all __ISV licenses__.  
+* This section relates to all commercial licenses: **Professional**, **Enterprise**, and all **ISV licenses**.  
 
 {NOTE: }
-__Automatic renewal__:  
+**Automatic renewal**:  
 
 ---
 If your server has an active connection to RavenDB's [License Server](../../start/licensing/licensing-overview#license-server),  
@@ -33,18 +33,18 @@ then these commercial licenses will be automatically renewed.
 {NOTE/}
 
 {NOTE: }
-__Manual (offline) renewal__:  
+**Manual (offline) renewal**:  
 
 ---
 If the connection to the License Server is unavailable, contact [customer service](https://ravendb.net/contact) to extend your license.  
-A license renewal email will be sent to you (the license ID will stay the __same__).  
+A license renewal email will be sent to you (the license ID will stay the **same**).  
 Copy the new license key from the mail and proceed with one of the following options.  
 
-__Either__:  
+**Either**:  
 
-* Replace the existing license key with the new one from the Studio, as described [here](../../start/licensing/replace-license#replace-license-from-studio).
+* Replace the existing license key with the new one from Studio, as described [here](../../start/licensing/replace-license#replace-license-from-studio).
 
-__Or__:  
+**Or**:  
 
 * Set [DisableAutoUpdateFromApi](../../server/configuration/license-configuration#license.disableautoupdatefromapi) to true.
 
@@ -57,22 +57,28 @@ __Or__:
 
 {PANEL: Renew Developer & Community licenses}
 
-* The __Developer__ and __Community__ licenses are renewed from the Studio,  
+* The **Developer** and **Community** licenses are renewed from Studio,  
   the 'Renew' button is available only for those license types.  
+  {NOTE: }
+  
+     - Servers using a Community license are **required to run the latest major version**.  
+       E.g., if RavenDB `7.0` is released and your server runs RavenDB `6.2` with a Community license, 
+       you will be required to upgrade RavenDB to version `7.0`.  
+     - Running a major version older than the latest with a Community license will **block your server's access to Studio**.  
+     - This requirement does not apply to licenses other than _Community_.  
+  {NOTE/}
 
 * They can be renewed when there are less than 30 days remaining on your current license.
 
 ![Renew License](images/renew-license.png "Renew License")
 
 1. **About**  
-   Click to open the Studio _About_ view  
+   Click to open Studio _About_ view  
 
 2. **Renew**  
    Click the _Renew License_ button  
 
-
    * ![Renew and Submit](images/renew-and-submit.png "Renew and Submit")  
-   
 
 **A**. **Renew**  
   Click to renew the current license.  
