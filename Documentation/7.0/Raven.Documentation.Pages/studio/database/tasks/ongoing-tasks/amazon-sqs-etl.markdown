@@ -94,7 +94,7 @@
 
 {PANEL: Add or Edit Transformation Script}
 
-![Add or Edit Transform Script](images/transformation-script.png "Add or Edit Transform Script")
+![Add or Edit Transform Script](images/sqs_etl_transformation-script.png "Add or Edit Transform Script")
 
 1. **Script Name**  
    Enter a name for the script (Optional).  
