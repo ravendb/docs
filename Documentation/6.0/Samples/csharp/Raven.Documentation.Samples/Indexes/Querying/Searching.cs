@@ -77,7 +77,7 @@ namespace Raven.Documentation.Samples.Indexes2.Querying
                 Index(x => x.EmployeeData, FieldIndexing.Search);
                 
                 // Note:
-                // Since no analyzer is set then the default 'RavenStandardAnalyzer' is used.
+                // Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
             }
         }
         #endregion
@@ -158,6 +158,46 @@ namespace Raven.Documentation.Samples.Indexes2.Querying
                 // Set the Exact analyzer for the index-field:
                 // (The field will not be tokenized)
                 Indexes.Add(x => x.FirstName, FieldIndexing.Exact);
+            }
+        }
+        #endregion
+        
+        #region index_6
+        public class Products_ByAllValues : 
+            AbstractIndexCreationTask<Product, Products_ByAllValues.IndexEntry>
+        {
+            public class IndexEntry
+            {
+                // This index field will contain all values from all properties in the document
+                public string AllValues { get; set; }
+                        
+                // Note:
+                // RavenDB seamlessly supports multi-value indexing on this field.
+                // Even though the 'AllValues' index-field is declared as a 'string',
+                // it can accept a collection of values, as defined in the Map function.
+                // The engine treats the field as if it contains multiple strings
+                // and indexes each one individually.
+            }
+
+            public Products_ByAllValues()
+            {
+                Map = products => from product in products
+                    select new
+                    {
+                        // Use the 'AsJson' method to convert the document into a JSON-like structure
+                        // and call 'Select' to extract only the values of each property
+                        AllValues = AsJson(product).Select(x => x.Value)
+                    };
+
+                // Configure the index-field for FTS:
+                // Set 'FieldIndexing.Search' on index-field 'AllValues'
+                Index(x => x.AllValues, FieldIndexing.Search);
+                
+                // Note:
+                // Since no analyzer is set, the default 'RavenStandardAnalyzer' is used.
+                
+                // Set the search engine type to Lucene:
+                SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Lucene;
             }
         }
         #endregion
@@ -533,6 +573,57 @@ namespace Raven.Documentation.Samples.Indexes2.Querying
                     
                     var explanation = explanations.GetExplanations(employees[0].Id)[0];
                     Assert.Contains($"FirstName:Mich*", explanation);
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region search_16
+                    List<Product> products = session
+                        .Query<Products_ByAllValues.IndexEntry,
+                            Products_ByAllValues>()
+                        .Search(x => x.AllValues, "tofu")
+                        .OfType<Product>()
+                        .ToList();
+                    
+                    // * Results will contain all Product documents that have 'tofu'
+                    //   in ANY of their fields.
+                    //
+                    // * Search is case-insensitive since the default analyzer is used.
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region search_17
+                    List<Product> products = await asyncSession
+                        .Query<Products_ByAllValues.IndexEntry,
+                            Products_ByAllValues>()
+                        .Search(x => x.AllValues, "tofu")
+                        .OfType<Product>()
+                        .ToListAsync();
+                    
+                    // * Results will contain all Product documents that have 'tofu'
+                    //   in ANY of their fields.
+                    //
+                    // * Search is case-insensitive since the default analyzer is used.
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region search_18
+                    List<Product> products = session.Advanced
+                        .DocumentQuery<Products_ByAllValues.IndexEntry,
+                            Products_ByAllValues>()
+                        .Search(x => x.AllValues, "tofu")
+                        .OfType<Product>()
+                        .ToList();
+                    
+                    // * Results will contain all Product documents that have 'tofu'
+                    //   in ANY of their fields.
+                    //
+                    // * Search is case-insensitive since the default analyzer is used.
                     #endregion
                 }
 
