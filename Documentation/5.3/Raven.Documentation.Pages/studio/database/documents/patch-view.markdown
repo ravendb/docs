@@ -59,9 +59,11 @@
   A JavaScript clause that defines the updates to apply to the documents returned by the query.
 
 * When running a patch operation, the server executes the query and applies the specified update to the resulting documents.
-  For example:  
+  
+* For example, the following patch script retrieves all documents from the _Orders_ collection and adds a new field, `CompanyName`, to each order.
+  The value is taken from the related _Company_ document.  
 
-      {CODE-BLOCK:sql}
+    {CODE-BLOCK:sql}
 // Update the set of documents from the Orders collection:
 // =======================================================
 
@@ -74,7 +76,7 @@ load o.Company as c
 update  {
     o.CompanyName = c.Name;
 }
-      {CODE-BLOCK/}
+    {CODE-BLOCK/}
 
 {PANEL/}
 
@@ -121,9 +123,9 @@ update  {
 
 {PANEL: Apply patch}
 
-While the patch is executing, the following runtime dialog is displayed:
+While the patch is executing, a runtime dialog is displayed showing the progress of the operation:
 
-![Run Patch](images/patch-view-apply-patch.png "Run Patch")  
+![Run Patch](images/patch-view-apply-patch.png "Patch progress")  
 
 1. **Time Elapsed**  
    Time since the patch operation started.
