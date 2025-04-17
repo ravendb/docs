@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NodaTime" Version="2.4.7" />
     <PackageReference Include="RavenDB.Client" Version="4.1.10" />
     <PackageReference Include="RavenDB.Embedded" Version="4.1.10" />
