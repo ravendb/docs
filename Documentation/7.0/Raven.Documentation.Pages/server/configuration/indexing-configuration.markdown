@@ -12,7 +12,7 @@
 
 {NOTE: }
 
-* In this page:  
+* In this article:  
   * Server-wide scope:  
     [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration#indexing.cleanupintervalinmin)  
     [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.maxnumberofthreadsforlocalembeddingsgeneration)  
