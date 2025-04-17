@@ -34,6 +34,7 @@
     [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.errorindexstartupbehavior)  
     [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration#indexing.history.numberofrevisions)  
     [Indexing.IndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.indexstartupbehavior)  
+    [Indexing.ResetMode](../../server/configuration/indexing-configuration#indexing.resetmode)  
     [Indexing.RunInMemory](../../server/configuration/indexing-configuration#indexing.runinmemory)  
     [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration#indexing.skipdatabaseidvalidationonindexopening)  
     [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration#indexing.static.archiveddataprocessingbehavior)  
@@ -44,6 +45,7 @@
     [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs)  
     [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin)  
   * Server-wide, or database, or per index:  
+    [Indexing.AllowStringCompilation](../../server/configuration/indexing-configuration#indexing.allowstringcompilation)  
     [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
     [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
     [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration#indexing.analyzers.search.default)  
@@ -53,6 +55,7 @@
     [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb)  
     [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
     [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior)  
+    [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.corax.unmanagedallocationsbatchsizelimitinmb)  
     [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying)  
@@ -333,6 +336,16 @@ Optional values:
 
 {PANEL/}
 
+{PANEL: Indexing.ResetMode}
+
+The default mode of the index reset operation.
+
+- **Type**: `enum IndexResetMode` (`InPlace`, `SideBySide`)
+- **Default**: `InPlace`
+- **Scope**: Server-wide, or per database
+
+{PANEL/}
+
 {PANEL: Indexing.RunInMemory}
 
 * Set if indexes should run purely in memory.
@@ -444,6 +457,22 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 {PANEL/}
 
+{PANEL: Indexing.AllowStringCompilation}
+
+* When defining a [JavaScript index](../../indexes/javascript-indexes),  
+  this option determines whether the JavaScript engine is allowed to compile code from strings at runtime,
+  using constructs such as `eval(...)` or `new Function(arg1, arg2, ..., functionBody)`.
+
+* A `JavaScriptException` is thrown if this option is disabled and such a construct is used.
+
+---
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
 {PANEL: Indexing.Analyzers.Default}
 
 [Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for fields.
@@ -534,14 +563,37 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
 
 {PANEL: Indexing.Corax.Static.ComplexFieldIndexingBehavior}
 
-Set Corax's [default behavior](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
-when a static index is requested to index a complex JSON object.  
-`CoraxComplexFieldIndexingBehavior.Throw` - Corax will throw a `NotSupportedInCoraxException` exception  
-`CoraxComplexFieldIndexingBehavior.Skip` - Corax will skip indexing the complex field without throwing an exception.  
+* Set Corax's [default behavior](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+  when a static index is requested to index a complex JSON object.  
 
-- **Type**: `enum`  
-- **Default**: `CoraxComplexFieldIndexingBehavior.Throw`  
+  * `CoraxComplexFieldIndexingBehavior.Throw` -  
+    Corax will throw a `NotSupportedInCoraxException` exception.  
+  * `CoraxComplexFieldIndexingBehavior.Skip` -  
+    Corax will skip indexing the complex field without throwing an exception.  
+
+---
+
+- **Type**: `enum CoraxComplexFieldIndexingBehavior` (`Throw`, `Skip`)  
+- **Default**: `Throw`  
 - **Scope**: Server-wide, or per database, or per index  
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb}
+
+* The maximum amount of unmanaged memory (in MB) that Corax can allocate during a single indexing batch.  
+  When this limit is reached, the batch completes and indexing continues in a new batch.
+
+* The default value is set by the constructor of the `IndexingConfiguration` class and depends on the environment:   
+   * If the machine is running in a 32-bit environment,  
+     or if RavenDB is explicitly configured to use a 32-bit pager on a 64-bit system, the default is `128 MB`.
+   * In all other cases (i.e., standard 64-bit environments), the default is `2048 MB`.
+  
+---
+
+- **Type**: `int`
+- **Default**: `DefaultValueSetInConstructor`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
