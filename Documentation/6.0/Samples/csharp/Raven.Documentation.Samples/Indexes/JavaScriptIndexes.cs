@@ -96,19 +96,19 @@ namespace Raven.Documentation.Samples.Indexes
             Maps = new HashSet<string>
             {
                 @"map('Products', function(product) {
-                      // Define a string expression with your condition
-                      const script = 'return product.UnitsInStock < 10';
+                      // Define a string expression to check for low stock.
+                      const functionBody = 'return product.UnitsInStock < 10';
 
-                      // Call 'new Function', pass the script string
-                      const dynamicFunc = new Function(""product"", script);
+                      // Create a dynamic function that evaluates the expression at runtime.
+                      const dynamicFunc = new Function(""product"", functionBody);
 
                       return {
                           StockIsLow: dynamicFunc(product)
                       };
                   });",
             };
-            
-            // 'AllowStringCompilation' must be set to true
+
+            // Enable string‑compilation so this index can execute the inline script
             Configuration["Indexing.AllowStringCompilation"] = "true";
         }
     }
@@ -129,10 +129,10 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 @"map('Products', function(product) {
                       // Define a string expression with your condition
-                      const script = 'product.UnitsInStock < 10';
+                      const expression = 'product.UnitsInStock < 10';
 
-                      // Evaluate inline
-                      const isLowOnStock = eval(script);
+                      // Evaluate the string expression at runtime using eval.
+                      const isLowOnStock = eval(expression);
 
                       return {
                           StockIsLow: isLowOnStock
@@ -140,7 +140,7 @@ namespace Raven.Documentation.Samples.Indexes
                   });",
             };
             
-            // 'AllowStringCompilation' must be set to true
+            // Enable string‑compilation so this index can execute the inline script
             Configuration["Indexing.AllowStringCompilation"] = "true";
         }
     }
