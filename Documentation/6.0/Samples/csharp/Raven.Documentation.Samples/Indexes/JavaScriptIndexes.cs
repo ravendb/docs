@@ -83,6 +83,70 @@ namespace Raven.Documentation.Samples.Indexes
     #endregion
     
     #region index_3
+    public class Products_ByStock1_JS : AbstractJavaScriptIndexCreationTask
+    {
+        public class IndexEntry
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+            
+        public Products_ByStock1_JS()
+        {
+            Maps = new HashSet<string>
+            {
+                @"map('Products', function(product) {
+                      // Define a string expression with your condition
+                      const script = 'return product.UnitsInStock < 10';
+
+                      // Call 'new Function', pass the script string
+                      const dynamicFunc = new Function(""product"", script);
+
+                      return {
+                          StockIsLow: dynamicFunc(product)
+                      };
+                  });",
+            };
+            
+            // 'AllowStringCompilation' must be set to true
+            Configuration["Indexing.AllowStringCompilation"] = "true";
+        }
+    }
+    #endregion
+    
+    #region index_4
+    public class Products_ByStock2_JS : AbstractJavaScriptIndexCreationTask
+    {
+        public class IndexEntry
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+            
+        public Products_ByStock2_JS()
+        {
+            Maps = new HashSet<string>
+            {
+                @"map('Products', function(product) {
+                      // Define a string expression with your condition
+                      const script = 'product.UnitsInStock < 10';
+
+                      // Evaluate inline
+                      const isLowOnStock = eval(script);
+
+                      return {
+                          StockIsLow: isLowOnStock
+                      };
+                  });",
+            };
+            
+            // 'AllowStringCompilation' must be set to true
+            Configuration["Indexing.AllowStringCompilation"] = "true";
+        }
+    }
+    #endregion
+    
+    #region index_5
     public class Animals_ByName_JS : AbstractJavaScriptIndexCreationTask
     {
         public class IndexEntry
@@ -104,7 +168,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
     
-    #region index_4
+    #region index_6
     public class Products_ByCategory_JS : AbstractJavaScriptIndexCreationTask
     {
         public class IndexEntry
@@ -142,7 +206,7 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
     
-    #region index_5
+    #region index_7
     public class ProductSales_ByMonth_JS : AbstractJavaScriptIndexCreationTask
     {
         public class IndexEntry
@@ -243,9 +307,20 @@ namespace Raven.Documentation.Samples.Indexes
     {
         /*
         #region js_index
-        public class Employees_ByFirstAndLastName_JS : AbstractJavaScriptIndexCreationTask
+        public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
         {
-            // ...
+             Maps = new HashSet<string>()
+            {
+                // Define a map function:
+                @"map(<CollectionName>, function(doc) { 
+                      return {
+                          Name: doc.Name
+                          // ...
+                      }
+                  })",
+                
+                // ...
+            };
         }
         #endregion
         */
