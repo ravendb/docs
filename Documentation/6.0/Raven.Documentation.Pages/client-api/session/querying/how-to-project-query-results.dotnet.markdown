@@ -9,15 +9,12 @@
 * This article provides examples of projecting query results when making a **dynamic-query**.  
   For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
 
-* In this page:
-
+* In this article:
   * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
-
   * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
       * [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
       * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
-      * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
-
+      * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)
   * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
 
 {NOTE/}
@@ -26,7 +23,9 @@
 
 {PANEL: Projections overview}
 
-### What are projections:
+---
+
+**What are projections**:
 
 * A projection refers to the **transformation of query results** into a customized structure,  
   modifying the shape of the data returned by the server.
@@ -36,12 +35,12 @@
 
 * The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
 
-* Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
+* Objects and arrays, including content from nested structures, can be projected.  
+  An alias name can be given to the projected fields, and any calculations can be applied within the projection.
 
-* Content from inner objects and arrays can be projected.  
-  An alias name can be given to the projected fields, and any calculations can be made within the projection.
+---
 
-### When to use projections:
+**When to use projections**:
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
@@ -58,13 +57,17 @@
 * However, when you need to actively work with the complete set of data on the client side,  
   then do use a query without a projection to retrieve the full document from the server.
 
-### Projections are not tracked by the session:
+---
+
+**Projections are not tracked by the session**:
 
 * On the client side, the resulting projected entities returned by the query are Not tracked by the Session.
 
 * Any modification made to a projection entity will not modify the corresponding document on the server when _SaveChanges_ is called.
 
-### Projections are the final stage in the query pipeline:
+---
+
+**Projections are the final stage in the query pipeline**:
 
 * Projections are applied as the last stage in the query pipeline,  
   after the query has been processed, filtered, sorted, and paged.
@@ -78,10 +81,12 @@
 * Only a single projection request can be made per Query (and DocumentQuery).  
   Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
 
-### The cost of projections:
+---
+
+**The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations) 
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
@@ -100,7 +105,9 @@
 
 * You can specify what fields from the document you want to retrieve and even provide a complex expression.
 
-### Example - Projecting individual fields of the document:
+{CONTENT-FRAME: }
+
+##### Example I - Projecting individual fields of the document:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -111,7 +118,10 @@ select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projecting arrays and objects:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example II - Projecting arrays and objects:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -130,7 +140,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with expression:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example III - Projection with expression:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -143,7 +156,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with calculations:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example IV - Projection with calculations:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -160,7 +176,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projecting using functions:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example V - Projecting using functions:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -174,7 +193,10 @@ from "Employees" as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projecting using a loaded document:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example VI - Projecting using a loaded document:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -189,7 +211,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with dates:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example VII - Projection with dates:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -204,7 +229,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with raw JavaScript code:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example VIII - Projection with raw JavaScript code:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -218,7 +246,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example - Projection with metadata:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example IX - Projection with metadata:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -232,6 +263,31 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example X - Projection with include:
+
+When using `Include` in a projection query,  
+RavenDB includes the related document only if the included path is one of the fields in the projection.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_14@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query_async projections_14_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "Products"
+select Name, Category as ProductCategory
+include Supplier, ProductCategory
+
+// NOTE:
+// Only the related Category document WILL BE INCLUDED in the query results.
+
+// The related Supplier document will NOT BE INCLUDED in the query results,
+// because 'Supplier' is Not one of the projected fields in the 'select' clause.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: ProjectInto}
@@ -265,7 +321,11 @@ IDocumentQuery<TProjection> SelectFields<TProjection>();
 IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
 {CODE-BLOCK/}
 
-### Using projection class type:
+---
+
+{CONTENT-FRAME: }
+
+##### Using projection class type
 
 The projection class fields are the fields that you want to project from the document class.
 
@@ -279,7 +339,10 @@ select Name, Phone, Fax
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Using specific fields:
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Using specific fields
 
 The fields specified are the fields that you want to project from the projection class.
 
@@ -293,6 +356,7 @@ select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Single projection per query}

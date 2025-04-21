@@ -9,14 +9,10 @@
 * This article provides examples of projecting query results when making a **dynamic-query**.  
   For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
 
-* In this page:
-
+* In this article:
     * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
-
-    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)
-  
-    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results#projecting-nested-object-types)
-  
+    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
+    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results#projecting-nested-object-types)  
     * [Syntax](../../../client-api/session/querying/how-to-project-query-results#syntax)
 
 {NOTE/}
@@ -39,7 +35,7 @@
 
 * Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../client-api/session/querying/how-to-project-query-results#projecting-nested-object-types).
 
-* An alias name can be given to the projected fields, and any calculations can be made within the projection.
+* An alias name can be given to the projected fields, and any calculations can be applied within the projection.
 
 ---
 
@@ -86,7 +82,8 @@
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#projectionWithCalculations) inside the projection.
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example-v---projection-with-calculations)
+  inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
@@ -103,9 +100,9 @@
 * Complex projection expressions can be provided directly with RQL via the `rawQuery` syntax,  
   see examples below.
 
-{NOTE: }
+{CONTENT-FRAME: }
 
-**Example I - Projecting individual fields of the document**:
+##### Example I - Projecting individual fields of the document
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_1@client-api\session\querying\howToProjectQueryResults.js /}
@@ -115,11 +112,10 @@ select Name, Address.City, Address.Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example II - Projecting individual fields with alias**:
+##### Example II - Projecting individual fields with alias
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_2@client-api\session\querying\howToProjectQueryResults.js /}
@@ -129,11 +125,10 @@ select Name as CompanyName, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example III - Projecting arrays and objects**:
+##### Example III - Projecting arrays and objects
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_3@client-api\session\querying\howToProjectQueryResults.js /}
@@ -151,11 +146,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example IV - Projection with expression**:
+##### Example IV - Projection with expression
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_4@client-api\session\querying\howToProjectQueryResults.js /}
@@ -167,11 +161,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-<a id="projectionWithCalculations" /> **Example V - Projection with calculations**:
+##### Example V - Projection with calculations
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_5@client-api\session\querying\howToProjectQueryResults.js /}
@@ -187,11 +180,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example VI - Projecting using functions**:
+##### Example VI - Projecting using functions
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_6@client-api\session\querying\howToProjectQueryResults.js /}
@@ -204,11 +196,10 @@ from "employees" as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example VII - Projecting using a loaded document**:
+##### Example VII - Projecting using a loaded document
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_7@client-api\session\querying\howToProjectQueryResults.js /}
@@ -222,11 +213,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example VIII - Projection with dates**:
+##### Example VIII - Projection with dates
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_8@client-api\session\querying\howToProjectQueryResults.js /}
@@ -240,11 +230,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Example IX - Projection with metadata**:
+##### Example IX - Projection with metadata
 
 {CODE-TABS}
 {CODE-TAB:nodejs:Query projections_9@client-api\session\querying\howToProjectQueryResults.js /}
@@ -257,7 +246,30 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
+
+##### Example X - Projection with include:
+
+When using `include` in a projection query,  
+RavenDB includes the related document only if the included path is one of the fields in the projection.
+
+{CODE-TABS}
+{CODE-TAB:nodejs:Query projections_11@client-api\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB-BLOCK:sql:RQL}
+from "products"
+select Name, Category
+include Supplier, Category
+
+// NOTE:
+// Only the related Category document WILL BE INCLUDED in the query results.
+
+// The related Supplier document will NOT BE INCLUDED in the query results,
+// because 'Supplier' is Not one of the projected fields in the 'select' clause.
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Projecting nested object types}
