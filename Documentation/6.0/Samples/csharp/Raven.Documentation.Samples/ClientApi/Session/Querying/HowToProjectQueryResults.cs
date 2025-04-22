@@ -37,7 +37,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region projections_1_async
-                    var results = await asyncSession
+                    var projectedResults = await asyncSession
                         // Make a dynamic query on the Companies collection
                         .Query<Company>()
                         // Call Select to define the new structure that will be returned per Company document
@@ -412,6 +412,50 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         // The following exception will be thrown:
                         // "Projection is already done. You should not project your result twice."
                     }
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region projections_14
+                    var projectedResults = session
+                        .Query<Product>()
+                         // NOTE:
+                         // While the following 'Include' line compiles,
+                         // the related Supplier document will NOT BE INCLUDED in the query results,
+                         // because 'Supplier' is not one of the projected fields in the 'Select' clause.
+                        .Include(x => x.Supplier)
+                        .Select(x => new
+                        {
+                            Name = x.Name,
+                            ProductCategory = x.Category
+                        })
+                         // The related Category document WILL BE INCLUDED in the query results,
+                         // since 'ProductCategory' is one of the projected fields.
+                        .Include(x => x.ProductCategory)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region projections_14_async
+                    var projectedResults = await asyncSession
+                        .Query<Product>()
+                         // NOTE:
+                         // While the following 'Include' line compiles,
+                         // the related Supplier document will NOT BE INCLUDED in the query results,
+                         // because 'Supplier' is not one of the projected fields in the 'Select' clause.
+                        .Include(x => x.Supplier)
+                        .Select(x => new
+                        {
+                            Name = x.Name,
+                            ProductCategory = x.Category
+                        })
+                         // The related Category document WILL BE INCLUDED in the query results,
+                         // since 'ProductCategory' is one of the projected fields.
+                        .Include(x =>x.ProductCategory)
+                        .ToListAsync();
                     #endregion
                 }
             }

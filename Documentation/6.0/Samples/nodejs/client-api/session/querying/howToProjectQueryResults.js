@@ -185,6 +185,21 @@ async function examples() {
         // }
         //endregion
     }
+    {
+        //region projections_11
+        const projectedResults = await session.query({ collection: "products" })
+             // NOTE:
+             // While the following 'include' line compiles,
+             // the related Supplier document will NOT BE INCLUDED in the query results,
+             // because 'Supplier' is not one of the projected fields in the 'selectFields' clause.
+            .include("Supplier")
+            .selectFields([ "Name", "Category"])
+             // The related Category document WILL BE INCLUDED in the query results,
+             // since 'Category' is one of the projected fields.
+            .include("Category")
+            .all();
+        //endregion
+    }
 }
 
 {
