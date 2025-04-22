@@ -12,7 +12,7 @@
 
 {NOTE: }
 
-* In this page:  
+* In this article:  
   * Server-wide scope:  
     [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration#indexing.cleanupintervalinmin)  
     [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.globalscratchspacelimitinmb)  
@@ -33,6 +33,7 @@
     [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.errorindexstartupbehavior)  
     [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration#indexing.history.numberofrevisions)  
     [Indexing.IndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.indexstartupbehavior)  
+    [Indexing.ResetMode](../../server/configuration/indexing-configuration#indexing.resetmode)  
     [Indexing.RunInMemory](../../server/configuration/indexing-configuration#indexing.runinmemory)  
     [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration#indexing.skipdatabaseidvalidationonindexopening)  
     [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration#indexing.static.archiveddataprocessingbehavior)  
@@ -43,6 +44,7 @@
     [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs)  
     [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin)  
   * Server-wide, or database, or per index:  
+    [Indexing.AllowStringCompilation](../../server/configuration/indexing-configuration#indexing.allowstringcompilation)  
     [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
     [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
     [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration#indexing.analyzers.search.default)  
@@ -301,6 +303,16 @@ Optional values:
 
 {PANEL/}
 
+{PANEL: Indexing.ResetMode}
+
+The default mode of the index reset operation.
+
+- **Type**: `enum IndexResetMode` (`InPlace`, `SideBySide`)
+- **Default**: `InPlace`
+- **Scope**: Server-wide, or per database
+
+{PANEL/}
+
 {PANEL: Indexing.RunInMemory}
 
 * Set if indexes should run purely in memory.
@@ -409,6 +421,22 @@ Set the number of minutes to wait before marking an auto index as idle.
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide, or per database
+
+{PANEL/}
+
+{PANEL: Indexing.AllowStringCompilation}
+
+* When defining a [JavaScript index](../../indexes/javascript-indexes),  
+  this option determines whether the JavaScript engine is allowed to compile code from strings at runtime,
+  using constructs such as `eval(...)` or `new Function(arg1, arg2, ..., functionBody)`.
+
+* A `JavaScriptException` is thrown if this option is disabled and such a construct is used.
+
+---
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}
 
