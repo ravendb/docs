@@ -65,22 +65,22 @@ To activate and/or configure document refreshing, the server needs to be sent a 
 
 [//]: # (| Parameter                 | Type     | Description                                                                                   |)
 [//]: # (|---------------------------|----------|-----------------------------------------------------------------------------------------------|)
-[//]: # (| __configuration__         | `object` | Refresh configuration that will be set on the server &#40;for the database&#41;                       |)
-[//]: # (| __disabled__              | `object` | If set to true, document refreshing is disabled for the entire database. Default: `true`      |)
-[//]: # (| __refreshFrequencyInSec__ | `number` | Determines how often the server checks for documents that need to be refreshed. Default: `60` |)
+[//]: # (| **configuration**         | `object` | Refresh configuration that will be set on the server &#40;for the database&#41;                       |)
+[//]: # (| **disabled**              | `object` | If set to true, document refreshing is disabled for the entire database. Default: `true`      |)
+[//]: # (| **refreshFrequencyInSec** | `number` | Determines how often the server checks for documents that need to be refreshed. Default: `60` |)
 
 {CODE:nodejs syntax_2@server/extensions/documentRefresh.js /}
 
 | Parameter                 | Type      | Description                                                                                                              |
 |---------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------|
-| __disabled__              | `boolean` | `true` - document refreshing is disabled for the entire database (Default).<br>`false` - document refreshing is enabled. |
-| __refreshFrequencyInSec__ | `number`  | Set how often the server checks for documents that need to be refreshed.<br>Default: `60`                                |
+| **disabled**              | `boolean` | `true` - document refreshing is disabled for the entire database (Default).<br>`false` - document refreshing is enabled. |
+| **refreshFrequencyInSec** | `number`  | Set how often the server checks for documents that need to be refreshed.<br>Default: `60`                                |
 
 {PANEL/}
 
 {PANEL: Configure from Studio}
 
-Alternatively, document refreshing can also be configured in the studio, under __Settings > Document Refresh__.
+Alternatively, document refreshing can also be configured via Studio, under **Settings > Document Refresh**.
 
 ![NoSQL DB Server - Document Refresh](images/StudioRefresh.png "Document Refresh Settings")
 
