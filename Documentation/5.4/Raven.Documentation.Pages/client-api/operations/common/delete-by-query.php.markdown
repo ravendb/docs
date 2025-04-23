@@ -12,8 +12,9 @@
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
+  If needed, you can **wait** for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
 
-* In this page:  
+* In this article:  
    * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
    * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
    * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
@@ -22,7 +23,9 @@
 
 {PANEL: Delete by dynamic query}
 
-#### Delete all documents in a collection:
+{CONTENT-FRAME: }
+
+##### Delete all documents in a collection
 
 {CODE-TABS}
 {CODE-TAB:php:DeleteByQueryOperation delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.php /}
@@ -31,9 +34,10 @@ from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete with filtering:  
+##### Delete with filtering  
 
 {CODE-TABS}
 {CODE-TAB:php:DeleteByQueryOperation delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.php /}
@@ -42,6 +46,7 @@ from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Delete by index query}
@@ -53,25 +58,29 @@ from "Orders" where Freight > 30
 
 ---
 
-#### A sample Map-index:
+{CONTENT-FRAME: }
+
+##### A sample Map-index
 
 {CODE:php the_index@ClientApi\Operations\Common\DeleteByQuery.php /}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete documents via an index query:
+##### Delete documents via an index query
 
 {CODE-TABS}
-{CODE-TAB:php:RQL delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.php /}
+{CODE-TAB:php:Query delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB:php:IndexQuery delete_by_query_3@ClientApi\Operations\Common\DeleteByQuery.php /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete with options:
+##### Delete with options
 
 {CODE-TABS}
 {CODE-TAB:php:QueryOperationOptions delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.php /}
@@ -80,18 +89,18 @@ from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}
 
 {CODE:php syntax_1@ClientApi\Operations\Common\DeleteByQuery.php /}
-<br />
 
-| Parameter         | Type                      | Description              |
-|-------------------|---------------------------|--------------------------|
-| **$queryToDelete** | `string` | The RQL query to perform |
-| **$queryToDelete** | `IndexQuery` | Holds all the information required to query an index |
-| **$options** | `?QueryOperationOptions` | Object holding different setting options for the operation |
+| Parameter          | Type                     | Description                                                |
+|--------------------|--------------------------|------------------------------------------------------------|
+| **$queryToDelete** | `string`                 | The RQL query to perform                                   |
+| **$queryToDelete** | `IndexQuery`             | Holds all the information required to query an index       |
+| **$options**       | `?QueryOperationOptions` | Object holding different setting options for the operation |
 
 {CODE:php syntax_2@ClientApi\Operations\Common\DeleteByQuery.php /}
 

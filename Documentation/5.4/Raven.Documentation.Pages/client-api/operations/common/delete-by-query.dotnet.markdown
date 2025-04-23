@@ -14,7 +14,7 @@
   This operation is performed in the background on the server.  
   If needed, you can **wait** for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
 
-* In this page:  
+* In this article:  
    * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
    * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
    * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
@@ -23,28 +23,32 @@
 
 {PANEL: Delete by dynamic query}
 
-#### Delete all documents in a collection:
+{CONTENT-FRAME: }
+
+##### Delete all documents in a collection
 
 {CODE-TABS}
-{CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:DeleteOperation_Async delete_by_query_0_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation_Sync delete_by_query_0@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation_Async delete_by_query_0_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete with filtering:  
+##### Delete with filtering  
 
 {CODE-TABS}
-{CODE-TAB:csharp:DeleteOperation_Sync delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:DeleteOperation_Async delete_by_query_1_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation_Sync delete_by_query_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation_Async delete_by_query_1_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Delete by index query}
@@ -56,16 +60,19 @@ from "Orders" where Freight > 30
 
 ---
 
-#### A sample Map-index:
+{CONTENT-FRAME: }
+
+##### A sample Map-index
 
 {CODE the_index@ClientApi\Operations\Common\DeleteByQuery.cs /}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete documents via an index query:
+##### Delete documents via an index query
 
 {CODE-TABS}
-{CODE-TAB:csharp:DeleteOperation delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation delete_by_query_2@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Overload_1 delete_by_query_3@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Overload_2 delete_by_query_4@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Overload_3 delete_by_query_5@ClientApi\Operations\Common\DeleteByQuery.cs /}
@@ -74,13 +81,14 @@ from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
----
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-#### Delete with options:
+##### Delete with options
 
 {CODE-TABS}
-{CODE-TAB:csharp:DeleteOperation delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.cs /}
-{CODE-TAB:csharp:DeleteOperation_async delete_by_query_6_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation delete_by_query_6@ClientApi\Operations\Common\DeleteByQuery.cs /}
+{CODE-TAB:csharp:DeleteByQueryOperation_async delete_by_query_6_async@ClientApi\Operations\Common\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
@@ -88,12 +96,12 @@ from index "Products/ByPrice" where Price > 10
 
 * Specifying `QueryOperationOptions` is also supported by the other overload methods, see the Syntax section below.
 
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}
 
 {CODE syntax_1@ClientApi\Operations\Common\DeleteByQuery.cs /}
-<br />
 
 | Parameter         | Type                        | Description                                                |
 |-------------------|-----------------------------|------------------------------------------------------------|

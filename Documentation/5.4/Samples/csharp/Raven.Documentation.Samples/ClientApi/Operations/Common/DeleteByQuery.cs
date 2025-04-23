@@ -69,7 +69,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
             {
                 #region delete_by_query_2
                 // Define the delete by query operation, pass an RQL querying the index
-                var deleteByQueryOp = new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
+                var deleteByQueryOp =
+                    new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
                 
                 // Execute the operation by passing it to Operations.Send
                 var operation = store.Operations.Send(deleteByQueryOp);
@@ -103,7 +104,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                     // Pass parameters:
                     // * The index name
                     // * A filtering expression on the index-field
-                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry>("Products/ByPrice", x => x.Price > 10);
+                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry>("Products/ByPrice",
+                        x => x.Price > 10);
                 
                 // Execute the operation by passing it to Operations.Send
                 var operation = store.Operations.Send(deleteByQueryOp);
@@ -119,7 +121,8 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Common
                 var deleteByQueryOp =
                     // Pass param:
                     // * A filtering expression on the index-field
-                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry, Products_ByPrice>(x => x.Price > 10);
+                    new DeleteByQueryOperation<Products_ByPrice.IndexEntry, Products_ByPrice>(
+                        x => x.Price > 10);
                 
                 // Execute the operation by passing it to Operations.Send
                 var operation = store.Operations.Send(deleteByQueryOp);
