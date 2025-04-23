@@ -12,7 +12,18 @@
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can **wait** for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+
+* **Operation scope**:  
+  `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
+  if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
+  their associated [Atomic-guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+
+    * To avoid issues when recreating such documents, see [Best practice when creating documents](../../../todo..).
+    * To learn more about the differences between transaction types,
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+
+---
 
 * In this article:  
    * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
