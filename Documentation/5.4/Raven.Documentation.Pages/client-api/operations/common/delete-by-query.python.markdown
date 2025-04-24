@@ -16,9 +16,10 @@
 * **Operation scope**:  
   `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
   if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
-  their associated [Atomic-guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
 
-    * To avoid issues when recreating such documents, see [Best practice when creating documents](../../../todo..).
+    * To avoid issues when recreating such documents using a cluster-wide session,
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
     * To learn more about the differences between transaction types,
       see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
 
