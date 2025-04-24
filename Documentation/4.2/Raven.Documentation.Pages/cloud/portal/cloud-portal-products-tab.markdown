@@ -112,7 +112,7 @@ It's useful for analysing usage, instance overload and traffic.
 
 !["Figure 9 - Cluster Health: General View"](images\portal-product-details-cluster-health.png "Figure 9 - Cluster Health: General View")
 
-This allows you to analyse your cluster incidents for a selected *time period*, *cluster node*, *severity* and *category*.  
+This allows you to analyse your cluster incidents for a selected *time period*, *cluster node*, *severity*, *category* and *event status*.  
 In addition, **Cluster Health** generates suggestions for a selected *cluster node* based on incident trends that can help resolve cluster stability issues.  
 It's useful for analysing usage, instance overload and traffic.  
 
