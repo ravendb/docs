@@ -11,11 +11,6 @@
   Atomic guards coordinate between sessions that attempt to write to the same document concurrently.  
   Saving a document will be prevented if another session has modified the document.
 
-     {WARNING: }
-     We strongly recommend that you **do Not disable atomic guards or manage them manually**,  
-     as this may break RavenDB’s ACID transaction guarantees.
-     {WARNING/}
-
 * In this article:
   * [Atomic guard creation and update](../../../client-api/session/cluster-transaction/atomic-guards#atomic-guard-creation-and-update)
   * [Atomic guard usage example](../../../client-api/session/cluster-transaction/atomic-guards#atomic-guard-usage-example)
@@ -83,8 +78,8 @@ After running the above example, you can view the automatically created atomic g
       * The ID of the associated document.
       
       {WARNING: }
-       Although this Studio view allows editing compare-exchange items, **do not delete or modify atomic guard entries**.
-       Doing so may break cluster-wide transaction guarantees.
+       * Although this Studio view allows editing compare-exchange items, **do not delete or modify atomic guard entries**.
+       * Doing so will interfere with RavenDB's ability to track document versioning through atomic guards.
       {WARNING/}
 
 {PANEL/}
