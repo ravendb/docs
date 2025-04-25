@@ -77,12 +77,11 @@ class LoadingEntities(ExampleBase):
                     if user is None:
                         # Document doesn't exist => create a new document
                         new_user = User()
-                        new_user.id = "users/johndoe"
                         new_user.name = "John Doe"
                         # ... initialize other properties
         
                         # Store the new user document in the session
-                        session.store(new_user)
+                        session.store(new_user, "users/johndoe")
                     else:
                         # Document exists => apply your modifications
                         user.name = "New name"
