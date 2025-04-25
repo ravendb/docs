@@ -139,13 +139,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     // Document doesn't exist => create a new document:
                     var newUser = new User
                     {
-                        Id = "users/johndoe",
                         Name = "John Doe",
                         // ... initialize other properties
                     };
 
                     // Store the new user document in the session
-                    session.Store(newUser);
+                    session.Store(newUser, "users/johndoe");
                 }
                 else
                 {
@@ -177,13 +176,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
                     // Document doesn't exist => create a new document:
                     var newUser = new User
                     {
-                        Id = "users/johndoe",
                         Name = "John Doe",
                         // ... initialize other properties
                     };
 
                     // Store the new user document in the session
-                    await asyncSession.StoreAsync(newUser);
+                    await asyncSession.StoreAsync(newUser, "users/johndoe");
                 }
                 else
                 {
@@ -203,7 +201,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
 
         private class User
         {
-            public string Id { get; set; }
             public string Name { get; set; }
             public int Age { get; set; }
         }

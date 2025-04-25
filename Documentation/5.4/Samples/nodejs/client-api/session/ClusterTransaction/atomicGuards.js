@@ -71,13 +71,12 @@ async function examples() {
         if (!user) {
             // Document doesn't exist => create a new document
             const newUser = {
-                id: "users/johndoe",
                 name: "John Doe",
                 // ... initialize other properties
             };
             
             // Store the new user document in the session
-            await session.store(newUser);
+            await session.store(newUser, "users/johndoe");
             
         } else {
             // Document exists => apply your modifications
