@@ -42,6 +42,12 @@
         "Mappings": []
     },
     {
+        "Path": "document-refresh.markdown",
+        "Name": "Document Refresh",
+        "DiscussionId": "c5633531-4b5d-4816-97d4-82d351f3f6a2",
+        "Mappings": []
+    },
+    {
         "Path": "document-archival.markdown",
         "Name": "Document Archival",
         "DiscussionId": "c5633531-4b5d-4816-97d4-82d351f3f6a2",

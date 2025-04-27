@@ -42,6 +42,12 @@
         "Mappings": []
     },
     {
+        "Path": "document-refresh.markdown",
+        "Name": "Document Refresh",
+        "DiscussionId": "c5633531-4b5d-4816-97d4-82d351f3f6a2",
+        "Mappings": []
+    },
+    {
         "Path": "manage-database-group.markdown",
         "Name": "Manage Database Group",
         "DiscussionId": "2b0b0669-1254-4bd2-8936-029b2099e261",
