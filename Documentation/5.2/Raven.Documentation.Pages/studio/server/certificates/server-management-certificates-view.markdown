@@ -1,4 +1,4 @@
-﻿# Certificates Management View
+﻿# Certificates Management View5
 
 * The built-in RavenDB Studio enables full customization of client certificates as well as importing and exporting of certificates.  
 
