@@ -123,17 +123,15 @@ Atomic guards are removed **automatically** in the following scenarios:
 
 * **Document deleted via a cluster-wide session**:
     * Create a document using a cluster wide session (an associated atomic guard is created).
-    * Delete the document using a cluster wide session => its atomic guard will be removed automatically.
+    * Delete the document using a cluster wide session - its atomic guard will be removed automatically.
 
 * **Document expires via the expiration feature**:
     * Create a document using a cluster wide session (an associated atomic guard is created).
     * Add the `@expires` metadata property the document, as described in [Document expiration](../../..//studio/database/settings/document-expiration).
-    * => When the expiration time is reached, the document and its atomic guard will both be removed automatically.
-    * {NOTE: }    
-      Since different cleanup tasks handle the removal of **expired** documents and the removal of their associated atomic guards,
+    * When the expiration time is reached, the document and its atomic guard will both be removed automatically.
+    * Since different cleanup tasks handle the removal of **expired** documents and the removal of their associated atomic guards,
       it may happen that atomic guards of removed documents would linger in the compare exchange entries list a short while longer before they are removed.
       You do Not need to remove such atomic guards yourself, they will be removed by the cleanup task.
-      {NOTE/}
 
 ---
 
@@ -154,37 +152,41 @@ Atomic guards are removed **automatically** in the following scenarios:
 
 * When working with a cluster-wide session,  
   we recommend that you always **`Load` the document into the session before storing it** -  
-  even if the document is expected to be a new document.
-
-* When _loading_ a document in a cluster-wide session,  
-  RavenDB attempts to retrieve the Raft index of its associated atomic guard:
-  
-  * **If a matching atomic guard is found**, its [Raft index](../../../client-api/operations/compare-exchange/overview#what-compare-exchange-items-are)
-    (the atomic guard version number) is stored in the session's context.
-    When saving the changes, the session sends this Raft index back to the server.  
-    If the version matches the one that is currently stored in the server, the save proceeds - and the Raft index is incremented as expected.
-    Otherwise, RavenDB will fail the operation with a _ConcurrencyException_.
-
-  * **If no matching atomic guard is found** (e.g., when creating a brand new document or if the atomic guard was manually removed),
-    RavenDB will attempt to create a new atomic guard when saving the changes.
+  even if the document is expected to be new.
 
 * This is especially important if a document (originally created in a cluster-wide transaction) was deleted **outside** of a cluster-wide session -
-  e.g., when using a [single-node session](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)
+  as when using a [single-node session](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)
   or the [DeleteByQueryOperation](../../../client-api/operations/common/delete-by-query).  
   In these cases, the document is deleted, but the atomic guard remains (it is not automatically removed).  
   If you attempt to re-create such a document without loading it first,
   RavenDB will fail to save it because the session is unaware of the existing atomic guard’s latest Raft index.
+  
+---
 
-----
-
-In this example, the document is _loaded_ into the session BEFORE either creating a new one  
-or modifying an existing document.
+In this example, the document is loaded into the session BEFORE creating or modifying it:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync_session load_before_storing@ClientApi/Session/ClusterTransaction/AtomicGuards.cs /}
 {CODE-TAB:csharp:Async_session load_before_storing_async@ClientApi/Session/ClusterTransaction/AtomicGuards.cs /}
 {CODE-TABS/}
 
+{NOTE: }
+
+When _loading_ a document in a cluster-wide session, RavenDB attempts to retrieve the document from the document store:
+
+* **If the document is found**, it is loaded into the session,
+  and modifications will be saved successfully as long as no other session has modified the document in the meantime.
+  Specifically, if the document’s [change vector](../../../server/clustering/replication/change-vector) matches the one currently stored on the server,
+  the save will proceed - after which the Raft index of the associated atomic guard will be incremented as expected.  
+  Otherwise, RavenDB will fail the operation with a _ConcurrencyException_.
+
+* **If no document is found**, RavenDB will check whether a matching atomic guard exists (as in the case when the document was deleted outside of a cluster-wide session):
+    * **If an atomic guard exists**,
+      the client constructs a change vector for the document using the atomic guard’s Raft index, and the document will be saved with this change vector.
+    * **If no atomic guard exists**,
+      the document is treated as a brand new document and will be saved as usual.
+
+{NOTE/}
 {PANEL/}
 
 ## Related Articles
