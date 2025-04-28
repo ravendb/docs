@@ -12,9 +12,21 @@
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can **wait** for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
 
-* In this page:  
+* **Operation scope**:  
+  `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
+  if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+
+    * To avoid issues when recreating such documents using a cluster-wide session,
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+    * To learn more about the differences between transaction types,
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+
+---
+
+* In this article:  
    * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
    * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
    * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
@@ -23,32 +35,30 @@
 
 {PANEL: Delete by dynamic query}
 
-{NOTE: }
+{CONTENT-FRAME: }
 
-**Delete all documents in collection**:
+##### Delete all documents in collection
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_0@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:nodejs:DeleteByQueryOperation delete_by_query_0@client-api\Operations\Common\deleteByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders"
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Delete with filtering**:  
+##### Delete with filtering 
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_1@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:nodejs:DeleteByQueryOperation delete_by_query_1@client-api\Operations\Common\deleteByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from "Orders" where Freight > 30
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
-
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Delete by index query}
@@ -60,34 +70,32 @@ from "Orders" where Freight > 30
 
 ---
 
-{NOTE: }
+{CONTENT-FRAME: }
 
-**A sample Map-index**:
+##### A sample Map-index
 
 {CODE:nodejs the_index@client-api\Operations\Common\deleteByQuery.js /}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Delete documents via an index query**:
+##### Delete documents via an index query
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_2@client-api\Operations\Common\deleteByQuery.js /}
-{CODE-TAB:nodejs:DeleteOperation_overload delete_by_query_3@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:nodejs:DeleteByQueryOperation delete_by_query_2@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:nodejs:DeleteByQueryOperation_overload delete_by_query_3@client-api\Operations\Common\deleteByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE/}
+{CONTENT-FRAME/}
+{CONTENT-FRAME: }
 
-{NOTE: }
-
-**Delete with options**:
+##### Delete with options
 
 {CODE-TABS}
-{CODE-TAB:nodejs:DeleteOperation delete_by_query_4@client-api\Operations\Common\deleteByQuery.js /}
+{CODE-TAB:nodejs:DeleteByQueryOperation delete_by_query_4@client-api\Operations\Common\deleteByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByPrice" where Price > 10
 {CODE-TAB-BLOCK/}
@@ -95,20 +103,18 @@ from index "Products/ByPrice" where Price > 10
 
 * Specifying `options` is also supported by the other overload methods, see the Syntax section below.
 
-{NOTE/}
-
+{CONTENT-FRAME/}
 {PANEL/}
 
 {PANEL: Syntax}
 
 {CODE:nodejs syntax_1@client-api\Operations\Common\deleteByQuery.js /}
-<br />
 
-| Parameter         | Type                        | Description                                                |
-|-------------------|-----------------------------|------------------------------------------------------------|
-| **queryToDelete** | `string`                      | The RQL query to perform                                   |
-| **queryToDelete** | `IndexQuery`                | Holds all the information required to query an index       |
-| **options**       | `object`                    | Object holding different setting options for the operation |
+| Parameter         | Type         | Description                                                |
+|-------------------|--------------|------------------------------------------------------------|
+| **queryToDelete** | `string`     | The RQL query to perform                                   |
+| **queryToDelete** | `IndexQuery` | Holds all the information required to query an index       |
+| **options**       | `object`     | Object holding different setting options for the operation |
 
 {CODE:nodejs syntax_2@client-api\Operations\Common\DeleteByQuery.js /}
 

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
@@ -9,83 +8,195 @@ namespace Raven.Documentation.Samples.ClientApi.Session.ClusterTransactions
     {
         public async Task CreateAtomicGuard()
         {
-            //var (nodes, leader) = await CreateRaftCluster(3);
-            using var store = new DocumentStore
-            {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "test"
-            }.Initialize();
-
-            #region atomic-guards-enabled
-
-            using (var session = store.OpenAsyncSession(new SessionOptions
+            using var store = new DocumentStore();
+            
+            #region atomic_guards_enabled
+            using (var session = store.OpenSession(new SessionOptions
                    {
-                       // Open a cluster-wide session
+                       // Open a cluster-wide session:
                        TransactionMode = TransactionMode.ClusterWide
                    }))
             {
-                await session.StoreAsync(new User(), "users/johndoe");
-                await session.SaveChangesAsync();
-                // An atomic-guard is now automatically created for the new document "users/johndoe".
+                session.Store(new User(), "users/johndoe");
+                session.SaveChanges();
+                // An atomic guard is now automatically created for the new document "users/johndoe".
             }
+            
+            // Open two concurrent cluster-wide sessions:
+            using (var session1 = store.OpenSession(
+                       new SessionOptions 
+                           {TransactionMode = TransactionMode.ClusterWide}))
+            using (var session2 = store.OpenSession(
+                       new SessionOptions 
+                           {TransactionMode = TransactionMode.ClusterWide}))
+            {
+                // Both sessions load the same document:
+                var loadedUser1 = session1.Load<User>("users/johndoe");
+                loadedUser1.Name = "jindoe";
 
-            // Open two more cluster-wide sessions
-            using (var session1 = store.OpenAsyncSession(
+                var loadedUser2 = session2.Load<User>("users/johndoe");
+                loadedUser2.Name = "jandoe";
+
+                // session1 saves its changes first —
+                // this increments the Raft index of the associated atomic guard.
+                session1.SaveChanges();
+
+                // session2 tries to save using an outdated atomic guard version
+                // and fails with a ConcurrencyException.
+                session2.SaveChanges();
+            }
+            #endregion
+            
+            #region atomic_guards_enabled_async
+            using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+                   {
+                       // Open a cluster-wide session:
+                       TransactionMode = TransactionMode.ClusterWide
+                   }))
+            {
+                await asyncSession.StoreAsync(new User(), "users/johndoe");
+                await asyncSession.SaveChangesAsync();
+                // An atomic guard is now automatically created for the new document "users/johndoe".
+            }
+            
+            // Open two concurrent cluster-wide sessions:
+            using (var asyncSession1 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
-            using (var session2 = store.OpenAsyncSession(
+            using (var asyncSession2 = store.OpenAsyncSession(
                    new SessionOptions 
                    {TransactionMode = TransactionMode.ClusterWide}))
             {
-                // The two sessions will load the same document at the same time
-                var loadedUser1 = await session1.LoadAsync<User>("users/johndoe");
+                // Both sessions load the same document:
+                var loadedUser1 = await asyncSession1.LoadAsync<User>("users/johndoe");
                 loadedUser1.Name = "jindoe";
 
-                var loadedUser2 = await session2.LoadAsync<User>("users/johndoe");
+                var loadedUser2 = await asyncSession2.LoadAsync<User>("users/johndoe");
                 loadedUser2.Name = "jandoe";
 
-                // Session1 will save changes first, which triggers a change in the 
-                // version number of the associated atomic-guard.
-                await session1.SaveChangesAsync();
+                // asyncSession1 saves its changes first —
+                // this increments the Raft index of the associated atomic guard.
+                await asyncSession1.SaveChangesAsync();
 
-                // session2.saveChanges() will be rejected with ConcurrencyException
-                // since session1 already changed the atomic-guard version,
-                // and session2 saveChanges uses the document version that it had when it loaded the document.
-                await session2.SaveChangesAsync();
+                // asyncSession2 tries to save using an outdated atomic guard version
+                // and fails with a ConcurrencyException.
+                await asyncSession2.SaveChangesAsync();
             }
             #endregion
-
-            var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
         }
 
         public async Task DoNotCreateAtomicGuard()
         {
-            //var (nodes, leader) = await CreateRaftCluster(3);
-            using var store = new DocumentStore
-            {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "test"
-            }.Initialize();
+            using var store = new DocumentStore();
 
-
-            #region atomic-guards-disabled
-            using (var session = store.OpenAsyncSession(new SessionOptions
+            #region atomic_guards_disabled
+            using (var session = store.OpenSession(new SessionOptions
                    {
                        TransactionMode = TransactionMode.ClusterWide,
                        // Disable atomic-guards
                        DisableAtomicDocumentWritesInClusterWideTransaction = true
                    }))
             {
-                await session.StoreAsync(new User(), "users/johndoe");
+                session.Store(new User(), "users/johndoe");
 
                 // No atomic-guard will be created upon saveChanges
-                await session.SaveChangesAsync();
+                session.SaveChanges();
             }
             #endregion
+            
+            #region atomic_guards_disabled_async
+            using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+                   {
+                       TransactionMode = TransactionMode.ClusterWide,
+                       // Disable atomic-guards
+                       DisableAtomicDocumentWritesInClusterWideTransaction = true
+                   }))
+            {
+                await asyncSession.StoreAsync(new User(), "users/johndoe");
 
-            // WaitForUserToContinueTheTest(store);
+                // No atomic-guard will be created upon saveChanges
+                await asyncSession.SaveChangesAsync();
+            }
+            #endregion
+        }
+        
+        public async Task LoadBeforeStoring()
+        {
+            using var store = new DocumentStore();
 
-            var result = await store.Operations.SendAsync(new GetCompareExchangeValuesOperation<User>(""));
+            #region load_before_storing
+            using (var session = store.OpenSession(new SessionOptions
+                   {
+                       // Open a cluster-wide session
+                       TransactionMode = TransactionMode.ClusterWide
+                   }))
+            {
+                // Load the user document BEFORE creating a new one or modifying if already exists
+                var user = session.Load<User>("users/johndoe");
+                
+                if (user == null)
+                {
+                    // Document doesn't exist => create a new document:
+                    var newUser = new User
+                    {
+                        Name = "John Doe",
+                        // ... initialize other properties
+                    };
+
+                    // Store the new user document in the session
+                    session.Store(newUser, "users/johndoe");
+                }
+                else
+                {
+                    // Document exists => apply your modifications:
+                    user.Name = "New name";
+                    // ... make any other updates
+                    
+                    // No need to call Store() again
+                    // RavenDB tracks changes on loaded entities
+                }
+
+                // Commit your changes
+                session.SaveChanges();
+            }
+            #endregion
+            
+            #region load_before_storing_async
+            using (var asyncSession = store.OpenAsyncSession(new SessionOptions
+                   {
+                       // Open a cluster-wide session
+                       TransactionMode = TransactionMode.ClusterWide
+                   }))
+            {
+                // Load the user document BEFORE creating or updating
+                var user = await asyncSession.LoadAsync<User>("users/johndoe");
+               
+                if (user == null)
+                {
+                    // Document doesn't exist => create a new document:
+                    var newUser = new User
+                    {
+                        Name = "John Doe",
+                        // ... initialize other properties
+                    };
+
+                    // Store the new user document in the session
+                    await asyncSession.StoreAsync(newUser, "users/johndoe");
+                }
+                else
+                {
+                    // Document exists => apply your modifications:
+                    user.Name = "New name";
+                    // ... make any other updates
+                    
+                    // No need to call Store() again
+                    // RavenDB tracks changes on loaded entities
+                }
+
+                // Commit your changes
+                await asyncSession.SaveChangesAsync();
+            }
+            #endregion
         }
 
         private class User

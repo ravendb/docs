@@ -17,8 +17,8 @@ class AtomicGuards
             );
             $store->initialize();
 
-            # region atomic-guards-enabled
-
+            # region atomic_guards_enabled
+            // Open a cluster-wide session:
             $sessionOptions = new SessionOptions();
             $sessionOptions->setTransactionMode(TransactionMode::clusterWide());
 
@@ -32,7 +32,7 @@ class AtomicGuards
                 $session->close();
             }
 
-            // Open two more cluster-wide sessions
+            // Open two concurrent cluster-wide sessions:
 
             $sessionOptions1 = new SessionOptions();
             $sessionOptions1->setTransactionMode(TransactionMode::clusterWide());
@@ -44,20 +44,19 @@ class AtomicGuards
                 $session2 = $store->openSession($sessionOptions2);
 
                 try {
-                // The two sessions will load the same document at the same time
+                // Both sessions load the same document:
                 var $loadedUser1 = $session1->load(User::class, "users/johndoe");
                 $loadedUser1->setName("jindoe");
 
                 $loadedUser2 = $session2->load(User::class, "users/johndoe");
                 $loadedUser2->setName("jandoe");
 
-                // Session1 will save changes first, which triggers a change in the
-                // version number of the associated atomic-guard.
+                // session1 saves its changes first —
+                // this increments the Raft index of the associated atomic guard.
                 $session1->saveChanges();
 
-                // session2.saveChanges() will be rejected with ConcurrencyException
-                // since session1 already changed the atomic-guard version,
-                // and session2 saveChanges uses the document version that it had when it loaded the document.
+                // session2 tries to save using an outdated atomic guard version
+                // and fails with a ConcurrencyException.
                 $session2->saveChanges();
                 } finally {
                     $session2->close();
@@ -66,7 +65,6 @@ class AtomicGuards
             } finally {
                 $session1->close();
             }
-
             # endregion
 
             $result = $store->operations()->sendAsync(new GetCompareExchangeValuesOperation(User::class, ""));
@@ -81,8 +79,7 @@ class AtomicGuards
         );
         $store->initialize();
 
-        # region atomic-guards-disabled
-
+        # region atomic_guards_disabled
         $sessionOptions = new SessionOptions();
         $sessionOptions->setTransactionMode(TransactionMode::clusterWide());
         $sessionOptions->setDisableAtomicDocumentWritesInClusterWideTransaction(true);
@@ -98,9 +95,49 @@ class AtomicGuards
         }
         # endregion
 
-        // WaitForUserToContinueTheTest($store);
-
         $result = $store->operations()->sendAsync(new GetCompareExchangeValuesOperation(User::class, ""));
+    }
 
+    public function loadBeforeStoring(): void
+    {
+        $store = new DocumentStore(
+            [ "http://127.0.0.1:8080" ],
+            "test"
+        );
+        $store->initialize();
+
+        # region load_before_storing
+        // Open a cluster-wide session
+        $sessionOptions = new SessionOptions();
+        $sessionOptions->setTransactionMode(TransactionMode::clusterWide());
+
+        $session = $store->openSession($sessionOptions);
+        try {
+            // Load the user document BEFORE creating or updating
+            $user = $session->load(User::class, "users/johndoe");
+
+            if ($user === null) {
+                // Document doesn't exist => create a new document:
+                $newUser = new User();
+                $newUser->setName("John Doe");
+                // ... initialize other properties
+
+                // Store the new user document in the session
+                $session->store($newUser, "users/johndoe");
+            } else {
+                // Document exists => apply your modifications:
+                $user->setName("New name");
+                // ... make any other updates
+                
+                // No need to call Store() again
+                // RavenDB tracks changes on loaded entities
+            }
+
+            // Commit your changes
+            $session->saveChanges();
+        } finally {
+            $session->close();
+        }
+        # endregion
     }
 }
