@@ -117,7 +117,7 @@ To license RavenDB under Linux, pass a license **file** rather than a **director
 ## Related Articles
 
 ### Installation
-- [Running in a Container](../../start/containers/overview)  
+- [Running in a Container](../../start/containers/general-guide)  
 - [Running as a Service](../../start/installation/running-as-service)  
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)  
 
