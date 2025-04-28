@@ -11,9 +11,9 @@
 
 * This feature is covered in detail in the following articles:
 
-  * [RavenDB as a Vector Database](../../../ai-integration/ravendb-as-vector-database)
-  * [Vector Search using a Dynamic Query](../../../ai-integration/vector-search-using-dynamic-query)
-  * [Vector Search using a Static Index](../../../ai-integration/vector-search-using-static-index)
+  * [RavenDB as a Vector Database](../../../ai-integration/vector-search/ravendb-as-vector-database)
+  * [Vector Search using a Dynamic Query](../../../ai-integration/vector-search/vector-search-using-dynamic-query)
+  * [Vector Search using a Static Index](../../../ai-integration/vector-search/vector-search-using-static-index)
 
 {NOTE/}
 

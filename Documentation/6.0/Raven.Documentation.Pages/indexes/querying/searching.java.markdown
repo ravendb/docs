@@ -184,11 +184,3 @@ where search(allValues, "tofu")
 ### Indexes
 
 - [Boosting](../../indexes/boosting)
-
-### Querying
-
-- [Boosting](../../indexes/querying/boosting)
-
-### Client API
-
-- [How to Use Search](../../client-api/session/querying/how-to-use-search)

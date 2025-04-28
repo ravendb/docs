@@ -101,7 +101,7 @@ machine restarts), this simple step will be done after initial secure installati
 
 {NOTE: Running in a Docker container}
 
-If you are interested in hosting the server in a Docker container, please read our [dedicated knowledge base](../start/containers/overview).
+If you are interested in hosting the server in a Docker container, please read our [dedicated knowledge base](../start/containers/dockerfile/dockerfile-overview).
 
 {NOTE/}
 
@@ -331,7 +331,7 @@ select Name
 ### Installation
 - [Setup Wizard](../start/installation/setup-wizard)  
 - [System Requirements](../start/installation/system-requirements)  
-- [Running in a Container](../start/containers/overview)  
+- [Running in a Container](../start/containers/general-guide)  
 
 ### Session
 - [Introduction](../client-api/session/what-is-a-session-and-how-does-it-work)  

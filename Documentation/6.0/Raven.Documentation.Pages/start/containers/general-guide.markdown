@@ -8,10 +8,10 @@ This guide provides a comprehensive overview of running RavenDB in containers. I
 
 ## Contents
 
-1. [Core Concepts & Difficulties](#core-concepts)
-2. [What We Offer](#what-we-offer)
-3. [What We Require](#what-we-require)
-4. [Benefits](#benefits)
+1. [Core Concepts & Difficulties](../../start/containers/general-guide#core-concepts)
+2. [What We Offer](../../start/containers/general-guide#what-we-offer)
+3. [What We Require](../../start/containers/general-guide#what-we-require)
+4. [Benefits](../../start/containers/general-guide#benefits)
 
 ---
 
