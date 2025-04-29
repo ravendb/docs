@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Documentation.Samples.Orders;
@@ -91,7 +92,7 @@ namespace Raven.Documentation.Samples.Indexes
         }
         #endregion
 
-        public Metadata()
+        public async Task QueryByMetadata()
         {
             using (var store = new DocumentStore())
             {
