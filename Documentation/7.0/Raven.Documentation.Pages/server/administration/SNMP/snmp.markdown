@@ -427,24 +427,25 @@ curl -X POST \
 
 <a id="general-oids" />
 
-| OID                            | Metric (General)                                                                                 |
-|--------------------------------|--------------------------------------------------------------------------------------------------| 
-| <a id="5.1.1" /> 5.1.1         | Number of all databases                                                                          |
-| <a id="5.1.2" /> 5.1.2         | Number of loaded databases                                                                       |
-| <a id="5.1.3" /> 5.1.3         | Time since oldest backup                                                                         |
-| <a id="5.1.4" /> 5.1.4         | Number of disabled databases                                                                     |
-| <a id="5.1.5" /> 5.1.5         | Number of encrypted databases                                                                    |
-| <a id="5.1.6" /> 5.1.6         | Number of databases for current node                                                             |
-| <a id="5.1.7.1" /> 5.1.7.1     | Number of indexes in all loaded databases                                                        |
-| <a id="5.1.7.2" /> 5.1.7.2     | Number of stale indexes in all loaded databases                                                  |
-| <a id="5.1.7.3" /> 5.1.7.3     | Number of error indexes in all loaded databases                                                  |
-| <a id="5.1.7.4" /> 5.1.7.4     | Number of faulty indexes in all loaded databases                                                 | 
-| <a id="5.1.8.1" /> 5.1.8.1     | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
-| <a id="5.1.8.2" /> 5.1.8.2     | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
-| <a id="5.1.8.3" /> 5.1.8.3     | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
-| <a id="5.1.9.1" /> 5.1.9.1     | Number of writes (documents, attachments, counters, timeseries) in all loaded databases          |
-| <a id="5.1.9.2" /> 5.1.9.2     | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
-| <a id="5.1.10" /> 5.1.10       | Number of faulted databases                                                                      |
+| OID                        | Metric (General)                                                                                 |
+|----------------------------|--------------------------------------------------------------------------------------------------| 
+| <a id="5.1.1" /> 5.1.1     | Number of all databases                                                                          |
+| <a id="5.1.2" /> 5.1.2     | Number of loaded databases                                                                       |
+| <a id="5.1.3" /> 5.1.3     | Time since oldest backup                                                                         |
+| <a id="5.1.4" /> 5.1.4     | Number of disabled databases                                                                     |
+| <a id="5.1.5" /> 5.1.5     | Number of encrypted databases                                                                    |
+| <a id="5.1.6" /> 5.1.6     | Number of databases for current node                                                             |
+| <a id="5.1.7.1" /> 5.1.7.1 | Number of indexes in all loaded databases                                                        |
+| <a id="5.1.7.2" /> 5.1.7.2 | Number of stale indexes in all loaded databases                                                  |
+| <a id="5.1.7.3" /> 5.1.7.3 | Number of error indexes in all loaded databases                                                  |
+| <a id="5.1.7.4" /> 5.1.7.4 | Number of faulty indexes in all loaded databases                                                 | 
+| <a id="5.1.7.5" /> 5.1.7.5 | Number of indexing errors in all loaded databases                                                | 
+| <a id="5.1.8.1" /> 5.1.8.1 | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
+| <a id="5.1.8.2" /> 5.1.8.2 | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
+| <a id="5.1.8.3" /> 5.1.8.3 | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
+| <a id="5.1.9.1" /> 5.1.9.1 | Number of writes (documents, attachments, counters, timeseries) in all loaded databases          |
+| <a id="5.1.9.2" /> 5.1.9.2 | Number of bytes written (documents, attachments, counters, timeseries) in all loaded databases   |
+| <a id="5.1.10" /> 5.1.10   | Number of faulted databases                                                                      |
 
 <a id="ongoing-tasks-oids" />
 
