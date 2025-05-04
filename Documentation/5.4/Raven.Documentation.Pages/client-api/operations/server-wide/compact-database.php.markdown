@@ -4,7 +4,7 @@
 
 {NOTE: }
 
-* Use The `CompactDatabaseOperation` compaction operation to **removes empty gaps on disk** 
+* Use the `CompactDatabaseOperation` compaction operation to **removes empty gaps on disk** 
   that still occupy space after deletes.  
   You can choose whether to compact _documents_ and/or _selected indexes_.  
 
