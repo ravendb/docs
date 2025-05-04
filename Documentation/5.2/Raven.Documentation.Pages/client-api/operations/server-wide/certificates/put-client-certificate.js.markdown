@@ -1,37 +1,52 @@
-# Operations: Server: How to Put a Client Certificate
+# Put Client Certificate Operation
+---
 
-You can register an existing client certificate using **PutClientCertificateOperation**. 
+{NOTE: }
 
-## Usage
+* Use `PutClientCertificateOperation` to register an existing client certificate.
 
-{CODE:nodejs cert_put_1@ClientApi\Operations\Server\ClientCertificate.js /}
+* To register an existing client certificate from the Studio,
+  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-client-certificate).
 
-`SecurityClearance` options:
+* In this article:
+    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate#put-client-certificate-example)
+    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate#syntax)
 
-* `UnauthenticatedClients`  
-* `ClusterAdmin`  
-* `ClusterNode`  
-* `Operator`  
-* `ValidUser`  
+{NOTE/}
 
-`DatabaseAccess ` options:
+---
 
-* `ReadWrite`  
-* `Admin`  
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **name** | string | Name of a certificate |
-| **certificate** | string | Certificate to register |
-| **permissions** | Record<string, DatabaseAccess> | Dictionary mapping databases to access level |
-| **clearance** | SecurityClearance | Access level |
-
-## Example
+{PANEL: Put client certificate example}
 
 {CODE:nodejs cert_put_2@ClientApi\Operations\Server\ClientCertificate.js /}
 
+{PANEL/}
+
+{PANEL: Syntax}
+
+{CODE:nodejs syntax@ClientApi\Operations\Server\ClientCertificate.js /}
+
+| Parameter       | Type                             | Description                                                                                         |
+|-----------------|----------------------------------|-----------------------------------------------------------------------------------------------------|
+| **name**        | `string`                         | A name for the certificate.                                                                         |
+| **certificate** | `string`                         | The certificate to register.                                                                        |
+| **permissions** | `Record<string, DatabaseAccess>` | A dictionary mapping database name to access level.<br>Relevant only when clearance is `ValidUser`. |
+| **clearance**   | `SecurityClearance`              | Access level (role) assigned to the certificate.                                                    |
+
+* `SecurityClearance` options:
+  * `ClusterAdmin`  
+  * `ClusterNode`  
+  * `Operator`  
+  * `ValidUser`  
+
+* `DatabaseAccess ` options:
+  * `Read`
+  * `ReadWrite`  
+  * `Admin`
+
+{PANEL/}
+
 ## Related Articles
 
-- [How to **delete** client certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate) 
-- [How to **generate** client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
-
+- [Delete client certificate](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [Generate client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate)

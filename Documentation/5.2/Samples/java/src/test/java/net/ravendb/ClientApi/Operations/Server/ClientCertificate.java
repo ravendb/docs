@@ -52,7 +52,6 @@ public class ClientCertificate {
     private static class Foo {
         //region cert_1_2
         public enum SecurityClearance {
-            UNAUTHENTICATED_CLIENTS,
             CLUSTER_ADMIN,
             CLUSTER_NODE,
             OPERATOR,
@@ -118,14 +117,14 @@ public class ClientCertificate {
 
             try {
                 //region cert_put_2
-                Certificate certificate = keyStore.getCertificate("clientCert");
-                String certificateAsBase64 = Base64.encodeBase64String(certificate.getEncoded());
+                byte[] rawCert = Files.readAllBytes(Paths.get("<path-to-certificate.crt>"));
+                String certificateAsBase64 = Base64.getEncoder().encodeToString(rawCert);                
 
                 store.maintenance().server().send(
                     new PutClientCertificateOperation(
-                        "cert1",
+                        "certificateName",
                         certificateAsBase64,
-                        null,
+                        new HashMap<>(),
                         SecurityClearance.CLUSTER_ADMIN));
                 //endregion
             } catch (Exception e) {
