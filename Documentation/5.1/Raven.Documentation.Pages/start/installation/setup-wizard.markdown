@@ -1,31 +1,37 @@
 # Installation: Setup Wizard Walkthrough
 
+* The **Setup Wizard** guides you through a step-by-step installation of a RavenDB server.  
 
-* We want to make it as easy as possible for you to start RavenDB with a valid, trusted server certificate from the beginning. 
-  This will ensure that your servers are secure throughout your application lifecycle.  
-  
-  * Setting up securely will create a development environment that includes security related features such as encryption and client certificates. 
-   This way, such features won't be missing when you launch, and there will be less bugs caused by code that needs to be adapted to 
-   security features that must be added later.  
+* You can use the wizard to install either a **secure** or an **unsecure** server.  
+   * An **unsecure server** can be used for **trial and development**, providing there 
+     is no issue with unauthorized access to the server and the data stored in it.  
+   * It is **highly recommended** to use a **secure server** wherever access to the 
+     server, its management, or its data should be restricted.  
+   * You will also need a secure server in a development environment that requires 
+     the usage of security related features like encryption and client certificates.  
 
-* To make the setup process as smooth as possible, we have introduced the **Setup Wizard**,  
-  a step-by-step guide to help you configure the desired security level and easily deploy a secure cluster.  
+* When installing a secure server, connecting it will thereafter be possible only 
+  for clients that own a valid, trusted certificate.  
+  To secure the server throughout its lifecycle, you can provide a suitable certificate 
+  during setup. The setup wizard allows you to either -  
+   * Generate and use a **Let's Encrypt certificate**,  
+     saving you the bother of providing your own certificate, and making it possible 
+     for RavenDB to renewal the certificate automatically from now on,  
+   * -or- Provide a **self-obtained certificate**,  
+     leaving you responsible for periodic certificate renewals.  
 
-* Using the Setup Wizard you can set up a secure cluster with:  
-  * **Let's Encrypt certificate** - Using the Wizard with "Let's Encrypt" will enable RavenDB's automatic certificate renewals. 
-  * **Self-obtained certificate** - You are responsible for periodic certificate renewals. 
-  * Or choose to continue in an **unsecure mode**.  
-
-* Note: The RavenDB server can also be **set up manually** if choosing not to use the wizard.  
-  See [Manual Setup](../../start/installation/manual).  
-
-* Note: this page explains how to follow the Setup Wizard, without going into security concerns details.  
-  To learn more about how _Authentication_ and _Authorization_ are implemented with RavenDB, and about _Security_ in general, 
+* This page explains how to follow the setup wizard, without going into security concerns details.  
+  To learn more about _Authentication_ and _Authorization_ in RavenDB, and about _Security_ in general, 
   go to [Security Overview](../../server/security/overview).  
 
-* If you are having trouble using the wizard, or with security in general, please visit the [Security Common Errors & FAQ](../../Server/Security/common-errors-and-faq) section.
+* Another helpful resource about setup and security is the [Security Common Errors & FAQ](../../Server/Security/common-errors-and-faq) section.  
+
+* To learn how to **install RavenDB manually** rather than via the setup wizard, See [Manual Setup](../../start/installation/manual).  
+
+
 
 * In this page:
+   * [Run the Setup Wizard](../../start/installation/setup-wizard#run-the-setup-wizard)  
    * [Select Setup Mode](../../start/installation/setup-wizard#select-setup-mode)  
    * [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-free-let)  
       * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses)  
@@ -56,6 +62,20 @@ appearing:
 {INFO/}
 
 ---
+
+{PANEL: Run the Setup Wizard}
+
+To install RavenDB, you can:  
+
+* Download the ravenDB version you'd like to install from the RavenDB [Downloads](https://ravendb.net/download) page  
+* Extract the loaded zip file to a folder on your computer  
+* Open a command prompt (e.g. PowerShell) and navigate to the setup folder  
+* Run setup:  
+   {CODE-BLOCK: plain}
+   .\run.ps1
+   {CODE-BLOCK/}
+
+{PANEL/}
 
 {PANEL:Select Setup Mode}
 
