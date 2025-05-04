@@ -5,20 +5,20 @@
 
 * Use the **Certificates** view to create, customize, import and export certificates.  
 
-* In this page:
-   * [The certificates view](../../../studio/server/certificates/server-management-certificates-view#the-certificates-view)  
-   * [View and Edit certificates](../../../studio/server/certificates/server-management-certificates-view#view-and-edit-certificates)  
-   * [Generate a client certificate](../../../studio/server/certificates/server-management-certificates-view#generate-a-client-certificate)  
-   * [Enable communication between secure servers](../../../studio/server/certificates/server-management-certificates-view#enable-communication-between-secure-servers)  
-      * [Upload an Existing Certificate](../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-certificate)
-      * [Export Server Certificates](../../../studio/server/certificates/server-management-certificates-view#export-server-certificates)
-   * [Certificate Collections](../../../studio/server/certificates/server-management-certificates-view#certificate-collections)
+* In this article:
+   * [The certificates view](../../../studio/server/certificates/server-management-certificates-view#the-certificates-view)
+   * [View and edit certificates](../../../studio/server/certificates/server-management-certificates-view#view-and-edit-certificates)
+   * [Generate a client certificate](../../../studio/server/certificates/server-management-certificates-view#generate-a-client-certificate)
+   * [Enable communication between secure servers](../../../studio/server/certificates/server-management-certificates-view#enable-communication-between-secure-servers)
+      * [Upload an existing client certificate](../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-client-certificate)
+      * [Export server certificates](../../../studio/server/certificates/server-management-certificates-view#export-server-certificates)
+   * [Certificate collections](../../../studio/server/certificates/server-management-certificates-view#certificate-collections)
 
 {NOTE/}
 
 ---
 
-{PANEL: The Certificates View}
+{PANEL: The Certificates view}
 
 ![Studio Certificates Management View](images/studio-certificates-overview.png "Studio Certificates Management View")
 
@@ -40,7 +40,7 @@ the permissions entirely using this view.
 
 {PANEL/}
 
-{PANEL: View and Edit Certificates}
+{PANEL: View and edit certificates}
 
 In the image below, the client certificates (`sampledom7.client.certificate` and `Booking`) have different 
 **security clearance** and **database permissions** configurations.  
@@ -128,7 +128,9 @@ To enable communication between two secure databases, you need to:
    the `.pfx` certificate from the destination cluster.  
 2. **Upload** (import) the downloaded certificate into the source server.  
 
-## Upload client certificate
+---
+
+### Upload an existing client certificate
 
 Use this option to upload an existing client certificate.  
 Uploaded certificates will be added to the list of registered certificates.  
@@ -142,7 +144,9 @@ While uploading the client certificate you can modify its settings.
 See the [Generate a client certificate](../../../studio/server/certificates/server-management-certificates-view#generate-a-client-certificate) 
 section to learn about the available settings.  
 
-## Export Server Certificates
+---
+
+## Export server certificates
 
 ![Export Server Certificates](images/export-server-certificates.png "Export Server Certificates")
 
@@ -153,7 +157,7 @@ will be exported.
 
 {PANEL/}
 
-{PANEL: Certificate Collections} 
+{PANEL: Certificate collections} 
 
 `.pfx` files may contain a single certificate or a collection of certificates.
 
