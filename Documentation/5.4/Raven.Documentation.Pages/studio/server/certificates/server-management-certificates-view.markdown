@@ -34,9 +34,14 @@ the permissions entirely using this view.
 4. **Server certificates**  
    * [Export server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) so that you can import them into another server.  
    * [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation) by uploading another `.pfx` certificate.  
-5. Status of current server certificate. You can click [Renew now](../../../server/security/authentication/certificate-renewal-and-rotation) here.  
-6. Status of current client certificates active in this server. You can remove or [edit client certificates](../../../server/security/authentication/certificate-management#edit-certificate), 
-   including configuring databases permissions and [authorization (security clearance) levels](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) here. 
+5. **Well known admin certificate**  
+   This is a trusted certificate, defined by a system administrator and given admin permissions.  
+6. **Server certificate**  
+   You can click [Renew now](../../../server/security/authentication/certificate-renewal-and-rotation) here.  
+7. **Client certificate currently active in this server**  
+   You can remove client certificates here or [edit](../../../server/security/authentication/certificate-management#edit-certificate) their settings, 
+   e.g. databases permissions and [authorization](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+   (security clearance) levels.  
 
 {PANEL/}
 
