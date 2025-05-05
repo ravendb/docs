@@ -69,7 +69,7 @@ namespace Raven.Documentation.Samples.Server
                         .GetFor<User>("users/1", start: 0, pageSize: 25);
 
                     // Get revisions metadata 
-                    List<MetadataAsDictionary> revisionsMetadata = session
+                    List<IMetadataDictionary> revisionsMetadata = session
                         .Advanced
                         .Revisions
                         .GetMetadataFor("users/1", start: 0, pageSize: 25);

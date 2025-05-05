@@ -135,7 +135,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
         }
         
-        private interface ISubscriptionBatchItem
+        private interface ISubscriptionBatchItem<T>
         {
             #region batch_item
             public struct Item
