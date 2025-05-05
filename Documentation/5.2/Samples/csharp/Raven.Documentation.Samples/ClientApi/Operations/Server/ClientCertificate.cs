@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.ServerWide.Operations;
 using Raven.Client.ServerWide.Operations.Certificates;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 {
-
     public class ClientCertificate
     {
         private interface IFoo
@@ -27,7 +26,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             public GetCertificatesOperation(int start, int pageSize)
             #endregion
 
-            #region cert_put_1
+            #region put_syntax
             public PutClientCertificateOperation(
                 string name, 
                 X509Certificate2 certificate, 
@@ -40,6 +39,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
         private class Foo
         {
             #region cert_1_2
+            // The role assigned to the certificate:
             public enum SecurityClearance
             {
                 ClusterAdmin,
@@ -50,6 +50,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             #endregion
 
             #region cert_1_3
+            // The access level for a 'ValidUser' security clearance:
             public enum DatabaseAccess
             {
                 Read,
@@ -105,14 +106,43 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                         store.Maintenance.Server.Send(new GetCertificatesOperation(0, 20));
                     #endregion
                 }
+            }
+        }
+        
+        public async Task PutClientCertificate()
+        {
+            using (var store = new DocumentStore())
+            {
+                {
+                    #region put_client_certificate
+                    X509Certificate2 certificate = new X509Certificate2("c:\\path_to_pfx_file");
+
+                    // Define the put client certificate operation 
+                    var putClientCertificateOp = new PutClientCertificateOperation(
+                        "certificateName",
+                        certificate, 
+                        new Dictionary<string, DatabaseAccess>(),
+                        SecurityClearance.ClusterAdmin);
+
+                    // Execute the operation by passing it to Maintenance.Server.Send
+                    store.Maintenance.Server.Send(putClientCertificateOp);
+                    #endregion
+                }
 
                 {
+                    #region put_client_certificate_async
 
-                    #region cert_put_2
                     X509Certificate2 certificate = new X509Certificate2("c:\\path_to_pfx_file");
-                    store.Maintenance.Server.Send(
-                        new PutClientCertificateOperation(
-                            "cert1", certificate, null, SecurityClearance.ClusterAdmin));
+
+                    // Define the put client certificate operation 
+                    var putClientCertificateOp = new PutClientCertificateOperation(
+                        "certificateName",
+                        certificate, 
+                        new Dictionary<string, DatabaseAccess>(),
+                        SecurityClearance.ClusterAdmin);
+
+                    // Execute the operation by passing it to Maintenance.Server.SendAsync
+                    await store.Maintenance.Server.SendAsync(putClientCertificateOp);
                     #endregion
                 }
             }

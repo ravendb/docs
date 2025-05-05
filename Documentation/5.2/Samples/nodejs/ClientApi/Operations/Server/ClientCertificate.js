@@ -4,7 +4,9 @@ import {
     DocumentStore,
     PutClientCertificateOperation
 } from 'ravendb';
+
 let urls, database, authOptions,permissions,clearance,password,certificate,publicKey,thumbprint;
+
 {
     //document_store_creation
     const store = new DocumentStore(["http://localhost:8080"], "Northwind2");
@@ -16,10 +18,7 @@ let urls, database, authOptions,permissions,clearance,password,certificate,publi
         new CreateClientCertificateOperation([name], [permissions], [clearance], [password]));
     //endregion
 
-
-
     async function foo1() {
-
 
         //region cert_1_4
         // With user role set to Cluster Administrator or Operator the user of this certificate
@@ -40,19 +39,27 @@ let urls, database, authOptions,permissions,clearance,password,certificate,publi
     const clientCertificateOperation = await store.maintenance.server.send(
         new CreateClientCertificateOperation("user1", clearance, "ValidUser", "myPassword"));
     const certificateRawData = clientCertificateOperation.rawData;
-
     //endregion
 
     async function foo2() {
-        //region cert_put_1
-        const putOperation = new PutClientCertificateOperation([name], [certificate], [permissions], [clearance]);
+        //region syntax
+        const putOperation = 
+            new PutClientCertificateOperation(name, certificate, permissions, clearance);
         //endregion
     }
 
     async function foo3() {
         //region cert_put_2
-        const putOperation = new PutClientCertificateOperation("cert1", publicKey, {}, "ClusterAdmin");
-        await store.maintenance.server.send(putOperation);
+        const rawCert = fs.readFileSync("<path-to-certificate.crt>");
+        const certificateAsBase64 = rawCert.toString("base64");
+        
+        const putClientCertificateOp = new PutClientCertificateOperation(
+            "certificateName",
+            certificateAsBase64,
+            {},
+            "ClusterAdmin");
+        
+        await store.maintenance.server.send(putClientCertificateOp);
         //endregion
 
         //region delete_cert_1
