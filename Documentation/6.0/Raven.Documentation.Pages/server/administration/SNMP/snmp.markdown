@@ -423,6 +423,7 @@ curl -X POST \
 | <a id="5.1.7.2" /> 5.1.7.2 | Number of stale indexes in all loaded databases                                                  |
 | <a id="5.1.7.3" /> 5.1.7.3 | Number of error indexes in all loaded databases                                                  |
 | <a id="5.1.7.4" /> 5.1.7.4 | Number of faulty indexes in all loaded databases                                                 | 
+| <a id="5.1.7.5" /> 5.1.7.5 | Number of indexing errors in all loaded databases                                                | 
 | <a id="5.1.8.1" /> 5.1.8.1 | Number of indexed documents per second for map indexes (one minute rate) in all loaded databases |
 | <a id="5.1.8.2" /> 5.1.8.2 | Number of maps per second for map-reduce indexes (one minute rate) in all loaded databases       |
 | <a id="5.1.8.3" /> 5.1.8.3 | Number of reduces per second for map-reduce indexes (one minute rate) in all loaded databases    |
