@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* From Studio, the database creation options are:  
+* From the Studio, the database creation options are:  
   * **Regular** database - see [below](../../../studio/database/create-new-database/general-flow#1.-new-database).  
   * **Encrypted** database - see [Encrypted Database](../../../studio/database/create-new-database/encrypted).  
   * Create a database from a **Backup** copy - see [From Backup](../../../studio/database/create-new-database/from-backup).  
@@ -11,7 +11,11 @@
   * Create a [Sharded](../../../sharding/overview) database - 
     see the [sharding Studio administration](../../../sharding/administration/studio-admin#creating-a-sharded-database) page.  
 
-* In this page:  
+* To create a new database using the Client API, see [Create database operation](../../../client-api/operations/server-wide/create-database).
+
+---
+
+* In this article:  
   * [1. New Database](../../../studio/database/create-new-database/general-flow#1.-new-database)  
   * [2. Database Name](../../../studio/database/create-new-database/general-flow#2.-database-name)  
   * [3. Configure Replication](../../../studio/database/create-new-database/general-flow#3.-configure-replication)  
