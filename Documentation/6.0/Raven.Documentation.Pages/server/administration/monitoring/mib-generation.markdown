@@ -4,10 +4,13 @@
 
 {NOTE: }
 
-RavenDB allows you to generate a MIB (Management Information Base) file that contains 
-a structured collection of SNMP OIDs.  
+* RavenDB allows you to generate a MIB (Management Information Base) file that contains 
+  a structured collection of SNMP OIDs.  
 
-The created MIB can be used by monitoring tools to extract RavenDB metrics via SNMP.  
+* The MIB can be generated through RavenDB's `/monitoring/snmp/mib` endpoint, 
+  and fine-tuned using flags.  
+
+* The created MIB can be used by monitoring tools to extract RavenDB metrics via SNMP.  
 
 * In this page:  
    * [Generating a MIB](../../../server/administration/monitoring/mib-generation#generating-a-mib)  
