@@ -81,6 +81,11 @@ The following is a list of JSON fields returned by the endpoints:
 | `databases` | `storage_indexes_used_data_file_in_mb` | Index storage used size in MB |
 | `databases` | `storage_total_allocated_storage_file_in_mb` | Total storage size in MB |
 | `databases` | `storage_total_free_space_in_mb` | Remaining storage disk space in MB |
+| `databases` | `storage_io_read_operations` | Storage I/O Read operations<br>Optional, Linux only |
+| `databases` | `storage_io_write_operations` | Storage I/O Write operations<br>Optional, Linux only |
+| `databases` | `storage_read_throughput_in_kb` | Storage Read throughput in KB<br>Optional, Linux only |
+| `databases` | `storage_write_throughput_in_kb` | Storage Write throughput in KB<br>Optional, Linux only |
+| `databases` | `storage_queue_length` | Storage queue length<br>Optional, Linux only |
 | `databases` | `time_since_last_backup_in_sec` | LastBackup |
 | `databases` | `uptime_in_sec` | Database up-time |
 | `indexes` | `entries_count` | Number of entries in the index |
