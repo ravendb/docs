@@ -27,20 +27,18 @@
 
 To generate a MIB, use RavenDB's HTTP `/monitoring/snmp/mib` GET endpoint.  
 You can inspect this endpoint using your browser to download a text file with 
-RavenDB's OIDs, or connect it with a monitoring too to utilize these OIDs.  
+RavenDB's OIDs, or connect it with a monitoring tool to utilize these OIDs.  
 
-The endpoint's path is added to RavenDB's address, including its port number.  
+To use the endpoint, add its path to RavenDB's address (including RavenDB's port number).  
 
-- To connect a local RavenDB setup, for example, and generate the MIB, use:  
-  `http://localhost:8080/monitoring/snmp/mib`  
-- Or to generate a MIB for RavenDB's live test server, use:  
+- To generate a MIB for RavenDB's live test server, for example. use:  
   [http://live-test.ravendb.net/monitoring/snmp/mib](http://live-test.ravendb.net/monitoring/snmp/mib)  
 
 ---
 
 ### Fine-tune the OIDs list
 
-By default, the MIB includes **server** metrics OIDs. You can fine-tune 
+By default, the generated MIB includes **server** metrics OIDs. You can fine-tune 
 it to include the OIDs range your are interested in. Available options are:  
 
 * `includeServer` - Include or exclude OIDs with **server** metrics.  
