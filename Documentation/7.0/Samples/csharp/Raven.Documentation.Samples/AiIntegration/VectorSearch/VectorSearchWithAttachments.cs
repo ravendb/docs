@@ -11,7 +11,7 @@ using Raven.Client.Documents.Indexes.Vector;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.AiIntegration
+namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
 {
     public class VectorSearchWithAttachments
     {
@@ -67,15 +67,15 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>
                 {
-                    $@"map('Companies', function (company) {{
+                    @"map('Companies', function (company) {
 
                            var attachment = loadAttachment(company, 'description.txt');
                            if (!attachment) return null;
  
-                           return {{
+                           return {
                                VectorFromAttachment: createVector(attachment.getContentAsString('utf8'))
-                           }};
-                    }})"
+                           };
+                    })"
                 };
 
                 Fields = new Dictionary<string, IndexFieldOptions>()
@@ -146,15 +146,15 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Companies', function (company) {{
+                    @"map('Companies', function (company) {
 
                          var attachment = loadAttachment(company, 'vector_base64.raw');
                          if (!attachment) return null;
 
-                         return {{
+                         return {
                              VectorFromAttachment: createVector(attachment.getContentAsString('utf8'))
-                         }};
-                     }})"
+                         };
+                    })"
                 };
             
                 Fields = new();

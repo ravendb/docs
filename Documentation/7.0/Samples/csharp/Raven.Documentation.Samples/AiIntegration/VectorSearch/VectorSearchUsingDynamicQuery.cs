@@ -10,7 +10,7 @@ using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Queries.Vector;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.AiIntegration
+namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
 {
     public class VectorSearchUsingDynamicQuery
     {
