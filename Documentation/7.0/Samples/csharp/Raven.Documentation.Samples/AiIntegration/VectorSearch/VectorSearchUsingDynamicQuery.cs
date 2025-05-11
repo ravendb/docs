@@ -593,7 +593,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                     #endregion
                 }
                 
-                /// F32 => Binary
+                // F32 => Binary
                 using (var session = store.OpenSession())
                 {
                     #region vs_18
@@ -802,6 +802,99 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .ToListAsync();
                     #endregion
                 }
+                
+                // Examples for "similar documents"
+                // ================================
+
+                using (var session = store.OpenSession())
+                {
+                    #region vs_24
+                    var similarProducts = session.Query<Product>()
+                        // Perform a vector search
+                        // Call the 'VectorSearch' method
+                        .VectorSearch(
+                             // Call 'WithText'
+                             // Specify the document field in which to search for similar values
+                            field => field.WithText(x => x.Name),
+                             // Call 'ForDocument' 
+                             // Provide the document ID for which you want to find similar documents.
+                             // The embedding stored in the auto-index for the specified document
+                             // will be used as the "query vector".
+                            embedding => embedding.ForDocument("Products/7-A"),
+                            0.82f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_24_async
+                    var similarProducts = await asyncSession.Query<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name), 
+                            embedding => embedding.ForDocument("Products/7-A"),
+                            0.82f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_25
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            embedding => embedding.ForDocument("Products/7-A"),
+                            0.82f)
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_25_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Product>()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            embedding => embedding.ForDocument("Products/7-A"),
+                            0.82f)
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_26
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                            from 'Products'
+                            // Pass a document ID to the 'forDoc' method to find similar documents
+                            where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)")
+                        .AddParameter("$documentID", "Products/7-A")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_26_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                            from 'Products'
+                            // Pass a document ID to the 'forDoc' method to find similar documents
+                            where vector.search(embedding.text(Name), embedding.forDoc($documentID), 0.82)")
+                        .AddParameter("$documentID", "Products/7-A")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
             }
         }
         
@@ -834,18 +927,24 @@ namespace Raven.Documentation.Samples.AiIntegration
             public interface IVectorFieldFactory<T>
             {
                 // Methods for the dynamic query:
+                // ==============================
+                
                 public IVectorEmbeddingTextField WithText(string documentFieldName);
                 public IVectorEmbeddingTextField WithText(Expression<Func<T, object>> propertySelector);
+                
                 public IVectorEmbeddingField WithEmbedding(string documentFieldName, 
                     VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
                 public IVectorEmbeddingField WithEmbedding(Expression<Func<T, object>> propertySelector,
                     VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
+                
                 public IVectorEmbeddingField WithBase64(string documentFieldName,
                     VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
                 public IVectorEmbeddingField WithBase64(Expression<Func<T, object>> propertySelector,
                     VectorEmbeddingType storedEmbeddingQuantization = VectorEmbeddingType.Single);
                 
                 // Methods for querying a static index:
+                // ====================================
+                
                 public IVectorField WithField(string indexFieldName);
                 public IVectorField WithField(Expression<Func<T, object>> indexPropertySelector);
             }
@@ -881,26 +980,34 @@ namespace Raven.Documentation.Samples.AiIntegration
             #region syntax_5
             public interface IVectorEmbeddingTextFieldValueFactory
             {
-                // Defines the queried text
+                // Defines the queried text(s)
                 public void ByText(string text);
+                public void ByTexts(IEnumerable<string> texts);
+                
+                // Query by the embedding(s) indexed from the specified document for the queried field 
+                public void ForDocument(string documentId);
             }
+            
             public interface IVectorEmbeddingFieldValueFactory
             {
                 // Define the queried embedding:
                 // =============================
                 
-                // 'embeddings' is an Enumerable containing embedding values.
+                // 'embeddings' is an enumerable containing embedding values
                 public void ByEmbedding<T>(IEnumerable<T> embedding) where T : unmanaged, INumber<T>;
+                public void ByEmbedding<T>(IEnumerable<IEnumerable<T>> embeddings) where T : unmanaged, INumber<T>;
                 
-                // 'embeddings' is an array containing embedding values.
+                
+                // 'embeddings' is an array containing embedding values
                 public void ByEmbedding<T>(T[] embedding) where T : unmanaged, INumber<T>;
+                public void ByEmbeddings<T>(T[][] embeddings) where T : unmanaged, INumber<T>;
                 
-                // Defines queried embedding in base64 format.
-                // 'base64Embedding' is encoded as base64 string.
-                public void ByBase64(string base64Embedding);
-                
-                // 'embedding` is a `RavenVector` containing embedding values.
+                // 'embedding` is a `RavenVector` containing embedding values
                 public void ByEmbedding<T>(RavenVector<T> embedding) where T : unmanaged, INumber<T>;
+                
+                // 'base64Embedding' is encoded as base64 string(s).
+                public void ByBase64(string base64Embedding);
+                public void ByBase64(IEnumerable<string> base64Embeddings);
             }
             #endregion
             
