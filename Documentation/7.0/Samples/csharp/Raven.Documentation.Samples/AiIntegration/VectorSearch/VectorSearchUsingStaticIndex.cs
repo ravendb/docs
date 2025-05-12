@@ -1199,7 +1199,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .RawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
                             // Pass a document ID to the 'forDoc' method to find similar documents
-                            where vector.search(embedding.text(VectorFromText), embedding.forDoc($documentID), 0.82)")
+                            where vector.search(VectorFromText, embedding.forDoc($documentID), 0.82)")
                         .AddParameter("$documentID", "Products/7-A")
                         .WaitForNonStaleResults()
                         .ToList();
@@ -1213,7 +1213,7 @@ namespace Raven.Documentation.Samples.AiIntegration
                         .AsyncRawQuery<Product>(@"
                             from index 'Products/ByVector/Text'
                             // Pass a document ID to the 'forDoc' method to find similar documents
-                            where vector.search(embedding.text(VectorFromText), embedding.forDoc($documentID), 0.82)")
+                            where vector.search(VectorFromText, embedding.forDoc($documentID), 0.82)")
                         .AddParameter("$documentID", "Products/7-A")
                         .WaitForNonStaleResults()
                         .ToListAsync();

@@ -360,7 +360,7 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 {CODE-TAB-BLOCK:sql:RQL}
 from index "Products/ByVector/Text"
 // Pass a document ID to the 'forDoc' method to find similar documents
-where vector.search(embedding.text(VectorFromText), embedding.forDoc($documentID), 0.82)
+where vector.search(VectorFromText, embedding.forDoc($documentID), 0.82)
 {"documentID" : "Products/7-A"}
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
