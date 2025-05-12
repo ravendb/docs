@@ -20,15 +20,16 @@
    * -or- Provide a **self-obtained certificate**,  
      leaving you responsible for periodic certificate renewals.  
 
+{INFO: Additional resources}
+
 * This page explains how to follow the setup wizard, without going into security concerns details.  
-  To learn more about _Authentication_ and _Authorization_ in RavenDB, and about _Security_ in general, 
-  go to [Security Overview](../../server/security/overview).  
+  Learn more about _authentication_, _authorization_, and _security_ in RavenDB in: 
+  [Security overview](../../server/security/overview)  
 
-* Another helpful resource about setup and security is the [Security Common Errors & FAQ](../../Server/Security/common-errors-and-faq) section.  
+* Another helpful resource about setup and security: [Security common errors & FAQ](../../Server/Security/common-errors-and-faq)  
 
-* To learn how to **install RavenDB manually** rather than via the setup wizard, See [Manual Setup](../../start/installation/manual).  
-
-
+* To learn how to **install RavenDB manually** rather than via the setup wizard: [Manual setup](../../start/installation/manual)  
+{INFO/}
 
 * In this page:
    * [Run the Setup Wizard](../../start/installation/setup-wizard#run-the-setup-wizard)  
@@ -67,9 +68,9 @@ appearing:
 
 To install RavenDB, you can:  
 
-* Download the ravenDB version you'd like to install from the RavenDB [Downloads](https://ravendb.net/download) page  
-* Extract the loaded zip file to a folder on your computer  
-* Open a command prompt (e.g. PowerShell) and navigate to the setup folder  
+* Download the RavenDB version you want to install from the [Downloads](https://ravendb.net/download) page.  
+* Extract the downloaded archive to a folder on your machine.  
+* Open a command prompt (e.g. PowerShell) and navigate to the setup folder.  
 * Run setup:  
    {CODE-BLOCK: plain}
    .\run.ps1
@@ -91,33 +92,33 @@ to the setup wizard welcome page where you can choose your preferred option.
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority.  
 It will generate a certificate for your domain as long as you can prove that you own it.  
 
-During the wizard, RavenDB will give you a free subdomain. This will let you configure the DNS records for 
-this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, and you can manage it 
-through our [Customer Portal](https://customers.ravendb.net). Login with your license key, and you can add/remove/update DNS 
-records for your cluster.
+During setup, RavenDB will provide you with a free subdomain and allow you to configure its DNS records 
+with the IP addresses that your server will listen on.  
+The subdomain is owned by RavenDB, and you can manage it through the [Customer Portal](https://customers.ravendb.net).  
+Login with your license key, and you can add/remove/update DNS records for your cluster.
 
-The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt. If you wish to use your own domain, 
-you are welcome to acquire your own certificate and use that instead.
+The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt.  
+If you wish to use your own domain, you are welcome to acquire your own certificate and use it instead.
 
 {WARNING: Security consideration and ownership of certificates and domains} 
 
 The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the details of setting up DNS 
 records, generating certificates, and performing their renewals. Because of these requirements, the ownership of the certificates 
-and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and 
+and DNS records needs to stay within the RavenDB company. This gives us the ability to generate valid certificates and 
 modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system.  
 
-Hibernating Rhinos will **never** exploit these abilities and will never perform any modifications to the certificates and DNS 
+We will never exploit these abilities and never perform any modifications to the certificates and DNS 
 records unless explicitly requested by the client.
 
-The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We recommend that 
-**for actual production deployments** and for the highest level of security and control, you'll 
-[use your own certificates and domains](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
+The purpose of this feature is to make it easy for users to get set up and running with the minimum fuss.  
+We recommend that **for actual production deployments** and for the highest level of security and control, 
+you will [use your own certificates and domains](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
 avoiding the need to rely on a third party for such a critical part of your security.
 
 {WARNING/}
 
 After choosing the Let's Encrypt Secure Setup option, you are required to enter your license key which was sent to the email 
-address you provided. This process will associate your license with the chosen subdomain to ensure that valid certificates can 
+address you provided. This process will associate your license with your subdomain to ensure that valid certificates can 
 only be generated by a single license holder.
 
 ![Enter License](images/setup/3.png "Enter License")
