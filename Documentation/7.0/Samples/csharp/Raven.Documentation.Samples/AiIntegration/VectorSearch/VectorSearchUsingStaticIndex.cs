@@ -60,7 +60,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         }
         #endregion
         
-        #region Index_2
+        #region index_2
         public class Products_ByVector_Text_JS : AbstractJavaScriptIndexCreationTask
         {
             public Products_ByVector_Text_JS()
@@ -138,7 +138,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         }
         #endregion
         
-        #region Index_5
+        #region index_5
         public class Movies_ByVector_Single_JS : AbstractJavaScriptIndexCreationTask
         {
             public Movies_ByVector_Single_JS()
@@ -217,7 +217,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         }
         #endregion
         
-        #region Index_8
+        #region index_8
         public class Movies_ByVector_Int8_JS : AbstractJavaScriptIndexCreationTask
         {
             public Movies_ByVector_Int8_JS()
@@ -287,7 +287,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         }
         #endregion
         
-        #region Index_11
+        #region index_11
         public class Products_ByMultipleFields_JS : AbstractJavaScriptIndexCreationTask
         {
             public Products_ByMultipleFields_JS()
@@ -350,7 +350,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         }
         #endregion
         
-        #region Index_14
+        #region index_14
         public class Categories_ByPreMadeTextEmbeddings_JS : AbstractJavaScriptIndexCreationTask
         {
             public Categories_ByPreMadeTextEmbeddings_JS()
@@ -384,7 +384,7 @@ namespace Raven.Documentation.Samples.AiIntegration
         {
             using (var store = new DocumentStore())
             {
-                #region Index_3
+                #region index_3
                 var indexDefinition = new IndexDefinition
                 {
                     Name = "Products/ByVector/Text",
@@ -428,7 +428,7 @@ namespace Raven.Documentation.Samples.AiIntegration
             
             using (var store = new DocumentStore())
             {
-                #region Index_6
+                #region index_6
                 var indexDefinition = new IndexDefinition 
                 {
                     Name = "Movies/ByVector/Single",
@@ -473,7 +473,7 @@ namespace Raven.Documentation.Samples.AiIntegration
             
             using (var store = new DocumentStore())
             {
-                #region Index_9
+                #region index_9
                 var indexDefinition = new IndexDefinition 
                 {
                     Name = "Movies/ByVector/Int8",
@@ -518,7 +518,7 @@ namespace Raven.Documentation.Samples.AiIntegration
             
             using (var store = new DocumentStore())
             {
-                #region Index_12
+                #region index_12
                 var indexDefinition = new IndexDefinition
                 {
                     Name = "Products/ByMultipleFields",
@@ -557,7 +557,7 @@ namespace Raven.Documentation.Samples.AiIntegration
             
             using (var store = new DocumentStore())
             {
-                #region Index_15
+                #region index_15
                 var indexDefinition = new IndexDefinition
                 {
                     Name = "Categories/ByPreMadeTextEmbeddings",
@@ -1107,6 +1107,114 @@ namespace Raven.Documentation.Samples.AiIntegration
                             // Optionally, wrap the 'vector.search' query with 'exact()' to perform an exact search
                             where exact(vector.search(VectorFromTextEmbeddings, $searchTerm, 0.75, 20))")
                         .AddParameter("searchTerm", "candy")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                // Query for similar documents
+                // ===========================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_15
+                    var similarProducts = session
+                        .Query<Products_ByVector_Text.IndexEntry, Products_ByVector_Text>()
+                        // Perform a vector search
+                        // Call the 'VectorSearch' method
+                        .VectorSearch(
+                            field => field
+                                // Call 'WithField'
+                                // Specify the index-field in which to search for similar values
+                                .WithField(x => x.VectorFromText),
+                            embedding => embedding
+                                // Call 'ForDocument'
+                                // Provide the document ID for which you want to find similar documents.
+                                // The embedding stored in the index for the specified document
+                                // will be used as the "query vector".
+                                .ForDocument("Products/7-A"),
+                            // Optionally, specify the minimum similarity value
+                            minimumSimilarity: 0.82f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .OfType<Product>()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_15_async
+                    var similarCategories = await asyncSession
+                        .Query<Products_ByVector_Text.IndexEntry, Products_ByVector_Text>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromText),
+                            embedding => embedding
+                                .ForDocument("Products/7-A"),
+                            minimumSimilarity: 0.82f)
+                        .Customize(x => x.WaitForNonStaleResults())
+                        .OfType<Category>()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_16
+                    var similarProducts = session.Advanced
+                        .DocumentQuery<Products_ByVector_Text.IndexEntry, Products_ByVector_Text>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromText),
+                            embedding => embedding
+                                .ForDocument("Products/7-A"),
+                            minimumSimilarity: 0.82f)
+                        .WaitForNonStaleResults()
+                        .OfType<Product>()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_16_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Products_ByVector_Text.IndexEntry, Products_ByVector_Text>()
+                        .VectorSearch(
+                            field => field
+                                .WithField(x => x.VectorFromText),
+                            embedding => embedding
+                                .ForDocument("Products/7-A"),
+                            minimumSimilarity: 0.82f)
+                        .WaitForNonStaleResults()
+                        .OfType<Product>()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region query_17
+                    var similarProducts = session.Advanced
+                        .RawQuery<Product>(@"
+                            from index 'Products/ByVector/Text'
+                            // Pass a document ID to the 'forDoc' method to find similar documents
+                            where vector.search(embedding.text(VectorFromText), embedding.forDoc($documentID), 0.82)")
+                        .AddParameter("$documentID", "Products/7-A")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region query_17_async
+                    var similarProducts = await asyncSession.Advanced
+                        .AsyncRawQuery<Product>(@"
+                            from index 'Products/ByVector/Text'
+                            // Pass a document ID to the 'forDoc' method to find similar documents
+                            where vector.search(embedding.text(VectorFromText), embedding.forDoc($documentID), 0.82)")
+                        .AddParameter("$documentID", "Products/7-A")
                         .WaitForNonStaleResults()
                         .ToListAsync();
                     #endregion
