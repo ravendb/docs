@@ -60,6 +60,7 @@
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying)  
     [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofedges)  
+    [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.maximumconcurrentbatchesforhnswacceleration)  
     [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically)  
     [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.encrypted.transactionsizelimitinmb)  
     [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration#indexing.indexemptyentries)  
@@ -644,6 +645,17 @@ The default number of edges that will be created for a vector during vector inde
 
 - **Type**: `int`
 - **Default**: `12`
+- **Scope**: Server-wide, or per database, or per index
+
+{PANEL/}
+
+{PANEL: Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration}
+
+EXPERT ONLY:  
+The maximum number of concurrent batches for HNSW distance computation acceleration.
+
+- **Type**: `int`
+- **Default**: `512`
 - **Scope**: Server-wide, or per database, or per index
 
 {PANEL/}

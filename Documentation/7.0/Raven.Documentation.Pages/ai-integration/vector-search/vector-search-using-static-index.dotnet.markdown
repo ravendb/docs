@@ -23,6 +23,7 @@
       * [Indexing pre-made text-embeddings](../../ai-integration/vector-search/vector-search-using-static-index#indexing-pre-made-text-embeddings)
     * [Indexing vector data - NUMERICAL](../../ai-integration/vector-search/vector-search-using-static-index#indexing-vector-data---numerical)
     * [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index#indexing-multiple-field-types)
+    * [Querying the static index for similar documents](../../ai-integration/vector-search/vector-search-using-static-index#querying-the-static-index-for-similar-documents)
     * [Configure the vector field in the Studio](../../ai-integration/vector-search/vector-search-using-static-index#configure-the-vector-field-in-the-studio)
 
 {NOTE/}
@@ -334,6 +335,44 @@ or vector.search(VectorFromText, $searchTerm2, 0.8)
 { "minPrice" : 200, "searchTerm1" : "Alice", "searchTerm2": "italian" }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Querying the static index for similar documents}
+
+* Similar to [querying for similar documents using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search---querying-for-similar-documents),  
+  you can **query a static-index for similar documents** by specifying a document ID in the vector search.
+
+* The following example queries the static-index defined in [this example](../../ai-integration/vector-search/vector-search-using-static-index#indexing-vector-data---text) above.
+  The document for which we want to find similar documents is specified by the document ID passed to the `ForDocument` method.
+
+* RavenDB retrieves the embedding that was indexed for the queried field in the specified document and uses it as the query vector for the similarity comparison.
+
+* The results will include documents whose indexed embeddings are most similar to the one stored in the referenced document’s index-entry.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_15@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:Query_async query_15_async@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:DocumentQuery query_16@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:DocumentQuery_async query_16_async@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:RawQuery query_17@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB:csharp:RawQuery_async query_17_async@AiIntegration\VectorSearch\VectorSearchUsingStaticIndex.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index "Products/ByVector/Text"
+// Pass a document ID to the 'forDoc' method to find similar documents
+where vector.search(VectorFromText, embedding.forDoc($documentID), 0.82)
+{"documentID" : "Products/7-A"}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Running the above example on RavenDB’s sample data returns the following documents that have similar content in their _Name_ field:
+(Note: the results include the referenced document itself, _Products/7-A_)
+
+{CODE-BLOCK:csharp}
+// ID: products/7-A  ... Name: "Uncle Bob's Organic Dried Pears"
+// ID: products/51-A ... Name: "Manjimup Dried Apples"
+// ID: products/6-A  ... Name: "Grandma's Boysenberry Spread"
+{CODE-BLOCK/}
 
 {PANEL/}
 
