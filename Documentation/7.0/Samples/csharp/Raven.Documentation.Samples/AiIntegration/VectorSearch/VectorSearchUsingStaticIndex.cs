@@ -8,7 +8,7 @@ using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Queries.Vector;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.AiIntegration
+namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
 {
     public class VectorSearchUsingStaticIndex
     {
@@ -67,11 +67,11 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Products', function (product) {{
-                           return {{
+                    @"map('Products', function (product) {
+                           return {
                                VectorFromText: createVector(product.Name)
-                           }};
-                     }})"
+                           };
+                    })"
                 };
             
                 Fields = new();
@@ -145,11 +145,11 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Movies', function (movie) {{
-                           return {{
+                    @"map('Movies', function (movie) {
+                           return {
                                VectorFromSingle: createVector(movie.TagsEmbeddedAsSingle)
-                           }};
-                     }})"
+                           };
+                    })"
                 };
             
                 Fields = new();
@@ -224,11 +224,11 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Movies', function (movie) {{
-                           return {{
+                    @"map('Movies', function (movie) {
+                           return {
                                VectorFromInt8Arrays: createVector(movie.TagsEmbeddedAsInt8)
-                           }};
-                     }})"
+                           };
+                    })"
                 };
             
                 Fields = new();
@@ -294,13 +294,13 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Products', function (product) {{
-                           return {{
+                    @"map('Products', function (product) {
+                           return {
                                PricePerUnit: product.PricePerUnit,
                                Name: product.Name,
                                VectorFromText: createVector(product.Name)
-                           }};
-                     }})"
+                           };
+                    })"
                 };
             
                 Fields = new();
@@ -357,12 +357,12 @@ namespace Raven.Documentation.Samples.AiIntegration
             {
                 Maps = new HashSet<string>()
                 {
-                    $@"map('Categories', function (category) {{
-                           return {{
+                    @"map('Categories', function (category) {
+                           return {
                                VectorFromTextEmbeddings:
                                    loadVector('Name', 'id-for-task-open-ai')
-                           }};
-                     }})"
+                           };
+                    })"
                 };
             
                 Fields = new();
