@@ -5,7 +5,7 @@
 The features listed on this page were available in former RavenDB versions and are unavailable in RavenDB `6.x`,  
 or their behavior is inconsistent with their behavior in previous versions.  
 
-* In this page:
+* In this article:
    * [Breaking changes](../../migration/client-api/client-breaking-changes#breaking-changes)  
    * [Breaking changes in a sharded database](../../migration/client-api/client-breaking-changes#breaking-changes-in-a-sharded-database)  
    * [Additional breaking changes](../../migration/client-api/client-breaking-changes#additional-breaking-changes)  
@@ -14,14 +14,12 @@ or their behavior is inconsistent with their behavior in previous versions.
 
 {PANEL: Breaking changes}
 
-* **Include from a Non-tracking session**  
-  A non-tracking session will now throw the following exception if an 'Include' operation is used in it,  
-  to indicate that the operation is forbidden in a non-tracking session and to warn about its expected results.
-
-        "This session does not track any entities, because of that registering includes is forbidden
-        to avoid false expectations when later load operations are performed on those and no requests
-        are being sent to the server.
-        Please avoid any 'Include' operations during non-tracking session actions like load or query."
+* **Include from a non-tracking session**  
+  * A non-tracking session will now throw an exception if an `Include` operation is used in it.
+  * Like other entities in a `NoTracking` session,
+    included items are not tracked and will not prevent additional server requests during subsequent _Load_ operations for the same data.
+    To avoid confusion, _Include_ operations are disallowed during non-tracking session actions such as _Load_ or _Query_.
+  * Learn more in [Using 'Include' in a NoTracking session will throw](../../client-api/session/configuration/how-to-disable-tracking#using-).
   
 * **Type changes**  
   Many methods related to paging information (Skip, Take, PageSize, TotalResults, etc.) that used the `int` type in former RavenDB versions now use `long`, 
