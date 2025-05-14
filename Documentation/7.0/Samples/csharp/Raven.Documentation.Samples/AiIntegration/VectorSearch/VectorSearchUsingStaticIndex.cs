@@ -37,7 +37,10 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         VectorFromText = CreateVector(product.Name)
                     };
 
-                // Customize the vector field options:
+                // You can customize the vector field using EITHER of the following syntaxes:
+                // ==========================================================================
+                
+                // Customize using VectorOptions:
                 VectorIndexes.Add(x => x.VectorFromText,
                     new VectorOptions()
                     {
@@ -53,6 +56,14 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         // Optionally, set the number of candidates
                         NumberOfCandidatesForIndexing = 20
                     });
+                
+                // OR - Customize using builder:
+                Vector(x=>x.VectorFromText,
+                    builder => builder
+                        .SourceEmbedding(VectorEmbeddingType.Text)
+                        .DestinationEmbedding(VectorEmbeddingType.Single)
+                        .NumberOfEdges(20)
+                        .NumberOfCandidates(20));
 
                 // The index MUST use the Corax search engine 
                 SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
@@ -113,7 +124,7 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         VectorFromSingle = CreateVector(movie.TagsEmbeddedAsSingle)
                     };
 
-                // Customize the vector field options:
+                // EITHER - Customize the vector field using VectorOptions:
                 VectorIndexes.Add(x => x.VectorFromSingle,
                     new VectorOptions()
                     {
@@ -131,6 +142,15 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         NumberOfEdges = 20,
                         NumberOfCandidatesForIndexing = 20
                     });
+                
+                // OR - Customize the vector field using builder:
+                Vector(x => x.VectorFromSingle,
+                    builder => builder
+                        .SourceEmbedding(VectorEmbeddingType.Single)
+                        .DestinationEmbedding(VectorEmbeddingType.Single)
+                        .Dimensions(2)
+                        .NumberOfEdges(20)
+                        .NumberOfCandidates(20));
 
                 // The index MUST use the Corax search engine 
                 SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
@@ -192,7 +212,7 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         VectorFromInt8Arrays = CreateVector(movie.TagsEmbeddedAsInt8)
                     };
 
-                // Customize the vector field options:
+                // EITHER - Customize the vector field using VectorOptions:
                 VectorIndexes.Add(x => x.VectorFromInt8Arrays,
                     new VectorOptions()
                     {
@@ -210,6 +230,15 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         NumberOfEdges = 20,
                         NumberOfCandidatesForIndexing = 20
                     });
+                
+                // OR - Customize the vector field using builder:
+                Vector(x => x.VectorFromInt8Arrays,
+                    builder => builder
+                        .SourceEmbedding(VectorEmbeddingType.Int8)
+                        .DestinationEmbedding(VectorEmbeddingType.Int8)
+                        .Dimensions(2)
+                        .NumberOfEdges(20)
+                        .NumberOfCandidates(20));
 
                 // The index MUST use the Corax search engine 
                 SearchEngineType = Raven.Client.Documents.Indexes.SearchEngineType.Corax;
