@@ -59,50 +59,67 @@ as soon as you finish registering, so you can immediately start creating and han
 {PANEL: Register Your Account}
 
 To create a new account, enter [https://cloud.ravendb.net/user/register](https://cloud.ravendb.net/user/register)
-and allow the wizard to walk you through the 4 simple stages of the registration procedure:
+and allow the wizard to walk you through the 5 simple stages of the registration procedure:
 
-1. **E-Mail**
-2. **Domain**
-3. **Billing**
-4. **Summary**
-
----
-
-#### 1. E-Mail
-!["Registration: Email Address"](images\registration-001-email.png "Registration: Email Address")
-
-- Provide your email address
-- Read the **terms & conditions** and the **privacy policy**, and click the **accept** checkbox if you accept them.
-- Click the **Next** button
+1. **Email**
+2. **Account information**
+3. **Billing information**
+4. **Payment information**
+5. **Summary**
 
 ---
 
-#### 2. Domain
-!["Registration: Domain Name"](images\registration-002-domain.png "Registration: Domain Name")
+#### 1. Email
+!["Figure 1 - Registration page: Email Address"](images\registration-page-email-address.png "Figure 1 - Registration page: Email Address")
+
+- Provide your email address.
+- Read the **terms & conditions** and the **privacy policy**.
+- Click the **Continue** button.
+
+---
+
+#### 2. Account information
+!["Figure 2 - Registration page: Domain Name"](images\registration-page-domain-name-and-account-type.png "Figure 2 - Registration page: Domain Name")
 
 - Enter an unoccupied domain name of your choice, that would be used for your cloud products.  
-  The domain name is typically your organization or project name and will be used in all your products' URLs.
-  The procedure will check this name's availability, and if it's free - let you continue using the **Next** button.  
-  -or-  
-  If you prefer **not** to currently provide a domain name, use the **Later** button.  
-  You will still be required to provide a domain name, but it will happen later on when you create your first product.
+  The domain name is typically your organization or project name and will be used in all your products' URLs. The procedure will check this name's availability.
+- Select your account type. For typical purposes, select the **Regular** button. If you need a *HIPAA-compliant* account, select the **HIPAA** button.
+- Click the **Continue** button.
+
+{INFO: }
+If you prefer **not** to currently provide a domain name and account type, use the **Later** button.  
+You will still be required to provide a domain name and account type, but it will happen later on when you create your first product.
+{INFO/}
 
 ---
 
-#### 3. Billing
-!["Registration: Billing"](images\registration-003-billing.png "Registration: Billing")
-!["Registration: Billing"](images\registration-004-payment.png "Registration: Billing")
+#### 3. Billing information
+!["Figure 3 - Registration page: Billing information"](images\registration-page-billing-information.png "Figure 3 - Registration page: Billing information")
 
-- Enter your billing and payment information and click the **Next** button  
-  -or-  
-  Click the **Skip Billing Information** button if you prefer to evaluate the cloud service for now using the free product.
+- Enter your billing information.
+- Click the **Continue** button.
+
+{INFO: }
+Click the **Skip Billing Information** button if you prefer to evaluate the cloud service for now using the free product.
+{INFO/}
 
 ---
 
-#### 4. Summary
-!["Registration: Link"](images\registration-005-summary.png "Registration: Link")
+#### 4. Payment information
+!["Figure 4 - Registration page: Payment information"](images\registration-page-payment-information.png "Figure 4 - Registration page: Payment information")
 
-- Verify your choices, confirm you're not a robot, and click the **Sign-up** button to register your cloud account.
+- Enter your payment information.
+- Click the **Continue** button.
+
+---
+
+#### 5. Summary
+!["Figure 5 - Registration page: Summary"](images\registration-page-summary.png "Figure 5 - Registration page: Summary")
+
+- Verify your choices, confirm you're not a robot, and click the **Create account** button to register your cloud account.
+- You’ll receive an email with sign in link which allows you to sign in to the RavenDB Cloud portal.
+
+!["Figure 6 - Registration page: Thank you page"](images\registration-page-thank-you.png "Figure 6 - Registration page: Thank you page")
 
 ---
 
@@ -121,11 +138,10 @@ To access your account, click [https://cloud.ravendb.net/user/login](https://clo
 ---
 
 #### Login
-!["Login"](images\registration-006-login.png "Login")
+!["Figure 7 - Login page"](images\login-page-email.png "Figure 7 - Login page")
 
 - Enter the same email address you provided during registration, confirm you're not a robot, and
   click the **Send Magic Link** button
-
 
 
 * The login procedure will send you a message with a link. Click the link to enter your account, no password required.
