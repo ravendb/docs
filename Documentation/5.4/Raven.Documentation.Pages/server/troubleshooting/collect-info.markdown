@@ -115,8 +115,8 @@ then enable the following logs (if not enabled yet) before downloading existing 
 * To maintain a specific setting after a server restart, set the following configuration keys  
   in your [default configuration](../../server/configuration/configuration-options):
   * Server logs - set [Logs.Mode](../../server/configuration/logs-configuration#logs.mode)
-  * Traffic Watch log - set [Logs.Microsoft.Disable](../../server/configuration/logs-configuration#logs.microsoft.disable)
-  * Microsoft logs - set [TrafficWatch.Mode](../../server/configuration/logs-configuration#logs.mode) 
+  * Microsoft logs - set [Logs.Microsoft.Disable](../../server/configuration/logs-configuration#logs.microsoft.disable)
+  * Traffic Watch log - set [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration#trafficwatch.mode)
 
 {WARNING/}
 
