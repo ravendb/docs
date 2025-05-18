@@ -37,7 +37,13 @@
     "Path": "running-in-docker-container.markdown",
     "Name": "Running in a Docker Container",
     "DiscussionId": "eda38daa-a361-4114-9519-0684a7e1bda2",
-    "Mappings": []
+    "Mappings": [
+        {
+          "Version": 6.0,
+          "Key": "/start/containers/general-guide"
+        }
+      ],
+    "LastSupportedVersion": "5.4"
   },
   {
     "Path": "upgrading-to-new-version.markdown",
