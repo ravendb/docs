@@ -40,7 +40,7 @@
     "Mappings": [
         {
           "Version": 6.0,
-          "Key": "start/containers/overview"
+          "Key": "/start/containers/general-guide"
         }
       ],
     "LastSupportedVersion": "5.4"
