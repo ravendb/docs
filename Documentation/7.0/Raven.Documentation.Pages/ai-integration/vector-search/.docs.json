@@ -28,5 +28,11 @@
         "Name": "Data Types for Vector Search",
         "DiscussionId": "251b7f9e-06a8-4a67-8707-4a87ee9e5d7d",
         "Mappings": []
+    },
+    {
+        "Path": "what-affects-vector-search-results.markdown",
+        "Name": "What Affects Vector Search Results",
+        "DiscussionId": "59017cc7-129c-46a1-ba9c-f709bc5e7d0d",
+        "Mappings": []
     }
 ]
