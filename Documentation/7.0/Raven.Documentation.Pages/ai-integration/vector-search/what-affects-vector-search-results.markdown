@@ -55,8 +55,8 @@
   * The search is influenced by the [Query-time params](../../ai-integration/vector-search/what-affects-vector-search-results#query-time-parameters) described below.  
     Slight variations in graph structure or search parameters can lead to different results.
   * While HNSW offers fast search performance at scale and quickly finds points that are likely to be among the nearest neighbors,
-    it does not guarantee exact results — only approximate matches are returned.  
-    This behavior is expected in all ANN algorithms, not just HNSW or RavenDB.  
+    it does not guarantee exact results - only approximate matches are returned.  
+    This behavior is expected in all ANN algorithms, not just HNSW.  
     If full accuracy is critical, consider using [Exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) instead.
 
 {PANEL/}
@@ -71,7 +71,7 @@ They help keep memory usage and indexing time under control, but may also limit 
 * **Number of edges**:  
    
   * This parameter controls how many connections (edges) each vector maintains in the HNSW graph.  
-    Each node (vector) is connected to a limited number of neighbors in each layer — up to the value specified by this param.
+    Each node (vector) is connected to a limited number of neighbors in each layer - up to the value specified by this param.
     These edges define the structure of the graph and affect how vectors are reached during search.
   * A **larger** number of edges increases the graph’s density, improving connectivity and typically resulting in more accurate search results, 
     but it may also increase memory usage and slow down index construction.  
