@@ -4,8 +4,8 @@
 {NOTE: }
 
 * This article explains why vector search results might not always return what you expect, even when relevant documents exist.
-  It applies to both [dynamic vector search queries](../../ai-integration/vector-search/vector-search-using-dynamic-query) and
-  [static-index vector search queries](../../ai-integration/vector-search/vector-search-using-static-index).
+  It applies to both [Dynamic vector search queries](../../ai-integration/vector-search/vector-search-using-dynamic-query) and
+  [Static-index vector search queries](../../ai-integration/vector-search/vector-search-using-static-index).
 
 * Vector search in RavenDB uses the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) algorithm (Hierarchical Navigable Small World)
   to index and search high-dimensional vector embeddings efficiently.
@@ -14,6 +14,11 @@
 
 * Several **indexing-time parameters** affect how the vector graph is built, and **query-time parameters** affect how the graph is searched.
   These settings influence the trade-off between speed and accuracy.
+
+* If full accuracy is required, RavenDB also provides [Exact vector search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search),  
+  which performs a full scan of all indexed vectors to guarantee the closest matches.
+
+---
 
 * In this article:
   * [The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results#the-approximate-nature-of-hnsw)
@@ -40,10 +45,11 @@
 * **Insertion order effects**:  
 
   * Because the HNSW graph is append-only and built incrementally,  
-    the order in which documents are added, updated, or deleted can affect the final graph structure.  
-    Deleted vectors are not physically removed, but marked as deleted (soft-deleted).
+    the order in which documents are inserted can affect the final graph structure.
+  * Updates and deletes do not change the structure - deleted vectors are not physically removed, but marked as deleted (soft-deleted), 
+    and updates typically replace a document by marking the old one as deleted and inserting a new one.
   * This means that two databases containing the same documents may return different vector search results
-    if the documents were indexed in a different order.
+    if the documents were inserted in a different order.
 
 * **Greedy search**:  
 
@@ -52,6 +58,7 @@
     The algorithm then descends through the layers, always choosing the neighbor closest to the query vector.  
   * The algorithm doesn't exhaustively explore all possible paths, so it can miss the true global nearest neighbors -  
     especially if they are not well-connected in the graph.
+    This design enables HNSW to find relevant results very quickly by focusing only on the most promising paths, making it highly efficient even for large datasets.
   * The search is influenced by the [Query-time params](../../ai-integration/vector-search/what-affects-vector-search-results#query-time-parameters) described below.  
     Slight variations in graph structure or search parameters can lead to different results.
   * While HNSW offers fast search performance at scale and quickly finds points that are likely to be among the nearest neighbors,
@@ -69,13 +76,15 @@ These parameters influence how vectors are connected and how effective the searc
 They help keep memory usage and indexing time under control, but may also limit the graph’s ability to precisely represent all possible proximity relationships.
 
 * **Number of edges**:  
-   
-  * This parameter controls how many connections (edges) each vector maintains in the HNSW graph.  
-    Each node (vector) is connected to a limited number of neighbors in each layer - up to the value specified by this param.
-    These edges define the structure of the graph and affect how vectors are reached during search.
+
+  * This parameter, which corresponds to the _M_ parameter in the original [HNSW paper](https://arxiv.org/abs/1603.09320),  
+    controls how many connections (edges) each vector maintains in the HNSW graph.  
+    Each node (vector) is connected to a limited number of neighbors in each layer - up to the value specified by this param.    
+    These edges define the structure of the graph and affect how vectors are reached during search.  
   * A **larger** number of edges increases the graph’s density, improving connectivity and typically resulting in more accurate search results, 
-    but it may also increase memory usage and slow down index construction.  
-    A **smaller** value reduces memory usage and speeds up indexing, but can result in a sparser graph with weaker connectivity and reduced search accuracy.
+    but it may also increase memory usage, slow down index construction, and result in a larger index.  
+    A **smaller** value reduces memory usage and speeds up indexing,  
+    but can result in a sparser graph with weaker connectivity and reduced search accuracy.
   * With **static-indexes** -  
     This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
@@ -87,10 +96,10 @@ They help keep memory usage and indexing time under control, but may also limit 
     This parameter (commonly referred to as _efConstruction_) controls how many neighboring vectors are considered during this process.
     It defines the size of the candidate pool - the number of potential links evaluated for each insertion.  
     From the candidate pool, HNSW selects up to the configured _number of edges_ for each node.
-  * A **larger** candidate pool increases the chance of finding better-connected neighbors,  
-    improving the overall accuracy of the graph.  
+  * A **larger** candidate pool increases the chance of finding better-connected neighbors, improving the overall accuracy of the graph.
+    However, it may increase indexing time and memory usage.  
     A **smaller** value speeds up indexing and reduces resource usage,  
-    but can result in a sparser and less accurate graph structure.   
+    but can result in a sparser and less accurate graph structure. 
   * With **static-indexes** -  
     This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
@@ -125,8 +134,10 @@ These parameters directly affect how many results are found, how similar they ar
   * Vectors with a similarity score below this threshold are excluded from the results -  
     even if they would otherwise be among the top candidates.  
     Use this to filter out marginal matches, especially when minimum semantic relevance is important.
-  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-raw-text).  
-    If not explicitly set, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity) configuration key.
+  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-raw-text).
+    If not explicitly set in the query, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity) configuration key.  
+    The default value of this configuration key is `0.0`, which means no similarity filtering is applied - all candidates found during the search are eligible to be returned,
+    regardless of how dissimilar they are from the query vector.
 
 * **Search Method**:  
 
@@ -136,7 +147,7 @@ These parameters directly affect how many results are found, how similar they ar
       it is typically accurate and strongly recommended in most scenarios due to its performance.
     * **Exact search**:  
       Performs a full comparison against all indexed vectors to guarantee the closest matches.  
-      This method is more accurate but much slower - learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) below.
+      Learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) below.
 
 ---
 
@@ -154,9 +165,10 @@ Static index queries - [Parameters used at query time](../../ai-integration/vect
 * Exact search performs a full scan of the vector space, comparing the query vector to every indexed vector.  
   This guarantees that the true closest matches are returned.
 
-* While exact search provides guaranteed accuracy, it is slower and more resource-intensive.  
-  The approximate search is strongly recommended in most scenarios due to its performance.  
-  Use exact search only when maximum precision is critical and you can tolerate the cost of a full scan.
+* While exact search provides guaranteed accuracy, it is more resource-intensive and may be slower - especially for large indexes.
+  However, if the index is small, exact search can still offer reasonable performance.  
+  The approximate search remains strongly recommended in most scenarios due to its performance.  
+  Use exact search only when maximum precision is critical and the performance trade-off is acceptable.
 
 * Exact search can be used with both static index queries and dynamic queries.  
   For example, see [Dynamic vector search - exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search---exact-search).
