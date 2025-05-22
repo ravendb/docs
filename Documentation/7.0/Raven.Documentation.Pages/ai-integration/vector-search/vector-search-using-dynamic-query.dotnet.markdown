@@ -21,6 +21,7 @@
   * [Dynamic vector search - exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search---exact-search)
   * [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options)
   * [Querying vector fields and regular data in the same query](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-vector-fields-and-regular-data-in-the-same-query)
+  * [Combining multiple vector searches in the same query](../../ai-integration/vector-search/vector-search-using-dynamic-query#combining-multiple-vector-searches-in-the-same-query)
   * [Syntax](../../ai-integration/vector-search/vector-search-using-dynamic-query#syntax)
     
 {NOTE/}
@@ -653,6 +654,45 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
     now the query returns **4** documents instead of **2**.
 
 {INFO/}
+{PANEL/}
+
+{PANEL: Combining multiple vector searches in the same query}
+
+* You can combine multiple vector search statements in the same query using logical operators.  
+  This is useful when you want to retrieve documents that match more than one vector-based criterion.
+ 
+* This can be done using [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery),
+  [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) or raw [RQL](../../client-api/session/querying/what-is-rql).
+
+* In the example below, the results will include companies that match one of two vector search conditions:  
+  * Companies from European countries with a _Name_ similar to "snack"
+  * Or companies with a _Name_ similar to "dairy"
+
+  {CODE-TABS}
+  {CODE-TAB:csharp:DocumentQuery vs_27@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:DocumentQuery_async vs_27_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery vs_28@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB:csharp:RawQuery_async vs_28_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
+  {CODE-TAB-BLOCK:sql:RQL}
+from "Companies"
+where
+(
+  vector.search(embedding.text(Name), $searchTerm1, 0.78)
+  and
+  vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+)
+or
+(
+  vector.search(embedding.text(Name), $searchTerm3, 0.80)
+)
+{"searchTerm1" : "snack", "searchTerm2" : "europe", "searchTerm3" : "dairy"}
+  {CODE-TAB-BLOCK/}
+  {CODE-TABS/}
+
+* Running the above query example on the RavenDB sample data will generate the following auto-index:  
+  `Auto/Companies/ByVector.search(embedding.text(Address.Country))AndVector.search(embedding.text(Name))`.  
+  This index includes two vector fields: _Address.Country_ and _Name_.
+
 {PANEL/}
 
 {PANEL: Syntax}
