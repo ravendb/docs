@@ -23,7 +23,7 @@ If you want to pay for *RavenDB Cloud* services using a credit card associated w
 - Monthly invoices are issued by *AWS*, not by *RavenDB Cloud*.
 - *AWS Cloud Account* offering is limited to *AWS* products.
 - Billing and contact information are fully managed by *AWS*. Changing the parameters is not possible via Cloud Portal.
-- The service cost includes a *3% AWS Marketplace* commission.
+- Additional *3%* commission fee is added by *AWS Marketplace*.
 
 {PANEL/}
 
