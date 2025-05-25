@@ -49,7 +49,7 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 
 {PANEL: Enabling SNMP in RavenDB}
 
-* To monitor RavenDB using SNMP you __must__ first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration#monitoring.snmp.enabled) configuration key to _true_.
+* To monitor RavenDB using SNMP you **must** first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration#monitoring.snmp.enabled) configuration key to _true_.
 
 * To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options) article,  
   which outlines all available options.
@@ -111,7 +111,7 @@ There are several configurable SNMP properties in RavenDB:
 
 {INFO: }
 
-* See article [Monitoring Options](../../../server/configuration/monitoring-configuration) for the full list of __SNMP configuration keys__.
+* See article [Monitoring Options](../../../server/configuration/monitoring-configuration) for the full list of **SNMP configuration keys**.
  
 * To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options) article,  
   which outlines all available options.
@@ -176,7 +176,7 @@ snmpget -v 3 -l authNoPriv -u ravendb -a SHA \
 
 ---
 
-__Access single OID value__:
+**Access single OID value**:
 
 * An individual OID value can be retrieved via HTTP `GET` endpoint:  
   `<serverUrl>/monitoring/snmp?oid=<oid>`  
@@ -194,7 +194,7 @@ curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1
 
 ---
 
-__Access multiple OID values__:
+**Access multiple OID values**:
 
 * Multiple OID values can be retrieved by making either a `GET` or a `POST` request to the following HTTP endpoint:
   `<serverUrl>/monitoring/snmp/bulk`
@@ -224,7 +224,7 @@ curl -X POST \
 
 --- 
 
-<a id="getAllOids" /> __Get all OIDs:__
+<a id="getAllOids" /> **Get all OIDs:**
 
 * You can get a list of all OIDs along with their description via this HTTP `GET` endpoint:  
   `<serverUrl>/monitoring/snmp/oids`
@@ -239,7 +239,7 @@ curl -X POST \
 
 {NOTE: }
 
-* RavenDB's **root OID** is: __1.3.6.1.4.1.45751.1.1.__
+* RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 
 * Values represented by `X`, `D`, or `I` in the OIDs list below will be:
     * `X`:  
