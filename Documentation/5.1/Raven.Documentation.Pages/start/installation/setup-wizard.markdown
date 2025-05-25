@@ -1,31 +1,38 @@
 # Installation: Setup Wizard Walkthrough
 
+* The **Setup Wizard** guides you through a step-by-step installation of a RavenDB server.  
 
-* We want to make it as easy as possible for you to start RavenDB with a valid, trusted server certificate from the beginning. 
-  This will ensure that your servers are secure throughout your application lifecycle.  
-  
-  * Setting up securely will create a development environment that includes security related features such as encryption and client certificates. 
-   This way, such features won't be missing when you launch, and there will be less bugs caused by code that needs to be adapted to 
-   security features that must be added later.  
+* You can use the wizard to install either a **secure** or an **unsecure** server.  
+   * An **unsecure server** can be used for **trial and development**, providing there 
+     is no issue with unauthorized access to the server and the data stored in it.  
+   * It is **highly recommended** to use a **secure server** wherever access to the 
+     server, its management, or its data should be restricted.  
+   * You will also need a secure server in a development environment that requires 
+     the usage of security related features like encryption and client certificates.  
 
-* To make the setup process as smooth as possible, we have introduced the **Setup Wizard**,  
-  a step-by-step guide to help you configure the desired security level and easily deploy a secure cluster.  
+* When installing a secure server, connecting it will thereafter be possible only 
+  for clients that own a valid, trusted certificate.  
+  To secure the server throughout its lifecycle, you can provide a suitable certificate 
+  during setup. The setup wizard allows you to either -  
+   * Generate and use a **Let's Encrypt certificate**,  
+     saving you the bother of providing your own certificate, and making it possible 
+     for RavenDB to renewal the certificate automatically from now on,  
+   * -or- Provide a **self-obtained certificate**,  
+     leaving you responsible for periodic certificate renewals.  
 
-* Using the Setup Wizard you can set up a secure cluster with:  
-  * **Let's Encrypt certificate** - Using the Wizard with "Let's Encrypt" will enable RavenDB's automatic certificate renewals. 
-  * **Self-obtained certificate** - You are responsible for periodic certificate renewals. 
-  * Or choose to continue in an **unsecure mode**.  
+{INFO: Additional resources}
 
-* Note: The RavenDB server can also be **set up manually** if choosing not to use the wizard.  
-  See [Manual Setup](../../start/installation/manual).  
+* This page explains how to follow the setup wizard, without going into security concerns details.  
+  Learn more about _authentication_, _authorization_, and _security_ in RavenDB in: 
+  [Security overview](../../server/security/overview)  
 
-* Note: this page explains how to follow the Setup Wizard, without going into security concerns details.  
-  To learn more about how _Authentication_ and _Authorization_ are implemented with RavenDB, and about _Security_ in general, 
-  go to [Security Overview](../../server/security/overview).  
+* Another helpful resource about setup and security: [Security common errors & FAQ](../../Server/Security/common-errors-and-faq)  
 
-* If you are having trouble using the wizard, or with security in general, please visit the [Security Common Errors & FAQ](../../Server/Security/common-errors-and-faq) section.
+* To learn how to **install RavenDB manually** rather than via the setup wizard: [Manual setup](../../start/installation/manual)  
+{INFO/}
 
 * In this page:
+   * [Run the Setup Wizard](../../start/installation/setup-wizard#run-the-setup-wizard)  
    * [Select Setup Mode](../../start/installation/setup-wizard#select-setup-mode)  
    * [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-free-let)  
       * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses)  
@@ -57,6 +64,20 @@ appearing:
 
 ---
 
+{PANEL: Run the Setup Wizard}
+
+To install RavenDB, you can:  
+
+* Download the RavenDB version you want to install from the [Downloads](https://ravendb.net/download) page.  
+* Extract the downloaded archive to a folder on your machine.  
+* Open a command prompt (e.g. PowerShell) and navigate to the setup folder.  
+* Run setup:  
+   {CODE-BLOCK: plain}
+   .\run.ps1
+   {CODE-BLOCK/}
+
+{PANEL/}
+
 {PANEL:Select Setup Mode}
 
 When running the RavenDB server for the first time, you will be redirected 
@@ -71,33 +92,33 @@ to the setup wizard welcome page where you can choose your preferred option.
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority.  
 It will generate a certificate for your domain as long as you can prove that you own it.  
 
-During the wizard, RavenDB will give you a free subdomain. This will let you configure the DNS records for 
-this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, and you can manage it 
-through our [Customer Portal](https://customers.ravendb.net). Login with your license key, and you can add/remove/update DNS 
-records for your cluster.
+During setup, RavenDB will provide you with a free subdomain and allow you to configure its DNS records 
+with the IP addresses that your server will listen on.  
+The subdomain is owned by RavenDB, and you can manage it through the [Customer Portal](https://customers.ravendb.net).  
+Login with your license key, and you can add/remove/update DNS records for your cluster.
 
-The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt. If you wish to use your own domain, 
-you are welcome to acquire your own certificate and use that instead.
+The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt.  
+If you wish to use your own domain, you are welcome to acquire your own certificate and use it instead.
 
 {WARNING: Security consideration and ownership of certificates and domains} 
 
 The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the details of setting up DNS 
 records, generating certificates, and performing their renewals. Because of these requirements, the ownership of the certificates 
-and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and 
+and DNS records needs to stay within the RavenDB company. This gives us the ability to generate valid certificates and 
 modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system.  
 
-Hibernating Rhinos will **never** exploit these abilities and will never perform any modifications to the certificates and DNS 
+We will never exploit these abilities and never perform any modifications to the certificates and DNS 
 records unless explicitly requested by the client.
 
-The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We recommend that 
-**for actual production deployments** and for the highest level of security and control, you'll 
-[use your own certificates and domains](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
+The purpose of this feature is to make it easy for users to get set up and running with the minimum fuss.  
+We recommend that **for actual production deployments** and for the highest level of security and control, 
+you will [use your own certificates and domains](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
 avoiding the need to rely on a third party for such a critical part of your security.
 
 {WARNING/}
 
 After choosing the Let's Encrypt Secure Setup option, you are required to enter your license key which was sent to the email 
-address you provided. This process will associate your license with the chosen subdomain to ensure that valid certificates can 
+address you provided. This process will associate your license with your subdomain to ensure that valid certificates can 
 only be generated by a single license holder.
 
 ![Enter License](images/setup/3.png "Enter License")
