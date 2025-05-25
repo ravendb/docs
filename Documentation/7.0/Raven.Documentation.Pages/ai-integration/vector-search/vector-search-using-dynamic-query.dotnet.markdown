@@ -668,6 +668,10 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
   * Companies from European countries with a _Name_ similar to "snack"
   * Or companies with a _Name_ similar to "dairy"
 
+* Running the query example on the RavenDB sample data will generate the following auto-index:  
+  `Auto/Companies/ByVector.search(embedding.text(Address.Country))AndVector.search(embedding.text(Name))`.  
+  This index includes two vector fields: _Address.Country_ and _Name_.
+
   {CODE-TABS}
   {CODE-TAB:csharp:DocumentQuery vs_27@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
   {CODE-TAB:csharp:DocumentQuery_async vs_27_async@AiIntegration\VectorSearch\VectorSearchUsingDynamicQuery.cs /}
@@ -689,10 +693,22 @@ or
   {CODE-TAB-BLOCK/}
   {CODE-TABS/}
 
-* Running the above query example on the RavenDB sample data will generate the following auto-index:  
-  `Auto/Companies/ByVector.search(embedding.text(Address.Country))AndVector.search(embedding.text(Name))`.  
-  This index includes two vector fields: _Address.Country_ and _Name_.
+{INFO: }
 
+**How multiple vector search clauses are evaluated**:
+
+* Each vector search clause is evaluated independently - the search algorithm runs separately for each vector field.
+
+* Each clause retrieves a limited number of candidates, determined by the _NumberOfCandidates_ parameter.
+  * You can explicitly set this value in the query clause, see [query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query#the-dynamic-query-parameters).  
+  * If not specified, it is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying) configuration key (default is 16).
+ 
+* **The final result set** is computed by applying the logical operators (and, or) between these independently retrieved sets.
+
+* To improve the chances of getting intersecting results, consider increasing the _NumberOfCandidates_ in each vector search clause.
+  This expands the pool of documents considered by each clause, raising the likelihood of finding matches that satisfy the combined logic.
+
+{INFO/}
 {PANEL/}
 
 {PANEL: Syntax}
