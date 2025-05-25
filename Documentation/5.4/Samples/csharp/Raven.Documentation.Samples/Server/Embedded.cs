@@ -105,6 +105,30 @@ namespace Raven.Documentation.Samples.Server
 
             #endregion
 
+            #region LicensingOptions_License
+
+            EmbeddedServer.Instance.StartServer(new ServerOptions
+            {
+                Licensing = new ServerOptions.LicensingOptions
+                {
+                    License = "your license here"
+                }
+            });
+
+            #endregion
+
+            #region LicensingOptions_LicensePath
+
+            EmbeddedServer.Instance.StartServer(new ServerOptions
+            {
+                Licensing = new ServerOptions.LicensingOptions
+                {
+                    LicensePath = "path to license.json file"
+                }
+            });
+
+            #endregion
+
             #region get_document_store
 
             EmbeddedServer.Instance.GetDocumentStore("Embedded");
@@ -131,9 +155,11 @@ namespace Raven.Documentation.Samples.Server
                 certPassword: "CertificatePassword");
             #endregion
 
+            string fileName = "path/to/certificate.pfx";
+            string password = "password";
             #region security2
             var serverOptionsWithExec = new ServerOptions();
-            var certificate = new X509Certificate2();
+            var certificate = new X509Certificate2(fileName, password);
             serverOptionsWithExec.Secured(
                 certLoadExec: "powershell",
                 certExecArgs: "C:\\secrets\\give_me_cert.ps1",

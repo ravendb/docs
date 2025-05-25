@@ -2,10 +2,10 @@
 
 {PANEL:License}
 
-* When using this configuration key in _settings.json_ embed the license key as a __string__, e.g.:  
+* When using this configuration key in _settings.json_ embed the license key as a **string**, e.g.:  
   `"License": "{ paste your license key including curly brackets here }"`.  
 
-* When using this configuration key as an [environment variable](../../server/configuration/configuration-options#environment-variables) embed the JSON license key __object__.  
+* When using this configuration key as an [environment variable](../../server/configuration/configuration-options#environment-variables) embed the JSON license key **object**.  
 
 * If `License` is specified, it overrides the `License.Path` configuration.  
  
@@ -22,10 +22,10 @@
 Save the license key to a `license.json` file.  
 Provide the path to this file in the 'License.Path' configuration key:
 
-  * Either the __full__ path to the license file, e.g.:  
+  * Either the **full** path to the license file, e.g.:  
     `"License.Path": "D:\\RavenDB\\Server\\license.json"`  
 
-  * Or, a __relative__ path to the license file from the Server folder, e.g.:  
+  * Or, a **relative** path to the license file from the Server folder, e.g.:  
     `"License.Path": "License\\license.json"`  
     (where 'License' folder is under the 'Server' folder)
 

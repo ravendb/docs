@@ -104,10 +104,13 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 {PANEL: ISV Bank-of-Cores License}
 
 An ISV Bank-of-Cores license allows you to generate RavenDB licenses on your own for a given number of cores.  
-If you purchase a 128-cores license for example, you can use it to generate 8 licenses for 8-core machines, 
+If you purchase a 128-cores license, for example, you can use it to generate 8 licenses for 8-core machines, 
 16 licenses for 4-core machines, or any other combination that suits your needs.  
 
 * Available bank-of-cores license types are: Essential, Professional, and Enterprise.  
+* The same license type, allowing the same feature set, is available for all generated sublicenses.  
+  E.g., if the license type you acquire includes the AI integration feature, this feature will be 
+  enabled by all the sublicenses you create.  
 * [Contact RavenDB for more details](https://ravendb.net/contact).  
 
 {CONTENT-FRAME: Generating bank-of-cores licenses}
