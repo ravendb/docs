@@ -74,6 +74,8 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
    * **Download a new server version**  
      Upgrade to the latest major version.  
   
+  {NOTE/}
+
 ---
 
 ### Professional
@@ -117,7 +119,8 @@ If you purchase a 128-cores license for example, you can use it to generate 8 li
 
 * You will be requested to provide an email address associated with your license key.  
   Authorizing license generation through your email provides an additional security layer.  
-  You can contact RavenDB's support to associate your key with additional addresses or with a whole domain.  
+  You can contact RavenDB's support to associate your key with additional addresses or with 
+  all addresses of a given domain.  
 
      ![License generation login page](images/bank-of-cores_login-email.png "License generation login page")
 
@@ -128,23 +131,23 @@ If you purchase a 128-cores license for example, you can use it to generate 8 li
 
      1. **Main License**  
         The details of your bank-of-cores license.  
-     2. **Features** 
+     2. **Features**  
         The features that are available for the licenses you generate here.  
-     3. **Generate new sublicense** 
+     3. **Generate new sublicense**  
         Use this section to assign cores to a new sublicense.  
         ![Generate license](images/bank-of-cores_generate-license.png "Generate license")  
-        _Cores count_ - The number of cores you want to assign this sublicense.  
-        _Sublicense tag_ - A tag you want to recognize the sublicense by.  
-        _Customer name_ - The identity of the sublicense's owner.  
-        _Expiration date_ - The date in which this sublicense will expire and its cores will be returned to your bank.  
-        Leaving this field empty will set it to the expiration date of the main license.  
-        _Generate_ - Click to generate the new sublicense.  
+          * _Cores count_ - The number of cores you want to assign this sublicense.  
+          * _Sublicense tag_ - A tag you want to recognize the sublicense by.  
+          * _Customer name_ - The identity of the sublicense's owner.  
+          * _Expiration date_ - The date in which this sublicense will expire and its cores will be returned to your bank.  
+            **Note**: Leavine this field empty will set the expiration date to that of the main license.  
+          * _Generate_ - Click to generate the new sublicense.  
 
 * Generating a sublicense will create a key that you can copy or download and register RavenDB with.  
 
      ![New sublicense key](images/bank-of-cores_sublicense-key.png "New sublicense key")
 
-     The new sublicense will then be listed in the sublicenses list at the bottom of the page.  
+* The new sublicense will then be listed in the sublicenses list at the bottom of the page.  
 
      ![Sublicenses list](images/bank-of-cores_sublicenses-list.png "Sublicenses list")
 
