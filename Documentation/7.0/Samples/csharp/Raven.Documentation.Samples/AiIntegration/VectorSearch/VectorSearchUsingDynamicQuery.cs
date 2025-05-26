@@ -895,6 +895,126 @@ namespace Raven.Documentation.Samples.AiIntegration.VectorSearch
                         .ToListAsync();
                     #endregion
                 }
+                
+                // Examples for "multiple vector searches in the same query"
+                // =========================================================
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_27
+                    var companies = session.Advanced
+                        .DocumentQuery<Company>()
+                         // Use OpenSubclause & CloseSubclause to differentiate between clauses:
+                         // ====================================================================
+                        
+                        .OpenSubclause()
+                        .VectorSearch( // Search for companies that sell snacks or similar
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("snack"),
+                            minimumSimilarity: 0.78f
+                        )
+                         // Use 'AndAlso' for an AND operation
+                        .AndAlso()
+                        .VectorSearch( // Search for companies located in Europe
+                            field => field.WithText(x => x.Address.Country),
+                            searchTerm => searchTerm.ByText("europe"),
+                            minimumSimilarity: 0.82f
+                        )
+                        .CloseSubclause()
+                         // Use 'OrElse' for an OR operation
+                        .OrElse()
+                        .OpenSubclause()
+                        .VectorSearch( // Search for companies that sell dairy products or similar
+                            field => field.WithText(x => x.Name),
+                            v => v.ByText("dairy"),
+                            minimumSimilarity: 0.80f
+                        )
+                        .CloseSubclause()
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_27_async
+                    var companies = await asyncSession.Advanced
+                        .AsyncDocumentQuery<Company>()
+                        .OpenSubclause()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("snack"),
+                            minimumSimilarity: 0.78f
+                        )
+                        .AndAlso()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Address.Country),
+                            searchTerm => searchTerm.ByText("europe"),
+                            minimumSimilarity: 0.82f
+                        )
+                        .CloseSubclause()
+                        .OrElse()
+                        .OpenSubclause()
+                        .VectorSearch(
+                            field => field.WithText(x => x.Name),
+                            searchTerm => searchTerm.ByText("dairy"),
+                            minimumSimilarity: 0.80f
+                        )
+                        .CloseSubclause()
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
+                
+                using (var session = store.OpenSession())
+                {
+                    #region vs_28
+                    var companies = session.Advanced
+                        .RawQuery<Company>(@"
+                            from Companies
+                            where 
+                                (
+                                    vector.search(embedding.text(Name), $searchTerm1, 0.78)
+                                    and
+                                    vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+                                )
+                                or
+                                (
+                                    vector.search(embedding.text(Name), $searchTerm3, 0.80)
+                                )
+                        ")
+                        .AddParameter("searchTerm1", "snack")
+                        .AddParameter("searchTerm2","europe")
+                        .AddParameter("searchTerm3", "dairy")
+                        .WaitForNonStaleResults()
+                        .ToList();
+                    #endregion
+                }
+                
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region vs_28_async
+                    var companies = await asyncSession.Advanced
+                        .AsyncRawQuery<Company>(@"
+                            from Companies
+                            where 
+                                (
+                                    vector.search(embedding.text(Name), $searchTerm1, 0.78)
+                                    and
+                                    vector.search(embedding.text(Address.Country), $searchTerm2, 0.82)
+                                )
+                                or
+                                (
+                                    vector.search(embedding.text(Name), $searchTerm3, 0.80)
+                                )
+                        ")
+                        .AddParameter("searchTerm1", "snack")
+                        .AddParameter("searchTerm2","europe")
+                        .AddParameter("searchTerm3", "dairy")
+                        .WaitForNonStaleResults()
+                        .ToListAsync();
+                    #endregion
+                }
             }
         }
         
