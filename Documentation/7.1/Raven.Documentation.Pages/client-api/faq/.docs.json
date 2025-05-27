@@ -1,0 +1,25 @@
+[
+  {
+    "Path": "what-is-a-collection.markdown",
+    "Name": "What is a Collection",
+    "DiscussionId": "ec37ebd5-7ce8-4bc5-b57a-b9f0c58cf05d",
+    "Mappings": []
+  },
+  {
+    "Path": "transaction-support.markdown",
+    "Name": "Transaction Support",
+    "DiscussionId": "974388da-ca4d-49bf-a279-db8653a02347",
+    "Mappings": []
+  },
+  {
+    "Path": "backward-compatibility.markdown",
+    "Name": "Backward Compatibility",
+    "DiscussionId": "3ecbc9df-448d-4755-b803-513104629313",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/backward-compatibility"
+      }
+    ]
+  }
+]

@@ -1,0 +1,104 @@
+[
+    {
+        "Path": "add-database-node.markdown",
+        "Name": "Add Database Node",
+        "DiscussionId": "120b2277-fbcc-4a32-a9bf-10ed4f4acde7",
+        "Mappings": []
+    },
+    {
+        "Path": "compact-database.markdown",
+        "Name": "Compact Database",
+        "DiscussionId": "59ce34dc-14b4-46ac-ad85-5a50d8dce7b4",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/admin/compaction"
+            }
+        ]
+    },
+    {
+        "Path": "create-database.markdown",
+        "Name": "Create Database",
+        "DiscussionId": "d1dd2bce-aa47-458a-ae60-66e3f3287496",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-database.markdown",
+        "Name": "Delete Databases",
+        "DiscussionId": "3795713e-c9b9-46ca-8c83-f653027d7ab4",
+        "Mappings": []
+    },
+    {
+        "Path": "get-build-number.markdown",
+        "Name": "Get Build Number",
+        "DiscussionId": "b7a1eac4-41d4-425c-aced-a664e88a37e3",
+        "Mappings": []
+    },
+    {
+        "Path": "get-database-names.markdown",
+        "Name": "Get Database Names",
+        "DiscussionId": "931719d0-fba8-46ee-9d02-65b4c1b0bd37",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/how-to/get-names-of-all-databases-on-a-server"
+            }
+        ]
+    },
+    {
+        "Path": "modify-conflict-solver.markdown",
+        "Name": "Modify Conflict Solver",
+        "DiscussionId": "3e8a7eb5-306e-4549-99bc-80a4b95f8416",
+        "Mappings": []
+    },
+    {
+        "Path": "promote-database-node.markdown",
+        "Name": "Promote Database Node",
+        "DiscussionId": "11e896a2-5696-4a0b-9852-8a47bd7da3c4",
+        "Mappings": []
+    },
+    {
+        "Path": "restore-backup.markdown",
+        "Name": "Restore Backup",
+        "DiscussionId": "698e1490-14df-417b-a663-a3eb52386761",
+        "Mappings": []
+    },
+    {
+        "Path": "toggle-databases-state.markdown",
+        "Name": "Toggle Databases State",
+        "DiscussionId": "a9f9b2ad-6976-451c-9a0f-a2c020fa9034",
+        "Mappings": []
+    },
+    {
+        "Path": "reorder-database-members.markdown",
+        "Name": "Reorder Database Members",
+        "DiscussionId": "9e09f1f5-3afd-48ec-ba62-3229c4f88849",
+        "Mappings": []
+    },
+    {
+        "Path": "toggle-dynamic-database-distribution.markdown",
+        "Name": "Toggle Dynamic Database Distribution",
+        "DiscussionId": "a3e0ba8b-3a5b-4741-8cc6-263485889b08",
+        "Mappings": []
+    },
+    {
+        "Path": "/certificates",
+        "Name": "Certificates",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/logs",
+        "Name": "Logs",
+        "Mappings": []
+    },
+    {
+        "Path": "/sorters",
+        "Name": "Sorters",
+        "Mappings": []
+    }
+]

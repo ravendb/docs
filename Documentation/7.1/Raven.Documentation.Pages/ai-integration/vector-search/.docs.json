@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "ravendb-as-vector-database.markdown",
+        "Name": "RavenDB as a Vector Database",
+        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
+        "Mappings": []
+    },
+    {
+        "Path": "vector-search-using-dynamic-query.markdown",
+        "Name": "Vector Search using a Dynamic Query",
+        "DiscussionId": "2b55d124-a9ff-474c-8171-d065daf938a3",
+        "Mappings": []
+    },
+    {
+        "Path": "vector-search-using-static-index.markdown",
+        "Name": "Vector Search using a Static Index",
+        "DiscussionId": "a25c7cca-e662-401f-9b66-8ce1102a2a09",
+        "Mappings": []
+    },
+    {
+        "Path": "indexing-attachments-for-vector-search.markdown",
+        "Name": "Indexing Attachments for Vector Search",
+        "DiscussionId": "7510d989-4925-4e7d-8c48-c3608c09506c",
+        "Mappings": []
+    },
+    {
+        "Path": "data-types-for-vector-search.markdown",
+        "Name": "Data Types for Vector Search",
+        "DiscussionId": "251b7f9e-06a8-4a67-8707-4a87ee9e5d7d",
+        "Mappings": []
+    }
+]

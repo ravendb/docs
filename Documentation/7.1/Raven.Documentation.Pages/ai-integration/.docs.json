@@ -1,0 +1,23 @@
+[
+    {
+        "Path": "/vector-search",
+        "Name": "Vector Search",
+        "Mappings": []
+    },
+    {
+        "Path": "/generating-embeddings",
+        "Name": "Generating Embeddings",
+        "Mappings": []
+    },
+    {
+        "Path": "/connection-strings",
+        "Name": "Connection Strings",
+        "Mappings": []
+    },
+    {
+        "Path": "ai-tasks-list-view.markdown",
+        "Name": "AI Tasks - List View",
+        "DiscussionId": "6f2679ae-0244-496b-aaff-06e3682bc55d",
+        "Mappings": []
+    }
+]

@@ -1,0 +1,40 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "b8e6db5e-7ba2-4f41-a6af-0f4f382e92af",
+        "Mappings": []
+    },
+    {
+        "Path": "/authentication",
+        "Name": "Authentication",
+        "Mappings": []
+    },
+    {
+        "Path": "/authorization",
+        "Name": "Authorization",
+        "Mappings": []
+    },
+    {
+        "Path": "/encryption",
+        "Name": "Encryption",
+        "Mappings": []
+    },
+    {
+        "Path": "/audit-log",
+        "Name": "Audit Log",
+        "Mappings": []
+    },
+    {
+        "Path": "fiddler-usage-with-secured-database.markdown",
+        "Name": "Fiddler Usage With Secured Database",
+        "DiscussionId": "c9af3491-8a59-4947-a274-29b5cac92e5c",
+        "Mappings": []
+    },
+    {
+        "Path": "common-errors-and-faq.markdown",
+        "Name": "Common Errors & FAQ",
+        "DiscussionId": "4c04c279-e144-4fb5-8f7b-90be95995496",
+        "Mappings": []
+    }
+]

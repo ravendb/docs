@@ -1,0 +1,18 @@
+[
+  {
+    "Path": "rest-api-intro.markdown",
+    "Name": "Introduction to the REST API",
+    "DiscussionId": "984f126b-8c7e-4c97-bb39-6324f7cdcd14",
+    "Mappings": []
+  },
+  {
+    "Path": "/document-commands",
+    "Name": "Document Commands",
+    "Mappings": []
+  },
+  {
+    "Path": "/queries",
+    "Name": "Queries",
+    "Mappings": []
+  }
+]

@@ -1,0 +1,139 @@
+[
+    {
+        "Path": "put-indexes.markdown",
+        "Name": "Put Indexes",
+        "DiscussionId": "04bf5b14-aeb7-4868-ae23-7e29fd725a38",
+        "Mappings": []
+    },
+    {
+        "Path": "set-index-lock.markdown",
+        "Name": "Set Index Lock Mode",
+        "DiscussionId": "c1de9893-93fc-4326-8024-ce5512428123",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/change-index-lock-mode"
+            }
+        ]
+    },
+    {
+        "Path": "set-index-priority.markdown",
+        "Name": "Set Index Priority",
+        "DiscussionId": "0589a8cd-3726-4545-a589-15671b9fe63d",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/change-index-priority"
+            }
+        ]
+    },
+    {
+        "Path": "reset-index.markdown",
+        "Name": "Reset Index",
+        "DiscussionId": "624e3437-3e39-40de-9f7e-05d30de19070",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/reset-index"
+            }
+        ]
+    },
+    {
+        "Path": "delete-index.markdown",
+        "Name": "Delete Index",
+        "DiscussionId": "aeb3d404-213f-4946-87d2-b47c4aefc0db",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/delete"
+            }
+        ]
+    },
+    {
+        "Path": "delete-index-errors.markdown",
+        "Name": "Delete Index Errors",
+        "DiscussionId": "aeb3d404-213f-4946-87d2-b47c4aefc0db"
+    },
+    {
+        "Path": "disable-index.markdown",
+        "Name": "Disable Index",
+        "DiscussionId": "e2327eb5-51aa-4425-bf49-ba08d1ce4125",
+        "Mappings": []
+    },
+    {
+        "Path": "enable-index.markdown",
+        "Name": "Enable Index",
+        "DiscussionId": "f8003896-3b7a-453a-8185-7a1510e29754",
+        "Mappings": []
+    },
+    {
+        "Path": "stop-index.markdown",
+        "Name": "Pause Index",
+        "DiscussionId": "288a315c-aca0-4576-a716-92637e6bc615",
+        "Mappings": []
+    },
+    {
+        "Path": "stop-indexing.markdown",
+        "Name": "Pause Indexing",
+        "DiscussionId": "01ff85e3-8453-4ca1-90f4-2f397e0a25b9",
+        "Mappings": []
+    },
+    {
+        "Path": "start-index.markdown",
+        "Name": "Resume Index",
+        "DiscussionId": "fddb8caf-ddeb-44f5-b28b-beedc5e7ba86",
+        "Mappings": []
+    },
+    {
+        "Path": "start-indexing.markdown",
+        "Name": "Resume Indexing",
+        "DiscussionId": "473b38b3-04c2-467e-b781-72672861de3b",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index.markdown",
+        "Name": "Get Index",
+        "DiscussionId": "1832ba8f-4142-4637-979f-820681ddcd1c",
+        "Mappings": []
+    },
+    {
+        "Path": "get-indexes.markdown",
+        "Name": "Get Indexes",
+        "DiscussionId": "b0a9c6b7-b9e4-43f3-9ded-3109ccf7a3ae",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-errors.markdown",
+        "Name": "Get Index Errors",
+        "DiscussionId": "b48cab12-31d7-4602-b324-03026545fa05",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-names.markdown",
+        "Name": "Get Index Names",
+        "DiscussionId": "d08a3764-4501-4db4-b1a6-5441ccc46754",
+        "Mappings": []
+    },
+    {
+        "Path": "get-terms.markdown",
+        "Name": "Get Index Terms",
+        "DiscussionId": "2033ba99-3ba9-48fe-9751-a918cf9ab652",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/get-index-terms"
+            }
+        ]
+    },
+    {
+        "Path": "index-has-changed.markdown",
+        "Name": "Index Has Changed",
+        "DiscussionId": "4606561c-b427-4995-bd3f-cb736248dde6",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/check-if-index-has-changed"
+            }
+        ]
+    }
+]

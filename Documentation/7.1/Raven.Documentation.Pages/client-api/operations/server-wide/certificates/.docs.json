@@ -1,0 +1,32 @@
+[
+  {
+    "Path": "create-client-certificate.markdown",
+    "Name": "Create Client Certificate",
+    "DiscussionId": "0ce22dbf-8575-446b-af1b-c4b3c5a27fd2",
+    "Mappings": []
+  },
+  {
+    "Path": "get-certificate.markdown",
+    "Name": "Get Certificate",
+    "DiscussionId": "93203f55-0eb7-434c-86aa-1c29252a0a10",
+    "Mappings": []
+  },
+  {
+    "Path": "get-certificates.markdown",
+    "Name": "Get Certificates",
+    "DiscussionId": "0dbaaaa8-0505-49e8-87bc-d7e7d06a5c11",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-certificate.markdown",
+    "Name": "Delete Certificate",
+    "DiscussionId": "81edde7e-f0ad-4dc2-be3b-fec1332bf322",
+    "Mappings": []
+  },
+  {
+    "Path": "put-client-certificate.markdown",
+    "Name": "Put Client Certificate",
+    "DiscussionId": "e590a6f8-e5dc-4e71-9102-37bbd9335251",
+    "Mappings": []
+  }
+]

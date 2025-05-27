@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "cluster-dashboard-overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-dashboard-customize.markdown",
+        "Name": "Customize",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-dashboard-widgets.markdown",
+        "Name": "Widgets",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "Mappings": []
+    }
+]

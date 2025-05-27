@@ -1,0 +1,39 @@
+[
+    {
+        "Path": "external-replication.markdown",
+        "Name": "External Replication",
+        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
+        "Mappings": []
+    },
+    {
+        "Path": "hub-sink-replication.markdown",
+        "Name": "Hub/Sink Replication",
+        "DiscussionId": "3ebce840-1ea8-4f9e-ae50-0275661a3c1d",
+        "Mappings": [
+            {
+                "Version": 5.0,
+                "Key": "Server/ongoing-tasks/pull-replication"
+            },
+            {
+                "Version": 4.2,
+                "Key": "Server/ongoing-tasks/pull-replication"
+            }
+        ]
+    },
+    {
+        "Path": "backup-overview.markdown",
+        "Name": "Backup Overview",
+        "DiscussionId": "70d71f23-2b91-4c03-9171-115aa91d18fa",
+        "Mappings": []
+    },
+    {
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "/queue-sink",
+        "Name": "Queue Sink",
+        "Mappings": []
+    }
+]
