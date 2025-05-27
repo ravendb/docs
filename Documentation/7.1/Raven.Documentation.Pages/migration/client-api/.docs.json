@@ -1,0 +1,14 @@
+[
+  {
+    "Path": "client-breaking-changes.markdown",
+    "Name": "Client Breaking Changes",
+    "DiscussionId": "f9da3352-974c-435d-bff8-de6b22fa2094",
+    "Mappings": []
+  },
+  {
+    "Path": "client-migration.markdown",
+    "Name": "Client Migration",
+    "DiscussionId": "79153a05-4a88-4cd0-9f6a-ef8e7396b7dc",
+    "Mappings": []
+  }
+]

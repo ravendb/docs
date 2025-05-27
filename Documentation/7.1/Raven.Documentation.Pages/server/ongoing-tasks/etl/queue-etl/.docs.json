@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "e8884541-a5ef-493e-8ba6-411a9b1a1c8a",
+        "Mappings": []
+    },
+    {
+        "Path": "kafka.markdown",
+        "Name": "Kafka ETL",
+        "DiscussionId": "98400991-8eb2-41f5-b364-d315890458f8",
+        "Mappings": []
+    },
+    {
+        "Path": "rabbit-mq.markdown",
+        "Name": "RabbitMQ ETL",
+        "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
+        "Mappings": []
+    },
+    {
+        "Path": "azure-queue.markdown",
+        "Name": "Azure Queue Storage ETL",
+        "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
+        "Mappings": []
+    },
+    {
+        "Path": "amazon-sqs.markdown",
+        "Name": "Amazon SQS ETL",
+        "DiscussionId": "1b5b21e5-5e51-4717-a467-4a31694271cf",
+        "Mappings": []
+    }
+]

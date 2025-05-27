@@ -1,0 +1,69 @@
+[
+    {
+        "Path": "setup-wizard.markdown",
+        "Name": "Setup Wizard",
+        "DiscussionId": "9ec18b39-d486-488f-ae3c-f08529ddb74a",
+        "Mappings": []
+    },
+    {
+        "Path": "manual.markdown",
+        "Name": "Manual Setup",
+        "DiscussionId": "ef5aab05-1dca-4ff3-9b84-6e431a11d18d",
+        "Mappings": []
+    },
+    {
+        "Path": "deployment-considerations.markdown",
+        "Name": "Deployment Considerations",
+        "DiscussionId": "798136cf-2bc3-4275-84de-806dceb5e803",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/installation/deployment-considerations"
+            }
+        ]
+    },
+    {
+        "Path": "running-as-service.markdown",
+        "Name": "Running as a Service",
+        "DiscussionId": "f40e088f-6317-4bb2-8df6-87a2523fd452",
+        "Mappings": []
+    },
+    {
+        "Path": "upgrading-to-new-version.markdown",
+        "Name": "Upgrading to a New Version",
+        "DiscussionId": "57129334-7cc2-41b8-b0d3-3bcce5cdca3f",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "server/administration/upgrade"
+            },
+            {
+                "Version": 3.0,
+                "Key": "server/installation/upgrading-to-new-version"
+            }
+        ]
+    },
+    {
+        "Path": "system-requirements.markdown",
+        "Name": "System Requirements",
+        "DiscussionId": "169ece6b-79c8-4e69-81ec-a25bb90840be",
+        "Mappings": []
+    },
+    {
+        "Path": "system-configuration-recommendations.markdown",
+        "Name": "System Configuration Recommendations",
+        "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
+        "Mappings": []
+    },
+    {
+        "Path": "/gnu-linux",
+        "Name": "GNU/Linux",
+        "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
+        "Mappings": []
+    },
+    {
+        "Path": "/setup-examples",
+        "Name": "Setup Examples",
+        "Mappings": []
+    }
+]

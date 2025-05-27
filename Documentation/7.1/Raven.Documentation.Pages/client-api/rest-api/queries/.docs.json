@@ -1,0 +1,20 @@
+[
+  {
+    "Path": "query-the-database.markdown",
+    "Name": "Query the Database",
+    "DiscussionId": "cfcd78a0-7ccf-43de-a26c-e276cd9ff9e8",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-by-query.markdown",
+    "Name": "Delete by Query",
+    "DiscussionId": "47198685-da51-4cc1-929c-754361670787",
+    "Mappings": []
+  },
+  {
+    "Path": "patch-by-query.markdown",
+    "Name": "Patch by Query",
+    "DiscussionId": "ee1510d4-800e-4d52-a123-487fa8c96189",
+    "Mappings": []
+  }
+]

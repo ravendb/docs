@@ -1,0 +1,61 @@
+[
+    {
+        "Path": "/cluster-dashboard",
+        "Name": "Cluster Dashboard"
+    },
+    {
+        "Path": "cluster-view.markdown",
+        "Name": "Cluster View",
+        "DiscussionId": "2d1d4a75-387e-4e6d-9325-2670ac9c7288",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/cluster/cluster-view"
+            }
+        ]
+    },
+    {
+        "Path": "setting-a-cluster.markdown",
+        "Name": "Setting a Cluster",
+        "DiscussionId": "3b8a45a5-8fe8-43e4-8f26-c531571404cc",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 4.1,
+                "Key": "studio/server/cluster/cluster-view"
+            },
+            {
+                "Version": 4.2,
+                "Key": "studio/server/cluster/add-node-to-cluster"
+            },
+            {
+                "Version": 5.0,
+                "Key": "studio/server/cluster/add-node-to-cluster"
+            },
+            {
+                "Version": 5.1,
+                "Key": "studio/server/cluster/add-node-to-cluster"
+            }
+        ]
+
+    }
+]

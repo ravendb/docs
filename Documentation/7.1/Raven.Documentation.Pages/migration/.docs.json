@@ -1,0 +1,17 @@
+﻿[
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "/server",
+        "Name": "Server",
+        "Mappings": []
+    },
+    {
+        "Path": "/embedded",
+        "Name": "Embedded",
+        "Mappings": []
+    }
+]

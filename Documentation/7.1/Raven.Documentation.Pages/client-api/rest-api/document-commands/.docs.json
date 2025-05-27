@@ -1,0 +1,38 @@
+[
+  {
+    "Path": "get-all-documents.markdown",
+    "Name": "Get All Documents",
+    "DiscussionId": "eba120d6-a59d-4def-b032-1a9539f11987",
+    "Mappings": []
+  },
+  {
+    "Path": "get-documents-by-id.markdown",
+    "Name": "Get Documents by ID",
+    "DiscussionId": "9cbdcec9-2158-4143-b1e0-fdaf7f8da993",
+    "Mappings": []
+  },
+  {
+    "Path": "get-documents-by-prefix.markdown",
+    "Name": "Get Documents by Prefix",
+    "DiscussionId": "7a88329f-ac6b-4269-9a8b-e478889a8d3f",
+    "Mappings": []
+  },
+  {
+    "Path": "put-documents.markdown",
+    "Name": "Put a Document",
+    "DiscussionId": "ee1c4661-881d-4092-a76c-0f7b917b4834",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-document.markdown",
+    "Name": "Delete a Document",
+    "DiscussionId": "af6d1d39-4f30-4655-b7d3-ff7fb4cd1673",
+    "Mappings": []
+  },
+  {
+    "Path": "batch-commands.markdown",
+    "Name": "Batch Commands",
+    "DiscussionId": "661b2ff7-95e2-40d1-bf0e-a857737334d4",
+    "Mappings": []
+  }
+]

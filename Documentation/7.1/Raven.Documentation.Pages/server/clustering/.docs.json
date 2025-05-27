@@ -1,0 +1,41 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Clustering Overview",
+        "DiscussionId": "79406c02-dbaa-4bb6-9c8b-5c25e94943f0",
+        "Mappings": []
+    },
+    {
+        "Path": "/rachis",
+        "Name": "Rachis",
+        "Mappings": []
+    },
+    {
+        "Path": "/replication",
+        "Name": "Replication",
+        "Mappings": []
+    },
+    {
+        "Path": "/distribution",
+        "Name": "Distribution",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-transactions.markdown",
+        "Name": "Cluster Transactions",
+        "DiscussionId": "57c3f326-4e60-4bcc-bad5-d21b0cdc3410",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-best-practice-and-configuration.markdown",
+        "Name": "Best Practice and Configuration",
+        "DiscussionId": "8bb01e3d-cd81-4308-bddb-4cfd68909ead",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-api.markdown",
+        "Name": "Cluster API",
+        "DiscussionId": "9c0416b3-5600-46c5-9c57-4c58ebfc9026",
+        "Mappings": []
+    }
+]

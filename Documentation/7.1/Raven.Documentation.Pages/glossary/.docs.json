@@ -1,0 +1,134 @@
+[
+  {
+    "Path": "blittable-json-reader-object.markdown",
+    "Name": "BlittableJsonReaderObject",
+    "DiscussionId": "8eff0093-00a8-4db0-8ad8-d6c917bda246",
+    "Mappings": []
+  },
+  {
+    "Path": "node-tag.markdown",
+    "Name": "Node Tag",
+    "DiscussionId": "ad164ea7-4524-461f-a037-43f81147d2fc",
+    "Mappings": []
+  },
+  {
+    "Path": "database-id.markdown",
+    "Name": "Database Id",
+    "DiscussionId": "53ac4a10-0bf6-4e2b-ac83-7fa836ecc1c0",
+    "Mappings": []
+  },
+  {
+    "Path": "etag.markdown",
+    "Name": "Etag",
+    "DiscussionId": "6c28ef40-d102-4d23-a52c-810228180aa5",
+    "Mappings": []
+  },
+  {
+    "Path": "tombstone.markdown",
+    "Name": "Tombstone",
+    "DiscussionId": "099fc2e3-6f50-43b0-8274-06f6373dfe7b",
+    "Mappings": []
+  },
+  {
+    "Path": "raft-algorithm.markdown",
+    "Name": "Raft Consensus Algorithm",
+    "DiscussionId": "1f57f7b0-3f49-4fd8-8ea5-0586b83b8e56",
+    "Mappings": []
+  },
+  {
+    "Path": "raft-command.markdown",
+    "Name": "Raft Command",
+    "DiscussionId": "3ac6f133-e212-48f7-abc4-e012626a746e",
+    "Mappings": []
+  },
+  {
+    "Path": "replication-factor.markdown",
+    "Name": "Replication Factor",
+    "DiscussionId": "2b6807d7-b679-4db6-b774-8794f5ce4301",
+    "Mappings": []
+  },
+  {
+    "Path": "cluster-node.markdown",
+    "Name": "Cluster Node",
+    "DiscussionId": "18e3541a-8ce6-4346-bd8e-528477b008ab",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-cluster.markdown",
+    "Name": "RavenDB Cluster",
+    "DiscussionId": "1f8af043-334e-442a-b1a7-dcbdae56319f",
+    "Mappings": []
+  },
+  {
+    "Path": "database-group.markdown",
+    "Name": "Database Group",
+    "DiscussionId": "774aa358-0655-4e6a-a50a-de7df333436b",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-command-data.markdown",
+    "Name": "DeleteCommandData",
+    "DiscussionId": "d09de3dc-5b81-4678-b442-70f95f318a91",
+    "Mappings": []
+  },
+  {
+    "Path": "index-query.markdown",
+    "Name": "IndexQuery",
+    "DiscussionId": "c8dbe890-4a03-4960-bf99-cd3123cd8778",
+    "Mappings": []
+  },
+  {
+    "Path": "query-result.markdown",
+    "Name": "QueryResult",
+    "DiscussionId": "452c99ba-1da3-496c-b15b-3c29ed1c9620",
+    "Mappings": []
+  },
+  {
+    "Path": "stream-query-statistics.markdown",
+    "Name": "StreamQueryStatistics",
+    "DiscussionId": "15cc1de3-9123-4870-beb2-f468fddf2888",
+    "Mappings": []
+  },
+  {
+    "Path": "stream-result.markdown",
+    "Name": "StreamResult",
+    "DiscussionId": "ad414e0f-0412-47f0-8ec5-6a3438b81262",
+    "Mappings": []
+  },
+  {
+    "Path": "patch-command-data.markdown",
+    "Name": "PatchCommandData",
+    "DiscussionId": "064ef86d-7fe4-4d7b-bd22-130dcc8ec2d7",
+    "Mappings": []
+  },
+  {
+    "Path": "put-command-data.markdown",
+    "Name": "PutCommandData",
+    "DiscussionId": "6e2afca8-2e54-45ee-9e74-12b937c053fd",
+    "Mappings": []
+  },
+  {
+    "Path": "copy-attachment-command-data.markdown",
+    "Name": "CopyAttachmentCommandData",
+    "DiscussionId": "032c5545-be08-4214-8571-76c25d63494a",
+    "Mappings": []
+  },
+  {
+    "Path": "move-attachment-command-data.markdown",
+    "Name": "MoveAttachmentCommandData",
+    "DiscussionId": "7f1e8c26-1d62-47a2-b32f-577afb806b6d",
+    "Mappings": []
+  },
+  {
+    "Path": "put-compare-exchange-command-data.markdown",
+    "Name": "PutCompareExchangeCommandData",
+    "DiscussionId": "cc2f84e3-1134-4132-b2c9-e4f52dbf6305",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-compare-exchange-command-data.markdown",
+    "Name": "DeleteCompareExchangeCommandData",
+    "DiscussionId": "5f0af201-0ce1-431a-ba34-850d096dd5b9",
+    "Mappings": []
+  }
+]

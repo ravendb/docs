@@ -1,0 +1,36 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "/session",
+        "Name": "Session",
+        "Mappings": []
+    },
+    {
+        "Path": "/operations",
+        "Name": "Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "javascript-support.markdown",
+        "Name": "JavaScript Support",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    },
+    {
+        "Path": "named-time-series-values.markdown",
+        "Name": "Named Time Series Values",
+        "DiscussionId": "b399492f-c034-4406-810c-58ecd8c59115",
+        "Mappings": []
+    }
+]

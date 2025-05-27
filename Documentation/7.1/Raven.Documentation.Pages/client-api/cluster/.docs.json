@@ -1,0 +1,31 @@
+[
+    {
+        "Path": "how-client-integrates-with-replication-and-cluster.markdown",
+        "Name": "Client Integration with the Cluster",
+        "DiscussionId": "b05e7bae-67c2-4271-b222-257b83682288",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+            }
+        ]
+    },
+    {
+        "Path": "document-conflicts-in-client-side.markdown",
+        "Name": "Document Conflict Exceptions at Client-Side",
+        "DiscussionId": "e2f7677e-0fdd-4ced-9e2e-d0d6e334bb4d",
+        "Mappings": []
+    },
+    {
+        "Path": "speed-test.markdown",
+        "Name": "Client Speed Test",
+        "DiscussionId": "715a3fc0-888c-4e49-9d2d-f6682cf24d3f",
+        "Mappings": []
+    },
+    {
+        "Path": "health-check.markdown",
+        "Name": "Cluster Node Health Check",
+        "DiscussionId": "e3e9b9f4-5e06-4d9a-a1cf-21b6ab521328",
+        "Mappings": []
+    }
+]

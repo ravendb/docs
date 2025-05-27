@@ -1,0 +1,100 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "ed9e00a0-d1bd-4fa4-bb47-585538a29f51",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "server/extensions/revisions"
+            },
+            {
+                "Version": 5.1,
+                "Key": "server/extensions/revisions"
+            },
+            {
+                "Version": 5.0,
+                "Key": "server/extensions/revisions"
+            },
+            {
+                "Version": 4.2,
+                "Key": "server/extensions/revisions"
+            },
+            {
+                "Version": 4.1,
+                "Key": "server/extensions/revisions"
+            },
+            {
+                "Version": 4.0,
+                "Key": "server/extensions/revisions"
+            }
+        ]
+    },
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "revert-revisions.markdown",
+        "Name": "Revert Documents to Revisions",
+        "DiscussionId": "ed9e00a0-d1bd-4fa4-bb47-585538a29f51",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "server/extensions/revert-revisions"
+            },
+            {
+                "Version": 5.1,
+                "Key": "server/extensions/revert-revisions"
+            },
+            {
+                "Version": 5.0,
+                "Key": "server/extensions/revert-revisions"
+            },
+            {
+                "Version": 4.2,
+                "Key": "server/extensions/revert-revisions"
+            }
+        ]
+    },
+    {
+        "Path": "revisions-and-other-features.markdown",
+        "Name": "Revisions and Other Features",
+        "DiscussionId": "68e60b2c-83a2-42dd-b464-9deb18c90e7a",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/session/revisions/counter-revisions"
+            },
+            {
+                "Version": 5.1,
+                "Key": "client-api/session/revisions/counter-revisions"
+            },
+            {
+                "Version": 5.0,
+                "Key": "client-api/session/revisions/counter-revisions"
+            },
+            {
+                "Version": 4.2,
+                "Key": "client-api/session/revisions/counter-revisions"
+            },
+            {
+                "Version": 4.1,
+                "Key": "client-api/session/revisions/counter-revisions"
+            }
+        ]
+    },
+    {
+        "Path": "revisions-bin-cleaner.markdown",
+        "Name": "Revisions Bin Cleaner",
+        "DiscussionId": "0acef912-fa39-43b5-9188-7265b1c45608",
+        "Mappings": []
+    },
+    {
+        "Path": "troubleshooting.markdown",
+        "Name": "Troubleshooting",
+        "DiscussionId": "e60b674f-e129-4426-92c0-84adb33cbe25",
+        "Mappings": []
+    }
+]

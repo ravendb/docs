@@ -1,0 +1,66 @@
+[
+    {
+        "Path": "configure-revisions.markdown",
+        "Name": "Configure Revisions",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/operations/revisions/configure-revisions"
+            },
+            {
+                "Version": 5.1,
+                "Key": "client-api/operations/revisions/configure-revisions"
+            },
+            {
+                "Version": 5.0,
+                "Key": "client-api/operations/revisions/configure-revisions"
+            },
+            {
+                "Version": 4.2,
+                "Key": "client-api/operations/revisions/configure-revisions"
+            },
+            {
+                "Version": 4.1,
+                "Key": "client-api/operations/revisions/configure-revisions"
+            }
+        ]
+    },
+    {
+        "Path": "conflict-revisions-configuration.markdown",
+        "Name": "Configure Conflict Revisions",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": []
+    },
+    {
+        "Path": "get-revisions.markdown",
+        "Name": "Get Revisions",
+        "DiscussionId": "43588db5-317b-4d2c-afb6-5db073dca55c",
+        "Mappings": [
+            {
+                "Version": 5.2,
+                "Key": "client-api/operations/revisions/get-revisions"
+            },
+            {
+                "Version": 5.1,
+                "Key": "client-api/operations/revisions/get-revisions"
+            },
+            {
+                "Version": 5.0,
+                "Key": "client-api/operations/revisions/get-revisions"
+            }
+        ]
+    },
+    {
+        "Path": "delete-revisions.markdown",
+        "Name": "Delete Revisions",
+        "DiscussionId": "f447c943-de2f-4f55-bec4-625dd8e4094a",
+        "Mappings": []
+    },
+    {
+        "Path": "revert-document-to-revision.markdown",
+        "Name": "Revert Document to Revision",
+        "DiscussionId": "4aacf518-a6b4-466f-a4fb-945f18c3f6e3",
+        "Mappings": []
+    }
+]
