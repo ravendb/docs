@@ -105,7 +105,10 @@ In order to fix the missing language page, the related markdown file should be c
 5. Open file `Models.cs` (under Raven.Documentation.Web.Core.ViewModels).  
    Add the new version to the `AllVersions` list.  
 
-6. In your **file system**:  
+6. Open file `RouteConfig.cs` (under Raven.Documentation.Web\App_Start).  
+   Add the new version to the `RouteAvailableVersions` constant.  
+
+7. In your **file system**:  
    Open file `scripts/populateDocsJson.ps1` and update the params, e.g.:  
    ```
    param (
@@ -114,10 +117,7 @@ In order to fix the missing language page, the related markdown file should be c
    )
    ```
 
-7. Run `scripts/populateDocsJson.ps1` to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project.
-
-8. Open file `RouteConfig.cs` (under Raven.Documentation.Web\App_Start).  
-   Add the new version to the `RouteAvailableVersions` constant.  
+8. Run `scripts/populateDocsJson.ps1` to populate the correct directory structure and `.docs.json` files in the newly added `Raven.Documentation.Pages` project.
 
 ## Changing document location between versions
 
