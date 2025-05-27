@@ -206,3 +206,19 @@ This feature is available only for *RavenDB* **7.0 and newer**.
 {INFO/}
 
 {PANEL/}
+
+{PANEL: Snowflake ETL }
+
+Seamlessly integrate *RavenDB Cloud* with Snowflake using an ongoing ETL task. 
+Automatically export data from RavenDB collections to your Snowflake data warehouse in near real-time.
+Define transformation scripts to shape the data before export, ensuring compatibility and efficiency for your analytics workflows.
+Ideal for building robust pipelines for business intelligence, reporting, and data science.
+
+Usage of this feature is
+described [here](https://ravendb.net/docs/article-page/latest/csharp/studio/database/tasks/ongoing-tasks/snowflake-etl-task).
+
+{INFO: Availability }
+This feature is available only for *RavenDB* **7.0 and newer**.
+{INFO/}
+
+{PANEL/}
