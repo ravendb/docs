@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RavenDB.Client" Version="7.1.0-nightly-20250522-0814" />
-    <PackageReference Include="RavenDB.Embedded" Version="7.1.0-nightly-20250522-0814" />
-    <PackageReference Include="RavenDB.TestDriver" Version="7.1.0-nightly-20250522-0814" />
+    <PackageReference Include="RavenDB.Client" Version="7.0.3-rc-70019" />
+    <PackageReference Include="RavenDB.Embedded" Version="7.0.3-rc-70019" />
+    <PackageReference Include="RavenDB.TestDriver" Version="7.0.3-rc-70019" />
   </ItemGroup>
 
 </Project>
