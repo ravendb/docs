@@ -24,7 +24,6 @@ If you want to pay for *RavenDB Cloud* services using a credit card associated w
 - Monthly invoices are issued by *Microsoft Azure*, not by *RavenDB Cloud*.
 - *Microsoft Azure Cloud Account* offering is limited to *Azure* products.
 - Billing and contact information are fully managed by *Microsoft Azure*. Changing the parameters is not possible via Cloud Portal.
-- Additional *3%* commission fee is added by *Microsoft Azure Marketplace*.
 
 {PANEL/}
 
