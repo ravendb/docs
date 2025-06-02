@@ -1,0 +1,26 @@
+[
+    {
+        "Path": "gen-ai-overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
+        "Mappings": []
+    },
+    {
+        "Path": "gen-ai-api.markdown",
+        "Name": "GenAI API",
+        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
+        "Mappings": []
+    },
+    {
+        "Path": "gen-ai-studio.markdown",
+        "Name": "Studio GenAI Task View",
+        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
+        "Mappings": []
+    },
+    {
+        "Path": "security-concerns.markdown",
+        "Name": "Security Concerns",
+        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
+        "Mappings": []
+    }
+]
