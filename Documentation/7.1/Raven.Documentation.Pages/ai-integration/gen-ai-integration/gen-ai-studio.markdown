@@ -289,7 +289,7 @@ for(const comment of this.Comments)
 {PANEL: Provide update script}
 
 Now that the AI model returned its output, the Gen AI task needs to know what to do with it.  
-The update script set in this stage, determines what actions should be taken on the arrival of the results.  
+The update script set in this step, determines what actions should be taken on the arrival of the results.  
 
 ![Provide update script](images/gen-ai_provide-update-script.png "Provide update script")
 
