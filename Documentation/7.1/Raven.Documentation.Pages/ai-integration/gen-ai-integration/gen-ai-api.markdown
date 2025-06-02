@@ -27,8 +27,8 @@
      It can, for example, modify or delete documents based on the conclusions made by the AI model.  
 
 * In this article:
-    * [Defining a Connection string](../../)
-    * [Defining the GenAI task](../../)
+    * [Defining a Connection string](../../ai-integration/gen-ai-integration/gen-ai-api#defining-a-connection-string)
+    * [Defining the GenAI task](../../ai-integration/gen-ai-integration/gen-ai-api#defining-the-genai-task)
     
 {NOTE/}
 
