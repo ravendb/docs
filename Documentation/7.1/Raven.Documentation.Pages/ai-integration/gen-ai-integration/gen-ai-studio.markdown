@@ -11,34 +11,41 @@
     * [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema)
     * [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script)
     * [Review configuiration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuiration-and-save-task)
-    
+    * [Run time](../../ai-integration/gen-ai-integration/gen-ai-studio#run-time)
+
 {NOTE/}
 
 ---
 
 {PANEL: GenAI Task}
 
-* **What does a GenAI task do?**  
-  A GenAI task is an ongoing task that:  
-   1. Retrieves documents from a collection of your choice.  
-   2. Shapes each retrieved document into an easy-to-handle "context object".  
-   3. Sends context objects one by one to an AI model for processing.  
-   4. Handles the AI model's output.  
+### What does a GenAI task do?
+A GenAI task is an ongoing task that:  
 
-* **The GenAI Task wizard**  
-  Studio's [AI Tasks](../../ai-integration/ai-tasks-list-view) view includes a GenAI **wizard**.  
-  Using this wizard, we can easily **create and configure** our task, as well as **test each stage 
-  of its creation** in a dedicated "playground".  
-  We will go through the task creation and testing sequence below, using the wizard.  
+1. Retrieves documents from a collection of your choice.  
+2. Shapes each retrieved document into an easy-to-handle "context object".  
+3. Sends context objects one by one to an AI model for processing.  
+4. Handles the AI model's output.  
 
-* **Sample data**  
-  While demonstrating the creation and testing of a GenAI task, we will use the following 
-  sample document, illustrating a blog post with an array of comments, of which one is spam.  
-  We will use our Gen AI task to go through the comments and identify spam entries so we can 
-  remove them.  
-  To use this sample through this guide, simply create a document named `posts/1` with the 
-  following content.  
-  {CODE-BLOCK:json}
+---
+
+### The GenAI Task wizard
+Studio's [AI Tasks](../../ai-integration/ai-tasks-list-view) view includes a GenAI **wizard**.  
+Using this wizard, we can easily **create and configure** our task, as well as **test each step 
+of its creation** in a dedicated "playground".  
+We will go through the task creation and testing sequence below, using the wizard.  
+
+---
+
+### Sample data
+While demonstrating the creation and testing of a GenAI task, we will use the following 
+sample document, illustrating a blog post with an array of comments, of which one is spam.  
+We will use our GenAI task to go through the comments and identify spam entries so we can 
+remove them.  
+To use this sample through this guide, simply create a document named `posts/1` with the 
+following content.  
+
+{CODE-BLOCK:json}
 {
     "Name": "first post",
     "Body": "This is my first post",
@@ -68,6 +75,7 @@
 {PANEL/}
 
 {PANEL: Add a GenAI Task}
+To add a new GenAI task, open: **AI Hub** > **AI Tasks** > **Add AI Task** > **GenAI**  
 
 ![Add a GenAI Task](images/gen-ai_add-GenAI-task.png "Add a GenAI Task")
 
@@ -81,10 +89,9 @@
    Click to add an AI task.  
 4. **GenAI**  
    Click to open a wizard that will guide you through the creation and testing of your GenAI task.  
-   The stages of this wizard are explained below, starting with basic GenAI task settings.  
+   The steps of this wizard are explained below, starting with basic GenAI task settings.  
 
 {PANEL/}
-
 
 {PANEL: Configure basic settings}
 
@@ -93,14 +100,13 @@
 1. **Task name**  
    Give your task a meaningful name.  
 
-2. **Identifier**  
+2. <a id="unique-identifier" />**Identifier**  
    Give your task a unique identifier that will be used by the GenAI task.  
-   You can pick your own identifier, or click **Regenerate** to create one automatically.  
-   When you complete the task and run it, the task will log parts of your documents that 
-   it had already processed, to avoid reprocessing them unnecessarily. It will do so by 
-   creating hash codes for processed document parts, and listing the hashes in the processed 
-   documents' metadata, under the identifier you choose here.  
-   We will see an example below.  
+    * You can name the identifier yourself, or click **Regenerate** to name it automatically.  
+    * When you complete creating the task and run it, the task will add a metadata property 
+      to documents it processes, named after the identifier you define here. The task will 
+      use this property to keep track of document parts it had already processed.  
+      See an example [here](../../ai-integration/gen-ai-integration/gen-ai-studio#run-time).  
 
 3. **Task state**  
    Use this switch to enable or disable the task.  
@@ -155,19 +161,20 @@ for(const comment of this.Comments)
 
 3. **Playground**  
    Each of the steps from now on is equipped with its own playground, allowing you 
-   to test what actually happens when you apply your configuration.  
+   to test what actually happens when you apply your configuratio    n.  
+   {CONTENT-FRAME: }
    The playground is a secluded environment, using it will **not** modify your documents.  
+   {CONTENT-FRAME/}
     * **Collapse/Expand**  
       Toggle to hide or show the playground area.  
     * **Edit mode**  
-       * Toggle ON to edit the playground content any way you like before running the test.  
-         This option gives you the freedom to test any content you like, regardless of the results 
-         generated by the playground of a previous stage.  
-       * Toggle OFF to use the results generated using the playground of the previous stage.  
+       * Toggle OFF to use the selected document as the source for the generated context.  
+       * Toggle ON to edit the document freely before running the test.  
     * **Select a document from the source collection**  
       Select a document to test your context generation script on.  
-      To use the same sample document we're using, select `Posts/1`.  
-      Or if you prefer it, click `enter a document manually` to type in a document for the test.  
+       * To use the same sample document we're using to demonstrate the process, 
+         add [posts/1](../../) and select it here.  
+       * Or if you prefer it, click `enter a document manually` and enter the sample document content yourself.  
     * To run the test, click the **Test context** button.  
       If all works well, you will see a list of context objects created by your script, one for each comment.  
       
@@ -180,9 +187,10 @@ for(const comment of this.Comments)
       Click to return to the previous step, [Configure basic settings](../../ai-integration/gen-ai-integration/gen-ai-studio#configure-basic-settings).  
     * **Test Context**  
       Click to test your context generation script on the document selected/entered in the playground area.  
-      You do not have to use the playgrounds, you'll be able to define and save your task without testing it first.  
-      However, the next playground will attempt to use the result set generated here; so if you want to use the next 
-      stage's playground, run the test here first.  
+       * You do not have to use the playground; you'll be able to define and save your task without testing 
+         it first.  
+       * However, running the test here will allow you to use the generated result set in the playground of 
+         the next wizard step.  
     * **Next**  
       Click to advance to the next step, [Define prompt & JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema).  
 
@@ -252,10 +260,10 @@ for(const comment of this.Comments)
     * **Collapse/Expand**  
       Toggle to hide or show the playground area.  
     * **Edit mode**  
-       * Toggle OFF to use the results generated using the playground of the previous stage.  
-       * Toggle ON to edit the playground content any way you like before running the test.  
-         This option gives you the freedom to test any content, regardless of the results 
-         generated by previous stages.  
+       * Toggle OFF to use the results generated using the playground of the previous step.  
+       * Toggle ON to edit the context objects freely before trying out your prompt and schema on them.  
+         This option gives you the freedom to test any context objects you like, regardless of the results 
+         generated by the playground of the previous step.  
     * To run the test, click the **Test model** button.  
       The GenAI task will send the model each context in its own transaction, accompanied 
       by the prompt and JSON schema defined above. 
@@ -307,6 +315,11 @@ if($output.Blocked)
 
       ![Playground: Provide update script](images/gen-ai_playground-provide-update-script.png "Playground: Provide update script")
 
+      * **Edit mode**  
+         * Toggle OFF to use the results generated using the playground of the previous step.  
+         * Toggle ON to edit the model output freely before testing your update script on it.  
+           This option gives you the freedom to test any content you like, regardless of the results 
+           generated by the playground of the previous step.  
 
 3. **Controls**  
     * **Cancel**  
@@ -320,9 +333,6 @@ if($output.Blocked)
       and so on - as you choose.  
     * **Next**  
       Click to advance to the next step, [Review configuiration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuiration-and-save-task).  
-
-
-   
 
 {PANEL/}
 
@@ -351,6 +361,28 @@ If your task is enabled, it will start running when you save it.
       Click to return to the previous step, [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script).  
     * **Save**  
       Save your task
+
+{PANEL/}
+
+{PANEL: Run time}
+
+Once you complete the configuration and save the task, it will start running.  
+Documents in the selected collection will be processed, and the task will keep 
+track of the collection and process documents as they are added or modified.  
+
+After processing a document, the task will keep in its metadata, under the unique 
+identifier you chose [here](../../ai-integration/gen-ai-integration/gen-ai-studio#unique-identifier), 
+a hash code for each document part it had already processed.  
+If the task ever needs to reprocess this document, it will create hash codes of the 
+document's properties and compare them with the hash codes stored in the metadata, to 
+identify the properties that do, or do not, need to be processed during the current run.  
+
+![Metadata Identifier and Hash codes](images/gen-ai_metadata-identifier-and-hash-codes.png "Metadata Identifier and Hash codes")
+
+1. **Identifier**  
+   This is the unique identifier used by the GenAI task.  
+2. **Hash codes**  
+   These two hash codes represent the `comment/1` and `comment/3`, that have already been processed.  
 
 {PANEL/}
 
