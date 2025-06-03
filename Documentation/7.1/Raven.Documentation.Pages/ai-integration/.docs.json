@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/gen-ai-integration",
+        "Name": "GenAI Integration",
+        "Mappings": []
+    },
+    {
         "Path": "/generating-embeddings",
         "Name": "Generating Embeddings",
         "Mappings": []
