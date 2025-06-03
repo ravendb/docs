@@ -90,7 +90,7 @@ its own connection string.
 | **Prompt** | `string` | AI model Prompt - the instructions sent to the AI model |
 | **SampleObject** | `string` | JSON schema - a sample response object to format AI model replies by |
 | **UpdateScript** | `string` | Update script - specifies what to do with AI model replies |
-| **MaxConcurrency** | `int` | Max concurrent connections to AI model |
+| **MaxConcurrency** | `int` | Max concurrent connections to AI model (remember that each context object is sent using its own separate connection |
 
 {PANEL/}
 

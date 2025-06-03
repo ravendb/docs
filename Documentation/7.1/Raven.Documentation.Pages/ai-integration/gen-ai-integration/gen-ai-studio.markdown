@@ -11,7 +11,6 @@
     * [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema)
     * [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script)
     * [Review configuiration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuiration-and-save-task)
-    * [Run time](../../ai-integration/gen-ai-integration/gen-ai-studio#run-time)
 
 {NOTE/}
 
@@ -147,7 +146,7 @@ To add a new GenAI task, open: **AI Hub** > **AI Tasks** > **Add AI Task** > **G
    Provide a JavaScript, that your GenAN task will run over each document it retrieves 
    from the selected collection.  
     * The purpose of the script you provide here is to format the documents' data in 
-      a common `Context` object that is most suitable for processing by the AI model.  
+      common `Context object` that can be easily and methodically processed by the AI model.  
     * An example for a context generation script can be: 
       {CODE-BLOCK:javascript}
 // go through all the comments left for this blog
@@ -159,7 +158,7 @@ for(const comment of this.Comments)
       {CODE-BLOCK/}
       
 
-3. **Playground**  
+3. <a id="generate-context-objects-playground" />**Playground**  
    Each of the steps from now on is equipped with its own playground, allowing you 
    to test what actually happens when you apply your configuratio    n.  
    {CONTENT-FRAME: }
@@ -308,7 +307,7 @@ if($output.Blocked)
 }  
       {CODE-BLOCK/}
 
-2. **Playground**  
+2. <a id="provide-update-script-playground" />**Playground**  
    Use this playground to verify that your update script does what you want it to do.  
    In the case of our spam filtering task, we can check whether the comment that was 
    detected as spam was removed from the blog post.  
@@ -363,29 +362,6 @@ If your task is enabled, it will start running when you save it.
       Save your task
 
 {PANEL/}
-
-{PANEL: Run time}
-
-Once you complete the configuration and save the task, it will start running.  
-Documents in the selected collection will be processed, and the task will keep 
-track of the collection and process documents as they are added or modified.  
-
-After processing a document, the task will keep in its metadata, under the unique 
-identifier you chose [here](../../ai-integration/gen-ai-integration/gen-ai-studio#unique-identifier), 
-a hash code for each document part it had already processed.  
-If the task ever needs to reprocess this document, it will create hash codes of the 
-document's properties and compare them with the hash codes stored in the metadata, to 
-identify the properties that do, or do not, need to be processed during the current run.  
-
-![Metadata Identifier and Hash codes](images/gen-ai_metadata-identifier-and-hash-codes.png "Metadata Identifier and Hash codes")
-
-1. **Identifier**  
-   This is the unique identifier used by the GenAI task.  
-2. **Hash codes**  
-   These two hash codes represent the `comment/1` and `comment/3`, that have already been processed.  
-
-{PANEL/}
-
 
 ## Related Articles
 

@@ -1,53 +1,67 @@
-# GenAI Integration: Studio
+# GenAI Integration: Security Concerns
 ---
 
 {NOTE: }
 
+This page addresses concerns that potential GenAI tasks' users may have, 
+regarding the safety of data sent to an AI model through the task and the 
+security of the database while running such tasks.
+
 * In this article:
-    * [](../../ai-integration/vector-search/ravendb-as-vector-database#what-is-a-vector-database)
-    * [](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
+    * [Security measures](../../ai-integration/gen-ai-integration/security-concerns#security-measures)
     
 {NOTE/}
 
 ---
 
-{PANEL: }
+{PANEL: Security measures}
 
-GenAI Security Concerns 
-Data Privacy and Confidentiality 
-Concern: Generative AI models may access and process sensitive or personally identifiable information (PII). 
-Mitigations: 
-Using HTTPS for data encryption in transient.
-The database admin has the full control of every step of the gen ai process:
-Define and shape the request that is sent to the model and the action to take upon getting the response.
-Controls the script to create inputs for the LLM
-Controls the prompt for the LLM
-Controls the action script to execute upon get a response
-The user has the ability to anonymize his data that he provides to the model by editing the extraction script.
-Access Control and Authentication: 
-Concern: Unauthorized access to databases can lead to data breaches. 
-Mitigations: 
-The AI model doesn't have any access to the database, only the database calls the model.
-The database admin has full control and the responsibility for choosing the model/service/account that will be used in the gen ai task.
-GenAI task are scoped for a specific DB, which meant DB Isolation implementation
-DB read/write access is controlled by certificate.
-Audit logging for GenAI task configuration, enables monitoring all access events.
-Data Leakage: 
-Concern: Sensitive data might inadvertently be memorized and reproduced by the generative model. 
-Mitigations: 
-RavenDB doesn't force any providers or model, it is users responsibility to define the proper service
-The abillity to use the Ollama model locally will avoid possible data breaches for a third party misusage of the data (optional).
+Our approach toward data safety while using RavenDB AI tasks, is that we need 
+to take care of security on our end, rather than expect the AI model to protect 
+our data.  
 
-{PANEL/}
+You can take these security measures:  
 
-{PANEL: }
+* **Use a local model when possible**  
+  Use a local AI model like Ollama whenever you don't have to transit your data 
+  to an external model, to Keep the data, as much as possible, within the safe 
+  boundaries of your own network.  
 
+* **Pick the right model**  
+  RavenDB does not dictate what model to use, giving you full freedom to pick 
+  the services that you want to connect.  
+  Choose wisely the AI model you connect, some seem to be in better hands than others.  
 
-#### 
+* **Send only the data you want to send**  
+  You are in full control of the data that is sent from your server to the AI model.  
+  Your choises while defining the task, including the collection you associate the 
+  task with and the [context generation script](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects) 
+  you define, determine the only data that will be exposed to the AI model.  
+  Take your time, when preparing this script, to make sure you send only the 
+  data you actually want to send.  
 
-* 
-* 
+* **Use the playgrounds**  
+  While defining your AI task, take the time and use Studio's 
+  [playgrounds](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects-playground) 
+  to double-check what is actually sent.  
+  There are separate playgrounds for the different stages, using them is 
+  really enjoyable, and you can test your configuration on various documents 
+  and see exactly what you send and what you receive.  
 
+* **Use a secure server**  
+  The AI model is **not** given entry to your database. The data that you send it 
+  voluntarily is all it gets. However, as always, if you care about your privacy 
+  and safety, you'd want to use a [secure server](../../start/installation/setup-wizard#select-setup-mode).  
+  This will assure that you have full control over visitors to your database and 
+  their permissions.
+
+* **Use your update script wisely**  
+  When we think of dangers to our data we normally think of others acting 
+  against us, but it is probably us that inflict most harms on ourselves.  
+  The [update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script) 
+  is the JavaScript that the GenAI task runs after receiving a reply from 
+  the AI model. Here too, take your time to check this powerful script 
+  using the built in Studio [playground](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script-playground).  
 
 {PANEL/}
 
