@@ -176,8 +176,6 @@ Here's an example of the notification sent to the owner and all cloud account ma
 The `Pay Now` button becomes visible on your Billing tab dashboard once there are any unpaid costs from previous billing cycle(s).
 
 {INFO: }
-There is one exception to this rule, on the billing day (27th of the month) `Pay Now` functionality is disabled, so the button won't be visible.
-
 After a failed charge attempt, another attempt can be made after **60** minutes.
 {INFO/}
 
@@ -185,8 +183,8 @@ If you have resolved the issue associated with the charge failure (e.g., updated
 Upon clicking the `Pay Now` button, the system will process the payment for all outstanding amounts up to the end of the previous billing cycle. If the payment process fails, you will be notified again by email.
 
 
-![PayNow1](images/pay-now-1.png)
-![PayNow2](images/pay-now-2.png)
+![PayNow1](images/portal-billing-and-costs-unbilled-account-with-active-paynow.png)
+![PayNow2](images/portal-billing-and-costs-paynow-modal.png)
 
 ####Billing Cycle and Date Range 
 
