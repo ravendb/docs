@@ -10,7 +10,7 @@
     * [Generate context objects](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects)
     * [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema)
     * [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script)
-    * [Review configuiration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuiration-and-save-task)
+    * [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuration-and-save-task)
 
 {NOTE/}
 
@@ -114,7 +114,7 @@ To add a new GenAI task, open: **AI Hub** > **AI Tasks** > **Add AI Task** > **G
    Toggle ON to pick which cluster node will be responsible for this task.  
    Toggle OFF for the cluster to pick a responsible node for you.  
 
-5. **Connection string**  
+5. <a id="studio_connection-string" />**Connection string**  
    The Gen AI task will use an AI model to process your data.  
    It can be a local AI model like Ollama, or an external model like OpenAI.  
    Use this bar to Select or Create the connection string that the GenAI task 
@@ -138,12 +138,12 @@ To add a new GenAI task, open: **AI Hub** > **AI Tasks** > **Add AI Task** > **G
 
 ![Generate context objects](images/gen-ai_generate-context-objects.png "Generate context objects")
 
-1. **Source sollection**  
+1. **Source collection**  
    Select the collection whose documents this GenAI task will process.  
    E.g., the `Posts` collection.  
 
-2. **Context generation script**  
-   Provide a JavaScript, that your GenAN task will run over each document it retrieves 
+2. <a id="studio_context-generation-script" />**Context generation script**  
+   Provide a JavaScript, that your GenAI task will run over each document it retrieves 
    from the selected collection.  
     * The purpose of the script you provide here is to format the documents' data in 
       common `Context object` that can be easily and methodically processed by the AI model.  
@@ -160,7 +160,7 @@ for(const comment of this.Comments)
 
 3. <a id="generate-context-objects-playground" />**Playground**  
    Each of the steps from now on is equipped with its own playground, allowing you 
-   to test what actually happens when you apply your configuratio    n.  
+   to test what actually happens when you apply your configuration.  
    {CONTENT-FRAME: }
    The playground is a secluded environment, using it will **not** modify your documents.  
    {CONTENT-FRAME/}
@@ -198,16 +198,16 @@ for(const comment of this.Comments)
 {PANEL: Define Prompt and JSON schema}
 
 * The GenAI task will send the AI model each context object (configured in the previous step) 
-  on its own transaction, along with the prompt and JSON schema you provide in this view.  
-* The Context provides the data for the model to process.  
+  on its own connection, along with the prompt and JSON schema you provide in this view.  
+* The context provides the data for the model to process.  
   The prompt determines what the model should do with the data.  
-  The JSON schema formats the results.  
+  The JSON schema formats the returned results.  
 
 ![Define Prompt and JSON schema](images/gen-ai_define-prompt-and-json-schema.png "GDefine Prompt and JSON schema")
 
 1. **Prompt**  
    These are the instructions for the AI model.  
-   For our spam filtering GenAI task, we can specifiy, for example:  
+   For our spam filtering GenAI task, we can specify, for example:  
    {CODE-BLOCK:plain}
    Check if the following blog post comment is spam or not.  
    A spam comment typically includes irrelevant or promotional content, excessive links, 
@@ -218,7 +218,7 @@ for(const comment of this.Comments)
 
 2. **JSON schema**  
    The AI model will return a results JSON object for each context object sent to it.  
-   Here, we determine what format the AI model would give the results objects it returns.  
+   Here, we determine what format the AI model would give the result objects it returns.  
     * **Use sample object**  
       Select this option to provide an object that the AI model will use as an example.  
       The results object will be formatted as the sample object you provide.  
@@ -254,7 +254,7 @@ for(const comment of this.Comments)
       structure of a formal JSON schema to begin with.  
 
 3. **Playground**  
-   Use this playground to send the AI model context objects with their prompts andschemas, 
+   Use this playground to send the AI model context objects with their prompts and schemas, 
    and see the results returned by the AI model.  
     * **Collapse/Expand**  
       Toggle to hide or show the playground area.  
@@ -331,11 +331,11 @@ if($output.Blocked)
       the update script can leave the original document unchanged, create new documents, 
       and so on - as you choose.  
     * **Next**  
-      Click to advance to the next step, [Review configuiration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuiration-and-save-task).  
+      Click to advance to the next step, [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuration-and-save-task).  
 
 {PANEL/}
 
-{PANEL: Review configuiration and Save task}
+{PANEL: Review configuration and Save task}
 
 Use this final step to review your GenAI task configuration before saving and executing it.  
 If your task is enabled, it will start running when you save it.  
@@ -343,8 +343,8 @@ If your task is enabled, it will start running when you save it.
 {WARNING: Precautions}
 
 * Make sure you fully understand what your task does before saving it.  
-* Be aware of any modification it may make.  
-* Take any precaution to protect your data, including assuring it is backed up.  
+* Be aware of any modifications it may make.  
+* Take any precaution to protect your data, including ensuring it is backed up.  
 {WARNING/}
 
 ![Provide update script](images/gen-ai_provide-update-script.png "Provide update script")
@@ -365,17 +365,14 @@ If your task is enabled, it will start running when you save it.
 
 ## Related Articles
 
-### Client API
+### GenAI Integration
 
-- [RQL](../../client-api/session/querying/what-is-rql) 
-- [Query overview](../../client-api/session/querying/how-to-query)
+- [GenAI Overview](../../ai-integration/gen-ai-integration/gen-ai-overview)
+- [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
+- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/security-concerns)
 
 ### Vector Search
 
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.markdown)
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.markdown)
 - [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
-
-### Server
-
-- [indexing configuration](../../server/configuration/indexing-configuration)

@@ -12,20 +12,21 @@
      for efficient retrieval, Enhance data security by detecting anomalies, Optimize inventory 
      predictions... or endless other options, bound only by our creativity.  
 
-* **You can use a wide variety of AI models**, e.g. a model installed locally like `Ollama llama3.2` 
-  during a development phase that requires quick service and no additional costs, or a remote model 
-  like `OpenAI gpt-4o-mini` with all the benefits of the latest features and broadest access.  
-
 * **Ongoing GenAI tasks** can be easily defined, tested and deployed using API or Studio.  
 
      While creating a GenAI task via Studio, a smart interactive environment is provided, 
      allowing each phase of the task to be tested in a secluded playground, freely and without 
      harming your data, but also produce result sets that can be tried out by the next phase.  
 
+* **You can use local and remote AI models**, e.g. a local `Ollama llama3.2` service during 
+  a development phase that requires speed and no additional costs, and a remote `OpenAI gpt-4o-mini` 
+  when you need a live service with advanced capabilities.  
+
 * In this article:
     * [RavenDB GenAI tasks](../../ai-integration/gen-ai-integration/gen-ai-overview#ravendb-genai-tasks)
     * [Run time](../../ai-integration/gen-ai-integration/gen-ai-overview#run-time)
     * [Licensing](../../ai-integration/gen-ai-integration/gen-ai-overview#licensing)
+    * [Supported services](../../ai-integration/gen-ai-integration/gen-ai-overview#supported-services)
 
 {NOTE/}
 
@@ -33,11 +34,11 @@
 
 {PANEL: RavenDB GenAI tasks}
 
-RavenDB offers an integration of generative AI capabilities through user defined **GenAI tasks**.  
-A GenAI task is an ongoing process that continuously monitors a document collection associated with 
-it, and reacts when a document is added or modified by Retrieving the document, Structuring it into 
-"context objects", Sending these objects to a generative AI model along with instructions regarding 
-what to do with the data and how to shape the reply, and potentially Acting upon the model's response.  
+RavenDB offers an integration of generative AI capabilities through user-defined **GenAI tasks**.  
+A GenAI task is an ongoing process that continuously monitors a document collection associated with it, 
+and reacts when a document is added or modified by Retrieving the document, Generating "context objects" 
+based on its data, Sending these objects to a generative AI model along with instructions regarding what 
+to do with the data and how to format the reply, and potentially Acting upon the model's response.  
 
 {CONTENT-FRAME: <a id="the-flow" />The flow}
 Let's put the above stages in order.
@@ -46,16 +47,21 @@ Let's put the above stages in order.
 
 1. The task continuously monitors the collection it is associated with.  
 2. When a document is added or modified, the task retrieves it.  
-3. The task structure the data contained in the document into **Context objects**.  
-   The structuring is done by a "context creation script" (JavaScript) you provide, 
-   that uses our `ai.genContext` method for the creation of each context object.  
+3. The task generates context objects based on the source document data.  
+   To generate these objects, the task applies a user-defined [context generation script](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_context-objects) 
+   that runs through the source document and generates context objects based on the document data.  
 4. The task sends each context object to a GenAI model for processing.  
-    * The task is associated with a **Connection string** that defines how to connect to the AI model.
-    * Each context object is sent over its own separate connection to the AI model.  
-    * Each object is sent along with a **Prompt** and a **JSON schema**.  
-      The prompt is written in regular english, with your instructions to the AI model.  
-      The schema defines how the model is to structure its replies.  
-5. The task can then apply an **Update script** (JavaScript) to handle the results.  
+    * The task is associated with a [Connection string](../../ai-integration/gen-ai-integration/gen-ai-studio#studio_connection-string) 
+      that defines how to connect to the AI model.
+    * Each context object is sent via a separate connection to the AI model.  
+       - The number of concurrent connections to the AI model is configurable 
+         via the [MaxConcurrency](../../ai-integration/gen-ai-integration/gen-ai-api#section) variable.  
+    * Each context object is sent along with a user-defined [Prompt](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_prompt), 
+      that instructs the AI model what to do with the data, and 
+      a user-defined [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) 
+      that instructs the AI model how to shape its response.  
+5. When the AI model returns its response, a user-defined [Update script](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_update-script) 
+   is applied to handle the results.  
 {CONTENT-FRAME/}
 
 {CONTENT-FRAME: <a id="the-elements" />The elements}
@@ -63,11 +69,97 @@ These are the elements that need to be defined for a GenAI task.
 <br>
 <br>
 
-* A **connection string** to the GenAI model.  
-* A **Context generation script** that uses `ai.genContext` to create each context object.  
-* A **Prompt**, written in regular English, instructing the AI model what to do with the data passed to it.  
-* A **JSON schema**, written in JavaScript, instructing the AI model how to structure its replies.  
-* An **Update JavaScript**, written in JavaScript, that is executed over replies returned from the AI model.  
+* [Connection string](../../ai-integration/gen-ai-integration/gen-ai-studio#studio_connection-string)  
+  The connection string defines the connection to the GenAI model.  
+
+* <a id="the-elements_context-objects" />**Context generation script**  
+  The context generation script goes through the source document,  
+  and applies the `ai.genContext` method to create **context objects** based on the source document's data.  
+  E.g. -  
+  {CODE-BLOCK:javascript}
+  for(const comment of this.Comments)
+{
+    // Use the `ai.genContext` method to generate a context object for each comment.  
+    ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});
+} 
+     {CODE-BLOCK/}
+   * RavenDB will pass the AI model **not** the source document, but the generated context objects.  
+   * Producing a series of context objects that share a clear common format can add the communication 
+     with the AI model a methodical, reliable aspect that is under our full control.  
+   * This is also an important security layer added between the database and the AI model, that 
+     you can use to ensure that only data you actually want to share with the AI model is passed on.  
+
+* <a id="the-elements_json-schema" />**JSON schema**  
+  This is a JSON-based object that defines the layout of the AI model's response.  
+  This object can be either an **explicit JSON schema**, or a **sample response object** 
+  that RavenDB will turn to a JSON schema for us.  
+   * It is normally easier to provide a sample response object, and let RavenDB create 
+     the schema behind the scenes. E.g. -  
+     {CODE-TABS}
+{CODE-TAB-BLOCK:json:Sample_response_object}
+{ 
+    "Blocked": true, 
+    "Reason": "Concise reason for why this comment was marked as spam or ham" 
+}
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:json:Explicit_JSON_schema}
+{
+  "name": "some-name",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "Blocked": {
+        "type": "boolean"
+      },
+      "Reason": {
+        "type": "string",
+        "description": "Concise reason for why this comment was marked as spam or ham"
+      }
+    },
+    "required": [
+      "Blocked",
+      "Reason"
+    ],
+    "additionalProperties": false
+  }
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+* <a id="the-elements_prompt" />**Prompt**  
+  The prompt relays to the AI model what we need it to do.  
+   * It can be phrased in natural language.  
+   * Since the JSON schema already specifies the response layout, including what fields we'd 
+     like the AI model to fill and with what content, the prompt can be used simply to explain 
+     what we want the model to do.  
+     E.g. -  
+     {CODE-BLOCK:plain}
+     Check if the following blog post comment is spam or not.  
+A spam comment typically includes irrelevant or promotional content, excessive 
+links, misleading information, or is written with the intent to manipulate search 
+rankings or advertise products/services.  
+Consider the language, intent, and relevance of the comment to the blog post topic.
+     {CODE-BLOCK/}
+
+* <a id="the-elements_update-script" />**Update Script**  
+  The update script is executed when the AI model responds to a context object we've sent it.  
+   * The update script can take any action, based on the information included in the model's response.  
+     It can, for example, Modify the source document, Create new documents populated by AI-generated text, 
+     Remove existing documents, and so on.  
+     The following script, for example, removes a comment from a blog post if the AI has concluded 
+     that the comment is spam.  
+     {CODE-BLOCK:javascript}
+const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+if($output.Blocked)
+{
+    this.Comments.splice(idx, 1);  
+} 
+    {CODE-BLOCK/}
+
+   * The update script can also be used as an additional security measure, and apply only actions 
+     that we trust not to inflict any damage.  
+
 {CONTENT-FRAME/}
 
 {CONTENT-FRAME: <a id="how-to-create-and-run-a-gen-ai-task" />How to create and run a GenAI task}
@@ -133,19 +225,26 @@ A `Developer` license will also enable the feature for experimentation and devel
 
 {PANEL/}
 
+{PANEL: Supported services}
+
+Supported services include:
+
+* `OpenAI` and `OpenAI-compatible` services  
+* `Ollama`  
+
+{PANEL/}
+
+
 ## Related Articles
 
-### Client API
+### GenAI Integration
 
-- [RQL](../../client-api/session/querying/what-is-rql) 
-- [Query overview](../../client-api/session/querying/how-to-query)
+- [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
+- [GenAI Studio](../../ai-integration/gen-ai-integration/gen-ai-studio)
+- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/security-concerns)
 
 ### Vector Search
 
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.markdown)
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.markdown)
 - [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
-
-### Server
-
-- [indexing configuration](../../server/configuration/indexing-configuration)
