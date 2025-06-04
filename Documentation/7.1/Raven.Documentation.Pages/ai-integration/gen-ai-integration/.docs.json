@@ -1,26 +1,26 @@
 [
-    {
-        "Path": "gen-ai-overview.markdown",
-        "Name": "Overview",
-        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
-        "Mappings": []
-    },
-    {
-        "Path": "gen-ai-api.markdown",
-        "Name": "GenAI API",
-        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
-        "Mappings": []
-    },
-    {
-        "Path": "gen-ai-studio.markdown",
-        "Name": "Studio GenAI Task View",
-        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
-        "Mappings": []
-    },
-    {
-        "Path": "security-concerns.markdown",
-        "Name": "Security Concerns",
-        "DiscussionId": "3a848621-110f-4bbd-9147-58f743b0a950",
-        "Mappings": []
-    }
+  {
+    "Path": "gen-ai-overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "eae7ec14-a0b6-4752-ac5e-84a1c5167e24",
+    "Mappings": []
+  },
+  {
+    "Path": "gen-ai-api.markdown",
+    "Name": "GenAI API",
+    "DiscussionId": "86e05e85-50d3-4102-bfb5-d8296747900e",
+    "Mappings": []
+  },
+  {
+    "Path": "gen-ai-studio.markdown",
+    "Name": "Studio GenAI Task View",
+    "DiscussionId": "85169f2a-44aa-4fe4-92bd-bf17294d1441",
+    "Mappings": []
+  },
+  {
+    "Path": "security-concerns.markdown",
+    "Name": "Security Concerns",
+    "DiscussionId": "8da8848e-15e9-4de6-beb1-e7198f81d06e",
+    "Mappings": []
+  }
 ]

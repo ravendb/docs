@@ -24,7 +24,7 @@ You can take these security measures:
 
 * **Use a local model when possible**  
   Use a local AI model like Ollama whenever you don't have to transit your data 
-  to an external model, to Keep the data, as much as possible, within the safe 
+  to an external model, to keep the data, as much as possible, within the safe 
   boundaries of your own network.  
 
 * **Pick the right model**  
@@ -34,7 +34,7 @@ You can take these security measures:
 
 * **Send only the data you want to send**  
   You are in full control of the data that is sent from your server to the AI model.  
-  Your choises while defining the task, including the collection you associate the 
+  Your choices while defining the task, including the collection you associate the 
   task with and the [context generation script](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects) 
   you define, determine the only data that will be exposed to the AI model.  
   Take your time, when preparing this script, to make sure you send only the 
@@ -56,8 +56,8 @@ You can take these security measures:
   their permissions.
 
 * **Use your update script wisely**  
-  When we think of dangers to our data we normally think of others acting 
-  against us, but it is probably us that inflict most harms on ourselves.  
+  When considering threats to our data we often focus on external risks, 
+  but many times it is us that endanger it the most.  
   The [update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script) 
   is the JavaScript that the GenAI task runs after receiving a reply from 
   the AI model. Here too, take your time to check this powerful script 
@@ -67,17 +67,14 @@ You can take these security measures:
 
 ## Related Articles
 
-### Client API
+### GenAI Integration
 
-- [RQL](../../client-api/session/querying/what-is-rql) 
-- [Query overview](../../client-api/session/querying/how-to-query)
+- [GenAI Overview](../../ai-integration/gen-ai-integration/gen-ai-overview)
+- [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
+- [GenAI Studio](../../ai-integration/gen-ai-integration/gen-ai-studio)
 
 ### Vector Search
 
 - [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.markdown)
 - [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.markdown)
 - [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
-
-### Server
-
-- [indexing configuration](../../server/configuration/indexing-configuration)
