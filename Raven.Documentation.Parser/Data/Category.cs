@@ -84,6 +84,10 @@ namespace Raven.Documentation.Parser.Data
         [Description("Document Extensions")]
         DocumentExtensions,
         
+        [Prefix("data-archival")]
+        [Description("Data Archival")]
+        DataArchival,
+        
         [Prefix("ai-integration")]
         [Description("AI Integration")]
         AiIntegration
