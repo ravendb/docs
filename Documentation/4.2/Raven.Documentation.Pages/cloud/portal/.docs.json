@@ -30,6 +30,12 @@
     "Mappings": []
   },
   {
+    "Path": "cloud-portal-api-tab.markdown",
+    "Name": "API Tab",
+    "DiscussionId": "2c7b04b6-883f-471e-aae3-40a0a54ad66e", 
+    "Mappings": []
+  },
+  {
     "Path": "cloud-portal-support-tab.markdown",
     "Name": "Support Tab",
     "DiscussionId": "97e15463-1433-4999-9c39-65b306c6a091",
