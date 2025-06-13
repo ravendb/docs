@@ -6,6 +6,12 @@
     "Mappings": []
   },
   {
+      "Path": "cloud-portal-home-tab.markdown",
+      "Name": "Home Tab",
+      "DiscussionId": "7a99aa88-f94e-4d4c-8ecf-4e2c1547cd5d",
+      "Mappings": []
+  },
+  {
     "Path": "cloud-portal-products-tab.markdown",
     "Name": "Products Tab",
     "DiscussionId": "0c54534c-3e1a-4c5c-b399-d0261c6c1cdf",
