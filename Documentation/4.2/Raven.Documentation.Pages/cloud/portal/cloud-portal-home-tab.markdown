@@ -6,7 +6,7 @@ Use this tab to manage your account and assigned roles. You can also use it to v
 
 * In this page:
     * [The Home Tab](../../cloud/portal/cloud-portal-home-tab#the-home-tab)  
-      {NOTE/}
+{NOTE/}
 
 ---
 

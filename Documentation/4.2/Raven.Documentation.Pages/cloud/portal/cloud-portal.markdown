@@ -29,7 +29,7 @@ takes you to your account's Portal, which gives you access to all the different 
 * **[The Billing & Costs Tab](../../cloud/portal/cloud-portal-billing-tab)**  
   Use the Billing & Costs tab to view your billing history and expected payments.
 
-* **[The API Tab](../../cloud/portal/cloud-portal-billing-tab)**  
+* **[The API Tab](../../cloud/portal/cloud-portal-api-tab)**  
   Use the API tab to explore the RavenDB Cloud API and manage your API keys.
 
 * **[The Support Tab](../../cloud/portal/cloud-portal-support-tab)**  

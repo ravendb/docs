@@ -45,5 +45,11 @@
         "Name": "Security",
         "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
         "Mappings": []
+    },
+    {
+        "Path": "cloud-api.markdown",
+        "Name": "API",
+        "DiscussionId": "0533554b-605e-450d-92bf-a6752764498a",
+        "Mappings": []
     }
 ]
