@@ -86,11 +86,6 @@ and allow the wizard to walk you through the 5 simple stages of the registration
 - Select your account type. For typical purposes, select the **Regular** button. If you need a *HIPAA-compliant* account, select the **HIPAA** button.
 - Click the **Continue** button.
 
-{INFO: }
-If you prefer **not** to currently provide a domain name and account type, use the **Later** button.  
-You will still be required to provide a domain name and account type, but it will happen later on when you create your first product.
-{INFO/}
-
 ---
 
 #### 3. Billing information
