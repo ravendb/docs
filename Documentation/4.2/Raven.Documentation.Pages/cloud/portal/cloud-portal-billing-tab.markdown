@@ -1,23 +1,20 @@
 # Cloud Portal: The Billing & Costs Tab
-
-{NOTE: }
-
-Use your account's Billing & Costs tab to view your present costs, past invoices and remaining credit.  
-
-* In this page:  
-  * [The Billing & Costs Tab](#the-billing-&-costs-tab)  
-
-{NOTE/}
-
 ---
+
+{PANEL: Overview}
+
+Use your account's Billing & Costs tab to view your present costs, past invoices and remaining credit.
+
+* In this page:
+    * [The Billing & Costs Tab](#the-billing-&-costs-tab)
+
+{PANEL/}
 
 {PANEL: The Billing & Costs Tab}
 
-!["Billing & Costs Tab"](images\portal-billing-tab.png "Billing & Costs Tab")
-
 The Billing & Costs tab will show your existing resources and their costs as well as past billing events.
 
-!["List of costs"](images\portal-billing-costs.png "List of costs")
+!["Figure 1 - The Billing & Costs Tab"](images\portal-billing-and-costs-unbilled-account-with-active-paynow.png "Figure 1 - The Billing & Costs Tab")
 
 * **Costs**  
   Sums up your current expenses over your products.  
