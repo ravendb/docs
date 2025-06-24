@@ -77,10 +77,6 @@ The last page shows selected options and basic information about your *Microsoft
 Providing *Primary phone number* **is not required**.
 {INFO/}
 
-{WARNING: }
-*Registration process* requires *Microsoft Azure* account with **configured email**.
-{WARNING/}
-
 After reviewing the information, please click **Subscribe**.
 
 ---
@@ -95,13 +91,16 @@ Provide the necessary information required to end the registration process:
 
 !["Figure 6 - RavenDB Cloud Azure Marketplace Landing Page"](images\cloud-ravendb-azure-marketplace-landing-page.png "Figure 6 - RavenDB Cloud Azure Marketplace Landing Page")
 
-1.  **Domain Name**  
+1.  **Email Address**  
+   Provide an email address that you will use in RavenDB Cloud.
+
+2.  **Domain Name**  
     Provide a Domain Name for the account.
 
-2.  **Account Type**  
+3.  **Account Type**  
     Provide an Account Type for the account.
 
-3.  **T&C and privacy policy**  
+4.  **T&C and privacy policy**  
     Accept Terms & Conditions and the privacy policy.
 
 After providing the information, please click **Sign up**.
