@@ -193,16 +193,20 @@ You can edit Autoscaling parameters by clicking on **Edit** button.
 
 {PANEL/}
 
-{PANEL: AI Embeddings }
+{PANEL: AI Embeddings & GenAI }
 
 *RavenDB Cloud* provides an integrated solution that combines high-performance NoSQL capabilities with advanced vector
-indexing and querying features, enabling efficient storage and management of high-dimensional vector data.
+indexing and querying features, enabling efficient storage and management of high-dimensional vector data. 
+
+*RavenDB* can now be combined with generative AI using LLM of your choice.
 
 Usage of this feature is
 described [here](https://ravendb.net/docs/article-page/latest/csharp/ai-integration).
 
 {INFO: Availability }
-This feature is available only for *RavenDB* **7.0 and newer**.
+AI Embeddings is available only for *RavenDB* **7.0 and newer**.
+
+Gen AI is available only for *RavenDB* **7.1 and newer**.
 {INFO/}
 
 {PANEL/}
