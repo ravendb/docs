@@ -20,6 +20,11 @@
         "Mappings": []
     },
     {
+        "Path": "/data-archival",
+        "Name": "Data Archival",
+        "Mappings": []
+    },
+    {
         "Path": "/server",
         "Name": "Server",
         "Mappings": []

@@ -273,6 +273,7 @@
 * **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureDataArchivalOperation](../../data-archival/enable-data-archiving#enable-archiving---from-the-client-api)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  

@@ -20,6 +20,12 @@
         "Path": "archival.markdown",
         "Name": "Data Archival",
         "DiscussionId": "b976732a-3da7-48e5-a454-4f34b8f716f9",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 6.2,
+                "Key": "data-archival/overview"
+            }
+        ],
+        "LastSupportedVersion": "6.0"
     }
 ]
