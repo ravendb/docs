@@ -153,7 +153,11 @@ You can view your configuration and change your product's instance type and stor
 * **Change Storage**  
   Use this slider to modify your product's storage.  
 
-!["Figure 14 - Manage Product: Storage"](images\portal-product-details-edit-storage.png "Figure 14 - Manage Product: Change Storage")
+!["Figure 14 - Manage Product: Change Storage"](images\portal-product-details-edit-storage.png "Figure 14 - Manage Product: Change Storage")
+
+  On **Azure** disk can be migrated to **Data Disk** using *Migrate disk* button.
+
+!["Figure 15 - Manage Product: Storage"](images\portal-product-details-storage.png "Figure 15 - Manage Product: Storage")
 
   More details can be found [here](../cloud-scaling#change-storage).
 
@@ -167,7 +171,7 @@ You can view your configuration and change your product's instance type and stor
 Use the security tab to download your [certificate](../../cloud/cloud-security) or determine which addresses are 
 allowed to connect your database instance.  
 
-!["Figure 15 - Manage Product: Manage access"](images/portal-product-details-manage-access.png "Figure 15 - Manage Product: Access")
+!["Figure 16 - Manage Product: Manage access"](images/portal-product-details-manage-access.png "Figure 16 - Manage Product: Access")
 
 * **Download Certificate**  
   Click this button to download your certificate.  
@@ -186,12 +190,12 @@ allowed to connect your database instance.
 * **See audit logs**
   Click this button to view audit logs. A popup will show where you have to select a year and month.
   You can download audit logs from there.
-  !["Figure 16 - See audit logs"](images/portal-product-details-audit-logs.png "Figure 16 - See audit logs")
+  !["Figure 17 - See audit logs"](images/portal-product-details-audit-logs.png "Figure 17 - See audit logs")
 
 * **Edit**  
   Click this button to edit your product's list of Allowed IPs.
 
-  !["Figure 17 - Manage Product: Edit IPs"](images/portal-product-details-allowed-ips.png "Figure 17 - Manage Product: Edit Allowed IPs")
+  !["Figure 18 - Manage Product: Edit IPs"](images/portal-product-details-allowed-ips.png "Figure 18 - Manage Product: Edit Allowed IPs")
 
   {INFO: We recommend fortifying your security by allowing access only to specific IPs}
   You can increase your system's security further using this in-depth security measure and restrict access to
@@ -209,9 +213,9 @@ You can view features available for your product, enable, disable and configure 
 After enabling features some of them must be configured to work properly.
 {NOTE/}
 
-!["Figure 18 - Manage Features: Enable features"](images/portal-product-features-disabled.png "Figure 18 - Manage Features: Enable features")
+!["Figure 19 - Manage Features: Enable features"](images/portal-product-features-disabled.png "Figure 19 - Manage Features: Enable features")
 
-!["Figure 19 - Manage Features: Configure or disable features"](images/portal-product-features-enabled.png "Figure 19 - Manage Features: Configure or disable features")
+!["Figure 20 - Manage Features: Configure or disable features"](images/portal-product-features-enabled.png "Figure 20 - Manage Features: Configure or disable features")
 
 Available features are described on [Product Features](../cloud-features) page.
 
@@ -221,7 +225,7 @@ Available features are described on [Product Features](../cloud-features) page.
 
 You can expand your cluster by adding *more product nodes* to your cluster. This helps improve *High Availability* and *task/load balancing*.
 
-!["Figure 20 - Nodes: Manage additional nodes"](images/portal-product-nodes-additional-nodes.png "Figure 20 - Nodes: Manage additional nodes")
+!["Figure 21 - Nodes: Manage additional nodes"](images/portal-product-nodes-additional-nodes.png "Figure 21 - Nodes: Manage additional nodes")
 
 More details can be found [here](../cloud-scaling#additional-product-nodes---general).
 
@@ -230,21 +234,21 @@ More details can be found [here](../cloud-scaling#additional-product-nodes---gen
 ### Maintenance and Danger Zones: Terminate and Restart your Instance
 You can restart your product nodes, deploy additional tools and terminate your product here.
 
-!["Figure 21 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 21 - Manage Product: Terminate")
+!["Figure 22 - Manage Product: Maintenance and Termination"](images\portal-product-details-maintenance-and-termination.png "Figure 22 - Manage Product: Terminate")
 
 ---
 
 * **Maintenance Zone**  
   Use this tab to restart selected node and deploy RavenDB tools.
 
-!["Figure 22 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 22 - Manage Product: Maintenance Zone")
+!["Figure 23 - Manage Product: Storage"](images\portal-product-details-maintenance-zone.png "Figure 23 - Manage Product: Maintenance Zone")
 
 ---
 
 * **Danger Zone**  
   Use this tab's **Terminate** button to eliminate your cluster.
 
-!["Figure 23 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 23 - Manage Product: Danger Zone")
+!["Figure 24 - Manage Product: Terminate"](images\portal-product-details-terminate-product.png "Figure 24 - Manage Product: Danger Zone")
 
   {DANGER: }
   Terminating your instance is **irreversible**. Your data and cluster properties will be permanently lost.  

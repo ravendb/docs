@@ -133,6 +133,14 @@ running on a Disk of size for which a given *Performance Tier* is the
 default one.
 {INFO/}
 
+### Data disks
+
+**Data Disks** are dedicated storage volumes used exclusively for RavenDB data. They are available on **Azure** for instances running in the *Production Tier*. These disks are entirely separate from the operating system disk, which remains isolated to ensure system stability and optimal performance.
+
+The use of a data disk is mandatory for deployments requiring more than 1TB of storage.
+
+**Data Disk** can be selected during instance creation or migrated to on already existing instances.
+
 ---
 
 ###GCP Disks
