@@ -4,14 +4,17 @@
 {NOTE: }
 
 * Documents cannot be archived directly - they must be scheduled for archival.
-  To **schedule a document** for archival, add the `@archive-at` property to the document's metadata, and set its value to the desired archival time (in UTC).
+  To **schedule a document** for archival, add the `@archive-at` property to the document's metadata and set its value to the desired archival time (in UTC).
   This can be done in several ways, as described in this article.
 
-* When the archival feature is enabled, RavenDB runs a background archiving task that periodically scans the database for documents scheduled for archival.  
-  The scan frequency is configurable when [Enabling the archival feature](../data-archival/enable-data-archiving) (default: 60 seconds).
-
+* **Note**:  
+  Just scheduling a document for archival does Not archive it at the specified time.  
+  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../data-archival/enable-data-archiving).  
+  This task periodically scans the database for documents scheduled for archival.  
+  The scan frequency is configurable when [enabling ](../data-archival/enable-data-archiving) the archival feature (default: 60 seconds).
+ 
 * The archiving task will archive any document whose `@archive-at` time has passed at the time of the scan.  
-  The `@archive-at` metadata property will be replaced with `@archived: true`.
+  The `@archive-at` metadata property will then be replaced with `@archived: true`.
 
 * You can schedule documents for archival even if the archiving feature is not yet enabled.
   These documents will be archived once the feature is enabled and the task runs - provided the scheduled time has already passed.

@@ -9,6 +9,10 @@
 * The archiving feature does Not need to be enabled to unarchive documents.  
   Any previously archived document can be unarchived, regardless of the feature's current state.
 
+* Do **not** attempt to unarchive a document by manually removing the `@archived: true` metadata property from the document.
+  This will not clear the internal archived status of the document.  
+  To properly unarchive a document, use the `archived.unarchive()` method as described below.
+
 * In this article:
   * [Unarchive documents - from the Client API](../data-archival/unarchiving-documents#unarchive-documents---from-the-client-api)
   * [Unarchive documents - from the Studio](../data-archival/unarchiving-documents#unarchive-documents---from-the-studio)
