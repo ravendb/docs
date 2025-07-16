@@ -64,7 +64,10 @@
 * Define a GenAI task using a `GenAiConfiguration` object.  
 * Run the task using `AddGenAiOperation`.  
 
-{CODE:csharp gen-ai_define-gen-ai-task@AiIntegration\GenAI\GenAI.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:use-sample-object gen-ai_define-gen-ai-task_use-sample-object@AiIntegration\GenAI\GenAI.cs /}
+{CODE-TAB:csharp:use-json-schema gen-ai_define-gen-ai-task_use-json-schema@AiIntegration\GenAI\GenAI.cs /}
+{CODE-TABS/}
 
 ---
 
@@ -79,7 +82,8 @@
 | **Collection** | `string` | Name of the document collection associated with the task |
 | **GenAiTransformation** | `GenAiTransformation` | Context generation script - format for objects to be sent to the AI model |
 | **Prompt** | `string` | AI model Prompt - the instructions sent to the AI model |
-| **SampleObject** | `string` | JSON schema - a sample response object to format AI model replies by |
+| **SampleObject** | `string` | A [sample response object](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
+| **JsonSchema** | `string` | A [JSON schema](../../ai-integration/gen-ai-integration/gen-ai-overview#the-elements_json-schema) to format the AI model's replies by <br> If both a `SampleObject` and a `JsonSchema` are provided the schema takes precedence |
 | **UpdateScript** | `string` | Update script - specifies what to do with AI model replies |
 | **MaxConcurrency** | `int` | Max concurrent connections to the AI model (each connection serving a single context object |
 
