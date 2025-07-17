@@ -9,10 +9,10 @@
 * The license key is sent to the email that was provided when obtaining the license.  
   There are a few ways to **activate your license**, see below.  
 
-* In this page:
+* In this article:
 
   * [Activate license with configuration keys](../../start/licensing/activate-license#activate-license-with-configuration-keys)
-  * [Activate license from Studio](../../start/licensing/activate-license#activate-license-from-studio)
+  * [Activate license from the Studio](../../start/licensing/activate-license#activate-license-from-the-studio)
 
 {NOTE/}
 
@@ -29,17 +29,17 @@
 
 {PANEL/}
 
-{PANEL: Activate license from Studio}
+{PANEL: Activate license from the Studio}
 
-You can activate the license from Studio:  
+You can activate the license from the Studio:  
 
 ![Register License](images/register-1.png "Register license")
 
 1. **About**  
-   Navigate to the _About_ page in Studio
+   Navigate to the _About_ page in the Studio.
    
 2. **Activate**  
-   Click the _REGISTER LICENSE_ button
+   Click the _REGISTER LICENSE_ button. The following form will open:
 
 ![Register License](images/register-2.png "Register license")
 
