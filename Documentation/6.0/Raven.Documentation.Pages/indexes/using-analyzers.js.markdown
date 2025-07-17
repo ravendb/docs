@@ -78,10 +78,10 @@ There are two exceptions to this rule:
    However, at query time, when performing a full-text search on that field,  
    the default [RavenStandardAnalyzer](../indexes/using-analyzers#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
 
-   Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
-   so to address this issue, you have two options:
-    * Increase the [MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).
-    * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.
+     Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
+     so to address this issue, you have two options:
+      * Increase the [MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).
+      * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.
 
 2. Behavior is also different when making a full-text search with wildcards in the search terms.  
    This is explained in detail in [Searching with wildcards](../indexes/querying/searching#searching-with-wildcards).
