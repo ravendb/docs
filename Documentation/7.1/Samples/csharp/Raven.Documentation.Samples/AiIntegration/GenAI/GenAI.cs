@@ -7,6 +7,7 @@ using Raven.Client.Documents.Operations.AI;
 using Raven.Client.Documents.Operations.ConnectionStrings;
 using Raven.Client.Documents.Operations.ETL;
 using Sparrow.Json;
+using static Akka.Streams.Attributes;
 using static Akka.Streams.Implementation.Fusing.GraphInterpreter;
 
 namespace Raven.Documentation.Samples.AiIntegration.ConnectionStrings;
@@ -65,7 +66,7 @@ public class GenAI
 
         using (var store = new DocumentStore())
         {
-            #region gen-ai_define-gen-ai-task
+            #region gen-ai_define-gen-ai-task_use-sample-object
             GenAiConfiguration config = new GenAiConfiguration
             {
                 // Task name
@@ -94,13 +95,88 @@ public class GenAI
                 // AI model Prompt - the instructions sent to the AI model
                 Prompt = "Check if the following blog post comment is spam or not",
 
-                // JSON schema - a sample response object to format AI model replies by
+                // Sample object - a sample response object to format the AI model's replies by
                 SampleObject = JsonConvert.SerializeObject(
                     new
                     {
                         Blocked = true,
                         Reason = "Concise reason for why this comment was marked as spam or ham"
                     }),
+
+                // Update script - specifies what to do with AI model replies
+                UpdateScript = @"    
+                        // Find the comment
+                        const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
+                        // Was detected as spam
+                        if($output.Blocked)
+                        {
+                            // Remove this comment
+                            this.Comments.splice(idx, 1);
+                        }",
+
+                // Max concurrent connections to AI model
+                MaxConcurrency = 4
+            };
+
+            // Run the task
+            var GenAiOperation = new AddGenAiOperation(config);
+            var addAiIntegrationTaskResult = store.Maintenance.Send(GenAiOperation);
+            #endregion
+        }
+
+        using (var store = new DocumentStore())
+        {
+            #region gen-ai_define-gen-ai-task_use-json-schema
+            GenAiConfiguration config = new GenAiConfiguration
+            {
+                // Task name
+                Name = "FilterSpam",
+
+                // Unique task identifier
+                Identifier = "FilterSpam",
+
+                // Connection string to AI model
+                ConnectionStringName = "ollama-cs",
+
+                // Task is enabled
+                Disabled = false,
+
+                // Collection associated with the task
+                Collection = "Posts",
+
+                // Context generation script - format for objects to be sentto the AI model
+                GenAiTransformation = new GenAiTransformation {
+                    Script = @"
+                        for(const comment of this.Comments)
+                        {
+                            ai.genContext({Text: comment.Text, Author: comment.Author, Id: comment.Id});}"
+                },
+
+                // AI model Prompt - the instructions sent to the AI model
+                Prompt = "Check if the following blog post comment is spam or not",
+
+                // JSON schema - a schema to format the AI model's replies by
+                JsonSchema = @"{
+                      ""name"": """ + "some-name" + @""",
+                      ""strict"": true,
+                      ""schema"": {
+                          ""type"": ""object"",
+                          ""properties"": {
+                            ""Blocked"": {
+                              ""type"": ""boolean""
+                            },
+                            ""Reason"": {
+                              ""type"": ""string"",
+                              ""description"": ""Concise reason for why this comment was marked as spam or ham""
+                            }
+                          },
+                          ""required"": [
+                            ""Blocked"",
+                            ""Reason""
+                          ],
+                          ""additionalProperties"": false
+                        }
+                    }",
 
                 // Update script - specifies what to do with AI model replies
                 UpdateScript = @"    
