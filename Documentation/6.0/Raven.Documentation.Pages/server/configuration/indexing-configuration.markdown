@@ -210,9 +210,12 @@ EXPERT ONLY:
 
 {PANEL: Indexing.Auto.ArchivedDataProcessingBehavior}
 
-Set the default deployment mode for static indexes.
+The default processing behavior for archived documents in auto-indexes.
 
-- **Type**: `enum IndexDeploymentModeArchivedDataProcessingBehavior` (`ExcludeArchived`, `IncludeArchived`, `ArchivedOnly`)
+- **Type**: `enum ArchivedDataProcessingBehavior`:  
+  * `ExcludeArchived`: only non-archived documents are processed by the index.  
+  * `IncludeArchived`: both archived and non-archived documents are processed by the index.  
+  * `ArchivedOnly`: only archived documents are processed by the index.  
 - **Default**: `ExcludeArchived`
 - **Scope**: Server-wide, or per database
 
@@ -351,9 +354,16 @@ Allow to open an index without checking if current Database ID matched the one f
 
 {PANEL: Indexing.Static.ArchivedDataProcessingBehavior}
 
-Set the default deployment mode for static indexes.
+* Set the default processing behavior for archived documents in static indexes.
+* This setting applies only to static indexes that use _Documents_ as their data source.  
+  It does not apply to indexes based on _Time Series_ or _Counters_, which default to `IncludeArchived`.
 
-- **Type**: `enum IndexDeploymentModeArchivedDataProcessingBehavior` (`ExcludeArchived`, `IncludeArchived`, `ArchivedOnly`)
+---
+
+- **Type**: `enum ArchivedDataProcessingBehavior`:
+    * `ExcludeArchived`: only non-archived documents are processed by the index.
+    * `IncludeArchived`: both archived and non-archived documents are processed by the index.
+    * `ArchivedOnly`: only archived documents are processed by the index.
 - **Default**: `ExcludeArchived`
 - **Scope**: Server-wide, or per database
 

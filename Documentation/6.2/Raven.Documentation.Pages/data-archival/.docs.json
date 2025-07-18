@@ -1,0 +1,57 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "DiscussionId": "28bb68b0-3af7-46b3-ad4c-e34b7e81565d",
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "server/extensions/archival"
+            }
+        ]
+    },
+    {
+        "Path": "enable-data-archiving.markdown",
+        "Name": "Enable Data Archiving",
+        "DiscussionId": "e5eeaaa7-bb98-4ae7-9cd1-75cb300738e7",
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "server/extensions/archival"
+            }
+        ]
+    },
+    {
+        "Path": "schedule-document-archiving.markdown",
+        "Name": "Schedule Document Archiving",
+        "DiscussionId": "ec35fa9a-834a-48b0-96c3-d67e1648cbae",
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "server/extensions/archival"
+            }
+        ]
+    },
+    {
+        "Path": "archived-documents-and-other-features.markdown",
+        "Name": "Archived Documents and Other Features",
+        "DiscussionId": "977c8625-ad1d-4dd9-8b29-eb92037957f8",
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "server/extensions/archival"
+            }
+        ]
+    },
+    {
+        "Path": "unarchiving-documents.markdown",
+        "Name": "Unarchiving Documents",
+        "DiscussionId": "a01cdd59-257e-4a0e-8ec6-07d7d7d3d239",
+        "Mappings": [
+            {
+                "Version": 6.0,
+                "Key": "server/extensions/archival"
+            }
+        ]
+    }
+]
