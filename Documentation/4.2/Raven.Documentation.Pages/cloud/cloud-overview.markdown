@@ -54,6 +54,15 @@ billing data. We create your account and send you a link to its [Portal](../clou
 as soon as you finish registering, so you can immediately start creating and handling your
 [cloud products](../cloud/portal/cloud-portal-products-tab).
 
+{INFO: }
+
+It is possible to become the owner of multiple Cloud Accounts using the same email address.
+This can be useful if you need to separate environments, teams, or billing contexts. 
+However, creating multiple Cloud Accounts under one email is not available through the self-service UI.
+To set this up, please contact RavenDB Cloud Support and request a multi-account configuration.
+
+{INFO/}
+
 {PANEL/}
 
 {PANEL: Register Your Account}
