@@ -4,7 +4,7 @@
 
 * **Conventions** in RavenDB are customizable settings that users can configure to tailor client behaviors according to their preferences.
  
-* In this page:  
+* In this article:  
   * [How to set conventions](../../client-api/configuration/conventions#how-to-set-conventions)  
   * [Conventions:](../../client-api/configuration/conventions#conventions:)  
       [customFetch](../../client-api/configuration/conventions#customfetch)  
