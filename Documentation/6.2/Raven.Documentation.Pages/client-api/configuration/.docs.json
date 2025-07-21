@@ -6,17 +6,6 @@
         "Mappings": []
     },
     {
-        "Path": "querying.markdown",
-        "Name": "Querying",
-        "DiscussionId": "da2fdd00-edeb-40a3-8d5c-33933fc23a46",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/configuration/conventions/querying"
-            }
-        ]
-    },
-    {
         "Path": "serialization.markdown",
         "Name": "Serialization",
         "DiscussionId": "da305bdb-37c5-4ee9-b5a2-f641969427e1",

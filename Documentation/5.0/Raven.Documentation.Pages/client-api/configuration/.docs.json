@@ -14,7 +14,8 @@
                 "Version": 3.0,
                 "Key": "client-api/configuration/conventions/querying"
             }
-        ]
+        ],
+        "LastSupportedVersion": "5.4"
     },
     {
         "Path": "serialization.markdown",

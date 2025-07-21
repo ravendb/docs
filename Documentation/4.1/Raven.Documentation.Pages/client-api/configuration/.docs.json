@@ -11,10 +11,15 @@
         "DiscussionId": "da2fdd00-edeb-40a3-8d5c-33933fc23a46",
         "Mappings": [
             {
+                "Version": 6.0,
+                "Key": "client-api/configuration/conventions"
+            },
+            {
                 "Version": 3.0,
                 "Key": "client-api/configuration/conventions/querying"
             }
-        ]
+        ],
+        "LastSupportedVersion": "5.4"
     },
     {
         "Path": "serialization.markdown",

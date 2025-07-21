@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Amazon.XRay.Recorder.Handlers.System.Net;
 using Newtonsoft.Json.Serialization;
 using Raven.Client;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Http;
 using Raven.Client.Json.Serialization;
@@ -158,8 +160,12 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     ResolveTypeFromClrTypeName = clrType => clrType.GetType()
                     #endregion
                     ,
+                    #region FindProjectedPropertyNameForIndex
+                    FindProjectedPropertyNameForIndex = (indexedType, indexName, path, prop) => path + prop
+                    #endregion
+                    ,
                     #region FindPropertyNameForIndex
-                    // The default function:
+                    // The DEFAULT function:
                     FindPropertyNameForIndex = (Type indexedType, string indexedName, string path, string prop) => 
                         (path + prop).Replace("[].", "_").Replace(".", "_")
                     #endregion
@@ -405,6 +411,25 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         // Syntax:
         public TimeSpan WaitForReplicationAfterSaveChangesTimeout { get; set; }
         #endregion
+        
+        public void QueryExamples()
+        {
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region project_results_from_index_query
+                    // Query the index
+                    var query = session.Query<Students_BySchoolId.IndexEntry, Students_BySchoolId>()
+                        .Where(x => x.Name == "someStudentName")
+                        .OfType<Student>()
+                         // Project only the School.Id property from the Student document in the results
+                        .Select(student => student.School.Id)
+                        .ToList();
+                    #endregion
+                }
+            }
+        }
     }
 
     internal class MyHttpClient : HttpClient
@@ -413,4 +438,40 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
         {
         }
     }
+
+    #region students_by_school_id_index
+    public class Students_BySchoolId : AbstractIndexCreationTask<Student>
+    {
+        public class IndexEntry
+        {
+            public string Name { get; set; }
+            public string SchoolId { get; set; }
+        }
+        
+        public Students_BySchoolId()
+        {
+            Map = students => from student in students
+                select new IndexEntry
+                {
+                    Name = student.StudentName,
+                    SchoolId = student.School.Id // index nested property
+                };
+        }
+    }
+    #endregion
+    
+    #region student_class
+    public class Student
+    {
+        public string StudentName { get; set; }
+        public School School { get; set; }
+        // ... other student properties
+    }
+    
+    public class School
+    {
+        public string SchoolName { get; set; }
+        public string Id { get; set; }
+    }
+    #endregion
 }

@@ -14,7 +14,14 @@
     "Path": "querying.markdown",
     "Name": "Querying",
     "DiscussionId": "06861f6c-3abb-4494-b1bb-710bf0f86942",
-    "Mappings": []
+    "Mappings": [
+        {
+            "Version": 6.0,
+            "Key": "client-api/configuration/conventions"
+        }
+    ],
+    "LastSupportedVersion": "5.4"
+      
   },
   {
     "Path": "caching.markdown",
