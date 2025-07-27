@@ -41,11 +41,14 @@ Visit the [pricing page](https://ravendb.net/buy) to see which features are incl
 
 * The developer license is for development use only and isn't applicable for commercial use.  
   You must upgrade this license before going into production.   
-* It is fully featured but temporary - license lasts 6 months and can be renewed.  
+* It is fully featured but temporary - the license lasts 6 months and can be renewed.  
 * Certificates exceeding 4 months expiration period are Not allowed to be used with this license.  
   Automatic renewal of Let’s Encrypt certificates is disabled.  
 * When you are ready to go into production:  
    * Be sure to choose a license that has all features with which your client was developed.  
+     Note that if you use [Let's encrypt](../../start/installation/setup-wizard#secure-setup-with-a-free-let) 
+     for the new license, you will not be able to simply replace the license since you are 
+     using a dev subdomain. Instead, you can create a new cluster.  
    * [Upgrade to a production license](https://ravendb.net/buy) and then [replace](../../start/licensing/replace-license) the developer license.  
 * The developer license can be obtained [here](https://ravendb.net/buy#developer).
 

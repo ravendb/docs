@@ -163,7 +163,7 @@ namespace Raven.Documentation.Samples.DocumentExtensions.Revisions.ClientAPI.Ope
         }
     }
 
-    public class Syntax
+    public class Syntax1
     {
         public interface IFoo
         {
