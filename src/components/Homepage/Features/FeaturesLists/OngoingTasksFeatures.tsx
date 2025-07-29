@@ -1,25 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const OngoingTasksFeaturesList = [
-  {
-    title: "Replication",
-    url: "/server/clustering/replication/replication",
-    description: "Short description",
-  },
-  {
-    title: "Subscriptions",
-    url: "/client-api/data-subscriptions/what-are-data-subscriptions",
-    description: "Short description",
-  },
-  {
-    title: "Periodic backups",
-    url: "/server/ongoing-tasks/backup-overview",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function OngoingTasksFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const OngoingTasksFeaturesList = [
+    {
+      title: "Replication",
+      url: `${activeVersion.label}/server/clustering/replication/replication-overview`,
+      description: "Short description",
+    },
+    {
+      title: "Subscriptions",
+      url: `${activeVersion.label}/client-api/data-subscriptions/what-are-data-subscriptions`,
+      description: "Short description",
+    },
+    {
+      title: "Periodic backups",
+      url: `${activeVersion.label}/server/ongoing-tasks/backup-overview`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

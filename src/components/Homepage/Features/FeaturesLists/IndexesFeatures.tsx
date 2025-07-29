@@ -1,20 +1,24 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const IndexesFeaturesList = [
-  {
-    title: "Static indexes",
-    url: "/indexes/creating-and-deploying",
-    description: "Short description",
-  },
-  {
-    title: "Auto indexes",
-    url: "/indexes/creating-and-deploying#auto-indexes",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function IndexesFeaturesGrid() {
+    const pluginId = "default";
+    const { activeVersion } = useActiveDocContext(pluginId);
+
+    const IndexesFeaturesList = [
+        {
+            title: "Static indexes",
+            url: `${activeVersion.label}/indexes/creating-and-deploying`,
+            description: "Short description",
+        },
+        {
+            title: "Auto indexes",
+            url: `${activeVersion.label}/indexes/creating-and-deploying#auto-indexes`,
+            description: "Short description",
+        },
+    ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

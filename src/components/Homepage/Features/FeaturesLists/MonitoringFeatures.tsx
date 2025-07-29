@@ -1,25 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const MonitoringFeaturesList = [
-  {
-    title: "Cluster dashboard",
-    url: "/studio/cluster/cluster-dashboard/cluster-dashboard-overview",
-    description: "Short description",
-  },
-  {
-    title: "SNMP monitoring",
-    url: "/server/administration/SNMP/snmp",
-    description: "Short description",
-  },
-  {
-    title: "Telegraf and Grafana",
-    url: "/server/administration/monitoring",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function MonitoringFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const MonitoringFeaturesList = [
+    {
+      title: "Cluster dashboard",
+      url: `${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
+      description: "Short description",
+    },
+    {
+      title: "SNMP monitoring",
+      url: `${activeVersion.label}/server/administration/snmp/snmp-overview`,
+      description: "Short description",
+    },
+    {
+      title: "Telegraf and Grafana",
+      url: `${activeVersion.label}/server/administration/monitoring/telegraf`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

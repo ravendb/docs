@@ -1,25 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const AdministrationFeaturesList = [
-  {
-    title: "Studio",
-    url: "/studio/overview",
-    description: "Short description",
-  },
-  {
-    title: "RavenCLI",
-    url: "/server/administration/cli",
-    description: "Short description",
-  },
-  {
-    title: "NLog",
-    url: "/server/troubleshooting/logging#configuring-and-using-nlog",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function AdministrationFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const AdministrationFeaturesList = [
+    {
+      title: "Studio",
+      url: `${activeVersion.label}/studio/overview`,
+      description: "Short description",
+    },
+    {
+      title: "RavenCLI",
+      url: `${activeVersion.label}/server/administration/cli`,
+      description: "Short description",
+    },
+    {
+      title: "NLog",
+      url: `${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

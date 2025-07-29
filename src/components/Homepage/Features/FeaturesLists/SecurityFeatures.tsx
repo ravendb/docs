@@ -1,20 +1,24 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const SecurityFeaturesList = [
-  {
-    title: "Certificates",
-    url: "/server/security/overview",
-    description: "Short description",
-  },
-  {
-    title: "Encryption",
-    url: "/server/security/encryption/encryption-at-rest",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function SecurityFeaturesGrid() {
+    const pluginId = "default";
+    const { activeVersion } = useActiveDocContext(pluginId);
+
+    const SecurityFeaturesList = [
+        {
+            title: "Certificates",
+            url: `${activeVersion.label}/server/security/overview`,
+            description: "Short description",
+        },
+        {
+            title: "Encryption",
+            url: `${activeVersion.label}/server/security/encryption/encryption-at-rest`,
+            description: "Short description",
+        },
+    ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

@@ -1,80 +1,84 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const IntegrationFeaturesList = [
-  {
-    title: "RavenDB ETL",
-    url: "/server/ongoing-tasks/etl/basics",
-    description: "Short description",
-  },
-  {
-    title: "OLAP ETL",
-    url: "/server/ongoing-tasks/etl/olap",
-    description: "Short description",
-  },
-  {
-    title: "Elasticsearch ETL",
-    url: "/server/ongoing-tasks/etl/elasticsearch",
-    description: "Short description",
-  },
-  {
-    title: "SQL ETL",
-    url: "/server/ongoing-tasks/etl/sql",
-    description: "Short description",
-  },
-  {
-    title: "Kafka ETL",
-    url: "/server/ongoing-tasks/etl/queue-etl/kafka",
-    description: "Short description",
-  },
-  {
-    title: "RabbitMQ ETL",
-    url: "/server/ongoing-tasks/etl/queue-etl/rabbit-mq",
-    description: "Short description",
-  },
-  {
-    title: "Snowflake ETL",
-    url: "/server/ongoing-tasks/etl/snowflake",
-    description: "Short description",
-  },
-  {
-    title: "Amazon SQS ETL",
-    url: "/server/ongoing-tasks/etl/queue-etl/amazon-sqs",
-    description: "Short description",
-  },
-  {
-    title: "Azure Queue Storage ETL",
-    url: "/server/ongoing-tasks/etl/queue-etl/azure-queue",
-    description: "Short description",
-  },
-  {
-    title: "RabbitMQ Sink",
-    url: "/server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink",
-    description: "Short description",
-  },
-  {
-    title: "Kafka Sink",
-    url: "/server/ongoing-tasks/queue-sink/kafka-queue-sink",
-    description: "Short description",
-  },
-  {
-    title: "PowerBI",
-    url: "/integrations/postgresql-protocol/power-bi",
-    description: "Short description",
-  },
-  {
-    title: "Akka.NET",
-    url: "/integrations/akka.net-persistence/integrating-with-akka-persistence",
-    description: "Short description",
-  },
-  {
-    title: "Grafana",
-    url: "/server/troubleshooting/logging",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function IntegrationFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const IntegrationFeaturesList = [
+    {
+      title: "RavenDB ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/basics`,
+      description: "Short description",
+    },
+    {
+      title: "OLAP ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/olap`,
+      description: "Short description",
+    },
+    {
+      title: "Elasticsearch ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/elasticsearch`,
+      description: "Short description",
+    },
+    {
+      title: "SQL ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/sql`,
+      description: "Short description",
+    },
+    {
+      title: "Kafka ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/queue-etl/kafka`,
+      description: "Short description",
+    },
+    {
+      title: "RabbitMQ ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/queue-etl/rabbit-mq`,
+      description: "Short description",
+    },
+    {
+      title: "Snowflake ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/snowflake`,
+      description: "Short description",
+    },
+    {
+      title: "Amazon SQS ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/queue-etl/amazon-sqs`,
+      description: "Short description",
+    },
+    {
+      title: "Azure Queue Storage ETL",
+      url: `${activeVersion.label}/server/ongoing-tasks/etl/queue-etl/azure-queue`,
+      description: "Short description",
+    },
+    {
+      title: "RabbitMQ Sink",
+      url: `${activeVersion.label}/server/ongoing-tasks/queue-sink/rabbit-mq-queue-sink`,
+      description: "Short description",
+    },
+    {
+      title: "Kafka Sink",
+      url: `${activeVersion.label}/server/ongoing-tasks/queue-sink/kafka-queue-sink`,
+      description: "Short description",
+    },
+    {
+      title: "PowerBI",
+      url: `${activeVersion.label}/integrations/postgresql-protocol/power-bi`,
+      description: "Short description",
+    },
+    {
+      title: "Akka.NET",
+      url: `${activeVersion.label}/integrations/akka.net-persistence/integrating-with-akka-persistence`,
+      description: "Short description",
+    },
+    {
+      title: "Grafana",
+      url: `${activeVersion.label}/server/troubleshooting/logging`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

@@ -1,25 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const BackgroundTasksFeaturesList = [
-  {
-    title: "Expiration",
-    url: "/server/extensions/expiration",
-    description: "Short description",
-  },
-  {
-    title: "Refresh",
-    url: "/server/extensions/refresh",
-    description: "Short description",
-  },
-  {
-    title: "Archival",
-    url: "/server/extensions/archival",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function BackgroundTasksFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const BackgroundTasksFeaturesList = [
+    {
+      title: "Expiration",
+      url: `${activeVersion.label}/server/extensions/expiration`,
+      description: "Short description",
+    },
+    {
+      title: "Refresh",
+      url: `${activeVersion.label}/server/extensions/refresh`,
+      description: "Short description",
+    },
+    {
+      title: "Archival",
+      url: `${activeVersion.label}/server/extensions/archival`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

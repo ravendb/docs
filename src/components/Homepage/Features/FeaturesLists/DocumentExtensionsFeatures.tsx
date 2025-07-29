@@ -1,35 +1,39 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const DocumentExtensionsFeaturesList = [
-  {
-    title: "Revisions",
-    url: "/document-extensions/revisions/overview",
-    description: "Short description",
-  },
-  {
-    title: "Time series",
-    url: "/document-extensions/timeseries/overview",
-    description: "Short description",
-  },
-  {
-    title: "Attachments",
-    url: "/document-extensions/attachments/what-are-attachments",
-    description: "Short description",
-  },
-  {
-    title: "Documents compression",
-    url: "/server/storage/documents-compression",
-    description: "Short description",
-  },
-  {
-    title: "Counters",
-    url: "/document-extensions/counters/overview",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function DocumentExtensionsFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const DocumentExtensionsFeaturesList = [
+    {
+      title: "Revisions",
+      url: `${activeVersion.label}/document-extensions/revisions/overview`,
+      description: "Short description",
+    },
+    {
+      title: "Time series",
+      url: `${activeVersion.label}/document-extensions/timeseries/overview`,
+      description: "Short description",
+    },
+    {
+      title: "Attachments",
+      url: `${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
+      description: "Short description",
+    },
+    {
+      title: "Documents compression",
+      url: `${activeVersion.label}/server/storage/documents-compression`,
+      description: "Short description",
+    },
+    {
+      title: "Counters",
+      url: `${activeVersion.label}/document-extensions/counters/overview`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">

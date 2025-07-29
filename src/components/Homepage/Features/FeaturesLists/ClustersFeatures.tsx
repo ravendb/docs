@@ -1,25 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
-
-const ClustersFeaturesList = [
-  {
-    title: "Sharding",
-    url: "/sharding/overview",
-    description: "Short description",
-  },
-  {
-    title: "Highly available tasks",
-    url: "/server/clustering/distribution/highly-available-tasks",
-    description: "Short description",
-  },
-  {
-    title: "Cluster-wide transactions",
-    url: "/server/clustering/cluster-transactions",
-    description: "Short description",
-  },
-];
+import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
 
 export default function ClustersFeaturesGrid() {
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
+
+  const ClustersFeaturesList = [
+    {
+      title: "Sharding",
+      url: `${activeVersion.label}/sharding/overview`,
+      description: "Short description",
+    },
+    {
+      title: "Highly available tasks",
+      url: `${activeVersion.label}/server/clustering/distribution/highly-available-tasks`,
+      description: "Short description",
+    },
+    {
+      title: "Cluster-wide transactions",
+      url: `${activeVersion.label}/server/clustering/cluster-transactions`,
+      description: "Short description",
+    },
+  ];
+
   return (
     <>
       <Heading as="h4" className="!mb-2">
