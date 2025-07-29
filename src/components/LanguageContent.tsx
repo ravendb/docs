@@ -1,5 +1,5 @@
 ﻿import React, { ReactNode } from "react";
-import { useLanguage } from "./language-context";
+import { useLanguage } from "./LanguageContext";
 
 interface LanguageContentProps {
   language: string;

@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { useLanguage } from "./language-context";
+import { useLanguage } from "./LanguageContext";
 import clsx from "clsx";
 
 const languages = [
