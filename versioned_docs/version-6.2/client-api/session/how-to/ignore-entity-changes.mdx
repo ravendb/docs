@@ -1,0 +1,152 @@
+---
+title: "How to Ignore Entity Changes"
+sidebar_label: ...ignore entity changes
+sidebar_position: 17
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# How to Ignore Entity Changes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* By default, each session tracks the changes made in all the entities it has ever stored, loaded, or queried for.  
+  All changes are then persisted when `SaveChanges` is called.
+
+* To ignore entity changes when calling `SaveChanges`, **disable entity tracking** by any of the following:
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+</Admonition>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To indicate that an entity should be ignored when tracking changes, 
+use the `advanced` session `ignoreChangesFor` method.  
+
+Using `Load` again to retrieve this entity will not initiate a server call.  
+
+The entity will still take part in the session, but be ignored when `save_changes` is called.  
+
+## Syntax
+
+<TabItem value="something-something" label="ignore_changes_1">
+<CodeBlock language="java">
+{`void ignoreChangesFor(Object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Instance of entity for which changes will be ignored. |
+
+
+## Example
+
+<TabItem value="something-something" label="ignore_changes_2">
+<CodeBlock language="java">
+{`Product product = session.load(Product.class, "products/1-A");
+session.advanced().ignoreChangesFor(product);
+product.unitsInStock++; //this will be ignored for SaveChanges
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+To indicate that an entity should be ignored when tracking changes, 
+use the `advanced` session `ignore_changes_for` method.  
+
+Using `load` again to retrieve this entity will not initiate a server call.  
+
+The entity will still take part in the session, but be ignored when `save_changes` is called.  
+
+See more here: [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking)
+
+## Syntax
+
+<TabItem value="something-something" label="ignore_changes_1">
+<CodeBlock language="python">
+{`def ignore_changes_for(self, entity: object) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **entity** | `object` | The instance of an entity for which changes will be ignored. |
+
+## Example
+
+<TabItem value="something-something" label="ignore_changes_2">
+<CodeBlock language="python">
+{`product = session.load("products/1-A", Product)
+session.ignore_changes_for(product)
+product.units_in_stock += 1  # this will be ignored for save_changes
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* By default, each session tracks the changes made in all the entities it has ever stored, loaded, or queried for.  
+  All changes are then persisted when `saveChanges` is called.
+
+* To ignore entity changes when calling `saveChanges`, **disable entity tracking** by any of the following:
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+</Admonition>
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* By default, each session tracks the changes made in all the entities it has ever stored, loaded, or queried for.  
+  All changes are then persisted when `saveChanges` is called.
+
+* To ignore entity changes when calling `saveChanges`, **disable entity tracking** by any of the following:
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+</Admonition>
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

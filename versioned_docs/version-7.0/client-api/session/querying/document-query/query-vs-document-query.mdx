@@ -1,0 +1,520 @@
+---
+title: "Query vs DocumentQuery"
+sidebar_label: Query vs DocumentQuery
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Query vs DocumentQuery
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* RavenDB Queries can be executed using `query` or `document_query`, or by passing 
+  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  via `raw_query`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+
+* The main differences between `Query` and `DocumentQuery` are outlined in this article.
+
+* In this page:
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
+  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query#immutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
+
+</Admonition>
+## API support
+
+**Query**:
+
+* The `Query` API supports LINQ, the essential data access solution in .NET.
+
+* The API exposed by the _Query_ method is a wrapper of _DocumentQuery_ and is built on top of it.
+
+* When using _Query_, the query is translated into a _DocumentQuery_ object,  
+  which then builds into an RQL that is sent to the server.
+
+* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
+**DocumentQuery**:
+
+* `DocumentQuery` does Not support LINQ.
+ 
+* It exposes a lower-level API that provides more flexibility and control when building a query.
+
+* When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
+
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
+<Admonition type="note" title="Note">
+
+**Note**:
+
+`Query` and `DocumentQuery` can be converted to one another.  
+This enables you to take advantage of all available API methods & extensions.  
+See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query).
+
+</Admonition>
+
+
+
+## Immutability
+
+* `Query` is **immutable** while `DocumentQuery` is **mutable**.  
+  You might get different results if you try to *reuse* a query.
+* The usage of the `Query` method in the following example:
+
+<TabItem value="something" label="immutable_query">
+<CodeBlock language="csharp">
+{`IRavenQueryable<User> query = session
+    .Query<User>()
+    .Where(x => x.Name.StartsWith("A"));
+
+IRavenQueryable<User> ageQuery = query
+    .Where(x => x.Age > 21);
+
+IRavenQueryable<User> eyeQuery = query
+    .Where(x => x.EyeColor == "blue");
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene-syntax queries:
+
+    `query: from Users where startsWith(Name, 'A')`
+
+    `ageQuery: from Users where startsWith(Name, 'A') and Age > 21`
+
+    `eyeQuery: from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
+* A similar usage with `DocumentQuery`:
+
+<TabItem value="something" label="mutable_query">
+<CodeBlock language="csharp">
+{`IDocumentQuery<User> documentQuery = session
+    .Advanced
+    .DocumentQuery<User>()
+    .WhereStartsWith(x => x.Name, "A");
+
+IDocumentQuery<User> ageDocumentQuery = documentQuery
+    .WhereGreaterThan(x => x.Age, 21);
+
+IDocumentQuery<User> eyeDocumentQuery = documentQuery
+    .WhereEquals(x => x.EyeColor, "blue");
+
+// Here all of the DocumentQuery variables have the same reference
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene queries:
+
+    `documentQuery: from Users where startsWith(Name, 'A')`  
+    (before creating `ageDocumentQuery`)
+
+    `ageDocumentQuery: from Users where startsWith(Name, 'A') and Age > 21`  
+    (before creating `eyeDocumentQuery`)
+
+    `eyeDocumentuery: from Users where startsWith(Name, 'A') and Age > 21 and EyeColor = 'blue'`
+
+    All created Lucene queries are the same query (actually the same instance).  
+    This is an important hint to be aware of if you are going to reuse `DocumentQuery`.
+
+
+
+## Default Query Operator
+
+* Starting from version 4.0, both `Query` and `DocumentQuery` use `AND` as the default operator.  
+  (Previously, `Query` used `AND` and `DocumentQuery` used `OR`).
+
+* This behavior can be modified by calling `UsingDefaultOperator`:
+        
+<TabItem value="something" label="default_operator">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<User>()
+    .UsingDefaultOperator(QueryOperator.Or);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Unlike .NET client, Java client offers single API for querying documents. 
+
+Below you can find examples of equivalent calls. 
+
+
+`query` method in `DocumentSession` is shorthand for calling `session.advanced().documentQuery`.
+
+<TabItem value="something-something" label="query_1a">
+<CodeBlock language="java">
+{`session.query(Order.class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_1b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class)
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="something-something" label="query_2a">
+<CodeBlock language="java">
+{`session.query(Order.class, Orders_ByShipToAndLines.class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_2b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, Orders_ByShipToAndLines.class)
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="something-something" label="query_3a">
+<CodeBlock language="java">
+{`session.query(Order.class, Query.index("Orders/ByShipToAndLines"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_3b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, "Orders/ByShipToAndLines", null, false);
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+<TabItem value="something-something" label="query_4a">
+<CodeBlock language="java">
+{`session.query(Order.class, Query.collection("orders"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_4b">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Order.class, null, "orders", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* RavenDB Queries can be executed using `query` or `document_query`, or by passing 
+  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  via `raw_query`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+
+* In the Python client API, `query` methods and their equivalent `document_query` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  The Python documentation therefore often provides `query` usage samples without adding 
+  `document_query` examples as well.  
+
+* In this page:
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
+  * [Mutability](../../../../client-api/session/querying/document-query/query-vs-document-query#mutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
+
+</Admonition>
+## API support
+
+* `query` and `document_query` queries are translated to RQL and sent to the server.  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).  
+* Available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).  
+
+
+
+## Mutability
+
+* All Python queries (`query` and `document_query`) are **mutable**.  
+  You may get different results if you try to *reuse* a query.
+
+* The usage of the `Query` method in the following example:
+
+<TabItem value="something-something" label="immutable_query">
+<CodeBlock language="python">
+{`query = session.query(object_type=User).where_starts_with("name", "A")
+
+age_query = query.where_greater_than_or_equal("age", 21)
+
+eye_query = query.where_equals("eye_color", "blue")
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene-syntax queries:
+
+    `query: from Users where startsWith(name, 'A')`
+
+    `ageQuery: from Users where startsWith(name, 'A') and age > 21`
+
+    `eyeQuery: from Users where startsWith(name, 'A') and eye_color = 'blue'`
+* A similar usage with `document_query`:
+
+<TabItem value="something-something" label="mutable_query">
+<CodeBlock language="python">
+{`document_query = session.advanced.document_query(object_type=User).where_starts_with("name", "A")
+
+age_document_query = document_query.where_greater_than_or_equal("age", 21)
+
+eye_document_query = document_query.where_equals("eye_color", "blue")
+
+# Here all of the DocumentQuery variables have the same reference
+`}
+</CodeBlock>
+</TabItem>
+
+    will result with the following Lucene queries:
+
+    `documentQuery: from Users where startsWith(name, 'A')`  
+    (before creating `ageDocumentQuery`)
+
+    `ageDocumentQuery: from Users where startsWith(name, 'A') and age > 21`  
+    (before creating `eyeDocumentQuery`)
+
+    `eyeDocumentuery: from Users where startsWith(name, 'A') and age > 21 and eye_color = 'blue'`
+
+    All created Lucene queries are the same query (actually the same instance).  
+    This is an important hint to be aware of if you are going to reuse `document_query`.
+
+
+
+## Default Query Operator
+
+* Queries use `AND` as the default operator.  
+
+* The operator can be replaced by calling `using_default_operator`:
+        
+<TabItem value="something-something" label="default_operator">
+<CodeBlock language="python">
+{`session.advanced.document_query(object_type=User).using_default_operator(QueryOperator.OR)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* RavenDB Queries can be executed using `query` or `document_query`, or by passing 
+  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  via `raw_query`.  
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+
+* In the PHP client API, `query` methods and their equivalent `documentQuery` methods 
+  provide the same functionality. (This is different from the C# client implementation, 
+  which often provides different functionality for `Query` methods and their `DocumentQuery` 
+  counterparts.)  
+  The PHP documentation therefore often provides `query` usage samples without adding 
+  `documentQuery` examples as well.  
+
+* In this page:
+   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
+   * [`query `and `documentQuery` equivalents](../../../../client-api/session/querying/document-query/query-vs-document-query#queryand-documentquery-equivalents)
+
+</Admonition>
+## API support
+
+* `query` and `documentQquery` queries are translated to RQL and sent to the server.  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).  
+* Available _documentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).  
+
+
+
+## `query `and `documentQuery` equivalents
+
+#### 1. 
+
+<TabItem value="something-something" label="query_1a">
+<CodeBlock language="php">
+{`$session->query(Order::class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_1b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class)
+`}
+</CodeBlock>
+</TabItem>
+#### 2. 
+
+<TabItem value="something-something" label="query_2a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Orders_ByShipToAndLines::class)
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_2b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, Orders_ByShipToAndLines::class)
+`}
+</CodeBlock>
+</TabItem>
+#### 3. 
+
+<TabItem value="something-something" label="query_3a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Query::index("Orders/ByShipToAndLines"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_3b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, "Orders/ByShipToAndLines", null, false);
+`}
+</CodeBlock>
+</TabItem>
+#### 4. 
+
+<TabItem value="something-something" label="query_4a">
+<CodeBlock language="php">
+{`$session->query(Order::class, Query::collection("orders"))
+`}
+</CodeBlock>
+</TabItem>
+
+is equivalent to:
+
+<TabItem value="something-something" label="query_4b">
+<CodeBlock language="php">
+{`$session->advanced()->documentQuery(Order::class, null, "orders", false);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The Node.js client provides a **unified API** for querying documents via the `session.query()` method.  
+  All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query#query-api).
+
+* The `query` method is essentially a shorthand for invoking the `documentQuery` method.  
+  Examples of those equivalent calls are listed below. 
+
+
+</Admonition>
+<TabItem value="something-something" label="query_1">
+<CodeBlock language="nodejs">
+{`// This collection query:
+session.query(Order);
+
+// is equivalent to this documentQuery:    
+session.advanced.documentQuery(Order);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="query_2">
+<CodeBlock language="nodejs">
+{`// This collection query:
+session.query(\{ collection: "orders" \});
+
+// is equivalent to this documentQuery
+session.advanced.documentQuery(\{
+    collection: "orders",
+    indexName: null,
+    isMapReduce: false
+\});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="query_3">
+<CodeBlock language="nodejs">
+{`// This index query:
+session.query(\{ indexName: "Orders/ByShipToAndLines" \});
+
+// is equivalent to this documentQuery:
+session.advanced.documentQuery(\{ indexName: "Orders/ByShipToAndLines" \});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="query_4">
+<CodeBlock language="nodejs">
+{`// This index query:
+session.query(\{ indexName: "Orders/ByShipToAndLines" \});
+
+// is equivalent to this documentQuery:
+session.advanced.documentQuery(\{
+    indexName: "Orders/ByShipToAndLines",
+    isMapReduce: false,
+    collection: null
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [Query Overview](../../../../client-api/session/querying/how-to-query)
+- [What is a Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
+- [How to use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
+
+### Indexes
+- [Querying an Index](../../../../indexes/querying/query-index)
+
+### Querying
+- [Basics](../../../../indexes/querying/query-index)
+
+
+-->

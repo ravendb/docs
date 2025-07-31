@@ -1,0 +1,428 @@
+---
+title: "Client API: Subscribing to Store Events"
+sidebar_label: ...subscribe to Store events
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Client API: Subscribing to Store Events
+<Admonition type="note" title="Note">
+
+* **Events** allow users to perform custom actions in response to operations made in 
+  a `Document Store` or a `Session`.  
+
+* An event is invoked when the selected action is executed on an entity, 
+  or querying is performed.  
+
+* Subscribing to an event at the `DocumentStore` level subscribes to this 
+  event in all subsequent sessions.  
+
+      E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
+      `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+* Subscribing to an event in a `Session` is valid only for this session.  
+
+     E.g., to invoke an event after SaveChanges() is called by **this session** only, use -  
+     `session.Advanced.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
+
+     Read more about `Session` events [here](../../client-api/session/how-to/subscribe-to-events).  
+
+* In this page:  
+   * [Store Events](../../client-api/how-to/subscribe-to-store-events#store-events)
+      * [OnBeforeRequest](../../client-api/how-to/subscribe-to-store-events#section)  
+      * [OnSucceedRequest](../../client-api/how-to/subscribe-to-store-events#section-1)  
+      * [AfterDispose](../../client-api/how-to/subscribe-to-store-events#section-2)  
+      * [BeforeDispose](../../client-api/how-to/subscribe-to-store-events#section-3)  
+      * [RequestExecutorCreated](../../client-api/how-to/subscribe-to-store-events#section-4)  
+      * [OnSessionCreated](../../client-api/how-to/subscribe-to-store-events#section-5)  
+      * [OnFailedRequest](../../client-api/how-to/subscribe-to-store-events#section-6)  
+      * [OnTopologyUpdated](../../client-api/how-to/subscribe-to-store-events#section-7)  
+   * [Store/Session Events](../../client-api/how-to/subscribe-to-store-events#store/session-events)
+
+</Admonition>
+## Store Events
+
+You can subscribe to the following events only at the store level, not within a session.  
+
+## `OnBeforeRequest`
+
+This event is invoked by sending a request to the server, before the request 
+is actually sent.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void OnBeforeRequestEvent(object sender, BeforeRequestEventArgs args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `BeforeRequestEventArgs` | See details below |
+
+`BeforeRequestEventArgs`:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class BeforeRequestEventArgs : EventArgs
+\{
+    // Database Name
+    public string Database \{ get; \}
+    // Database URL
+    public string Url \{ get; \}
+    // The request intended to be sent to the server  
+    public HttpRequestMessage Request \{ get; \}
+    // The number of attempts made to send the request to the server
+    public int AttemptNumber \{ get; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Example**:  
+  To define a method that checks URLs sent in a document store request:  
+<TabItem value="something" label="OnBeforeRequestEvent">
+<CodeBlock language="csharp">
+{`private void OnBeforeRequestEvent(object sender, BeforeRequestEventArgs args)
+\{
+    var forbiddenURL = new Regex("/databases/[^/]+/docs");
+
+    if (forbiddenURL.IsMatch(args.Url) == true)
+    \{
+        // action to be taken if the URL is forbidden
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    To subscribe to the event:  
+<TabItem value="something" label="SubscribeToOnBeforeRequest">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+store.OnBeforeRequest += OnBeforeRequestEvent;
+`}
+</CodeBlock>
+</TabItem>
+
+## `OnSucceedRequest`
+
+This event is invoked by receiving a successful reply from the server.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void OnSucceedRequestEvent(object sender, SucceedRequestEventArgs args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `SucceedRequestEventArgs` | See details below |
+
+`SucceedRequestEventArgs`:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class SucceedRequestEventArgs : EventArgs
+\{
+    // Database Name
+    public string Database \{ get; \}
+    // Database URL
+    public string Url \{ get; \}
+    // The message returned from the server
+    public HttpResponseMessage Response \{ get; \}
+    // The original request sent to the server
+    public HttpRequestMessage Request \{ get; \}
+    // The number of attempts made to send the request to the server
+    public int AttemptNumber \{ get; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Example**  
+  To define a method that would be activated when a request succeeds:  
+<TabItem value="something" label="OnSucceedRequestEvent">
+<CodeBlock language="csharp">
+{`private void OnSucceedRequestEvent(object sender, SucceedRequestEventArgs args)
+\{
+    if (args.Response.IsSuccessStatusCode == true)
+    \{
+        // action to be taken after a successful request
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    To subscribe to the event:  
+<TabItem value="something" label="SubscribeToOnSucceedRequest">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+store.OnSucceedRequest += OnSucceedRequestEvent;
+`}
+</CodeBlock>
+</TabItem>
+
+## `AfterDispose`
+This event is invoked immediately after a document store is disposed of.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void AfterDisposeEvent(object sender, EventHandler args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store whose disposal triggered the event |
+| **args** | `EventHandler` | **args** has no contents for this event |
+
+## `BeforeDispose`
+This event is invoked immediately before a document store is disposed of.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void BeforeDisposeEvent(object sender, EventHandler args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store whose disposal triggered the event |
+| **args** | `EventHandler` | **args** has no contents for this event |
+
+## `RequestExecutorCreated`
+This event is invoked when a Request Executor is created, 
+allowing you to subscribe to various events of the request executor.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void RequestExecutorCreatedEvent(object sender, RequestExecutor args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `RequestExecutor` | The created Request Executor instance |
+
+## `OnSessionCreated`
+This event is invoked after a session is created, allowing you, for example, 
+to change session configurations.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void OnSessionCreatedEvent(object sender, SessionCreatedEventArgs args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `SessionCreatedEventArgs` | The created Session |
+
+`SessionCreatedEventArgs`:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class SessionCreatedEventArgs : EventArgs
+\{
+    public InMemoryDocumentSessionOperations Session \{ get; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Example**  
+  To define a method that would be activated when a session is created:  
+<TabItem value="something" label="OnSessionCreatedEvent">
+<CodeBlock language="csharp">
+{`private void OnSessionCreatedEvent(object sender, SessionCreatedEventArgs args)
+\{
+        args.Session.MaxNumberOfRequestsPerSession = 100;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    To subscribe to the event:  
+<TabItem value="something" label="SubscribeToOnSessionCreated">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+store.OnSessionCreated += OnSessionCreatedEvent;
+`}
+</CodeBlock>
+</TabItem>
+    
+
+## `OnFailedRequest`
+This event is invoked before a request fails. It allows you, for example, to track 
+and log failed requests.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void OnFailedRequestEvent(object sender, FailedRequestEventArgs args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `FailedRequestEventArgs` | See details below |
+
+`FailedRequestEventArgs`:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class FailedRequestEventArgs : EventArgs
+\{
+    // Database Name
+    public string Database \{ get; \}
+    // Database URL
+    public string Url \{ get; \}
+    // The exception returned from the server
+    public Exception Exception \{ get; \}
+    // The message returned from the server
+    public HttpResponseMessage Response \{ get; \}
+    // The original request sent to the server
+    public HttpRequestMessage Request \{ get; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **Example**  
+  To define a method that would be activated when a request fails:  
+<TabItem value="something" label="OnFailedRequestEvent">
+<CodeBlock language="csharp">
+{`private void OnFailedRequestEvent(object sender, FailedRequestEventArgs args)
+\{
+    Logger($"Failed request for database '\{args.Database\}' ('\{args.Url\}')", args.Exception);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    To subscribe to the event:  
+<TabItem value="something" label="SubscribeToOnFailedRequest">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+store.OnFailedRequest += OnFailedRequestEvent;
+`}
+</CodeBlock>
+</TabItem>
+
+## `OnTopologyUpdated`
+This event is invoked by a topology update (e.g. when a node is added), 
+**after** the topology is updated.  
+It should be defined with this signature:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`private void OnTopologyUpdatedEvent(object sender, TopologyUpdatedEventArgs args);
+`}
+</CodeBlock>
+</TabItem>
+
+**Parameters**:  
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **sender** | `IDocumentStore ` | The subscribed store that triggered the event |
+| **args** | `TopologyUpdatedEventArgs` | The updated list of nodes |
+
+`TopologyUpdatedEventArgs`:  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class TopologyUpdatedEventArgs : EventArgs
+\{
+    public Topology Topology \{ get; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+`Topology`:  
+public class Topology
+&#123;
+    public long Etag;
+    public List&lt;ServerNode&gt; Nodes;
+&#125;
+
+* **Example**  
+  To define a method that would be activated on a topology update:  
+<TabItem value="something" label="OnTopologyUpdatedEvent">
+<CodeBlock language="csharp">
+{`void OnTopologyUpdatedEvent(object sender, TopologyUpdatedEventArgs args)
+\{
+    var topology = args.Topology;
+    if (topology == null)
+        return;
+    for (var i = 0; i < topology.Nodes.Count; i++)
+    \{
+        // perform relevant operations on the nodes after the topology was updated
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+    To subscribe to the event:  
+<TabItem value="something" label="SubscribeToOnTopologyUpdated">
+<CodeBlock language="csharp">
+{`// Subscribe to the event
+store.OnTopologyUpdated += OnTopologyUpdatedEvent;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Store/Session Events
+You can subscribe to the following events both at the store level and in a session.  
+
+<Admonition type="note" title="Note">
+
+  * Subscribing to an event in a session limits the scope of the subscription to this session.  
+  * When you subscribe to an event at the store level, the subscription is inherited by 
+    all subsequent sessions.  
+
+</Admonition>
+
+* [OnBeforeStore](../../client-api/session/how-to/subscribe-to-events#onbeforestore)  
+* [OnAfterSaveChanges](../../client-api/session/how-to/subscribe-to-events#onaftersavechanges)  
+* [OnBeforeDelete](../../client-api/session/how-to/subscribe-to-events#onbeforedelete)  
+* [OnBeforeQuery](../../client-api/session/how-to/subscribe-to-events#onbeforequery)  
+* [OnBeforeConversionToDocument](../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontodocument)  
+* [OnAfterConversionToDocument](../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
+* [OnBeforeConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
+* [OnAfterConversionToEntity](../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
+* [OnSessionDisposing](../../client-api/session/how-to/subscribe-to-events#onsessiondisposing)  
+  
+
+

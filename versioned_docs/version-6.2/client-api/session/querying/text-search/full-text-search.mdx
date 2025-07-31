@@ -1,0 +1,2575 @@
+---
+title: "Full-Text Search"
+sidebar_label: Full-Text Search
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Full-Text Search
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching).  
+
+* Use the `Search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="Info">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search#search-for-single-term)
+  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search#search-in-multiple-fields)
+  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search#search-in-complex-object)
+  * [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators)
+  * [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-options)
+  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search#using-wildcards)
+  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Make a dynamic query on Employees collection
+    .Query<Employee>()
+     // * Call 'Search' to make a Full-Text search
+     // * Search is case-insensitive
+     // * Look for documents containing the term 'University' within their 'Notes' field
+    .Search(x => x.Notes, "University")
+    .ToList();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+     // Make a dynamic query on Employees collection
+    .Query<Employee>()
+     // * Call 'Search' to make a Full-Text search
+     // * Search is case-insensitive
+     // * Look for documents containing the term 'University' within their 'Notes' field
+    .Search(x => x.Notes, "University")
+    .ToListAsync();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+     // Make a dynamic DocumentQuery on Employees collection
+    .DocumentQuery<Employee>()
+     // * Call 'Search' to make a Full-Text search
+     // * Search is case-insensitive
+     // * Look for documents containing the term 'University' within their 'Notes' field
+    .Search(x => x.Notes, "University")
+    .ToList();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
+    Calling the `Search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the __same field__ in a single search method.
+
+* By default, the logical operator between these terms is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators). 
+
+<Admonition type="note" title="Note">
+
+__Pass terms in a string__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .Search(x => x.Notes, "University Sales Japanese")
+    .ToList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .Search(x => x.Notes, "University Sales Japanese")
+    .ToListAsync();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .Search(x => x.Notes, "University Sales Japanese")
+    .ToList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Pass terms in a list__:
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // * Pass terms in IEnumerable<string>.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .Search(x => x.Notes, new[] { "University", "Sales", "Japanese" })
+    .ToList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // * Pass terms in IEnumerable<string>.
+     // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+     //   within their 'Notes' field
+    .Search(x => x.Notes, new[] { "University", "Sales", "Japanese" })
+    .ToListAsync();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in __different fields__ by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-operators).
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // * Look for documents containing:
+     //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .Search(x => x.Notes, "French")
+    .Search(x => x.Title, "President")
+    .ToList();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // * Look for documents containing:
+     //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .Search(x => x.Notes, "French")
+    .Search(x => x.Title, "President")
+    .ToListAsync();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+     // * Look for documents containing:
+     //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .Search(x => x.Notes, "French")
+    .Search(x => x.Title, "President")
+    .ToList();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where (search(Notes, "French") or search(Title, "President"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Company> companies = session
+    .Query<Company>()
+     // * Look for documents that contain:
+     //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .Search(x => x.Address, "USA London")
+    .ToList();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession
+    .Query<Company>()
+     // * Look for documents that contain:
+     //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .Search(x => x.Address, "USA London")
+    .ToListAsync();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+     // * Look for documents that contain:
+     //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .Search(x => x.Address, "USA London")
+    .ToList();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search operators
+
+* By default, the logical operator between multiple terms within the __same field__ in a search call is __OR__.
+
+* This can be modified using the `@operator` parameter as follows: 
+
+<Admonition type="note" title="Note">
+
+__AND__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.And'
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
+    .ToList();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.And'
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
+    .ToListAsync();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.And'
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.And)
+    .ToList();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__OR__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
+    .ToList();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
+    .ToListAsync();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+     // * Pass \`@operator\` with 'SearchOperator.Or' (or don't pass this param at all)
+    .Search(x => x.Notes, "College German", @operator: SearchOperator.Or)
+    .ToList();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search options
+
+* Search options allow to:  
+    * Negate a search criteria.  
+    * Specify the logical operator used between __consecutive search calls__.  
+
+* When using `Query`: use the `options` parameter.  
+  When using `DocumentQuery`: follow the specific syntax in each example below.  
+
+<Admonition type="note" title="Note">
+
+__Negate search__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Company> companies = session
+    .Query<Company>()
+     // Pass 'options' with 'SearchOptions.Not'
+    .Search(x => x.Address, "USA", options: SearchOptions.Not)
+    .ToList();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession
+    .Query<Company>()
+     // Pass 'options' with 'SearchOptions.Not'
+    .Search(x => x.Address, "USA", options: SearchOptions.Not)
+    .ToListAsync();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .OpenSubclause()
+     // Call 'Not' to negate the next search call
+    .Not
+    .Search(x => x.Address, "USA")
+    .CloseSubclause()
+    .ToList();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where (exists(Address) and not search(Address, "USA"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Default behavior between search calls__:
+
+* By default, the logical operator between consecutive search methods is __OR__.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Company> companies = session
+    .Query<Company>()
+    .Where(x => x.Contact.Title == "Owner")
+     // Operator AND will be used with previous 'Where' predicate
+    .Search(x => x.Address.Country, "France")
+     // Operator OR will be used between the two 'Search' calls by default
+    .Search(x => x.Name, "Markets")
+    .ToList();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession
+    .Query<Company>()
+    .Where(x => x.Contact.Title == "Owner")
+     // Operator AND will be used with previous 'Where' predicate
+    .Search(x => x.Address.Country, "France")
+     // Operator OR will be used between the two 'Search' calls by default
+    .Search(x => x.Name, "Markets")
+    .ToListAsync();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+    .WhereEquals(x => x.Contact.Title, "Owner")
+     // Operator AND will be used with previous 'Where' predicate
+     // Call 'OpenSubclause' to open predicate block
+    .OpenSubclause()
+    .Search(x => x.Address.Country, "France")
+     // Operator OR will be used between the two 'Search' calls by default
+    .Search(x => x.Name, "Markets")
+     // Call 'CloseSubclause' to close predicate block
+    .CloseSubclause()
+    .ToList();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+where Contact.Title == "Owner" and
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__AND search calls__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Search(x => x.Notes, "French")
+     // * Pass 'options' with 'SearchOptions.And' to the second 'Search'
+     // * Operator AND will be used with previous the 'Search' call
+    .Search(x => x.Title, "Manager", options: SearchOptions.And)
+    .ToList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+    .Search(x => x.Notes, "French")
+     // * Pass 'options' with 'SearchOptions.And' to this second 'Search'
+     // * Operator AND will be used with previous the 'Search' call
+    .Search(x => x.Title, "Manager", options: SearchOptions.And)
+    .ToListAsync();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .Search(x => x.Notes, "French")
+     // Call 'AndAlso' so that operator AND will be used with previous 'Search' call
+    .AndAlso()
+    .Search(x => x.Title, "Manger")
+    .ToList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" 
+where search(Notes, "French") and search(Title, "Manager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Use options as bit flags__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Search(x => x.Notes, "French")
+     // Pass logical operators as flags in the 'options' parameter
+    .Search(x => x.Title, "Manager", options: SearchOptions.Not | SearchOptions.And)
+    .ToList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+    .Search(x => x.Notes, "French")
+     // Pass logical operators as flags in the 'options' parameter
+    .Search(x => x.Title, "Manager", options: SearchOptions.Not | SearchOptions.And)
+    .ToListAsync();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .Search(x => x.Notes, "French")
+     // Call 'AndAlso' so that operator AND will be used with previous 'Search' call
+    .AndAlso()
+    .OpenSubclause()
+     // Call 'Not' to negate the next search call
+    .Not
+    .Search(x => x.Title, "Manager")
+    .CloseSubclause()
+    .ToList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is less recommended,  
+    as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+     // Use '*' to replace one or more characters
+    .Search(x => x.Notes, "art*")
+    .Search(x => x.Notes, "*logy")
+    .Search(x => x.Notes, "*mark*")
+    .ToList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle) 
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+     // Use '*' to replace one or more characters
+    .Search(x => x.Notes, "art*")
+    .Search(x => x.Notes, "*logy")
+    .Search(x => x.Notes, "*mark*")
+    .ToListAsync();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle) 
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+     // Use '*' to replace one or more characters
+    .Search(x => x.Notes, "art*")
+    .Search(x => x.Notes, "*logy")
+    .Search(x => x.Notes, "*mark*")
+    .ToList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle) 
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`// Query overloads:
+// ================
+
+IRavenQueryable<T> Search<T>(
+    Expression<Func<T, object>> fieldSelector,
+    string searchTerms,
+    decimal boost,
+    SearchOptions options,
+    SearchOperator @operator);
+
+IRavenQueryable<T> Search<T>(
+    Expression<Func<T, object>> fieldSelector,
+    IEnumerable<string> searchTerms,
+    decimal boost,
+    SearchOptions options,
+    SearchOperator @operator);
+
+// DocumentQuery overloads:
+// ========================
+
+IDocumentQueryBase<T> Search(
+    string fieldName,
+    string searchTerms,
+    SearchOperator @operator);
+
+IDocumentQueryBase<T> Search<TValue>(
+    Expression<Func<T, TValue>> propertySelector,
+    string searchTerms,
+    SearchOperator @operator);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                                | Description                                                                                                                                                              |
+|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __fieldSelector__ | `Expression<Func<TResult>>`         | Points to the field in which you search.                                                                                                                                 |
+| __fieldName__     | string                              | Name of the field in which you search.                                                                                                                                   |
+| __searchTerms__   | string / 
+`IEnumerable<string>` | A string containing the term or terms (separated by spaces) to search for.
+Or, can pass an array (or other `IEnumerable`) with terms to search for.                  |
+| __boost__         | decimal                             | The boost value.<br/>Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).<br/>&lt;strong&gt;Default&lt;/strong&gt; is `1.0` |
+| __options__       | `SearchOptions` enum                | Logical operator to use between consecutive Search methods.<br/> Can be `Or`, `And`, `Not`, or `Guess`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOptions.Guess`              |
+| __@operator__     | `SearchOperator` enum               | Logical operator to use between multiple terms in the same Search method.<br/>Can be `Or` or `And`.<br/>&lt;strong&gt;Default&lt;/strong&gt; is `SearchOperation.Or`                   |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching).  
+
+* Use the `search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="Info">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search#search-for-single-term)
+  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search#search-in-multiple-fields)
+  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search#search-in-complex-object)
+  * [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators)
+  * [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-options)
+  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search#using-wildcards)
+  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session
+    # Make a dynamic query on Employees collection
+    .query(object_type=Employee)
+    # * Call 'Search' to make a Full-Text search
+    # * Search is case-insensitive
+    # * Look for documents containing the term 'University' within their 'Notes' field
+    .search("Notes", "University")
+)
+# Results will contain Employee documents that have
+# any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
+    Calling the `search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the **same field** in a single search method.
+
+* By default, the logical operator between these terms is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators). 
+
+<Admonition type="note" title="Note">
+
+**Pass terms in a string**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass multiple terms in a single string, separated by spaces.
+    # * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    #   within their 'Notes' field
+    .search("Notes", "University Sales Japanese")
+)
+
+# * Results will contain Employee documents that have at least one of the specified terms.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in **different fields** by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-operators).
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Look for documents containing:
+    #   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    .search("Notes", "French").search("Title", "President")
+)
+# * Results will contain Employee documents that have
+#   at least one of the specified fields with the specified terms.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where (search(Notes, "French") or search(Title, "President"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company)
+    # * Look for documents that contain:
+    #   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .search("Address", "USA London")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search operators
+
+* By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
+
+* This can be modified using the `@operator` parameter as follows: 
+
+<Admonition type="note" title="Note">
+
+**AND**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass \`@operator\` with 'SearchOperator.AND'
+    .search("Notes", "College German", operator=SearchOperator.AND)
+)
+# * Results will contain Employee documents that have BOTH 'College' AND 'German'
+#   in their 'Notes' field.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**OR**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # * Pass \`@operator\` with 'SearchOperator.OR' (or don't pass this param at all)
+    .search("Notes", "College German", operator=SearchOperator.OR)
+)
+# * Results will contain Employee documents that have BOTH 'College' OR 'German'
+#   in their 'Notes' field.
+# * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search options
+
+Search options allow to:  
+
+* Negate a search criteria.  
+* Specify the logical operator used between **consecutive search calls**.  
+
+<Admonition type="note" title="Note">
+
+**Negate search**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company)
+    .open_subclause()
+    # Call 'Not' to negate the next search call
+    .not_()
+    .search("Address", "USA")
+    .close_subclause()
+)
+# * Results will contain Company documents are NOT located in 'USA'
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where (exists(Address) and not search(Address, "USA"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Default behavior between search calls**:
+
+* By default, the logical operator between consecutive search methods is **OR**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.query(object_type=Company).where_equals("Contact.Title", "Owner")
+    # Operator AND will be used with previous 'where_equals' predicate
+    .search("Address.Country", "France")
+    # Operator OR will be used between the two 'search' calls by default
+    .search("Name", "Markets")
+)
+
+# * Results will contain Company documents that have:
+#   ('Owner' as the 'Contact.Title')
+#   AND
+#   (are located in 'France' OR have 'Markets' in their 'Name' field)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+where Contact.Title == "Owner" and
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Use options as bit flags**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.advanced.document_query(object_type=Employee)
+    .search("Notes", "French")
+    # Call 'AndAlso' so that operator AND will be used with previous 'Search' call
+    .and_also()
+    .open_subclause()
+    # Call 'Not' to negate the next search call
+    .not_()
+    .search("Title", "Manager")
+    .close_subclause()
+)
+
+# * Results will contain Employee documents that have:
+#   ('French' in their 'Notes' field)
+#   AND
+#   (do NOT have 'Manager' in their 'Title' field)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is 
+    not advised as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`employees = list(
+    session.query(object_type=Employee)
+    # Use '*' to replace one or more characters
+    .search("Notes", "art*")
+    .search("Notes", "*logy")
+    .search("Notes", "*mark*")
+)
+
+# Results will contain Employee documents that have in their 'Notes' field:
+# (terms that start with 'art')  OR
+# (terms that end with 'logy') OR
+# (terms that have the text 'mark' in the middle)
+#
+# * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`def search(self, field_name: str, search_terms: str, operator: SearchOperator = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                                | Description                                                                                                                                                              |
+|-------------------|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **field_name** | `str` | Name of the searched field. |
+| **search_terms** | `str` | A string containing the term or terms (separated by spaces) to search for. |
+| **operator** | `SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br/>**Can be**: `SearchOperator.OR` or `SearchOperator.AND`<br/>**Default**: `SearchOperation.OR` |
+
+| Return Type         | Description   |
+| ------------------- | ------------- |
+| `DocumentQuery[_T]` | The same object used for the query |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching).  
+
+* Use the `search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="Info">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search#search-for-single-term)
+  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search#search-in-multiple-fields)
+  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search#search-in-complex-object)
+  * [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators)
+  * [Search options](../../../../client-api/session/querying/text-search/full-text-search#search-options)
+  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search#using-wildcards)
+  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    // Make a dynamic query on Employees collection
+    ->query(Employee::class)
+    // * Call 'Search' to make a Full-Text search
+    // * Search is case-insensitive
+    // * Look for documents containing the term 'University' within their 'Notes' field
+    ->search("Notes", "University")
+    ->toList();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    // Make a dynamic DocumentQuery on Employees collection
+    ->documentQuery(Employee::class)
+    // * Call 'Search' to make a Full-Text search
+    // * Search is case-insensitive
+    // * Look for documents containing the term 'University' within their 'Notes' field
+    ->search("Notes", "University")
+    ->toList();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains **lower-cased terms** that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
+    Calling the `search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the **same field** in a single search method.
+
+* By default, the logical operator between these terms is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators). 
+
+<Admonition type="note" title="Note">
+
+**Pass terms in a string**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // * Pass multiple terms in a single string, separated by spaces.
+    // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    //   within their 'Notes' field
+    ->search("Notes", "University Sales Japanese")
+    ->toList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // * Pass multiple terms in a single string, separated by spaces.
+    // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    //   within their 'Notes' field
+    ->search("Notes", "University Sales Japanese")
+    ->toList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Pass terms in a list**:
+ 
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // * Pass terms in array<string>.
+    // * Look for documents containing either 'University' OR 'Sales' OR 'Japanese'
+    //   within their 'Notes' field
+    ->search("Notes", ["University", "Sales", "Japanese"])
+    ->toList();
+
+// * Results will contain Employee documents that have at least one of the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in **different fields** by making multiple search calls.
+
+* By default, the logical operator between consecutive search methods is 'OR'.
+
+* This behavior can be modified. See section [Search operators](../../../../client-api/session/querying/text-search/full-text-search#search-operators).
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // * Look for documents containing:
+    //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    ->search("Notes", "French")
+    ->search("Title", "President")
+    ->toList();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // * Look for documents containing:
+    //   'French' in their 'Notes' field OR 'President' in their 'Title' field
+    ->search("Notes", "French")
+    ->search("Title", "President")
+    ->toList();
+
+// * Results will contain Employee documents that have
+//   at least one of the specified fields with the specified terms.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where (search(Notes, "French") or search(Title, "President"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session
+    ->query(Company::class)
+    // * Look for documents that contain:
+    //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    ->search("Address", "USA London")
+    ->toList();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session->advanced()
+    ->documentQuery(Company::class)
+    // * Look for documents that contain:
+    //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    ->search("Address", "USA London")
+    ->toList();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search operators
+
+* By default, the logical operator between multiple terms within the **same field** in a search call is **OR**.
+
+* This can be modified using the `@operator` parameter as follows: 
+
+<Admonition type="note" title="Note">
+
+**AND**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // * Pass operator with SearchOperator::and()
+    ->search("Notes", "College German", SearchOperator::and())
+    ->toList();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // * Pass operator with SearchOperator::and()
+    ->search("Notes", "College German", SearchOperator::and())
+    ->toList();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**OR**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // * Pass operator with SearchOperator::or()
+    ->search("Notes", "College German", SearchOperator::or())
+    ->toList();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // * Pass operator with SearchOperator::or()
+    ->search("Notes", "College German", SearchOperator::or())
+    ->toList();
+
+// * Results will contain Employee documents that have EITHER 'College' OR 'German'
+//   in their 'Notes' field.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search options
+
+Search options allow to:  
+
+* Negate a search criteria.  
+* Specify the logical operator used between **consecutive search calls**.  
+
+<Admonition type="note" title="Note">
+
+**Negate search**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session
+    ->query(Company::class)
+    # Call 'not()' to negate the next search call
+    ->not()
+    ->search("Address", "USA")
+    ->toList();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session->advanced()
+    ->documentQuery(Company::class)
+    ->openSubclause()
+    // Call 'not()' to negate the next search call
+    ->not()
+    ->search("Address", "USA")
+    ->closeSubclause()
+    ->toList();
+
+// * Results will contain Company documents are NOT located in 'USA'
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where (exists(Address) and not search(Address, "USA"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Default behavior between search calls**:
+
+* By default, the logical operator between consecutive search methods is **OR**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session
+    ->query(Company::class)
+    ->whereEquals("Contact.Title", "Owner")
+    // Operator AND will be used with previous 'Where' predicate
+    ->search("Address.Country", "France")
+    // Operator OR will be used between the two 'Search' calls by default
+    ->search("Name", "Markets")
+    ->toList();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session->advanced()
+    ->documentQuery(Company::class)
+    ->whereEquals("Contact.Title", "Owner")
+    // Operator AND will be used with previous 'Where' predicate
+    // Call 'openSubclause()' to open predicate block
+    ->openSubclause()
+    ->search("Address.Country", "France")
+    // Operator OR will be used between the two 'Search' calls by default
+    ->search("Name", "Markets")
+    // Call 'closeSubclause()' to close predicate block
+    ->closeSubclause()
+    ->toList();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+where Contact.Title == "Owner" and
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+**AND search calls**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    ->search("Notes", "French")
+    // Call 'AndAlso' so that operator AND will be used with previous 'search' call
+    ->andAlso()
+    ->search("Title", "Manager")
+    ->toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    ->search("Notes", "French")
+    // Call 'andAlso()' so that operator AND will be used with previous 'search' call
+    ->andAlso()
+    ->search("Title", "Manger")
+    ->toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" 
+where search(Notes, "French") and search(Title, "Manager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Use options as bit flags**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    ->search("Notes", "French")
+    // Call 'andAlso()' so that operator AND will be used with previous 'search' call
+    ->andAlso()
+    ->openSubclause()
+    // Call 'not()' to negate the next search call
+    ->not()
+    ->search("Title", "Manager")
+    ->closeSubclause()
+    ->toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    ->search("Notes", "French")
+    // Call 'andAlso()' so that operator AND will be used with previous 'search' call
+    ->andAlso()
+    ->openSubclause()
+    // Call 'not()' to negate the next search call
+    ->not()
+    ->search("Title", "Manager")
+    ->closeSubclause()
+    ->toList();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is 
+    not advised as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session
+    ->query(Employee::class)
+    // Use '*' to replace one or more characters
+    ->search("Notes", "art*")
+    ->search("Notes", "*logy")
+    ->search("Notes", "*mark*")
+    ->ToList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Employee> $employees */
+$employees = $session->advanced()
+    ->documentQuery(Employee::class)
+    // Use '*' to replace one ore more characters
+    ->search("Notes", "art*")
+    ->search("Notes", "*logy")
+    ->search("Notes", "*mark*")
+    ->toList();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`public function search(string $fieldName, string $searchTerms, ?SearchOperator $operator = null): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **$fieldName** | `string` | Name of the searched field. |
+| **$searchTerms** | `string` | A string containing the term or terms (separated by spaces) to search for. |
+| **$operator** | `?SearchOperator ` | Logical operator to use between multiple terms in the same Search method.<br/>**Can be**: `SearchOperator::or` or `SearchOperator::and`<br/>**Default**: `SearchOperator::or` |
+
+| Return Type | Description |
+| ------------| ----------- |
+| `DocumentQueryInterface` | Query results |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This article is about running a full-text search with a **dynamic query**.  
+  To learn how to run a full-text search using a static-index, see [full-text search with index](../../../../indexes/querying/searching).  
+
+* Use the `search()` method to query for documents that contain specified term/s
+  within the text of the specified document field/s.
+
+* When running a full-text search with a dynamic query, the **auto-index** created by the server 
+  breaks down the text of the searched document field using the [default search analyzer](../../../../indexes/using-analyzers#ravendb).  
+  All generated terms are lower-cased, so the search is **case-insensitive**.  
+
+* Gain additional control over term tokenization by running a full-text search 
+  using a [static-index](../../../../indexes/querying/searching), where the used 
+  analyzer is configurable.  
+
+<Admonition type="info" title="Info">
+
+* A **boost** value can be set for each search to prioritize results. 
+  Learn more in [boost search results](../../../../client-api/session/querying/text-search/boost-search-results).
+  
+* User experience can be enhanced by requesting text fragments that **highlight** 
+  the searched terms in the results. Learn more in [highlight search results](../../../../client-api/session/querying/text-search/highlight-query-results).
+</Admonition>
+* In this page:
+  * [Search for single term](../../../../client-api/session/querying/text-search/full-text-search#search-for-single-term)
+  * [Search for multiple terms](../../../../client-api/session/querying/text-search/full-text-search#search-for-multiple-terms)
+  * [Search in multiple fields](../../../../client-api/session/querying/text-search/full-text-search#search-in-multiple-fields)
+  * [Search in complex object](../../../../client-api/session/querying/text-search/full-text-search#search-in-complex-object)
+  * [Using wildcards](../../../../client-api/session/querying/text-search/full-text-search#using-wildcards)
+  * [Syntax](../../../../client-api/session/querying/text-search/full-text-search#syntax)
+
+</Admonition>
+## Search for single term
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+     // Make a dynamic query on 'Employees' collection    
+    .query({ collection: "Employees" })
+     // * Call 'search' to make a Full-Text search
+     // * Search is case-insensitive
+     // * Look for documents containing the term 'University' within their 'Notes' field
+    .search("Notes", "University")
+    .all();
+
+// Results will contain Employee documents that have
+// any case variation of the term 'university' in their 'Notes' field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+* Executing the above query will generate the auto-index `Auto/Employees/BySearch(Notes)`.  
+
+* This auto-index will contain the following two index-fields:
+
+  * `Notes`  
+    Contains terms with the original text from the indexed document field 'Notes'.  
+    Text is lower-cased and Not tokenized.
+  
+  * `search(Notes)`  
+    Contains __lower-cased terms__ that were tokenized from the 'Notes' field by the [default search analyzer](../../../../indexes/using-analyzers#ravendb) (RavenStandardAnalyzer). 
+    Calling the `search()` method targets these terms to find matching documents.
+
+
+
+## Search for multiple terms
+
+* You can search for multiple terms in the __same field__ in a single search method.
+
+* By default, the logical operator between these terms is __OR__.  
+  Specify __AND__ explicitly To perform an 'and' operation between these terms.  
+
+<Admonition type="note" title="Note">
+
+__AND__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Employees" })
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Pass 'AND' as the third parameter
+    .search("Notes", "College German", "AND")
+    .all();
+
+// * Results will contain Employee documents that have BOTH 'College' AND 'German'
+//   in their 'Notes' field.
+//   
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "College German", and)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__OR__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Employees" })
+     // * Pass multiple terms in a single string, separated by spaces.
+     // * Pass 'OR' as the third parameter (or don't pass this param at all) 
+    .search("Notes", "University Sales Japanese", "OR")
+    .all();
+
+// * Results will contain Employee documents that have
+//   either 'University' OR 'Sales' OR 'Japanese' within their 'Notes' field
+//
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "University Sales Japanese")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in multiple fields
+
+* You can search for terms in __different fields__ by making multiple search calls.
+
+* By default, the logical operator between __consecutive search methods__ is 'OR'.  
+  This behavior can be modified. See examples below.
+
+<Admonition type="note" title="Note">
+
+__Default behavior between search calls__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session  
+    .query({ collection: "Employees" })
+    .search("Notes", "French")
+     // Operator OR will be used between the two 'Search' calls by default
+    .search("Title", "President")
+    .all();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field) OR ('President' in their 'Title' field)
+//
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") or search(Title, "President")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const companies = await session
+    .query({ collection: "Companies" })
+    .whereEquals("Contact.Title", "Owner")
+     // Operator AND will be used with previous 'where' predicate
+     // Call 'openSubclause' to open predicate block
+    .openSubclause()
+    .search("Address.Country", "France")
+     // Operator OR will be used between the two 'Search' calls by default
+    .search("Name", "Markets")
+     // Call 'closeSubclause' to close predicate block
+    .closeSubclause()
+    .all();
+
+// * Results will contain Company documents that have:
+//   ('Owner' as the 'Contact.Title')
+//   AND
+//   (are located in 'France' OR have 'Markets' in their 'Name' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where Contact.Title = "Owner" and 
+(search(Address.Country, "France") or search(Name, "Markets"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__AND search calls:__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Employees" })
+    .search("Notes", "French")
+     // Call 'andAlso' so that operator AND will be used with previous 'search' call
+    .andAlso()
+    .search("Title", "Manager")
+    .all();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   ('Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and search(Title, "Manger")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Negate search__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Employees" })
+    .search("Notes", "French")
+    .andAlso()
+     // Call 'openSubclause' to open predicate block
+    .openSubclause()
+     // Call 'not' to negate the next search call
+    .not()
+    .search("Title", "Manager")
+     // Call 'closeSubclause' to close predicate block
+    .closeSubclause()
+    .all();
+
+// * Results will contain Employee documents that have:
+//   ('French' in their 'Notes' field)
+//   AND
+//   (do NOT have 'Manager' in their 'Title' field)
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees"
+where search(Notes, "French") and
+(exists(Title) and not search(Title, "Manager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Search in complex object
+
+* You can search for terms within a complex object.
+
+* Any nested text field within the object is searchable.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const companies = await session
+    .query({ collection: "Companies" })
+     // * Look for documents that contain:
+     //   the term 'USA' OR 'London' in any field within the complex 'Address' object
+    .search("Address", "USA London")
+    .all();
+
+// * Results will contain Company documents that are located either in 'USA' OR in 'London'.
+// * Search is case-insensitive.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where search(Address, "USA London")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Using wildcards
+
+* Wildcards can be used to replace:
+  * Prefix of a searched term
+  * Postfix of a searched term
+  * Both prefix & postfix
+
+* Note:  
+
+  * Searching with a wildcard as the prefix of the term (e.g. `*text`) is less recommended,  
+    as it will cause the server to perform a full index scan.
+  
+  * Instead, consider using a static-index that indexes the field in reverse order  
+    and then query with a wildcard as the postfix, which is much faster.  
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Employees" })
+     // Use '*' to replace one ore more characters
+    .search("Notes", "art*")
+    .search("Notes", "*logy")
+    .search("Notes", "*mark*")
+    .all();
+
+// Results will contain Employee documents that have in their 'Notes' field:
+// (terms that start with 'art')  OR
+// (terms that end with 'logy') OR
+// (terms that have the text 'mark' in the middle) 
+//
+// * Search is case-insensitive
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where
+search(Notes, "art*") or
+search(Notes, "*logy") or
+search(Notes, "*mark*")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+search(fieldName, searchTerms);
+search(fieldName, searchTerms, operator);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter           | Type     | Description                                                                                                   |
+|---------------------|----------|---------------------------------------------------------------------------------------------------------------|
+| __fieldName__       | string   | Name of the field in which you search.                                                                        |
+| __searchTerms__     | string   | A string containing the term or terms (separated by spaces) to search for.                                    |
+| __operator__        | string   | Logical operator to use between multiple terms in the same Search method.<br/>Can be `AND` or `OR` (default). |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [How to Use Regex](../../../../client-api/session/querying/text-search/using-regex)
+- [How to Query With Exact Match](../../../../client-api/session/querying/text-search/exact-match-query)
+
+### Indexes
+- [Analyzers](../../../../indexes/using-analyzers)
+- [Full-text search with index](../../../../indexes/querying/searching)
+
+
+-->

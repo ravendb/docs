@@ -1,0 +1,935 @@
+---
+title: "Indexing Polymorphic Data"
+sidebar_label: Indexing Polymorphic Data
+sidebar_position: 14
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Indexing Polymorphic Data
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this Page:  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+
+</Admonition>
+## Polymorphic Data
+
+Let's assume, for example, that we have the following inheritance hierarchy:
+
+![Figure 1: Polymorphic indexes](./assets/polymorphic_indexes_faq.png)
+
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
+
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from cat in docs.Cats
+select new \{ cat.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+And for dogs:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from dog in docs.Dogs
+select new \{ dog.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="The challenge" id="the-challenge" href="#the-challenge">
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+</Admonition>
+
+## Multi-Map Indexes
+
+The easiest way to do this is by writing a multi-map index such as:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="MultiMap" label="MultiMap">
+<CodeBlock language="csharp">
+{`public class Animals_ByName : AbstractMultiMapIndexCreationTask
+{
+    public Animals_ByName()
+    {
+        AddMap<Cat>(cats => from c in cats select new { c.Name });
+
+        AddMap<Dog>(dogs => from d in dogs select new { d.Name });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="csharp">
+{`public class Animals_ByName : AbstractJavaScriptIndexCreationTask
+{
+    public Animals_ByName()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('cats', function (c){ return {Name: c.Name}})",
+            @"map('dogs', function (d){ return {Name: d.Name}})"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And query it like this:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<IAnimal> results = session
+    .Query<IAnimal, Animals_ByName>()
+    .Where(x => x.Name == "Mitzy")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<IAnimal> results = session
+    .Advanced
+    .DocumentQuery<IAnimal, Animals_ByName>()
+    .WhereEquals("Name", "Mitzy")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Other Options
+
+Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
+
+<TabItem value="something" label="other_ways_1">
+<CodeBlock language="csharp">
+{`DocumentStore store = new DocumentStore()
+\{
+    Conventions =
+    \{
+        FindCollectionName = type =>
+        \{
+            if (typeof(Animal).IsAssignableFrom(type))
+                return "Animals";
+            return DocumentConventions.DefaultGetCollectionName(type);
+        \}
+    \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+Using this method, we can now index on all animals using:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from animal in docs.Animals
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+But what happens when you don't want to modify the entity name of an entity itself?
+
+You can create a polymorphic index using:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from animal in docs.WhereEntityIs("Cats", "Dogs")
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+It will generate an index that matches both Cats and Dogs.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this Page:  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+
+</Admonition>
+## Polymorphic Data
+
+Let's assume, for example, that we have the following inheritance hierarchy:
+
+![Figure 1: Polymorphic indexes](./assets/polymorphic_indexes_faq.png)
+
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
+
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from cat in docs.Cats
+select new \{ cat.name \}
+`}
+</CodeBlock>
+</TabItem>
+
+And for dogs:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from dog in docs.Dogs
+select new \{ dog.name \}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="The challenge" id="the-challenge" href="#the-challenge">
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+</Admonition>
+
+## Multi-Map Indexes
+
+The easiest way to do this is by writing a multi-map index such as:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="MultiMap" label="MultiMap">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Animals/ByName");
+HashSet<String> maps = new HashSet<>();
+maps.add("docs.Cats.Select(c => new { name = c.name})");
+maps.add("docs.Dogs.Select(c => new { name = c.name})");
+indexDefinition.setMaps(maps);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="java">
+{`public static class Animals_ByName extends AbstractJavaScriptIndexCreationTask {
+    public Animals_ByName() {
+        setMaps(Sets.newHashSet(
+            "map('cats', function (c){ return {name: c.name}})",
+            "map('dogs', function (d){ return {name: d.name}})"
+        ));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And query it like this:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Animal> results = session
+    .query(Animal.class, Query.index("Animals/ByName"))
+    .whereEquals("name", "Mitzy")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Other Options
+
+Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
+
+<TabItem value="something-something" label="other_ways_1">
+<CodeBlock language="java">
+{`try (IDocumentStore store = new DocumentStore()) \{
+    store.getConventions().setFindCollectionName(clazz -> \{
+        if (Animal.class.isAssignableFrom(clazz)) \{
+            return "Animals";
+        \}
+
+        return DocumentConventions.defaultGetCollectionName(clazz);
+    \});
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Using this method, we can now index on all animals using:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from animal in docs.Animals
+select new \{ animal.name \}
+`}
+</CodeBlock>
+</TabItem>
+
+But what happens when you don't want to modify the entity name of an entity itself?
+
+You can create a polymorphic index using:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`from animal in docs.WhereEntityIs("Cats", "Dogs")
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+It will generate an index that matches both Cats and Dogs.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this Page:  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+
+</Admonition>
+## Polymorphic Data
+
+Let's assume, for example, that we have the following inheritance hierarchy:
+
+![Figure 1: Polymorphic indexes](./assets/polymorphic_indexes_faq.png)
+
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
+
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`from cat in docs.Cats
+select new \{ cat.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+And for dogs:
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`from dog in docs.Dogs
+select new \{ dog.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="The challenge" id="the-challenge" href="#the-challenge">
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+</Admonition>
+
+## Multi-Map Indexes
+
+The easiest way to do this is by writing a multi-map index such as:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="MultiMap" label="MultiMap">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractMultiMapIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self._add_map("from c in docs.Cats select new { c.name }")
+        self._add_map("from d in docs.Dogs select new { d.name }")
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})",
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And query it like this:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(session.query_index_type(Animals_ByName, Animal).where_equals("name", "Mitzy"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Other Options
+
+Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
+
+<TabItem value="something-something" label="other_ways_1">
+<CodeBlock language="python">
+{`store = DocumentStore()
+
+def _custom_find_collection_name(object_type: Type) -> str:
+    if issubclass(object_type, Animal):
+        return "Animals"
+    return DocumentConventions.default_get_collection_name(object_type)
+
+store.conventions.find_collection_name = _custom_find_collection_name
+`}
+</CodeBlock>
+</TabItem>
+
+Using this method, we can now index on all animals using:
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`from animal in docs.Animals
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+But what happens when you don't want to modify the entity name of an entity itself?
+
+You can create a polymorphic index using:
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`from animal in docs.WhereEntityIs("Cats", "Dogs")
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+It will generate an index that matches both Cats and Dogs.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this Page:  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+
+</Admonition>
+## Polymorphic Data
+
+Let's assume, for example, that we have the following inheritance hierarchy:
+
+![Figure 1: Polymorphic indexes](./assets/polymorphic_indexes_faq.png)
+
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
+
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
+
+<TabItem value="something" label="php">
+<CodeBlock language="php">
+{`from cat in docs.Cats
+select new \{ cat.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+And for dogs:
+
+<TabItem value="something" label="php">
+<CodeBlock language="php">
+{`from dog in docs.Dogs
+select new \{ dog.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="The challenge" id="the-challenge" href="#the-challenge">
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+</Admonition>
+
+## Multi-Map Indexes
+
+The easiest way to do this is by writing a multi-map index such as:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="MultiMap" label="MultiMap">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractMultiMapIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addMap("from c in docs.Cats select new { c.name }");
+        $this->addMap("from d in docs.Dogs select new { d.name }");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And query it like this:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Animal> $results */
+$results = $session
+    ->advanced()
+    ->documentQuery(Animal::class, Animals_ByName::class)
+    ->whereEquals("Name", "Mitzy")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Other Options
+
+Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
+
+<TabItem value="something-something" label="other_ways_1">
+<CodeBlock language="php">
+{`$store = new DocumentStore();
+$store->getConventions()->setFindCollectionName(
+    function (?string $className): string \{
+        if (is_a($className, Animal::class)) \{
+            return "Animals";
+        \}
+        return DocumentConventions::defaultGetCollectionName($className);
+    \}
+);
+`}
+</CodeBlock>
+</TabItem>
+
+Using this method, we can now index on all animals using:
+
+<TabItem value="something" label="php">
+<CodeBlock language="php">
+{`from animal in docs.Animals
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+But what happens when you don't want to modify the entity name of an entity itself?
+
+You can create a polymorphic index using:
+
+<TabItem value="something" label="php">
+<CodeBlock language="php">
+{`from animal in docs.WhereEntityIs("Cats", "Dogs")
+select new \{ animal.Name \}
+`}
+</CodeBlock>
+</TabItem>
+
+It will generate an index that matches both Cats and Dogs.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* By default, RavenDB indexes are defined on a specific entity type, referred to as a `Collection`,  
+  and do not consider the inheritance hierarchy.
+
+* In this page:
+    * [The challenge](../indexes/indexing-polymorphic-data#the-challenge)
+    * [Possible solutions:](../indexes/indexing-polymorphic-data#possible-solutions)
+        * [Multi-map index](../indexes/indexing-polymorphic-data#multi-map-index)
+        * [Polymorphic index](../indexes/indexing-polymorphic-data#polymorphic-index)
+        * [Customize collection](../indexes/indexing-polymorphic-data#customize-collection)
+
+</Admonition>
+## The challenge
+
+Let's assume, for example, that we have the following inheritance hierarchy:
+
+![Figure 1: Polymorphic indexes](./assets/polymorphic_indexes_faq.png)
+
+<br/>
+**By default**:  
+When saving a `Cat` document, it will be assigned to the "Cats" collection,  
+while a `Dog` document will be placed in the "Dogs" collection.
+
+If we intend to create a simple Map-index for Cat documents based on their names, we would write:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="nodejs">
+{`class Cats_ByName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Index the 'name' field from the CATS collection
+        this.map('Cats', cat => {
+            return {
+                name: cat.name
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="nodejs">
+{`class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+class Cat extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+And for Dogs:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="nodejs">
+{`class Dogs_ByName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Index the 'name' field from the DOGS collection
+        this.map('Dogs', dog => {
+            return {
+                name: dog.name
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="nodejs">
+{`class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+class Dog extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**The challenge**:  
+Querying each index results in documents only from the specific collection the index was defined for.  
+However, what if we need to query across ALL animal collections?
+
+
+
+## Possible solutions
+
+<Admonition type="note" title="Note">
+
+<a id="multi-map-index"/> **Multi-Map Index**:
+Writing a [Multi-map index](../indexes/multi-map-indexes) enables getting results from all collections the index was defined for.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="MultiMap_Index" label="MultiMap_Index">
+<CodeBlock language="nodejs">
+{`class CatsAndDogs_ByName extends AbstractJavaScriptMultiMapIndexCreationTask  {
+    constructor() {
+        super();
+
+        // Index documents from the CATS collection
+        this.map('Cats', cat => {
+            return {
+                name: cat.name
+            };
+        });
+
+        // Index documents from the DOGS collection
+        this.map('Dogs', dog => {
+            return {
+                name: dog.name
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the Multi-map index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const catsAndDogs = await session
+    // Query the index
+    .query({ indexName: "CatsAndDogs/ByName" })
+    // Look for all Cats or Dogs that are named 'Mitzy' :))
+    .whereEquals("name", "Mitzy")
+    .all();
+
+// Results will include matching documents from the CATS and DOGS collection
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "CatsAndDogs/ByName"
+where name == "Mitzy"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="polymorphic-index"/> **Polymorphic index**:
+Another option is to create a polymorphic-index.
+
+Use method `WhereEntityIs` within your index definition to index documents from all collections  
+listed in the method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Polymorphic_index" label="Polymorphic_index">
+<CodeBlock language="nodejs">
+{`class CatsAndDogs_ByName extends AbstractCsharpIndexCreationTask {
+    constructor() {
+        super();
+
+        // Index documents from both the CATS collection and the DOGS collection
+        this.map = \`from animal in docs.WhereEntityIs("Cats", "Dogs")
+                    select new {
+                        animal.name
+                    }\`;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the polymorphic-index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const catsAndDogs = await session
+    // Query the index
+    .query({ indexName: "CatsAndDogs/ByName" })
+    // Look for all Cats or Dogs that are named 'Mitzy' :))
+    .whereEquals("name", "Mitzy")
+    .all();
+
+// Results will include matching documents from the CATS and DOGS collection
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "CatsAndDogs/ByName"
+where name == "Mitzy"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="customize-collection"/> **Customize collection**:
+This option involves customizing the collection name that is assigned to documents created from  
+subclasses of the _Animal_ class.
+
+This is done by setting the [findCollectionName](../client-api/configuration/conventions#findcollectionname) convention on the document store.
+
+<TabItem value="something-something" label="define_convention">
+<CodeBlock language="nodejs">
+{`const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
+
+// Customize the findCollectionName convention 
+documentStore.conventions.findCollectionName = (type) => \{
+    const typeName = type.name;
+
+    // Documents created from a 'Cat' or a 'Dog' entity will be assinged the "Animals" collection
+    if (typeName === "Cat" || typeName === "Dog") \{
+        return "Animals";
+    \}
+
+    // All other documents will be assgined the default collection name
+    return DocumentConventions.defaultGetCollectionName(type);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+With the above convention in place, whenever a _Cat_ or a _Dog_ entity is saved, its document will be assigned the "Animals" collection instead of the default "Cats" or "Dogs" collection.
+
+Now you can define a Map-index on the "Animals" collection:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Map_index" label="Map_index">
+<CodeBlock language="nodejs">
+{`class Animals_ByName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        // Index documents from the ANIMALS collection
+        this.map('Animals', animal => {
+            return {
+                name: animal.name
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const animals = await session
+    // Query the index
+    .query({ indexName: "Animals/ByName" })
+    // Look for all Animals that are named 'Mitzy' :))
+    .whereEquals("name", "Mitzy")
+    .all();
+
+// Results will include matching documents from the ANIMALS collection
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Animals/ByName"
+where name == "Mitzy"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing basics](../indexes/indexing-basics)
+- [Indexing related documents](../indexes/indexing-related-documents)
+- [Indexing spatial data](../indexes/indexing-spatial-data)
+- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
+
+### Querying
+- [Query overview](../client-api/session/querying/how-to-query)
+- [Basics](../indexes/querying/query-index)
+
+
+-->

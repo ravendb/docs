@@ -1,0 +1,86 @@
+---
+title: "Ongoing Tasks Stats: SQL ETL Stats"
+sidebar_label: SQL ETL Stats
+sidebar_position: 4
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Ongoing Tasks Stats: SQL ETL Stats
+<Admonition type="note" title="Note">
+
+* **SQL ETL** is a process that reads data from a RavenDB database, transforms it, 
+  and stores it in an SQL database.
+* Learn more about the SQL ETL task [here](../../../../server/ongoing-tasks/etl/sql).  
+
+* In this page:  
+    * [SQL ETL Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/sql-etl-stats#sql-etl-stats-closed-view)  
+    * [SQL ETL Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/sql-etl-stats#sql-etl-stats-expanded-view)  
+
+</Admonition>
+## SQL ETL Stats
+
+### SQL ETL Stats Closed View
+
+![SQL ETL Stats Closed View](./assets/stats-view-13-sql-etl-closed-view.png)
+
+1. **Task Type**  
+   Click the arrow or the task type to toggle Closed/Expanded View.  
+2. **Task Name**  
+3. **Transform Script**  
+   Click to display the ETL transform script.  
+4. **Task Bar**  
+    * Hover over the bar to display a tooltip with the task's information.  
+    * Click the bar for the expanded view.  
+    * Click and Drag the bar to slide the graph.  
+    * Zoom in & out using the mouse wheel.  
+### SQL ETL Stats Expanded View
+![SQL ETL Stats Expanded View](./assets/stats-view-14-sql-etl-expanded-view.png)
+
+* **SQL ETL**  
+   * **Total Duration**  
+     Overall ETL operation time, including the Extraction, 
+     Transformation, and Loading phases.  
+   * **Batch Complete Reason**  
+     The reason the operation ended, e.g. -  
+     "No items to process",  
+     "Stopping the batch because maximum batch size limit was reached",  
+     and others.  
+   * **Currently Allocated**  
+     The amount of memory allocated by the server to handle this task.  
+   * **Batch Size**  
+     Size of ETL batches.  
+
+* **Extract Phase**  
+   * **Duration**  
+     The time it took to extract the documents from the database.  
+   * **Extracted Documents**  
+     The number of documents extracted from the database.  
+
+* **Transform Phase**  
+   * **Duration**  
+     The time it took to process the documents using the transform script.  
+   * **Transformed Documents**  
+     The number of documents processed by the transform script.  
+   * **Documents Processing Speed**  
+     Average Doc/Sec transformation speed.  
+   * **Last Transformed Etag for Document**  
+     Last transformed document's identifier.  
+
+* **Load Phase**  
+   * **Duration**  
+     The time it took to transfer the documents to their destination SQL table.  
+   * **Successfully Loaded**  
+     Documents transfer verification.  
+   * **Last Loaded Etag**  
+     Last loaded document's identifier.  
+
+
+
+

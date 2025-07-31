@@ -1,0 +1,92 @@
+---
+title: "Operations: Server: How to Get Certificates"
+sidebar_label: Get Certificates
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: Server: How to Get Certificates
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To get client certificates use **GetCertificatesOperation**.
+
+## Syntax
+
+<TabItem value="something-something" label="get_certs_1">
+<CodeBlock language="csharp">
+{`public GetCertificatesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped |
+
+| Return Value | |
+| ------------- | ----- |
+| `CertificateDefinition[]` | Array of certificate definitions |
+
+## Example
+
+<TabItem value="something-something" label="get_certs_2">
+<CodeBlock language="csharp">
+{`CertificateDefinition[] definitions = 
+    store.Maintenance.Server.Send(new GetCertificatesOperation(0, 20));
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To get client certificates use **GetCertificatesOperation**.
+
+## Syntax
+
+<TabItem value="something-something" label="get_certs_1">
+<CodeBlock language="java">
+{`public GetCertificatesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped |
+
+| Return Value | |
+| ------------- | ----- |
+| `CertificateDefinition[]` | Array of certificate definitions |
+
+## Example
+
+<TabItem value="something-something" label="get_certs_2">
+<CodeBlock language="java">
+{`CertificateDefinition[] definitions = store.maintenance()
+    .server()
+    .send(new GetCertificatesOperation(0, 20));
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

@@ -1,0 +1,179 @@
+---
+title: "Include Time Series with Query"
+sidebar_label: With Query
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Include Time Series with&nbsp;`Query`
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* When querying via `session.Query` for documents that contain time series,  
+  you can request to include their time series data in the server response.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:  
+   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#include-time-series-when-making-a-query)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#syntax)
+
+</Admonition>
+## Include time series when making a query
+
+In this example, we retrieve a document using `session.Query`  
+and _include_ entries from the document's "HeartRates" time series.
+
+<TabItem value="something" label="timeseries_region_Query-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Query for a document and include a whole time-series
+    User user = session.Query<User>()
+        .Where(u => u.Name == "John")
+        .Include(includeBuilder => includeBuilder.IncludeTimeSeries("HeartRates"))
+        .FirstOrDefault();
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> val = session.TimeSeriesFor(user, "HeartRates")
+        .Get();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+**`Include`** builder methods:
+
+<TabItem value="something" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type        | Description                                                           |
+|-----------|-------------|-----------------------------------------------------------------------|
+| **name**  | `string`    | Time series Name.                                                     |
+| **from**  | `DateTime?` | Time series range start (inclusive).<br/>Default: `DateTime.MinValue`. |
+| **to**    | `DateTime?` | Time series range end (inclusive).<br/>Default: `DateTime.MaxValue`.   |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* When querying via `session.query` for documents that contain time series,  
+  you can request to include their time series data in the server response.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:  
+   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#include-time-series-when-making-a-query)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#syntax)
+
+</Admonition>
+## Include time series when making a query
+
+In this example, we retrieve a document using `session.query`  
+and _include_ entries from the document's "HeartRates" time series.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Query for a document and include a whole time-series
+const user = await session.query({ collection: "users" })
+    .whereEquals("name", "John")
+     // Call 'includeTimeSeries' to include the time series entries in the response
+     // Pass the time series name
+     // (find more include builder overloads under the Syntax section)
+    .include(includeBuilder => includeBuilder.includeTimeSeries("HeartRates"))
+    .first();
+
+const numberOfRequests1 = session.advanced.numberOfRequests;
+
+// The following call to 'get' will Not trigger a server request,
+// the entries will be retrieved from the session's cache.
+const entries = await session.timeSeriesFor(user, "HeartRates")
+    .get();
+
+const entryValue = entries[0].value;
+
+const numberOfRequests2 = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests1, numberOfRequests2);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "users"
+where name = "John" 
+include timeseries("HeartRates", null, null)
+limit null, 1
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+**`include`** builder methods:
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`includeTimeSeries(name);
+includeTimeSeries(name, from, to);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type     | Description                                                          |
+|-----------|----------|----------------------------------------------------------------------|
+| **name**  | `string` | Time series Name.                                                    |
+| **from**  | `Date`   | Time series range start (inclusive).<br/>Default: minimum date value. |
+| **to**    | `Date`   | Time series range end (inclusive).<br/>Default: maximum date value.   |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

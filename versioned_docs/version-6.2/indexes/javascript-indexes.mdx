@@ -1,0 +1,742 @@
+---
+title: "JavaScript Indexes"
+sidebar_label: JavaScript Indexes
+sidebar_position: 8
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# JavaScript Indexes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* JavaScript indexes are intended for users who prefer to define static indexes using JavaScript instead of C#.
+
+* The RavenDB JavaScript engine supports ECMAScript 5.1 syntax.  
+  In addition, RavenDB provides a set of predefined JavaScript functions that can be used in JavaScript indexes and in other features such as subscriptions, ETL scripts, set-based patching, and more.  
+  See the full list in [Predefined JavaScript functions](../server/kb/javascript-engine#predefined-javascript-functions).
+* In this article:
+  * [Creating and deploying a JavaScript index](../indexes/javascript-indexes#creating-and-deploying-a-javascript-index)
+  * [Map index](../indexes/javascript-indexes#map-index)
+     * [Map index - basic](../indexes/javascript-indexes#example-i---map-index---basic)
+     * [Map index - with additional sources](../indexes/javascript-indexes#example-ii---map-index---with-additional-sources)
+     * [Map index - with inline string compilation](../indexes/javascript-indexes#example-iii---map-index---with-inline-string-compilation)
+  * [Multi-Map index](../indexes/javascript-indexes#multi-map-index)
+  * [Map-Reduce index](../indexes/javascript-indexes#map-reduce-index)
+
+</Admonition>
+
+## Creating and deploying a JavaScript index
+
+**Creating a JavaScript index**:
+
+* To create a JavaScript index, define a class that inherits from `AbstractJavaScriptIndexCreationTask`.  
+* This base class itself inherits from [AbstractIndexCreationTask](../indexes/creating-and-deploying#define-a-static-index-using-a-custom-class),
+  which is the base class for all C# indexes.
+
+<TabItem value="something" label="js_index">
+<CodeBlock language="csharp">
+{`public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
+\{
+     Maps = new HashSet<string>()
+    \{
+        // Define a map function:
+        @"map(<CollectionName>, function(doc) \{ 
+              return \{
+                  Name: doc.Name
+                  // ...
+              \}
+          \})",
+        
+        // ...
+    \};
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Deploying a JavaScript index**:  
+
+* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index).
+
+* Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../server/security/authorization/security-clearance-and-permissions#section-1) certificate,  
+  while **C# static indexes** require a [User/Admin](../server/security/authorization/security-clearance-and-permissions#section) certificate or higher.
+
+* To restrict the creation of JavaScript indexes to database admins (and above),  
+  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) configuration to `true`.
+
+* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexes/indexing-basics).
+
+
+
+## Map index
+
+* A map index contains a single `map` function.  
+  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../indexes/javascript-indexes#multi-map-index) below.
+
+* The `map` function is written as a string and specifies what content from the documents will be indexed.
+
+<Admonition type="note" title="Note">
+
+#### Example I - Map index - basic
+The following index indexes the `FirstName` and `LastName` of employees from the _Employees_ collection.
+
+<TabItem value="something" label="index_1">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName_JS : AbstractJavaScriptIndexCreationTask
+\{
+    public class IndexEntry
+    \{
+        public string FirstName \{ get; set; \}
+        public string LastName \{ get; set; \}
+    \}
+        
+    public Employees_ByFirstAndLastName_JS()
+    \{
+        Maps = new HashSet<string>
+        \{
+            // Define the 'map' function:
+            // Index content from documents in the 'Employees' collection
+            @"map('Employees', function (employee) \{
+ 
+                  // Provide your JavaScript code here
+                  // Return an object that defines the index-entry:
+                  // ==============================================
+                       
+                  return \{
+                      // Define the index-fields:
+                      // ========================
+
+                      FirstName: employee.FirstName, 
+                      LastName: employee.LastName
+                  \};
+              \})",
+        \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Query the index**:  
+Once the index is deployed, you can query for _Employee_ documents based on the indexed name fields.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+     // Query the map index
+    .Query<Employees_ByFirstAndLastName_JS.IndexEntry,
+        Employees_ByFirstAndLastName_JS>()
+    .Where(x => x.LastName == "King")
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstAndLastName/JS"
+where LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+#### Example II - Map index - with additional sources
+* The following index indexes the names of all comment authors (including nested replies) for each _BlogPost_ document.  
+
+* It uses `getNames`, a recursive helper defined in `AdditionalSources`, to traverse every comment level and accumulate author names.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="The_JS_index" label="The_JS_index">
+<CodeBlock language="csharp">
+{`public class BlogPosts_ByCommentAuthor_JS : AbstractJavaScriptIndexCreationTask
+{
+    public class IndexEntry
+    {
+        public string[] Authors { get; set; }
+    }
+
+    public BlogPosts_ByCommentAuthor_JS()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('BlogPosts', function(post) {
+                  const names = [];
+
+                  // Get names of authors from the additional source code:
+                  if (post.Comments) {
+                      post.Comments.forEach(x => getNames(x, names));
+                  }
+
+                  return {
+                      Authors: names
+                  };
+              })"
+        };
+            
+        AdditionalSources = new Dictionary<string, string>
+        {
+            ["The getNames method"] = @"
+                function getNames(comment, names) {
+                    names.push(comment.Author);
+
+                    if (comment.Comments) {
+                        comment.Comments.forEach(x => getNames(x, names));
+                    }
+                }"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="The_BlogPost_class" label="The_BlogPost_class">
+<CodeBlock language="csharp">
+{`public class BlogPost
+{
+    public string Author { get; set; }
+    public string Title { get; set; }
+    public string Text { get; set; }
+    public List<BlogPostComment> Comments { get; set; }
+}
+
+public class BlogPostComment
+{
+    public string Author { get; set; }
+    public string Text { get; set; }
+    public List<BlogPostComment> Comments { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+#### Example III - Map index - with inline string compilation
+* To define a JavaScript index using inline string compilation,  
+  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration#indexing.allowstringcompilation) configuration key to _true_.
+  
+* The following indexes use inline string compilation to evaluate whether each product’s `UnitsInStock` is low.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="JS_index_usingFunction" label="JS_index_usingFunction">
+<CodeBlock language="csharp">
+{`public class Products_ByStock1_JS : AbstractJavaScriptIndexCreationTask
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Products_ByStock1_JS()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Products', function(product) {
+                  // Define a string expression to check for low stock.
+                  const functionBody = 'return product.UnitsInStock < 10';
+
+                  // Create a dynamic function that evaluates the expression at runtime.
+                  const dynamicFunc = new Function(""product"", functionBody);
+
+                  return {
+                      StockIsLow: dynamicFunc(product)
+                  };
+              });",
+        };
+
+        // Enable string‑compilation so this index can execute the inline script
+        Configuration["Indexing.AllowStringCompilation"] = "true";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JS_index_usingEval" label="JS_index_usingEval">
+<CodeBlock language="csharp">
+{`public class Products_ByStock2_JS : AbstractJavaScriptIndexCreationTask
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Products_ByStock2_JS()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Products', function(product) {
+                  // Define a string expression with your condition
+                  const expression = 'product.UnitsInStock < 10';
+
+                  // Evaluate the string expression at runtime using eval.
+                  const isLowOnStock = eval(expression);
+
+                  return {
+                      StockIsLow: isLowOnStock
+                  };
+              });",
+        };
+        
+        // Enable string‑compilation so this index can execute the inline script
+        Configuration["Indexing.AllowStringCompilation"] = "true";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+Learn more about [Map indexes here](../indexes/map-indexes).
+
+
+
+## Multi-Map index
+
+* A Multi-Map index allows indexing data from multiple collections.
+
+* For example, the following index processes documents from both the _Cats_ and _Dogs_ collections.
+
+<Admonition type="note" title="Note">
+
+<TabItem value="something" label="index_5">
+<CodeBlock language="csharp">
+{`public class Animals_ByName_JS : AbstractJavaScriptIndexCreationTask
+\{
+    public class IndexEntry
+    \{
+        public string Name \{ get; set; \}
+    \}
+        
+    public Animals_ByName_JS()
+    \{
+        Maps = new HashSet<string>()
+        \{
+            // Define a map function on the 'Cats' collection
+            @"map('Cats', function(c) \{ return \{ Name: c.Name \}\})",
+                
+            // Define a map function on the 'Dogs' collection
+            @"map('Dogs', function(d) \{ return \{ Name: d.Name \}\})"
+        \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Query the index**:  
+Once the index is deployed, querying it will return matching documents from both the _Cats_ and _Dogs_ collections.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var animalsNamedMilo = session
+     // Query the multi-map index
+    .Query<Animals_ByName_JS.IndexEntry, Animals_ByName_JS>()
+    .Where(x => x.Name == "Milo")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Animals/ByName/JS"
+where Name == "Milo"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+Learn more about [Multi-Map indexes here](../indexes/multi-map-indexes).
+
+
+
+## Map-Reduce index
+
+* A Map-Reduce index allows you to perform complex data aggregations.
+
+* In the **Map** stage, the index processes documents and extracts relevant data using the defined mapping function(s).
+
+* In the **Reduce** stage, the map results are aggregated to produce the final output.
+
+<Admonition type="note" title="Note">
+
+#### Example I
+The following index counts the number of products per category by grouping on the category name.
+
+<TabItem value="something" label="index_6">
+<CodeBlock language="csharp">
+{`public class Products_ByCategory_JS : AbstractJavaScriptIndexCreationTask
+\{
+    public class IndexEntry
+    \{
+        public string Category \{ get; set; \}
+        public int Count \{ get; set; \}
+    \}
+
+    public Products_ByCategory_JS()
+    \{
+        // The Map stage:
+        // For each product document -
+        // * load its related Category document using the 'load' function,
+        // * extract the category name, and return a count of 1.
+        Maps = new HashSet<string>()
+        \{
+            @"map('Products', function(p) \{
+                  return \{
+                      Category: load(p.Category, 'Categories').Name,
+                      Count: 1
+                  \}
+              \})"
+        \};
+
+        // The Reduce stage:
+        // * group the mapped results by Category
+        // * and count the number of products in each category.
+        Reduce = @"groupBy(x => x.Category).aggregate(g => \{
+                       return \{
+                           Category: g.key,
+                           Count: g.values.reduce((count, val) => val.Count + count, 0)
+                       \};
+                  \})";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Query the index**:  
+Once the index is deployed, you can query for the total number of products per category,  
+and optionally, order the results by product count in descending order.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var topCategories = session
+     // Query the map-reduce index
+    .Query<Products_ByCategory_JS.IndexEntry, Products_ByCategory_JS>()
+    .OrderByDescending(x => x.Count)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByCategory/JS"
+order by Count as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+#### Example II
+The following index calculates how many items were sold and the total sales amount for each product and month.
+
+<TabItem value="something" label="index_7">
+<CodeBlock language="csharp">
+{`public class ProductSales_ByMonth_JS : AbstractJavaScriptIndexCreationTask
+\{
+    public class IndexEntry
+    \{
+        public string Product \{ get; set; \}
+        public DateTime Month \{ get; set; \}
+        public int Count \{ get; set; \}
+        public decimal Total \{ get; set; \}
+    \}
+    
+    public ProductSales_ByMonth_JS()
+    \{
+        // The Map stage:
+        // For each order, emit one entry per line with:
+        // * the product,
+        // * the first day of the order’s month,
+        // * a count of 1,
+        // * and the line’s total value.
+        Maps = new HashSet<string>()
+        \{
+            @"map('orders', function(order) \{
+                  var res = [];
+                  var orderDate = new Date(order.OrderedAt);
+
+                  order.Lines.forEach(l => \{
+                      res.push(\{
+                          Product: l.Product,
+                          Month: new Date(orderDate.getFullYear(), orderDate.getMonth(), 1),
+                          Count: 1,
+                          Total: (l.Quantity * l.PricePerUnit) * (1- l.Discount)
+                      \})
+                  \});
+
+                  return res;
+            \})"
+        \};
+        
+        // The Reduce stage:
+        // Group by product and month, then sum up counts and totals.
+        Reduce = @"
+            groupBy(x => (\{Product: x.Product, Month: x.Month\}))
+                .aggregate(g => \{
+                     return \{
+                         Product: g.key.Product,
+                         Month: g.key.Month,
+                         Count: g.values.reduce((sum, x) => x.Count + sum, 0),
+                         Total: g.values.reduce((sum, x) => x.Total + sum, 0)
+                     \}
+                \})";
+        
+        // Output the reduce results into a dedicated collection
+        OutputReduceToCollection = "MonthlyProductSales";
+        PatternReferencesCollectionName = "MonthlyProductSales/References";
+        PatternForOutputReduceToCollectionReferences = "sales/monthly/\{Month\}";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+Learn more about [Map-Reduce indexes here](../indexes/map-reduce-indexes).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This feature was created for users who want to create an index and prefer JavaScript over C#.   
+JavaScript indexes can be defined by a user with lower permissions than the C# indexes (admin not required).   
+All other capabilities and features are the same as C# indexes.   
+
+## Creating JavaScript index
+
+If we want to create JavaScript index we need to create an instance of our class that inherits 
+from AbstractJavaScriptIndexCreationTask.   
+AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask 
+(Read more about AbstractIndexCreationTask [here](../indexes/creating-and-deploying#Using-AbstractIndexCreationTask).)
+
+<TabItem value="something-something" label="javaScriptindexes_1">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Map index
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
+They indicate which documents can be searched by which fields.
+
+<TabItem value="something" label="java">
+<CodeBlock language="java">
+{`map(<collection-name>, function (document)\{
+     return \{
+         // indexed properties go here e.g:
+         // name: document.name
+     \};
+ \})
+`}
+</CodeBlock>
+</TabItem>
+
+### Example I - Simple map index
+
+<TabItem value="something-something" label="javaScriptindexes_6">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
+    public Employees_ByFirstAndLastName() \{
+        setMaps(Sets.newHashSet("map('Employees', function (employee)\{\\n" +
+            "                return \{\\n" +
+            "                    FirstName : employee.FirstName,\\n" +
+            "                    LastName : employee.LastName\\n" +
+            "                \};\\n" +
+            "        \})"));
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II - Map index with additional sources
+
+<TabItem value="something-something" label="indexes_2">
+<CodeBlock language="java">
+{`public static class BlogPosts_ByCommentAuthor extends AbstractJavaScriptIndexCreationTask \{
+    public BlogPosts_ByCommentAuthor() \{
+        setMaps(Sets.newHashSet("map('BlogPosts', function(b)\{\\n" +
+            "            var names = [];\\n" +
+            "            b.comments.forEach(x => getNames(x, names));\\n" +
+            "                return \{\\n" +
+            "                   authors : names\\n" +
+            "                \};" +
+            "            \})"));
+
+        java.util.Map<String, String> additionalSources = new HashMap<>();
+        additionalSources.put("The Script", "function getNames(x, names)\{\\n" +
+            "        names.push(x.author);\\n" +
+            "        x.comments.forEach(x => getNames(x, names));\\n" +
+            "    \}");
+
+        setAdditionalSources(additionalSources);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about map indexes [here](../indexes/map-indexes).
+
+## Multi map index
+
+Multi-Map indexes allow you to index data from multiple collections
+
+### Example
+
+<TabItem value="something-something" label="multi_map_5">
+<CodeBlock language="java">
+{`public static class Animals_ByName extends AbstractJavaScriptIndexCreationTask \{
+    public Animals_ByName() \{
+        setMaps(Sets.newHashSet(
+            "map('cats', function (c)\{ return \{name: c.name\}\})",
+            "map('dogs', function (d)\{ return \{name: d.name\}\})"
+        ));
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about multi map indexes [here](../indexes/map-reduce-indexes).
+
+## Map-Reduce index
+Map-Reduce indexes allow you to perform complex aggregations of data.
+The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
+Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
+
+<TabItem value="something" label="java">
+<CodeBlock language="java">
+{`groupBy(x => \{map properties\})
+     .aggregate(y => \{
+         return \{
+             // indexed properties go here e.g:
+             // name: y.name
+         \};
+     \})
+`}
+</CodeBlock>
+</TabItem>
+
+### Example I
+
+<TabItem value="something-something" label="map_reduce_0_0">
+<CodeBlock language="java">
+{`public static class Products_ByCategory extends AbstractJavaScriptIndexCreationTask \{
+    public Products_ByCategory() \{
+        setMaps(Sets.newHashSet("map('products', function(p)\{\\n" +
+            "            return \{\\n" +
+            "                Category: load(p.Category, 'Categories').Name,\\n" +
+            "                Count: 1\\n" +
+            "            \}\\n" +
+            "        \})"));
+
+        setReduce("groupBy(x => x.Category)\\n" +
+            "    .aggregate(g => \{\\n" +
+            "        return \{\\n" +
+            "            Category: g.key,\\n" +
+            "            Count: g.values.reduce((count, val) => val.Count + count, 0)\\n" +
+            "        \};\\n" +
+            "    \})");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="something-something" label="map_reduce_3_0">
+<CodeBlock language="java">
+{`public static class Product_Sales_ByMonth extends AbstractJavaScriptIndexCreationTask \{
+    public Product_Sales_ByMonth() \{
+        setMaps(Sets.newHashSet("map('orders', function(order)\{\\n" +
+            "            var res = [];\\n" +
+            "            order.Lines.forEach(l => \{\\n" +
+            "            res.push(\{\\n" +
+            "                Product: l.Product,\\n" +
+            "                Month: new Date( (new Date(order.OrderedAt)).getFullYear(),(new Date(order.OrderedAt)).getMonth(),1),\\n" +
+            "                Count: 1,\\n" +
+            "                Total: (l.Quantity * l.PricePerUnit) * (1- l.Discount)\\n" +
+            "            \})\\n" +
+            "        \});\\n" +
+            "        return res;\\n" +
+            "    \})"));
+
+        setReduce("groupBy(x => (\{Product: x.Product, Month: x.Month\}))\\n" +
+            "    .aggregate(g => \{\\n" +
+            "        return \{\\n" +
+            "            Product: g.key.Product,\\n" +
+            "            Month: g.key.Month,\\n" +
+            "            Count: g.values.reduce((sum, x) => x.Count + sum, 0),\\n" +
+            "            Total: g.values.reduce((sum, x) => x.Total + sum, 0)\\n" +
+            "        \}\\n" +
+            "    \})");
+
+        setOutputReduceToCollection("MonthlyProductSales");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Read more about map reduce indexes [here](../indexes/multi-map-indexes).
+
+<Admonition type="info" title="Information" id="information" href="#information">
+Supported JavaScript version : ECMAScript 5.1
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map Indexes](../indexes/map-indexes)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
+- [Basics](../indexes/querying/basics)
+
+
+-->

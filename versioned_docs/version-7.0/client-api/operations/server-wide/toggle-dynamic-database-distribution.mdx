@@ -1,0 +1,72 @@
+---
+title: "Operations: Server: Toggle Dynamic Database Distribution"
+sidebar_label: Toggle Dynamic Database Distribution
+sidebar_position: 11
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+## Related Articles
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Operations: Server: Toggle Dynamic Database Distribution
+<Admonition type="note" title="Note">
+
+* In [dynamic database distribution](../../../server/clustering/distribution/distributed-database#dynamic-database-distribution) mode, 
+if a database node is down, another cluster node is added to the database group to compensate.  
+
+* Use this operation to toggle dynamic distribution for a particular database group.  
+
+* This can also be done [in the studio](../../../studio/database/settings/manage-database-group#database-group-topology---actions) under 
+database group settings.  
+
+</Admonition>
+
+
+
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`public SetDatabaseDynamicDistributionOperation(string databaseName, bool allowDynamicDistribution)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | string | Name of database group |
+| **allowDynamicDistribution** | bool | Set to `true` to activate dynamic distribution mode. |
+### Example
+
+<TabItem value="something" label="operation">
+<CodeBlock language="csharp">
+{`SetDatabaseDynamicDistributionOperation operation =
+    new SetDatabaseDynamicDistributionOperation("NorthWind", true);
+documentStore.Maintenance.Server.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Server
+- [Distributed Database](../../../server/clustering/distribution/distributed-database)
+
+### Studio
+- [Manage Database Group](../../../studio/database/settings/manage-database-group)
+
+
+-->

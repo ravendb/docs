@@ -1,0 +1,37 @@
+---
+title: "Configuration: Queue Sink"
+sidebar_label: Queue Sink Configuration
+sidebar_position: 18
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Queue Sink
+## `QueueSink.MaxBatchSize`
+
+The maximum number of pulled messages consumed in a single batch.  
+
+- **Default**: `8192`
+- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../studio/database/settings/database-settings#view-database-settings)
+
+
+
+## `QueueSink.MaxFallbackTimeInSec`
+
+The maximum number of seconds the queue sink process will be in a fallback 
+mode (i.e. suspending the process) after a connection failure.  
+
+- **Default**: `15*60`
+- **TimeUnit**: `TimeUnit.Seconds`
+- **Scope**: [Server-wide](../../server/configuration/configuration-options#settings.json) 
+  or [per database](../../studio/database/settings/database-settings#view-database-settings)
+
+
+

@@ -1,0 +1,343 @@
+---
+title: "Get Indexes Operation"
+sidebar_label: Get Indexes
+sidebar_position: 13
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Indexes Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, the index definitions returned are taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
+
+* In this page:
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+
+</Admonition>
+## Get Indexes example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get indexes operation
+// Pass number of indexes to skip & number of indexes to retrieve
+var getIndexesOp = new GetIndexesOperation(0, 10);
+
+// Execute the operation by passing it to Maintenance.Send
+IndexDefinition[] indexes = store.Maintenance.Send(getIndexesOp);
+
+// indexes will contain the first 10 indexes, alphabetically ordered by index name
+// Access an index definition from the resulting list:
+var name = indexes[0].Name;
+var state = indexes[0].State;
+var lockMode = indexes[0].LockMode;
+var deploymentMode = indexes[0].DeploymentMode;
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get indexes operation
+// Pass number of indexes to skip & number of indexes to retrieve
+var getIndexesOp = new GetIndexesOperation(0, 10);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+IndexDefinition[] indexes = await store.Maintenance.SendAsync(getIndexesOp);
+
+// indexes will contain the first 10 indexes, alphabetically ordered by index name
+// Access an index definition from the resulting list:
+var name = indexes[0].Name;
+var state = indexes[0].State;
+var lockMode = indexes[0].LockMode;
+var deploymentMode = indexes[0].DeploymentMode;
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="get_indexes_syntax">
+<CodeBlock language="csharp">
+{`public GetIndexesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **start** | `int` | Number of indexes to skip |
+| **pageSize** | `int` | Number of indexes to retrieve |
+
+| Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
+| - | - |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) classes,<br/> ordered alphabetically by index name. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetIndexesOperation** is used to retrieve multiple index definitions from a database.
+
+### Syntax
+
+<TabItem value="something-something" label="get_2_0">
+<CodeBlock language="java">
+{`public GetIndexesOperation(int start, int pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Number of indexes that should be skipped |
+| **pageSize** | int | Maximum number of indexes that will be retrieved  |
+
+| Return Value | |
+| ------------- | ----- |
+| `IndexDefinition` | Instance of IndexDefinition representing index. |
+
+### Example
+
+<TabItem value="something-something" label="get_2_1">
+<CodeBlock language="java">
+{`IndexDefinition[] indexes
+    = store.maintenance()
+        .send(new GetIndexesOperation(0, 10));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, the index definitions returned are taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
+
+* In this page:
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+
+</Admonition>
+## Get Indexes example
+
+<TabItem value="something-something" label="get_indexes">
+<CodeBlock language="python">
+{`# Define the get indexes operation
+# Pass number of indexes to skip & number of indexes to retrieve
+get_index_op = GetIndexesOperation(0, 10)
+
+# Execute the operation by passing it to maintenance.send
+indexes = store.maintenance.send(get_index_op)
+
+# indexes will contain the first 10 indexes, alphabetically ordered by index name
+# Access an index definition from the resulting list:
+name = indexes[0].name
+state = indexes[0].state
+lock_mode = indexes[0].lock_mode
+deployment_mode = indexes[0].deployment_mode
+# etc.
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="get_indexes_syntax">
+<CodeBlock language="python">
+{`class GetIndexesOperation(MaintenanceOperation[List[IndexDefinition]]):
+    def __init__(self, start: int, page_size: int): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **start** | `int` | Number of indexes to skip |
+| **page_size** | `int` | Number of indexes to retrieve |
+
+| Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
+| - | - |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) classes, <br/> ordered alphabetically by index name. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, the index definitions returned are taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
+
+* In this page:
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+
+</Admonition>
+## Get Indexes example
+
+<TabItem value="something-something" label="get_indexes">
+<CodeBlock language="php">
+{`// Define the get indexes operation
+// Pass number of indexes to skip & number of indexes to retrieve
+$getIndexesOp = new GetIndexesOperation(0, 10);
+
+// Execute the operation by passing it to Maintenance.Send
+/** @var IndexDefinitionArray $indexes */
+$indexes = $store->maintenance()->send($getIndexesOp);
+
+// indexes will contain the first 10 indexes, alphabetically ordered by index name
+// Access an index definition from the resulting list:
+$name = $indexes[0]->getName();
+$state = $indexes[0]->getState();
+$lockMode = $indexes[0]->getLockMode();
+$deploymentMode = $indexes[0]->getDeploymentMode();
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+
+#### Syntax
+
+<TabItem value="something-something" label="get_indexes_syntax">
+<CodeBlock language="php">
+{`GetIndexesOperation(int $start, int $pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$start** | `int` | Number of indexes to skip |
+| **$pageSize** | `int` | Number of indexes to retrieve |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
+
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, the index definitions returned are taken from the database record,  
+  which is common to all the database-group nodes.  
+  i.e., an index state change done only on a local node is not reflected.
+
+* To get a specific index state on a local node use `GetIndexStatisticsOperation`.
+
+* In this page:
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+
+</Admonition>
+## Get Indexes example
+
+<TabItem value="something-something" label="get_indexes">
+<CodeBlock language="nodejs">
+{`// Define the get indexes operation
+// Pass number of indexes to skip & number of indexes to retrieve
+const getIndexesOp = new GetIndexesOperation(0, 10);
+
+// Execute the operation by passing it to maintenance.send
+const indexes = await store.maintenance.send(getIndexesOp);
+
+// indexes will contain the first 10 indexes, alphabetically ordered by index name
+// Access an index definition from the resulting list:
+const name = indexes[0].name;
+const state = indexes[0].state;
+const lockMode = indexes[0].lockMode;
+const deploymentMode = indexes[0].deploymentMode;
+// etc.
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="get_indexes_syntax">
+<CodeBlock language="nodejs">
+{`const getIndexesOp = new GetIndexesOperation(start, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **start** | `number` | Number of indexes to skip |
+| **pageSize** | `number` | Number of indexes to retrieve |
+
+| Return value of `store.maintenance.send(getIndexesOp)` | Description |
+| - | - |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition), <br/>ordered alphabetically by index name. |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Index](../../../../client-api/operations/maintenance/indexes/get-index)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+
+
+-->

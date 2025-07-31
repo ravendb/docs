@@ -1,0 +1,254 @@
+---
+title: "Delete Index Operation"
+sidebar_label: Delete Index
+sidebar_position: 4
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Delete Index Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexOperation` to remove an index from the database.
+
+* The index will be deleted from all the database-group nodes.
+
+* In this page:
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+
+</Admonition>
+## Delete index example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the delete index operation, specify the index name
+var deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(deleteIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the delete index errors operation, specify the index name
+var deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
+                
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(deleteIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`public DeleteIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type     | Description             |
+|---------------|----------|-------------------------|
+| **indexName** | `string` | Name of index to delete |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**DeleteIndexOperation** is used to remove an index from a database.
+
+## Syntax
+
+<TabItem value="something-something" label="delete_1">
+<CodeBlock language="java">
+{`public DeleteIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to delete |
+
+## Example
+
+<TabItem value="something-something" label="delete_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new DeleteIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexOperation` to remove an index from the database.
+
+* The index will be deleted from all the database-group nodes.
+
+* In this page:
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+
+</Admonition>
+## Delete index example
+
+<TabItem value="something-something" label="delete_index">
+<CodeBlock language="python">
+{`# Define the delete index operation, specify the index name
+delete_index_op = DeleteIndexOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+store.maintenance.send(delete_index_op)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`class DeleteIndexOperation(VoidMaintenanceOperation):
+    def __init__(self, index_name: str): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters    | Type | Description |
+|- | - | - |
+| **index_name** | `str` | Name of index to delete |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexOperation` to remove an index from the database.
+
+* The index will be deleted from all the database-group nodes.
+
+* In this page:
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+
+</Admonition>
+## Delete index example
+
+<TabItem value="something-something" label="delete_index">
+<CodeBlock language="php">
+{`// Define the delete index operation, specify the index name
+$deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+$store->maintenance()->send($deleteIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`DeleteIndexOperation(?string $indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters    | Type | Description |
+|- | - | - |
+| **$indexName** | `?string` | Name of index to delete |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteIndexOperation` to remove an index from the database.
+
+* The index will be deleted from all the database-group nodes.
+
+* In this page:
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+
+</Admonition>
+## Delete index example
+
+<TabItem value="something-something" label="delete_index">
+<CodeBlock language="nodejs">
+{`// Define the delete index operation, specify the index name
+const deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to maintenance.send
+await store.maintenance.send(deleteIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`const deleteIndexOp = new DeleteIndexOperation(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters    | Type | Description |
+|- | - | - |
+| **indexName** | `string` | Name of index to delete |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Get Index](../../../../client-api/operations/maintenance/indexes/get-index)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+
+
+-->

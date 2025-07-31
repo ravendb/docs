@@ -1,0 +1,42 @@
+import React, { ReactNode } from "react";
+import Heading from "@theme/Heading";
+import Button from "@site/src/components/Common/Button";
+
+export interface CardWithImageProps {
+  title: string;
+  description: ReactNode;
+  imgSrc: string;
+  imgAlt?: string;
+  url?: string;
+  ctaLabel?: string;
+}
+
+export default function CardWithImage({
+  title,
+  description,
+  imgSrc,
+  imgAlt = "",
+  url,
+  ctaLabel = "Read now",
+}: CardWithImageProps) {
+  return (
+    <div className="card group flex flex-col overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-muted/40 p-4 transition-colors">
+      <div className="flex items-center justify-center rounded-xl bg-black/40 mb-4 overflow-hidden">
+        <img
+          src={imgSrc}
+          alt={imgAlt}
+          className="pointer-events-none object-cover transition-transform origin-bottom duration-500 group-hover:scale-105 group-hover:translate-y-1"
+        />
+      </div>
+      <Heading as="h4" className="!mb-2">
+        {title}
+      </Heading>
+      <p className="!mb-3 text-sm">{description}</p>
+      {url && (
+        <Button variant="default" url={url} className="mt-auto">
+          {ctaLabel}
+        </Button>
+      )}
+    </div>
+  );
+}

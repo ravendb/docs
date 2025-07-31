@@ -1,0 +1,41 @@
+---
+title: "Documents: Conflicts View"
+sidebar_label: Conflicts View
+sidebar_position: 6
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Documents: Conflicts View
+<Admonition type="note" title="Note">
+
+* Manually resolve a conflict between two documents in this view.  
+
+* For a conflict overview see: [What is a Conflict](../../../server/clustering/replication/replication-conflicts)  
+
+* Note:  
+  By default, conflicts are resolved using the latest document version when no script is defined.  
+  Conflicts will be created _only if_ this option is unchecked in [Conflict Resolution](../../../studio/database/settings/conflict-resolution).  
+</Admonition>
+## The Conflicts View
+
+![Figure 1. Conflicts View](./assets/conflict-view-1.png)
+
+1. **The conflicted document** - Click to open the resolve editor
+
+2. **The conflicted document versions** - Resolve to either version by clicking _'Use this'_  
+
+3. **The conflicted document body** - Resolve by modifying  the document body directly  
+
+4. **Resolve Conflict By:**  
+   * ***Resolve and Save*** - Click to save the resolved document version, or -  
+   * ***Delete*** - Click to delete this document  
+
+
+

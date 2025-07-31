@@ -1,0 +1,114 @@
+---
+title: "Operations: Server: How to Delete a Client Certificate"
+sidebar_label: Delete Certificate
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Operations: Server: How to Delete a Client Certificate
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+You can delete a client certificate using the **DeleteCertificateOperation**.  
+
+## Syntax
+
+<TabItem value="something" label="delete_cert_1">
+<CodeBlock language="csharp">
+{`public DeleteCertificateOperation(string thumbprint)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | string | The certificate thumbprint |
+
+## Example I
+
+<TabItem value="something" label="delete_cert_2">
+<CodeBlock language="csharp">
+{`string thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+store.Maintenance.Server.Send(new DeleteCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+You can delete client certificate using **DeleteCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="something-something" label="delete_cert_1">
+<CodeBlock language="java">
+{`public DeleteCertificateOperation(String thumbprint);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | String | The certificate thumbprint |
+
+## Example I
+
+<TabItem value="something-something" label="delete_cert_2">
+<CodeBlock language="java">
+{`String thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+store.maintenance().server().send(new DeleteCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+You can delete a client certificate using the **DeleteCertificateOperation**.  
+
+## Usage
+
+<TabItem value="something-something" label="delete_cert_1">
+<CodeBlock language="nodejs">
+{`await store.maintenance.server.send(new DeleteCertificateOperation([thumbprint]));
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | string | The certificate thumbprint |
+
+## Example I
+
+<TabItem value="something-something" label="delete_cert_2">
+<CodeBlock language="nodejs">
+{`const thumbprint = "a909502dd82ae41433e6f83886b00d4277a32a7b";
+await store.maintenance.server.send(new DeleteCertificateOperation(thumbprint));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to create client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
+
+-->

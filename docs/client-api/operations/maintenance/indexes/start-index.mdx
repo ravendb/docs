@@ -1,0 +1,331 @@
+---
+title: "Resume Index Operation"
+sidebar_label: Resume Index
+sidebar_position: 10
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Resume Index Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+  use `StartIndexOperation` to **resume the index**.  
+
+* When resuming the index from the **client**:  
+  The index is resumed on the preferred node only, and Not on all the database-group nodes.
+
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+  The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
+
+* In this page:
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+
+</Admonition>
+## Resume index example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the resume index operation, pass the index name
+var resumeIndexOp = new StartIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(resumeIndexOp);
+
+// At this point:
+// Index 'Orders/Totals' is resumed on the preferred node
+
+// Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+var indexingStatus = store.Maintenance.Send(new GetIndexingStatusOperation());
+
+var index = indexingStatus.Indexes.FirstOrDefault(x => x.Name == "Orders/Totals");
+Assert.Equal(IndexRunningStatus.Running, index.Status);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the resume index operation, pass the index name
+var resumeIndexOp = new StartIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(resumeIndexOp);
+
+// At this point:
+// Index 'Orders/Totals' is resumed on the preferred node
+
+// Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+var indexingStatus = await store.Maintenance.SendAsync(new GetIndexingStatusOperation());
+
+var index = indexingStatus.Indexes.FirstOrDefault(x => x.Name == "Orders/Totals");
+Assert.Equal(IndexRunningStatus.Running, index.Status);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`// class name has "Start", but this is ok, this is the "Resume" operation
+public StartIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |-|
+| **indexName** | `string` | Name of an index to resume |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The **StartIndexOperation** is used to resume indexing for an index.
+
+### Syntax
+
+<TabItem value="something-something" label="start_1">
+<CodeBlock language="java">
+{`public StartIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to start indexing |
+
+### Example
+
+<TabItem value="something-something" label="start_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StartIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+  use `StartIndexOperation` to **resume the index**.  
+
+* When resuming the index from the **client**:  
+  The index is resumed on the preferred node only, and Not on all the database-group nodes.
+
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+  The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
+
+* In this page:
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+
+</Admonition>
+## Resume index example
+
+<TabItem value="something-something" label="resume_index">
+<CodeBlock language="python">
+{`# Define the resume index operation, pass the index name
+resume_index_op = StartIndexOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+store.maintenance.send(resume_index_op)
+
+# At this point:
+# Index 'Orders/Totals' is resumed on the preferred node
+
+# Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+indexing_status = store.maintenance.send(GetIndexingStatusOperation())
+
+index = [x for x in indexing_status.indexes if x.name == "Orders/Totals"][0]
+self.assertEqual(index.status, IndexRunningStatus.RUNNING)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`class StartIndexOperation(VoidMaintenanceOperation):
+    def __init__(self, index_name: str): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |-|
+| **index_name** | `str` | Name of an index to resume |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+  use `StartIndexOperation` to **resume the index**.  
+
+* When resuming the index from the **client**:  
+  The index is resumed on the preferred node only, and Not on all the database-group nodes.
+
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+  The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
+
+* In this page:
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+
+</Admonition>
+## Resume index example
+
+<TabItem value="something-something" label="resume_index">
+<CodeBlock language="php">
+{`// Define the resume index operation, pass the index name
+$resumeIndexOp = new StartIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+$store->maintenance()->send($resumeIndexOp);
+
+// At this point:
+// Index 'Orders/Totals' is resumed on the preferred node
+
+// Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+/** @var IndexingStatus $indexingStatus */
+$indexingStatus = $store->maintenance()->send(new GetIndexingStatusOperation());
+
+$indexes = array_filter($indexingStatus->getIndexes()->getArrayCopy(), function ($v, $k) \{
+    return $v->getName() == "Orders/Totals";
+\});
+/** @var IndexingStatus $index */
+$index = $indexes[0];
+
+$this->assertTrue($index->getStatus()->isRunning());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`// class name begins with "Start" but this is still the "Resume" operation
+StartIndexOperation(?string $indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |-|
+| **$indexName** | `?string` | Name of an index to resume |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+  use `StartIndexOperation` to **resume the index**.  
+
+* When resuming the index from the **client**:  
+  The index is resumed on the preferred node only, and Not on all the database-group nodes.
+
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+  The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
+
+* In this page:
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+
+</Admonition>
+## Resume index example
+
+<TabItem value="something-something" label="resume_index">
+<CodeBlock language="nodejs">
+{`// Define the resume index operation, pass the index name 
+const resumeIndexOp = new StartIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to maintenance.send
+await store.maintenance.send(resumeIndexOp);
+
+// At this point:
+// Index 'Orders/Totals' is resumed on the preferred node
+
+// Can verify the index status on the preferred node by sending GetIndexingStatusOperation
+const indexingStatus = await store.maintenance.send(new GetIndexingStatusOperation());
+
+const index = indexingStatus.indexes.find(x => x.name === "Orders/Totals")
+assert.strictEqual(index.status, "Running");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// class name has "Start", but this is ok, this is the "Resume" operation
+const resumeIndexOp = new StartIndexOperation(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - |-|
+| **indexName** | `string` | Name of an index to resume |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+### Studio
+- [Resume index from Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)
+
+
+-->

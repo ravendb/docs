@@ -1,0 +1,70 @@
+---
+title: "Fiddler Usage With Secured Database"
+sidebar_label: Fiddler Usage With Secured Database
+sidebar_position: 5
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Fiddler Usage With Secured Database
+
+When you want to use fiddler with secure database you need to configure fiddler that it could response and do requests as you.
+
+## Respond to Requests Requiring a Client Certificate
+
+First you need to create .CER file: 
+
+1. Open Manege User certificates
+
+2. Right-click the certificate in Personal Certificates Store.
+
+3. Click All Tasks &gt; Export 
+
+Then you need to specify the .CER file for Fiddler to return for a given session.
+
+You have two options to do so:
+
+1. Add a FiddlerScript to OnBeforeRequest function: 
+<TabItem value="something" label="plain">
+<CodeBlock language="plain">
+{`oSession["https-Client-Certificate"] = "C:\\\\test\\\\someCert.cer"; 
+`}
+</CodeBlock>
+</TabItem>
+2. Place your .CER file in '%USERPROFILE%\My Documents\Fiddler2\ClientCertificate.cer' ( the name must be ClientCertificate.cer)
+
+<Admonition type="warning" title="Warning">
+If you do this your client certificate is exposed through fiddler
+</Admonition>
+
+## Accepting response by the client
+
+* Option 1: Configure Windows Client to trust Fiddler Root Certificate
+
+    1. Click Tools &gt; Fiddler Options &gt; HTTPS.
+
+    2. Click the Decrypt HTTPS Traffic box.
+
+    3. Next to `Trust the Fiddler Root certificate?`, click Yes.
+
+    4. After `Do you want to install this certificate?`, click Yes.
+
+<Admonition type="danger" title="Danger">
+If you do this windows will automatically trust any certificate issued by this CA. This is a security risk!
+</Admonition>
+
+* Option 2: Client will ignore certificate validation
+
+    In the application you should set:
+
+    Raven.Client.Http.RequestExecutor.RemoteCertificateValidationCallback += (sender, cert, chain, errors) =&gt; true;
+
+<Admonition type="danger" title="Danger">
+If you do this and forget to remove it from your code, your client will accept any response!
+</Admonition>

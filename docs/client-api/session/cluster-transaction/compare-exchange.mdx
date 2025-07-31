@@ -1,0 +1,753 @@
+---
+title: "Compare Exchange in Cluster-Wide Session"
+sidebar_label: Compare Exchange
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Compare Exchange in Cluster-Wide Session
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Compare-Exchange items can be created and managed on the advanced session (`Session.Advanced`)  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
+</Admonition>
+## Create compare-exchange
+
+<Admonition type="note" title="Note">
+#### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// The session must be first opened with cluster-wide mode
+session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+    key: "Best NoSQL Transactional Database",
+    value: "RavenDB"
+);
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// The session must be first opened with cluster-wide mode
+session.Advanced.ClusterTransaction.CreateCompareExchangeValue(
+    key: "Best NoSQL Transactional Database",
+    value: "RavenDB"
+);
+
+await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* `SaveChanges()` throws a `ConcurrencyException` if the key already exists.
+* An `InvalidOperationException` exception is thrown if the session was Not opened as **cluster-wide**.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.CreateCompareExchangeValue<T>(key, value);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.CreateCompareExchangeValue<T>(key, value);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `T`      | The associated value to store for the key                          |
+
+| Return Value              | Description                               |
+|---------------------------|-------------------------------------------|
+| `CompareExchangeValue<T>` | The new compare-exchange item is returned |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### The CompareExchangeValue
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `T`      | The value associated with the key                                  |
+| **index**    | `long`   | Index for concurrency control                                      |
+
+</Admonition>
+
+
+## Get compare-exchange
+
+<Admonition type="note" title="Note">
+#### Get single value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.GetCompareExchangeValue<T>(key);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await session.Advanced.ClusterTransaction.GetCompareExchangeValueAsync<T>(key);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters   | Type     | Description         |
+|--------------|----------|---------------------|
+| **key**      | `string` | The key to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `CompareExchangeValue<T>`| If the key doesn't exist it will return `null` |
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get multiple values
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session.Advanced.ClusterTransaction.GetCompareExchangeValues<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await session.Advanced.ClusterTransaction.GetCompareExchangeValuesAsync<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters   | Type       | Description               |
+|--------------|------------|---------------------------|
+| **keys**     | `string[]` | Array of keys to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get compare-exchange lazily
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Single value
+session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValue<T>(key);
+
+// Multiple values
+session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValues<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Single value
+session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValueAsync<T>(key);
+
+// Multiple values
+session.Advanced.ClusterTransaction.Lazily.GetCompareExchangeValuesAsync<T>(keys);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters  | Type       | Description               |
+|-------------|------------|---------------------------|
+| **key**     | `string`   | The key to retrieve       |
+| **keys**    | `string[]` | Array of keys to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Lazy<CompareExchangeValue<T>>`| If the key doesn't exist it will return `null` |
+| `Lazy<Dictionary<string, CompareExchangeValue<T>>>` | If a key doesn't exists the associate value will be `null` |
+</Admonition>
+
+
+## Delete compare-exchange
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Delete by key & index
+session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+
+// Delete by compare-exchange item
+session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Delete by key & index
+session.Advanced.ClusterTransaction.DeleteCompareExchangeValue(key, index);
+
+// Delete by compare-exchange item
+session.Advanced.ClusterTransaction.DeleteCompareExchangeValue<T>(item);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameters | Type                      | Description                                    |
+|------------|---------------------------|------------------------------------------------|
+| **key**    | `string`                  | The key of the compare-exchange item to delete |
+| **index**  | `long`                    | The index of this compare-exchange item        |
+| **item**   | `CompareExchangeValue<T>` | The compare-exchange item to delete            |
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
+</Admonition>
+## Create compare-exchange
+
+<Admonition type="note" title="Note">
+#### Example
+
+<TabItem value="something-something" label="new_compare_exchange_sync">
+<CodeBlock language="python">
+{`# The session must be first opened with cluster-wide mode
+session.advanced.cluster_transaction.create_compare_exchange_value(
+    key="Best NoSQL Transactional Database",
+    item="RavenDB",
+)
+
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+* `save_changes()` throws a `ConcurrencyException` if the key already exists.
+* A `RuntimeError` exception is thrown if the session was Not opened as **cluster-wide**.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Syntax
+
+<TabItem value="something-something" label="methods_3_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.create_compare_exchange_value(key, value)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description                                                |
+|--------------|----------|------------------------------------------------------------|
+| **key**      | `str`    | The key for the compare-exchange item to be created<br/>This string can be up to 512 bytes |
+| **value**    | `T`      | The value to associate with this key                       |
+
+| Return Value              | Description                               |
+|---------------------------|-------------------------------------------|
+| `CompareExchangeValue[T]` | The new compare-exchange item is returned |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### The CompareExchangeValue
+
+| Parameters   | Type     | Description                                                         |
+|--------------|----------|---------------------------------------------------------------------|
+| **key**      | `str`    | The compare-exchange item key<br/>This string can be up to 512 bytes |
+| **value**    | `T`      | The value associated with the key                                   |
+| **index**    | `int`    | Index for concurrency control                                       |
+
+</Admonition>
+
+
+## Get compare-exchange
+
+<Admonition type="note" title="Note">
+#### Get single value
+
+<TabItem value="something-something" label="methods_1_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.get_compare_exchange_value(key)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description         |
+|--------------|----------|---------------------|
+| **key**      | `str`    | The key for a compare-exchange item whose value is requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `CompareExchangeValue[T]`| The requested value<br/>If the key doesn't exist the value associated with it will be `None` |
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get multiple values
+
+<TabItem value="something-something" label="methods_2_sync">
+<CodeBlock language="python">
+{`session.advanced.cluster_transaction.get_compare_exchange_values(keys)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type        | Description               |
+|--------------|-------------|---------------------------|
+| **keys**     | `List[str]` | An array of compare-exchange keys whose values are requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Dict[str, CompareExchangeValue[T]]` | A dictionary of requested values<br/>If a key doesn't exist the value associated with it will be `None` |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get compare-exchange lazily
+
+<TabItem value="something-something" label="methods_sync_lazy_1">
+<CodeBlock language="python">
+{`# Single value
+session.advanced.cluster_transaction.lazily.get_compare_exchange_value(key)
+
+# Multiple values
+session.advanced.cluster_transaction.lazily.get_compare_exchange_values(keys)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters  | Type        | Description               |
+|-------------|-------------|---------------------------|
+| **key**     | `str`       | The key for a compare-exchange item whose value is requested |
+| **keys**    | `List[str]` | An array of compare-exchange keys whose values are requested |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Lazy[CompareExchangeValue[T]]`| The requested value<br/>If the key doesn't exist the value associated with it will be `None` |
+| `Lazy[Dict[str, CompareExchangeValue[T]]]` | A dictionary of requested values<br/>If a key doesn't exist the value associated with it will be `None` |
+</Admonition>
+
+
+## Delete compare-exchange
+
+To delete a compare exchange item, use either of the following methods.  
+
+<Admonition type="note" title="Note">
+
+<TabItem value="something-something" label="methods_4_sync">
+<CodeBlock language="python">
+{`# Delete by key & index
+session.advanced.cluster_transaction.delete_compare_exchange_value(key, index)
+
+# Delete by compare-exchange item
+session.advanced.cluster_transaction.delete_compare_exchange_value(item)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                      | Description                                     |
+|------------|---------------------------|-------------------------------------------------|
+| **key**    | `str`                     | The key for the compare-exchange item to delete |
+| **index**  | `int`                     | The index for the compare-exchange item to delete   |
+| **item**   | `CompareExchangeValue[T]` | The compare-exchange item to delete             |
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Compare-Exchange items can be created and managed on the advanced session (`session.advanced`).  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
+</Admonition>
+## Create compare-exchange
+
+<Admonition type="note" title="Note">
+#### Example
+
+<TabItem value="something-something" label="new_compare_exchange_sync">
+<CodeBlock language="php">
+{`// The session must be first opened with cluster-wide mode
+$session->advanced()->clusterTransaction()->createCompareExchangeValue(
+    key: "Best NoSQL Transactional Database",
+    value: "RavenDB"
+);
+
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+* `saveChanges()` throws a `ConcurrencyException` if the key already exists.
+* An `InvalidOperationException` exception is thrown if the session was Not opened as **cluster-wide**.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Syntax
+
+<TabItem value="something-something" label="methods_3_sync">
+<CodeBlock language="php">
+{`$session->advanced()->clusterTransaction()->createCompareExchangeValue($key, $value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `T`      | The associated value to store for the key                          |
+
+| Return Value              | Description                               |
+|---------------------------|-------------------------------------------|
+| `CompareExchangeValue<T>` | The new compare-exchange item is returned |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### The CompareExchangeValue
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `T`      | The value associated with the key                                  |
+| **index**    | `long`   | Index for concurrency control                                      |
+
+</Admonition>
+
+
+## Get compare-exchange
+
+<Admonition type="note" title="Note">
+#### Get single value
+
+<TabItem value="something-something" label="methods_1_sync">
+<CodeBlock language="php">
+{`$session->advanced()->clusterTransaction()->getCompareExchangeValue(null, $key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description         |
+|--------------|----------|---------------------|
+| **key**      | `string` | The key to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `CompareExchangeValue<T>`| The compare exchange value, or `null` if it doesn't exist |
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get multiple values
+
+<TabItem value="something-something" label="methods_2_sync">
+<CodeBlock language="php">
+{`$session->advanced()->clusterTransaction()->getCompareExchangeValues(null, $keys);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type       | Description               |
+|--------------|------------|---------------------------|
+| **keys**     | `string[]` | Array of keys to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Dictionary<string, CompareExchangeValue<T>>` | If a key doesn't exists the associate value will be `null` |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get compare-exchange lazily
+
+<TabItem value="something-something" label="methods_sync_lazy_1">
+<CodeBlock language="php">
+{`// Single value
+$session->advanced()->clusterTransaction()->lazily()->getCompareExchangeValue(null, $key);
+
+// Multiple values
+$session->advanced()->clusterTransaction()->lazily()->getCompareExchangeValues(null, $keys);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters  | Type       | Description               |
+|-------------|------------|---------------------------|
+| **key**     | `string`   | The key to retrieve       |
+| **keys**    | `string[]` | Array of keys to retrieve |
+
+| Return Value | Description |
+| ------------- | ----- |
+| `Lazy<CompareExchangeValue<T>>`| If the key doesn't exist it will return `null` |
+| `Lazy<Dictionary<string, CompareExchangeValue<T>>>` | If a key doesn't exists the associate value will be `null` |
+</Admonition>
+
+
+## Delete compare-exchange
+
+<Admonition type="note" title="Note">
+
+<TabItem value="something-something" label="methods_4_sync">
+<CodeBlock language="php">
+{`// Delete by key & index
+$session->advanced()->clusterTransaction()->deleteCompareExchangeValue($key, $index);
+
+// Delete by compare-exchange item
+$session->advanced()->clusterTransaction()->deleteCompareExchangeValue($item);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type                      | Description                                    |
+|------------|---------------------------|------------------------------------------------|
+| **key**    | `string`                  | The key of the compare-exchange item to delete |
+| **index**  | `long`                    | The index of this compare-exchange item        |
+| **item**   | `CompareExchangeValue<T>` | The compare-exchange item to delete            |
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Compare-Exchange items can be created and managed on the advanced session (`session.advanced`)  
+  Other options are listed in this [compare-exchange overview](../../../client-api/operations/compare-exchange/overview#how-to-create-and-manage-compare-exchange-items).
+
+* When working with compare-exchange items from the session,  
+  the session **must be opened as a [cluster-wide session](../../../client-api/session/cluster-transaction/overview#open-a-cluster-transaction)**.
+
+* In this page:
+    * [Create compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#create-compare-exchange)
+    * [Get compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange)
+    * [Delete compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#delete-compare-exchange)
+</Admonition>
+## Create compare-exchange
+
+<Admonition type="note" title="Note">
+#### Example
+
+<TabItem value="something-something" label="create_compare_exchange_example">
+<CodeBlock language="nodejs">
+{`// The session must be first opened with cluster-wide mode
+const session = documentStore.openSession(\{
+    transactionMode: "ClusterWide"
+\});
+
+session.advanced.clusterTransaction.createCompareExchangeValue(
+    "Best NoSQL Transactional Database", "RavenDB"  // key, value
+);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+* An `InvalidOperationException` exception is thrown when:
+  * The session was Not opened as **cluster-wide**.
+  * The key already exists in the database.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Syntax
+
+<TabItem value="something-something" label="create_compare_exchange">
+<CodeBlock language="nodejs">
+{`session.advanced.clusterTransaction.createCompareExchangeValue(key, item);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type      | Description                                                        |
+|--------------|-----------|--------------------------------------------------------------------|
+| **key**      | `string`  | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `object`  | The associated value to store for the key                          |
+
+| Return value | Description                               |
+|---------------|-------------------------------------------|
+| `object`      | The new compare-exchange item is returned |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### The compare exchange object returned
+
+| Parameters   | Type     | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| **key**      | `string` | The compare-exchange item key. This string can be up to 512 bytes. |
+| **value**    | `object` | The value associated with the key                                  |
+| **index**    | `number` | Index for concurrency control                                      |
+
+</Admonition>
+
+
+## Get compare-exchange
+
+<Admonition type="note" title="Note">
+#### Get single value
+
+<TabItem value="something-something" label="get_compare_exchange_1">
+<CodeBlock language="nodejs">
+{`await session.advanced.clusterTransaction.getCompareExchangeValue(key);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type     | Description                    |
+|--------------|----------|--------------------------------|
+| **key**      | `string` | The key to retrieve            |
+
+| Return value | Description                                                                     |
+|---------------|---------------------------------------------------------------------------------|
+| `object`      | The compare-exchange item is returned.<br/> Returns `null` if key doesn't exist. |
+
+[key: string]: CompareExchangeValue&lt;T&gt;;
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get multiple values
+
+<TabItem value="something-something" label="get_compare_exchange_2">
+<CodeBlock language="nodejs">
+{`await session.advanced.clusterTransaction.getCompareExchangeValues(keys);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters  | Type        | Description               |
+|-------------|-------------|---------------------------|
+| **keys**    | `string[]`  | Array of keys to retrieve |
+
+| Return value            | Description                                                |
+|--------------------------|------------------------------------------------------------|
+| `Record<string, object>` | If a key doesn't exists the associate value will be `null` |
+</Admonition>
+
+<Admonition type="note" title="Note">
+#### Get compare-exchange lazily
+
+<TabItem value="something-something" label="get_compare_exchange_3">
+<CodeBlock language="nodejs">
+{`// Single item
+const lazyItem = session.advanced.clusterTransaction.lazily.getCompareExchangeValue(key);
+const item = await lazyItem.getValue();
+
+// Multiple items
+const lazyItems = session.advanced.clusterTransaction.lazily.getCompareExchangeValues(keys);
+const items = await lazyItems.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters   | Type       | Description               |
+|--------------|------------|---------------------------|
+| **key**      | `string`   | The key to retrieve       |
+| **keys**     | `string[]` | Array of keys to retrieve |
+
+| Return value - after calling `getValue` | Description                                                                        |
+|-----------------------------------------|------------------------------------------------------------------------------------|
+| `object`                                | For single item:<br/>If the key doesn't exist it will return `null`                 |
+| `Record<string, object>`                | For multiple items:<br/>If a key doesn't exists the associate value will be `null`  |
+</Admonition>
+
+
+## Delete compare-exchange
+
+<Admonition type="note" title="Note">
+
+<TabItem value="something-something" label="delete_compare_exchange">
+<CodeBlock language="nodejs">
+{`// Delete by key & index
+session.advanced.clusterTransaction.deleteCompareExchangeValue(key, index);
+
+// Delete by compare-exchange item
+session.advanced.clusterTransaction.deleteCompareExchangeValue(item);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type     | Description                                    |
+|------------|----------|------------------------------------------------|
+| **key**    | `string` | The key of the compare-exchange item to delete |
+| **index**  | `number` | The index of this compare-exchange item        |
+| **item**   | `object` | The compare-exchange item to delete            |
+
+</Admonition>
+
+
+
+</LanguageContent>
+
+<!---
+### Compare-Exchange Operations
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+
+
+-->

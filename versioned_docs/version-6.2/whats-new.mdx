@@ -1,0 +1,377 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+hide_table_of_contents: true
+---
+
+## 6.2.8 (62045) - 2025/07/22
+
+### Server
+
+* `[Backup]` Server-wide tasks are now correctly skipped when restoring from a snapshot
+* `[Cluster]` Fixed an issue where a node with a database in a "Loading" state could be incorrectly considered for promotion
+* `[Corax]` Improved memory allocation tracking for `NativeList` by refining size and maximum capacity monitoring
+* `[Corax]` Fixed a server crash that could occur when splitting pages due to the use of a removed compact key
+* `[Corax]`  Added the ability to cancel an in-progress "Commit" operation
+* `[Corax]`  Improved performance when indexing large datasets
+* `[Database]` Escaped the database name in the `Database-Missing` header to prevent errors with characters not allowed in HTTP headers
+* `[Indexing]` Fixed dynamic returns detection for JS map indexes syntax
+* `[Indexing]` Prevented an exception from being thrown when attempting to start an index that is already running
+* `[Logging]` Reduced excessive logging of failures during disk stats checks
+* `[Logging]` Resolved a Traffic Watch issue that could disrupt certain queries
+* `[Logging]` Optimized subscription logging by reducing string allocations
+* `[Logging]` Improvements to Audit Log when doing import/export
+* `[Logging]` PostgreSQL calls are now visible in Traffic Watch
+* `[Logging]` Added logging for high-latency requests (over 30 seconds) and large response sizes (over 16MB)
+* `[Replication]` Added a debug endpoint for finding missing attachments
+* `[Voron]` Fixed an issue with the Storage Report for vector indexes
+* `[.NET]` Updated to 8.0.17
+
+<hr/>
+
+### Client
+
+* `[Exceptions]` Improved the deserialization of `LicenseLimitException`
+
+<hr/>
+
+### Studio
+
+* `[Atomic Guards]` Added the ability to delete an Atomic Guard.
+* `[Atomic Guards]` Added an informational warning that is displayed when editing an Atomic Guard.
+* `[Certificates]` Adjusted colors and icons for certificate database permissions for better clarity.
+* `[Certificates]` Replaced the "Regenerate" button with a "Clone" button to better reflect its function.
+* `[Client Configuration]` Apply client configuration properties based on enabled flags
+* `[Custom Sorters/Analyzers]` The license warning is no longer displayed before saving Custom Sorters or Analyzers
+* `[Data Archival Settings]` Added a UI toggle for the `MaxItemsToProcess` setting
+* `[Documents]` Added a confirmation checkbox to the "Delete All Documents" operation to prevent accidental data loss
+* `[Edit Document]` The "Copy document ID" button in the document editor is now always visible
+* `[Indexes]` Improved pause/resume indexing in databases view
+
+
+## 6.2.7 (62042) - 2025/06/25
+
+
+### Studio
+
+* Fixed accessibility of Certificates view
+
+
+
+
+## 6.2.6 (62039) - 2025/06/10
+
+### Server
+
+* `[Attachments]` Fix the attachment key data extraction 
+* `[Audit Log]` Added logging on database settings/index configuration changes
+* `[Audit Log]` Added logging of opening a TCP connection
+* `[Audit Log]` Added logging of memory dumps endpoints usage
+* `[Audit Log]` Fixed a log message of a backup operation
+* `[Backup]` Fixed slow restore of a backup with revisions
+* `[Backup]` Enabled support for multi-part uploads up to 5TB to S3
+* `[Backup/Export]` Implemented rate limiting for backup/restore and import/export operations
+* `[Certificates]` Removed Oracle Key Usage support for newly generated client certificates to fix compatibility with .NET 9
+* `[Corax]` Added support for unbounded time queries in Corax between operations
+* `[Corax]` Optimized performance of cold queries on large data sets
+* `[Corax]` Made default value of `Indexing.Corax.MaxMemoizationSizeInMb` dependent on total physical installed memory
+* `[Corax]` Fixed query results deduplication when a query has projection and specific terms
+* `[Corax]` Adjusted the starts with behavior inside the `Search` method to match Lucene
+* `[Corax]` Fixed the handling of document double deletion in internal structures
+* `[Corax]` Fixed backward compatibility for indexes that do not have `NonExisting` posting list support
+* `[Corax]` Fixed ArgumentOutOfRangeException in MultiTermMatch.AndWithFill
+* `[Data Archival]` Archived flag will not be removed when modifying an archived document
+* `[Debug]` Switched to Microsoft.SourceLink.GitHub and introduced .snupkg
+* `[Debug]` Fixed `/databases/*/admin/debug/txinfo` debug endpoint
+* `[Debug]` Fixed handling of cancellation gracefully in LogTrafficWatch and preventing immediate exit in Raven.Debug `traffic` command 
+* `[Debug]` Enhanced the replication debug endpoint functionality
+* `[ETL]` Connection string changes will now restart the relevant ETL process
+* `[JSON]` Fixed internal parsing of JSON due to invalid handling of escape positions
+* `[Memory]` Optimized unmanaged memory usage when doing deep paging and using encryption
+* `[Memory]` Fixed internal calculations of memory utilization 
+* `[Memory]` Enhanced low memory detection on Windows
+* `[Patching]` Added `WaitForIndexes` functionality for patch operations 
+* `[PowerBI]` Fixed experimental feature error confusion
+* `[Subscriptions]` Fixed `OperationCanceledException` on waiting subscriptions
+* `[TestDriver]` Made `RavenTestDriver` testable and fixed testing of `ThrowOnInvalidOrMissingLicense`
+* `[Time Series]` Preserved time series name order after conflict resolution for Client API compatibility
+* `[.NET]` Updated to 8.0.16
+
+
+<hr/>
+
+### Client
+
+* `[Querying]` Added support for `MemoryExtensions.Contains` and `MemoryExtensions.ContainsAny` in LINQ provider and LINQ to JS coverter
+* `[Qyerying]` Fixed an issue that query builder didn't handle properly `ContainsAll` of an empty array  
+* `[Querying]` Fixed the problem with `Query` improperly serializing an enum when it had an `EnumMember` attribute
+
+
+<hr/>
+
+### Smuggler
+
+* `[Certificates]` Revamped certificates filtering/sorting view
+* `[Export]` Added export to stream overload for Smuggler API
+
+<hr/>
+
+### Studio
+
+* `[Edit]` Added ability to save a document in Studio via cluster transaction  
+* `[Revisions]` Added a button to copy revision dates
+
+## 6.2.5 (62035) - 2025/04/29
+
+### Server
+
+* `[Audit Log]` Logging enhancements
+* `[Certificates]` Fixed an issue with loading a certificate with a password after removing the password
+* `[Corax]` Fixed NRE when using wildcard search with multiple analyzers
+* `[Corax]` Optimizations and enhancements for deletions
+* `[Corax]` Performance optimizations for range queries on big datasets
+* `[Databases]` Improved management of database idleness detection timers
+* `[Indexing]` Fixed an issue where indexes could start before custom analyzers and sorters had been loaded
+* `[Indexing]` Improved validation of an index definition when using Run Test functionality
+* `[Licensing]` Introduced grace period for upgrade required modal - 14 days
+* `[Memory]` Prevented possible memory fragmentation in internal allocations
+* `[Monitoring]` Added SNMP endpoint for getting the time since the creation of oldest active transaction
+* `[Monitoring]` Fixed incorrect CPU usage calculation on machines with two physical processors
+* `[Replication]` Fixed an issue in which the incoming replication recreated a revision that has been deleted
+* `[Setup]` Fixed ports reservation for server
+* `[Subscriptions]` Snapshot backup restore will restore an original subscription name
+* `[TestDriver / Embedded]` Added more details on how to handle invalid or missing license
+* `[Voron]` Fixed a potential issue with missing removal of an active transaction from in-memory state in some edge conditions
+* `[.NET]` Updated to 8.0.15
+
+<hr/>
+
+### Client
+
+
+* `[Querying]` Added `RavenQuery.Include` method which extends existing include functionality to allow more complex operations
+
+<hr/>
+
+
+### Studio
+
+* `[Cluster]` Improvements to Cluster Debug view
+* `[Index Errors]` Opening the errors by default
+* `[Indexes]` Fixed filtering arrow icons
+* `[Revisions]` Exposed size of a revision
+* `[Tombstones view]` Exposed info about what is blocking tombstones deletion
+
+## 6.2.4 (62028) - 2025/03/18
+
+### Server
+
+* `[Backup]` Better selection of databases to wake up for to run a backup
+* `[Backup]` Enhanced backup operation status error reporting
+* `[Backup]` Fixed error when saving the periodic backup status
+* `[Backup]` Improved logic for determining when a backup should run
+* `[Configuration]` Removed obsolete "Storage.TransactionsModeDurationInMin" option
+* `[Corax]` Fixed and issue with duplicates when performing `AndWith` with `TermReader`
+* `[Corax]` Fixed invalid order of query results when using `order by`
+* `[Corax]` Fixed missing handling of non existing values in `MultiUnaryMatch`
+* `[Corax]` Fixed NRE on the dictionary training phase for indexes defined on @all_docs 
+* `[Counters]` Fixed the mechanism of counter tombstones cleanup
+* `[Indexing]` Fixed `WaitForIndexesAfterSaveChanges()` implementation to handle indexes defined on @all_docs
+* `[Memory]` Improvement to memory cleanup mechanism of Lucene's managed memory resources
+* `[Memory]` Improved the memory allocation mechanism in Lucene to reduce GC pressure
+* `[Memory]` Fixed calculation of unmanaged memory the debug stats
+* `[Memory]` Fixed an issue with unmanaged memory allocation for a specific pattern
+* `[Memory]` Fixed an issue with managed memoru usage during backups
+* `[Notifications]` Improved implementation of notifications storage
+* `[Revisions]` Fixed possible infinite loop when enforcing revision configuration
+* `[Security]` Added audit logs for export and import operations
+* `[Voron]` Fixed edge cases in `SeekBackwardFrom` implementation that could affect Time-Series retention
+* `[Voron]` Improved performance of the free space detection to allocate
+* `[.NET]` Updated to 8.0.13
+
+
+<hr/>
+
+### Client
+
+* `[Querying]` Fixed an issue that "Id" field was not populated in some projections
+* Fixed an issue that the Read balance behavior configuration changes was not triggering the speed test
+
+### Studio
+
+* `[Index View]` Fixed an issue with the default search analyzer not shown in UI
+* `[Ongoing Tasks View]` Better observability of replication tasks
+* `[Revisions]` Added revision bin cleaner to the settings
+
+## 6.2.3 (62017) - 2025/01/21
+
+### Server
+
+- `[Backups]` fixed issue with re-sending save backup status command in case of a failure
+- `[Cluster]` fixed issue with compare exchange tombstones not being cleaned if there is no cluster wide transaction
+- `[Cluster]` introduced a limit of executed cluster transactions by their size to avoid excessive memory usage
+- `[Configuration]` switched 'Cluster.WorkerSamplePeriodInMs' from 250 to 500 ms
+- `[Configuration]` switched 'Cluster.SupervisorSamplePeriodInMs' from 500 to 1000 ms
+- `[Corax]` fixed issue with TotalResults not being calculated properly when OrderBy clause is used
+- `[Corax]` fixed memory leak when dynamic fields are being used
+- `[Counters]` fixed issue with possible counter corruption
+- `[Indexes]` fixed issue with search with leading wildcard returning different results when StandardAnalyzer is used
+- `[Indexes]` fixed issue with map-reduce indexes taking longer to process due to invalid handling of references
+- `[Indexes]` disabled the ability to reset map-reduce index with output reduce to collection via side-by-side mode
+- `[JSON]` fixed a corner case when we would recognize date properly when .FFFFFFFK or .FFFK format is used
+- `[Querying]` added support to export time series query to CSV for sharded database
+- `[Querying]` properly export time series query to CSV
+- `[Revisions]` fixed issue with including duplicates when 'include' is being used on documents
+- `[RQL]` fixed issue with using 'select with load' in RQL for sharded databases
+- `[Security]` added audit log for client certificate management operations
+- `[Subscriptions]` better memory handling when compressed documents are used
+- `[.NET]` updated to 8.0.12
+
+<hr />
+
+### Client
+
+- `[Http]` fixed issue with usage of Multi-Get and possible NRE when HttpCache is used
+- `[Session]` added Delete and Stream to the incremental time series session
+- `[Session]` fixed caching behavior when NoCaching is used as a session parameter
+
+<hr />
+
+### Studio
+
+- `[Configuration]` fixed issue with Database settings not displaying content when aliased configuration key is being used
+- `[Community`] exposed community link in the footer
+- `[Indexes]` fixed issue with auto-index not refreshing after change
+- `[Licensing]` exposed more information about developer license
+- `[Security]` fixed issue with using backspace in 2FA view
+
+## 6.2.2 (62011) - 2024/12/11
+
+### Server
+
+- `[Backups]` disposing skipped cluster commands to avoid increased memory consumption during restore
+- `[Backups]` fixed issue with incorrect operation ID being returned when 'StartBackupOperation' is called while backup is already running
+- `[Certificates]` fixed possible NRE when /whoami endpoint is hit with invalid cert
+- `[Certificates]` added an option to validate trusted issuers certificate SAN's via 'Security.WellKnownIssuers.Admin.ValidateCertificateNames' configuration option
+- `[Certificates]` avoiding possible text injection to the auth-error page
+- `[Corax]` fixed issue with order by long retuning incorrect results in some cases
+- `[Corax]` added support for UTF8 in lower-cased analyzers
+- `[Cluster]` removing cluster transaction error notification after cluster transaction applier resumes work
+- `[Cluster]` fixed possible endless loop on FollowerSteadyState
+- `[Http]` server will now use HttpClientFactory to maintain connectivity and handle DNS changes
+- `[Indexes]` fixed 'NotSupportedException' when deleting index entries in Time-Series Map-Reduce indexes
+- `[Indexes]` fixed issue with long running batches in indexes with a lot of references
+- `[Licensing]` fixed issue with license limitations not being properly applied on server startup if cluster is still booting
+- `[Linux]` displaying thread names on Threads View
+- `[Prometheus]` exposed 'AvailableMemoryForProcessingInMb', 'ManagedMemoryInBytes' and 'UnmanagedMemoryInBytes' metrics
+- `[Replication]` properly handle idle databases with sink and hub replication tasks
+- `[Storage]` improved the performance of getting free pages count
+- `[Storage]` optimized free space search performance
+- `[Time Series]` fixed possible issue with retention stop working and not resuming
+- `[.NET]` updated to .NET 8.0.11
+
+<hr />
+
+### Client API
+
+- `[Indexes]` improved deployment of multiple indexes while using `IndexCreation.CreateIndexes`
+
+<hr />
+
+### Studio
+
+- `[Cluster Dashboard]` added GC widget
+- `[Cluster Dashboard]` exposed average request time
+- `[Cluster Debug]` introduced new view
+- `[Expiration & Refresh]` add an option to specify max items to process in a single expiration and refresh run
+
+## 6.2.1 (62005) - 2024/10/30
+
+### Server
+
+- `[Attachments]` added range support
+- `[Backup]` fixed possible high unmanaged memory during import of large amount of compare exchange values
+- `[Backup]` fixed possible NRE when Backup Retention Policy is running
+- `[Backup]` fixed issue with database not being deleted when restore is cancelled
+- `[Backup]` properly setting idle database timer if next activity time is null
+- `[Certificates]` optimized certificate replacement mechanism to avoid re-issuing a new certificate when it was correctly generated but cluster was down during the save process
+- `[Corax]` adjusting Corax's search to match Lucene's search method
+- `[Corax]` fixing sorting edge case in Corax where all matches have been found already so there is no need to fallback to normal sorting (which expected to get non empty batch of results)
+- `[Corax]` empty strings have to be projected as EMPTY_STRING instead of \u0003 when Facets are used
+- `[Cluster]` fixed issue with modifying a document by a non-cluster session after it was created in a cluster-wide transaction
+- `[Cluster]` stability fixes
+- `[Indexes]` deleting time series directly should update index entries correctly
+- `[Linux]` switched from /smaps to /smaps_rollup which decreases number of kernel locks especially on high memory systems
+- `[Monitoring]` exposed 'Number of indexing errors in all loaded databases' in SNMP
+- `[Replication]` removing incoming and outgoing replication handlers on change correctly
+- `[Replication]` fixed issue with replicating tombstones from artificial documents
+- `[Revisions]` will throw document ID too big exception when change vector is too long
+- `[.NET]` updated to 8.0.10
+
+<hr />
+
+### Studio 
+
+- `[Cluster]` added Cluster Debug View
+- `[ETL]` added deprecate warning message when 'MySql.Data.MySqlClient' is used
+- `[Indexes]` added ability to more easily copy/export/import indexes between databases
+
+<hr />
+
+### Client API
+
+- `[Attachments]` GetAttachmentOperation now supports returning ranges
+- `[Session]` fixed InvalidOperationException that would be thrown if ConditionalLoadAsync is called in the same session as LoadAsync
+
+## 6.2.0 (62001) - 2024/09/17
+
+### Features
+
+- `[Sharding]` added prefixed sharding feature. More [here](https://ravendb.net/docs/article-page/6.2/csharp/sharding/administration/sharding-by-prefix)
+- `[ETL]` added Azure Queue Storage ETL. More [here](https://ravendb.net/docs/article-page/6.2/csharp/server/ongoing-tasks/etl/queue-etl/azure-queue)
+- `[Monitoring]` added OpenTelemetry support. More [here](https://ravendb.net/docs/article-page/6.2/csharp/server/administration/monitoring/open-telemetry)
+- `[Studio]` introduced OmniSearch for easier navigation
+- `[Integrations]` Akka.NET Persistence. [Guide](https://ravendb.net/articles/using-ravendb-persistence-in-an-akka-net-application) | [Docs](https://ravendb.net/docs/article-page/6.2/csharp/integrations/akka.net-persistence/integrating-with-akka-persistence) | [Design Notes](https://ravendb.net/articles/notes-from-integrating-ravendb-with-akka-net-persistence)
+
+<hr />
+
+### Upgrading from previous versions
+
+- please refer to our [Server migration guide](https://ravendb.net/docs/article-page/6.2/csharp/migration/server/data-migration) before proceeding with Server update and check our list of Server breaking changes available [here](https://ravendb.net/docs/article-page/6.2/csharp/migration/server/server-breaking-changes), Client API breaking changes available [here](https://ravendb.net/docs/article-page/6.2/csharp/migration/client-api/client-breaking-changes) and Test Driver breaking changes are available [here](https://ravendb.net/docs/article-page/6.2/csharp/migration/embedded/testdriver-breaking-changes)
+
+### Server
+
+- `[Cryptography]` removed Portable.BouncyCastle and introduced BouncyCastle.Cryptography instead
+- `[Encryption]` switched 'libsodium' to 1.0.20
+- `[ETL]` MSSQL integration no longer defaults to 'Encrypt=Optional'
+- `[Identity]` database configuration will now take into account server-wide identity parts separator
+- `[Indexes]` throw exception on LoadDocument with dynamic collection name
+- `[Indexes]` changed how complex fields are handled in Corax. More [here](https://ravendb.net/docs/article-page/6.2/csharp/migration/server/server-breaking-changes#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)
+- `[Revisions]` added ability to revert revision to a document via 'databases/*/revisions/revert/docs' endpoint
+- `[Setup]` switched to Single File App
+
+<hr />
+
+### Client API
+
+- `[Changes API]` changes 'ForOperation' are only available when node tag is passed to 'DocumentStore.Changes' method
+- `[Compare Exchange]` create only compare exchange when index is 0
+- `[Operations]` align default delta (1) with rest of the API operations in CounterOperation
+- `[Revisions]` added 'RevertRevisionsByIdOperation'
+- `[Session]` both Load and LazyLoad should return null when ID is null
+- `[Session]` optimized chained negated search query in LINQ queries
+- `[Session]` throwing exception when 'Any' is used in LINQ queries on enumerable with 'and' on different fields
+
+<hr />
+
+### Studio
+
+- `[Revisions]` introduced better navigation and comparison in compare revisions view
+
+<hr />
+
+### Test Driver
+
+- `[Licensing]` by default if no license is specified or license is invalid/expired, the test driver will throw an exception

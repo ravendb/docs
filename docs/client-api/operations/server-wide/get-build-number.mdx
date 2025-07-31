@@ -1,0 +1,83 @@
+---
+title: "Operations: Server: How to Get Server Build Number"
+sidebar_label: Get Build Number
+sidebar_position: 4
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: Server: How to Get Server Build Number
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To get the server build number use **GetBuildNumberOperation** from `Maintenance.Server`
+
+## Syntax
+
+<TabItem value="something-something" label="buildNumber_1">
+<CodeBlock language="csharp">
+{`public GetBuildNumberOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The result of executing GetBuildNumberOperation is a **BuildNumber** object: 
+
+<TabItem value="something-something" label="buildNumber_2">
+<CodeBlock language="csharp">
+{`public class BuildNumber
+\{
+    public string ProductVersion \{ get; set; \}
+
+    public int BuildVersion \{ get; set; \}
+
+    public string CommitHash \{ get; set; \}
+
+    public string FullVersion \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| ------------- |----- |
+| **ProductVersion** | current product version e.g. "4.0" |
+| **BuildVersion** | current build version e.g. 40 |
+| **CommitHash** | git commit SHA e.g. ""a377982"" |
+| **FullVersion** | semantic versioning e.g. "4.0.0" |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var getBuildNumberResult = documentStore.Maintenance.Server.Send(new GetBuildNumberOperation());
+Console.WriteLine(getBuildNumberResult.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var buildNumber = await documentStore.Maintenance.Server.SendAsync(new GetBuildNumberOperation());
+Console.WriteLine(buildNumber.BuildVersion);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</LanguageContent>
+
+<!---
+
+-->

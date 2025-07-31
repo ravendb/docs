@@ -1,0 +1,307 @@
+---
+title: "Stream Time Series Data"
+sidebar_label: Streaming Time Series
+sidebar_position: 7
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Stream Time Series Data
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This page explains how time series data can be streamed:  
+  1. Stream a time series directly.
+  2. Stream time series query results.
+
+* In this page:
+  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries#syntax)
+  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries#examples)
+
+</Admonition>
+## Syntax
+
+### Stream a time series directly:  
+
+Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries)), 
+and call `Stream()`/`StreamAsync()`.  
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`IEnumerator<T> Stream(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
+
+Task<IAsyncEnumerator<T>> StreamAsync(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **from** | `DateTime?` | Start the stream from a certain time. If null, stream starts from the beginning of the time series. |
+| **to** | `DateTime?` | Stop the stream at a certain time. If null, stream stops at the end of the time series. |
+| **offset** | `TimeSpan?` | Change the timestamp of the streamed time series entries by adding this amount of time. |
+
+### Stream results of time series queries:  
+
+This syntax is the same as the syntax for streaming query results in general, 
+found [here](../../../client-api/session/querying/how-to-stream-query-results).  
+
+<TabItem value="something" label="stream_methods">
+<CodeBlock language="csharp">
+{`IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IQueryable<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IQueryable<T> query,
+    out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IDocumentQuery<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IRawDocumentQuery<T> query);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IRawDocumentQuery<T> query,
+    out StreamQueryStatistics streamQueryStats);
+
+IEnumerator<TimeSeriesStreamResult<T>> Stream(
+    IDocumentQuery<T> query,
+    out StreamQueryStatistics streamQueryStats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
+| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query. |
+
+| Return Value | Description |
+| - | - |
+| IEnumerator&lt;[StreamResult](../../../glossary/stream-result)&gt; | Enumerator with entities. |
+
+
+
+## Examples
+
+### Example I
+
+Using `TimeSeriesFor`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
+var results = new List<TimeSeriesEntry>();
+
+using (var TSstream = timeseries.Stream())
+{
+    while (TSstream.MoveNext())
+    {
+        results.Add(TSstream.Current);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var timeseries = session.TimeSeriesFor<HeartRate>("user/1-A");
+var results = new List<TimeSeriesEntry>();
+var TSstream = await timeseries.StreamAsync();
+
+await using (TSstream)
+{
+    while (await TSstream.MoveNextAsync())
+    {
+        results.Add(TSstream.Current);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+Using a `RawQuery`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+    from Users
+    select timeseries (
+        from HeartRate
+    )");
+
+var results = new List<TimeSeriesEntry>();
+
+using (var docStream = session.Advanced.Stream(query))
+{
+    while (docStream.MoveNext())
+    {
+        var document = docStream.Current.Result;
+        var timeseries = document.Stream;
+        while (timeseries.MoveNext())
+        {
+            results.Add(timeseries.Current);
+        }
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var query = session.Advanced.AsyncRawQuery<TimeSeriesRawResult>(@"
+    from Users
+    select timeseries (
+        from HeartRate
+    )");
+
+var results = new List<TimeSeriesEntry>();
+
+await using (var docStream = await session.Advanced.StreamAsync(query))
+{
+    while (await docStream.MoveNextAsync())
+    {
+        var document = docStream.Current.Result;
+        var timeseries = document.StreamAsync;
+        while (await timeseries.MoveNextAsync())
+        {
+            results.Add(timeseries.Current);
+        }
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* This page explains how time series data can be streamed:  
+  1. Stream a time series directly.
+  2. Stream time series query results.
+
+* In this page:
+  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries#syntax)
+  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries#examples)
+
+</Admonition>
+## Syntax
+
+### Stream a time series directly:  
+
+Get a time series (using `timeSeriesFor().get()`, and call `stream()`).  
+
+<TabItem value="something" label="java">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **query** | `IRawDocumentQuery<T>` | Raw data |
+
+
+### Stream results of time series queries:  
+
+This syntax is the same as the syntax for streaming query results in general, 
+found [here](../../../client-api/session/querying/how-to-stream-query-results).  
+
+<TabItem value="something-something" label="stream_methods">
+<CodeBlock language="java">
+{`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
+| `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
+
+| Return Value | |
+| ------------- | ----- |
+| CloseableIterator&lt;StreamResult&gt; | Iterator with entities. |
+
+
+
+## Examples
+
+[comment]: &lt;
+### Example I
+
+Using `timeSeriesFor`:
+
+<TabItem value="something-something" label="direct">
+<CodeBlock language="java">
+{`ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate", "user/1-A");
+`}
+</CodeBlock>
+</TabItem>
+
+&gt; (There isn't get to stream, a sample couldn't exists like that)
+
+### Example 
+
+Using a `rawQuery`:
+
+<TabItem value="something-something" label="query">
+<CodeBlock language="java">
+{`IRawDocumentQuery<Employee> query = session.advanced()
+    .rawQuery(Employee.class,
+        "from Users\\n" +
+        "select timeseries (\\n" +
+        "    from HeartRate\\n"+
+        ")"
+    );
+
+CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Document Extensions
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+- [Get Time Series Entries](../../../document-extensions/timeseries/client-api/session/get/get-entries)
+
+### Client API
+- [How To Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+
+
+-->

@@ -1,0 +1,498 @@
+---
+title: "Get Query Statistics"
+sidebar_label: Get Query Statistics
+sidebar_position: 10
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Query Statistics
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `Statistics` method.  
+  
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Anne")
+     // Get query stats:
+     // * Call 'Statistics'
+     // * Pass an out 'QueryStatistics' param for getting the stats
+    .Statistics(out QueryStatistics stats)
+    .ToList();
+
+long numberOfResults = stats.TotalResults; // Get results count
+long queryDuration = stats.DurationInMs;   // Get query duration
+string indexNameUsed = stats.IndexName;    // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> employees = await asyncSession
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Anne")
+     // Get query stats:
+     // * Call 'Statistics'
+     // * Pass an out 'QueryStatistics' param for getting the stats
+    .Statistics(out QueryStatistics stats)
+    .ToListAsync();
+
+long numberOfResults = stats.TotalResults; // Get results count
+long queryDuration = stats.DurationInMs;   // Get query duration
+string indexNameUsed = stats.IndexName;    // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Anne")
+     // Get query stats:
+     // * Call 'Statistics'
+     // * Pass an out 'QueryStatistics' param for getting the stats
+    .Statistics(out QueryStatistics stats)
+    .ToList();
+
+long numberOfResults = stats.TotalResults; // Get results count
+long queryDuration = stats.DurationInMs;  // Get query duration
+string indexNameUsed = stats.IndexName;   // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Anne"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Statistics(out QueryStatistics stats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type              | Description                                     |
+|-----------|-------------------|-------------------------------------------------|
+| **stats** | `QueryStatistics` | An 'out' param for getting the query statistics |
+
+<br/> 
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class QueryStatistics
+\{
+    public bool IsStale \{ get; set; \}
+    public long DurationInMs \{ get; set; \}
+    public long TotalResults \{ get; set; \}
+    public long SkippedResults \{ get; set; \}
+    public long? ScannedResults \{ get; set; \}
+    public DateTime Timestamp \{ get; set; \}
+    public string IndexName \{ get; set; \}
+    public DateTime IndexTimestamp \{ get; set; \}
+    public DateTime LastQueryTime \{ get; set; \}
+    public long? ResultEtag \{ get; set; \}
+    public string NodeTag \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property           | Type             | Description                                                                                                                                                                                                  |
+|--------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **IsStale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                                                      |
+| **DurationInMs**   | `long`           | Query duration on the server side in Milliseconds                                                                                                                                                            |
+| **TotalResults**   | `long`           | The total count of results that matched the query as `Int32`.<br/>Matching query results can also be counted as `Int32` using [Count](../../../client-api/session/querying/how-to-count-query-results#count). |
+| **SkippedResults** | `long`           | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                                           |
+| **ScannedResults** | `long?`          | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                                                                        |
+| **Timestamp**      | `DateTime`       | The time when the query results were unstale                                                                                                                                                                 |
+| **IndexName**      | `string`         | The name of the queried index                                                                                                                                                                                |
+| **IndexTimestamp** | `IndexTimestamp` | The timestamp of the queried index                                                                                                                                                                           |
+| **LastQueryTime**  | `DateTime`       | The timestamp of the last time the index was queried                                                                                                                                                         |
+| **ResultEtag**     | `long?`          | Results Etag                                                                                                                                                                                                 |
+| **NodeTag**        | `string`         | Tag of the cluster node that responded to the query                                                                                                                                                          |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Query statistics can provide important information about a query like duration, total number of results, staleness information, etc. 
+To access statistics use the `statistics` method.
+
+## Example
+
+<TabItem value="something-something" label="stats_3">
+<CodeBlock language="java">
+{`Reference<QueryStatistics> stats = new Reference<>();
+
+List<Employee> employees = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .statistics(stats)
+    .toList();
+
+int totalResults = stats.value.getTotalResults();
+long durationInMs = stats.value.getDurationInMs();
+`}
+</CodeBlock>
+</TabItem>
+
+## Syntax
+
+<TabItem value="something-something" label="stats_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> statistics(Reference<QueryStatistics> stats);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **stats** | `QueryStatistics` | Statistics for query. |
+
+<TabItem value="something-something" label="stats_2">
+<CodeBlock language="java">
+{`public class QueryStatistics \{
+
+    private boolean isStale;
+    private long durationInMs;
+    private int totalResults;
+    private long longTotalResults;
+    private int skippedResults;
+    private Date timestamp;
+    private String indexName;
+    private Date indexTimestamp;
+    private Date lastQueryTime;
+    private Long resultEtag;
+    private String nodeTag;
+    
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Property           | Type      | Description                                                                                                                                                        |
+|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **IsStale**        | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
+| **DurationInMs**   | `long`    | Query duration on the server side in Milliseconds                                                                                                                  |
+| **TotalResults**   | `long`    | The total count of results that matched the query as `int`                                                                                                         |
+| **SkippedResults** | `long`    | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results). |
+| **ScannedResults** | `long`    | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                              |
+| **Timestamp**      | `Date`    | The time when the query results were unstale                                                                                                                       |
+| **IndexName**      | `string`  | The name of the queried index                                                                                                                                      |
+| **indexTimestamp** | `Date`    | The timestamp of the queried index                                                                                                                                 |
+| **LastQueryTime**  | `Date`    | The timestamp of the last time the index was queried                                                                                                               |
+| **ResultEtag**     | `Long`    | Results Etag                                                                                                                                                       |
+| **NodeTag**        | `String`  | Tag of the cluster node that responded to the query                                                                                                                |
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.  
+  
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __statistics_callback(statistics: QueryStatistics) -> None:
+    # Read and interact with QueryStatistics here
+    total_results = statistics.total_results
+    duration_milliseconds = statistics.duration_in_ms
+    ...
+
+employees = list(
+    session.query(object_type=Employee)
+    .where_equals("first_name", "Robert")
+    .statistics(__statistics_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Anne"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="stats_1">
+<CodeBlock language="python">
+{`def statistics(self, stats_callback: Callable[[QueryStatistics], None]) -> DocumentQuery[_T]: ...
+
+test_get_query_statistics(self):
+with self.embedded_server.get_document_store("QueryStatistics") as store:
+    with store.open_session() as session:
+        # region stats_2
+        def __statistics_callback(statistics: QueryStatistics) -> None:
+            # Read and interact with QueryStatistics here
+            total_results = statistics.total_results
+            duration_milliseconds = statistics.duration_in_ms
+            ...
+
+        employees = list(
+            session.query(object_type=Employee)
+            .where_equals("first_name", "Robert")
+            .statistics(__statistics_callback)
+        )
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter          | Type                                | Description                                                  |
+|--------------------|-------------------------------------|--------------------------------------------------------------|
+| **stats_callback** | `Callable[[QueryStatistics], None]` | An _action_ that will be called with query statistics object |
+
+| Property            | Type             | Description                                                                                                                                                                           |
+|---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **is_stale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                               |
+| **duration_in_ms**  | `int`            | Query duration on the server side in Milliseconds                                                                                                                                     |
+| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../client-api/session/querying/how-to-count-query-results#count). |
+| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                    |
+| **timestamp**       | `datetime`       | The time when the query results were unstale                                                                                                                                          |
+| **index_name**      | `str`            | The name of the queried index                                                                                                                                                         |
+| **index_timestamp** | `IndexTimestamp` | The timestamp of the queried index                                                                                                                                                    |
+| **last_query_time** | `datetime`       | The timestamp of the last time the index was queried                                                                                                                                  |
+| **result_etag**     | `int`            | Results Etag                                                                                                                                                                          |
+| **node_tag**        | `str`            | Tag of the cluster node that responded to the query                                                                                                                                   |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.  
+  
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$stats = new QueryStatistics();
+
+$employees = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->statistics($stats)
+    ->toList();
+
+$totalResults = $stats->getTotalResults();
+$durationInMs = $stats->getDurationInMs();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Robert"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="stats_1">
+<CodeBlock language="php">
+{`public function statistics(QueryStatistics &$stats): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type              | Description                                     |
+|------------|-------------------|-------------------------------------------------|
+| **$stats** | `QueryStatistics` | An 'out' param for getting the query statistics |
+
+<br/> 
+
+<TabItem value="something-something" label="stats_2">
+<CodeBlock language="php">
+{`class QueryStatistics
+\{
+    private bool $isStale = false;
+    private int $durationInMs = 0;
+    private int $totalResults = 0;
+    private int $longTotalResults = 0;
+    private int $skippedResults = 0;
+    private ?int $scannedResults = null;
+    private ?DateTimeInterface $timestamp = null;
+    private ?string $indexName = null;
+    private ?DateTimeInterface $indexTimestamp = null;
+    private ?DateTimeInterface $lastQueryTime = null;
+    private ?int $resultEtag = null;
+    private ?string $nodeTag = null;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Property                                    | Type                 | Description                                                                                                                                                                            |
+|---------------------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$isStale**                                | `bool`               | Are the results returned by the query potentially stale                                                                                                                                |
+| **$durationInMs**                           | `int`                | Query duration on the server side in Milliseconds                                                                                                                                      |
+| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../client-api/session/querying/how-to-count-query-results#count). |
+| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                     |
+| **$timestamp**                              | `?DateTimeInterface` | The time when the query results were unstale                                                                                                                                           |
+| **$indexName**                              | `?string`            | The name of the queried index                                                                                                                                                          |
+| **$indexTimestamp**                         | `?DateTimeInterface` | The timestamp of the queried index                                                                                                                                                     |
+| **$lastQueryTime**                          | `?DateTimeInterface` | The timestamp of the last time the index was queried                                                                                                                                   |
+| **$resultEtag**                             | `?int`               | Results Etag                                                                                                                                                                           |
+| **$nodeTag**                                | `?string`            | Tag of the cluster node that responded to the query                                                                                                                                    |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Detailed **query statistics** can be retrieved for every executed query using the `statistics` method.
+
+* Stats such as query duration, number of results, index name used in the query, and more,  
+  are returned in the `QueryStatistics` object.
+
+* In This Page:
+    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)
+    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)
+
+</Admonition>
+## Get query statistics
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define an output param for getting the query stats
+let stats;
+
+const employees = await session
+    .query({ collection: "Employees" })
+    .whereEquals("FirstName", "Anne")
+     // Get query stats:
+     // * Call 'statistics', pass a callback function
+     // * Output param 'stats' will be filled with the stats when query returns 
+    .statistics(s => stats = s)
+    .all();
+
+const numberOfResults = stats.value.totalResults; // Get results count
+const queryDuration = stats.value.durationInMs;   // Get query duration
+const indexNameUsed = stats.value.indexName;      // Get index name used in query
+// ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" where FirstName == "Anne"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`query.statistics(statsCallback);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type              | Description                                                                                                                                                                       |
+|-------------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **statsCallback** | `(stats) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `QueryStatistics` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
+
+| `QueryStatistics`   |           |                                                                                                                                                                    |
+|---------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **isStale**         | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
+| **durationInMs**    | `number`  | Query duration on the server side in Milliseconds                                                                                                                  |
+| **totalResults**    | `number`  | The total count of results that matched the query                                                                                                                  |
+| **skippedResults**  | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results). |
+| **scannedResults**  | `long?`   | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                              |
+| **timestamp**       | `Date`    | The time when the query results were unstale                                                                                                                       |
+| **indexName**       | `string`  | The name of the queried index                                                                                                                                      |
+| **indexTimestamp**  | `Date`    | The timestamp of the queried index                                                                                                                                 |
+| **lastQueryTime**   | `Date`    | The timestamp of the last time the index was queried                                                                                                               |
+| **resultEtag**      | `number`  | Results Etag                                                                                                                                                       |
+| **nodeTag**         | `string`  | Tag of the cluster node that responded to the query                                                                                                                |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [How to query](../../../client-api/session/querying/how-to-query)
+- [How to customize query](../../../client-api/session/querying/how-to-customize-query)
+- [Count query results](../../../client-api/session/querying/how-to-count-query-results)
+
+
+-->

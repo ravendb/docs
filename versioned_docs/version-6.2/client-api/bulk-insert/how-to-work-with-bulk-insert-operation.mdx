@@ -1,0 +1,365 @@
+---
+title: "Bulk Insert: How to Work With Bulk Insert Operation"
+sidebar_label: How to Work With Bulk Insert Operation
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Bulk Insert: How to Work With Bulk Insert Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="note" title="Note">
+
+* `BulkInsert` is useful when inserting a large quantity of data from the client to the server.  
+* It is an optimized time-saving approach with a few 
+  [limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#limitations) 
+  like the possibility that interruptions will occure during the operation.  
+
+In this page:
+
+* [Syntax](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#syntax)
+* [`BulkInsertOperation`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoperation) 
+  * [Methods](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#methods)
+  * [Limitations](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#limitations)
+  * [Example](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#example)
+* [`BulkInsertOptions`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoptions)
+  * [`CompressionLevel`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#section)
+  * [`SkipOverwriteIfUnchanged`](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#section-1)
+
+</Admonition>
+
+## Syntax
+
+<TabItem value="something" label="bulk_inserts_1">
+<CodeBlock language="csharp">
+{`BulkInsertOperation BulkInsert(string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | `string` | The name of the database to perform the bulk operation on.<br/>If `null`, the DocumentStore `Database` will be used. |
+| **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
+
+| Return Value | |
+| ------------- | ----- |
+| `BulkInsertOperation`| Instance of `BulkInsertOperation` used for interaction. |
+<TabItem value="something" label="bulk_inserts_2">
+<CodeBlock language="csharp">
+{`BulkInsertOperation BulkInsert(string database, BulkInsertOptions options, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **database** | `string` | The name of the database to perform the bulk operation on.<br/>If `null`, the DocumentStore `Database` will be used. |
+| **options** | `BulkInsertOptions` | [Options](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoptions) to configure BulkInsert. |
+| **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
+
+| Return Value | |
+| ------------- | ----- |
+| `BulkInsertOperation`| Instance of `BulkInsertOperation` used for interaction. |
+<TabItem value="something" label="bulk_inserts_3">
+<CodeBlock language="csharp">
+{`BulkInsertOperation BulkInsert(BulkInsertOptions options, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **options** | `BulkInsertOptions` | [Options](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#bulkinsertoptions) to configure BulkInsert. |
+| **token** | `CancellationToken` | Cancellation token used to halt the worker operation. |
+
+| Return Value | |
+| ------------- | ----- |
+| `BulkInsertOperation`| Instance of `BulkInsertOperation` used for interaction. |
+
+
+
+## `BulkInsertOperation`
+
+The following methods can be used when creating a bulk insert.
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **void Abort()** | Abort the operation |
+| **void Store(object entity, IMetadataDictionary metadata = null)** | Store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void Store(object entity, string id, IMetadataDictionary metadata = null)** | Store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void StoreAsync(object entity, IMetadataDictionary metadata = null)** | Store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | Store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void Dispose()** | Dispose of an object |
+| **void DisposeAsync()** | Dispose of an object in an async manner |
+
+### Limitations
+
+* BulkInsert is designed to efficiently push high quantities of data.  
+  Data is therefore streamed and **processed by the server in batches**.  
+  Each batch is fully transactional, but there are no transaction guarantees between the batches 
+  and the operation as a whole is non-transactional.  
+  If the bulk insert operation is interrupted mid-way, some of your data might be persisted 
+  on the server while some of it might not.  
+   * Make sure that your logic accounts for the possibility of an interruption that would cause 
+     some of your data not to persist on the server yet.  
+   * If the operation was interrupted and you choose to re-insert the whole dataset in a new 
+     operation, you can set 
+     [SkipOverwriteIfUnchanged](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation#section-1) 
+     as `true` so the operation will overwrite existing documents only if they changed since 
+     the last insertion.  
+   * **If you need full transactionality**, using [session](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+     may be a better option.  
+     Note that if `session` is used all of the data is processed in a single transaction, so the 
+     server must have sufficient resources to handle the entire data-set included in the transaction.  
+* Bulk insert is **not thread-safe**.  
+  A single bulk insert should not be accessed concurrently.  
+   * The use of multiple bulk inserts concurrently on the same client is supported.  
+   * Usage in an async context is also supported.
+
+### Example
+
+#### Create bulk insert
+
+Here we create a bulk insert operation and insert a million documents of type `Employee`:
+<Tabs groupId='languageSyntax'>
+<TabItem value="sync" label="sync">
+<CodeBlock language="csharp">
+{`using (BulkInsertOperation bulkInsert = store.BulkInsert())
+{
+    for (int i = 0; i < 1000 * 1000; i++)
+    {
+        bulkInsert.Store(new Employee
+        {
+            FirstName = "FirstName #" + i,
+            LastName = "LastName #" + i
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="async" label="async">
+<CodeBlock language="csharp">
+{`BulkInsertOperation bulkInsert = null;
+try
+{
+    bulkInsert = store.BulkInsert();
+    for (int i = 0; i < 1000 * 1000; i++)
+    {
+        await bulkInsert.StoreAsync(new Employee
+        {
+            FirstName = "FirstName #" + i,
+            LastName = "LastName #" + i
+        });
+    }
+}
+finally
+{
+    if (bulkInsert != null)
+    {
+        await bulkInsert.DisposeAsync().ConfigureAwait(false);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## `BulkInsertOptions`
+
+The following options can be configured for BulkInsert.
+
+### `CompressionLevel`
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **Optimal** | `string` | Compression level to be used when compressing static files. |
+| **Fastest** | `string` | Compression level to be used when compressing HTTP responses with `GZip` or `Deflate`. |
+| **NoCompression**<br/>(Default) | `string` | Does not compress. |
+
+### `SkipOverwriteIfUnchanged`
+
+Prevents overriding documents when the inserted document and the existing one are similar.  
+
+Enabling this flag can exempt the server of many operations triggered by document-change, 
+like re-indexation and subscription or ETL-tasks updatess.  
+There is a slight potential cost in the additional comparison that has to be made between 
+the existing documents and the ones that are being inserted. 
+
+<TabItem value="something" label="bulk_insert_option_SkipOverwriteIfUnchanged">
+<CodeBlock language="csharp">
+{`using (var bulk = store.BulkInsert(new BulkInsertOptions
+\{
+    SkipOverwriteIfUnchanged = true
+\}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+One of the features that is particularly useful when inserting large amount of data is `bulk inserting`.  
+This is an optimized time-saving approach with few drawbacks that will be described later.
+
+## Syntax
+
+<TabItem value="something-something" label="bulk_inserts_1">
+<CodeBlock language="java">
+{`BulkInsertOperation bulkInsert();
+
+BulkInsertOperation bulkInsert(String database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | `String` | The name of the database to perform the bulk operation on.<br/>If `null`, the DocumentStore `Database` will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| `BulkInsertOperation`| Instance of BulkInsertOperation used for interaction. |
+
+# BulkInsertOperation
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **void abort()** | Abort the operation |
+| **void store(Object entity, IMetadataDictionary metadata = null)** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void store(Object entity, String id, IMetadataDictionary metadata = null)** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void close()** | Close an object |
+
+## Limitations
+
+There are a couple limitations to the API:
+
+* The bulk insert operation is broken into batches, each batch is treated in its own transaction 
+  so the whole operation isn't treated under a single transaction.
+* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently.  
+  The use of multiple bulk inserts, on the same client, concurrently is supported also the 
+  use in an async context is supported.
+
+## Example
+
+### Create bulk insert
+
+Here we create a bulk insert operation and insert a million documents of type Employee
+
+<TabItem value="something-something" label="bulk_inserts_4">
+<CodeBlock language="java">
+{`try (BulkInsertOperation bulkInsert = store.bulkInsert()) \{
+    for (int i = 0; i < 1_000_000; i++) \{
+        Employee employee = new Employee();
+        employee.setFirstName("FirstName #" + i);
+        employee.setLastName("LastName #" + i);
+        bulkInsert.store(employee);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+One of the features that is particularly useful when inserting large amount of data is `bulk inserting`.  
+This is an optimized time-saving approach with few drawbacks that will be described later.
+
+## Syntax
+
+<TabItem value="something-something" label="bulk_inserts_1">
+<CodeBlock language="nodejs">
+{`documentStore.bulkInsert([database]);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | `string` | The name of the database to perform the bulk operation on.<br/>If `null`, the DocumentStore `Database` will be used. |
+
+| Return Value | |
+| ------------- | ----- |
+| `BulkInsertOperation` | Instance of `BulkInsertOperation` used for interaction. |
+
+# `BulkInsertOperation`
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **async abort()** | Aborts the bulk insert operation. Returns a `Promise`. |
+| **async store(entity, [metadata])** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. Returns a `Promise`. |
+| **async store(entity, id, [metadata])** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity. Returns a `Promise`. |
+| **async finish()** | Finish bulk insert and flush everything to the server. Returns a `Promise`. |
+
+## Limitations
+
+There are a couple limitations to the API:
+
+* The bulk insert operation is broken into batches, each batch is treated in its own transaction 
+  so the whole operation isn't treated under a single transaction.
+
+## Example
+
+### Create bulk insert
+
+Here we create a bulk insert operation and insert a million documents of type Employee
+
+<TabItem value="something-something" label="bulk_inserts_4">
+<CodeBlock language="nodejs">
+{`\{
+    const bulkInsert = documentStore.bulkInsert();
+    for (let i = 0; i < 1000000; i++) \{
+        const employee = new Employee("FirstName #" + i, "LastName #" + i);
+        await bulkInsert.store(employee);
+    \}
+
+    await bulkInsert.finish();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Session
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)
+
+### Document Extensions
+- [Bulk Insert: How to Add Attachments](../../document-extensions/attachments/bulk-insert)
+- [Bulk Insert: How to Append Time Series](../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk)
+
+
+-->

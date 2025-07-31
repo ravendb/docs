@@ -1,0 +1,300 @@
+---
+title: "Put Attachment Operation"
+sidebar_label: Put Attachment
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Put Attachment Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This operation is used to put an attachment to a document. 
+
+## Syntax
+
+<TabItem value="something-something" label="put_attachment_syntax">
+<CodeBlock language="csharp">
+{`public PutAttachmentOperation(string documentId, 
+        string name, 
+        Stream stream, 
+        string contentType = null, 
+        string changeVector = null)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="put_attachment_return_value">
+<CodeBlock language="csharp">
+{`public class AttachmentDetails : AttachmentName
+\{
+    public string ChangeVector;
+    public string DocumentId;
+\}
+
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |        |                                                                         |
+|------------------|--------|-------------------------------------------------------------------------|
+| **documentId**   | string | ID of a document which will contain an attachment                       |
+| **name**         | string | Name of an attachment                                                   |
+| **stream**       | Stream | Stream contains attachment raw bytes                                    |
+| **contentType**  | string | MIME type of attachment                                                 |
+| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value     |                                     |
+|------------------|-------------------------------------|
+| **ChangeVector** | Change vector of created attachment |
+| **DocumentId**   | ID of document                      |
+| **Name**         | Name of created attachment          |
+| **Hash**         | Hash of created attachment          |
+| **ContentType**  | MIME content type of attachment     |
+| **Size**         | Size of attachment                  |
+
+## Example
+
+<TabItem value="something" label="put_1">
+<CodeBlock language="csharp">
+{`AttachmentDetails attachmentDetails =
+    store.Operations.Send(
+        new PutAttachmentOperation("orders/1-A",
+            "invoice.pdf",
+            stream,
+            "application/pdf"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This operation is used to put an attachment to a document. 
+
+## Syntax
+
+<TabItem value="something-something" label="put_attachment_syntax">
+<CodeBlock language="java">
+{`PutAttachmentOperation(String documentId, String name, InputStream stream)
+
+PutAttachmentOperation(String documentId, String name, InputStream stream, String contentType)
+
+PutAttachmentOperation(String documentId, String name, InputStream stream, String contentType, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="put_attachment_return_value">
+<CodeBlock language="java">
+{`public class AttachmentDetails extends AttachmentName \{
+    private String changeVector;
+    private String documentId;
+
+    public String getChangeVector() \{
+        return changeVector;
+    \}
+
+    public void setChangeVector(String changeVector) \{
+        this.changeVector = changeVector;
+    \}
+
+    public String getDocumentId() \{
+        return documentId;
+    \}
+
+    public void setDocumentId(String documentId) \{
+        this.documentId = documentId;
+    \}
+\}
+
+public class AttachmentName \{
+    private String name;
+    private String hash;
+    private String contentType;
+    private long size;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public String getHash() \{
+        return hash;
+    \}
+
+    public void setHash(String hash) \{
+        this.hash = hash;
+    \}
+
+    public String getContentType() \{
+        return contentType;
+    \}
+
+    public void setContentType(String contentType) \{
+        this.contentType = contentType;
+    \}
+
+    public long getSize() \{
+        return size;
+    \}
+
+    public void setSize(long size) \{
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | | |
+|------------------| ------------- | ----- |
+| **documentId**   | String | ID of a document which will contain an attachment |
+| **name**         | String | Name of an attachment |
+| **stream**       | InputStream | Stream contains attachment raw bytes |
+| **contentType**  | String | MIME type of attachment |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
+
+| Return Value | |
+| ------------- | ----- |
+| **ChangeVector** | Change vector of created attachment |
+| **DocumentId** | ID of document |
+| **Name** | Name of created attachment |
+| **Hash** | Hash of created attachment |
+| **ContentType** | MIME content type of attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="something-something" label="put_1">
+<CodeBlock language="java">
+{`AttachmentDetails attachmentDetails = store
+    .operations().send(new PutAttachmentOperation("orders/1-A",
+        "invoice.pdf",
+        stream,
+        "application/pdf"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use the `PutAttachmentOperation` to add an attachment to a document.
+
+* In this page:
+  
+  * [Put attachment example](../../../client-api/operations/attachments/put-attachment#put-attachment-example)
+  * [Syntax](../../../client-api/operations/attachments/put-attachment#syntax)
+  
+</Admonition>
+## Put attachment example
+
+<TabItem value="something-something" label="put_attachment">
+<CodeBlock language="nodejs">
+{`// Prepare content to attach
+const text = "Some content...";
+const byteArray = Buffer.from(text);
+
+// Define the put attachment operation
+const putAttachmentOp = new PutAttachmentOperation(
+    "employees/1-A", "attachmentName.txt", byteArray, "text/plain");
+
+// Execute the operation by passing it to operations.send
+const attachmentDetails = await documentStore.operations.send(putAttachmentOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType);
+const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type                         | Description                                                                       |
+|------------------|------------------------------|-----------------------------------------------------------------------------------|
+| __documentId__   | `string`                     | Document ID to which the attachment will be added                                 |
+| __name__         | `string`                     | Name of attachment to put                                                         |
+| __stream__       | `stream.Readable` / `Buffer` | A stream that contains the raw bytes of the attachment                            |
+| __contentType__  | `string`                     | Content type of attachment                                                        |
+| __changeVector__ | `string`                     | ChangeVector of attachment,<br/>used for concurrency checks (`null` to skip check) |
+
+| Return Value of `store.operations.send(putAttachmentOp)` |                                             |
+|----------------------------------------------------------|---------------------------------------------|
+| `object`                                                 | An object with the new attachment's details |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// The AttachmentDetails object:
+// =============================
+\{
+    // Change vector of attachment
+    changeVector; // string
+
+    // ID of the document that contains the attachment
+    documentId?; // string
+
+    // Name of attachment
+    name; // string;
+
+    // Hash of attachment
+    hash; // string;
+
+    // Content type of attachment
+    contentType; // string
+
+    // Size of attachment
+    size; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+- [Get attachment](../../../client-api/operations/attachments/get-attachment)
+- [Delete attachment](../../../client-api/operations/attachments/delete-attachment)
+
+
+-->

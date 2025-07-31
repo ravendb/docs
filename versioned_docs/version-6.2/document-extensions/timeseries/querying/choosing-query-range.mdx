@@ -1,0 +1,979 @@
+---
+title: "Choosing Time Series Range"
+sidebar_label: Choosing Query Range
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Choosing Time Series Range
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Queries can retrieve data from the entire time series or from a specific range of entries,  
+  such as those collected in the last 7 days.
+
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+
+* In this page:
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
+       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
+       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+
+</Admonition>
+## Choose range in a query
+
+#### Specify range:
+
+* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).  
+  Omitting these parameters will retrieve the entire series.  
+
+* The provided DateTime values are handled by the server as UTC.  
+  The client does Not perform any conversion to UTC prior to sending the request to the server.  
+
+* In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session
+    .Query<Employee>()
+    .Where(employee => employee.Address.Country == "UK")
+    .Select(employee => RavenQuery
+         // Specify the range:
+         // pass a 'from' and a 'to' DateTime values to the 'TimeSeries' method
+        .TimeSeries(employee, "HeartRates", from, to)
+         // Call 'Offset' to adjust the timestamps in the returned results to your local time (optional)
+        .Offset(TimeSpan.FromHours(3))
+        .ToList());
+
+// Execute the query
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(employee => employee.Address.Country, "UK")
+    .SelectTimeSeries(builder => builder.From("HeartRates")
+         // Specify the range:
+         // pass a 'from' and a 'to' DateTime values to the 'Between' method
+        .Between(from, to)
+         // Call 'Offset' to adjust the timestamps in the returned results to your local time (optional)
+        .Offset(TimeSpan.FromHours(3))
+        .ToList());
+
+// Execute the query
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+
+var query = session.Advanced
+    .RawQuery<TimeSeriesRawResult>(@"
+        from Employees
+        where Address.Country == 'UK'
+        select timeseries (
+            from HeartRates
+            between $from and $to
+            offset '03:00'
+        )")
+    .AddParameter("from", baseTime)
+    .AddParameter("to", baseTime.AddMinutes(10));
+
+// Execute the query
+List<TimeSeriesRawResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as employee
+where employee.Address.Country == "UK"
+select timeseries(
+    from employee.HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Retrieve first or last entries:
+
+* Use `FromFirst()` to specify the time frame from the start of the time series.  
+  Use `FromLast()` to specify the time frame from the end of the time series.  
+  A query function can use either `FromFirst` or `FromLast`, but not both.  
+
+* In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var query = session
+    .Query<Employee>()
+    .Select(p => RavenQuery
+        .TimeSeries(p, "HeartRates")
+         // Call 'FromLast'
+         // specify the time frame from the end of the time series
+        .FromLast(x => x.Minutes(30))
+        .Offset(TimeSpan.FromHours(3))
+        .ToList());
+
+// Execute the query
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var query = session.Advanced
+    .DocumentQuery<Employee>()
+    .SelectTimeSeries(builder => builder.From("HeartRates")
+         // Call 'FromLast'
+         // specify the time frame from the end of the time series
+        .FromLast(x => x.Minutes(30))
+        .Offset(TimeSpan.FromHours(3))
+        .ToList());
+
+// Execute the query
+List<TimeSeriesRawResult> result = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`var query = session.Advanced
+     // Provide the raw RQL to the RawQuery method:
+    .RawQuery<TimeSeriesRawResult>(@"
+        from Employees
+        select timeseries (
+            from HeartRates
+            last 30 min
+            offset '03:00'
+        )");
+
+// Execute the query
+List<TimeSeriesRawResult> results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select timeseries(
+    from e.HeartRates
+    last 30 min
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Choose range - RQL syntax
+
+#### `between` and `and`:
+
+* Use the `between` and `and` keywords to retrieve time series entries from the specified range (inclusive).  
+  Provide the timestamps in UTC format.
+  E.g.:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL_select_syntax" label="RQL_select_syntax">
+<CodeBlock language="sql">
+{`from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+)
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_declare_syntax" label="RQL_declare_syntax">
+<CodeBlock language="sql">
+{`declare timeseries getHeartRates(employee)
+{
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+}
+
+from "Employees" as e
+where e.Address.Country == "UK"
+select getHeartRates(e) 
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+  Using Studio, you can apply parameters as follows for a clearer query.  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`$from = "2020-05-17T00:00:00.0000000Z"
+$to = "2020-05-17T01:00:00.0000000Z"
+
+from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between $from and $to  // using parameters
+)
+`}
+</CodeBlock>
+</TabItem>
+#### `first` and `last`:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both. E.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    last 1 day
+)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    first 10 min
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* The range is specified using a whole number of one of the following units.  
+
+    * **seconds**  ( seconds/ second / s )
+    * **minutes**  ( minutes / minute / min )
+    * **hours**    ( hours / hour / h )
+    * **days**     ( days / day / d )
+    * **months**   ( months / month / mon / mo )
+    * **quarters** ( quarters / quarter / q )
+    * **years**    ( years / year / y )
+    * Note: **milliseconds** are currently not supported by 'first' and 'last' in a time series query.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Queries can retrieve data from the entire time series or from a specific range of entries,  
+  such as those collected in the last 7 days.
+
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+
+* In this page:
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
+      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
+      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+
+</Admonition>
+## Choose range in a query
+
+#### Specify range:
+
+* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).  
+  Omitting these parameters will retrieve the entire series.  
+
+* The provided DateTime values are handled by the server as UTC.  
+  The client does Not perform any conversion to UTC prior to sending the request to the server.  
+
+* In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from "Employees" as employee
+where employee.Address.Country == "UK"
+select timeseries(
+    from employee.HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+#### Retrieve first or last entries:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both.  
+
+* In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select timeseries(
+    from e.HeartRates
+    last 30 min
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Choose range - RQL syntax
+
+#### `between` and `and`:
+
+* Use the `between` and `and` keywords to retrieve time series entries from the specified range (inclusive).  
+  Provide the timestamps in UTC format.
+  E.g.:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL_select_syntax" label="RQL_select_syntax">
+<CodeBlock language="sql">
+{`from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+)
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_declare_syntax" label="RQL_declare_syntax">
+<CodeBlock language="sql">
+{`declare timeseries getHeartRates(employee)
+{
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+}
+
+from "Employees" as e
+where e.Address.Country == "UK"
+select getHeartRates(e) 
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+  Using Studio, you can apply parameters as follows for a clearer query.  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`$from = "2020-05-17T00:00:00.0000000Z"
+$to = "2020-05-17T01:00:00.0000000Z"
+
+from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between $from and $to  // using parameters
+)
+`}
+</CodeBlock>
+</TabItem>
+#### `first` and `last`:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both. E.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    last 1 day
+)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    first 10 min
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* The range is specified using a whole number of one of the following units.  
+
+    * **seconds**  ( seconds/ second / s )
+    * **minutes**  ( minutes / minute / min )
+    * **hours**    ( hours / hour / h )
+    * **days**     ( days / day / d )
+    * **months**   ( months / month / mon / mo )
+    * **quarters** ( quarters / quarter / q )
+    * **years**    ( years / year / y )
+    * Note: **milliseconds** are currently not supported by 'first' and 'last' in a time series query.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Queries can retrieve data from the entire time series or from a specific range of entries,  
+  such as those collected in the last 7 days.
+
+* In this page:
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
+      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
+      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+
+</Admonition>
+## Choose range in a query
+
+#### Specify range:
+
+* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).  
+  Omitting these parameters will retrieve the entire series.  
+
+* The provided DateTime values are handled by the server as UTC.  
+  The client does Not perform any conversion to UTC prior to sending the request to the server.  
+
+* In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from "Employees" as employee
+where employee.Address.Country == "UK"
+select timeseries(
+    from employee.HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+#### Retrieve first or last entries:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both.  
+
+* In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select timeseries(
+    from e.HeartRates
+    last 30 min
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Choose range - RQL syntax
+
+#### `between` and `and`:
+
+* Use the `between` and `and` keywords to retrieve time series entries from the specified range (inclusive).  
+  Provide the timestamps in UTC format.
+  E.g.:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL_select_syntax" label="RQL_select_syntax">
+<CodeBlock language="sql">
+{`from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+)
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_declare_syntax" label="RQL_declare_syntax">
+<CodeBlock language="sql">
+{`declare timeseries getHeartRates(employee)
+{
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+}
+
+from "Employees" as e
+where e.Address.Country == "UK"
+select getHeartRates(e) 
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+  Using Studio, you can apply parameters as follows for a clearer query.  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`$from = "2020-05-17T00:00:00.0000000Z"
+$to = "2020-05-17T01:00:00.0000000Z"
+
+from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between $from and $to  // using parameters
+)
+`}
+</CodeBlock>
+</TabItem>
+#### `first` and `last`:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both. E.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    last 1 day
+)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    first 10 min
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* The range is specified using a whole number of one of the following units.  
+
+    * **seconds**  ( seconds/ second / s )
+    * **minutes**  ( minutes / minute / min )
+    * **hours**    ( hours / hour / h )
+    * **days**     ( days / day / d )
+    * **months**   ( months / month / mon / mo )
+    * **quarters** ( quarters / quarter / q )
+    * **years**    ( years / year / y )
+    * Note: **milliseconds** are currently not supported by 'first' and 'last' in a time series query.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Queries can retrieve data from the entire time series or from a specific range of entries,  
+  such as those collected in the last 7 days.
+
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+
+* In this page:
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
+       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
+       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
+       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
+       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+
+</Admonition>
+## Choose range in a query
+
+#### Specify range:
+
+* Provide 'from' & 'to' DateTime values to the time series query to retrieve entries only from that range (inclusive).  
+  Omitting these parameters will retrieve the entire series.  
+
+* The provided DateTime values are handled by the server as UTC.  
+  The client does Not perform any conversion to UTC prior to sending the request to the server.  
+
+* Note: calling 'offset' will only adjust the timestamps in the returned results to your local time (optional).  
+
+* In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define the time series query part (expressed in RQL):
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    offset "03:00"\`;
+
+// Define the query:
+const query = session.query({ collection: "employees" })
+    .whereEquals("Address.Country", "UK")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+rawResults = results[0];
+assert.equal((rawResults instanceof TimeSeriesRawResult), true);
+
+const tsEntry = rawResults.results[0];
+assert.equal((tsEntry instanceof TimeSeriesEntry), true);
+
+const tsValue = tsEntry.value;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_using_params" label="Query_using_params">
+<CodeBlock language="nodejs">
+{`const from = new Date("2020-05-17T00:00:00.0000000");
+const to = new Date("2020-05-17T00:10:00.0000000");
+
+// Define the time series query part (expressed in RQL):
+const tsQueryText = \`
+    from HeartRates
+    between $from and $to
+    offset "03:00"\`;
+
+// Define the query:
+const query = session.query({ collection: "employees" })
+    .whereEquals("Address.Country", "UK")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
+    .addParameter("from", from)
+    .addParameter("to", to);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+rawResults = results[0];
+assert.equal((rawResults instanceof TimeSeriesRawResult), true);
+
+const tsEntry = rawResults.results[0];
+assert.equal((tsEntry instanceof TimeSeriesEntry), true);
+
+const tsValue = tsEntry.value;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`const rql = \`
+    from "Employees" as employee
+    where employee.Address.Country == "UK"
+    select timeseries(
+        from employee.HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        offset "03:00"
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery_using_params" label="RawQuery_using_params">
+<CodeBlock language="nodejs">
+{`const rql = \`
+    from "Employees" as employee
+    where employee.Address.Country == "UK"
+    select timeseries(
+        from employee.HeartRates
+        between $from and $to
+        offset "03:00"
+    )\`;
+
+const from = new Date("2020-05-17T00:00:00.0000000");
+const to = new Date("2020-05-17T00:10:00.0000000");
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("from", from)
+    .addParameter("to", to);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// RQL:
+from "employees" as employee
+where employee.Address.Country == "UK"
+select timeseries(
+    from employee.HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    offset "03:00"
+)
+
+// RQL with parameters:
+from "employees"
+where Address.Country = $p0
+select timeseries(
+    from HeartRates
+    between $from and $to
+    offset "03:00"
+)
+{
+  "p0":   "UK",
+  "from": "2020-05-17T00:00:00.0000000",
+  "to":   "2020-05-17T00:10:00.0000000"
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Retrieve first or last entries:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both.  
+
+* In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define the time series query part (expressed in RQL):
+const tsQueryText = \`
+    from HeartRates
+    last 30 min
+    offset "03:00"\`;
+
+// Define the query:
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+// Execute the query:
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`const rql = \`
+    from "Employees" as employee
+    select timeseries(
+        from employee.HeartRates
+        last 30 min
+        offset "03:00"
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Employees" as e 
+select timeseries(
+    from e.HeartRates
+    last 30 min
+    offset "03:00"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Choose range - RQL syntax
+
+#### `between` and `and`:
+
+* Use the `between` and `and` keywords to retrieve time series entries from the specified range (inclusive).  
+  Provide the timestamps in UTC format.
+  E.g.:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="RQL_select_syntax" label="RQL_select_syntax">
+<CodeBlock language="sql">
+{`from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+)
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL_declare_syntax" label="RQL_declare_syntax">
+<CodeBlock language="sql">
+{`declare timeseries getHeartRates(employee)
+{
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000Z" // start of range
+    and "2020-05-17T01:00:00.0000000Z"     // end of range
+}
+
+from "Employees" as e
+where e.Address.Country == "UK"
+select getHeartRates(e) 
+
+// Results will include only time series entries within the specified range for employees from UK.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+  Using Studio, you can apply parameters as follows for a clearer query.  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`$from = "2020-05-17T00:00:00.0000000Z"
+$to = "2020-05-17T01:00:00.0000000Z"
+
+from "Employees"
+where Address.Country == "UK"
+select timeseries(
+    from HeartRates
+    between $from and $to  // using parameters
+)
+`}
+</CodeBlock>
+</TabItem>
+#### `first` and `last`:
+
+* Use `first` to specify the time frame from the start of the time series.  
+  Use `last` to specify the time frame from the end of the time series.  
+  A query function can use either `first` or `last`, but not both. E.g. -  
+  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    last 1 day
+)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
+from "Employees"
+select timeseries(
+    from HeartRates
+    first 10 min
+)
+`}
+</CodeBlock>
+</TabItem>
+
+* The range is specified using a whole number of one of the following units.  
+
+    * **seconds**  ( seconds/ second / s )
+    * **minutes**  ( minutes / minute / min )
+    * **hours**    ( hours / hour / h )
+    * **days**     ( days / day / d )
+    * **months**   ( months / month / mon / mo )
+    * **quarters** ( quarters / quarter / q )
+    * **years**    ( years / year / y )
+    * Note: **milliseconds** are currently not supported by 'first' and 'last' in a time series query.
+
+
+
+
+</LanguageContent>
+
+<!---
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+
+### Time Series Indexing
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Time Series Queries
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

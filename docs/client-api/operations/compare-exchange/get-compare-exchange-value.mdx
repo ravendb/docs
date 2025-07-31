@@ -1,0 +1,368 @@
+---
+title: "Get Compare Exchange Value Operation"
+sidebar_label: Get Compare Exchange Value
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Get Compare Exchange Value Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetCompareExchangeValueOperation` to return the saved compare-exchange _Value_ for the specified _Key_.  
+
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value#syntax)  
+  * [Example I - Value is 'long'](../../../client-api/operations/compare-exchange/get-compare-exchange-value#example-i---value-is-)  
+  * [Example II - Value is a custom object](../../../client-api/operations/compare-exchange/get-compare-exchange-value#example-ii---value-is-a-custom-object)  
+</Admonition>
+## Syntax
+
+**Method**:
+<TabItem value="something" label="get_0">
+<CodeBlock language="csharp">
+{`public GetCompareExchangeValueOperation(string key)
+`}
+</CodeBlock>
+</TabItem>
+
+**Returned object**:
+<TabItem value="something" label="compare_exchange_value">
+<CodeBlock language="csharp">
+{`public class CompareExchangeValue<T>
+\{
+    public readonly string Key;
+    public readonly T Value;
+    public readonly long Index;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| ------------- | ----- | ---- |
+| **Key** | string | The unique object identifier |
+| **Value** | `T` | The existing value that _Key_ has |
+| **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
+
+<Admonition type="info" title="Session Interface and Lazy Get" id="session-interface-and-lazy-get" href="#session-interface-and-lazy-get">
+You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
+at `session.Advanced.ClusterTransaction`.  
+
+This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange).  
+</Admonition>
+
+
+
+## Example I - Value is 'long' 
+<TabItem value="something" label="get_1">
+<CodeBlock language="csharp">
+{`CompareExchangeValue<long> readResult =
+    store.Operations.Send(new GetCompareExchangeValueOperation<long>("NextClientId"));
+
+long value = readResult.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II - Value is a custom object 
+<TabItem value="something" label="get_2">
+<CodeBlock language="csharp">
+{`CompareExchangeValue<User> readResult =
+    store.Operations.Send(new GetCompareExchangeValueOperation<User>("AdminUser"));
+
+User admin = readResult.Value;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Use `GetCompareExchangeValueOperation` to return the saved compare-exchange _Value_ for the specified _Key_.  
+
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value#syntax)  
+  * [Example I - Value is 'long'](../../../client-api/operations/compare-exchange/get-compare-exchange-value#example-i---value-is-)  
+  * [Example II - Value is a custom object](../../../client-api/operations/compare-exchange/get-compare-exchange-value#example-ii---value-is-a-custom-object)  
+</Admonition>
+## Syntax
+
+**Method**:
+<TabItem value="something-something" label="get_0">
+<CodeBlock language="java">
+{`GetCompareExchangeValueOperation(Class<T> clazz, String key);
+`}
+</CodeBlock>
+</TabItem>
+
+**Returned object**:
+<TabItem value="something-something" label="compare_exchange_value">
+<CodeBlock language="java">
+{`public class CompareExchangeValue<T> \{
+    private String key;
+    private long index;
+    private T value;
+
+    public CompareExchangeValue(String key, long index, T value) \{
+        this.key = key;
+        this.index = index;
+        this.value = value;
+    \}
+
+    public String getKey() \{
+        return key;
+    \}
+
+    public void setKey(String key) \{
+        this.key = key;
+    \}
+
+    public long getIndex() \{
+        return index;
+    \}
+
+    public void setIndex(long index) \{
+        this.index = index;
+    \}
+
+    public T getValue() \{
+        return value;
+    \}
+
+    public void setValue(T value) \{
+        this.value = value;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| ------------- | ----- | ---- |
+| **Key** | String | The unique object identifier |
+| **Value** | `T` | The existing value that _Key_ has |
+| **Index** | long |  The version number of the _Value_ that is stored for the specified _Key_ |
+
+
+
+## Example I - Value is 'long' 
+<TabItem value="something-something" label="get_1">
+<CodeBlock language="java">
+{`CompareExchangeValue<Long> readResult
+    = store.operations().send(new GetCompareExchangeValueOperation<>(Long.class, "nextClientId"));
+
+Long value = readResult.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Example II - Value is a custom object 
+<TabItem value="something-something" label="get_2">
+<CodeBlock language="java">
+{`CompareExchangeValue<User> readResult
+    = store.operations().send(
+        new GetCompareExchangeValueOperation<>(User.class, "AdminUser"));
+
+User admin = readResult.getValue();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use the `GetCompareExchangeValueOperation` operation to get a compare-exchange item by its _key_.  
+
+* Compare-exchange items can also be managed via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange),  
+  which also expose getting the compare-exchange lazily,  
+  or from the [Studio](../../../studio/database/documents/compare-exchange-view).
+
+* In this page:
+  * [Examples](../../../client-api/operations/compare-exchange/get-compare-exchange-value#examples)
+      * [Get cmpXchg item that has a number and metadata](../../../client-api/operations/compare-exchange/get-compare-exchange-value#get-cmpxchg-item-that-has-a-number-and-metadata)
+      * [Get cmpXchg item that has an object](../../../client-api/operations/compare-exchange/get-compare-exchange-value#get-cmpxchg-item-that-has-an-object)
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value#syntax)  
+
+</Admonition>
+## Examples 
+
+<Admonition type="note" title="Note">
+
+<a id="get-cmpxchg-item-that-has-a-number-and-metadata"/> __Get cmpXchg item that has a number and metadata__:
+<TabItem value="something-something" label="get_1">
+<CodeBlock language="nodejs">
+{`// Put a new compare-exchange item,
+// e.g. save the number of sales made by an employee as the value + some metadata info        
+const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", 12345, 0,\{
+    "Department": "Sales",
+    "Role": "Salesperson",
+\});
+const result = await documentStore.operations.send(putCmpXchgOp);
+
+// Get the compare-exchange item:
+// ==============================
+
+// Define the get compare-exchange operation, pass the unique item key
+const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A");
+
+// Execute the operation by passing it to operations.send
+const item = await documentStore.operations.send(getCmpXchgOp);
+
+// Access the value and metadata of the retrieved item
+const numberOfSales = item.value;
+const employeeRole = item.metadata["Role"];
+
+// Access the version number of the retrieved item
+const version = item.index;
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+<a id="get-cmpxchg-item-that-has-an-object"/> __Get cmpXchg item that has an object__:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Get_operation" label="Get_operation">
+<CodeBlock language="nodejs">
+{`// Put a new compare-exchange item,
+// e.g. save an object as the value
+const employee = new Employee();
+employee.role = "Salesperson"
+employee.department = "Sales";
+employee.numberOfSales = 12345;
+
+const putCmpXchgOp = new PutCompareExchangeValueOperation("employees/1-A", employee, 0);
+const result = await documentStore.operations.send(putCmpXchgOp);
+
+// Get the compare-exchange item:
+// ==============================
+
+// Define the get compare-exchange operation, pass the unique item key & the class type
+const getCmpXchgOp = new GetCompareExchangeValueOperation("employees/1-A", Employee);
+
+// Execute the operation by passing it to operations.send
+const item = await documentStore.operations.send(getCmpXchgOp);
+
+// Access the value of the retrieved item
+const employeeResult = item.value;
+const employeeClass = employeeResult.constructor;   // Employee
+
+const employeeRole = employeeResult.role;           // Salesperson
+const employeeDep = employeeResult.department;      // Sales
+const employeeSales = employeeResult.numberOfSales; // 12345
+
+// Access the version number of the retrieved item
+const version = item.index;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Employee_class" label="Employee_class">
+<CodeBlock language="nodejs">
+{`class Employee {
+    constructor(
+        id = null,
+        department = "",
+        role = "",
+        numberOfSales = 0
+
+    ) {
+        Object.assign(this, {
+            id,
+            department,
+            role,
+            numberOfSales
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`const getCmpXchgOp = new GetCompareExchangeValueOperation(key, clazz, materializeMetadata);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter               | Type      | Description                                                                                                     |
+|-------------------------|-----------|-----------------------------------------------------------------------------------------------------------------|
+| __key__                 | `string`  | The unique identifier of the cmpXchg item.                                                                      |
+| __clazz__               | `object`  | The class type of the item's value.                                                                             |
+| __materializeMetadata__ | `boolean` | The Metadata will be retrieved and available regardless of the value of this param. Used for internal purposes. |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// Return value of store.operations.send(getCmpXchgOp)
+// ===================================================
+class CompareExchangeValue \{
+    key;
+    value;
+    metadata;
+    index;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                           |
+|--------------|----------|-------------------------------------------------------|
+| __key__      | `string` | The unique identifier of the cmpXchg item.            |
+| __value__    | `object` | The existing `value` of the returned cmpXchg item.    |
+| __metadata__ | `object` | The existing `metadata` of the returned cmpXchg item. |
+| __index__    | `number` | The compare-exchange item's version.                  |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Compare Exchange
+- [Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+
+### Session
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction/overview)
+
+### Client API
+- [Operations overview](../../../client-api/operations/what-are-operations)
+- [Cluster Transaction - Overview](../../../client-api/session/cluster-transaction/overview)
+
+
+-->

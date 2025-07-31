@@ -1,0 +1,639 @@
+---
+title: "Sharding: Restore"
+sidebar_label: Restore
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Sharding: Restore
+<Admonition type="note" title="Note">
+
+* A sharded database's backup is a set of backup files that were 
+  created by the database's shards.  
+* To restore a sharded database, we need to pass the restore 
+  operation paths to the locations of the backup files so it 
+  can retrieve and restore them.  
+   <Admonition type="warning" title="Warning">
+   Shards must be restored in their 
+   [original order](../../sharding/backup-and-restore/restore#restore).  
+   The backup of shard 1, for example, must be restored as shard 1.
+   </Admonition>
+* Backup files can be restored from local shard node storage or from 
+  a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote).  
+* A backed-up sharded database can be restored in part or in full, 
+  to a sharded or a non-sharded database.  
+* Only [logical](../../server/ongoing-tasks/backup-overview#logical-backup) 
+  backups are supported. 
+  [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) 
+  backups cannot be created or restored for sharded databases.  
+* `.ravendbdump` files (exported from RavenDB databases) and 
+  backup files can also be 
+  [imported](../../sharding/import-and-export#import) 
+  into a database (sharded or non-sharded).  
+* A backup created for a non-sharded database **cannot** be restored 
+  as a sharded database.  
+
+* In this page:  
+  * [Restore](../../sharding/backup-and-restore/restore#restore)  
+     * [Set Paths to Backup Files Locations](../../sharding/backup-and-restore/restore#set-paths-to-backup-files-locations)  
+     * [Define a Restore Configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration)  
+         * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore#section)
+     * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore#run--with-the-restore-configuration)  
+     * [Examples](../../sharding/backup-and-restore/restore#examples)  
+  * [Restoring to a Selected Restore Point](../../sharding/backup-and-restore/restore#restoring-to-a-selected-restore-point)  
+  * [Restore Options Summary](../../sharding/backup-and-restore/restore#restore-options-summary)  
+
+</Admonition>
+## Restore
+
+To restore a sharded database, we need to:  
+
+## Set Paths to Backup Files Locations
+When a shard stores a backup file, it may store it locally (on the 
+shard node's storage) or remotely (supported platforms currently include 
+S3 Buckets, Azure Blobs, and Google cloud).  
+  
+To restore the backup files, we need to provide the restore process with 
+each shard's backup folder location.  
+The shards' backup folder locations, and additional data regarding the backups, 
+are provided in a dictionary of `SingleShardRestoreSetting` objects.  
+
+`SingleShardRestoreSetting`  
+<TabItem value="something" label="restore_SingleShardRestoreSetting">
+<CodeBlock language="csharp">
+{`public class SingleShardRestoreSetting
+\{
+    // Shard number 
+    public int ShardNumber \{ get; set; \}
+    // Node tag
+    public string NodeTag \{ get; set; \}
+    // Folder name
+    public string FolderName \{ get; set; \}
+    // Restore up to (including) this incremental backup file
+    public string LastFileNameToRestore \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:
+
+    | Parameter | Value | Functionality |
+    | ------------- | ------------- | ----- |
+    | **ShardNumber** | `int` | The shard number that will be given to the restored shard. <br/> should normally be similar to the original shard number. |
+    | **NodeTag** | `string` | The node to restore the shard on. |
+    | **FolderName** | `string` | The name of the folder that holds the backup file/s. |
+    | **LastFileNameToRestore** | `string` | Last incremental backup file to restore. <br/> If omitted, restore all backup files in folder. |
+ 
+    <Admonition type="warning" title="Warning">
+    When setting **ShardNumber**, please make sure that all shards are 
+    given the same numbers they had when they were backed-up.  
+    Giving a restored shard a number different than its original number 
+    will place buckets on the wrong shards and cause mapping errors.  
+
+    E.g., a backup of shard 1 must be restored as shard 1: `ShardNumber = 1`  
+    </Admonition>
+
+    <Admonition type="warning" title="Warning">
+    When restoring a local shard backup, make sure that the backup file 
+    resides on the node that the shard's `NodeTag` property is set to, 
+    so the restore process can find the file.  
+
+    E.g., if a backup file that's been produced by node `A` is now 
+    restored to node `B` (`NodeTag = "B"`), place the backup file in 
+    the backup folder of node `B` before initiating the restore operation.  
+    </Admonition>
+
+## Define a Restore Configuration
+To restore the database, we pass the 
+[Restore Operation](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
+a **configuration object**.  
+
+* The configuration object inherits properties from the `RestoreBackupConfigurationBase` class 
+  ([discussed below](../../sharding/backup-and-restore/restore#section)) 
+  and defines additional sharding-specific settings.  
+
+* We choose what configuration object to pass the restore operation, by 
+  the backup files' location.  
+  The backup files may be located locally (on each shard machine storage) 
+  or remotely (in a cloud location).  
+  
+    | Configuration Object | Backup Location | Additional Properties |
+    | -------------------- | --------------- | --------------------- |
+    | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../sharding/backup-and-restore/restore#examples)) |
+### `RestoreBackupConfigurationBase`
+`RestoreBackupConfigurationBase` is a parent class to all the configuration types 
+mentioned above, allowing you to set backups **encryption settings** among other options.  
+<TabItem value="something" label="restore_RestoreBackupConfigurationBase">
+<CodeBlock language="csharp">
+{`public abstract class RestoreBackupConfigurationBase
+\{
+    public string DatabaseName \{ get; set; \}
+
+    public string LastFileNameToRestore \{ get; set; \}
+
+    public string DataDirectory \{ get; set; \}
+
+    public string EncryptionKey \{ get; set; \}
+
+    public bool DisableOngoingTasks \{ get; set; \}
+
+    public bool SkipIndexes \{ get; set; \}
+
+    public ShardedRestoreSettings ShardRestoreSettings \{ get; set; \}
+
+    public BackupEncryptionSettings BackupEncryptionSettings \{ get; set; \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* Parameters:
+
+    | Parameter | Value | Functionality |
+    | ------------- | ------------- | ----- |
+    | **DatabaseName** | `string` | Name for the new database. |
+    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br/> Ignored when restoring a sharded database. <br/> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
+    | **DataDirectory** <br/> (Optional -<br/> omit for default) | `string` | The new database data directory. <br/> <br/> **Default folder: <br/> Under the "Databases" folder <br/> In a folder carrying the restored database name.** |
+    | **EncryptionKey** <br/> (Optional -<br/> omit for default) | `string` | A key for an encrypted database. <br/> <br/> **Default behavior: <br/> Try restoring as if DB is unencrypted.**|
+    | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br/> `false` - enable ongoing tasks when Restore is complete. <br/> <br/> **Default: `false` <br/> Ongoing tasks will run when Restore is complete.**|
+    | **SkipIndexes** <br/> (Optional -<br/> omit for default) | `boolean` | `true` - disable indexes import, <br/> `false` - enable indexes import. <br/> <br/> **Default: `false` <br/> Restore all indexes.**|
+    | **ShardRestoreSettings** | `ShardedRestoreSettings` | a dictionary of `SingleShardRestoreSetting` instances defining paths to backup locations <br/>
+```csharp
+{`public class ShardedRestoreSettings
+\{
+  public Dictionary<int, 
+    SingleShardRestoreSetting> Shards 
+                            \{ get; set; \}
+\}
+`}
+```
+ |
+    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
+         
+    <Admonition type="note" title="Note">
+    Verify that RavenDB has full access to the backup locations and database files.  
+    Make sure your server has write permission to `DataDirectory`.  
+    </Admonition>
+
+## Run `RestoreBackupOperation` with the Restore Configuration
+Pass the configuration object you defined to the `RestoreBackupOperation` store operation 
+to restore the database.  
+<TabItem value="something" label="restore_RestoreBackupOperation">
+<CodeBlock language="csharp">
+{`public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration)
+`}
+</CodeBlock>
+</TabItem>
+
+* Instead of `RestoreBackupConfigurationBase`, use the configuration object 
+  you [prepared](../../sharding/backup-and-restore/restore#define-a-restore-configuration):  
+   * `RestoreBackupConfiguration` for locally-stored backups  
+   * `RestoreFromS3Configuration` to restore from S3  
+   * `RestoreFromAzureConfiguration` to restore from Azure  
+   * `RestoreFromGoogleCloudConfiguration` to restore from Google Cloud  
+
+## Examples
+
+Here are examples for restoring a sharded database using 
+backup files stored locally and remotely.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Local_Storage" label="Local_Storage">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    // Shard Number - which shard to restore to.
+    // Please make sure that each shard is given 
+    // the same number it had when it was backed up.
+    ShardNumber = 0,
+    // Node Tag - which node to restore to
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+});
+
+// Second shard
+restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+{
+    ShardNumber = 1,
+    NodeTag = "B",
+    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+});
+
+// Third shard
+restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+{
+    ShardNumber = 2,
+    NodeTag = "C",
+    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="S3_Bucket" label="S3_Bucket">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    // Shard Number - which shard to restore to.
+    // Please make sure that each shard is given 
+    // the same number it had when it was backed up.
+    ShardNumber = 0,
+    // Node Tag - which node to restore to
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+});
+
+// Second shard
+restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+{
+    ShardNumber = 1,
+    NodeTag = "B",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+});
+
+// Third shard
+restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+{
+    ShardNumber = 2,
+    NodeTag = "C",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromS3Configuration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // S3 Bucket settings
+    Settings = new S3Settings 
+    {
+        AwsRegionName = "us-east-1", // Optional
+        BucketName = "your bucket name here",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        AwsAccessKey = "your access key here",
+        AwsSecretKey = "your secret key here",
+    } 
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Azure_Blob" label="Azure_Blob">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    // Shard Number - which shard to restore to.
+    // Please make sure that each shard is given 
+    // the same number it had when it was backed up.
+    ShardNumber = 0,
+    // Node Tag - which node to restore to
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+});
+
+// Second shard
+restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+{
+    ShardNumber = 1,
+    NodeTag = "B",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+});
+
+// Third shard
+restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+{
+    ShardNumber = 2,
+    NodeTag = "C",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromAzureConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // Azure Blob settings
+    Settings = new AzureSettings
+    {
+        StorageContainer = "storageContainer",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        AccountName = "your account name here",
+        AccountKey = "your account key here",
+    }
+  });
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Google_Cloud" label="Google_Cloud">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    // Shard Number - which shard to restore to.
+    // Please make sure that each shard is given 
+    // the same number it had when it was backed up.
+    ShardNumber = 0,
+    // Node Tag - which node to restore to
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup"
+});
+
+// Second shard
+restoreSettings.Shards.Add(1, new SingleShardRestoreSetting
+{
+    ShardNumber = 1,
+    NodeTag = "B",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$1-B-backup"
+});
+
+// Third shard
+restoreSettings.Shards.Add(2, new SingleShardRestoreSetting
+{
+    ShardNumber = 2,
+    NodeTag = "C",
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$2-C-backup",
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromGoogleCloudConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // Google Cloud settings
+    Settings = new GoogleCloudSettings
+    {
+        BucketName = "your bucket name here",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        GoogleCredentialsJson = "your credentials here"
+    }
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Restoring to a Selected Restore Point
+
+### The default procedure
+When a **full backup** is created, (for either a non sharded database or for 
+any shard of a sharded database), a backup folder is created to contain it.  
+When **incremental backups** are created, they are stored in the folder of 
+the last full backup.  
+To restore a backup, its folder name is provided. By default, the full 
+backup stored in this folder will be restored, as well as all the incremental 
+backups that were added to it over time.  
+
+### Restoring a Non-sharded database to a selected restore point 
+
+* Read [here](../../sharding/backup-and-restore/restore) about restoring a non-sharded database.  
+* In short, restoring a non-sharded database to a selected restore point 
+  is done by filling:  
+   * [RestoreBackupConfiguration.BackupLocation](../../client-api/operations/maintenance/backup/restore#section-1) 
+     with the backup location.  
+   * [RestoreBackupConfiguration.LastFileNameToRestore](../../client-api/operations/maintenance/backup/restore#section-2) 
+     with the name of the last incremental backup to restore.  
+
+### Restoring a Sharded database to a selected restore point 
+
+* When a sharded database is restored, `RestoreBackupConfiguration.BackupLocation` 
+  and `RestoreBackupConfiguration.LastFileNameToRestore` mentioned above are **overridden** 
+  by per-shard settings.  
+
+* To restore the database of a particular shard up to a selected restore point 
+  simply add `ShardRestoreSettings.SingleShardRestoreSetting.LastFileNameToRestore` 
+  to the shard configuration and fill it with the name of the last incremental 
+  backup to restore.  
+
+* Example:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Local_Storage" label="Local_Storage">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    ShardNumber = 0,
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "E:/RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+    // Last incremental backup to restore
+    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreBackupConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="S3_Bucket" label="S3_Bucket">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    ShardNumber = 0,
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+    // Last incremental backup to restore
+    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromS3Configuration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // S3 Bucket settings
+    Settings = new S3Settings
+    {
+        AwsRegionName = "us-east-1", // Optional
+        BucketName = "your bucket name here",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        AwsAccessKey = "your access key here",
+        AwsSecretKey = "your secret key here",
+    }
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Azure_Blob" label="Azure_Blob">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    ShardNumber = 0,
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+    // Last incremental backup to restore
+    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromAzureConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // Azure Blob settings
+    Settings = new AzureSettings
+    {
+        StorageContainer = "storageContainer",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        AccountName = "your account name here",
+        AccountKey = "your account key here",
+    }
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Google_Cloud" label="Google_Cloud">
+<CodeBlock language="csharp">
+{`// Create a dictionary with paths to shard backups
+var restoreSettings = new ShardedRestoreSettings
+{
+    Shards = new Dictionary<int, SingleShardRestoreSetting>(),
+};
+
+// First shard
+restoreSettings.Shards.Add(0, new SingleShardRestoreSetting
+{
+    ShardNumber = 0,
+    NodeTag = "A",
+    // Backups Folder Name
+    FolderName = "RavenBackups/2023-02-12-09-52-27.ravendb-Books$0-A-backup",
+    // Last incremental backup to restore
+    LastFileNameToRestore = "2023-02-12-10-30-00.ravendb-incremental-backup"
+});
+
+var restoreBackupOperation = new RestoreBackupOperation(new RestoreFromGoogleCloudConfiguration
+{
+    // Database Name
+    DatabaseName = "Books",
+    // Paths to backup files
+    ShardRestoreSettings = restoreSettings,
+    // Google Cloud settings
+    Settings = new GoogleCloudSettings
+    {
+        BucketName = "your bucket name here",
+        RemoteFolderName = "", // Replaced by restoreSettings.Shards.FolderName 
+        GoogleCredentialsJson = "your credentials here"
+    }
+});
+
+var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperation);
+`}
+</CodeBlock>
+</TabItem>
+  </Tabs>
+
+
+
+## Restore Options Summary
+
+| Option | Supported on a Sharded Database | Comment |
+| -------------------- | --------------- | --------------------- |
+| Restore from **local shard storage** | **Yes** |  |
+| Restore from a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
+| Restore a **sharded database** backup <br/> to a **sharded database** | **Yes** |  |
+| Restore a **sharded database** backup <br/> to a **non-sharded database** | **Yes** |  |
+| Restore a **non-sharded database** backup <br/> to a **sharded database** | **No** | A backup created for a non-sharded database CANNOT be restored to a sharded database. |
+| Restore a **Full** database backup | **Yes** |  |
+| Restore a **Partial** database backup | **Yes** |  |
+| Restore a **Logical** database backup | **Yes** |  |
+| Restore a **Snapshot** database backup | **No** | A snapshot backup CANNOT be restored by a sharded database. |
+| Restore backed-up shards in a different order than the original | **No** | Always restore the shards in their original order. |
+
+
+

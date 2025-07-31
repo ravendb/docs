@@ -1,0 +1,130 @@
+---
+title: "Operations: Get Incremental Time Series"
+sidebar_label: Get
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Operations: Get Incremental Time Series
+<Admonition type="note" title="Note">
+
+* Get time series entries using `GetTimeSeriesOperation`.  
+* Using this method, you can retrieve node values from incremental time series entries.  
+
+* In this page:  
+      * [`GetTimeSeriesOperation`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#gettimeseriesoperation)  
+         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#syntax)  
+         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#usage-flow)  
+         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#usage-sample)  
+
+</Admonition>
+## `GetTimeSeriesOperation`
+
+Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for the requested entries.  
+### Syntax
+
+* `GetTimeSeriesOperation` Definition:  
+<TabItem value="something" label="incremental_declaration_GetTimeSeriesOperation">
+<CodeBlock language="csharp">
+{`public GetTimeSeriesOperation(
+    string docId, string timeseries, DateTime? @from = null,
+    DateTime? to = null, int start = 0, int pageSize = int.MaxValue, 
+    bool returnFullResults = false)
+`}
+</CodeBlock>
+</TabItem>
+
+* **Parameters**  
+
+    | Parameters | Type | Description |
+    |:-------------|:-------------|:-------------|
+    | `docId` | `string` | Document ID |
+    | `timeseries` | `string` | Time series name |
+    | `from` (optional) | `DateTime?` | Range start  <br/> Default: `DateTime.Min` ||
+    | `to` (optional) | `DateTime?` | Range end  <br/> Default: `DateTime.Max` ||
+    | `start` | `int` | Start of first Page |
+    | `pageSize` | `int` | Size of each page, counted in [entries with unique timestamps](../../../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series-structure) |
+    | `returnFullResults` | `bool` | If true, retrieve the values stored per-node. <br/> If false, return `null ` in `TimeSeriesEntry.NodeValues`. |
+     
+
+* **Return Value**: **`TimeSeriesRangeResult<TimeSeriesEntry>`**  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesRangeResult 
+    \{
+        public DateTime From, To;
+        public TimeSeriesEntry[] Entries;
+        
+        // The number of unique values
+        public long? TotalResults; 
+        
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public class TimeSeriesEntry 
+    \{
+        public DateTime Timestamp \{ get; set; \}
+        public double[] Values \{ get; set; \}
+        public string Tag \{ get; set; \}
+        public bool IsRollup \{ get; set; \}
+        
+        // The nodes distribution per each entry
+        public Dictionary<string, double[]> NodeValues \{ get; set; \} 
+`}
+</CodeBlock>
+</TabItem>
+
+     * `TimeSeriesRangeResult.TotalResults` will contain the number of **unique** values.  
+       If the time series contains entries with multiple values (remember 
+       that since this is an incremental time series this means duplications 
+       of the same number at the same timestamp) all values will be aggregated 
+       in `TotalResults` to a single unique value.  
+     * Requesting a time series that doesn't exist will return `null`.  
+     * Requesting an entries range that doesn't exist will return a `TimeSeriesRangeResult` object 
+       with an empty `Entries` property.  
+
+* **Exceptions**  
+  Exceptions are not generated.  
+### Usage Sample
+
+* In this sample we retrieve 50 entries from an incremental time series that contains 
+  two per-node values in each entry.  
+  We then calculate where the next `Get` operation should start, and run another `Get` 
+  operation starting there.  
+<TabItem value="something" label="incremental_GetTimeSeriesOperation">
+<CodeBlock language="csharp">
+{`int pageSize = 100;
+var entries = store.Operations
+                  .Send(new GetTimeSeriesOperation("users/ayende",
+                   "INC:Downloads", start: 0, pageSize: pageSize, 
+                   returnFullResults: true));
+
+//load another page, starting with the first entry that wasn't read yet
+int nextStart = entries.Entries.Length;
+entries = store.Operations
+                  .Send(new GetTimeSeriesOperation("users/ayende",
+                   "INC:Downloads", start: nextStart, pageSize: pageSize, 
+                   returnFullResults: true));
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## `GetMultipleTimeSeriesOperation`
+
+To retrieve data from **multiple** time series, 
+use [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation).  
+
+
+

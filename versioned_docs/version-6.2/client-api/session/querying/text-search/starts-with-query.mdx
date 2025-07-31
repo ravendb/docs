@@ -1,0 +1,577 @@
+---
+title: "Starts-With Query"
+sidebar_label: Starts-With Query
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Starts-With Query
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that starts with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* In this page:
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+
+</Admonition>
+## StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'StartsWith' on the field
+     // Pass the prefix to search by
+    .Where(x => x.Name.StartsWith("Ch"))
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'StartsWith' on the field
+     // Pass the prefix to search by
+    .Where(x => x.Name.StartsWith("Ch"))
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereStartsWith'
+     // Pass the document field and the prefix to search by
+    .WhereStartsWith(x => x.Name, "Ch")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## StartsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT prefix match
+    .Where(x => x.Name.StartsWith("Ch"), exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT prefix match
+    .Where(x => x.Name.StartsWith("Ch"), exact: true)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereStartsWith'
+     // Pass 'exact: true' to search for an EXACT prefix match
+    .WhereStartsWith(x => x.Name, "Ch", exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'StartsWith' on the field
+     // Pass the prefix to search by
+    .Where(x => x.Name.StartsWith("Ch") == false)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'StartsWith' on the field
+     // Pass the prefix to search by
+    .Where(x => x.Name.StartsWith("Ch") == false)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'Not' to negate the next predicate
+    .Not
+     // Call 'WhereStartsWith'
+     // Pass the document field and the prefix to search by
+    .WhereStartsWith(x => x.Name, "Ch")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that starts with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* In this page:
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+
+</Admonition>
+## StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Call 'where_starts_with' on the field
+    # Pass the prefix to search by
+    .where_starts_with("Name", "Ch")
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## StartsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Pass 'exact=True' to search for an EXACT prefix match
+    .where_starts_with("Name", "Ch", exact=True)
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate StartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Negate next statement
+    .not_()
+    # Call 'where_starts_with' on the field
+    # Pass the prefix to search by
+    .where_starts_with("Name", "Ch")
+)
+# Results will contain only Product documents having a 'Name' field
+# that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that starts with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* In this page:
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+
+</Admonition>
+## StartsWith
+
+The results will contain only Product documents having a 'Name' field
+that starts with any case variation of 'ch'.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    // Call 'StartsWith' on the field
+    // Pass the prefix to search by
+    ->whereStartsWith("Name", "Ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+    ->documentQuery(Product::class)
+    // Call 'WhereStartsWith'
+    // Pass the document field and the prefix to search by
+    ->whereStartsWith("Name", "Ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## StartsWith (case-sensitive)
+
+The results will contain only Product documents having a 'Name' field
+that starts with 'Ch'.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+    ->query(Product::class)
+    // Pass 'exact: true' to search for an EXACT prefix match
+    ->whereStartsWith("Name", "Ch", true)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+    ->documentQuery(Product::class)
+    // Call 'WhereStartsWith'
+    // Pass 'exact: true' to search for an EXACT prefix match
+    ->whereStartsWith("Name", "Ch", true)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate StartsWith
+
+The results will contain only Product documents having a 'Name' field
+that does NOT start with 'ch' or any other case variations of it.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    # Negate next statement
+    ->not()
+    // Call 'StartsWith' on the field
+    // Pass the prefix to search by
+    ->whereStartsWith("Name", "Ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+    ->documentQuery(Product::class)
+    // Call 'Not' to negate the next predicate
+    ->not()
+    // Call 'WhereStartsWith'
+    // Pass the document field and the prefix to search by
+    ->whereStartsWith("Name", "Ch")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `whereStartsWith` to query for documents having a field that starts with some specified string.
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* In this page:
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith-(case-sensitive))  
+  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-wherestartswith)  
+  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-query#syntax)  
+
+</Admonition>
+## whereStartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+     // Call 'whereStartsWith'
+     // Pass the document field and the prefix to search by
+    .whereStartsWith("Name", "Ch")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with any case variation of 'ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## whereStartsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'whereStartsWith'
+    // Pass 'true' as the 3'rd parameter to search for an EXACT prefix match
+    .whereStartsWith("Name", "Ch", true)
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that starts with 'Ch'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(startsWith(Name, "Ch"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate whereStartsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'Not' to negate the next predicate
+    .not()
+    // Call 'whereStartsWith'
+    // Pass the document field and the prefix to search by
+    .whereStartsWith("Name", "Ch")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT start with 'ch' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exists(Name) and not startsWith(Name, "Ch")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+whereStartsWith(fieldName, value);
+whereStartsWith(fieldName, value, exact);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| __fieldName__ | string  | The field name in which to search                                         |
+| __value__     | string  | The __prefix__ string to search by                                        |
+| __exact__     | boolean | `false` - search is case-insensitive<br/>`true` - search is case-sensitive |
+
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [Query overview](../../../../client-api/session/querying/how-to-query)
+- [Ends-With query](../../../../client-api/session/querying/text-search/ends-with-query)
+- [Full-text search](../../../../client-api/session/querying/text-search/full-text-search)
+
+
+-->

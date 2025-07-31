@@ -1,0 +1,215 @@
+---
+title: "Session: How to Get Entity Last Modified"
+sidebar_label: ...get entity last modified
+sidebar_position: 9
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Session: How to Get Entity Last Modified 
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+
+Last modified date is stored within the metadata in session and is available for each entity using the `GetLastModifiedFor` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="something" label="get_last_modified_1">
+<CodeBlock language="csharp">
+{`DateTime? GetLastModifiedFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **instance** | T | Instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| DateTime? | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+
+## Example
+
+<TabItem value="something" label="get_last_modified_2">
+<CodeBlock language="csharp">
+{`Employee employee = session.Load<Employee>("employees/1-A");
+DateTime? lastModified = session.Advanced.GetLastModifiedFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+
+Last modified date is stored within the metadata in session and is available for each entity using the `getLastModifiedFor` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="get_last_modified_1">
+<CodeBlock language="java">
+{`<T> Date getLastModifiedFor(T instance)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **instance** | T | Instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| Date | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+
+## Example
+
+<TabItem value="something-something" label="get_last_modified_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");
+Date lastModified = session.advanced().getLastModifiedFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+When a document is downloaded from the server it contains various metadata details, 
+including the last modified date of the document.  
+
+Last modified date is stored within the session metadata and is available for each 
+entity using the `get_last_modified_for` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="get_last_modified_1">
+<CodeBlock language="python">
+{`def get_last_modified_for(self, entity: object) -> datetime: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `datetime` | Returns the last modified date for an entity. Throws an exception if the entity is not tracked by the session. |
+
+## Example
+
+<TabItem value="something-something" label="get_last_modified_2">
+<CodeBlock language="python">
+{`employee = session.load("employees/1-A")
+last_modified = session.advanced.get_last_modified_for(employee)
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+When a document is downloaded from the server it contains various metadata details, 
+including the last modified date of the document.  
+
+Last modified date is stored within the session metadata and is available for each 
+entity using the `getLastModifiedFor` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="get_last_modified_1">
+<CodeBlock language="php">
+{`public function getLastModifiedFor($instance): ?DateTimeInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Description |
+| --------- | ----------- |
+| **$instance** | An instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `?DateTimeInterface` | Returns the last modified date for an entity. Throws an exception if the entity is not tracked by the session. |
+
+## Example
+
+<TabItem value="something-something" label="get_last_modified_2">
+<CodeBlock language="php">
+{`$employee = $session->load(Employee::class, "employees/1-A");
+$lastModified = $session->advanced()->getLastModifiedFor($employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+
+Last modified date is stored within the metadata in session and is available for each entity using the `getLastModifiedFor()` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="get_last_modified_1">
+<CodeBlock language="nodejs">
+{`session.advanced.getLastModifiedFor(instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **instance** | object | Instance of an entity for which the last modified date will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| Date | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
+
+
+## Example
+
+<TabItem value="something-something" label="get_last_modified_2">
+<CodeBlock language="nodejs">
+{`const employee = await session.load("employees/1-A");
+const lastModified = session.advanced.getLastModifiedFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+- [How to Get Entity Change-Vector](../../../client-api/session/how-to/get-entity-change-vector)
+
+
+-->

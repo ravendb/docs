@@ -1,0 +1,633 @@
+---
+title: "Get Counter Values"
+sidebar_label: Get Counter Values
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Counter Values  
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `CountersFor.Get` to retrieve the value of a **single Counter**,  
+  or `CountersFor.GetAll` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+
+</Admonition>
+## Get a single Counter's value
+
+#### Get usage:  
+
+* Open a session
+* Create an instance of `CountersFor`.
+    * Either pass `CountersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
+* Call `CountersFor.Get` to retrieve the current value of a single Counter.
+#### Get example:  
+
+<TabItem value="something" label="counters_region_Get">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Use \`CountersFor.Get\` to retrieve a Counter's value
+    var DaysLeft = documentCounters.Get("DaysLeftForSale");
+    Console.WriteLine("Days Left For Sale: " + DaysLeft);
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get syntax:  
+
+<TabItem value="something" label="Get-definition">
+<CodeBlock language="csharp">
+{`long Get(string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counterName` | string | Counter's name |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `long`       | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### GetAll usage: 
+
+* Open a session.  
+* Create an instance of `CountersFor`.
+    * Either pass `CountersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).
+* Call `CountersFor.GetAll` to retrieve the names and values of all counters associated with the document.
+#### GetAll example:  
+
+<TabItem value="something" label="counters_region_GetAll">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+    var counters = documentCounters.GetAll();
+
+    // list counters' names and values
+    foreach (var counter in counters)
+    \{
+        Console.WriteLine("counter name: " + counter.Key + ", counter value: " + counter.Value);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### GetAll syntax:  
+
+<TabItem value="something" label="GetAll-definition">
+<CodeBlock language="csharp">
+{`Dictionary<string, long?> GetAll();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type              | Description                     |
+|--------------------------|---------------------------------|
+| Dictionary&lt;string, long&gt; | Map of Counter names and values |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Use `countersFor.get` to retrieve the value of a **single Counter**,  
+  or `countersFor.getAll` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:  
+
+    * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)
+       * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)
+       * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)
+       * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+
+    * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)
+       * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)
+       * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)
+       * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+      
+</Admonition>
+## Get a single Counter's value
+#### Get usage:  
+
+* Open a session
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an entity tracked by the session, e.g. a document object returned from `session.query` or from `session.load`.
+* Call `countersFor.get` to retrieve the current value of a single Counter.
+#### Get example:  
+
+<TabItem value="something-something" label="counters_region_Get">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass CountersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Use \`countersFor.get\` to retrieve a Counter's value
+    Long daysLeft = documentCounters.get("daysLeftForSale");
+    System.out.println("Days Left For Sale: " + daysLeft);
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get syntax:  
+
+<TabItem value="something" label="Get-definition">
+<CodeBlock language="csharp">
+{`long Get(string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description    |
+|---------------|---------|----------------|
+| `counterName` | String | Counter's name |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `long`       | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### GetAll usage: 
+
+* Open a session.
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an entity tracked by the session, e.g. a document object returned from session.query or from session.load.
+* Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
+#### GetAll example:  
+
+<TabItem value="something-something" label="counters_region_GetAll">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass countersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Use GetAll to retrieve all of the document's Counters' names and values.
+    Map<String, Long> counters = documentCounters.getAll();
+
+    // list counters' names and values
+    for (Map.Entry<String, Long> kvp : counters.entrySet()) \{
+        System.out.println("counter name: " + kvp.getKey() + ", counter value: " + kvp.getValue());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### GetAll syntax:  
+
+<TabItem value="something-something" label="getAll-definition">
+<CodeBlock language="java">
+{`Map<String, Long> getAll();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type       | Description                     |
+|-------------------|---------------------------------|
+| Map&lt;String, Long&gt; | Map of Counter names and values |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `counters_for.get` to retrieve the value of a **single Counter**,  
+  or `counters_for.get_all` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
+     * [`get` usage](../../document-extensions/counters/retrieve-counter-values#usage)  
+     * [`get` example](../../document-extensions/counters/retrieve-counter-values#example)  
+     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values#syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
+     * [`get_all` usage](../../document-extensions/counters/retrieve-counter-values#usage-1)  
+     * [`get_all` example](../../document-extensions/counters/retrieve-counter-values#example-1)  
+     * [`get_all` Syntax](../../document-extensions/counters/retrieve-counter-values#syntax-1)  
+
+</Admonition>
+## Get a single Counter's value
+
+#### `get` usage:  
+
+* Open a session
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `counters_for.get` to retrieve the current value of a single Counter.
+#### `get` example:  
+
+<TabItem value="something-something" label="counters_region_Get">
+<CodeBlock language="python">
+{`# 1. Open a session
+with store.open_session() as session:
+    # 2. pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-C")
+
+    # 3. Use 'CountersFor.Get' to retrieve a Counter's value
+    days_left = document_counters.get("DaysLeftForSale")
+    print(f"Days Left For Sale: \{days_left\}")
+`}
+</CodeBlock>
+</TabItem>
+#### `get` syntax:  
+
+<TabItem value="something-something" label="Get-definition">
+<CodeBlock language="python">
+{`def get(self, counter) -> int: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counter` | str | Counter name |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `int`        | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### `get_all` usage: 
+
+* Open a session.  
+* Create an instance of `counters_for`.
+    * Either pass `counters_for` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `counters_for.get_all` to retrieve the names and values of all counters associated with the document.
+#### `get_all` example:  
+
+<TabItem value="something-something" label="counters_region_GetAll">
+<CodeBlock language="python">
+{`# 1. Open a session
+with store.open_session() as session:
+    # 2. pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-C")
+
+    # 3. Use GetAll to retrieve all of the document's counters' names and values
+    counters = document_counters.get_all()
+
+    # list counters' names and values
+    for counter_name, counter_value in counters.items():
+        print(f"counter name: \{counter_name\}, counter value: \{counter_value\}")
+`}
+</CodeBlock>
+</TabItem>
+#### `get_all` syntax:  
+
+<TabItem value="something-something" label="GetAll-definition">
+<CodeBlock language="python">
+{`def get_all(self) -> Dict[str, int]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type      | Description                     |
+|------------------|---------------------------------|
+| `Dict[str, int]` | Map of Counter names and values |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `countersFor.get` to retrieve the values of **specific counters**,  
+  or `countersFor.getAll` to retrieve the names and values of **all counters** associated with a document.
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get values of specific counters](../../document-extensions/counters/retrieve-counter-values#get-values-of-specific-counters)  
+     * [`get` usage](../../document-extensions/counters/retrieve-counter-values#usage)  
+     * [`get` example](../../document-extensions/counters/retrieve-counter-values#example)  
+     * [`get` syntax](../../document-extensions/counters/retrieve-counter-values#syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
+     * [`getAll` usage](../../document-extensions/counters/retrieve-counter-values#usage-1)  
+     * [`getAll` example](../../document-extensions/counters/retrieve-counter-values#example-1)  
+     * [`getAll` Syntax](../../document-extensions/counters/retrieve-counter-values#syntax-1)  
+
+</Admonition>
+## Get values of specific counters
+
+#### `get` usage:  
+
+* Open a session
+* Create an instance of `countersFor`.
+   * Either pass `countersFor` an explicit document ID, -or-
+   * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+     e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `countersFor.get` to retrieve counter value/s.
+   * `get("CounterName")` will return a single `int` value for the specified counter.  
+   * `get(["counter1", "counter2"]` will return an array with values for all listed counters.  
+      E.g., `[ "counter1" => 1, "counter2" => 5 ]`
+#### `get` example:  
+
+<TabItem value="something-something" label="counters_region_Get">
+<CodeBlock language="php">
+{`// 1. Open a session
+$session = $docStore->openSession();
+try \{
+    // 2. pass the countersFor constructor a document ID
+    $documentCounters = $session->countersFor("products/1-C");
+
+    // 3. Use \`countersFor.get\` to retrieve a counter's value
+    $daysLeft = $documentCounters->get("DaysLeftForSale");
+
+    echo "Days Left For Sale: " . $daysLeft . PHP_EOL;
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `get` syntax:  
+
+<TabItem value="something-something" label="Get-definition">
+<CodeBlock language="php">
+{`public function get(string|StringList|array $counters): null|int|array;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counters` | `string` or `StringList` or `array` | Counter names |
+
+| Return Type  | Description             |
+|--------------|-------------------------|
+| `int`        | Counter's current value |
+
+
+
+## Get all Counters of a document
+#### `getAll` usage: 
+
+* Open a session.  
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
+#### `getAll` example:  
+
+<TabItem value="something-something" label="counters_region_GetAll">
+<CodeBlock language="php">
+{`// 1. Open a session
+$session = $docStore->openSession();
+try \{
+    // 2. Pass the countersFor constructor a document ID
+    $documentCounters = $session->countersFor("products/1-C");
+
+    // 3. Use getAll to retrieve all of the document's Counters' names and values
+    $counters = $documentCounters->getAll();
+
+    // list counters' names and values
+
+    foreach ($counters as $counterKey => $counterValue)
+    \{
+        echo "counter name: " . $counterKey . ", counter value: " . $counterValue;
+    \}
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### `getAll` syntax:  
+
+<TabItem value="something-something" label="GetAll-definition">
+<CodeBlock language="php">
+{`public function getAll(): array;
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type      | Description                 |
+|------------------|-----------------------------|
+| `array` | An array of Counter names and values |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `countersFor.get` to retrieve the value of a **single Counter**,  
+  or `countersFor.getAll` to retrieve the names and values of **all Counters** associated with a document.
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:  
+
+  * [Get a single Counter's value](../../document-extensions/counters/retrieve-counter-values#get-a-single-counter)  
+     * [Get usage](../../document-extensions/counters/retrieve-counter-values#get-usage)  
+     * [Get example](../../document-extensions/counters/retrieve-counter-values#get-example)  
+     * [Get syntax](../../document-extensions/counters/retrieve-counter-values#get-syntax)
+
+  * [Get all Counters of a document](../../document-extensions/counters/retrieve-counter-values#get-all-counters-of-a-document)  
+     * [GetAll usage](../../document-extensions/counters/retrieve-counter-values#getall-usage)  
+     * [GetAll example](../../document-extensions/counters/retrieve-counter-values#getall-exmaple)  
+     * [GetAll Syntax](../../document-extensions/counters/retrieve-counter-values#getall-syntax)  
+
+</Admonition>
+## Get a single Counter's value
+
+<Admonition type="note" title="Note">
+
+<a id="get-usage"/> **Get usage**:  
+
+* Open a session
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `countersFor.get` to retrieve the current value of a single Counter.
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="get-example"/> **Get example**:  
+
+<TabItem value="something-something" label="getCounter">
+<CodeBlock language="nodejs">
+{`// Open a session
+const session = documentStore.openSession();        
+       
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Call \`get\` to retrieve a Counter's value
+const daysLeft = await documentCounters.get("DaysLeftForSale");
+
+console.log("Days Left For Sale: " + daysLeft);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="get-syntax"/> **Get syntax**:  
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`get(counter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type   | Description    |
+|------------|--------|----------------|
+| `counter`  | string | Counter's name |
+
+| Return Type                    | Description                                                                                  |
+|--------------------------------|----------------------------------------------------------------------------------------------|
+| `Promise<number>`              | A `Promise` resolving to the Counter's current value, or to `null` if counter doesn't exist. |
+
+</Admonition>
+
+
+## Get all Counters of a document
+
+<Admonition type="note" title="Note">
+
+<a id="getall-usage"/> **GetAll usage**: 
+
+* Open a session.  
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).
+* Call `countersFor.getAll` to retrieve the names and values of all counters associated with the document.
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="getall-example"/> **GetAll example**:  
+
+<TabItem value="something-something" label="getAllCounters">
+<CodeBlock language="nodejs">
+{`// Open a session
+const session = documentStore.openSession();
+
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Call \`getAll\` to retrieve all of the document's Counters' names and values
+const allCounters = await documentCounters.getAll();
+
+for (var counter in allCounters) \{
+    console.log("counter name: " + counter + ", counter value: " + allCounters[counter]);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+<a id="getall-syntax"/> **GetAll syntax**:  
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`getAll(counters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Type       | Description                                                              |
+|-------------------|--------------------------------------------------------------------------|
+| `Promise<object>` | A `Promise` resolving to a dictionary of counter values by counter names |
+
+</Admonition>
+
+
+
+</LanguageContent>
+
+<!---
+### Studio Articles
+- [Studio Counters Management](../../studio/database/document-extensions/counters#counters)
+
+### Client-API - Session Articles
+- [Counters Overview](../../document-extensions/counters/overview)
+- [Creating and Modifying Counters](../../document-extensions/counters/create-or-modify)
+- [Deleting a Counter](../../document-extensions/counters/delete)
+- [Counters and other features](../../document-extensions/counters/counters-and-other-features)
+- [Counters In Clusters](../../document-extensions/counters/counters-in-clusters)
+
+### Client-API - Operations Articles
+- [Counters Operations](../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+
+
+-->

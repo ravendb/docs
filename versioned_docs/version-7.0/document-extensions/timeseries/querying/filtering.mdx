@@ -1,0 +1,1238 @@
+---
+title: "Filtering Time Series Queries"
+sidebar_label: Filtering
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Filtering Time Series Queries
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range) to retrieve,
+  you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* For an overview of the available time series queries, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM 
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Query<Employee>()
+    .Select(employee => RavenQuery
+        .TimeSeries(employee, "HeartRates", from, to)
+        // Call 'Where' to filter entries by the value
+        .Where(ts => ts.Value > 75)
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Advanced.DocumentQuery<Employee>()
+    .SelectTimeSeries(builder => builder.From("HeartRates")
+        .Between(from, to)
+        // Call 'Where' to filter entries by the value
+        .Where(ts => ts.Value > 75)
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+    from Employees
+    select timeseries (
+        from HeartRates
+        between $from and $to
+        // Use the 'where Value' clause to filter by the value
+        where Value > 75
+    )")
+    .AddParameter("from", from)
+    .AddParameter("to", to);
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Query<Employee>()
+    .Select(employee => RavenQuery
+        .TimeSeries(employee, "HeartRates", from, to)
+        // Call 'Where' to filter entries by the tag
+        .Where(ts => ts.Tag == "watches/fitbit")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Advanced.DocumentQuery<Employee>()
+    .SelectTimeSeries(builder => builder.From("HeartRates")
+        .Between(from, to)
+        // Call 'Where' to filter entries by the tag
+        .Where(ts => ts.Tag == "watches/fitbit")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var query = session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+    from Employees
+    select timeseries (
+        from HeartRates
+        between $from and $to
+        // Use the 'where Tag' clause to filter entries by the tag string content
+        where Tag == 'watches/fitbit'
+    )")
+    .AddParameter("from", from)
+    .AddParameter("to", to);
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is one of several options
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var optionalTags = new[] {"watches/apple", "watches/samsung", "watches/xiaomi"};
+
+var query = session.Query<Employee>()
+    .Select(employee => RavenQuery
+        .TimeSeries(employee, "HeartRates", from, to)
+        // Call 'Where' to filter entries by the tag
+        .Where(ts =>
+            ts.Tag == "watches/apple" || ts.Tag == "watches/samsung" || ts.Tag == "watches/xiaomi")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is one of several options
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var optionalTags = new[] {"watches/apple", "watches/samsung", "watches/xiaomi"};
+
+var query = session.Advanced.DocumentQuery<Employee>()
+    .SelectTimeSeries(builder => builder.From("HeartRates")
+        .Between(from, to)
+        // Call 'Where' to filter entries by the tag
+        .Where(ts =>
+            ts.Tag == "watches/apple" || ts.Tag == "watches/samsung" || ts.Tag == "watches/xiaomi")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`// Retrieve only entries where the tag string content is one of several options
+
+var baseTime = new DateTime(2020, 5, 17, 00, 00, 00);
+var from = baseTime;
+var to = baseTime.AddMinutes(10);
+
+var optionalTags = new[] {"watches/apple", "watches/samsung", "watches/xiaomi"};
+
+var query = session.Advanced.RawQuery<TimeSeriesRawResult>(@"
+    from Employees
+    select timeseries (
+        from HeartRates
+        between $from and $to
+        // Use the 'where Tag in' clause to filter by various tag options
+        where Tag in ($optionalTags)
+    )")
+    .AddParameter("from", from)
+    .AddParameter("to", to)
+    .AddParameter("optionalTags", optionalTags);
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+var query = session.Query<Company>()
+    // Query companies from USA
+    .Where(c => c.Address.Country == "USA")
+    .Select(company => RavenQuery
+        .TimeSeries(company, "StockPrices")
+        // Use 'LoadByTag' to load the employee document referenced in the tag
+        .LoadByTag<Employee>()
+        // Use 'Where' to filter the entries by the 'Title' property of the loaded document
+        .Where((ts, employeeDoc) => employeeDoc.Title == "Sales Manager")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+var query = session.Advanced.DocumentQuery<Company>()
+    // Query companies from USA
+    .WhereEquals(company => company.Address.Country, "USA")
+    .SelectTimeSeries(builder => builder.From("StockPrices")
+        // Use 'LoadByTag' to load the employee document referenced in the tag
+        .LoadByTag<Employee>()
+        // Use 'Where' to filter the entries by the 'Title' property of the loaded document
+        .Where((ts, employeeDoc) => employeeDoc.Title == "Sales Manager")
+        .ToList());
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+var query = session.Advanced.RawQuery<Company>(@"
+    from Companies
+    where Address.Country == 'USA'
+    select timeseries (
+        from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where <property>' to filter entries by the properties of the loaded document 
+        where employeeDoc.Title == 'Sales Manager'
+    )"
+);
+
+var results = query.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range) to retrieve,
+you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# For example, in the "HeartRates" time series,
+# retrieve only entries where the value exceeds 75 BPM
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+query_string = """
+from Employees
+select timeseries (
+    from HeartRates
+    between $from and $to
+    // Use the 'where Value' clause to filter by the value
+    where Value > 75
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# Retrieve only entries where the tag string content is "watches/fitbit"
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+query_string = """
+from Employees
+select timeseries (
+    from HeartRates 
+    between $from and $to 
+    // Use the 'where Tag' clause to filter entries by the tag string content
+    where Tag == 'watches/fitbit'
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# retrieve only entries where the tag string content is one of several options
+
+base_time = datetime(2020, 5, 17, 0, 0, 0, 0)
+from_dt = base_time
+to_dt = base_time + timedelta(minutes=10)
+
+optional_tags = ["watches/apple", "watches/samsung", "watches/xiaomi"]
+
+query_string = """
+from Employees 
+select timeseries (
+    from HeartRates
+    between $from and $to
+    // Use the 'where Tag in' clause to filter by various tag options
+    where Tag in ($optionalTags)
+)"""
+
+query = (
+    session.advanced.raw_query(query_string, TimeSeriesRawResult)
+    .add_parameter("from", from_dt)
+    .add_parameter("to", to_dt)
+    .add_parameter("optionalTags", optional_tags)
+)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`# retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+query_string = """
+from Companies
+where Address.Country == 'USA'
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == 'Sales Manager'
+)"""
+
+query = session.advanced.raw_query(query_string, Company)
+
+results = list(query)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range) to retrieve,
+  you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Value" clause to filter entries by the value
+    "where Value > 75";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Value" clause to filter entries by the value
+    "where Value > 75";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Value' clause to filter by the value
+        where Value > 75
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\""  .
+    "and \\"2020-05-17T00:10:00.0000000\\""  .
+    // Use the "where Tag" clause to filter entries by the tag string content"  .
+    "where Tag == \\"watches/fitbit\\";";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\""  .
+    "and \\"2020-05-17T00:10:00.0000000\\""  .
+    // Use the "where Tag" clause to filter entries by the tag string content"  .
+    "where Tag == \\"watches/fitbit\\";";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Tag' clause to filter entries by the tag string content
+        where Tag == 'watches/fitbit'
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Tag in" clause to filter by various tag options
+    "where Tag in (\\"watches/apple\\", \\"watches/samsung\\", \\"watches/xiaomi\\")";
+
+$query = $session->advanced()->query(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$tsQueryText =
+    "from HeartRates" .
+    "between \\"2020-05-17T00:00:00.0000000\\"" .
+    "and \\"2020-05-17T00:10:00.0000000\\"" .
+    // Use the "where Tag in" clause to filter by various tag options
+    "where Tag in (\\"watches/apple\\", \\"watches/samsung\\", \\"watches/xiaomi\\")";
+
+$query = $session->advanced()->documentQuery(Employee::class)
+    ->selectTimeSeries(TimeSeriesRawResult::class, function($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve only entries where the tag string content is one of several options
+
+$baseTime = new DateTime("2020-05-17");
+$from = $baseTime;
+$to =  (clone $baseTime)->add(new DateInterval("PT10M"));
+
+$optionalTags = [ "watches/apple", "watches/samsung", "watches/xiaomi" ];
+
+$query = $session->advanced()->rawQuery(TimeSeriesRawResult::class, "
+    from Employees
+    select timeseries (
+        from HeartRates
+        between \\$from and \\$to
+        // Use the 'where Tag in' clause to filter by various tag options
+        where Tag in (\\$optionalTags)
+    )")
+    ->addParameter("from", $from)
+    ->addParameter("to", $to)
+    ->addParameter("optionalTags", $optionalTags);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$tsQueryText =
+    "from StockPrices" .
+    // Use 'load Tag' to load the employee document referenced in the tag
+    "load Tag as employeeDoc" .
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    "where employeeDoc.Title == \\"Sales Manager\\"";
+
+$query = $session->advanced()->query(Company::class)
+    // Query companies from USA
+    ->whereEquals("Address.Country", "USA")
+    ->selectTimeSeries(TimeSeriesRawResult::class, function ($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$tsQueryText =
+    "from StockPrices" .
+    // Use 'load Tag' to load the employee document referenced in the tag
+    "load Tag as employeeDoc" .
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    "where employeeDoc.Title == \\"Sales Manager\\"";
+
+$query = $session->advanced()->documentQuery(Company::class)
+    // Query companies from USA
+    ->whereEquals("Address.Country", "USA")
+    ->selectTimeSeries(TimeSeriesRawResult::class, function ($builder) use ($tsQueryText) {
+        return $builder->raw($tsQueryText);
+    });
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="php">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+$query = $session->advanced()->rawQuery(Company::class, "
+    from Companies
+    where Address.Country == 'USA'
+    select timeseries (
+        from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where \\<property\\>' to filter entries by the properties of the loaded document
+        where employeeDoc.Title == 'Sales Manager'
+    )"
+);
+
+$results = $query->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* In addition to limiting time series query results by specifying the [range of entries](../../../document-extensions/timeseries/querying/choosing-query-range) to retrieve,
+  you can filter the time series entries by their **values**, **tag**, or by the contents of a **document referenced in the tag**.
+
+* For an overview of the available time series queries, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+
+* In this page:  
+  * [Filter by value](../../../document-extensions/timeseries/querying/filtering#filter-by-value)
+  * [Filter by tag](../../../document-extensions/timeseries/querying/filtering#filter-by-tag)
+  * [Filter by referenced document](../../../document-extensions/timeseries/querying/filtering#filter-by-referenced-document)
+
+</Admonition>
+## Filter by value
+
+* A time series entry can have up to 32 [values](../../../document-extensions/timeseries/overview#values).
+
+* A time series query can filter entries based on these values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM 
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`// For example, in the "HeartRates" time series,
+// retrieve only entries where the value exceeds 75 BPM 
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Value' clause to filter by the value
+        where Value > 75
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees 
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Value" clause to filter entries by the value
+    where Value > 75
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by tag
+
+* A time series entry can have an optional [tag](../../../document-extensions/timeseries/overview#tags).
+
+* A time series query can filter entries based on this tag.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`// Retrieve only entries where the tag string content is "watches/fitbit"
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Tag' clause to filter entries by the tag string content
+        where Tag == 'watches/fitbit'
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag" clause to filter entries by the tag string content
+    where Tag == "watches/fitbit"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Retrieve only entries where the tag string content is one of several options
+
+const tsQueryText = \`
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")\`;
+
+const query = session.query({ collection: "employees" })
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`// Retrieve only entries where the tag string content is one of several options
+
+const optionalTags = ["watches/apple", "watches/samsung", "watches/xiaomi"];
+
+const rql = \`
+    from Employees
+    select timeseries (
+        from HeartRates
+        between "2020-05-17T00:00:00.0000000"
+        and "2020-05-17T00:10:00.0000000"
+        // Use the 'where Tag in' clause to filter by various tag options
+        where Tag in ($optionalTags)
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult)
+    .addParameter("optionalTags", optionalTags);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees  
+select timeseries (
+    from HeartRates
+    between "2020-05-17T00:00:00.0000000"
+    and "2020-05-17T00:10:00.0000000"
+    // Use the "where Tag in" clause to filter by various tag options
+    where Tag in ("watches/apple", "watches/samsung", "watches/xiaomi")
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter by referenced document
+
+* A time series entry's [tag](../../../document-extensions/timeseries/overview#tags) can contain the **ID of a document**.
+
+* A time series query can filter entries based on the contents of this referenced document.  
+  The referenced document is loaded, and entries are filtered by its properties.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+const tsQueryText = \`
+    from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where <property>' to filter entries by the properties of the loaded document
+        where employeeDoc.Title == "Sales Manager"\`;
+
+const query = session.query({ collection: "companies" })
+    .whereEquals("Address.Country", "USA")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult);
+
+const results = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`// Retrieve entries that reference a document that has "Sales Manager" in its 'Title' property
+
+const rql = \`
+    from Companies
+    where Address.Country == 'USA'
+    select timeseries (
+        from StockPrices
+        // Use 'load Tag' to load the employee document referenced in the tag
+        load Tag as employeeDoc
+        // Use 'where <property>' to filter entries by the properties of the loaded document 
+        where employeeDoc.Title == 'Sales Manager'
+    )\`;
+
+const query = session.advanced.rawQuery(rql, TimeSeriesRawResult);
+
+const result = await query.all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where Address.Country == "USA"
+select timeseries (
+    from StockPrices
+    // Use 'load Tag' to load the employee document referenced in the tag
+    load Tag as employeeDoc
+    // Use 'where <property>' to filter entries by the properties of the loaded document
+    where employeeDoc.Title == "Sales Manager"
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+
+### Time Series Indexing
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Time Series Queries
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+- [Indexed Time Series Queries](../../../document-extensions/timeseries/querying/using-indexes)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

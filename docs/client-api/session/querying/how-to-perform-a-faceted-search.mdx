@@ -1,0 +1,681 @@
+---
+title: "Perform a Faceted (Aggregated) Search"
+sidebar_label: Perform Faceted Search
+sidebar_position: 8
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Perform a Faceted (Aggregated) Search
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.  
+
+* To make a faceted search,  
+  a static-index must be defined for the fields you want to query and apply facets on.  
+  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).
+
+</Admonition>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To execute facet (aggregation) query using the session `query` method, use the `aggregateBy` or `aggregateUsing` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using a straightforward and fluent API.
+
+## Syntax
+
+<TabItem value="something-something" label="facet_1">
+<CodeBlock language="java">
+{`IAggregationDocumentQuery<T> aggregateBy(Consumer<IFacetBuilder<T>> builder);
+
+IAggregationDocumentQuery<T> aggregateBy(FacetBase facet);
+
+IAggregationDocumentQuery<T> aggregateBy(Facet... facet);
+
+IAggregationDocumentQuery<T> aggregateUsing(String facetSetupDocumentId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facet** | FacetBase | `FacetBase` implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
+| **facets** | `FacetBase...` | Items containing `FacetBase` implementations |
+| **builder** | `Consumer<IFacetBuilder<T>>` | Builder with a fluent API that constructs a `FacetBase` instance |
+| **facetSetupDocumentId** | String | ID of a document containing `FacetSetup` | 
+
+### Facet & RangeFacet
+
+<Admonition type="info" title="Facet vs RangeFacet" id="facet-vs-rangefacet" href="#facet-vs-rangefacet">
+`RangeFacet` allows you to split the results of the calculations into several ranges, in contrast to `Facet` where whole spectrum of results will be used to generate a single outcome.
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Facet" label="Facet">
+<CodeBlock language="java">
+{`public class Facet {
+    private String fieldName;
+    private FacetOptions options;
+    private Map<FacetAggregation, String> aggregations;
+    private String displayFieldName;
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public FacetOptions getOptions() {
+        return options;
+    }
+
+    public void setOptions(FacetOptions options) {
+        this.options = options;
+    }
+
+    public Map<FacetAggregation, String> getAggregations() {
+        return aggregations;
+    }
+
+    public void setAggregations(Map<FacetAggregation, String> aggregations) {
+        this.aggregations = aggregations;
+    }
+
+    public String getDisplayFieldName() {
+        return displayFieldName;
+    }
+
+    public void setDisplayFieldName(String displayFieldName) {
+        this.displayFieldName = displayFieldName;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RangeFacet" label="RangeFacet">
+<CodeBlock language="java">
+{`public class RangeFacet {
+    private List<String> ranges;
+    private FacetOptions options;
+    private Map<FacetAggregation, String> aggregations;
+    private String displayFieldName;
+
+    public List<String> getRanges() {
+        return ranges;
+    }
+
+    public void setRanges(List<String> ranges) {
+        this.ranges = ranges;
+    }
+
+    public FacetOptions getOptions() {
+        return options;
+    }
+
+    public void setOptions(FacetOptions options) {
+        this.options = options;
+    }
+
+    public Map<FacetAggregation, String> getAggregations() {
+        return aggregations;
+    }
+
+    public void setAggregations(Map<FacetAggregation, String> aggregations) {
+        this.aggregations = aggregations;
+    }
+
+    public String getDisplayFieldName() {
+        return displayFieldName;
+    }
+
+    public void setDisplayFieldName(String displayFieldName) {
+        this.displayFieldName = displayFieldName;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FacetAggregation" label="FacetAggregation">
+<CodeBlock language="java">
+{`public enum FacetAggregation {
+    NONE,
+    MAX,
+    MIN,
+    AVERAGE,
+    SUM;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Builder
+
+<TabItem value="something-something" label="facet_7_1">
+<CodeBlock language="java">
+{`IFacetOperations<T> byRanges(RangeBuilder range, RangeBuilder... ranges);
+
+IFacetOperations<T> byField(String fieldName);
+
+IFacetOperations<T> withDisplayName(String displayName);
+
+IFacetOperations<T> withOptions(FacetOptions options);
+
+IFacetOperations<T> sumOn(String path);
+IFacetOperations<T> minOn(String path);
+IFacetOperations<T> maxOn(String path);
+IFacetOperations<T> averageOn(String path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | String | Points to the index field that should be used for operation (`byRanges`, `byField`) or to document field that should be used for aggregation (`sumOn`, `minOn`, `maxOn`, `averageOn`) |
+| **fieldName** | String | Points to the index field that should be used for operation (`byRanges`, `byField`) or to document field that should be used for aggregation (`sumOn`, `minOn`, `maxOn`, `averageOn`) |
+| **displayName** | String | If set, results of a facet will be returned under this name |
+| **options** | `FacetOptions` | Non-default options that should be used for operation |
+
+### Options
+
+<TabItem value="something-something" label="facet_7_2">
+<CodeBlock language="java">
+{`private FacetTermSortMode termSortMode = FacetTermSortMode.VALUE_ASC;
+private boolean includeRemainingTerms;
+private int start;
+private int pageSize = Integer.MAX_VALUE;
+
+//getters and setters
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **termSortMode** | `FacetTermSortMode` | Indicates how terms should be sorted (`VALUE_ASC`, `VALUE_DESC`, `COUNT_ASC`, `COUNT_DESC`) |
+| **includeRemainingTerms** | booelean | Indicates if remaining terms should be included in results |
+| **start** | int | Used to skip given number of facet results in the outcome |
+| **pageSize** | int | Used to limit facet results to the given value |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`FacetOptions facetOptions = new FacetOptions();
+facetOptions.setTermSortMode(FacetTermSortMode.COUNT_DESC);
+
+Facet facet1 = new Facet();
+facet1.setFieldName("manufacturer");
+facet1.setOptions(facetOptions);
+
+RangeFacet facet2 = new RangeFacet();
+facet2.setRanges(Arrays.asList(
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800"
+));
+facet2.setAggregations(Collections.singletonMap(FacetAggregation.AVERAGE, "cost"));
+
+RangeFacet facet3 = new RangeFacet();
+facet3.setRanges(Arrays.asList(
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10"
+));
+
+Map<String, FacetResult> facets = session
+    .query(Camera.class, Query.index("Camera/Costs"))
+    .aggregateBy(facet1)
+    .andAggregateBy(facet2)
+    .andAggregateBy(facet3)
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 AND cost < 400, cost >= 400 AND cost < 600, cost >= 600 AND cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`FacetOptions options = new FacetOptions();
+options.setTermSortMode(FacetTermSortMode.COUNT_DESC);
+
+RangeBuilder<Integer> costBuilder = RangeBuilder.forPath("cost");
+RangeBuilder<Integer> megapixelsBuilder = RangeBuilder.forPath("megapixels");
+
+Map<String, FacetResult> facetResult = session
+    .query(Camera.class, Query.index("Camera/Costs"))
+    .aggregateBy(builder -> builder
+        .byField("manufacturer")
+        .withOptions(options))
+    .andAggregateBy(builder -> builder
+        .byRanges(
+            costBuilder.isLessThan(200),
+            costBuilder.isGreaterThanOrEqualTo(200).isLessThan(400),
+            costBuilder.isGreaterThanOrEqualTo(400).isLessThan(600),
+            costBuilder.isGreaterThanOrEqualTo(600).isLessThan(800),
+            costBuilder.isGreaterThanOrEqualTo(800))
+        .averageOn("cost"))
+    .andAggregateBy(builder -> builder
+        .byRanges(
+            megapixelsBuilder.isLessThan(3),
+            megapixelsBuilder.isGreaterThanOrEqualTo(3).isLessThan(7),
+            megapixelsBuilder.isGreaterThanOrEqualTo(7).isLessThan(10),
+            megapixelsBuilder.isGreaterThanOrEqualTo(10)
+        ))
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 AND cost < 400, cost >= 400 AND cost < 600, cost >= 600 AND cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`FacetSetup facetSetup = new FacetSetup();
+
+Facet facetManufacturer = new Facet();
+facetManufacturer.setFieldName("manufacturer");
+facetSetup.setFacets(Arrays.asList(facetManufacturer));
+
+RangeFacet cameraFacet = new RangeFacet();
+cameraFacet.setRanges(Arrays.asList(
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800"
+));
+
+RangeFacet megapixelsFacet = new RangeFacet();
+megapixelsFacet.setRanges(Arrays.asList(
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10"
+));
+
+facetSetup.setRangeFacets(Arrays.asList(cameraFacet, megapixelsFacet));
+
+session.store(facetSetup, "facets/CameraFacets");
+session.saveChanges();
+
+Map<String, FacetResult> facets = session
+    .query(Camera.class, Query.index("Camera/Costs"))
+    .aggregateUsing("facets/CameraFacets")
+    .execute();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select facet(id('facets/CameraFacets'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Remarks
+
+<Admonition type="warning" title="Warning">
+`aggregateBy` only supports aggregation by a single field. If you want to aggregate by multiple fields, you need to emit a single field that contains all values.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+To execute facet (aggregation) query via the session `query` method, use `aggregate_by`, 
+`aggregate_by_facets`, or `aggregate_using`.  
+This will scope you to the aggregation query builder, where you'll be allowed to define 
+single or multiple facets for the query using a straightforward and fluent API.
+
+## Syntax
+
+<TabItem value="something-something" label="facet_1">
+<CodeBlock language="python">
+{`def aggregate_by(
+    self, builder_or_facet: Union[Callable[[FacetBuilder], None], FacetBase]
+) -> AggregationDocumentQuery[_T]: ...
+
+def aggregate_by_facets(self, facets: List[FacetBase]) -> AggregationDocumentQuery[_T]: ...
+
+def aggregate_using(self, facet_setup_document_id: str) -> AggregationDocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **builder_or_facet** | `Union[Callable[[FacetBuilder], None]` | **Builder** with a fluent API that constructs a `FacetBase` instance<br/>**-or-**<br/>**FacetBase** implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
+| **facets** | `List[FacetBase]` | Items containing `FacetBase` implementations |
+| **facet_setup_document_id** | `str` | ID of a document containing `FacetSetup` |
+
+### Facet & RangeFacet
+
+<Admonition type="info" title="Facet vs RangeFacet" id="facet-vs-rangefacet" href="#facet-vs-rangefacet">
+`RangeFacet` allows you to split the results of the calculations into several ranges, in contrast to `Facet` where whole spectrum of results will be used to generate a single outcome.
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Facet" label="Facet">
+<CodeBlock language="python">
+{`class FacetBase(ABC):
+    def __init__(self):
+        self.display_field_name: Union[None, str] = None
+        self.options: Union[None, FacetOptions] = None
+        self.aggregations: Dict[FacetAggregation, Set[FacetAggregationField]] = {}
+
+class Facet(FacetBase):
+    def __init__(self, field_name: str = None):
+        super().__init__()
+        self.field_name = field_name
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RangeFacet" label="RangeFacet">
+<CodeBlock language="python">
+{`class RangeFacet(FacetBase):
+    def __init__(self, parent: Optional[FacetBase] = None):
+        super().__init__()
+        self.ranges: List[str] = []
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="FacetAggregation" label="FacetAggregation">
+<CodeBlock language="python">
+{`class FacetAggregation(enum.Enum):
+    NONE = "None"
+    MAX = "Max"
+    MIN = "Min"
+    AVERAGE = "Average"
+    SUM = "Sum"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Builder
+
+<TabItem value="something-something" label="facet_7_1">
+<CodeBlock language="python">
+{`def by_ranges(self, range_: RangeBuilder, *ranges: RangeBuilder) -> FacetOperations[_T]: ...
+
+def by_field(self, field_name: str) -> FacetOperations[_T]: ...
+
+def with_display_name(self, display_name: str) -> FacetOperations[_T]: ...
+
+def with_options(self, options: FacetOptions) -> FacetOperations[_T]: ...
+
+def sum_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def min_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def max_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+
+def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOperations[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| ***ranges** | `RangeBuilder` | A list of aggregated ranges |
+| **field_name** | `str` | Points to the index field that should be used for operation (`by_ranges`, `by_field`) or to document field that should be used for aggregation (`sum_on`, `min_on`, `max_on`, `average_on`) |
+| **display_name** | `str` | If set, results of a facet will be returned under this name |
+| **options** | `FacetOptions` | Non-default options that should be used for operation |
+| **path** | `str` | Points to the index field that should be used for operation (`by_ranges`, `by_field`) or to document field that should be used for aggregation (`sum_on`, `min_on`, `max_on`, `average_on`) |
+
+### Options
+
+<TabItem value="something-something" label="facet_7_2">
+<CodeBlock language="python">
+{`def __init__(self):
+    self.page_size: int = constants.int_max
+    self.start: Union[None, int] = None
+    self.term_sort_mode: FacetTermSortMode = FacetTermSortMode.VALUE_ASC
+    self.include_remaining_terms: bool = False
+`}
+</CodeBlock>
+</TabItem>
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **term_sort_mode** | `FacetTermSortMode` | Indicates how terms should be sorted (`VALUE_ASC`, `VALUE_DESC`, `COUNT_ASC`, `COUNT_DESC`) |
+| **include_remaining_terms** | `bool` | Indicates if remaining terms should be included in results |
+| **start** | `Union[None, int]` | Used to skip given number of facet results in the outcome |
+| **page_size** | `int` | Used to limit facet results to the given value |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`facet_options = FacetOptions.default_options()
+facet_options.term_sort_mode = FacetTermSortMode.COUNT_DESC
+facet_options.start = 0
+
+facet1 = Facet("manufacturer")
+facet1.options = facet_options
+
+facet2 = RangeFacet()
+facet2.ranges = [
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800",
+]
+facet2.aggregations = {FacetAggregation.AVERAGE: {FacetAggregationField("cost")}}
+
+facet3 = RangeFacet()
+facet3.ranges = [
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10",
+]
+
+facets = (
+    session.query_index("Camera/Costs", Camera)
+    .aggregate_by(facet1)
+    .and_aggregate_by(facet2)
+    .and_aggregate_by(facet3)
+    .execute()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 AND cost < 400, cost >= 400 AND cost < 600, cost >= 600 AND cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`options = FacetOptions()
+options.start = 0
+options.term_sort_mode = FacetTermSortMode.COUNT_DESC
+
+cost_builder = RangeBuilder.for_path("cost")
+megapixels_builder = RangeBuilder.for_path("megapixels")
+
+facet_result = (
+    session.query_index("Camera/Costs", Camera)
+    .aggregate_by(lambda builder: builder.by_field("manufacturer").with_options(options))
+    .and_aggregate_by(
+        lambda builder: builder.by_ranges(
+            cost_builder.is_less_than(200),
+            cost_builder.is_greater_than_or_equal_to(200).is_less_than(400),
+            cost_builder.is_greater_than_or_equal_to(400).is_less_than(600),
+            cost_builder.is_greater_than_or_equal_to(600).is_less_than(800),
+            cost_builder.is_greater_than_or_equal_to(800),
+        ).average_on("cost")
+    )
+    .and_aggregate_by(
+        lambda builder: builder.by_ranges(
+            megapixels_builder.is_less_than(3),
+            megapixels_builder.is_greater_than_or_equal_to(3).is_less_than(7),
+            megapixels_builder.is_greater_than_or_equal_to(7).is_less_than(10),
+            megapixels_builder.is_greater_than_or_equal_to(10),
+        )
+    )
+).execute()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select 
+facet(manufacturer), 
+facet(cost < 200, cost >= 200 AND cost < 400, cost >= 400 AND cost < 600, cost >= 600 AND cost < 800, cost >= 800),
+facet(megapixels < 3, megapixels >= 3 AND megapixels < 7, megapixels >= 7 AND megapixels < 10, megapixels >= 10)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example III
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`facet_setup = FacetSetup()
+
+facet_manufacturer = Facet()
+facet_manufacturer.field_name = "manufacturer"
+facet_setup.facets = [facet_manufacturer]
+
+camera_facet = RangeFacet()
+camera_facet.ranges = [
+    "cost < 200",
+    "cost between 200 and 400",
+    "cost between 400 and 600",
+    "cost between 600 and 800",
+    "cost >= 800",
+]
+
+megapixels_facet = RangeFacet()
+megapixels_facet.ranges = [
+    "megapixels < 3",
+    "megapixels between 3 and 7",
+    "megapixels between 7 and 10",
+    "megapixels >= 10",
+]
+
+facet_setup.range_facets = [camera_facet, megapixels_facet]
+
+session.store(facet_setup, "facets/CameraFacets")
+session.save_changes()
+
+facets = session.query_index("Camera/Costs", Camera).aggregate_using("facets/CameraFacets").execute()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Camera/Costs' 
+select facet(id('facets/CameraFacets'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+<Admonition type="info" title="Info">
+`aggregate_by` only supports aggregation by a single field.  
+If you want to aggregate by multiple fields, emit a single field that contains all values. 
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.  
+
+* To make a faceted search,  
+  a static-index must be defined for the fields you want to query and apply facets on.  
+  Please refer to the **Query by Facets** article under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).  
+
+</Admonition>
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* A **Faceted Search** provides an efficient way to explore and navigate through large datasets or search results.  
+
+* To make a faceted search,  
+  a static-index must be defined for the fields you want to query and apply facets on.  
+  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).
+
+</Admonition>
+
+</LanguageContent>
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+- [Faceted Search](../../../indexes/querying/faceted-search)
+
+
+-->

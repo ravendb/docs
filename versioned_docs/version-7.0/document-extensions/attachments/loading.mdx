@@ -1,0 +1,534 @@
+---
+title: "Attachments: Loading Attachments"
+sidebar_label: Loading
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Attachments: Loading Attachments
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+Learn in this page how to load a part of an attachment, an entire attachment, 
+or multiple attachments.  
+
+* In this page:  
+   * [Load attachments](../../document-extensions/attachments/loading#load-attachments)  
+   * [Load a part of an attachment](../../document-extensions/attachments/loading#load-a-part-of-an-attachment)  
+
+</Admonition>
+## Load attachments
+
+* Use these methods to load attachments from the database.  
+   * **session.Advanced.Attachments.Get**  
+     Can be used to download an attachment or multiple attachments.  
+   * **session.Advanced.Attachments.GetNames**  
+     Can be used to download all attachment names that are attached to a document.  
+   * **session.Advanced.Attachments.GetRevision**  
+     Can be used to download an attachment of a revision document.  
+
+* Use this method to verify that an attachment exists.  
+   * **session.Advanced.Attachments.Exists**  
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`AttachmentResult Get(string documentId, string name);
+AttachmentResult Get(object entity, string name);
+IEnumerator<AttachmentEnumeratorResult> Get(IEnumerable<AttachmentRequest> attachments);
+AttachmentName[] GetNames(object entity);
+AttachmentResult GetRevision(string documentId, string name, string changeVector);
+bool Exists(string documentId, string name);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<AttachmentResult> GetAsync(string documentId, string name, CancellationToken token = default);
+Task<AttachmentResult> GetAsync(object entity, string name, CancellationToken token = default);
+Task<IEnumerator<AttachmentEnumeratorResult>> GetAsync(IEnumerable<AttachmentRequest> attachments, CancellationToken token = default);
+Task<AttachmentResult> GetRevisionAsync(string documentId, string name, string changeVector, CancellationToken token = default);
+Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    Album album = session.Load<Album>("albums/1");
+
+    using (AttachmentResult file1 = session.Advanced.Attachments.Get(album, "001.jpg"))
+    using (AttachmentResult file2 = session.Advanced.Attachments.Get("albums/1", "002.jpg"))
+    {
+        Stream stream = file1.Stream;
+
+        AttachmentDetails attachmentDetails = file1.Details;
+        string name = attachmentDetails.Name;
+        string contentType = attachmentDetails.ContentType;
+        string hash = attachmentDetails.Hash;
+        long size = attachmentDetails.Size;
+        string documentId = attachmentDetails.DocumentId;
+        string changeVector = attachmentDetails.ChangeVector;
+    }
+
+    AttachmentName[] attachmentNames = session.Advanced.Attachments.GetNames(album);
+    foreach (AttachmentName attachmentName in attachmentNames)
+    {
+        string name = attachmentName.Name;
+        string contentType = attachmentName.ContentType;
+        string hash = attachmentName.Hash;
+        long size = attachmentName.Size;
+    }
+
+    bool exists = session.Advanced.Attachments.Exists("albums/1", "003.jpg");
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    Album album = await asyncSession.LoadAsync<Album>("albums/1");
+
+    using (AttachmentResult file1 = await asyncSession.Advanced.Attachments.GetAsync(album, "001.jpg"))
+    using (AttachmentResult file2 = await asyncSession.Advanced.Attachments.GetAsync("albums/1", "002.jpg"))
+    {
+        Stream stream = file1.Stream;
+
+        AttachmentDetails attachmentDetails = file1.Details;
+        string name = attachmentDetails.Name;
+        string contentType = attachmentDetails.ContentType;
+        string hash = attachmentDetails.Hash;
+        long size = attachmentDetails.Size;
+        string documentId = attachmentDetails.DocumentId;
+        string changeVector = attachmentDetails.ChangeVector;
+    }
+
+    AttachmentName[] attachmentNames = asyncSession.Advanced.Attachments.GetNames(album);
+    foreach (AttachmentName attachmentName in attachmentNames)
+    {
+        string name = attachmentName.Name;
+        string contentType = attachmentName.ContentType;
+        string hash = attachmentName.Hash;
+        long size = attachmentName.Size;
+    }
+
+    bool exists = await asyncSession.Advanced.Attachments.ExistsAsync("albums/1", "003.jpg");
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+Here, we load multiple string attachments we previously created for a document. We then 
+go through them, and decode each attachment to its original text.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Load a user profile
+var user = session.Load<User>(userId);
+
+// Get the names of files attached to this document
+IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+// Get the attached files
+IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = session.Advanced.Attachments.Get(attachmentNames);
+
+// Go through the document's attachments
+while (attachmentsEnumerator.MoveNext())
+{
+    AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+    AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+    Stream attachmentStream = res.Stream; // attachment contents
+
+    // In this case it is a string attachment, that can be decoded back to text 
+    var ms = new MemoryStream();
+    attachmentStream.CopyTo(ms);
+    string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Load a user profile
+var user = await session.LoadAsync<User>(userId);
+
+// Get the names of files attached to this document
+IEnumerable<AttachmentRequest> attachmentNames = session.Advanced.Attachments.GetNames(user).Select(x => new AttachmentRequest(userId, x.Name));
+
+// Get the attached files
+IEnumerator<AttachmentEnumeratorResult> attachmentsEnumerator = await session.Advanced.Attachments.GetAsync(attachmentNames);
+
+// Go through the document's attachments
+while (attachmentsEnumerator.MoveNext())
+{
+    AttachmentEnumeratorResult res = attachmentsEnumerator.Current;
+
+    AttachmentDetails attachmentDetails = res.Details; // attachment details
+
+    Stream attachmentStream = res.Stream; // attachment contents
+
+    // In this case it is a string attachment, that can be decoded back to text 
+    var ms = new MemoryStream();
+    attachmentStream.CopyTo(ms);
+    string decodedStream = Encoding.UTF8.GetString(ms.ToArray());
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Load a part of an attachment
+
+Use `GetRange` to load a part of an attachment by document ID and the attachment name.  
+
+## Syntax
+<TabItem value="something-something" label="GetRngSyntax">
+<CodeBlock language="csharp">
+{`// Returns a range of the attachment by the document id and attachment name.
+AttachmentResult GetRange(string documentId, string name, long? from, long? to);
+
+// Returns a range of the attachment by the document id and attachment name.
+AttachmentResult GetRange(object entity, string name, long? from, long? to);
+`}
+</CodeBlock>
+</TabItem>  
+
+## Sample
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Album album = session.Load<Album>("albums/1");
+
+AttachmentResult attachmentPart = session.Advanced.Attachments.GetRange(
+                                            album, "track1.mp3", 101, 200);
+`}
+</CodeBlock>
+</TabItem>  
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Album album = await asyncSession.LoadAsync<Album>("albums/1");
+
+AttachmentResult file1 = await asyncSession.Advanced.Attachments.GetRangeAsync(
+                                            album, "track1.mp3", 101, 200);
+`}
+</CodeBlock>
+</TabItem>  
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are a few methods that allow you to download attachments from a database:   
+
+**session.advanced().attachments().get** can be used to download an attachment.   
+**session.advanced().attachments().getNames** can be used to download all attachment names that are attached to a document.   
+**session.advanced().attachments().getRevision** can be used to download an attachment of a revision document.   
+**session.advanced().attachments().exists** can be used to determine if an attachment exists on a document.   
+
+## Syntax
+
+<TabItem value="something-something" label="GetSyntax">
+<CodeBlock language="java">
+{`AttachmentName[] getNames(Object entity);
+
+boolean exists(String documentId, String name);
+
+CloseableAttachmentResult get(String documentId, String name);
+
+CloseableAttachmentResult get(Object entity, String name);
+
+CloseableAttachmentResult getRevision(String documentId, String name, String changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="GetAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Album album = session.load(Album.class, "albums/1");
+
+    try (CloseableAttachmentResult file1 = session
+            .advanced().attachments().get(album, "001.jpg");
+        CloseableAttachmentResult file2 = session
+            .advanced().attachments().get("albums/1", "002.jpg")) \{
+
+        InputStream inputStream = file1
+            .getData();
+
+        AttachmentDetails attachmentDetails = file1.getDetails();
+        String name = attachmentDetails.getName();
+        String contentType = attachmentDetails.getContentType();
+        String hash = attachmentDetails.getHash();
+        long size = attachmentDetails.getSize();
+        String documentId = attachmentDetails.getDocumentId();
+        String changeVector = attachmentDetails.getChangeVector();
+    \}
+
+    AttachmentName[] attachmentNames = session.advanced().attachments().getNames(album);
+    for (AttachmentName attachmentName : attachmentNames) \{
+
+        String name = attachmentName.getName();
+        String contentType = attachmentName.getContentType();
+        String hash = attachmentName.getHash();
+        long size = attachmentName.getSize();
+    \}
+
+    boolean exists = session.advanced().attachments().exists("albums/1", "003.jpg");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+Several methods allow you to download attachments from a database:   
+
+Use `session.advanced.attachments.get` to download an attachment or multiple attachments.  
+Use `session.advanced.attachments.get_names` to get all the names of a document's attachments.  
+Use `session.advanced.attachments.get_revision` to download an attachment of a document revision.  
+Use `session.advanced.attachments.exists` to determine if an attachment exists on a document.  
+
+## Syntax
+
+<TabItem value="something-something" label="GetSyntax">
+<CodeBlock language="python">
+{`def get(self, entity_or_document_id: str = None, name: str = None) -> CloseableAttachmentResult: ...
+
+class CloseableAttachmentResult:
+    def __init__(self, response: requests.Response, details: AttachmentDetails):
+        self.__details = details
+        self.__response = response
+
+class AttachmentDetails(AttachmentName):
+    def __init__(
+        self, name: str, hash: str, content_type: str, size: int, change_vector: str = None, document_id: str = None
+    ):
+        super().__init__(...)
+        ...
+
+class AttachmentName:
+    def __init__(self, name: str, hash: str, content_type: str, size: int): ...
+
+def get_names(self, entity: object) -> List[AttachmentName]: ...
+
+def exists(self, document_id: str, name: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="something-something" label="GetAttachment">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    album = session.load("albums/1", Album)
+
+    with session.advanced.attachments.get(album, "001.jpg") as file1:
+        with session.advanced.attachments.get("albums/1", "002.jpg") as file2:
+            bytes_data = file1.data
+
+            attachment_details = file1.details
+            name = attachment_details.name
+            content_type = attachment_details.content_type
+            hash_ = attachment_details.hash
+            size = attachment_details.size
+            document_id = attachment_details.document_id
+            change_vector = attachment_details.change_vector
+
+    attachment_names = session.advanced.attachments.get_names(album)
+    for attachment_name in attachment_names:
+        name = attachment_name.name
+        content_type = attachment_name.content_type
+        hash_ = attachment_name.hash
+        size = attachment_name.size
+
+    exists = session.advanced.attachments.exists("albums/1", "003.jpg")
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+Several methods allow you to download attachments from a database:   
+
+Use `session.advanced.attachments.get` to download an attachment or multiple attachments.  
+Use `session.advanced.attachments.getNames` to get all the names of a document's attachments.  
+Use `session.advanced.attachments.getRevision` to download an attachment of a document revision.  
+Use `session.advanced.attachments.exists` to determine if an attachment exists on a document.  
+
+## Syntax
+
+<TabItem value="something-something" label="GetSyntax">
+<CodeBlock language="php">
+{`function get(object|string $idOrEntity, ?string $name): CloseableAttachmentResult;
+function getNames(?object $entity): AttachmentNameArray;
+function exists(?string $documentId, ?string $name): bool;
+function getRevision(?string $documentId, ?string $name, ?string $changeVector): CloseableAttachmentResult;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example I
+
+<TabItem value="something-something" label="GetAttachment">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    $album = $session->load(Album::class, "albums/1");
+
+    $file1 = $session->advanced()->attachments()->get($album, "001.jpg");
+    $file2 = $session->advanced()->attachments()->get("albums/1", "002.jpg");
+
+    $data = $file1->getData();
+
+    $attachmentDetails = $file1->getDetails();
+    $name = $attachmentDetails->getName();
+    $contentType = $attachmentDetails->getContentType();
+    $hash = $attachmentDetails->getHash();
+    $size = $attachmentDetails->getSize();
+    $documentId = $attachmentDetails->getDocumentId();
+    $changeVector = $attachmentDetails->getChangeVector();
+
+    $attachmentNames = $session->advanced()->attachments()->getNames($album);
+    /** @var AttachmentName $attachmentName */
+    foreach ($attachmentNames as $attachmentName)
+    \{
+        $name = $attachmentName->getName();
+        $contentType = $attachmentName->getContentType();
+        $hash = $attachmentName->getHash();
+        $size = $attachmentName->getSize();
+    \}
+
+    $exists = $session->advanced()->attachments()->exists("albums/1", "003.jpg");
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+There are a few methods that allow you to download attachments from a database:   
+
+**session.advanced.attachments.get()** can be used to download an attachment.   
+**session.advanced.attachments.getNames()** can be used to download all attachment names that are attached to a document.   
+**session.advanced.attachments.getRevision()** can be used to download an attachment of a revision document.   
+**session.advanced.attachments.exists()** can be used to determine if an attachment exists on a document.   
+
+## Syntax
+
+<TabItem value="something-something" label="GetSyntax">
+<CodeBlock language="nodejs">
+{`session.advanced.attachments.getNames(entity);
+
+session.advanced.attachments.exists(documentId, name);
+
+session.advanced.attachments.get(documentId, name);
+
+session.advanced.attachments.get(entity, name);
+
+session.advanced.attachments.getRevision(documentId, name, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** or **documentId** | object or string | instance of the entity or the entity ID |
+| **name** | string | attachment name |
+| **changeVector** | string | change vector for revision identification |
+
+| Return Value | |
+| ------------- | ------------- |
+| `Promise<AttachmentStreamResult>` | Promise resolving to a Readable for attachment content |
+
+## Example
+
+<TabItem value="something-something" label="GetAttachment">
+<CodeBlock language="nodejs">
+{`const album = await session.load("albums/1");
+
+const file1 = await session.advanced.attachments.get(album, "001.jpg");
+const file2 = await session.advanced.attachments.get("albums/1", "002.jpg");
+
+const inputStream = file1.data;
+
+const attachmentDetails = file1.details;
+//     \{ 
+//       name: '001.jpg',
+//       documentId: 'albums/1',
+//       contentType: 'image/jpeg',
+//       hash: 'MvUEcrFHSVDts5ZQv2bQ3r9RwtynqnyJzIbNYzu1ZXk=',
+//       changeVector: '"A:3-K5TR36dafUC98AItzIa6ow"',
+//       size: 25793 
+//     \}
+
+const attachmentNames = await session.advanced.attachments.getNames(album);
+for (const attachmentName of attachmentNames) \{
+    const name = attachmentName.name;
+    const contentType = attachmentName.contentType;
+    const hash = attachmentName.hash;
+    const size = attachmentName.size;
+\}
+
+const exists = session.advanced.attachments.exists("albums/1", "003.jpg");
+// true
+
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Attachments
+- [What are Attachments](../../document-extensions/attachments/what-are-attachments)
+- [Storing](../../document-extensions/attachments/storing)
+- [Deleting](../../document-extensions/attachments/deleting)
+
+
+-->

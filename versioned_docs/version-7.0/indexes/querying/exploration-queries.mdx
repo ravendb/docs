@@ -1,0 +1,1218 @@
+---
+title: "Exploration Queries"
+sidebar_label: Exploration Queries
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Exploration Queries
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* **Exploration Queries** form an additional layer of filtering that can be applied 
+  to a dataset after its retrieval by [Query](../../client-api/session/querying/how-to-query#session.query), 
+  [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery), 
+  or [Raw RQL](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  while the dataset is still held by the server.  
+
+* The **retrieved dataset** is scanned and filtered **without requiring or creating an 
+  index**, providing a way to conduct one-time explorations without creating an index that would 
+  have to be maintained by the cluster.  
+
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
+
+* Exploration queries need to be used 
+  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  since scanning and filtering all the data retrieved by a query cost substantial 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  when large datasets are handled.  
+    <Admonition type="warning" title="Warning">
+
+    We recommend that you -  
+
+    * **Limit** the number of records that an exploration query filters.  
+    * Use [where](../../indexes/querying/filtering) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+
+    </Admonition>
+
+* In this page:  
+   * [`filter`](../../indexes/querying/exploration-queries#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+
+</Admonition>
+
+## `filter`
+
+Exploration queries can be applied using -  
+
+* `Query.Filter`  
+* `DocumentQuery.Filter`  
+* RQL's `filter` keyword  
+
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
+
+The provided filtering operations resemble those implemented by 
+[where](../../indexes/querying/filtering) and can be further enhanced 
+by Javascript functions of your own.  
+Read [here](../../indexes/querying/exploration-queries#with-a-javascript-function:-declare) 
+about creating and using your own Javascript function in your filters.  
+
+
+
+## When should exploration queries be used
+
+`filter` can be applied to a Collection query, like in:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+it can also be applied to queries handled by an index, e.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a dynamic query via an auto-index  
+from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a query that uses an index explicitly  
+from index 'Orders/ByCompany' 
+filter Count > 10
+`}
+</CodeBlock>
+</TabItem>
+
+Both in a collection query and in a query handled by an index, the entire retrieved 
+dataset is scanned and filtered.  
+This helps understand when exploration queries should be used, why a Limit 
+should be set for the number of filtered records, and when `where` should 
+be preferred:  
+
+<Admonition type="info" title="Info">
+#### When to use
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+no existing index and is not expected to be repeated much.  
+
+* You gain the ability to filter post-query results on the server side, for 
+  both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster 
+  would continue updating from now on.  
+</Admonition>
+<Admonition type="warning" title="Warning">
+#### Limit the query, and prefer `where` for recurring queries 
+Be aware that when a large dataset is retrieved, like the whole collection in 
+the case of a collection query, exploring it all using `filter` would tax the server 
+in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore -  
+
+* **Limit** the number of records that an exploration query filters, e.g.:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+filter_limit 500 // limit the number of filtered records
+`}
+</CodeBlock>
+</TabItem>
+* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+  `where` will use an index, creating it if necessary, to accelerate the filtering 
+  in subsequent queries.  
+</Admonition>
+
+
+
+## Syntax
+
+* `Query.Filter`  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`IRavenQueryable<T> Filter<T>(this IRavenQueryable<T> source, 
+                           Expression<Func<T, bool>> predicate, 
+                           int limit = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>  
+
+    | Parameters | Type | Description |
+    | ---------- | ---- | ----------- |
+    | **source** | `IRavenQueryable<T>` | `Filter`, defined as an `IRavenQueryable` extension method |
+    | **predicate** | `Expression<Func<T, bool>>` | The condition by which retrieved records are filtered |
+    | **limit** | `int ` | Limits the number of filtered records (Recommended) <br/> Default: all retrieved records |
+
+* `DocumentQuery.Filter`  
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Filter(Action<IFilterFactory<T>> builder, 
+                       int limit = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>  
+
+    | Parameters | Type | Description |
+    | ---------- | ---- | ----------- |
+    | **builder** | `Action<IFilterFactory<T>>` | Your filter |
+    | **limit** | `int ` | Limits the number of filtered records (Recommended) <br/> Default: all retrieved records |
+
+* **RQL**  
+   * In an RQL query, use:  
+     The `filter` keyword, followed by the filtering condition.  
+     The `filter_limit` option, followed by the max number of records to filter.  
+   * E.g. -  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA' // filter the retrieved dataset
+filter_limit 500 // limit the number of filter records
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Usage examples
+
+#### With collection queries
+
+Use `filter` with a collection query to scan and filter the entire collection.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var result = session.Query<Employee>()
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`result = session.Advanced.DocumentQuery<Employee>()
+    .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`result = session.Advanced.RawQuery<Employee>
+    ("from Employees as e " +
+       "filter e.Address.Country = 'USA' " +
+       "filter_limit 500").SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+Filtering a sizable collection will burden the server and prolong user waiting time.  
+Set a `filter_limit` to restrict the number of filtered records.  
+</Admonition>
+#### With queries that use an index
+
+Use `filter` after a `where` clause to filter the results retrieved by an index query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var emp = session.Query<Employee>()
+    .Where(w => w.Title == "Sales Representative")
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`emp = session.Advanced.DocumentQuery<Employee>()
+      .WhereEquals(w => w.Title, "Sales Representative")
+      .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+      .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`emp = session.Advanced.RawQuery<Employee>
+    ("from Employees as e" +
+     "where e.Title = $title" +
+     "filter e.Address.Country = $country" +
+     "filter_limit $limit")
+    .AddParameter("title", "Sales Representative")
+    .AddParameter("country", "USA")
+    .AddParameter("limit", 500)
+    .SingleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With projections
+
+The filtered results can be projected using `select`, like those of any other query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var emp1 = session
+    .Query<Employee>()
+    .Filter(f => f.Address.Country == "USA", limit: 500)
+    .Select(x => new
+     {
+        FullName = x.FirstName + " " + x.LastName
+     })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var fullName = new string[]{
+    "FirstName",
+    "LastName"
+};
+
+var emp2 = session.Advanced.DocumentQuery<Employee>()
+      .Filter(p => p.Equals(a => a.Address.Country, "USA"), limit: 500)
+      .SelectFields<Employee>(fullName)
+      .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`var emp3 = session.Advanced.RawQuery<Employee>
+    ("from Employees as e" +
+        "filter startsWith(e.FirstName, 'A')" +
+        "select { FullName: e.FirstName + ' ' + e.LastName }");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With user-defined JavaScript functions (`declare`)
+
+You can define a Javascript function as part of your query using the 
+[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+use it as part of your `filter` condition to freely adapt the filtering 
+to your needs.  
+
+Here is a simple example:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// declare a Javascript function
+declare function titlePrefix(r, prefix) 
+\{ 
+    // Add whatever filtering capabilities you like
+    return r.Title.startsWith(prefix)
+\} 
+
+from Employees as e 
+
+// Filter using the function you've declared
+filter titlePrefix(e, $prefix)
+filter_limit 100
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* **Exploration Queries** form an additional layer of filtering that can be applied 
+  to a dataset after its retrieval by [raw_rql](../../client-api/session/querying/how-to-query#session.advanced.raw_query), 
+  while the dataset is still held by the server.  
+
+* The **retrieved dataset** is scanned and filtered **without requiring or creating an 
+  index**, providing a way to conduct one-time explorations without creating an index that would 
+  have to be maintained by the cluster.  
+
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
+
+* Exploration queries need to be used 
+  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  since scanning and filtering all the data retrieved by a query cost substantial 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  when large datasets are handled.  
+    <Admonition type="warning" title="Warning">
+
+    We recommend that you -  
+
+    * [Limit](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+      the number of records that an exploration query filters.  
+    * Use [where](../../indexes/querying/filtering) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+
+    </Admonition>
+
+* In this page:  
+   * [`filter`](../../indexes/querying/exploration-queries#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+
+</Admonition>
+
+## `filter`
+
+In Python, exploration queries can be applied via RQL using the `filter` keyword.  
+
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
+
+The provided filtering operations resemble those implemented by 
+[where](../../indexes/querying/filtering) and can be further enhanced 
+by Javascript functions of your own.  
+Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) 
+about creating and using your own Javascript function in your filters.  
+
+
+
+## When should exploration queries be used
+
+`filter` can be applied to a Collection query, like in:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+it can also be applied to queries handled by an index, e.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a dynamic query via an auto-index  
+from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a query that uses an index explicitly  
+from index 'Orders/ByCompany' 
+filter Count > 10
+`}
+</CodeBlock>
+</TabItem>
+
+Both in a collection query and in a query handled by an index, the entire retrieved 
+dataset is scanned and filtered.  
+This helps understand when exploration queries should be used, why a Limit 
+should be set for the number of filtered records, and when `where` should 
+be preferred:  
+
+<Admonition type="info" title="Info">
+#### When to use
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+no existing index and is not expected to be repeated much.  
+
+* You gain the ability to filter post-query results on the server side, for 
+  both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster 
+  would continue updating from now on.  
+</Admonition>
+<Admonition type="warning" title="Warning">
+#### Limit the query, and prefer `where` for recurring queries 
+Be aware that when a large dataset is retrieved, like the whole collection in 
+the case of a collection query, exploring it all using `filter` would tax the server 
+in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore -  
+
+* **Limit** the number of records that an exploration query filters, e.g.:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+filter_limit 500 // limit the number of filtered records
+`}
+</CodeBlock>
+</TabItem>
+* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+  `where` will use an index, creating it if necessary, to accelerate the filtering 
+  in subsequent queries.  
+</Admonition>
+
+
+
+## Syntax
+
+* In C#, for example, `filter` can be applied using code from the `Query` or `DocumentQuery`API.  
+  There is no such API implementation under python, leaving `RQL` as the only way to perform exploration queries.
+
+* **RQL**  
+   * In an RQL query, use:  
+     The `filter` keyword, followed by the filtering condition.  
+     The `filter_limit` option, followed by the max number of records to filter.  
+   * E.g. -  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA' // filter the retrieved dataset
+filter_limit 500 // limit the number of filter records
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Usage examples
+
+#### With collection queries
+
+Use `filter` with a collection query to scan and filter the entire collection.  
+<TabItem value="something-something" label="exploration-queries_1.3">
+<CodeBlock language="python">
+{`result = session.advanced.raw_query(
+    "from Employees as e " "filter e.Address.Country = 'USA' " "filter_limit 500", Employee
+).single()
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Warning">
+Filtering a sizable collection will burden the server and prolong user waiting time.  
+Set a `filter_limit` to restrict the number of filtered records.  
+</Admonition>
+#### With queries that use an index
+
+Use `filter` after a `where` clause to filter the results retrieved by an index query.  
+<TabItem value="something-something" label="exploration-queries_2.3">
+<CodeBlock language="python">
+{`emp = (
+    session.advanced.raw_query(
+        "from Employees as e "
+        "where e.Title = $title "
+        "filter e.Address.Country = $country "
+        "filter_limit $limit",
+        Employee,
+    )
+    .add_parameter("title", "Sales Representative")
+    .add_parameter("country", "USA")
+    .add_parameter("limit", 500)
+    .single()
+)
+`}
+</CodeBlock>
+</TabItem>
+#### With projections
+
+The filtered results can be projected using `select`, like those of any other query.  
+<TabItem value="something-something" label="exploration-queries_3.3">
+<CodeBlock language="python">
+{`emp3 = session.advanced.raw_query(
+    "from Employees as e "
+    "filter startsWith(e.FirstName, 'A') "
+    "select \{ FullName: e.FirstName + ' ' + e.LastName \}",
+    Employee,
+)
+`}
+</CodeBlock>
+</TabItem>
+#### With user-defined JavaScript functions (`declare`)
+
+You can define a Javascript function as part of your query using the 
+[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+use it as part of your `filter` condition to freely adapt the filtering 
+to your needs.  
+
+Here is a simple example:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// declare a Javascript function
+declare function titlePrefix(r, prefix) 
+\{ 
+    // Add whatever filtering capabilities you like
+    return r.Title.startsWith(prefix)
+\} 
+
+from Employees as e 
+
+// Filter using the function you've declared
+filter titlePrefix(e, $prefix)
+filter_limit 100
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* **Exploration Queries** form an additional layer of filtering that can be applied 
+  to a dataset after its retrieval by [raw rql](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  while the dataset is still held by the server.  
+
+* The **retrieved dataset** is scanned and filtered **without requiring or creating an 
+  index**, providing a way to conduct one-time explorations without creating an index that would 
+  have to be maintained by the cluster.  
+
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
+
+* Exploration queries need to be used 
+  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  since scanning and filtering all the data retrieved by a query cost substantial 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  when large datasets are handled.  
+    <Admonition type="warning" title="Warning">
+
+    We recommend that you -  
+
+    * [Limit](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+      the number of records that an exploration query filters.  
+    * Use [where](../../indexes/querying/filtering) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+
+    </Admonition>
+
+* In this page:  
+   * [`filter`](../../indexes/querying/exploration-queries#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+
+</Admonition>
+
+## `filter`
+
+Exploration queries can be applied via RQL using the `filter` keyword.  
+
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
+
+The provided filtering operations resemble those implemented by 
+[where](../../indexes/querying/filtering) and can be further enhanced 
+by Javascript functions of your own.  
+Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) 
+about creating and using your own Javascript function in your filters.  
+
+
+
+## When should exploration queries be used
+
+`filter` can be applied to a Collection query, like in:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+it can also be applied to queries handled by an index, e.g. -  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a dynamic query via an auto-index  
+from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// in a query that uses an index explicitly  
+from index 'Orders/ByCompany' 
+filter Count > 10
+`}
+</CodeBlock>
+</TabItem>
+
+Both in a collection query and in a query handled by an index, the entire retrieved 
+dataset is scanned and filtered.  
+This helps understand when exploration queries should be used, why a Limit 
+should be set for the number of filtered records, and when `where` should 
+be preferred:  
+
+<Admonition type="info" title="Info">
+#### When to use
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches 
+no existing index and is not expected to be repeated much.  
+
+* You gain the ability to filter post-query results on the server side, for 
+  both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster 
+  would continue updating from now on.  
+</Admonition>
+<Admonition type="warning" title="Warning">
+#### Limit the query, and prefer `where` for recurring queries 
+Be aware that when a large dataset is retrieved, like the whole collection in 
+the case of a collection query, exploring it all using `filter` would tax the server 
+in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore -  
+
+* **Limit** the number of records that an exploration query filters, e.g.:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+filter e.Address.Country = 'USA'
+filter_limit 500 // limit the number of filtered records
+`}
+</CodeBlock>
+</TabItem>
+* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+  `where` will use an index, creating it if necessary, to accelerate the filtering 
+  in subsequent queries.  
+</Admonition>
+
+
+
+## Syntax
+
+In an RQL query, use:  
+The `filter` keyword, followed by the filtering condition.  
+The `filter_limit` option, followed by the max number of records to filter.  
+
+E.g. -  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Employees as e 
+where e.Title = 'Sales Representative'  
+filter e.Address.Country = 'USA' // filter the retrieved dataset
+filter_limit 500 // limit the number of filter records
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Usage examples
+
+#### With collection queries
+
+Use `filter` with a collection query to scan and filter the entire collection.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`$result = $session->query(Employee::class)
+    ->filter(function($f) { return $f->equals("Address.Country", "USA"); }, 500)
+    ->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`$result = $session->advanced()->documentQuery(Employee::class)
+    ->filter(function($p) { return $p->equals("Address.Country", "USA"); }, limit: 500)
+    ->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="rawQuery" label="rawQuery">
+<CodeBlock language="php">
+{`$result = $session->advanced()
+        ->rawQuery(
+            Employee::class,
+            "from Employees as e " .
+               "filter e.Address.Country = 'USA' " .
+               "filter_limit 500")
+->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+Filtering a sizable collection will burden the server and prolong user waiting time.  
+Set a `filter_limit` to restrict the number of filtered records.  
+</Admonition>
+#### With queries that use an index
+
+Use `filter` after a `where` clause to filter the results retrieved by an index query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`$emp = $session->query(Employee::class)
+    ->whereEquals("Title", "Sales Representative")
+    ->filter(function($f) { return $f->equals("Address.Country", "USA"); }, 500)
+    ->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`$emp = $session->advanced()->documentQuery(Employee::class)
+      ->whereEquals("Title", "Sales Representative")
+      ->filter(function($p) { return $p->equals("Address.Country", "USA"); }, limit: 500)
+      ->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="rawQuery" label="rawQuery">
+<CodeBlock language="php">
+{`$emp = $session->advanced()->rawQuery(Employee::class,
+    "from Employees as e" .
+     "where e.Title = \\$title" .
+     "filter e.Address.Country = \\$country" .
+     "filter_limit \\$limit")
+    ->addParameter("title", "Sales Representative")
+    ->addParameter("country", "USA")
+    ->addParameter("limit", 500)
+    ->singleOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With projections
+
+The filtered results can be projected using `select`, like those of any other query.  
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`$emp1 = $session
+    ->query(Employee::class)
+    ->filter(function($f) { return $f->equals("Address.Country", "USA"); }, 500)
+    ->selectFields(null,  "Name", "Address.City", "Address.Country")
+    ->toList();
+
+    // Results:
+    // ========
+
+    // * Results include all companies with country = 'USA'
+    //   Each resulting object contains only the selected fields.
+    //
+    // * No auto-index is created.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="rawQuery" label="rawQuery">
+<CodeBlock language="php">
+{`$emp3 = $session->advanced()->rawQuery(
+    Employee::class,
+    "from Companies " .
+        "filter Address.Country == 'USA'" .
+        "select Name, Address.City, Address.Count\`"
+);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With user-defined JavaScript functions (`declare`)
+
+You can define a Javascript function as part of your query using the 
+[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+use it as part of your `filter` condition to freely adapt the filtering 
+to your needs.  
+
+Here is a simple example:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// declare a Javascript function
+declare function titlePrefix(r, prefix) 
+\{ 
+    // Add whatever filtering capabilities you like
+    return r.Title.startsWith(prefix)
+\} 
+
+from Employees as e 
+
+// Filter using the function you've declared
+filter titlePrefix(e, $prefix)
+filter_limit 100
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* **Exploration Queries** form an additional layer of filtering that can be applied 
+  to a dataset after its retrieval by [query](../../client-api/session/querying/how-to-query#session.query), 
+  or [rawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  while the dataset is still held by the server.  
+
+* The **retrieved dataset** is scanned and filtered **without requiring or creating an index**,  
+  providing a way to conduct one-time explorations without creating an index that would have to be maintained by the cluster.  
+
+* You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
+
+* Exploration queries need to be used with caution when large datasets are handled
+  since scanning and filtering all the data retrieved by a query costs substantial server resources and user waiting time.
+
+<Admonition type="warning" title="Warning">
+
+    We recommend that you -  
+
+  * **Limit** the number of records that an exploration query filters.  
+  * Use [where](../../indexes/querying/filtering) in recurring queries, 
+    so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+
+</Admonition>
+
+* In this page:  
+
+   * [`filter`](../../indexes/querying/exploration-queries#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
+   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+   * [Syntax](../../indexes/querying/exploration-queries#syntax)
+
+</Admonition>
+## `filter`
+
+Exploration queries can be applied using -  
+
+* `query.filter` 
+* RQL's `filter` keyword  
+
+The added filtering is parsed and executed by RavenDB's Javascript engine.  
+
+The provided filtering operations resemble those implemented by [where](../../indexes/querying/filtering) 
+and can be further enhanced by Javascript functions of your own. 
+Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) about creating and using your own Javascript function in your filters.  
+
+
+
+## When Should Exploration Queries Be Used
+
+`filter` can be applied to a Full-Collection query, for example:
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// A full-collection query:
+// ========================
+
+from Employees as e
+filter e.Address.Country == "USA"
+
+// Results include only employees from USA
+// No auto-index is created
+`}
+</CodeBlock>
+</TabItem>
+
+It can also be applied to queries handled by an index:  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// A dynamic query:
+// ================
+
+from Employees as e 
+where e.Title == "Sales Representative" // This triggers auto-index creation
+filter e.Address.Country == "USA"
+
+// Results include only employees from USA having the specified title
+// The auto-index created only indexes the 'Title' field
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// A static-index query:
+// =====================
+
+from index "Orders/ByCompany" 
+filter Count > 10
+
+// Results include orders with Count > 10 using the specified static-index 
+`}
+</CodeBlock>
+</TabItem>
+
+Both in a collection query and in a query handled by an index, all the results that are retrieved by the query are scanned and filtered by `filter`.  
+
+<Admonition type="info" title="Info">
+
+#### When to use
+
+Use `filter` for an ad-hoc exploration of the retrieved dataset, that matches no existing index and is not expected to be repeated much.  
+
+* You gain the ability to filter post-query results on the server side, for both collection queries and when an index was used.  
+* The dataset will be filtered without creating an unrequired index that the cluster would continue updating from now on.
+ 
+</Admonition>
+ 
+<Admonition type="warning" title="Warning">
+
+#### Limit the query, and prefer `where` for recurring queries
+
+Be aware that when a large dataset is retrieved, like the whole collection in the case of a collection query,  
+exploring it using `filter` would tax the server in memory and CPU usage while it checks the filter condition for each query result, 
+and cost the user a substantial waiting time. Therefore:  
+
+* **Limit** the number of records that an exploration query filters, e.g.:  
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`from Orders
+// Apply filter
+filter ShipTo.Country == "UK"
+// Limit the number of records that will be scanned by the filter operation
+filter_limit 100 
+
+// While there are 830 records in the Orders collection, 
+// only the first 100 records that are retrieved by the query are scanned by 'filter'
+// Running this RQL on the sample data returns 4 matching results out of the 100 scanned.
+`}
+</CodeBlock>
+</TabItem>
+
+* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+  `where` will use an index, creating it if necessary, to accelerate the filtering in subsequent queries.
+ 
+</Admonition>
+
+
+
+## Usage examples
+
+#### With collection queries:
+
+Use `filter` with a full-collection query to scan and filter the entire collection.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+     // Make a full-collection query
+    .query({ collection: "companies" })
+     // Apply a filter, scan only first 50 records from query results
+    .filter(x => x.equals("Address.Country", "USA"), 50)
+    .all();
+
+// Results: 
+// ========
+
+// * While a full-collection query on the 'companies' colletion yields 91 results
+//   only the first 50 records are scanned by the filter operation -
+//   resulting in 5 matching documents.
+//
+// * No auto-index is created.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+    .advanced
+    .rawQuery("from Companies filter Address.Country == 'USA' filter_limit 50")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies" 
+filter Address.Country == "USA"
+filter_limit 50
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Warning">
+
+Filtering a sizable collection will burden the server and prolong user waiting time.  
+It is recommended to set a `filter_limit` to restrict the number of filtered records.  
+
+</Admonition>
+#### With queries that use an index:
+
+Use `filter` after a `whereEquals` clause to filter the results retrieved by the query.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+     // Make a dynamic query on a collection
+    .query({ collection: "companies" })
+     // Apply some condition - this will trigger auto-index creation
+    .whereEquals("Contact.Title", "Sales Representative")
+     // Apply a filter 
+    .filter(x => x.equals("Address.Country", "Germany"))
+    .all();
+
+// Results: 
+// ========
+
+// * The dynamic query results (before applying the filter) contain 17 results.
+//   Applying the filter results in 4 matching documents. 
+//
+// * Since a query predicate was applied (using 'whereEquals') 
+//   an auto-index that is indexing field 'Contact.Title' is created.
+//
+// * Field 'Address.Country' is Not included in the auto-index
+//   since it is part of the filter operation.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+    .advanced
+    .rawQuery(\`from Companies 
+               where Contact.Title == 'Sales Representative'
+               filter Address.Country == 'Germany'\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where Contact.Title == "Sales Representative"
+filter Address.Country == "Germany"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With projections:
+
+The filtered results can be projected using `selectFields`, like those of any other query.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+     // Make a collection query
+    .query({ collection: "companies" })
+     // Apply a filter 
+    .filter(x => x.equals("Address.Country", "Germany"))
+     // Any fields can be projected in the results
+    .selectFields([ "Name", "Address.City", "Address.Country"])
+    .all();
+
+ // Results: 
+ // ========
+
+ // * Results include all companies with country = 'Germany'
+ //   Each resluting object contains only the selected fields.
+ //
+ // * No auto-index is created.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="nodejs">
+{`const filteredCompanies = await session
+    .advanced
+    .rawQuery(\`from Companies 
+               filter Address.Country == 'Germany'
+               select Name, Address.City, Address.Count\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+filter Address.Country == "Germany"
+select Name, Address.City, Address.Country
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### With user-defined JavaScript functions (`declare`):
+
+When using RQL, you can define a JavaScript function using the [declare](../../client-api/session/querying/what-is-rql#declare) keyword.  
+This function can then be used as part of your `filter` condition to further customize the results.  
+For example:  
+
+<TabItem value="something" label="sql">
+<CodeBlock language="sql">
+{`// Declare a Javascript function:
+// ==============================
+
+declare function filterByTitlePrefix(employee, prefix) 
+\{ 
+    // Include any filtering logic that suits your needs
+    return employee.Title.startsWith(prefix)
+\} 
+
+// Use the function in your RQL:
+// =============================
+
+from Employees as employee
+// Filter using the declared function
+filter filterByTitlePrefix(employee, "Sales")
+filter_limit 10
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`filter(builder);
+filter(builder, limit);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                | Description                                                                                                               |
+|---------------|---------------------|---------------------------------------------------------------------------------------------------------------------------|
+| **builder**   | `(factory) => void` | The filtering method                                                                                                      |
+| **limit**     | `number`            | The number of records from the query results that `filter` should scan.<br/>Default: all retrieved records. |
+      
+
+
+
+</LanguageContent>
+
+<!---
+### Querying
+- [What is RQL](../../client-api/session/querying/what-is-rql)
+- [Query](../../client-api/session/querying/how-to-query#session.query)
+- [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery)
+- [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery)
+- [Where](../../indexes/querying/filtering)
+- [Querying an Index](../../indexes/querying/query-index)
+- [Sorting](../../indexes/querying/sorting)
+- [declare](../../client-api/session/querying/what-is-rql#declare)
+
+
+-->

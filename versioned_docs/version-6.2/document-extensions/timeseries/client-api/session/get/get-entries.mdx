@@ -1,0 +1,926 @@
+---
+title: "Get Time Series Entries"
+sidebar_label: Get Entries
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Get Time Series Entries 
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `TimeSeriesFor.Get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
+
+* Calling `TimeSeriesFor.Get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+  Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview).
+
+* In this page:  
+  * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
+
+</Admonition>
+## `Get` usage 
+
+* Open a session.  
+* Create an instance of `TimeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="something" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="csharp">
+{`// Get all time series entries
+TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "HeartRates")
+    .Get(DateTime.MinValue, DateTime.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="something" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="csharp">
+{`// Query for a document with the Name property "John" 
+// and get its HeartRates time-series values
+using (var session = store.OpenSession())
+\{
+    var baseline = DateTime.Today;
+
+    IRavenQueryable<User> query = session.Query<User>()
+        .Where(u => u.Name == "John");
+
+    var result = query.ToList();
+
+    TimeSeriesEntry[] val = session.TimeSeriesFor(result[0], "HeartRates")
+        .Get(DateTime.MinValue, DateTime.MaxValue);
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values,  
+  we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values) 
+  to make the code easier to read.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="csharp">
+{`// Use Get without a named type
+// Is the stock's closing-price rising?
+bool goingUp = false;
+
+using (var session = store.OpenSession())
+{
+    TimeSeriesEntry[] val = session.TimeSeriesFor("users/john", "StockPrices")
+        .Get();
+
+    var closePriceDay1 = val[0].Values[1];
+    var closePriceDay2 = val[1].Values[1];
+    var closePriceDay3 = val[2].Values[1];
+
+    if ((closePriceDay2 > closePriceDay1)
+        &&
+        (closePriceDay3 > closePriceDay2))
+        goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Named" label="Named">
+<CodeBlock language="csharp">
+{`goingUp = false;
+
+using (var session = store.OpenSession())
+{
+    // Call 'Get' with the custom StockPrice class type
+    TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
+        .Get();
+
+    var closePriceDay1 = val[0].Value.Close;
+    var closePriceDay2 = val[1].Value.Close;
+    var closePriceDay3 = val[2].Value.Close;
+
+    if ((closePriceDay2 > closePriceDay1)
+        &&
+        (closePriceDay3 > closePriceDay2))
+        goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `TimeSeriesFor.Get`,  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../document-extensions/timeseries/overview#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="something" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="csharp">
+{`// Get all time series entries
+TimeSeriesEntry[] entries =
+    session.TimeSeriesFor("users/john", "HeartRates")
+        .Get(DateTime.MinValue, DateTime.MaxValue,
+            includes: builder => builder
+        // Include documents referred-to by entry tags
+        .IncludeTags()
+        // Include Parent Document
+        .IncludeDocument());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="csharp">
+{`TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null,
+    int start = 0, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="csharp">
+{`//The stongly-typed API is used, to address time series values by name.
+TimeSeriesEntry<TValues>[] Get(DateTime? from = null, DateTime? to = null,
+int start = 0, int pageSize = int.MaxValue);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type        | Description                                                                                                                                      |
+|--------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from**     | `DateTime?` | Get the range of time series entries starting from this timestamp (inclusive).
+Default: `DateTime.MinValue`                                  |
+| **to**       | `DateTime?` | Get the range of time series entries ending at this timestamp (inclusive).
+Default: `DateTime.MaxValue`                                      |
+| **start**    | `int`       | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry. |
+| **pageSize** | `int`       | Paging page-size.<br/>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br/>Default: `int.MaxValue`, for all time series entries.         |
+
+**Return Values**
+ 
+* **`TimeSeriesEntry[]`** - an array of time series entry classes.
+
+<TabItem value="something" label="TimeSeriesEntry-Definition">
+<CodeBlock language="csharp">
+{`public class TimeSeriesEntry
+\{
+    public DateTime Timestamp \{ get; set; \}
+    public double[] Values \{ get; set; \}
+    public string Tag \{ get; set; \}
+    public bool IsRollup \{ get; set; \}
+
+    public double Value;
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* **`TimeSeriesEntry<TValues>[]`** - Time series values that can be referred to [by name](../../../../../document-extensions/timeseries/client-api/named-time-series-values).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `time_series_for.get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
+
+* Calling `time_series_for.get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+  Learn more in: [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview).
+
+* In this page:  
+  * [`Get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
+
+</Admonition>
+## `Get` usage 
+
+* Open a session.  
+* Create an instance of `time_series_for` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query) 
+      or from [session.load](../../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `time_series_for.get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="something-something" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="python">
+{`# Get all time series entries
+val = session.time_series_for("users/john", "HeartRates").get(datetime.min, datetime.max)
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="something-something" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="python">
+{`# Query for a document with the Name property "John"
+# and get its HeartRates time-series values
+with store.open_session() as session:
+    base_line = datetime.utcnow()
+
+    query = session.query(object_type=User).where_equals("Name", "John")
+
+    result = list(query)
+
+    doc_id = session.advanced.get_document_id(result[0])
+
+    val = session.time_series_for(doc_id, "HeartRates").get(datetime.min, datetime.max)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values, 
+  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values) 
+  time series values to make the code easier to read.  
+
+<TabItem value="something-something" label="timeseries_region_Get-Named-Values">
+<CodeBlock language="python">
+{`going_up = False
+
+# Use Get with a Named type
+with store.open_session() as session:
+    val = session.typed_time_series_for(StockPrice, "users/john").get()
+
+    close_price_day_1 = val[0].value.close
+    close_price_day_2 = val[1].value.close
+    close_price_day_3 = val[2].value.close
+    if close_price_day_2 > close_price_day_1 and close_price_day_3 > close_price_day_2:
+        going_up = True
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `time_series_for.get`,  
+  you can include the series parent document and/or documents referred to by the entries 
+  [tags](../../../../../document-extensions/timeseries/overview#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="something-something" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="python">
+{`# Get all time series entries
+entries = session.time_series_for("users/john", "HeartRates").get_with_include(
+    datetime.min,
+    datetime.max,
+    lambda builder: builder
+    # Include documents referred-to by entry tags
+    .include_tags()
+    # Include Parent Document
+    .include_document(),
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="python">
+{`def get(
+    self,
+    from_date: Optional[datetime] = None,
+    to_date: Optional[datetime] = None,
+    start: int = 0,
+    page_size: int = int_max,
+) -> Optional[List[TimeSeriesEntry]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="python">
+{`# The strongly-typed API is used, to address time series values by name.
+def get(
+    self,
+    from_date: Optional[datetime] = None,
+    to_date: Optional[datetime] = None,
+    start: int = 0,
+    page_size: int = int_max,
+) -> Optional[List[TypedTimeSeriesEntry[_T_TS_Values_Bindable]]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **from_date** (Optional) | `datetime` | Get the range of time series entries starting from this timestamp (inclusive).
+Default: `datetime.min` |
+| **to_date** (Optional) | `datetime` | Get the range of time series entries ending at this timestamp (inclusive).
+Default: `datetime.max` |
+| **start** | `int` | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
+| **page_size** | `int` | Paging page-size.<br/>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br/>Default: `int_max`, for all time series entries. |
+
+**Return Values (Optional)**
+ 
+* `List[TypedTimeSeriesEntry[_T_TS_Values_Bindable]]` - an array of time series entry classes.
+<TabItem value="something-something" label="TimeSeriesEntry-Definition">
+<CodeBlock language="python">
+{`class TimeSeriesEntry:
+    def __init__(self, timestamp: datetime = None, tag: str = None, values: List[int] = None, rollup: bool = None):
+        self.timestamp = timestamp
+        self.tag = tag
+        self.values = values
+        self.rollup = rollup
+
+    @property
+    def value(self):
+        if len(self.values) == 1:
+            return self.values[0]
+        raise ValueError("Entry has more than one value.")
+
+    @value.setter
+    def value(self, value: int):
+        if len(self.values) == 1:
+            self.values[0] = value
+            return
+        raise ValueError("Entry has more than one value")
+`}
+</CodeBlock>
+</TabItem>
+
+* `TimeSeriesEntry<TValues>[]` - Time series values that can be referred to by name.  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `timeSeriesFor.get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the `GetMultipleTimeSeriesOperation`operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+  
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
+
+* Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+
+* In this page:  
+  * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
+
+</Admonition>
+## `get` usage 
+
+* Open a session.  
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query) 
+      or from [session.load](../../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.get`.  
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="something-something" label="timeseries_region_Get-All-Entries-Using-Document-ID">
+<CodeBlock language="php">
+{`// Get all time series entries
+/** @var TimeSeriesEntryArray $val */
+$val = $session->timeSeriesFor("users/john", "HeartRates")
+    ->get();
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get its "Heartrate" time series data.
+
+<TabItem value="something-something" label="timeseries_region_Pass-TimeSeriesFor-Get-Query-Results">
+<CodeBlock language="php">
+{`// Query for a document with the Name property "John"
+// and get its HeartRates time-series values
+$session = $store->openSession();
+try \{
+     $baseTime = DateUtils::today();
+
+    $query = $session->query(User::class)
+        ->whereEquals("Name", "John");
+
+    $result = $query->toList();
+
+    /** @var TimeSeriesEntryArray $val */
+    $val = $session->timeSeriesFor($result[0], "HeartRates")
+        ->get();
+
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check whether a stock's closing-time price is rising from day to day (over three days).  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
+ 
+* Since each time series entry contains multiple StockPrice values, 
+  we include a sample that uses [named](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values) 
+  time series values to make the code easier to read.  
+
+<TabItem value="something-something" label="timeseries_region_Get-Named-Values">
+<CodeBlock language="php">
+{`$goingUp = false;
+
+$session = $store->openSession();
+try \{
+    // Call 'Get' with the custom StockPrice class type
+    /** @var TimeSeriesEntryArray<StockPrice> $val */
+    $val = $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->get();
+
+    $closePriceDay1 = $val[0]->getValue()->getClose();
+    $closePriceDay2 = $val[1]->getValue()->getClose();
+    $closePriceDay3 = $val[2]->getValue()->getClose();
+
+    if (($closePriceDay2 > $closePriceDay1)
+        &&
+        ($closePriceDay3 > $closePriceDay2))
+        $goingUp = true;
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `timeSeriesFor.get`,  
+  you can include the series parent document and/or documents referred to by the entries 
+  [tags](../../../../../document-extensions/timeseries/overview#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="something-something" label="IncludeParentAndTaggedDocuments">
+<CodeBlock language="php">
+{`// Get all time series entries
+/** @var TimeSeriesEntryArray $entries */
+$entries =
+    $session->timeSeriesFor("users/john", "HeartRates")
+        ->get(null, null,
+            includes: function($builder) \{
+                return $builder
+                    // Include documents referred-to by entry tags
+                    ->includeTags()
+                    // Include Parent Document
+                    ->includeDocument();
+            \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="TimeSeriesFor-Get-definition">
+<CodeBlock language="php">
+{`public function get(?DateTimeInterface $from = null, ?DateTimeInterface $to = null, ?Closure $includes = null, int $start = 0, int $pageSize = PHP_INT_MAX): ?TimeSeriesEntryArray;
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="TimeSeriesFor-Get-Named-Values">
+<CodeBlock language="php">
+{`// The stongly-typed API is used, to address time series values by name.
+
+/**
+ * Return the time series values for the provided range
+ *
+ * @param DateTimeInterface|null $from
+ * @param DateTimeInterface|null $to
+ * @param int $start
+ * @param int $pageSize
+ * @return TypedTimeSeriesEntryArray|null
+ */
+public function get(?DateTimeInterface $from = null, ?DateTimeInterface $to = null, int $start = 0, int $pageSize = PHP_INT_MAX): ?TypedTimeSeriesEntryArray;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **from** (Optional) | `DateTimeInterface` | Get the range of time series entries starting from this timestamp (inclusive). |
+| **to** (Optional) | `DateTimeInterface` | Get the range of time series entries ending at this timestamp (inclusive). |
+| **start** | `int` | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: `0`, for the first time-series entry. |
+| **pageSize** | `int` | Paging page-size.<br/>E.g. set `page_size` to 10 to retrieve pages of 10 entries.<br/>Default: `PHP_INT_MAX`, for all time series entries. |
+
+**Return Values (Optional)**
+ 
+* `?TimeSeriesEntryArray` - an array of time series entry classes.
+<TabItem value="something-something" label="TimeSeriesEntry-Definition">
+<CodeBlock language="php">
+{`class TimeSeriesEntry
+\{
+    private ?DateTime $timestamp = null;
+    private ?string $tag = null;
+    private ?array $values = null;
+    private bool $rollup = false;
+
+    private ?array $nodeValues = null; // Map<String, Double[]>
+
+
+    //..
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `timeSeriesFor.get` to retrieve a range of entries from a **single** time series.  
+  To retrieve a range of entries from **multiple** series, 
+  use the [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) operation.
+
+* The retrieved data can be paged to get the time series entries gradually, one custom-size page at a time.
+
+* By default, the session will track the retrieved time series data. 
+  See [disable tracking](../../../../../client-api/session/configuration/how-to-disable-tracking) to learn how to disable.
+
+* When getting the time series entries,  
+  you can also _include_ the series' **parent document** and/or **documents referred to by the entry tag**.  
+  Learn more [below](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents).
+
+* Calling `timeSeriesFor.get` will result in a trip to the server unless the series' parent document was loaded  
+  (or queried for) with the time series included beforehand.  
+  Learn more in [Including time series](../../../../../document-extensions/timeseries/client-api/session/include/overview).
+
+* In this page:  
+  * [`get` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-usage)
+  * [Examples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#examples)
+     * [Get all entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-all-entries)
+     * [Get range of entries](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-range-of-entries)
+     * [Get entries with multiple values](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#get-entries-with-multiple-values)
+  * [Include parent and tagged documents](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#include-parent-and-tagged-documents)
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax)
+
+</Admonition>
+## `get` usage 
+
+* Open a session.  
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../../client-api/session/querying/how-to-query) or from [session.load](../../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.get`.
+
+
+
+## Examples
+
+#### Get all entries:
+
+In this example, we retrieve all entries of the "Heartrate" time series.  
+The ID of the parent document is explicitly specified.  
+
+<TabItem value="something-something" label="get_Entries_1">
+<CodeBlock language="nodejs">
+{`// Get all time series entries
+const allEntries = await session
+    .timeSeriesFor("users/john", "HeartRates")
+    .get();
+`}
+</CodeBlock>
+</TabItem>
+#### Get range of entries:
+
+In this example, we query for a document and get a range of entries from its "Heartrate" time series.
+
+<TabItem value="something-something" label="get_Entries_2">
+<CodeBlock language="nodejs">
+{`// Query for a document
+const user = await session.query(\{ collection: "users" \})
+    .whereEquals("name", "John")
+    .first();
+
+const from = new Date();
+const to = new Date(baseTime.getTime() + 60_000 * 5);
+
+// Retrieve a range of 6 entries
+const tsEntries = await session
+    .timeSeriesFor(user, "HeartRates")
+    .get(from, to);
+`}
+</CodeBlock>
+</TabItem>
+#### Get entries with multiple values:
+
+* Here, we check if a stock's closing price is rising consecutively over three days.  
+  This example is based on the sample entries that were entered in [this example](../../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).
+
+* Since each time series entry contains multiple StockPrice values,  
+  we include a sample that uses [named time series values](../../../../../document-extensions/timeseries/client-api/named-time-series-values)
+  to make the code easier to read.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="nodejs">
+{`let goingUp = false;
+
+const allEntries = await session
+    .timeSeriesFor("users/john", "StockPrices")
+    .get();
+    
+const closePriceDay1 = allEntries[0].values[1];
+const closePriceDay2 = allEntries[1].values[1];
+const closePriceDay3 = allEntries[2].values[1];
+
+// Check if the stock's closing price is rising
+if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) {
+        goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Named" label="Named">
+<CodeBlock language="nodejs">
+{`let goingUp = false;
+
+const allEntries = await session
+    .timeSeriesFor("users/john", "StockPrices")
+    .get();
+
+// Call 'asTypedEntry' to be able to access the entry's values by their names
+// Pass the class type (StockPrice)
+const typedEntry1 = allEntries[0].asTypedEntry(StockPrice);
+
+// Access the entry value by its StockPrice class property name (close)
+const closePriceDay1 = typedEntry1.value.close;
+
+const typedEntry2 = allEntries[1].asTypedEntry(StockPrice);
+const closePriceDay2 = typedEntry2.value.close;
+
+const typedEntry3 = allEntries[2].asTypedEntry(StockPrice);
+const closePriceDay3 = typedEntry3.value.close;
+
+// Check if the stock's closing price is rising
+if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) {
+    goingUp = true;
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Include parent and tagged documents
+
+* When retrieving time series entries using `timeSeriesFor.get`,  
+  you can include the series' parent document and/or documents referred to by the entries [tags](../../../../../document-extensions/timeseries/overview#tags).  
+
+* The included documents will be cached in the session, and instantly retrieved from memory if loaded by the user.
+
+* Use the following syntax to include the parent or tagged documents:
+
+<TabItem value="something-something" label="get_Entries_4">
+<CodeBlock language="nodejs">
+{`const allEntries = await session
+    .timeSeriesFor("users/john", "HeartRates")
+     // Get all entries
+    .get(null, null, builder => builder
+        .includeDocument() // include the parent document
+        .includeTags());   // include documents referenced in the entries tags
+    
+// The following 'load' call will not trigger a server request
+const user = await session.load("users/john");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+get(); // Get all entries
+
+get(from, to);
+get(from, to, start);
+
+get(start, pageSize);
+get(from, to, start, pageSize);
+
+get(from, to, includes);
+get(from, to, includes, start);
+get(from, to, includes, start, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+| Parameter        | Type                       | Description                                                                                                                                                   |
+|------------------|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **from**         | `Date`                     | Get the range of time series entries starting from this timestamp (inclusive).
+Pass `null` to use the minimum date value.                                 |
+| **to**           | `Date`                     | Get the range of time series entries ending at this timestamp (inclusive).
+Pass `null` to use the maximum date value.                                     |
+| **start**        | `number`                   | Paging first entry.<br/>E.g. 50 means the first page would start at the 50th time series entry. <br/> Default: 0, for the first time-series entry.              |
+| **pageSize**     | `number`                   | Paging page-size.<br/>E.g. set `pageSize` to 10 to retrieve pages of 10 entries.<br/>Default: the equivalent of C# `int.MaxValue`, for all time series entries. |
+| **includes**     | `(includeBuilder) => void` | Builder function with a fluent API<br/>containing the `includeTags` and `includeDocument` methods.                                                             |
+
+| Return value                 |                                              |
+|------------------------------|----------------------------------------------|
+| `Promise<TimeSeriesEntry[]>` | A `Promise` resolving to the list of entries |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`class TimeSeriesEntry \{
+    // The entry's time stamp
+    timestamp; // Date
+    
+    // The entry's tag, can contain a related document ID
+    tag; // string
+    
+    // List of up to 32 values for this entry
+    values; // number[]
+    
+    // Is this an entry that belongs to a "rollup" time series
+    isRollup; // boolean
+    
+    // Nodes info for incremental time series
+    nodeValues; // Record<string, number[]>;
+    
+    // A method that returns the entry as a typed entry (TypedTimeSeriesEntry)
+    asTypedEntry(clazz); // 'clazz' designates the type for the value  
+\}
+
+class TypedTimeSeriesEntry \{
+    timestamp; // Date
+    tag;       // string
+    values;    // number[]
+    isRollup;  // boolean
+    
+    // Access the value of a typed entry as an object
+    value;     // object of type clazz
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [Time Series API Overview](../../../../../document-extensions/timeseries/client-api/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../../../studio/database/document-extensions/time-series)
+
+### Querying and Indexing
+- [Time Series Querying](../../../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

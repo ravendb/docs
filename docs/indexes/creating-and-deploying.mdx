@@ -1,0 +1,1248 @@
+---
+title: "Creating and Deploying Indexes"
+sidebar_label: Creating and Deploying Indexes
+sidebar_position: 2
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Creating and Deploying Indexes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This article explains how to create indexes in RavenDB.  
+  For a general overview of indexes, see [What are indexes](../indexes/what-are-indexes).
+
+* You can either:  
+  * [create a Static-index](../indexes/creating-and-deploying#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
+  * let the RavenDB server [create an Auto-index](../indexes/creating-and-deploying#creating-auto-indexes) for you based on query patterns.
+
+* Static-indexes can be created:
+    * using the Client API, as outlined in this article, or
+    * from the [Indexes list view](../studio/database/indexes/indexes-list-view) in the Studio.
+* In this page:
+  * [Static-indexes](../indexes/creating-and-deploying#static-indexes)
+      * [Define a static-index](../indexes/creating-and-deploying#define-a-static-index)
+      * [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index)
+          * [Deploy single index](../indexes/creating-and-deploying#deploy-single-index)
+          * [Deploy multiple indexes](../indexes/creating-and-deploying#deploy-multiple-indexes)
+          * [Deploy syntax](../indexes/creating-and-deploying#deploy-syntax)
+          * [Deployment behavior](../indexes/creating-and-deploying#deployment-behavior)
+      * [Creating a static-index - Example](../indexes/creating-and-deploying#create-a-static-index---example)
+      * [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation)
+  * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+      * [Creating auto-indexes](../indexes/creating-and-deploying#creating-auto-indexes)
+      * [Disabling auto-indexes](../indexes/creating-and-deploying#disabling-auto-indexes)
+
+</Admonition>
+
+<a id="static-indexes"/>
+## Define a static-index
+
+<Admonition type="note" title="Note">
+
+##### Static-indexes
+* Indexes that are explicitly **created by the user** are called `static` indexes.
+* Static-indexes can perform calculations, data conversions, and other processes behind the scenes.  
+  This reduces the workload at query time by offloading these costly operations to the indexing phase.
+* To query with a static-index, you must explicitly specify the index in the query definition.  
+  For more details, see [Querying an index](../indexes/querying/query-index).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Define a static-index using a custom class
+* To define a static-index using a custom class inherit from `AbstractIndexCreationTask`.
+* This method is recommended over the [Creating an index using an operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation) method  
+  for its simplicity and the following advantages:  
+  * **Strongly-typed syntax**:  
+    Provides strong typing when defining the index, making it easier to work with.
+  * **Ease of querying**:  
+    Lets you use the index class name in a query, instead of hard-coding the index name.
+<TabItem value="something" label="indexes_1">
+<CodeBlock language="csharp">
+{`// Define a static-index
+// Inherit from 'AbstractIndexCreationTask'
+public class Orders_ByTotal : AbstractIndexCreationTask<Order>
+\{
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+* A complete example of creating a static-index is provided [below](../indexes/creating-and-deploying#create-a-static-index---example).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Naming convention
+* Static-index class names follow a single naming convention:  
+  Each `_` in the class name is translated to `/` in the index name on the server.
+* In the above example, the index class name is `Orders_ByTotal`.  
+  The name of the index that will be generated on the server will be: `Orders/ByTotal`.  
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Customizing configuration
+* You can set various [indexing configuration](../server/configuration/indexing-configuration) values within the index definition.
+* Setting a configuration value within the index will override the matching indexing configuration values set at the server or database level.
+<TabItem value="something" label="indexes_2">
+<CodeBlock language="csharp">
+{`public class Orders_ByTotal : AbstractIndexCreationTask<Order>
+\{
+    public Orders_ByTotal()
+    \{
+        // ...
+        // Set an indexing configuration value for this index:
+        Configuration["Indexing.MapTimeoutInSec"] = "30";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Deploy a static-index
+
+* To begin indexing data, the index must be deployed to the server.
+* This section provides options for deploying indexes that inherit from `AbstractIndexCreationTask`.
+* To create and deploy an index using the `IndexDefinition` class via `PutIndexesOperation`,  
+  see [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation).
+<Admonition type="note" title="Note">
+
+##### Deploy single index
+* Use `Execute()` or `ExecuteIndex()` to deploy a single index.
+* The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
+  See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Execute" label="Execute">
+<CodeBlock language="csharp">
+{`// Call 'Execute' directly on the index instance
+new Orders_ByTotal().Execute(store);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Execute_async" label="Execute_async">
+<CodeBlock language="csharp">
+{`// Call 'ExecuteAsync' directly on the index instance
+await new Orders_ByTotal().ExecuteAsync(store);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="ExecuteIndex" label="ExecuteIndex">
+<CodeBlock language="csharp">
+{`// Call 'ExecuteIndex' on your store object
+store.ExecuteIndex(new Orders_ByTotal());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="ExecuteIndex_async" label="ExecuteIndex_async">
+<CodeBlock language="csharp">
+{`// Call 'ExecuteIndexAsync' on your store object
+await store.ExecuteIndexAsync(new Orders_ByTotal());
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deploy multiple indexes
+* Use `ExecuteIndexes()` or `IndexCreation.CreateIndexes()` to deploy multiple indexes.
+* The `IndexCreation.CreateIndexes` method attempts to create all indexes in a single request.  
+  If it fails, it will repeat the execution by calling the `Execute` method for each index, one by one,  
+  in separate requests.
+* The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
+  See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="ExecuteIndexes" label="ExecuteIndexes">
+<CodeBlock language="csharp">
+{`var indexesToDeploy = new List<AbstractIndexCreationTask>
+{
+    new Orders_ByTotal(),
+    new Employees_ByLastName()
+};
+
+// Call 'ExecuteIndexes' on your store object
+store.ExecuteIndexes(indexesToDeploy);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="ExecuteIndexes_async" label="ExecuteIndexes_async">
+<CodeBlock language="csharp">
+{`var indexesToDeploy = new List<AbstractIndexCreationTask>
+{
+    new Orders_ByTotal(),
+    new Employees_ByLastName()
+};
+
+// Call 'ExecuteIndexesAsync' on your store object
+await store.ExecuteIndexesAsync(indexesToDeploy);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="CreateIndexes" label="CreateIndexes">
+<CodeBlock language="csharp">
+{`var indexesToDeploy = new List<AbstractIndexCreationTask>
+{
+    new Orders_ByTotal(),
+    new Employees_ByLastName()
+};
+
+// Call the static method 'CreateIndexes' on the IndexCreation class
+IndexCreation.CreateIndexes(indexesToDeploy, store);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="CreateIndexes_async" label="CreateIndexes_async">
+<CodeBlock language="csharp">
+{`var indexesToDeploy = new List<AbstractIndexCreationTask>
+{
+    new Orders_ByTotal(),
+    new Employees_ByLastName()
+};
+
+// Call the static method 'CreateIndexesAsync' on the IndexCreation class
+await IndexCreation.CreateIndexesAsync(indexesToDeploy, store);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+###### Deploy ALL indexes from an assembly
+
+* The following overload allows you to deploy ALL indexes from a specified assembly:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="CreateIndexes" label="CreateIndexes">
+<CodeBlock language="csharp">
+{`// Deploy ALL indexes from the assembly containing the \`Orders_ByTotal\` class
+IndexCreation.CreateIndexes(typeof(Orders_ByTotal).Assembly, store);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="CreateIndexes_async" label="CreateIndexes_async">
+<CodeBlock language="csharp">
+{`// Deploy ALL indexes from the assembly containing the \`Orders_ByTotal\` class
+await IndexCreation.CreateIndexesAsync(typeof(Orders_ByTotal).Assembly, store);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deploy syntax
+<Tabs groupId='languageSyntax'>
+<TabItem value="Deploy_methods" label="Deploy_methods">
+<CodeBlock language="csharp">
+{`// Call this method directly on the index instance
+void Execute(IDocumentStore store, DocumentConventions conventions = null, 
+    string database = null);
+
+// Call these methods on the store object
+void ExecuteIndex(IAbstractIndexCreationTask index, string database = null);
+void ExecuteIndexes(IEnumerable<IAbstractIndexCreationTask> indexes,
+    string database = null);
+
+// Call these static methods on the IndexCreation class
+void CreateIndexes(IEnumerable<IAbstractIndexCreationTask> indexes, IDocumentStore store,
+    DocumentConventions conventions = null, string database = null);
+void CreateIndexes(Assembly assemblyToScan, IDocumentStore store,
+    DocumentConventions conventions = null, string database = null);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Deploy_methods_async" label="Deploy_methods_async">
+<CodeBlock language="csharp">
+{`// Call this method directly on the index instance
+Task ExecuteAsync(IDocumentStore store, DocumentConventions conventions = null,
+    string database = null, CancellationToken token = default);
+
+// Call these methods on the store object
+Task ExecuteIndexAsync(IAbstractIndexCreationTask index, string database = null,
+    CancellationToken token = default(CancellationToken));
+Task ExecuteIndexesAsync(IEnumerable<IAbstractIndexCreationTask> indexes,
+    string database = null, CancellationToken token = default(CancellationToken));
+
+// Call these static methods on the IndexCreation class
+Task CreateIndexesAsync(IEnumerable<IAbstractIndexCreationTask> indexes,
+    IDocumentStore store, DocumentConventions conventions = null, string database = null,
+    CancellationToken token = default(CancellationToken));
+Task CreateIndexesAsync(Assembly assemblyToScan, IDocumentStore store,
+    DocumentConventions conventions = null, string database = null,
+    CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter          | Type                                      | Description                                                                                                       |
+|--------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **store**          | `IDocumentStore`                          | Your document store object.                                                                                       |
+| **conventions**    | `DocumentConventions`                     | The [Conventions](../client-api/configuration/conventions) used by the document store.                            |
+| **database**       | `string`                                  | The target database to deploy the index to. If not specified, the default database set on the store will be used. |
+| **index**          | `IAbstractIndexCreationTask`              | The index object to deploy.                                                                                       |
+| **indexes**        | `IEnumerable<IAbstractIndexCreationTask>` | A list of index objects to deploy.                                                                                |
+| **assemblyToScan** | `Assembly `                               | Deploy all indexes that are contained in this assembly.                                                           |
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deployment behavior
+<Admonition type="info" title="Info">
+
+###### Deployment mode:
+* When your database spans multiple nodes,  
+  you can choose between **Rolling** index deployment or **Parallel** index deployment.
+* Rolling deployment applies the index to one node at a time,  
+  while Parallel deployment deploys the index on all nodes simultaneously.
+* Learn more in [Rolling index deployment](../indexes/rolling-index-deployment).
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+###### When the index you are deploying already exists on the server:
+* **If the index definition is updated**:
+    * RavenDB uses a side-by-side strategy for all index updates.
+    * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
+      The new index will replace the existing index once it becomes non-stale.
+    * If you want to swap the indexes immediately, you can do so through the Studio.  
+      For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
+* **If the index definition is unchanged**:
+    * If the definition of the index being deployed is identical to the one on the server,  
+      the existing index will not be overwritten.
+    * The indexed data will remain intact, and the indexing process will not restart.
+
+</Admonition>
+</Admonition>
+
+
+## Create a static-index - Example
+
+<TabItem value="something" label="indexes_13">
+<CodeBlock language="csharp">
+{`// Define a static-index:
+// ======================
+public class Orders_ByTotal : AbstractIndexCreationTask<Order>
+\{
+    public class IndexEntry
+    \{
+        // The index-fields:
+        public string Employee \{ get; set; \}
+        public string Company \{ get; set; \}
+        public decimal Total \{ get; set; \}
+    \}
+    
+    public Orders_ByTotal()
+    \{
+        Map = orders => from order in orders
+                        select new IndexEntry
+                        \{
+                            // Set the index-fields:
+                            Employee = order.Employee,
+                            Company = order.Company,
+                            Total = order.Lines.Sum(l => 
+                                (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+                        \};
+        
+        // Customize the index as needed, for example:
+        DeploymentMode = IndexDeploymentMode.Rolling;
+        Configuration["Indexing.MapTimeoutInSec"] = "30";
+        Indexes.Add(x => x.Company, FieldIndexing.Search);
+        // ...
+    \}
+\}
+
+public static void Main(string[] args)
+\{
+    using (DocumentStore store = new DocumentStore
+    \{
+        Urls = new[] \{ "http://localhost:8080" \},
+        Database = "Northwind"
+    \})
+    \{
+        store.Initialize();
+        
+        // Deploy the index:
+        // =================
+        new Orders_ByTotal().Execute(store);
+        
+        using (IDocumentSession session = store.OpenSession())
+        \{
+            // Query the index:
+            // ================
+            IList<Order> orders = session
+                .Query<Orders_ByTotal.IndexEntry, Orders_ByTotal>()
+                 // Query for Order documents that have Total > 100
+                .Where(x => x.Total > 100)
+                .OfType<Order>()
+                .ToList();
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create a static-index - using an Operation
+
+* An index can also be defined and deployed using the [PutIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes) maintenance operation.  
+
+* When using this operation:
+
+  * Unlike the [naming convention](../indexes/creating-and-deploying#naming-convention) used with indexes inheriting from `AbstractIndexCreationTask`,  
+    you can choose any string-based name for the index.   
+    However, when querying, you must use that string-based name rather than the index class type.
+
+  * You can also modify various low-level settings available in the [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition)
+    and [IndexDefinitionBuilder](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinitionbuilder) classes.
+
+* Consider using this operation only if inheriting from `AbstractIndexCreationTask` is not an option.  
+
+* For a detailed explanation and examples, refer to the dedicated article: [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes).
+
+
+
+<a id="auto-indexes"/>
+## Creating auto-indexes
+
+<Admonition type="note" title="Note">
+
+##### Auto-indexes creation
+* Indexes **created by the server** are called `dynamic` or `auto` indexes.
+* Auto-indexes are created when all of the following conditions are met:  
+    * A query is issued without specifying an index (a dynamic query).
+    * The query includes a filtering condition.
+    * No suitable auto-index exists that can satisfy the query.
+    * Creation of auto-indexes has not been disabled.
+* For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
+  If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
+  (Static-indexes are not taken into account when determining which auto-index should handle the query).
+* Note: dynamic queries can be issued either when [querying](../studio/database/queries/query-view#query-view) or when [patching](../studio/database/documents/patch-view#patch-configuration).
+* Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
+  For more details, see [Query a collection - with filtering (dynamic query)](../client-api/session/querying/how-to-query#dynamicQuery).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Naming convention
+* Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
+* Their name also includes the name of the queried collection and a list of fields used in the query predicate to filter matching results.
+* For example, issuing the following query:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> employees = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert" && x.LastName == "King")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where FirstName = "Robert" and LastName = "King"
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+    will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Auto-index idle state
+* To reduce server load, an auto-index is marked as `idle` when it hasn't been used for a while.  
+  Specifically, if the time difference between the last time the auto-index was queried
+  and the last time a query was made on the database (using any index) exceeds the configured threshold (30 minutes by default),
+  the auto-index will be marked as `idle`.
+* This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
+  as well as for databases that were just restored from a snapshot or a backup.
+* To set the time before marking an index as idle, use the
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
+  Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
+* An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
+  or when resetting the index.
+* If not resumed, the idle auto-index will be deleted by the server after the time period defined in the 
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
+  (72 hours by default).
+
+</Admonition>
+
+
+## Disabling auto-indexes
+
+**Why disable**:  
+
+* Disabling auto-index creation prevents the accidental deployment of resource-consuming auto-indexes that may result from one-time, ad-hoc queries issued from the Studio.  
+* In production environments, disabling this feature helps avoid the creation and background execution of expensive indexes.
+
+**How to disable**:
+
+* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration#indexing.disablequeryoptimizergeneratedindexes) configuration key.
+  This will affect all queries made both from the **Client API** and the **Studio**.
+
+* Alternatively, you can disable auto-indexes from the Studio.  
+  However, this will affect queries made only from the **Studio**.
+
+   * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../studio/database/queries/query-view#query-settings).
+   * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../studio/database/documents/patch-view#patch-settings).
+   * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Indexes are used by the server to satisfy queries.  
+  They are at the heart of RavenDB's efficiency and should be understood before indexes and queries are defined in production.
+
+* Static indexes can do a number of operations on the data behind the scenes so that queries that use this already processed data are as fast as possible.  
+  Indexes keep the processed data in a separate storage so that the raw data isn't affected.
+
+* Whenever a user issues a query _that doesn't specify an index_, RavenDB's Query Optimizer will try to find an 
+  existing auto-index that fulfills the query.  
+   * If one doesn't yet exist, RavenDB will either create an auto-index or optimize an existing one if it almost satisfies the query.
+
+* Indexes process data assigned to them as the data changes. For example, if changes are made to documents in the collection "Orders", 
+  the indexes that are defined to handle queries on "Orders" will be triggered to update the index with the new data.
+   * These behind-the-scenes processes remove a lot of burden from queries. Also, indexes need to process entire datasets just once, 
+     after which, they only process new data.  
+     Still, they utilize machine resources and this should be considered when defining indexes and queries.  
+
+
+<Admonition type="info" title="Auto and Static Indexes" id="auto-and-static-indexes" href="#auto-and-static-indexes">
+
+* Indexes created by issuing a query are called `dynamic` or `Auto` indexes. 
+   * They can be easily identified. Their name starts with the `Auto/` prefix.
+   * If no [Auto-Index](../indexes/creating-and-deploying#auto-indexes) exists to satisfy a query, 
+     a new Auto-Index will be created and maintained automatically.
+* Indexes created explicitly by the user are called `static`.
+   * [To use a Static Index in a query](../indexes/querying/query-index), 
+     **you must specify the index in the query definition**. If you don't specify the index, 
+     RavenDB will look for an auto-index and potentially create a new one.  
+   * Static Indexes can be defined to do calculations, conversions, and various other processes behind the scenes, to prevent
+     doing these costly processes at query time (see [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask), 
+     our [map-indexes](../indexes/map-indexes) article, [indexing multiple collections](../indexes/multi-map-indexes), 
+     and [map-reduce indexing](../indexes/map-reduce-indexes)).  
+
+</Admonition>
+
+* In this page:
+   * [Static indexes](../indexes/creating-and-deploying#static-indexes)
+      * [Using AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask)
+         * [Naming convention](../indexes/creating-and-deploying#naming-convention)
+         * [Sending to server](../indexes/creating-and-deploying#sending-to-server)
+         * [Creating an index with custom configuration](../indexes/creating-and-deploying#creating-an-index-with-custom-configuration)
+         * [Using assembly scanner](../indexes/creating-and-deploying#using-assembly-scanner)
+         * [Example](../indexes/creating-and-deploying#example)
+      * [Using maintenance operations](../indexes/creating-and-deploying#using-maintenance-operations)
+         * [IndexDefinitionBuilder](../indexes/creating-and-deploying#indexdefinitionbuilder)
+   * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+      * [Naming convention](../indexes/creating-and-deploying#naming-convention-1)
+      * [Auto indexes and indexing state](../indexes/creating-and-deploying#auto-indexes-and-indexing-state)
+   * [If indexes exhaust system resources](../indexes/creating-and-deploying#if-indexes-exhaust-system-resources)
+
+
+</Admonition>
+
+## Static indexes
+
+There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../indexes/creating-and-deploying#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). 
+
+---
+
+### Using AbstractIndexCreationTask
+
+AbstractIndexCreationTask let you avoid hard-coding index names in every query.
+
+<Admonition type="note" title="Note">
+We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages.
+</Admonition>
+
+#### Naming convention
+
+There is only one naming convention: each `_` in the class name will be translated to `/` in the index name.
+
+e.g.
+
+In the `Northwind` samples, there is a index called `Orders/Totals`. To get such a index name, we need to create a class called `Orders_Totals`.
+
+<TabItem value="something-something" label="indexes_1">
+<CodeBlock language="java">
+{`public class Orders_Totals extends AbstractIndexCreationTask \{
+    /// ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Sending to server
+
+There is not much use from an index if it is not deployed to the server. To do so, we need to create an instance of our class that inherits from `AbstractIndexCreationTask` and use `execute` method.
+
+<TabItem value="something-something" label="indexes_2">
+<CodeBlock language="java">
+{`// deploy index to database defined in \`DocumentStore.getDatabase\` method
+// using default DocumentStore \`conventions\`
+new Orders_Totals().execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="indexes_3">
+<CodeBlock language="java">
+{`// deploy index to \`Northwind\` database
+// using default DocumentStore \`conventions\`
+new Orders_Totals().execute(store, store.getConventions(), "Northwind");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch.
+</Admonition>
+
+#### Creating an index with custom configuration
+
+If you need to create an index with a custom [`index configuration`](../server/configuration/indexing-configuration) you can set them in the index class constructor like so: 
+<TabItem value="something-something" label="indexes_9">
+<CodeBlock language="java">
+{`public class Orders_Totals extends AbstractIndexCreationTask \{
+    public Orders_Totals() \{
+        // ...
+        configuration.put("MapTimeoutInSec","30");
+        setConfiguration(configuration);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+#### Example
+
+<TabItem value="something-something" label="indexes_8">
+<CodeBlock language="java">
+{`public static class Orders_Totals extends AbstractIndexCreationTask \{
+    public static class Result \{
+        private String employee;
+        private String company;
+        private double total;
+
+        public String getEmployee() \{
+            return employee;
+        \}
+
+        public void setEmployee(String employee) \{
+            this.employee = employee;
+        \}
+
+        public String getCompany() \{
+            return company;
+        \}
+
+        public void setCompany(String company) \{
+            this.company = company;
+        \}
+
+        public double getTotal() \{
+            return total;
+        \}
+
+        public void setTotal(double total) \{
+            this.total = total;
+        \}
+    \}
+
+    public Orders_Totals() \{
+        map = "docs.Orders.Select(order => new \{ " +
+            "    Employee = order.Employee, " +
+            "    Company = order.Company, " +
+            "    Total = Enumerable.Sum(order.Lines, l => ((decimal)((((decimal) l.Quantity) * l.PricePerUnit) * (1M - l.Discount)))) " +
+            "\})";
+    \}
+
+    public static void main(String[] args) \{
+        try (IDocumentStore store = new DocumentStore(new String[]\{ "http://localhost:8080" \}, "Northwind")) \{
+            store.initialize();
+
+            new Orders_Totals().execute(store);
+
+            try (IDocumentSession session = store.openSession()) \{
+                List<Order> orders = session
+                    .query(Result.class, Orders_Totals.class)
+                    .whereGreaterThan("Total", 100)
+                    .ofType(Order.class)
+                    .toList();
+            \}
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+---
+
+### Using maintenance operations
+
+The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/operations/maintenance/indexes/put-indexes)) can be used also to send index(es) to the server.
+
+The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. You will have to use string-based names of indexes when querying.
+
+<TabItem value="something-something" label="indexes_5">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setName("Orders/Totals");
+indexDefinition.setMaps(Collections.singleton(
+    "from order in docs.Orders " +
+    " select new " +
+    " \{ " +
+    "    order.employee, " +
+    "    order.company, " +
+    "    total = order.lines.Sum(l => (l.quantity * l.pricePerUnit) * (1 - l.discount)) " +
+    "\}"
+));
+
+store
+    .maintenance()
+    .send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+#### IndexDefinitionBuilder
+
+`IndexDefinitionBuilder` is a very useful class that enables you to create `IndexDefinitions` using strongly-typed syntax with access to low-level settings not available when the `AbstractIndexCreationTask` approach is used.
+
+<TabItem value="something-something" label="indexes_6">
+<CodeBlock language="java">
+{`IndexDefinitionBuilder builder = new IndexDefinitionBuilder();
+builder.setMap(
+        "from order in docs.Orders \\n" +
+                "select new \\n" +
+                " \{\\n" +
+                "    order.employee,\\n" +
+                "    order.company,\\n" +
+                "    total = order.lines.Sum(l => (l.quantity * l.pricePerUnit) * (1 - l.discount))\\n" +
+                "\}");
+
+store.maintenance()
+        .send(new PutIndexesOperation(builder.toIndexDefinition(store.getConventions())));
+`}
+</CodeBlock>
+</TabItem>
+
+#### Remarks
+
+<Admonition type="info" title="Info">
+Maintenance Operations or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do it by inheriting from `AbstractIndexCreationTask`.
+</Admonition>
+
+<Admonition type="info" title="Side-by-Side" id="side-by-side" href="#side-by-side">
+
+Since RavenDB 4.0, **all** index updates are side-by-side by default. The new index will replace the existing one once it becomes non-stale. If you want to force an index to swap immediately, you can use the Studio for that.
+
+</Admonition>
+
+
+
+## **Auto indexes**
+
+Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
+
+<Admonition type="note" title="Note">
+The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query.
+</Admonition>
+
+### Naming convention
+
+Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also contains the name of a collection that was queried, and list of fields that were required to find valid query results.
+
+For instance, issuing a query like this
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class)
+    .whereEquals("firstName", "Robert")
+    .andAlso()
+    .whereEquals("lastName", "King")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where FirstName = 'Robert' and LastName = 'King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+will result in a creation of a index named `Auto/Employees/ByFirstNameAndLastName`.
+
+### Auto indexes and indexing state
+
+To reduce the server load, if auto-indexes are not queried for a certain amount of time defined in `Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin` setting (30 minutes by default), then they will be marked as `Idle`. You can read more about the implications of marking index as `Idle` [here](../studio/database/indexes/indexes-list-view#index-state).
+
+Setting this configuration option to a high value may result in performance degradation due to the possibility of having a high amount of unnecessary work that is all redundant and not needed by indexes to perform. This is _not_ a recommended configuration.
+
+
+
+## If indexes exhaust system resources
+
+* The indexing process utilizes machine resources to keep the data up-to-date for queries.
+
+* If indexing drains system resources, it may indicate one or more of the following:
+    * Indexes may have been defined in a way that causes inefficient processing.
+    * The [license](https://ravendb.net/buy) may need to be upgraded,
+    * Your [cloud instance](../cloud/cloud-instances#a-production-cloud-cluster) (if used) may require optimization.
+    * Hardware upgrades may be necessary to better support your workload.
+
+* Refer to the [Indexing Performance View](../studio/database/indexes/indexing-performance) in the Studio to analyze the indexing process and optimize indexes.
+  This view provides graphical representations and detailed statistics of all index activities at each stage.
+
+* Additionally, refer to the [Common indexing issues](../studio/database/indexes/indexing-performance#common-indexing-issues) section
+  for troubleshooting and resolving indexing challenges.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This article explains how to create indexes in RavenDB.  
+  For a general overview of indexes, see [What are indexes](../indexes/what-are-indexes).
+
+* You can either:
+    * [create a Static-index](../indexes/creating-and-deploying#define-a-static-index) yourself, which involves **Defining** the index and **Deploying** it to the RavenDB server, or
+    * let the RavenDB server [create an Auto-index](../indexes/creating-and-deploying#creating-auto-indexes) for you based on query patterns.
+
+* Static-indexes can be created:
+    * using the Client API, as outlined in this article, or
+    * from the [Indexes list view](../studio/database/indexes/indexes-list-view) in the Studio.
+* In this page:
+    * [Static-indexes](../indexes/creating-and-deploying#static-indexes)
+        * [Define a static-index](../indexes/creating-and-deploying#define-a-static-index)
+        * [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index)
+            * [Deploy single index](../indexes/creating-and-deploying#deploy-single-index)
+            * [Deploy multiple indexes](../indexes/creating-and-deploying#deploy-multiple-indexes)
+            * [Deploy syntax](../indexes/creating-and-deploying#deploy-syntax)
+            * [Deployment behavior](../indexes/creating-and-deploying#deployment-behavior)
+        * [Creating a static-index - Example](../indexes/creating-and-deploying#create-a-static-index---example)
+        * [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation)
+    * [Auto-indexes](../indexes/creating-and-deploying#auto-indexes)
+        * [Creating auto-indexes](../indexes/creating-and-deploying#creating-auto-indexes)
+        * [Disabling auto-indexes](../indexes/creating-and-deploying#disabling-auto-indexes)
+
+</Admonition>
+
+<a id="static-indexes"/>
+## Define a static-index
+
+<Admonition type="note" title="Note">
+
+##### Static-indexes
+* Indexes that are explicitly **created by the user** are called `static` indexes.
+* Static-indexes can perform calculations, data conversions, and other processes behind the scenes.  
+  This reduces the workload at query time by offloading these costly operations to the indexing phase.
+* To query with a static-index, you must explicitly specify the index in the query definition.  
+  For more details, see [Querying an index](../indexes/querying/query-index).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Define a static-index using a custom class
+* To define a static-index using a custom class, extend the `AbstractJavaScriptIndexCreationTask` class.
+* This method is recommended over the [Creating an index using an operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation) method  
+  for its simplified index definition, offering a straightforward way to define the index.
+<TabItem value="something-something" label="indexes_1">
+<CodeBlock language="nodejs">
+{`class Orders_ByTotal extends AbstractJavaScriptIndexCreationTask \{
+    /// ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+* A complete example of creating a static-index is provided [below](../indexes/creating-and-deploying#create-a-static-index---example).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Naming convention
+* Static-index class names follow a single naming convention:  
+  Each `_` in the class name is translated to `/` in the index name on the server.
+* In the above example, the index class name is `Orders_ByTotal`.  
+  The name of the index that will be generated on the server will be: `Orders/ByTotal`.
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Customizing configuration
+* You can set various [indexing configuration](../server/configuration/indexing-configuration) values within the index definition.
+* Setting a configuration value within the index will override the matching indexing configuration values set at the server or database level.
+<TabItem value="something-something" label="indexes_2">
+<CodeBlock language="nodejs">
+{`class Orders_ByTotal extends AbstractJavaScriptIndexCreationTask \{
+    constructor() \{
+        super();
+        // ...
+        
+        // Set an indexing configuration value for this index:
+        this.configuration = \{
+            "Indexing.MapTimeoutInSec": "30",
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Deploy a static-index
+
+* To begin indexing data, the index must be deployed to the server.
+* This section provides options for deploying indexes that inherit from `AbstractJavaScriptIndexCreationTask`.
+* To create and deploy an index using the `IndexDefinition` class via `PutIndexesOperation`,  
+  see [Creating a static-index - using an Operation](../indexes/creating-and-deploying#create-a-static-index---using-an-operation).
+<Admonition type="note" title="Note">
+
+##### Deploy single index
+* Use `execute()` or `executeIndex()` to deploy a single index.
+* The following examples deploy index `Ordes/ByTotal` to the default database defined in your _DocumentStore_ object.
+  See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
+
+<TabItem value="something-something" label="indexes_3">
+<CodeBlock language="nodejs">
+{`// Call 'execute' directly on the index instance
+await new Orders_ByTotal().execute(documentStore);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="indexes_4">
+<CodeBlock language="nodejs">
+{`// Call 'executeIndex' on your store object
+await documentStore.executeIndex(new Orders_ByTotal());
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deploy multiple indexes
+* Use `executeIndexes()` or `IndexCreation.createIndexes()` to deploy multiple indexes.
+* The `IndexCreation.createIndexes` method attempts to create all indexes in a single request.  
+  If it fails, it will repeat the execution by calling the `execute` method for each index, one by one,  
+  in separate requests.
+* The following examples deploy indexes `Ordes/ByTotal` and `Employees/ByLastName` to the default database defined in your _DocumentStore_ object.  
+  See the [syntax](../indexes/creating-and-deploying#deploy-syntax) section below for all available overloads.
+
+<TabItem value="something-something" label="indexes_5">
+<CodeBlock language="nodejs">
+{`const indexesToDeploy = [new Orders_ByTotal(), new Employees_ByLastName()];
+// Call 'executeIndexes' on your store object
+await documentStore.executeIndexes(indexesToDeploy);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="indexes_6">
+<CodeBlock language="nodejs">
+{`const indexesToDeploy = [new Orders_ByTotal(), new Employees_ByLastName()];
+// Call the static method 'createIndexes' on the IndexCreation class
+await IndexCreation.createIndexes(indexesToDeploy, documentStore);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deploy syntax
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// Call this method directly on the index instance
+execute(store);
+execute(store, conventions)>;
+execute(store, conventions, database);
+
+// Call these methods on the store object
+executeIndex(index);
+executeIndex(index, database);
+executeIndexes(indexes);
+executeIndexes(indexes, database);
+
+// Call these methods on the IndexCreation class
+createIndexes(indexes, store);
+createIndexes(indexes, store, conventions);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter          | Type                  | Description                                                                                                       |
+|--------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------|
+| **store**          | `object`              | Your document store object.                                                                                       |
+| **conventions**    | `DocumentConventions` | The [Conventions](../client-api/configuration/conventions) used by the document store.                            |
+| **database**       | `string`              | The target database to deploy the index to. If not specified, the default database set on the store will be used. |
+| **index**          | `object`              | The index object to deploy.                                                                                       |
+| **indexes**        | `object[]`            | A list of index objects to deploy.                                                                                |
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Deployment behavior
+<Admonition type="info" title="Info">
+
+###### Deployment mode:
+* When your database spans multiple nodes,  
+  you can choose between **Rolling** index deployment or **Parallel** index deployment.
+* Rolling deployment applies the index to one node at a time,  
+  while Parallel deployment deploys the index on all nodes simultaneously.
+* Learn more in [Rolling index deployment](../indexes/rolling-index-deployment).
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+###### When the index you are deploying already exists on the server:
+* **If the index definition is updated**:
+    * RavenDB uses a side-by-side strategy for all index updates.
+    * When an existing index definition is modified, RavenDB creates a new index with the updated definition.
+      The new index will replace the existing index once it becomes non-stale.
+    * If you want to swap the indexes immediately, you can do so through the Studio.  
+      For more details, see [Side by side indexing](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).
+* **If the index definition is unchanged**:
+    * If the definition of the index being deployed is identical to the one on the server,  
+      the existing index will not be overwritten.
+    * The indexed data will remain intact, and the indexing process will not restart.
+
+</Admonition>
+</Admonition>
+
+
+## Create a static-index - Example
+
+<TabItem value="something-something" label="indexes_7">
+<CodeBlock language="nodejs">
+{`// Define a static-index:
+// ======================
+class Orders_ByTotal extends AbstractJavaScriptIndexCreationTask \{
+    constructor() \{
+        super();
+        
+        this.map("Orders", order => \{
+            return \{
+                Employee: order.Employee,
+                Company: order.Company,
+                Total: order.Lines.reduce((sum, line) =>
+                       sum + (line.Quantity * line.PricePerUnit) * (1 - line.Discount), 0)
+            \}
+        \});
+
+        // Customize the index configuration
+        this.deploymentMode = "Rolling";
+        this.configuration["Indexing.MapTimeoutInSec"] = "30";
+        this.indexes.add(x => x.Company, "Search");
+        // ...
+    \}
+\}
+
+async function main() \{
+    const documentStore = new DocumentStore("http://localhost:8080", "Northwind");
+    documentStore.initialize();
+
+    // Deploy the index:
+    // =================
+    const ordersByTotalIndex = new Orders_ByTotal();
+    await ordersByTotalIndex.execute(documentStore);
+    
+    const session = documentStore.openSession()
+    
+    // Query the index:
+    // ================
+    const myIndexName = ordersByTotalIndex.getIndexName();
+    
+    const orders = await session
+        .query(\{ indexName: myIndexName \})
+        .whereGreaterThan("Total", 100)
+        .all();    
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create a static-index - using an Operation
+
+* An index can also be defined and deployed using the [PutIndexesOperation](../client-api/operations/maintenance/indexes/put-indexes) maintenance operation.
+
+* When using this operation:
+
+    * Unlike the [naming convention](../indexes/creating-and-deploying#naming-convention) used with indexes inheriting from `AbstractJavaScriptIndexCreationTask`,  
+      you can choose any string-based name for the index.   
+      However, when querying, you must use that string-based name rather than the index class type.
+
+    * You can also modify various low-level settings available in the [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition) class.
+
+* Consider using this operation only if inheriting from `AbstractJavaScriptIndexCreationTask` is not an option.
+
+* For a detailed explanation and examples, refer to the dedicated article: [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes).
+
+
+
+<a id="auto-indexes"/>
+## Creating auto-indexes
+
+<Admonition type="note" title="Note">
+
+##### Auto-indexes creation
+* Indexes **created by the server** are called `dynamic` or `auto` indexes.
+* Auto-indexes are created when all of the following conditions are met:
+    * A query is issued without specifying an index (a dynamic query).
+    * The query includes a filtering condition.
+    * No suitable auto-index exists that can satisfy the query.
+    * Creation of auto-indexes has not been disabled.
+* For such queries, RavenDB's Query Optimizer searches for an existing auto-index that can satisfy the query.
+  If no suitable auto-index is found, RavenDB will either create a new auto-index or optimize an existing auto-index.
+  (Static-indexes are not taken into account when determining which auto-index should handle the query).
+* Note: dynamic queries can be issued either when [querying](../studio/database/queries/query-view#query-view) or when [patching](../studio/database/documents/patch-view#patch-configuration).
+* Over time, RavenDB automatically adjusts and merges auto-indexes to efficiently serve your queries.  
+  For more details, see [Query a collection - with filtering (dynamic query)](../client-api/session/querying/how-to-query#dynamicQuery).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Naming convention
+* Auto-indexes are easily identified by their names, which start with the `Auto/` prefix.
+* Their name also includes the name of the queried collection and a list of fields used in the query predicate to filter matching results.
+* For example, issuing the following query:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: 'employees' })
+    .whereEquals("FirstName", "Robert")
+    .whereEquals("LastName", "King")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where FirstName = "Robert" and LastName = "King"
+`}
+</CodeBlock>
+</TabItem>
+  </Tabs>
+  will result in the creation of an auto-index named `Auto/Employees/ByFirstNameAndLastName`.
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Auto-index idle state
+* To reduce server load, an auto-index is marked as `idle` when it hasn't been used for a while.  
+  Specifically, if the time difference between the last time the auto-index was queried
+  and the last time a query was made on the database (using any index) exceeds the configured threshold (30 minutes by default),
+  the auto-index will be marked as `idle`.
+* This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
+  as well as for databases that were just restored from a snapshot or a backup.
+* To set the time before marking an index as idle, use the
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
+  Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
+* An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
+  or when resetting the index.
+* If not resumed, the idle auto-index will be deleted by the server after the time period defined in the
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
+  (72 hours by default).
+
+</Admonition>
+
+
+## Disabling auto-indexes
+
+**Why disable**:
+
+* Disabling auto-index creation prevents the accidental deployment of resource-consuming auto-indexes that may result from one-time, ad-hoc queries issued from the Studio.
+* In production environments, disabling this feature helps avoid the creation and background execution of expensive indexes.
+
+**How to disable**:
+
+* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration#indexing.disablequeryoptimizergeneratedindexes) configuration key.
+  This will affect all queries made both from the **Client API** and the **Studio**.
+
+* Alternatively, you can disable auto-indexes from the Studio.  
+  However, this will affect queries made only from the **Studio**.
+
+    * To disable auto-index creation for a specific query made from the query view, see these [Query settings](../studio/database/queries/query-view#query-settings).
+    * To disable auto-index creation for a specific query made from the patch view, see these [Patch settings](../studio/database/documents/patch-view#patch-settings).
+    * Disabling auto-index creation for ALL queries made on a database can be configured in the [Studio configuration view](../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches).
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../indexes/what-are-indexes)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Operations
+- [Put Indexes Operation](../client-api/operations/maintenance/indexes/put-indexes)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
+
+### Studio
+- [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Index List View](../studio/database/indexes/indexes-list-view)
+
+### Inside RavenDB
+- [Working with Indexes](https://ravendb.net/learn/inside-ravendb-book/reader/4.0/12-working-with-indexes)
+
+### Code Walkthrough
+- [See various indexing guides in the online DEMO](https://demo.ravendb.net/)
+
+
+-->

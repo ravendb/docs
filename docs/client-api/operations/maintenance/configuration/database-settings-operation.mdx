@@ -1,0 +1,472 @@
+---
+title: "Database Settings Operations"
+sidebar_label: Database Settings Operations
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "php", "nodejs"];
+
+
+# Database Settings Operations
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+  
+* The default database configuration settings can be customized:
+
+  * From the Client API - as described in this article.
+
+  * From Studio - via the [Database Settings](../../../../studio/database/settings/database-settings#database-settings) view.
+
+* In this page:  
+
+  * [Put database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)
+
+  * [Get database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)
+
+<Admonition type="warning" title="Warning">
+Do not modify the database settings unless you are an expert and know what you're doing.  
+</Admonition>
+
+</Admonition>
+
+## Put database settings operation
+
+* Use `PutDatabaseSettingsOperation` to modify the default database configuration.
+
+* Only **database-level** settings can be customized using this operation.  
+  See the [Configuration overview](../../../../server/configuration/configuration-options) article to learn how to customize the **server-level** settings.  
+
+* Note: for the changes to take effect, the database must be **reloaded**.  
+  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state).  
+  See the following example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// 1. Modify the database settings:
+// ================================
+
+// Define the settings dictionary with the key-value pairs to set, for example:
+var settings = new Dictionary<string, string>
+{
+    ["Databases.QueryTimeoutInSec"] = "350", 
+    ["Indexing.Static.DeploymentMode"] = "Rolling"
+};
+
+// Define the put database settings operation,
+// specify the database name & pass the settings dictionary
+var putDatabaseSettingsOp = new PutDatabaseSettingsOperation(documentStore.Database, settings);
+    
+// Execute the operation by passing it to Maintenance.Send
+documentStore.Maintenance.Send(putDatabaseSettingsOp);
+    
+// 2. RELOAD the database for the change to take effect:
+// =====================================================
+
+// Disable database
+var disableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, true);
+documentStore.Maintenance.Server.Send(disableDatabaseOp);
+
+// Enable database
+var enableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, false);
+documentStore.Maintenance.Server.Send(enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// 1. Modify the database settings:
+// ================================
+
+// Define the settings dictionary with the key-value pairs to set, for example:
+var settings = new Dictionary<string, string>
+{
+    ["Databases.QueryTimeoutInSec"] = "350", 
+    ["Indexing.Static.DeploymentMode"] = "Rolling"
+};
+
+// Define the put database settings operation,
+// specify the database name & pass the settings dictionary
+var putDatabaseSettingsOp = new PutDatabaseSettingsOperation(documentStore.Database, settings);
+    
+// Execute the operation by passing it to Maintenance.SendAsync
+await documentStore.Maintenance.SendAsync(putDatabaseSettingsOp);
+    
+// 2. RELOAD the database for the change to take effect:
+// =====================================================
+
+// Disable database
+var disableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, true);
+await documentStore.Maintenance.Server.SendAsync(disableDatabaseOp);
+
+// Enable database
+var enableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.Database, false);
+await documentStore.Maintenance.Server.SendAsync(enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Syntax**:
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`PutDatabaseSettingsOperation(string databaseName, Dictionary<string, string> configurationSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type                         | Description                                        |
+|-----------------------|------------------------------|----------------------------------------------------|
+| databaseName          | `string`                     | Name of database for which to change the settings. |
+| configurationSettings | `Dictionary<string, string>` | The configuration settings to set.                 |
+
+
+
+
+## Get database settings operation
+
+* Use `GetDatabaseSettingsOperation` to get the configuration settings that were customized for the database.  
+
+* Only settings that have been changed will be retrieved.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get database settings operation, specify the database name
+var getDatabaseSettingsOp = new GetDatabaseSettingsOperation(documentStore.Database);
+    
+// Execute the operation by passing it to Maintenance.Send
+var customizedSettings = documentStore.Maintenance.Send(getDatabaseSettingsOp);
+
+// Get the customized value
+var customizedValue = customizedSettings.Settings["Databases.QueryTimeoutInSec"];
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get database settings operation, specify the database name
+var getDatabaseSettingsOp = new GetDatabaseSettingsOperation(documentStore.Database);
+    
+// Execute the operation by passing it to Maintenance.SendAsync
+var customizedSettings = await documentStore.Maintenance.SendAsync(getDatabaseSettingsOp);
+
+// Get the customized value
+var customizedValue = customizedSettings.Settings["Databases.QueryTimeoutInSec"];
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+**Syntax**:
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`GetDatabaseSettingsOperation(string databaseName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                 |
+|--------------|----------|-------------------------------------------------------------|
+| databaseName | `string` | The database name for which to get the customized settings. |
+
+
+<TabItem value="something" label="syntax_3">
+<CodeBlock language="csharp">
+{`// Executing the operation returns the following object:
+public class DatabaseSettings
+\{
+    // Configuration settings that have been customized
+    public Dictionary<string, string> Settings \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+  
+* The default database configuration settings can be customized:
+
+  * From the Client API - as described in this article.
+
+  * From Studio - via the [Database Settings](../../../../studio/database/settings/database-settings#database-settings) view.
+
+* In this page:  
+
+  * [Put database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)
+
+  * [Get database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)
+
+<Admonition type="warning" title="Warning">
+Do not modify the database settings unless you are an expert and know what you're doing.  
+</Admonition>
+
+</Admonition>
+
+## Put database settings operation
+
+* Use `PutDatabaseSettingsOperation` to modify the default database configuration.
+
+* Only **database-level** settings can be customized using this operation.  
+  See the [Configuration overview](../../../../server/configuration/configuration-options) article to learn how to customize the **server-level** settings.  
+
+* Note: for the changes to take effect, the database must be **reloaded**.  
+  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state).  
+  See the following example:
+
+<TabItem value="something-something" label="put_database_settings">
+<CodeBlock language="php">
+{`// 1. Modify the database settings:
+// ================================
+
+// Define the settings dictionary with the key-value pairs to set, for example:
+$settings = [
+    "Databases.QueryTimeoutInSec" => "350",
+    "Indexing.Static.DeploymentMode" => "Rolling"
+];
+
+// Define the put database settings operation,
+// specify the database name & pass the settings dictionary
+$putDatabaseSettingsOp = new PutDatabaseSettingsOperation($documentStore->getDatabase(), $settings);
+
+// Execute the operation by passing it to Maintenance.Send
+$documentStore->maintenance()->send($putDatabaseSettingsOp);
+
+// 2. RELOAD the database for the change to take effect:
+// =====================================================
+
+// Disable database
+$disableDatabaseOp = new ToggleDatabasesStateOperation($documentStore->getDatabase(), true);
+$documentStore->maintenance()->server()->send($disableDatabaseOp);
+
+// Enable database
+$enableDatabaseOp = new ToggleDatabasesStateOperation($documentStore->getDatabase(), false);
+$documentStore->maintenance()->server()->send($enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="php">
+{`PutDatabaseSettingsOperation(?string $databaseName, StringMap|array|null $configurationSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type       | Description                                      |
+|-----------------------|------------|--------------------------------------------------|
+| $databaseName          | `?string` | Name of the database to change the settings for. |
+| $configurationSettings | `StringMap`<br/>`array`<br/>`null` | The configuration settings to set.               |
+
+
+
+
+## Get database settings operation
+
+* Use `GetDatabaseSettingsOperation` to get the configuration settings that were customized for the database.  
+
+* Only settings that have been changed will be retrieved.
+
+<TabItem value="something-something" label="get_database_settings">
+<CodeBlock language="php">
+{`// Define the get database settings operation, specify the database name
+$getDatabaseSettingsOp = new GetDatabaseSettingsOperation($documentStore->getDatabase());
+
+// Execute the operation by passing it to Maintenance.Send
+/** @var DatabaseSettings $customizedSettings */
+$customizedSettings = $documentStore->maintenance()->send($getDatabaseSettingsOp);
+
+// Get the customized value
+$customizedValue = $customizedSettings->getSettings()["Databases.QueryTimeoutInSec"];
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="php">
+{`GetDatabaseSettingsOperation(?string $databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type      | Description                                            |
+|--------------|-----------|--------------------------------------------------------|
+| $databaseName | `?string` | The database name to get the customized settings for. |
+
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="php">
+{`// Executing the operation returns the following object:
+class DatabaseSettings
+\{
+// Configuration settings that have been customized
+    private ?StringMap $settings = null;
+    // ...getter and setter
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+  
+* The default database configuration settings can be customized:
+
+  * From the Client API - as described in this article.
+
+  * From Studio - via the [Database Settings](../../../../studio/database/settings/database-settings#database-settings) view.
+
+* In this page:  
+
+  * [Put database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)
+
+  * [Get database settings operation](../../../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)
+
+<Admonition type="warning" title="Warning">
+Do not modify the database settings unless you are an expert and know what you're doing.  
+</Admonition>
+
+</Admonition>
+
+## Put database settings operation
+
+* Use `PutDatabaseSettingsOperation` to modify the default database configuration.
+
+* Only **database-level** settings can be customized using this operation.  
+  See the [Configuration overview](../../../../server/configuration/configuration-options) article to learn how to customize the **server-level** settings.  
+
+* Note: for the changes to take effect, the database must be **reloaded**.  
+  Reloading is accomplished by disabling and enabling the database using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state).  
+  See the following example:
+
+<TabItem value="something-something" label="put_database_settings">
+<CodeBlock language="nodejs">
+{`// 1. Modify the database settings:
+// ================================
+
+// Define a settings object with key-value pairs to set, for example:
+const settings = \{
+    "Databases.QueryTimeoutInSec": "350",
+    "Indexing.Static.DeploymentMode": "Rolling"
+\};
+
+// Define the put database settings operation,
+// specify the database name & pass the settings dictionary
+const putDatabaseSettingsOp = new PutDatabaseSettingsOperation(documentStore.database, settings)
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putDatabaseSettingsOp);
+
+// 2. RELOAD the database for the change to take effect:
+// =====================================================
+
+// Disable database
+const disableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.database, true);
+await documentStore.maintenance.server.send(disableDatabaseOp);
+
+// Enable database
+const enableDatabaseOp = new ToggleDatabasesStateOperation(documentStore.database, false);
+await documentStore.maintenance.server.send(enableDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`const putDatabaseSettingsOp = new PutDatabaseSettingsOperation(databaseName, configurationSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type      | Description                                        |
+|-----------------------|-----------|----------------------------------------------------|
+| databaseName          | `string`  | Name of database for which to change the settings. |
+| configurationSettings | `object` | The configuration settings to set.                 |
+
+
+
+
+## Get database settings operation
+
+* Use `GetDatabaseSettingsOperation` to get the configuration settings that were customized for the database.  
+
+* Only settings that have been changed will be retrieved.
+
+<TabItem value="something-something" label="get_database_settings">
+<CodeBlock language="nodejs">
+{`// Define the get database settings operation, specify the database name
+const getDatabaseSettingsOp = new GetDatabaseSettingsOperation(documentStore.database);
+
+// Execute the operation by passing it to maintenance.send
+const customizedSettings = await documentStore.maintenance.send(getDatabaseSettingsOp);
+
+// Get the customized value
+const customizedValue = customizedSettings.settings["Databases.QueryTimeoutInSec"];
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`const getDatabaseSettingsOp = new GetDatabaseSettingsOperation(databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                 |
+|--------------|----------|-------------------------------------------------------------|
+| databaseName | `string` | The database name for which to get the customized settings. |
+
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="nodejs">
+{`// Executing the operation returns the following object:
+\{
+    settings // An object with key-value configuration pairs
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Studio
+- [Database settings view](../../../../studio/database/settings/database-settings#database-settings)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [How to Get Client Configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration)
+- [How to Get Server-Wide Client Configuration](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+- [Toggle database state](../../../../client-api/operations/server-wide/toggle-databases-state)
+
+
+-->

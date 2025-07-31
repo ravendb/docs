@@ -1,0 +1,297 @@
+---
+title: "Operations: Server: How to Generate a Client Certificate"
+sidebar_label: Create Client Certificate
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Operations: Server: How to Generate a Client Certificate
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* You can generate a client certificate using **CreateClientCertificateOperation**.  
+
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+</Admonition>
+
+## Syntax
+
+<TabItem value="something" label="cert_1_1">
+<CodeBlock language="csharp">
+{`public CreateClientCertificateOperation(string name, 
+    Dictionary<string, DatabaseAccess> permissions, 
+    SecurityClearance clearance, 
+    string password = null)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="cert_1_2">
+<CodeBlock language="csharp">
+{`// The role assigned to the certificate:
+public enum SecurityClearance
+\{
+    ClusterAdmin,
+    ClusterNode,
+    Operator,
+    ValidUser
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="cert_1_3">
+<CodeBlock language="csharp">
+{`// The access level for a 'ValidUser' security clearance:
+public enum DatabaseAccess
+\{
+    Read,
+    ReadWrite,
+    Admin
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary mapping databases to access level |
+| **clearance** | SecurityClearance | Access level |
+| **password** | string | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="something" label="cert_1_4">
+<CodeBlock language="csharp">
+{`// With the security clearance set to Cluster Administrator or Operator,
+// the user of this certificate will have access to all databases
+CreateClientCertificateOperation operation = 
+    new CreateClientCertificateOperation(
+        "admin", null, SecurityClearance.Operator);
+CertificateRawData certificateRawData = 
+    store.Maintenance.Server.Send(operation);
+byte[] cert = certificateRawData.RawData;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="something" label="cert_1_5">
+<CodeBlock language="csharp">
+{`// When the security clearance is ValidUser, you must specify an access level for each database
+CreateClientCertificateOperation operation = 
+    new CreateClientCertificateOperation(
+        "user1", new Dictionary<string, DatabaseAccess>
+\{
+    \{ "Northwind", DatabaseAccess.Admin \}
+\}, SecurityClearance.ValidUser, "myPassword");
+CertificateRawData certificateRawData = 
+    store.Maintenance.Server.Send(operation);
+byte[] cert = certificateRawData.RawData;
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* You can generate a client certificate using **CreateClientCertificateOperation**.  
+
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+</Admonition>
+
+## Syntax
+
+<TabItem value="something-something" label="cert_1_1">
+<CodeBlock language="java">
+{`public CreateClientCertificateOperation(String name,
+                                        Map<String, DatabaseAccess> permissions,
+                                        SecurityClearance clearance)
+
+public CreateClientCertificateOperation(String name,
+                                        Map<String, DatabaseAccess> permissions,
+                                        SecurityClearance clearance,
+                                        String password)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="cert_1_2">
+<CodeBlock language="java">
+{`public enum SecurityClearance \{
+    CLUSTER_ADMIN,
+    CLUSTER_NODE,
+    OPERATOR,
+    VALID_USER
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="cert_1_3">
+<CodeBlock language="java">
+{`public enum DatabaseAccess \{
+    READ,
+    READ_WRITE,
+    ADMIN
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of a certificate |
+| **permissions** | Map&lt;String, DatabaseAccess&gt; | Map with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+| **password** | String | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="something-something" label="cert_1_4">
+<CodeBlock language="java">
+{`// With user role set to Cluster Administrator or Operator the user of this certificate
+// is going to have access to all databases
+
+CreateClientCertificateOperation operation = new CreateClientCertificateOperation("admin",
+    null, SecurityClearance.OPERATOR);
+CertificateRawData certificateRawData = store.maintenance().server().send(operation);
+byte[] certificatesZipped = certificateRawData.getRawData();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="something-something" label="cert_1_5">
+<CodeBlock language="java">
+{`// when security clearance is ValidUser, you need to specify per database permissions
+CreateClientCertificateOperation operation = new CreateClientCertificateOperation("user1",
+    Collections.singletonMap("Northwind", DatabaseAccess.ADMIN),
+    SecurityClearance.VALID_USER,
+    "myPassword");
+
+CertificateRawData certificateRawData = store.maintenance().server().send(operation);
+byte[] certificateZipped = certificateRawData.getRawData();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* You can generate a client certificate using **CreateClientCertificateOperation**.  
+
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+
+</Admonition>
+
+## Usage
+
+<TabItem value="something-something" label="cert_1_1">
+<CodeBlock language="nodejs">
+{`const cert1 = await store.maintenance.server.send(
+    new CreateClientCertificateOperation([name], [permissions], [clearance], [password]));
+`}
+</CodeBlock>
+</TabItem>
+
+`SecurityClearance` options:
+
+* `UnauthenticatedClients`  
+* `ClusterAdmin`  
+* `ClusterNode`  
+* `Operator`  
+* `ValidUser`  
+
+`DatabaseAccess ` options:
+
+* `ReadWrite`  
+* `Admin`  
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **permissions** | Record&lt;string, DatabaseAccess&gt; | Record mapping databases to access level |
+| **clearance** | SecurityClearance | Access level |
+| **password** | string | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="something-something" label="cert_1_4">
+<CodeBlock language="nodejs">
+{`// With user role set to Cluster Administrator or Operator the user of this certificate
+// is going to have access to all databases
+const clientCertificateOperation = await store.maintenance.server.send(
+    new CreateClientCertificateOperation("admin", \{\}, "Operator"));
+const certificateRawData = clientCertificateOperation.rawData;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="something-something" label="cert_1_5">
+<CodeBlock language="nodejs">
+{`// when security clearance is ValidUser, you need to specify per database permissions
+
+const clearance = \{
+    [store.database]: "ReadWrite"
+\};
+    \}
+
+t clientCertificateOperation = await store.maintenance.server.send(
+new CreateClientCertificateOperation("user1", clearance, "ValidUser", "myPassword"));
+t certificateRawData = clientCertificateOperation.rawData;
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Client API Articles
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)
+
+### Server Articles
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
+- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)
+
+
+-->

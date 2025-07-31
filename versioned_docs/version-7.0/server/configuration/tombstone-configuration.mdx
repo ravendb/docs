@@ -1,0 +1,44 @@
+---
+title: "Configuration: Tombstone Options"
+sidebar_label: Tombstone Configuration
+sidebar_position: 25
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Tombstone Options
+
+## Tombstones.CleanupIntervalInMin
+
+Time (in minutes) between tombstone cleanups.
+
+- **Type**: `TimeUnit.Minutes`
+- **Default**: `5`
+- **Scope**: Server-wide or per database
+
+
+## Tombstones.RetentionTimeWithReplicationHubInHrs
+
+Time (in hours) to save tombsones from deletion if this server is defined 
+as a replication hub.  
+
+- **Type**: `TimeUnit.Hours`
+- **Default**: `336` (14 days)
+- **Scope**: Server-wide or per database
+
+
+## Tombstones.CleanupIntervalWithReplicationHubInMin
+
+Time (in minutes) between tombstone cleanups if this server is defined as 
+a replication hub.  
+
+- **Type**: `TimeUnit.Minutes`
+- **Default**: `1440` (1 day)
+- **Scope**: Server-wide or per database
+

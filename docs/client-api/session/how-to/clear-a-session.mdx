@@ -1,0 +1,192 @@
+---
+title: "Session: How to Clear a Session"
+sidebar_label: ...clear a session
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Session: How to Clear a Session
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `Clear` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="something" label="clear_1">
+<CodeBlock language="csharp">
+{`void Clear();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something" label="clear_2">
+<CodeBlock language="csharp">
+{`session.Store(new Employee
+\{
+    FirstName = "John",
+    LastName = "Doe"
+\});
+
+session.Advanced.Clear();
+
+session.SaveChanges(); // nothing will happen
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the  `clear` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="clear_1">
+<CodeBlock language="java">
+{`void clear()
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="clear_2">
+<CodeBlock language="java">
+{`Employee employee = new Employee();
+employee.setFirstName("John");
+employee.setLastName("Doe");
+session.store(employee);
+
+session.advanced().clear();
+
+session.saveChanges(); // nothing will hapen
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `clear` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="clear_1">
+<CodeBlock language="python">
+{`def clear(self) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="clear_2">
+<CodeBlock language="python">
+{`session.store(Employee(first_name="John", last_name="Doe"))
+
+session.advanced.clear()
+
+session.save_changes()  # nothing will happen
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `clear` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="clear_1">
+<CodeBlock language="php">
+{`public function clear(): void;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="clear_2">
+<CodeBlock language="php">
+{`$employee = new Employee();
+$employee->setFirstName("John");
+$employee->setLastName("Doe");
+$session->store($employee);
+
+$session->advanced()->clear();
+
+$session->saveChanges(); // nothing will hapen
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+To clear session state, stop tracking entities, and remove all pending commands, 
+use the `clear()` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="something-something" label="clear_1">
+<CodeBlock language="nodejs">
+{`session.advanced.clear();
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="clear_2">
+<CodeBlock language="nodejs">
+{`const employee = new Employee();
+employee.firstName = "John";
+employee.lastName = "Doe";
+await session.store(employee);
+
+session.advanced.clear();
+
+await session.saveChanges(); // nothing will hapen
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+
+
+-->

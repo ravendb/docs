@@ -1,0 +1,607 @@
+---
+title: "Named Time Series Values"
+sidebar_label: Named Time Series Values
+sidebar_position: 5
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Named Time Series Values
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="note" title="Note">
+
+* A time series entry consists of a **timestamp**, one or more **values**, and an optional **tag**.  
+  Each value can be given a name to indicate what it represents, such as "Temperature", "Humidity", "Pressure", etc.
+  
+* Referring to these values by their names in time series methods (such as `Append`, `Get`, etc.)  
+  makes your code more readable and easier to manage.
+
+* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series#time-series-view),  
+  you need to register the time series types on the server. 
+
+* In this page:  
+  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values#named-values)  
+     * [Define time series type](../../../document-extensions/timeseries/client-api/named-time-series-values#define-time-series-type)  
+     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values#examples)  
+  * [Register time series type](../../../document-extensions/timeseries/client-api/named-time-series-values#register-time-series-type)  
+     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values#usage)
+     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values#syntax)
+
+</Admonition>
+## Named values
+
+* Many time series are populated with multiple values for each measurement.  
+  For example, each GPS measurement in a route-tracking time series would include at least two values:  
+  latitude and longitude.
+
+* You can ease the management of multi-value time series by -  
+  * Naming time series values in model classes that can be used as time series types.  
+  * Calling time series methods with your custom types to address and manage values by name.  
+#### Define time series type
+
+To define a class for use as a time series type, mark the class properties (which represent the values)  
+with consecutive `TimeSeriesValue` attributes: `TimeSeriesValue(0)`, `TimeSeriesValue(1)`, etc. 
+
+E.g.:
+
+<TabItem value="something" label="Custom-Data-Type-2">
+<CodeBlock language="csharp">
+{`public class RoutePoint
+\{
+    // The Latitude and Longitude properties will contain the time series entry values.
+    // The names for these values will be "Latitude" and "Longitude" respectively.
+    [TimeSeriesValue(0)] public double Latitude;
+    [TimeSeriesValue(1)] public double Longitude;
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+The class can then be used by time series methods like _Append_:  
+
+<TabItem value="something" label="timeseries_region_Append-Named-Values-1">
+<CodeBlock language="csharp">
+{`// Append coordinates
+session.TimeSeriesFor<RoutePoint>("users/john")
+    .Append(baseTime.AddHours(1), new RoutePoint
+    \{
+        Latitude = 40.712776,
+        Longitude = -74.005974
+    \}, "devices/Navigator");
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+A quick way of retrieving a time series entry's value, timestamp, and tag is to use `Deconstruct()`:  
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public void Deconstruct(out DateTime timestamp, out T value);
+public void Deconstruct(out DateTime timestamp, out T value, out string tag);
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+#### Examples
+
+* In this example, we define a StockPrice type and use it when appending StockPrice entries.
+<TabItem value="something" label="Custom-Data-Type-1">
+<CodeBlock language="csharp">
+{`public class StockPrice
+\{
+    [TimeSeriesValue(0)] public double Open;
+    [TimeSeriesValue(1)] public double Close;
+    [TimeSeriesValue(2)] public double High;
+    [TimeSeriesValue(3)] public double Low;
+    [TimeSeriesValue(4)] public double Volume;
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something" label="timeseries_region_Append-Named-Values-2">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    session.Store(new User \{ Name = "John" \}, "users/john");
+
+    // Call 'Append' with the custom StockPrice class
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(1), new StockPrice
+    \{
+        Open = 52,
+        Close = 54,
+        High = 63.5,
+        Low = 51.4,
+        Volume = 9824,
+    \}, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(2), new StockPrice
+    \{
+        Open = 54,
+        Close = 55,
+        High = 61.5,
+        Low = 49.4,
+        Volume = 8400,
+    \}, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(3), new StockPrice
+    \{
+        Open = 55,
+        Close = 57,
+        High = 65.5,
+        Low = 50,
+        Volume = 9020,
+    \}, "companies/kitchenAppliances");
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
+<TabItem value="something" label="timeseries_region_Get-Named-Values">
+<CodeBlock language="csharp">
+{`goingUp = false;
+
+using (var session = store.OpenSession())
+\{
+    // Call 'Get' with the custom StockPrice class type
+    TimeSeriesEntry<StockPrice>[] val = session.TimeSeriesFor<StockPrice>("users/john")
+        .Get();
+
+    var closePriceDay1 = val[0].Value.Close;
+    var closePriceDay2 = val[1].Value.Close;
+    var closePriceDay3 = val[2].Value.Close;
+
+    if ((closePriceDay2 > closePriceDay1)
+        &&
+        (closePriceDay3 > closePriceDay2))
+        goingUp = true;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* In this query, we use the custom StockPrice type so we can address trade Volume by name.
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    var query =
+        session.Query<Company>()
+        .Where(c => c.Address.City == "New York")
+         // Use the StockPrice type in the time series query
+        .Select(q => RavenQuery.TimeSeries<StockPrice>(q, "StockPrices", baseTime, baseTime.AddDays(3))
+            .Where(ts => ts.Tag == "companies/kitchenAppliances")
+            .ToList());
+
+    List<TimeSeriesRawResult<StockPrice>> queryResults = query.ToList();
+    
+    var tsEntries = queryResults[0].Results;
+
+    double volumeDay1 = tsEntries[0].Value.Volume;
+    double volumeDay2 = tsEntries[1].Value.Volume;
+    double volumeDay3 = tsEntries[2].Value.Volume;
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "companies" as c
+where Address.City = $p0
+select timeseries(
+    from c.StockPrices
+    between $p1 and $p2
+    where (Tag == $p3))
+{
+   "p0":"New York",
+   "p1":"2024-06-03T10:47:00.7880000Z",
+   "p2":"2024-06-06T10:47:00.7880000Z",
+   "p3":"companies/kitchenAppliances"
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Register time series type
+
+Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record).  
+This allows the Studio to present time series values by name when you view and manage them.
+#### Usage
+
+To register a time series type, call `store.TimeSeries.Register`, e.g.:
+
+<TabItem value="something" label="timeseries_region_Named-Values-Register">
+<CodeBlock language="csharp">
+{`// Register the StockPrice class type on the server
+store.TimeSeries.Register<Company, StockPrice>();
+`}
+</CodeBlock>
+</TabItem>
+
+<br/>
+The time series entries will be listed in the Studio under their corresponding named values:
+
+!["Time series entries"](./assets/time-series-entries.png)
+
+<br/>
+The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings) in the Studio:
+
+!["Time series settings view"](./assets/time-series-settings-view.png)
+#### Syntax
+
+<TabItem value="something" label="Register-Definition-1">
+<CodeBlock language="csharp">
+{`public void Register<TCollection, TTimeSeriesEntry>(string name = null)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something" label="Register-Definition-2">
+<CodeBlock language="csharp">
+{`public void Register<TCollection>(string name, string[] valueNames)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something" label="Register-Definition-3">
+<CodeBlock language="csharp">
+{`public void Register(string collection, string name, string[] valueNames)
+`}
+</CodeBlock>
+</TabItem>
+
+<br/>
+
+| Parameter            | Type             | Description                                                             |
+|----------------------|------------------|-------------------------------------------------------------------------|
+| **TCollection**      | Collection type  | The time series collection                                              |
+| **TTimeSeriesEntry** | Time series type | The custom time series type                                             |
+| **collection**       | `string`         | The time series collection name<br/>(when `TCollection` is not provided) |
+| **name**             | `string `        | Time series name                                                        |
+| **valueNames**       | `string[]`       | Names to register (name per value)                                      | 
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+<Admonition type="note" title="Note">
+
+* A time series entry consists of a **timestamp**, one or more **values**, and an optional **tag**.  
+  Each value can be given a name to indicate what it represents, such as "Temperature", "Humidity", "Pressure", etc.
+  
+* Referring to these values by their names in time series methods (such as `append`, `get`, etc.)  
+  makes your code more readable and easier to manage.
+
+* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series#time-series-view),  
+  you need to register the named values on the server. 
+
+* In this page:  
+  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values#named-values)  
+     * [Define time series class with named values](../../../document-extensions/timeseries/client-api/named-time-series-values#define-time-series-class-with-named-values)  
+     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values#examples)  
+  * [Register time series named values](../../../document-extensions/timeseries/client-api/named-time-series-values#register-time-series-named-values)  
+     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values#usage)
+     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values#syntax)
+
+</Admonition>
+## Named values
+
+* Many time series are populated with multiple values for each measurement.  
+  For example, each GPS measurement in a route-tracking time series would include at least two values:  
+  latitude and longitude.
+
+* You can ease the management of multi-value time series by -  
+  * Naming time series values in custom classes.  
+  * Calling time series methods with your custom types to address and manage values by name.  
+#### Define time series class with named values
+
+To define a class with named values, add the static property `TIME_SERIES_VALUES` to the class.  
+E.g.:
+
+<TabItem value="something-something" label="routePoint_class">
+<CodeBlock language="nodejs">
+{`class RoutePoint \{
+    
+    // Add the following static param:
+    static TIME_SERIES_VALUES = ["latitude", "longitude"];
+
+    // The Latitude and Longitude properties will contain the time series entry values.
+    // The names for these values will be "latitude" and "longitude" respectively.
+    
+    constructor(
+        latitude = 0,
+        longitude = 0
+    ) \{
+        Object.assign(this, \{
+            latitude,
+            longitude
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+The class can then be used by time series methods like _append_:  
+
+<TabItem value="something-something" label="named_values_1">
+<CodeBlock language="nodejs">
+{`const baseTime = new Date();
+const oneHour = 60 * 60 * 1000;
+let nextHour = new Date(baseTime.getTime() + oneHour);
+
+const tsf = session.timeSeriesFor("users/john", "RoutePoints", RoutePoint);
+
+const routePoint = new RoutePoint();
+routePoint.latitude = 40.712776;
+routePoint.longitude = -74.005974;
+
+// Append coordinates using the routePoint object
+tsf.append(nextHour, routePoint, "devices/Navigator");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+#### Examples
+
+* In this example, we define a StockPrice class and use it when appending StockPrice entries.
+<TabItem value="something-something" label="stockPrice_class">
+<CodeBlock language="nodejs">
+{`class StockPrice \{
+
+    // Define the names for the entry values
+    static TIME_SERIES_VALUES = ["open", "close", "high", "low", "volume"];
+
+    constructor(
+        open = 0,
+        close = 0,
+        high = 0,
+        low = 0,
+        volume = 0
+    ) \{
+        Object.assign(this, \{
+            open,
+            close,
+            high,
+            low,
+            volume
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="named_values_2">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+await session.store(new User("John"), "users/john");
+
+// Get an instance of 'timeSeriesFor', pass:
+// * the document ID
+// * the time series name
+// * the class that will hold the entry's values
+const tsf = session.timeSeriesFor("users/john", "StockPrices", StockPrice);
+
+const optionalTag = "companies/kitchenAppliances";
+const baseTime = new Date();
+baseTime.setUTCHours(0);
+const oneDay = 24 * 60 * 60 * 1000;
+
+// Provide the multiple values via the StockPrice class
+const price1 = new StockPrice();
+price1.open = 52;
+price1.close = 54;
+price1.high = 63.5;
+price1.low = 51.4;
+price1.volume = 9824;
+
+// Call 'append' with the custom StockPrice class
+let nextDay = new Date(baseTime.getTime() + oneDay);
+tsf.append(nextDay, price1, optionalTag);
+
+const price2 = new StockPrice();
+price2.open = 54;
+price2.close = 55;
+price2.high = 61.5;
+price2.low = 49.4;
+price2.volume = 8400;
+
+nextDay = new Date(baseTime.getTime() + oneDay * 2);
+tsf.append(nextDay, price2, optionalTag);
+
+const price3 = new StockPrice();
+price3.open = 55;
+price3.close = 57;
+price3.high = 65.5;
+price3.low = 50;
+price3.volume = 9020;
+
+nextDay = new Date(baseTime.getTime() + oneDay * 3);
+tsf.append(nextDay, price3, optionalTag);
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+* In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
+<TabItem value="something-something" label="named_values_3">
+<CodeBlock language="nodejs">
+{`let goingUp = false;
+
+const allEntries = await session
+    .timeSeriesFor("users/john", "StockPrices")
+    .get();
+
+// Call 'asTypedEntry' to be able to access the entry's values by their names
+// Pass the class type (StockPrice)
+const typedEntry1 = allEntries[0].asTypedEntry(StockPrice);
+
+// Access the entry value by its StockPrice class property name (close)
+const closePriceDay1 = typedEntry1.value.close;
+
+const typedEntry2 = allEntries[1].asTypedEntry(StockPrice);
+const closePriceDay2 = typedEntry2.value.close;
+
+const typedEntry3 = allEntries[2].asTypedEntry(StockPrice);
+const closePriceDay3 = typedEntry3.value.close;
+
+// Check if the stock's closing price is rising
+if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) \{
+    goingUp = true;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* In this query, we use the custom StockPrice type so we can address trade Volume by name.
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const oneDay = 24 * 60 * 60 * 1000;
+const startTime = new Date();
+const endTime = new Date(startTime.getTime() + 3 * oneDay);
+
+// Note: the 'where' clause must come after the 'between' clause
+const tsQueryText = \`
+    from StockPrices
+    between $start and $end
+    where Tag == "AppleTech"\`;
+
+const query = session.query({ collection: "companies" })
+    .whereEquals("address.city", "New York")
+    .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
+    .addParameter("start", startTime)
+    .addParameter("end", endTime);
+
+// Execute the query:
+const results = await query.all();
+
+// Access entries results:
+const tsEntries = results[0].results;
+
+// Call 'asTypedEntry' to be able to access the entry's values by their names
+// Pass the class type (StockPrice)
+const volumeDay1 = tsEntries[0].asTypedEntry(StockPrice).value.volume;
+const volumeDay2 = tsEntries[1].asTypedEntry(StockPrice).value.volume;
+const volumeDay3 = tsEntries[2].asTypedEntry(StockPrice).value.volume;
+`}
+</CodeBlock>
+</TabItem>  
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "companies"
+where address.city = $p0
+select timeseries(
+    from StockPrices
+    between $start and $end
+    where Tag == "AppleTech")
+{
+   "p0":"New York",
+   "start":"2024-06-04T06:02:39.826Z",
+   "end":"2024-06-07T06:02:39.826Z"
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Register time series named values
+
+Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record).  
+This allows the Studio to present time series values by name when you view and manage them.
+#### Usage
+
+To register a time series type, call `documentStore.timeSeries.register`, e.g.:
+
+<TabItem value="something-something" label="named_values_5">
+<CodeBlock language="nodejs">
+{`// Register the named values for the 'StockPrices' series on the server
+await documentStore.timeSeries.register("Users",
+    "StockPrices", ["open", "close", "high", "low", "volume"]);
+`}
+</CodeBlock>
+</TabItem>
+
+<br/>
+The time series entries will be listed in the Studio under their corresponding named values:
+
+!["Time series entries"](./assets/time-series-entries-js.png)
+
+<br/>
+The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings) in the Studio:
+
+!["Time series settings view"](./assets/time-series-settings-view-js.png)
+#### Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+register(collection, name, valueNames);
+register(collectionClass, name, valueNames);
+register(collectionClass, timeSeriesEntryClass);
+register(collectionClass, timeSeriesEntryClass, name); 
+`}
+</CodeBlock>
+</TabItem>
+
+<br/>
+
+| Parameter                | Type       | Description                        |
+|--------------------------|------------|------------------------------------|
+| **collection**           | `string`   | The time series collection name    |
+| **name**                 | `string `  | Time series name                   |
+| **valueNames**           | `string[]` | Names to register (name per value) |
+| **collectionClass**      | `object`   | The collection class               |
+| **timeSeriesEntryClass** | `object`   | The custom time series entry class |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Time Series Overview
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+
+### Studio Articles
+- [Studio Time Series Management](../../../studio/database/document-extensions/time-series)
+- [Time Series Settings View](../../../studio/database/settings/time-series-settings)
+
+### Querying and Indexing
+- [Time Series Querying](../../../document-extensions/timeseries/querying/overview-and-syntax)
+- [Time Series Indexing](../../../document-extensions/timeseries/indexing)
+
+### Policies
+- [Time Series Rollup and Retention](../../../document-extensions/timeseries/rollup-and-retention)
+
+
+-->

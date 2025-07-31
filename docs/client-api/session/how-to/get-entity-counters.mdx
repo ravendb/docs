@@ -1,0 +1,237 @@
+---
+title: "How to Get Entity Counters"
+sidebar_label: ...get entity counters
+sidebar_position: 10
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# How to Get Entity Counters
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* When a document is loaded to the session,  
+  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
+
+* If the document has __Counters__, the document metadata will also contain its counter names.  
+  The counter names are available for each entity using the `GetCountersFor()` method from the `Advanced` session operations.
+
+* In this page:
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+</Admonition>
+## Get entity counters
+
+<TabItem value="something" label="example">
+<CodeBlock language="csharp">
+{`// Load a document
+var employee = session.Load<Employee>("employees/1-A");
+
+// Get counter names from the loaded entity
+List<string> counterNames = session.Advanced.GetCountersFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`List<string> GetCountersFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **instance** | T | Instance of an entity for which counter names will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `List<string>` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br/>An exception is thrown if the `instance` is not tracked by the session. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* When a document is loaded to the session, the loaded entity will include 
+  various metadata details such as ID, current change-vector, etc.
+
+* If the document has **Counters**, the document metadata will also contain 
+  its counter names.  
+  The counter names are available for each entity using the `get_counters_for()` 
+  method from the `advanced` session operations.
+
+* In this page:
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+</Admonition>
+## Get entity counters
+
+<TabItem value="something-something" label="example">
+<CodeBlock language="python">
+{`# Load a document
+employee = session.load("employees/1-A")
+
+# Get counter names from the loaded entity
+counter_names = session.advanced.get_counters_for(employee)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`def get_counters_for(self, entity: object) -> List[str]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | `object` | Instance of an entity for which counter names will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `List[str]` | Returns the counter names for the specified entity, or `None` if the entity has no counters.<br/>An exception is thrown if the entity is not tracked by the session. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* When a document is loaded to the session, the loaded entity will include 
+  various metadata details such as ID, current change-vector, etc.
+
+* If the document has **Counters**, the document metadata will also contain 
+  its counter names.  
+  The counter names are available for each entity using the `getCountersFor()` 
+  method from the `advanced` session operations.
+
+* In this page:
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+</Admonition>
+## Get entity counters
+
+<TabItem value="something-something" label="example">
+<CodeBlock language="php">
+{`// Load a document
+$employee = $session->load(Employee::class, "employees/1-A");
+
+// Get counter names from the loaded entity
+$counterNames = $session->advanced()->getCountersFor($employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`public function getCountersFor(mixed $instance): ?StringList;
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **$instance** | `mixed` | An instance of an entity for which counter names will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `?StringList` | Returns the counter names for the specified entity, or `None` if the entity has no counters.<br/>An exception is thrown if the entity is not tracked by the session. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* When a document is loaded to the session,  
+  the loaded entity will contain various metadata information such as ID, current change-vector, and more.
+
+* If the document has __Counters__, the document metadata will also contain its counter names.  
+  The counter names are available for each entity using the `getCountersFor()` method from the `advanced` session operations.
+
+* In this page:
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+</Admonition>
+## Get entity counters
+
+<TabItem value="something-something" label="example">
+<CodeBlock language="nodejs">
+{`// Load a document
+const employee = await session.load("employees/1-A");
+
+// Get counter names from the loaded entity
+const counterNames = session.advanced.getCountersFor(employee);    
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`getCountersFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **entity** | T | The entity for which counter names will be returned. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `string[]` | Returns the counter names for the specified entity, or `null` if the entity has no counters.<br/>An exception is thrown if the entity is not tracked by the session. |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+
+### Counters
+- [Counters Overview](../../../document-extensions/counters/overview)
+
+
+-->

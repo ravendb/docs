@@ -1,0 +1,81 @@
+---
+title: "Documents: Compare Exchange View"
+sidebar_label: Compare Exchange
+sidebar_position: 5
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Documents: Compare Exchange View
+<Admonition type="note" title="Note">
+
+* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview) are cluster-wide key/value pair items where the key 
+  is a unique identifier in the database.
+
+* CmpXchg items coordinate work between sessions that are 
+  trying to modify a shared resource (such as a document) at the same time.
+
+* Compare exchange items are created and managed by either of the following:
+  * RavenDB [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)  
+    To guarantee ACIDity across the cluster, 
+    as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
+  * [API Operations](../../../client-api/operations/compare-exchange/overview)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction/overview)
+  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+* In this page:
+  * [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+
+</Admonition>
+## The Compare Exchange View
+
+![Compare Exchange View](./assets/compare-exchange-view.png)
+
+1. **Documents Tab**  
+   Select to see document-related options and the list of documents in this database .  
+2. **Compare Exchange**  
+   Select to see the Compare Exchange view.  
+3. **Add new item**  
+   Click to add a new compare exchange key/value pair.  
+4. **Compare exchange key/value properties**  
+   Click the edit button or key name to edit this item.  
+    ![Compare Exchange Single Pair](./assets/compare-exchange-single-pair.png)
+    1. **Key**  
+       A unique identifier that is reserved across the cluster.  
+       Enter any string of your choice.  
+        <Admonition type="info" title="Atomic Guards" id="atomic-guards" href="#atomic-guards">
+        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards).  
+        They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
+        **Do not remove or edit these** as this will disable ACID guarantees.  
+        
+        ![Atomic Guard](./assets/compare-exchange-atomic-guard.png)
+
+        </Admonition>
+    2. **Value**  
+       Enter a value that will be associated with the key.  
+       Values can be numbers, strings, arrays, or objects. Any value that can be represented as JSON is valid.
+    3. **Metadata**  
+       Click to add metadata.  
+       The metadata is associated with the key, similar to document's metadata.  
+    4. **Raft Index**  
+       The raft index increments automatically each time the value or metadata are changed, indicating the compare-exchange item's 
+       current version.  
+    5. **Delete**  
+       Click to delete this compare exchange item.  
+       <Admonition type="warning" title="Warning" id="warning" href="#warning">
+       Deleting a compare exchange item will remove ACID guarantees for transactions if the pair was set up to protect ACIDity.  
+       Only remove or edit these if you _truly_ know what you're doing.  
+       </Admonition>
+    6. **Save**  
+       Save will only succeed if the Raft Index version that is currently stored within RavenDB for this key 
+       matches the version that shows in the view.  
+
+
+
+

@@ -1,0 +1,759 @@
+---
+title: "Set Index Lock Mode Operation"
+sidebar_label: Set Index Lock Mode
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Set Index Lock Mode Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The lock mode controls the behavior of index modifications.  
+  Use `SetIndexesLockOperation` to modify the **lock mode** for a single index or multiple indexes.
+
+* **Indexes scope**:  
+  The lock mode can be set only for static-indexes, not for auto-indexes.
+
+* **Nodes scope**:  
+  The lock mode will be updated on all nodes in the database group.
+
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+  Locking an index is not a security measure, the index can be unlocked at any time.  
+
+* In this page:
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+
+</Admonition>
+## Lock modes
+
+* **Unlocked** - when lock mode is set to `Unlock`:  
+  * Any change to the index definition will be applied.  
+  * If the new index definition differs from the one stored on the server,  
+    the index will be updated and the data will be re-indexed using the new index definition.  
+  * The index can be deleted.
+ 
+* **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
+  * Index definition changes will Not be applied.  
+  * Modifying the index definition will return successfully and no error will be raised,  
+    however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
+
+* **Locked (error)** - when lock mode is set to `LockedError`:  
+  * Index definitions changes will Not be applied.  
+  * An exception will be thrown upon trying to modify or delete the index.  
+  * The index cannot be deleted. Attempting to do so will result in an exception.
+
+
+
+## Sample usage flow
+
+Consider the following scenario:
+
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+  
+* After the application has started, you make a change to your index definition and re-indexing occurs.   
+  However, if the index lock mode is _'Unlock'_, the next time your application will start,  
+  it will reset the index definition back to the original version.
+
+* Locking the index allows to make changes to the running index and prevents the application  
+  from setting it back to the previous definition upon startup. See the following steps:  
+<br/>
+
+  1. Run your application  
+  2. Modify the index definition on the server (from Studio, or from another application),  
+     and then set this index lock mode to `LockedIgnore`.  
+  3. A side-by-side replacement index is created on the server.  
+     It will index your dataset according to the **new** definition.  
+  4. At this point, if any instance of your original application is started,  
+     the code that defines and deploys the index upon startup will have no effect  
+     since the index is 'locked'.  
+  5. Once the replacement index is done indexing, it will replace the original index.  
+
+
+
+## Set lock mode - single index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the set lock mode operation
+// Pass index name & lock mode
+var setLockModeOp = new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LockedIgnore);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if index does not exist
+store.Maintenance.Send(setLockModeOp);
+
+// Lock mode is now set to 'LockedIgnore'
+// Any modifications done now to the index will Not be applied, and will Not throw
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the set lock mode operation
+// Pass index name & lock mode
+var setLockModeOp = new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LockedIgnore);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if index does not exist
+await store.Maintenance.SendAsync(setLockModeOp);
+
+// Lock mode is now set to 'LockedIgnore'
+// Any modifications done now to the index will Not be applied, and will Not throw
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Set lock mode - multiple indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the index list and the new lock mode:
+var parameters = new SetIndexesLockOperation.Parameters {
+    IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
+    Mode = IndexLockMode.LockedError
+};
+    
+// Define the set lock mode operation, pass the parameters
+var setLockModeOp = new SetIndexesLockOperation(parameters);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+store.Maintenance.Send(setLockModeOp);
+
+// Lock mode is now set to 'LockedError' on both indexes
+// Any modifications done now to either index will throw
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the index list and the new lock mode:
+var parameters = new SetIndexesLockOperation.Parameters {
+    IndexNames = new[] {"Orders/Totals", "Orders/ByCompany"}, 
+    Mode = IndexLockMode.LockedError
+};
+
+// Define the set lock mode operation, pass the parameters
+var setLockModeOp = new SetIndexesLockOperation(parameters);
+                
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if any of the specified indexes do not exist
+await store.Maintenance.SendAsync(setLockModeOp);
+
+// Lock mode is now set to 'LockedError' on both indexes
+// Any modifications done now to either index will throw
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public SetIndexesLockOperation(string indexName, IndexLockMode mode);
+public SetIndexesLockOperation(Parameters parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|- | - | - |
+| **indexName** | string | Index name for which to set lock mode |
+| **mode** | `IndexLockMode` | Lock mode to set |
+| **parameters** | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br/>An exception is thrown if any of the specified indexes do not exist. |
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public enum IndexLockMode
+\{
+    Unlock,
+    LockedIgnore,
+    LockedError
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    public string[] IndexNames \{ get; set; \}
+    public IndexLockMode Mode \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
+
+## Syntax
+
+<TabItem value="something-something" label="set_lock_mode_1">
+<CodeBlock language="java">
+{`public SetIndexesLockOperation(String indexName, IndexLockMode mode)
+public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="set_lock_mode_2">
+<CodeBlock language="java">
+{`public enum IndexLockMode \{
+    UNLOCK,
+    LOCKED_IGNORE,
+    LOCKED_ERROR
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="set_lock_mode_3">
+<CodeBlock language="java">
+{`public static class Parameters \{
+    private String[] indexNames;
+    private IndexLockMode mode;
+
+    public String[] getIndexNames() \{
+        return indexNames;
+    \}
+
+    public void setIndexNames(String[] indexNames) \{
+        this.indexNames = indexNames;
+    \}
+
+    public IndexLockMode getMode() \{
+        return mode;
+    \}
+
+    public void setMode(IndexLockMode mode) \{
+        this.mode = mode;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to change lock mode for |
+| **lockMode** | IndexLockMode | new index lock mode |
+| **parameters** | SetIndexesLockOperation.Parameters | list of indexes + new index lock mode |
+
+## Example I
+
+<TabItem value="something-something" label="set_lock_mode_4">
+<CodeBlock language="java">
+{`store.maintenance().send(new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LOCKED_IGNORE));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="something-something" label="set_lock_mode_5">
+<CodeBlock language="java">
+{`SetIndexesLockOperation.Parameters parameters = new SetIndexesLockOperation.Parameters();
+parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
+parameters.setMode(IndexLockMode.LOCKED_IGNORE);
+
+store.maintenance().send(new SetIndexesLockOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* The lock mode controls the behavior of index modifications.  
+  Use `SetIndexesLockOperation` to modify the **lock mode** for a single index or multiple indexes.
+
+* **Indexes scope**:  
+  The lock mode can be set only for static-indexes, not for auto-indexes.
+
+* **Nodes scope**:  
+  The lock mode will be updated on all nodes in the database group.
+
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+  Locking an index is not a security measure, the index can be unlocked at any time.  
+
+* In this page:
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+
+</Admonition>
+## Lock modes
+
+* **Unlocked** - when lock mode is set to `UNLOCK`:  
+  * Any change to the index definition will be applied.  
+  * If the new index definition differs from the one stored on the server,  
+    the index will be updated and the data will be re-indexed using the new index definition.
+  * The index can be deleted.
+ 
+* **Locked (ignore)** - when lock mode is set to `LOCKED_IGNORE`:  
+  * Index definition changes will Not be applied.  
+  * Modifying the index definition will return successfully and no error will be raised,  
+    however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
+ 
+* **Locked (error)** - when lock mode is set to `LOCKED_ERROR`:  
+  * Index definitions changes will Not be applied.  
+  * An exception will be thrown upon trying to modify the index.
+  * The index cannot be deleted. Attempting to do so will result in an exception.
+
+
+
+## Sample usage flow
+
+Consider the following scenario:
+
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+  
+* After the application has started, you make a change to your index definition and re-indexing occurs.   
+  However, if the index lock mode is `UNLOCK`, the next time your application will start,  
+  it will reset the index definition back to the original version.
+
+* Locking the index allows to make changes to the running index and prevents the application  
+  from setting it back to the previous definition upon startup. See the following steps:  
+<br/>
+
+  1. Run your application  
+  2. Modify the index definition on the server (from Studio, or from another application),  
+     and then set this index lock mode to `LOCKED_IGNORE`.  
+  3. A side-by-side replacement index is created on the server.  
+     It will index your dataset according to the **new** definition.  
+  4. At this point, if any instance of your original application is started,  
+     the code that defines and deploys the index upon startup will have no effect  
+     since the index is `LOCKED`.  
+  5. Once the replacement index is done indexing, it will replace the original index.  
+
+
+
+## Set lock mode - single index
+
+<TabItem value="something-something" label="set_lock_single">
+<CodeBlock language="python">
+{`# Define the set lock mode operation
+# Pass index name & lock mode
+set_lock_mode_op = SetIndexesLockOperation(IndexLockMode.LOCKED_IGNORE, "Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if index does not exist
+store.maintenance.send(set_lock_mode_op)
+
+# Lock mode is now set to 'LockedIgnore'
+# Any modification done now to the index will Not be applied, and will Not throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Set lock mode - multiple indexes
+
+<TabItem value="something-something" label="set_lock_multiple">
+<CodeBlock language="python">
+{`# Define the set lock mode operation, pass the parameters
+set_lock_mode_op = SetIndexesLockOperation(IndexLockMode.LOCKED_ERROR, "Orders/Totals", "Orders/ByCompany")
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if any of the specified indexes does not exist
+store.maintenance.send(set_lock_mode_op)
+
+# Lock mode is now set to 'LockedError' on both indexes
+# Any modifications done now to either index will throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="python">
+{`class SetIndexesLockOperation(VoidMaintenanceOperation):
+    def __init__(self, mode: IndexLockMode, *index_names: str): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|- | - | - |
+| **mode** | `IndexLockMode` | Lock mode to set |
+| **\*index_names** | `str` | Index names to set lock mode for |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="python">
+{`class IndexLockMode(Enum):
+    UNLOCK = "Unlock"
+    LOCKED_IGNORE = "LockedIgnore"
+    LOCKED_ERROR = "LockedError"
+
+    def __str__(self):
+        return self.value
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* The lock mode controls the behavior of index modifications.  
+  Use `SetIndexesLockOperation` to modify the **lock mode** for a single index or multiple indexes.
+
+* **Indexes scope**:  
+  The lock mode can be set only for static-indexes, not for auto-indexes.
+
+* **Nodes scope**:  
+  The lock mode will be updated on all nodes in the database group.
+
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+  Locking an index is not a security measure, the index can be unlocked at any time.  
+
+* In this page:
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+
+</Admonition>
+## Lock modes
+
+* **Unlocked** - when lock mode is set using `unlock()`:  
+  * Any change to the index definition will be applied.  
+  * If the new index definition differs from the one stored on the server,  
+    the index will be updated and the data will be re-indexed using the new index definition.
+  * The index can be deleted.
+ 
+* **Locked (ignore)** - when lock mode is set using `lockedIgnore()`:  
+  * Index definition changes will Not be applied.  
+  * Modifying the index definition will return successfully and no error will be raised,  
+    however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
+ 
+* **Locked (error)** - when lock mode is set using `lockedError()`:  
+  * Index definitions changes will Not be applied.  
+  * An exception will be thrown upon trying to modify the index.
+  * The index cannot be deleted. Attempting to do so will result in an exception.
+
+
+
+## Sample usage flow
+
+Consider the following scenario:
+
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+  
+* After the application has started, you make a change to your index definition and re-indexing occurs.   
+  However, if the index lock mode is `unlock`, the next time your application will start,  
+  it will reset the index definition back to the original version.
+
+* Locking the index allows to make changes to the running index and prevents the application  
+  from setting it back to the previous definition upon startup. See the following steps:  
+<br/>
+
+  1. Run your application  
+  2. Modify the index definition on the server (from Studio, or from another application),  
+     and then set this index lock mode to `lockedIgnore`.  
+  3. A side-by-side replacement index is created on the server.  
+     It will index your dataset according to the **new** definition.  
+  4. At this point, if any instance of your original application is started,  
+     the code that defines and deploys the index upon startup will have no effect  
+     since the index is locked.  
+  5. Once the replacement index is done indexing, it will replace the original index.  
+
+
+
+## Set lock mode - single index
+
+<TabItem value="something-something" label="set_lock_single">
+<CodeBlock language="php">
+{`// Define the set lock mode operation
+// Pass index name & lock mode
+$setLockModeOp = new SetIndexesLockOperation("Orders/Totals", IndexLockMode::lockedIgnore());
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if index does not exist
+$store->maintenance()->send($setLockModeOp);
+
+// Lock mode is now set to 'LockedIgnore'
+// Any modifications done now to the index will Not be applied, and will Not throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Set lock mode - multiple indexes
+
+<TabItem value="something-something" label="set_lock_multiple">
+<CodeBlock language="php">
+{`// Define the index list and the new lock mode:
+$parameters = new IndexLockParameters();
+$parameters->setIndexNames([ "Orders/Totals", "Orders/ByCompany" ]);
+$parameters->setMode(IndexLockMode::lockedError());
+
+// Define the set lock mode operation, pass the parameters
+$setLockModeOp = new SetIndexesLockOperation($parameters);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+$store->maintenance()->send($setLockModeOp);
+
+// Lock mode is now set to 'LockedError' on both indexes
+// Any modifications done now to either index will throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="php">
+{`// Available overloads:
+SetIndexesLockOperation(?string $indexName, ?IndexLockMode $mode);
+SetIndexesLockOperation(?Parameters $parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|- | - | - |
+| **$mode** | `?IndexLockMode` | Lock mode to set |
+| **$indexName** | `?string` | Index names to set lock mode for |
+| **$parameters** | `?Parameters` | Index lock parameters |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="php">
+{`class IndexLockMode
+\{
+    public static function unlock(): IndexLockMode;
+    public static function lockedIgnore(): IndexLockMode
+    public static function lockedError(): IndexLockMode;
+
+    public function isUnlock(): bool;
+    public function isLockedIgnore(): bool;
+    public function isLockedError(): bool;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The lock mode controls the behavior of index modifications.  
+  Use `SetIndexesLockOperation` to modify the **lock mode** for a single index or multiple indexes.
+
+* **Indexes scope**:  
+  The lock mode can be set only for static-indexes, not for auto-indexes.
+
+* **Nodes scope**:  
+  The lock mode will be updated on all nodes in the database group.
+
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+  Locking an index is not a security measure, the index can be unlocked at any time.  
+
+
+* In this page:
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+
+</Admonition>
+## Lock modes
+
+* **Unlocked** - when lock mode is set to `Unlock`:  
+  * Any change to the index definition will be applied.  
+  * If the new index definition differs from the one stored on the server,  
+    the index will be updated and the data will be re-indexed using the new index definition.
+  * The index can be deleted.
+ 
+* **Locked (ignore)** - when lock mode is set to `LockedIgnore`:  
+  * Index definition changes will Not be applied.  
+  * Modifying the index definition will return successfully and no error will be raised,  
+    however, no change will be made to the index definition on the server.
+  * Trying to delete the index will not remove it from the server, and no error will be raised.
+ 
+* **Locked (error)** - when lock mode is set to `LockedError`:  
+  * Index definitions changes will Not be applied.  
+  * An exception will be thrown upon trying to modify the index.
+  * The index cannot be deleted. Attempting to do so will result in an exception.
+
+
+
+## Sample usage flow
+
+Consider the following scenario:
+
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+  
+* After the application has started, you make a change to your index definition and re-indexing occurs.   
+  However, if the index lock mode is _'Unlock'_, the next time your application will start,  
+  it will reset the index definition back to the original version.
+
+* Locking the index allows to make changes to the running index and prevents the application  
+  from setting it back to the previous definition upon startup. See the following steps:  
+<br/>
+
+  1. Run your application  
+  2. Modify the index definition on the server (from Studio, or from another application),  
+     and then set this index lock mode to `LockedIgnore`.  
+  3. A side-by-side replacement index is created on the server.  
+     It will index your dataset according to the **new** definition.  
+  4. At this point, if any instance of your original application is started,  
+     the code that defines and deploys the index upon startup will have no effect  
+     since the index is 'locked'.  
+  5. Once the replacement index is done indexing, it will replace the original index.  
+
+
+
+## Set lock mode - single index
+
+<TabItem value="something-something" label="set_lock_single">
+<CodeBlock language="nodejs">
+{`// Define the set lock mode operation
+// Pass index name & lock mode
+const setLockModeOp = new SetIndexesLockOperation("Orders/Totals", "LockedIgnore");
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if index does not exist
+await store.maintenance.send(setLockModeOp);
+
+// Lock mode is now set to 'LockedIgnore'
+// Any modifications done now to the index will Not be applied, and will Not throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Set lock mode - multiple indexes
+
+<TabItem value="something-something" label="set_lock_multiple">
+<CodeBlock language="nodejs">
+{`// Define the index list and the new lock mode:
+const parameters = \{
+    indexNames: ["Orders/Totals", "Orders/ByCompany"],
+    mode: "LockedError"
+\}
+
+// Define the set lock mode operation, pass the parameters
+const setLockModeOp = new SetIndexesLockOperation(parameters);
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if any of the specified indexes do not exist
+await store.maintenance.send(setLockModeOp);
+
+// Lock mode is now set to 'LockedError' on both indexes
+// Any modifications done now to either index will throw
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+const setLockModeOp = new SetIndexesLockOperation(indexName, mode);
+const setLockModeOp = new SetIndexesLockOperation(parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|- | - | - |
+| **indexName** | string | Index name for which to set lock mode |
+| **mode** | `"Unlock"` /<br/> `"LockedIgnore"` /<br/> `"LockedError"` | Lock mode to set |
+| **parameters** | parameters object | List of indexes + lock mode to set.<br/>An exception is thrown if any of the specified indexes do not exist. |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// parameters object
+\{
+    indexNames, // string[], list of index names
+    mode        // Lock mode to set
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-index-priority)
+
+
+-->

@@ -1,0 +1,439 @@
+---
+title: "Changes API: How to Subscribe to Counter Changes"
+sidebar_label: How to Subscribe to Counter Changes
+sidebar_position: 4
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Changes API: How to Subscribe to Counter Changes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Following methods allow you to subscribe to counter changes:
+
+- [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounter)
+- [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounterofdocument)
+- [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
+- [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes#forallcounters)
+
+## ForCounter
+
+Counter changes can be observed using `ForCounter` method. This will subscribe changes from all counters with a given name, no matter in what document counter was changed.
+
+### Syntax
+
+<TabItem value="something" label="counter_changes_1">
+<CodeBlock language="csharp">
+{`IChangesObservable<CounterChange> ForCounter(string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **counterName** | string | Name of a counter to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something" label="counter_changes_1_1">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForCounter("Likes")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case CounterChangeTypes.Increment:
+                    // do something
+                    break;
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForCounterOfDocument
+
+Specific counter changes of a given document can be observed using `ForCounterOfDocument` method.
+
+### Syntax
+
+<TabItem value="something" label="counter_changes_2">
+<CodeBlock language="csharp">
+{`IChangesObservable<CounterChange> ForCounterOfDocument(string documentId, string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | string | ID of a document to subscribe to. |
+| **counterName** | string | Name of a counter to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something" label="counter_changes_2_1">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForCounterOfDocument("companies/1-A", "Likes")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case CounterChangeTypes.Increment:
+                    // do something
+                    break;
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForCountersOfDocument
+
+Counter changes of a specified document can be observed using `ForCountersOfDocument` method.
+
+### Syntax
+
+<TabItem value="something" label="counter_changes_3">
+<CodeBlock language="csharp">
+{`IChangesObservable<CounterChange> ForCountersOfDocument(string documentId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | string | ID of a document to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something" label="counter_changes_3_1">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForCountersOfDocument("companies/1-A")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case CounterChangeTypes.Increment:
+                    // do something
+                    break;
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllCounters
+
+Changes for all counters can be observed using `ForAllCounters` method.
+
+### Syntax
+
+<TabItem value="something" label="counter_changes_4">
+<CodeBlock language="csharp">
+{`IChangesObservable<CounterChange> ForAllCounters();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something" label="counter_changes_4_1">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForAllCounters()
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case CounterChangeTypes.Increment:
+                    // do something
+                    break;
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## CounterChange
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [CounterChangeTypes](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchangetypes) | Counter change type enum |
+| **Name** | string | Counter name |
+| **Value** | long | Counter value after the change |
+| **DocumentId** | string | Counter document identifier |
+| **ChangeVector** | string | Counter's ChangeVector|
+
+
+
+## CounterChangeTypes
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **Put** | `1` |
+| **Delete** | `2` |
+| **Increment** | `4` |
+
+
+
+## Remarks
+
+<Admonition type="warning" title="Warning">
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Following methods allow you to subscribe to counter changes:
+
+- [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounter)
+- [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounterofdocument)
+- [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
+- [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes#forallcounters)
+
+## ForCounter
+
+Counter changes can be observed using `forCounter` method. This will subscribe changes from all counters with a given name, no matter in what document counter was changed.
+
+### Syntax
+
+<TabItem value="something-something" label="counter_changes_1">
+<CodeBlock language="java">
+{`IChangesObservable<CounterChange> forCounter(String counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **counterName** | String | Name of a counter to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something-something" label="counter_changes_1_1">
+<CodeBlock language="java">
+{`store
+    .changes()
+    .forCounter("likes")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case INCREMENT:
+                // do something ...
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForCounterOfDocument
+
+Specific counter changes of a given document can be observed using `forCounterOfDocument` method.
+
+### Syntax
+
+<TabItem value="something-something" label="counter_changes_2">
+<CodeBlock language="java">
+{`IChangesObservable<CounterChange> forCounterOfDocument(String documentId, String counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | String | ID of a document to subscribe to. |
+| **counterName** | String | Name of a counter to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something-something" label="counter_changes_2_1">
+<CodeBlock language="java">
+{`store
+    .changes()
+    .forCounterOfDocument("companies/1-A", "likes")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case INCREMENT:
+                // do something
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForCountersOfDocument
+
+Counter changes of a specified document can be observed using `forCountersOfDocument` method.
+
+### Syntax
+
+<TabItem value="something-something" label="counter_changes_3">
+<CodeBlock language="java">
+{`IChangesObservable<CounterChange> forCountersOfDocument(String documentId);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | String | ID of a document to subscribe to. |
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something-something" label="counter_changes_3_1">
+<CodeBlock language="java">
+{`store
+    .changes()
+    .forCountersOfDocument("companies/1-A")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case INCREMENT:
+                // do something ...
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllCounters
+
+Changes for all counters can be observed using `forAllCounters` method.
+
+### Syntax
+
+<TabItem value="something" label="counter_changes_4">
+<CodeBlock language="csharp">
+{`IChangesObservable<CounterChange> ForAllCounters();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)&gt; | Observable that allows to add subscriptions to counter notifications. |
+
+### Example
+
+<TabItem value="something-something" label="counter_changes_4_1">
+<CodeBlock language="java">
+{`store
+    .changes()
+    .forAllCounters()
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case INCREMENT:
+                // do something ...
+                break;
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## CounterChange
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [CounterChangeTypes](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchangetypes) | Counter change type enum |
+| **Name** | String | Counter name |
+| **Value** | Long | Counter value after the change |
+| **DocumentId** | String | Counter document identifier |
+| **ChangeVector** | String | Counter's ChangeVector|
+
+
+
+## CounterChangeTypes
+
+| Name | Value |
+| ---- | ----- |
+| **NONE** | `0` |
+| **PUT** | `1` |
+| **DELETE** | `2` |
+| **INCREMENT** | `4` |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Changes API
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
+
+
+-->

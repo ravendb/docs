@@ -1,0 +1,645 @@
+---
+title: "Data Subscriptions: Maintenance Operations"
+sidebar_label: Maintenance Operations
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Data Subscriptions: Maintenance Operations
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This article covers data subscriptions maintenance operations.  
+
+* In this page:  
+   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
+   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#delete-subscription)  
+   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disable-subscription)  
+   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enable-subscription)  
+   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#update-subscription)
+   * [Drop Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#drop-connection)
+   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscription-state)  
+
+</Admonition>
+## DocumentSubscriptions class
+
+The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
+The class is available through `DocumentStore`'s `Subscriptions` property.
+
+| Method Signature                                                                                              | Return type                     | Description                                                                                                                                         |
+|---------------------------------------------------------------------------------------------------------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **Create&lt;T&gt;(SubscriptionCreationOptions&lt;T&gt; options, string database)**                                        | `string`                        | Create a new data subscription.                                                                                                                     |
+| **Create(SubscriptionCreationOptions criteria, string database)**                                             | `string`                        | Create a new data subscription.                                                                                                                     |
+| **Create(SubscriptionCreationOptions criteria, string database)**                                             | `string`                        | Create a new data subscription.                                                                                                                     |
+| **CreateAsync&lt;T&gt;(SubscriptionCreationOptions&lt;T&gt; options, string database)**                                   | `Task<string>`                  | Create a new data subscription.                                                                                                                     |
+| **CreateAsync&lt;T&gt;(Expression&lt;Func&lt;T, bool&gt;&gt; predicate, SubscriptionCreationOptions options, string database)** | `Task<string>`                  | Create a new data subscription.                                                                                                                     |
+| **Delete(string name, string database)**                                                                      | `void`                          | Delete subscription.                                                                                                                                |
+| **DeleteAsync(string name, string database)**                                                                 | `Task`                          | Delete subscription.                                                                                                                                |
+| **DropConnection(string name, string database)**                                                              | `void`                          | Drop all existing subscription connections with workers.                                                                                            |
+| **DropConnectionAsync(string name, string database)**                                                         | `Task`                          | Drop all existing subscription connections with workers.                                                                                            |
+| **DropSubscriptionWorker&lt;T&gt;(SubscriptionWorker&lt;T&gt; worker, string database = null)**                           | `void`                          | Drop an existing subscription connection with a worker                                                                                              |
+| **Enable(string name, string database)**                                                                      | `void`                          | Enable existing subscription.                                                                                                                       |
+| **EnableAsync(string name, string database)**                                                                 | `Task`                          | Enable existing subscription.                                                                                                                       |
+| **Disable(string name, string database)**                                                                     | `void`                          | Disable existing subscription.                                                                                                                      |
+| **DisableAsync(string name, string database)**                                                                | `Task`                          | Disable existing subscription.                                                                                                                      |
+| **GetSubscriptions(int start, int take, string database)**                                                    | `List<SubscriptionState>`       | Returns subscriptions list.                                                                                                                         |
+| **GetSubscriptionsAsync(int start, int take, string database)**                                               | `Task<List<SubscriptionState>>` | Returns subscriptions list.                                                                                                                         |
+| **GetSubscriptionState(string subscriptionName, string database)**                                            | `SubscriptionState `            | Get specific subscription state.                                                                                                                    |
+| **GetSubscriptionStateAsync(string subscriptionName, string database)**                                       | `Task<SubscriptionState> `      | Get specific subscription state.                                                                                                                    |
+| **GetSubscriptionWorker&lt;T&gt;(string subscriptionName, string database)**                                        | `SubscriptionWorker<T>`         | Generate a subscription worker, using default configurations, that processes documents deserialized to `T` type .                                   |
+| **GetSubscriptionWorker(string subscriptionName, string database)**                                           | `SubscriptionWorker<dynamic>`   | Generate a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)**                                 | `SubscriptionWorker<T>`         | Generate a subscription worker, using default configurations, that processes documents deserialized to `T` type .                                   |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)**                                 | `SubscriptionWorker<dynamic>`   | Generate a subscription worker, using default configurations, that processes documents in its raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **Update(SubscriptionUpdateOptions options, string database = null)**                                         | `string`                        | Update an existing data subscription.                                                                                                               |
+| **UpdateAsync(SubscriptionUpdateOptions options, string database = null, CancellationToken token = default)** | `Task<string>`                  | Update an existing data subscription.                                                                                                               |
+
+
+
+## Delete subscription
+
+Subscriptions can be entirely deleted from the system.  
+
+This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
+
+<TabItem value="something" label="interface_subscription_deletion">
+<CodeBlock language="csharp">
+{`void Delete(string name, string database = null);
+Task DeleteAsync(string name, string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something" label="subscription_deletion">
+<CodeBlock language="csharp">
+{`store.Subscriptions.Delete(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disable subscription
+
+Existing subscription tasks can be disabled from the client.
+
+<TabItem value="something" label="interface_subscription_disabling">
+<CodeBlock language="csharp">
+{`void Disable(string name, string database = null);
+Task DisableAsync(string name, string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something" label="subscription_disabling">
+<CodeBlock language="csharp">
+{`store.Subscriptions.Disable(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Enable subscription
+
+Existing subscription tasks can be enabled from the client.  
+This operation can be useful for already disabled subscriptions.
+
+<TabItem value="something" label="interface_subscription_enabling">
+<CodeBlock language="csharp">
+{`void Enable(string name, string database = null);
+Task EnableAsync(string name, string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something" label="subscription_enabling">
+<CodeBlock language="csharp">
+{`store.Subscriptions.Enable(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Update subscription
+
+See [examples](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
+and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+
+<TabItem value="something" label="updating_subscription">
+<CodeBlock language="csharp">
+{`string Update(SubscriptionUpdateOptions options, string database = null);
+
+Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = null,
+                    CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Drop connection
+
+Active subscription connections established by workers can be dropped remotely from the client.  
+Once dropped, the worker will not attempt to reconnect to the server.
+
+<TabItem value="something" label="interface_subscription_dropping">
+<CodeBlock language="csharp">
+{`void DropConnection(string name, string database = null);
+Task DropConnectionAsync(string name, string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+usage:
+
+<TabItem value="something" label="connection_dropping">
+<CodeBlock language="csharp">
+{`store.Subscriptions.DropConnection(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get subscription state
+
+<TabItem value="something" label="interface_subscription_state">
+<CodeBlock language="csharp">
+{`SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
+Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, string database = null, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something" label="subscription_state">
+<CodeBlock language="csharp">
+{`var subscriptionState = store.Subscriptions.GetSubscriptionState(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+
+##### SubscriptionState
+
+| Member                                    | Type        | Description                                                                                                                                                 |
+|-------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **Query**                                 | `string`    | Subscription's RQL like query.                                                                                                                              |
+| **LastBatchAckTime**                      | `DateTime?` | Last time a batch processing progress was acknowledged.                                                                                                     |
+| **NodeTag**                               | `string`    | Processing server's node tag.                                                                                                                               |
+| **MentorNode**                            | `string`    | The mentor node that was manually set.                                                                                                                      |
+| **SubscriptionName**                      | `string`    | The subscription's name, which is also its unique identifier.                                                                                               |
+| **SubscriptionId**                        | `long`      | Subscription's internal identifier (cluster's operation etag during subscription creation).                                                                 |
+| **ChangeVectorForNextBatchStartingPoint** | `string`    | The Change Vector from which the subscription will begin sending documents.&lt;br.This value is updated on batch acknowledgement and can also be set manually. |
+| **Disabled**                              | `bool`      | If `true`, subscription will not allow workers to connect.                                                                                                    |
+| **LastClientConnectionTime**              | `DateTime?` | Time when last client was connected (value sustained after disconnection).                                                                                  |                
+
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* This page covers data subscriptions maintenance operations:  
+   * [Deleting subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deleting-subscription)  
+   * [Dropping connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
+   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
+   * [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
+   * [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+
+</Admonition>
+## Deleting subscription
+
+Subscriptions can be entirely deleted from the system.  
+
+This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
+
+<TabItem value="something-something" label="interface_subscription_deletion">
+<CodeBlock language="java">
+{`void delete(String name);
+
+void delete(String name, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something-something" label="subscription_deletion">
+<CodeBlock language="java">
+{`store.subscriptions().delete(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+    
+## Dropping connection
+
+Subscription connections with workers can be dropped remotely.  
+A dropped worker will not try to reconnect to the server.
+
+<TabItem value="something-something" label="interface_subscription_dropping">
+<CodeBlock language="java">
+{`void dropConnection(String name);
+
+void dropConnection(String name, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something-something" label="connection_dropping">
+<CodeBlock language="java">
+{`store.subscriptions().dropConnection(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disabling subscription
+
+<Admonition type="info" title="Info">
+This operation can only be performed through the management studio
+</Admonition>
+
+
+
+## Updating subscription
+
+<Admonition type="info" title="Info">
+This operation can only be performed through the management studio
+</Admonition>
+
+
+
+## Getting subscription status
+
+<TabItem value="something-something" label="interface_subscription_state">
+<CodeBlock language="java">
+{`SubscriptionState getSubscriptionState(String subscriptionName);
+
+SubscriptionState getSubscriptionState(String subscriptionName, String database);
+`}
+</CodeBlock>
+</TabItem>
+
+usage: 
+
+<TabItem value="something-something" label="subscription_state">
+<CodeBlock language="java">
+{`SubscriptionState subscriptionState = store.subscriptions().getSubscriptionState(subscriptionName);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="SubscriptionState" id="subscriptionstate" href="#subscriptionstate">
+
+| Member | Type | Description |
+|--------|:-----|-------------| 
+| **query** | `String` | Subscription's RQL like query. |
+| **lastBatchAckTime** | `Date` | Last time a batch processing progress was acknowledged. |
+| **nodeTag** | `String` | Processing server's node tag |
+| **mentorNode** | `String` | The mentor node that was manually set. |
+| **subscriptionName** | `String` | Subscription's name, and also it's unique identifier |
+| **subscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
+| **changeVectorForNextBatchStartingPoint** | `String` | Change vector, starting from which the subscription will send documents. This value is updated manually, or automatically on batch acknowledgment  |
+| **disabled** | `boolean` | If true, subscription will not allow workers to connect |
+| **lastClientConnectionTime** | `Date` | Time when last client was connected (value sustained after disconnection) |
+
+</Admonition>
+
+
+
+## DocumentSubscriptions class
+
+The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
+The class is available through `DocumentStore`'s `subscriptions()` method.
+
+| Method Signature| Return type | Description |
+|--------|:---|-------------| 
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class&lt;T&gt; clazz)** | `String` | Creates a new data subscription. |
+| **create(Class&lt;T&gt; clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class&lt;T&gt; clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class&lt;T&gt; clazz)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class&lt;T&gt; clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class&lt;T&gt; clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **delete(String name)** | `void` | Deletes subscription. |
+| **delete(String name, String database)** | `void` | Deletes subscription. |
+| **dropConnection(String name)** | `void` | Drops existing subscription connection with worker. |
+| **dropConnection(String name, String database)** | `void` | Drops existing subscription connection with worker. |
+| **getSubscriptions(int start, int take)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptions(int start, int take, String database)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptionState(String subscriptionName)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionState(String subscriptionName, String database)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionWorker(string subscriptionName)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(string subscriptionName, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker&lt;T&gt;(Class&lt;T&gt; clazz, String subscriptionName)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker&lt;T&gt;(Class&lt;T&gt; clazz, String subscriptionName, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker&lt;T&gt;(Class&lt;T&gt; clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker&lt;T&gt;(Class&lt;T&gt; clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions&lt;T&gt;(Class&lt;T&gt; clazz, String subscriptionName)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions&lt;T&gt;(Class&lt;T&gt; clazz, String subscriptionName, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions&lt;T&gt;(Class&lt;T&gt; clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions&lt;T&gt;(Class&lt;T&gt; clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This article covers data subscriptions maintenance operations.  
+
+* In this page:  
+   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#delete-subscription)  
+   * [Disable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disable-subscription)  
+   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enable-subscription)  
+   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#update-subscription)
+   * [Drop connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#drop-connection)
+   * [Get subscriptions](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscriptions)
+   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscription-state)
+   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)
+
+</Admonition>
+## Delete subscription
+
+Subscription tasks can be entirely deleted from the system.  
+
+<TabItem value="something-something" label="delete">
+<CodeBlock language="nodejs">
+{`await documentStore.subscriptions.delete("subscriptionNameToDelete");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="delete_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+delete(name);
+delete(name, database);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Disable subscription
+
+Existing subscription tasks can be disabled from the client.
+
+<TabItem value="something-something" label="disable">
+<CodeBlock language="nodejs">
+{`await documentStore.subscriptions.disable("subscriptionNameToDisable");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="disable_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+disable(name);
+disable(name, database);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Enable subscription
+
+Existing subscription tasks can be enabled from the client.  
+This operation can be useful for already disabled subscriptions.
+
+<TabItem value="something-something" label="enable">
+<CodeBlock language="nodejs">
+{`await documentStore.subscriptions.enable("subscriptionNameToEnable");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="enable_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+enable(name);
+enable(name, database);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Update subscription
+
+See [examples](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
+and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+
+<TabItem value="something-something" label="update">
+<CodeBlock language="nodejs">
+{`const updateOptions = \{
+    id: "<theSubscriptionId>",
+    query: "<theSubscriptionQuery>"
+    // ...
+\}
+await documentStore.subscriptions.update(updateOptions);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="update_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+update(options);
+update(options, database);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Drop connection
+
+Active subscription connections established by workers can be dropped remotely from the client.  
+Once dropped, the worker will not attempt to reconnect to the server.
+
+<TabItem value="something-something" label="drop_connection">
+<CodeBlock language="nodejs">
+{`// Drop all connections to the subscription:
+// =========================================
+
+await documentStore.subscriptions.dropConnection("subscriptionName");
+
+// Drop specific worker connection:
+// ===============================
+
+const workerOptions = \{
+    subscriptionName: "subscriptionName",
+    // ...
+\};
+
+const worker = documentStore.subscriptions.getSubscriptionWorker(workerOptions);
+
+
+worker.on("batch", (batch, callback) => \{
+    // worker processing logic 
+\});
+
+await documentStore.subscriptions.dropConnection(worker);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="drop_connection_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+dropConnection(options);
+dropConnection(options, database);
+dropSubscriptionWorker(worker); 
+dropSubscriptionWorker(worker, database); 
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get subscriptions
+
+Get a list of all existing subscription tasks in the database.
+
+<TabItem value="something-something" label="get_subscriptions">
+<CodeBlock language="nodejs">
+{`const subscriptions = await documentStore.subscriptions.getSubscriptions(0, 10);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="get_subscriptions_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+getSubscriptions(start, take);
+getSubscriptions(start, take, database);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get subscription state
+
+<TabItem value="something-something" label="get_state">
+<CodeBlock language="nodejs">
+{`const subscriptionState = 
+    await documentStore.subscriptions.getSubscriptionState("subscriptionName");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="get_state_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+getSubscriptionState(subscriptionName);
+getSubscriptionState(subscriptionName, database);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Info">
+
+##### SubscriptionState
+
+| Member                                    | Type      | Description                                                                                                                                                 |
+|-------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **query**                                 | `string`  | Subscription's RQL like query.                                                                                                                              |
+| **lastBatchAckTime**                      | `string`  | Last time a batch processing progress was acknowledged.                                                                                                     |
+| **nodeTag**                               | `string`  | Processing server's node tag.                                                                                                                               |
+| **mentorNode**                            | `string`  | The mentor node that was manually set.                                                                                                                      |
+| **subscriptionName**                      | `string`  | The subscription's name, which is also its unique identifier.                                                                                               |
+| **subscriptionId**                        | `number`  | Subscription's internal identifier (cluster's operation etag during subscription creation).                                                                 |
+| **changeVectorForNextBatchStartingPoint** | `string`  | The Change Vector from which the subscription will begin sending documents.<br/>This value is updated on batch acknowledgement and can also be set manually. |
+| **disabled**                              | `boolean` | If `true`, subscription will not allow workers to connect.                                                                                                  |
+| **lastClientConnectionTime**              | `string`  | Time when last client was connected (value sustained after disconnection).                                                                                  |                
+
+</Admonition>
+
+
+
+## DocumentSubscriptions class
+
+The `DocumentSubscriptions` class manages all interaction with the data subscriptions.  
+The class is available through the `subscriptions` property in the `documentStore`.
+
+| Method Signature                                         | Return type                    | Description                                                  |
+|----------------------------------------------------------|--------------------------------|--------------------------------------------------------------| 
+| **create(options)**                                      | `Promise<string>`              | Create a new data subscription.                              |
+| **create(options, database)**                            | `Promise<string>`              | Create a new data subscription.                              |
+| **create(documentType)**                                 | `Promise<string>`              | Create a new data subscription.                              |
+| **create(optionsOrDocumentType, database)**              | `Promise<string>`              | Create a new data subscription.                              |
+| **createForRevisions(options)**                          | `Promise<string>`              | Create a new data subscription.                              |
+| **createForRevisions(options, database)**                | `Promise<string>`              | Create a new data subscription.                              |
+| **delete(name)**                                         | `Promise<void>`                | Delete subscription.                                         |
+| **delete(name, database)**                               | `Promise<void>`                | Delete subscription.                                         |
+| **dropConnection(name)**                                 | `Promise<void>`                | Drop all existing subscription connections with workers.     |
+| **dropConnection(name, database)**                       | `Promise<void>`                | Drop all existing subscription connections with workers.     |
+| **dropSubscriptionWorker(worker, database)**             | `Promise<void>`                | Drop an existing subscription connection with a worker.      |
+| **enable(name)**                                         | `Promise<void>`                | Enable existing subscription.                                |
+| **enable(name, database)**                               | `Promise<void>`                | Enable existing subscription.                                |
+| **disable(name)**                                        | `Promise<void>`                | Disable existing subscription.                               |
+| **disable(name, database)**                              | `Promise<void>`                | Disable existing subscription.                               |
+| **update(updateOptions)**                                | `Promise<string>`              | Update an existing data subscription.                        |
+| **update(updateOptions, database)**                      | `Promise<string>`              | Update an existing data subscription.                        |
+| **getSubscriptions(start, take)**                        | `Promise<SubscriptionState[]>` | Returns subscriptions list.                                  |
+| **getSubscriptions(start, take, database)**              | `Promise<SubscriptionState[]>` | Returns subscriptions list.                                  |
+| **getSubscriptionState(subscriptionName)**               | `Promise<SubscriptionState> `  | Get the state of a specific subscription.                    |
+| **getSubscriptionState(subscriptionName, database)**     | `Promise<SubscriptionState> `  | Get the state of a specific subscription.                    |
+| **getSubscriptionWorker(options)**                       | `SubscriptionWorker`           | Generate a subscription worker.                              |
+| **getSubscriptionWorker(options, database)**             | `SubscriptionWorker`           | Generate a subscription worker.                              |
+| **getSubscriptionWorker(subscriptionName)**              | `SubscriptionWorker`           | Generate a subscription worker.                              |
+| **getSubscriptionWorker(subscriptionName, database)**    | `SubscriptionWorker`           | Generate a subscription worker.                              |
+| **getSubscriptionWorkerForRevisions(options)**           | `SubscriptionWorker`           | Generate a subscription worker for a revisions subscription. |
+| **getSubscriptionWorkerForRevisions(options, database)** | `SubscriptionWorker`           | Generate a subscription worker for a revisions subscription. |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Data Subscriptions
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+
+-->

@@ -1,0 +1,172 @@
+---
+title: "Get Connection String Operation"
+sidebar_label: Get Connection String
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Get Connection String Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetConnectionStringsOperation` to retrieve properties for a specific connection string  
+  or for all connection strings defined in the databse.
+
+* To learn how to create a new connection string, see [Add Connection String Operation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string).
+
+* In this page:
+  * [Get connection string by name and type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#get-connection-string-by-name-and-type)
+  * [Get all connection strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#get-all-connnection-strings)  
+  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#syntax)
+
+</Admonition>
+## Get connection string by name and type
+
+The following example retrieves a RavenDB Connection String:
+
+<TabItem value="something" label="get_connection_string_by_name">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // Request to get a specific connection string, pass its name and type:
+    // ====================================================================
+    var getRavenConStrOp = 
+        new GetConnectionStringsOperation("ravendb-connection-string-name", ConnectionStringType.Raven);
+    
+    GetConnectionStringsResult connectionStrings = store.Maintenance.Send(getRavenConStrOp);
+    
+    // Access results:
+    // ===============
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        connectionStrings.RavenConnectionStrings;
+    
+    var numberOfRavenConnectionStrings = ravenConnectionStrings.Count;
+    var ravenConStr = ravenConnectionStrings["ravendb-connection-string-name"];
+    
+    var targetUrls = ravenConStr.TopologyDiscoveryUrls;
+    var targetDatabase = ravenConStr.Database;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get all connnection strings
+
+<TabItem value="something" label="get_all_connection_strings">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+\{
+    // Get all connection strings:
+    // ===========================
+    var getAllConStrOp = new GetConnectionStringsOperation();
+    GetConnectionStringsResult allConnectionStrings = store.Maintenance.Send(getAllConStrOp);
+    
+    // Access results: 
+    // ===============
+    
+    // RavenDB
+    Dictionary<string, RavenConnectionString> ravenConnectionStrings = 
+        allConnectionStrings.RavenConnectionStrings;
+    
+    // SQL
+    Dictionary<string, SqlConnectionString> sqlConnectionStrings = 
+        allConnectionStrings.SqlConnectionStrings;
+    
+    // OLAP
+    Dictionary<string, OlapConnectionString> olapConnectionStrings = 
+        allConnectionStrings.OlapConnectionStrings;
+    
+    // Elasticsearch
+    Dictionary<string, ElasticSearchConnectionString> elasticsearchConnectionStrings = 
+        allConnectionStrings.ElasticSearchConnectionStrings;
+    
+    // Access the Queue ETL connection strings in a similar manner:
+    // ============================================================
+    Dictionary<string, QueueConnectionString> queueConnectionStrings = 
+        allConnectionStrings.QueueConnectionStrings;
+    
+    var kafkaConStr = queueConnectionStrings["kafka-connection-string-name"];
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`public GetConnectionStringsOperation()
+public GetConnectionStringsOperation(string connectionStringName, ConnectionStringType type)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter                | Type                   | Description                                                                    |
+|--------------------------|------------------------|--------------------------------------------------------------------------------|
+| **connectionStringName** | `string`               | Connection string name                                                         |
+| **type**                 | `ConnectionStringType` | Connection string type:<br/>`Raven`, `Sql`, `Olap`, `ElasticSearch`, or `Queue` |
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public enum ConnectionStringType
+\{
+    Raven,
+    Sql,
+    Olap,
+    ElasticSearch,
+    Queue
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value of `store.Maintenance.Send(GetConnectionStringsOperation)`  |                                                               |
+|--------------------------------------------------------------------------|---------------------------------------------------------------|
+| `GetConnectionStringsResult`                                             | Class with all connection strings are defined on the database |
+
+<TabItem value="something" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class GetConnectionStringsResult
+\{
+    public Dictionary<string, RavenConnectionString> RavenConnectionStrings \{ get; set; \}
+    public Dictionary<string, SqlConnectionString> SqlConnectionStrings \{ get; set; \}
+    public Dictionary<string, OlapConnectionString> OlapConnectionStrings \{ get; set; \}
+    public Dictionary<string, ElasticSearchConnectionString> ElasticSearchConnectionStrings \{ get; set; \}
+    public Dictionary<string, QueueConnectionString> QueueConnectionStrings \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+A detailed syntax for each connection string type is available in article [Add connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string).
+</Admonition>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Connection Strings
+- [Add](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
+- [Remove](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string)
+
+
+-->

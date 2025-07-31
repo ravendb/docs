@@ -1,0 +1,484 @@
+---
+title: "How to Defer Commands"
+sidebar_label: ...defer commands
+sidebar_position: 3
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# How to Defer Commands
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* `Defer` allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server in a single batch when SaveChanges is called,
+  along with any other changes/operations made on the session.  
+  Thus, all deferred commands are __executed as part of the session's SaveChanges transaction__.
+
+* In this page:   
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="something" label="defer_1">
+<CodeBlock language="csharp">
+{`// Defer is available in the session's Advanced methods 
+session.Advanced.Defer(
+    
+    // Define commands to be executed:
+    // i.e. Put a new document
+    new PutCommandData("products/999-A", null, new DynamicJsonValue
+        \{
+            ["Name"] = "My Product",
+            ["Supplier"] = "suppliers/1-A",
+            ["@metadata"] = new DynamicJsonValue
+            \{
+                ["@collection"] = "Products"
+            \}
+        \}),
+    
+    // Patch document
+    new PatchCommandData("products/999-A", null, new PatchRequest
+            \{
+                Script = "this.Supplier = 'suppliers/2-A';"
+            \},
+            null),
+    
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+    
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `ICommandData` interface and can be deferred:  
+
+  - [PutCommandData](../../../glossary/put-command-data)
+  - [DeleteCommandData](../../../glossary/delete-command-data)
+  - DeletePrefixedCommandData
+  - [PatchCommandData](../../../glossary/patch-command-data)
+  - BatchPatchCommandData
+  - PutAttachmentCommandData
+  - DeleteAttachmentCommandData
+  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
+  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
+  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - PutCompareExchangeCommandData
+  - DeleteCompareExchangeCommandData
+  - CopyTimeSeriesCommandData
+  - TimeSeriesBatchCommandData
+  - ForceRevisionCommandData
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`void Defer(ICommandData command, params ICommandData[] commands);
+void Defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - |-|-|
+| **command** | A command that implements the `ICommandData` interface | The command to be executed |
+| **commands** | `ICommandData[]` | Array of commands to be executed |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Commands can be deferred till `saveChanges` is called by using `defer` method in `advanced` session operations.  
+All of the operations will update teh session state appropriately after `saveChanges` is called.
+
+Types of commands that can be deferred:
+
+- [PutCommandData](../../../glossary/put-command-data)
+- [DeleteCommandData](../../../glossary/delete-command-data)
+- DeletePrefixedCommandData
+- [PatchCommandData](../../../glossary/patch-command-data)
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
+- [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
+- [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
+- [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+
+## Syntax
+
+<TabItem value="something-something" label="defer_1">
+<CodeBlock language="java">
+{`void defer(ICommandData command, ICommandData... commands);
+
+void defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| `ICommandData` | Command to be executed. |
+| `ICommandData[]` | Array of commands implementing `ICommandData` interface. |
+
+## Example
+
+<TabItem value="something-something" label="defer_2">
+<CodeBlock language="java">
+{`Map<String, Object> value1 = new HashMap<>();
+value1.put("Name", "My Product");
+value1.put("Supplier", "suppliers/999-A");
+value1.put("@metadata", Collections.singletonMap("@collection", "Users"));
+
+PutCommandDataWithJson putCommand1 =
+    new PutCommandDataWithJson("products/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value1));
+
+HashMap<String, Object> value2 = new HashMap<>();
+value2.put("Name", "My Product");
+value2.put("Supplier", "suppliers/999-A");
+value2.put("@metadata", Collections.singletonMap("@collection", "Suppliers"));
+
+PutCommandDataWithJson putCommand2 =
+    new PutCommandDataWithJson("suppliers/999-A",
+        null,
+        store.getConventions().getEntityMapper().valueToTree(value2));
+
+DeleteCommandData command3 = new DeleteCommandData("products/1-A", null);
+
+session.advanced().defer(putCommand1, putCommand2, command3);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* The `defer` method allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server 
+  in a single batch when `save_changes` is called, along with any other changes/operations 
+  made on the session.  
+  Thus, all deferred commands are **executed as part of the session's `save_changes` transaction**.
+
+* In this page:   
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="something-something" label="defer_1">
+<CodeBlock language="python">
+{`# Defer is available in the session's advanced methods
+session.advanced.defer(
+    # Define commands to be executed:
+    # i.e. Put a new document
+    PutCommandDataBase(
+        "products/999-A",
+        None,
+        \{"Name": "My Product", "Supplier": "suppliers/1-A", "@metadata": \{"@collection": "Products"\}\},
+    ),
+    # Patch document
+    PatchCommandData("products/999-A", None, PatchRequest("this.Supplier = 'suppliers/2-A'"), None),
+    # Force a revision to be created
+    ForceRevisionCommandData("products/999-A"),
+    # Delete a document
+    DeleteCommandData("products/1-A", None),
+)
+
+# All deferred commands will be sent to the server upon calling save_changes
+session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `ICommandData` interface and can be deferred:  
+
+  - [PutCommandData](../../../glossary/put-command-data)
+  - [DeleteCommandData](../../../glossary/delete-command-data)
+  - DeletePrefixedCommandData
+  - [PatchCommandData](../../../glossary/patch-command-data)
+  - BatchPatchCommandData
+  - PutAttachmentCommandData
+  - DeleteAttachmentCommandData
+  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
+  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
+  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - PutCompareExchangeCommandData
+  - DeleteCompareExchangeCommandData
+  - CopyTimeSeriesCommandData
+  - TimeSeriesBatchCommandData
+  - ForceRevisionCommandData
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`def defer(self, *commands: CommandData) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **\*commands** | `CommandData` | An array of commands to be executed |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* The `defer` method allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server 
+  in a single batch when `saveChanges` is called, along with any other changes/operations 
+  made on the session.  
+  Thus, all deferred commands are **executed as part of the session's `saveChanges` transaction**.
+
+* In this page:   
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="something-something" label="defer_1">
+<CodeBlock language="php">
+{`// Defer is available in the session's \`advanced\` methods
+$session->advanced()->defer(
+    // Define commands to be executed:
+
+    // i.e. Put a new document
+    new PutCommandDataWithJson(
+        "products/999-A",
+        null,
+        null,
+        [
+            "Name" => "My Product",
+            "Supplier" => "suppliers/1-A",
+            "@metadata" => [
+                "@collection" => "Products"
+            ]
+        ]
+    ),
+
+    // Patch document
+    new PatchCommandData(
+        "products/999-A",
+        null,
+        PatchRequest::forScript("this.Supplier = 'suppliers/2-A';"),
+        null
+    ),
+
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+$session->saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `CommandDataInterface` interface and can be deferred:  
+
+  - [putCommandData](../../../glossary/put-command-data)
+  - [deleteCommandData](../../../glossary/delete-command-data)
+  - deletePrefixedCommandData
+  - [patchCommandData](../../../glossary/patch-command-data)
+  - batchPatchCommandData
+  - putAttachmentCommandData
+  - deleteAttachmentCommandData
+  - [copyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
+  - [moveAttachmentCommandData](../../../glossary/move-attachment-command-data)
+  - [countersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - putCompareExchangeCommandData
+  - deleteCompareExchangeCommandData
+  - copyTimeSeriesCommandData
+  - timeSeriesBatchCommandData
+  - forceRevisionCommandData
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`/**
+ * Usage:
+ *   - defer(CommandDataInterface $command): void
+ *   - defer(CommandDataInterface ...$commands): void
+ *   - defer(array<CommandDataInterface> $commands): void
+ *
+ *   - defer(CommandDataInterface $command, array $commands): void
+ *
+ * Example:
+ *   - defer($cmd);
+ *   - defer($cmd1, $cmd2, $cmd3, $cmd4 ...)
+ *   - defer([$cmd1, $cmd2, $cmd4, $cmd4, ...])
+ *   - defer($cmd1, [$cmd2, $cmd3])
+ *
+ */
+public function defer(...$commands): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| **$command** | `CommandDataInterface` | A command to be executed |
+| **$commands** | `array<CommandDataInterface>` | An array of commands to be executed |
+| **$commands** | `array` | An array of commands to be executed |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* `Defer` allows you to register server commands via the session.
+
+* All the deferred requests will be stored in the session and sent to the server in a single batch when saveChanges is called,
+  along with any other changes/operations made on the session.  
+  Thus, all deferred commands are __executed as part of the session's saveChanges transaction__.
+
+* In this page:
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+</Admonition>
+## Defer commands example
+
+<TabItem value="something-something" label="defer_1">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+
+// Define a patchRequest object for the PatchCommandData used in the 'defer' below
+const patchRequest = new PatchRequest();
+patchRequest.script = "this.Supplier = 'suppliers/2-A';";
+
+// 'defer' is available in the session's advanced methods 
+session.advanced.defer(
+
+    // Define commands to be executed:
+    // i.e. Put a new document
+    new PutCommandDataBase("products/999-A", null, null, \{
+        "Name": "My Product",
+        "Supplier": "suppliers/1-A"
+        "@metadata": \{ "@collection": "Products" \}
+    \}),
+    
+    // Patch document
+    new PatchCommandData("products/999-A", null, patchRequest, null),
+
+    // Force a revision to be created
+    new ForceRevisionCommandData("products/999-A"),
+
+    // Delete a document
+    new DeleteCommandData("products/1-A", null)
+);
+
+// All deferred commands will be sent to the server upon calling SaveChanges
+await session.saveChanges();
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Commands that can be deferred
+
+The following commands implement the `ICommandData` interface and can be deferred:
+
+- PutCommandDataBase
+- DeleteCommandData
+- DeletePrefixedCommandData
+- PatchCommandData
+- BatchPatchCommandData
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
+- CopyAttachmentCommandData
+- MoveAttachmentCommandData
+- CountersBatchCommandData
+- PutCompareExchangeCommandData
+- DeleteCompareExchangeCommandData
+- CopyTimeSeriesCommandData
+- TimeSeriesBatchCommandData
+- ForceRevisionCommandData
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`session.advanced.defer(...commands);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - |-|-|
+| **commands** | `ICommandData[]` | Commands to be executed |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Storing Entities](../../../client-api/session/storing-entities)
+- [Saving Changes](../../../client-api/session/saving-changes)
+
+
+-->

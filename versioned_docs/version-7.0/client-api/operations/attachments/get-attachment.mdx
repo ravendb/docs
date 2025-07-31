@@ -1,0 +1,316 @@
+---
+title: "Get Attachment Operation"
+sidebar_label: Get Attachment
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Get Attachment Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This operation is used to get an attachment from a document. 
+
+## Syntax
+
+<TabItem value="something-something" label="get_attachment_syntax">
+<CodeBlock language="csharp">
+{`public GetAttachmentOperation(string documentId, string name, AttachmentType type, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="get_attachment_return_value">
+<CodeBlock language="csharp">
+{`public class AttachmentResult
+\{
+    public Stream Stream;
+    public AttachmentDetails Details;
+\}
+
+public class AttachmentDetails : AttachmentName
+\{
+    public string ChangeVector;
+    public string DocumentId;
+\}
+
+public class AttachmentName
+\{
+    public string Name;
+    public string Hash;
+    public string ContentType;
+    public long Size;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        |                | |
+|------------------|----------------| ----- |
+| **documentId**   | string         | ID of a document which will contain an attachment |
+| **name**         | string     | Name of an attachment |
+| **type**         | AttachmentType | Specify whether getting an attachment from a document or from a revision.<br/>(`Document` or `Revision`). |
+| **changeVector** | string         | The ChangeVector of the document or the revision to which the attachment belongs.<br/>Mandatory when getting an attachment from a revision.<br/>Used for concurrency checks (use `null` to skip the check). |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | Stream containing an attachment |
+| **ChangeVector** | Change vector of document |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="something" label="get_1">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new GetAttachmentOperation("orders/1-A",
+    "invoice.pdf",
+    AttachmentType.Document,
+    changeVector: null));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This operation is used to get an attachment from a document. 
+
+## Syntax
+
+<TabItem value="something-something" label="get_attachment_syntax">
+<CodeBlock language="java">
+{`GetAttachmentOperation(String documentId, String name, AttachmentType type, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="get_attachment_return_value">
+<CodeBlock language="java">
+{`public class CloseableAttachmentResult implements AutoCloseable \{
+    private AttachmentDetails details;
+    private CloseableHttpResponse response;
+
+    public InputStream getData() throws IOException \{
+        return response.getEntity().getContent();
+    \}
+
+    public AttachmentDetails getDetails() \{
+        return details;
+    \}
+\}
+
+public class AttachmentDetails extends Foo.AttachmentName \{
+    private String changeVector;
+    private String documentId;
+
+    public String getChangeVector() \{
+        return changeVector;
+    \}
+
+    public void setChangeVector(String changeVector) \{
+        this.changeVector = changeVector;
+    \}
+
+    public String getDocumentId() \{
+        return documentId;
+    \}
+
+    public void setDocumentId(String documentId) \{
+        this.documentId = documentId;
+    \}
+\}
+
+public class AttachmentName \{
+    private String name;
+    private String hash;
+    private String contentType;
+    private long size;
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public String getHash() \{
+        return hash;
+    \}
+
+    public void setHash(String hash) \{
+        this.hash = hash;
+    \}
+
+    public String getContentType() \{
+        return contentType;
+    \}
+
+    public void setContentType(String contentType) \{
+        this.contentType = contentType;
+    \}
+
+    public long getSize() \{
+        return size;
+    \}
+
+    public void setSize(long size) \{
+        this.size = size;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentId** | String | ID of a document which will contain an attachment |
+| **name** | String | Name of an attachment |
+| **type** | AttachmentType | Specify whether getting an attachment from a document or from a revision.<br/>(`DOCUMENT` or `REVISION`). |
+| **changeVector** | String | The ChangeVector of the document or the revision to which the attachment belongs.<br/>Mandatory when getting an attachment from a revision.<br/>Used for concurrency checks (use `null` to skip the check). |
+
+| Return Value | |
+| ------------- | ----- |
+| **Stream** | InputStream containing an attachment |
+| **ChangeVector** | Change vector of document |
+| **DocumentId** | ID of document |
+| **Name** | Name of attachment |
+| **Hash** | Hash of attachment |
+| **ContentType** | MIME content type of an attachment |
+| **Size** | Size of attachment |
+
+## Example
+
+<TabItem value="something-something" label="get_1">
+<CodeBlock language="java">
+{`store.operations().send(
+    new GetAttachmentOperation("orders/1-A", "invoice.pdf", AttachmentType.DOCUMENT, null));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use the `GetAttachmentOperation` to retrieve an attachment from a document. 
+
+* In this page:  
+
+  * [Get attachment example](../../../client-api/operations/attachments/get-attachment#get-attachment-example)  
+  * [Syntax](../../../client-api/operations/attachments/get-attachment#syntax)
+   
+</Admonition>
+## Get attachment example
+
+<TabItem value="something-something" label="get_attachment">
+<CodeBlock language="nodejs">
+{`// Define the get attachment operation
+const getAttachmentOp = new GetAttachmentOperation("employees/1-A", "attachmentName.txt", "Document", null);
+
+// Execute the operation by passing it to operations.send
+const attachmentResult = await documentStore.operations.send(getAttachmentOp);
+
+// Retrieve attachment content:
+attachmentResult.data
+    .pipe(fs.createWriteStream("attachment"))
+    .on("finish", () => \{
+        fs.readFile("attachment", "utf8", (err, data) => \{
+            if (err) \{
+                console.error("Error reading file:", err);
+                return;
+            \}
+            console.log("Content of attachment:", data);
+            next();
+        \});
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`const getAttachmentOp = new GetAttachmentOperation(documentId, name, type, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                                                                                                                                               |
+|------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| __documentId__   | `string` | Document ID that contains the attachment.                                                                                                                                                                 |
+| __name__         | `string` | Name of attachment to get.                                                                                                                                                                                |
+| __type__         | `string` | Specify whether getting an attachment from a document or from a revision.<br/>(`"Document"` or `"Revision"`).                                                                                              |
+| __changeVector__ | `string` | The ChangeVector of the document or the revision to which the attachment belongs.<br/>Mandatory when getting an attachment from a revision.<br/>Used for concurrency checks (use `null` to skip the check). |
+
+| Return Value of `store.operations.send(getAttachmentOp)`  |                                         |
+|-----------------------------------------------------------|-----------------------------------------|
+| `AttachmentResult`                                        | An instance of class `AttachmentResult` |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`class AttachmentResult \{
+    data;    // Stream containing the attachment content
+    details; // The AttachmentDetails object
+\}
+
+// The AttachmentDetails object:
+// =============================
+\{
+    // Change vector of the document that contains the attachment
+    changeVector; // string
+
+    // ID of the document that contains the attachment
+    documentId?; // string
+    
+    // Name of attachment
+    name; // string;
+    
+    // Hash of attachment
+    hash; // string;
+    
+    // Content type of attachment
+    contentType; // string
+    
+    // Size of attachment
+    size; // number
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Operations
+- [What are operations](../../../client-api/operations/what-are-operations)
+- [Put attachment](../../../client-api/operations/attachments/put-attachment)
+- [Delete attachment](../../../client-api/operations/attachments/delete-attachment)
+
+
+-->

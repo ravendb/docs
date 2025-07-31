@@ -1,0 +1,368 @@
+---
+title: "Type-Specific Identifier Generation"
+sidebar_label: Type-specific
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Type-Specific Identifier Generation
+
+[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
+
+To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
+
+
+
+<TabItem value="something" label="register_id_convention_method_async">
+<CodeBlock language="csharp">
+{`DocumentConventions RegisterAsyncIdConvention<TEntity>(Func<string, TEntity, Task<string>> func);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **func** | Func&lt;string, TEntity, Task&lt;string&gt;&gt; | Identifier generation function that supplies a result in async way for given database name (`string`) and entity object (`TEntity`). |
+
+| Return Value | |
+| ------------- | ----- |
+| DocumentConventions | Current `DocumentConventions` instance. |
+
+<Admonition type="note" title="Note">
+This method applied to both synchronous and asynchronous operations
+</Admonition>
+
+<Admonition type="info" title="Database name parameter" id="database-name-parameter" href="#database-name-parameter">
+The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database.
+</Admonition>
+
+### Example
+
+Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
+(for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
+
+<TabItem value="something" label="employees_custom_async_convention">
+<CodeBlock language="csharp">
+{`store.Conventions.RegisterAsyncIdConvention<Employee>(
+    (dbname, employee) =>
+        Task.FromResult(string.Format("employees/\{0\}/\{1\}", employee.LastName, employee.FirstName)));
+`}
+</CodeBlock>
+</TabItem>
+
+Now, when you store a new entity:
+
+<TabItem value="something" label="employees_custom_convention_example">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    session.Store(new Employee
+    \{
+        FirstName = "James",
+        LastName = "Bond"
+    \});
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+the client will associate the `employees/Bond/James` identifier with it.
+
+## Inheritance
+
+Registered conventions are inheritance-aware so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree.
+
+### Example
+
+If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, both types will use the following:
+
+<TabItem value="something" label="employees_custom_convention_inheritance">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    session.Store(new Employee // employees/Smith/Adam
+    \{
+        FirstName = "Adam",
+        LastName = "Smith"
+    \});
+
+    session.Store(new EmployeeManager // employees/Jones/David
+    \{
+        FirstName = "David",
+        LastName = "Jones"
+    \});
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
+
+<TabItem value="something" label="custom_convention_inheritance_2">
+<CodeBlock language="csharp">
+{`store.Conventions.RegisterAsyncIdConvention<Employee>(
+    (dbname, employee) =>
+        Task.FromResult(string.Format("employees/\{0\}/\{1\}", employee.LastName, employee.FirstName)));
+
+store.Conventions.RegisterAsyncIdConvention<EmployeeManager>(
+    (dbname, employee) =>
+        Task.FromResult(string.Format("managers/\{0\}/\{1\}", employee.LastName, employee.FirstName)));
+
+using (var session = store.OpenSession())
+\{
+    session.Store(new Employee // employees/Smith/Adam
+    \{
+        FirstName = "Adam",
+        LastName = "Smith"
+    \});
+
+    session.Store(new EmployeeManager // managers/Jones/David
+    \{
+        FirstName = "David",
+        LastName = "Jones"
+    \});
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+#Type-Specific Identifier Generation
+
+[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
+
+To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
+
+
+
+<TabItem value="something-something" label="register_id_convention_method_async">
+<CodeBlock language="java">
+{`public <TEntity> DocumentConventions registerIdConvention(Class<TEntity> clazz, BiFunction<String, TEntity, String> function);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- | 
+| **function** | BiFunction&lt;String, TEntity, String&gt; | Identifier generation function that supplies a result for given database name (`String`) and entity object (`TEntity`). |
+
+| Return Value | |
+| ------------- | ----- |
+| DocumentConventions | Current `DocumentConventions` instance. |
+
+<Admonition type="info" title="Database name parameter" id="database-name-parameter" href="#database-name-parameter">
+The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database.
+</Admonition>
+
+### Example
+
+Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
+(for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
+
+<TabItem value="something-something" label="employees_custom_async_convention">
+<CodeBlock language="java">
+{`store.getConventions().registerIdConvention(Employee.class,
+    (dbName, employee) ->
+        String.format("employees/%s/%s", employee.getLastName(), employee.getFirstName()));
+`}
+</CodeBlock>
+</TabItem>
+
+Now, when you store a new entity:
+
+<TabItem value="something-something" label="employees_custom_convention_example">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee employee = new Employee();
+    employee.setFirstName("James");
+    employee.setLastName("Bond");
+
+    session.store(employee);
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+the client will associate the `employees/Bond/James` identifier with it.
+
+## Inheritance
+
+Registered conventions are inheritance-aware so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree.
+
+### Example
+
+If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, both types will use the following:
+
+<TabItem value="something-something" label="employees_custom_convention_inheritance">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee adam = new Employee();
+    adam.setFirstName("Adam");
+    adam.setLastName("Smith");
+    session.store(adam); // employees/Smith/Adam
+
+    EmployeeManager david = new EmployeeManager();
+    david.setFirstName("David");
+    david.setLastName("Jones");
+    session.store(david);  // employees/Jones/David
+
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
+
+<TabItem value="something-something" label="custom_convention_inheritance_2">
+<CodeBlock language="java">
+{`store.getConventions().registerIdConvention(Employee.class,
+    (dbName, employee) ->
+        String.format("employees/%s/%s", employee.getLastName(), employee.getFirstName())
+);
+
+store.getConventions().registerIdConvention(EmployeeManager.class,
+    (dbName, employee) ->
+        String.format("managers/%s/%s", employee.getLastName(), employee.getFirstName())
+);
+
+try (IDocumentSession session = store.openSession()) \{
+    Employee adam = new Employee();
+    adam.setFirstName("Adam");
+    adam.setLastName("Smith");
+    session.store(adam); // employees/Smith/AdamReadBalanceBehavior
+
+    EmployeeManager david = new EmployeeManager();
+    david.setFirstName("David");
+    david.setLastName("Jones");
+    session.store(david);  // managers/Jones/David
+
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+#Type-Specific Identifier Generation
+
+[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
+
+To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
+
+
+
+<TabItem value="something-something" label="register_id_convention_method_async">
+<CodeBlock language="nodejs">
+{`conventions.registerIdConvention(clazz, idConvention);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- | 
+| clazz | class or object | Entity type | 
+| idConvention | function `(databaseName, entity) => Promise<string>` | Identifier generation function that supplies a result for given database name and entity object. Must return a `Promise` resolving to a string. |
+
+| Return Value | |
+| ------------- | ----- |
+| DocumentConventions | Current `DocumentConventions` instance. |
+
+<Admonition type="info" title="Database name parameter" id="database-name-parameter" href="#database-name-parameter">
+The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database.
+</Admonition>
+
+### Example
+
+Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
+(for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
+
+<TabItem value="something-something" label="employees_custom_async_convention">
+<CodeBlock language="nodejs">
+{`store.conventions.registerIdConvention(Employee,
+    (dbName, entity) => Promise.resolve(\`employees/$\{entity.lastName\}/$\{entity.firstName\}\`)); 
+
+// or using async keyword
+store.conventions.registerIdConvention(Employee,
+    async (dbName, entity) => \`employees/$\{entity.lastName\}/$\{entity.firstName\}\`); 
+`}
+</CodeBlock>
+</TabItem>
+
+Now, when you store a new entity:
+
+<TabItem value="something-something" label="employees_custom_convention_example">
+<CodeBlock language="nodejs">
+{`const session = store.openSession();
+const employee = new Employee("James", "Bond");
+
+await session.store(employee);
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+the client will associate the `employees/Bond/James` identifier with it.
+
+<Admonition type="info" title="Info">
+ID convention function must return a Promise since it *can* be asynchronous.
+</Admonition>
+
+### Example: Object literal based entities
+
+<TabItem value="something-something" label="employees_custom_async_convention_typedescriptor">
+<CodeBlock language="nodejs">
+{`// for object literal based entities you can pass type descriptor object
+const typeDescriptor = \{
+    name: "Employee",
+    isType(entity) \{
+        // if it quacks like a duck... ekhm employee
+        return entity 
+            && "firstName" in entity 
+            && "lastName" in entity 
+            && "boss" in entity;
+    \}
+\};
+
+store.conventions.registerIdConvention(typeDescriptor, 
+    async (dbName, entity) => \`employees/$\{entity.lastName\}/$\{entity.firstName\}\`);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Document identifier generation](../../../server/kb/document-identifier-generation)
+- [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global identifier generation conventions](../../../client-api/configuration/identifier-generation/global)
+
+-->
