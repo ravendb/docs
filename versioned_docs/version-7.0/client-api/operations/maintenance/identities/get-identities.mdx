@@ -2,14 +2,15 @@
 title: "Get Identities Operation"
 sidebar_label: Get Identities
 sidebar_position: 0
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
@@ -389,3 +390,21 @@ const latestIdentityValue = identities["companies|"]; // => value will be 1
 
 
 </LanguageContent>
+
+<!---
+### Document Identifiers
+- [Working with Document Identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation#strategy--3)
+- [Document Identifier Generation](../../../../server/kb/document-identifier-generation)
+
+### Operations
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [Seed identity](../../../../client-api/operations/maintenance/identities/seed-identity)
+- [Increment next identity](../../../../client-api/operations/maintenance/identities/increment-next-identity)
+
+
+-->

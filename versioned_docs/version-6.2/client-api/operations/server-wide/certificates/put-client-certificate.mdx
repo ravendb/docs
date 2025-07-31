@@ -2,14 +2,15 @@
 title: "Put Client Certificate Operation"
 sidebar_label: Put Client Certificate
 sidebar_position: 4
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
@@ -263,3 +264,9 @@ await store.maintenance.server.send(putClientCertificateOp);
 
 
 </LanguageContent>
+
+<!---
+- [Delete client certificate](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [Generate client certificate](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
+
+-->

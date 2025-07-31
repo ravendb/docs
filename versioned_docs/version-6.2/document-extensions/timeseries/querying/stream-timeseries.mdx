@@ -2,14 +2,15 @@
 title: "Stream Time Series Data"
 sidebar_label: Streaming Time Series
 sidebar_position: 7
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java"];
 
@@ -290,3 +291,17 @@ CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(qu
 
 
 </LanguageContent>
+
+<!---
+### Document Extensions
+- [Time Series Overview](../../../document-extensions/timeseries/overview)
+- [Range Selection](../../../document-extensions/timeseries/querying/choosing-query-range)
+- [Filtering](../../../document-extensions/timeseries/querying/filtering)
+- [Aggregation and Projection](../../../document-extensions/timeseries/querying/aggregation-and-projections)
+- [Get Time Series Entries](../../../document-extensions/timeseries/client-api/session/get/get-entries)
+
+### Client API
+- [How To Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+
+
+-->

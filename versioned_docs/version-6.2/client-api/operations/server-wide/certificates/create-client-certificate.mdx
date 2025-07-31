@@ -2,14 +2,15 @@
 title: "Operations: Server: How to Generate a Client Certificate"
 sidebar_label: Create Client Certificate
 sidebar_position: 0
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "nodejs"];
 
@@ -282,3 +283,15 @@ t certificateRawData = clientCertificateOperation.rawData;
 
 
 </LanguageContent>
+
+<!---
+### Client API Articles
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)
+
+### Server Articles
+- [Certificates Management](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
+- [Client Certificate Usage](../../../../server/security/authentication/client-certificate-usage)
+
+
+-->

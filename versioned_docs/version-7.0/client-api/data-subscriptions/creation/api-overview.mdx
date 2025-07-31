@@ -2,14 +2,15 @@
 title: "Create and Update Subscription API"
 sidebar_label: API Overview
 sidebar_position: 2
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "python", "nodejs"];
 
@@ -158,7 +159,7 @@ Options for the **non-generic** version of the subscription creation options obj
 | **Disabled**                       | `bool`                                   | `true` - task will be disabled.<br/>`false` - task will be enabled.                                                                                                                                                                                                                                                                                                                                  |
 | **MentorNode**                     | `string`                                 | Allows to define a node in the cluster that will be responsible to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                        |
 | **PinToMentorNode**                | `bool`                                   | `true` - the selected responsible node will be pinned to handle the task.<br/>`false` - Another node will execute the task if the responsible node is down.                                                                                                                                                                                                                                          |
-| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define whether [archived documents](../../../server/extensions/archival#archiving-and-data-subscriptions) will be included in the subscription.                                                                                                                                                                                                                                                     |
+| **ArchivedDataProcessingBehavior** | `ArchivedDataProcessingBehavior?`        | Define whether [archived documents](../../../data-archival/archived-documents-and-other-features#archived-documents-and-subscriptions) will be included in the subscription.                                                                                                                                                                                                                                                     |
 
 <Admonition type="note" title="Note">
 
@@ -751,3 +752,15 @@ where filterLines(o, "products/1-A")
 
 
 </LanguageContent>
+
+<!---
+### Data Subscriptions:
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+### Knowledge Base:
+- [JavaScript Engine](../../../server/kb/javascript-engine)
+
+
+-->

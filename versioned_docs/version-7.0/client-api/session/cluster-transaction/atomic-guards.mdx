@@ -2,14 +2,15 @@
 title: "Atomic Guards"
 sidebar_label: Atomic Guards
 sidebar_position: 2
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
@@ -1159,3 +1160,21 @@ When _loading_ a document in a cluster-wide session, RavenDB attempts to retriev
 
 
 </LanguageContent>
+
+<!---
+### Client API
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+
+### Session
+- [Cluster-Wide Session](../../../client-api/session/cluster-transaction/overview)
+
+### Server
+- [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)
+- [Cluster-Wide Transactions ACIDity](../../../server/clustering/cluster-transactions#cluster-transaction-properties)
+- [Document Expiration](../../../server/extensions/expiration)
+
+### Additional Resources
+- [Simplifying Atomic Cluster-Wide Transactions&quot; / Oren Eini](https://ayende.com/blog/194405-A/ravendb-5-2-simplifying-atomic-cluster-wide-transactions)
+
+
+-->

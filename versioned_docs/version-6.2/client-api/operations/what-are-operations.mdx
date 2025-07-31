@@ -2,14 +2,15 @@
 title: "What are Operations"
 sidebar_label: What are Operations
 sidebar_position: 0
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
@@ -378,6 +379,7 @@ Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
 * **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureDataArchivalOperation](../../data-archival/enable-data-archiving#enable-archiving---from-the-client-api)  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
@@ -1278,6 +1280,7 @@ def send_async(self, operation: MaintenanceOperation[OperationIdResult]) -> Oper
 * **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureDataArchivalOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
@@ -1713,6 +1716,7 @@ $status = $indexStats->getStatus(); // will be "Paused"
 * **Misc**:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureDataArchivalOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
@@ -2213,6 +2217,7 @@ __Send syntax__:
 * __Misc__:  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureDataArchivalOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
@@ -2412,3 +2417,14 @@ await kill();
 
 
 </LanguageContent>
+
+<!---
+### Document Store
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Operations
+- [How to Switch Operations to a Different Database](../../client-api/operations/how-to/switch-operations-to-a-different-database)
+- [How to Switch Operations to a Different Node](../../client-api/operations/how-to/switch-operations-to-a-different-node)
+
+
+-->

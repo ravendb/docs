@@ -2,14 +2,15 @@
 title: "Compare Exchange Metadata"
 sidebar_label: Compare Exchange Metadata
 sidebar_position: 7
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp"];
 
@@ -82,3 +83,15 @@ await documentStore.Operations.SendAsync(
 
 
 </LanguageContent>
+
+<!---
+### Client API
+- [Session: How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+- [Compare Exchange: Overview](../../../client-api/operations/compare-exchange/overview)
+- [Compare Exchange Expiration](../../../client-api/operations/compare-exchange/compare-exchange-expiration)
+
+### Server
+- [Document Expiration](../../../server/extensions/expiration)
+
+
+-->

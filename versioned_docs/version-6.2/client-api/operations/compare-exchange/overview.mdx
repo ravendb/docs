@@ -2,14 +2,15 @@
 title: "Compare Exchange Overview"
 sidebar_label: Overview
 sidebar_position: 0
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "python", "php"];
 
@@ -1195,3 +1196,36 @@ class UniquePhoneReference
 
 
 </LanguageContent>
+
+<!---
+### Client API
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)
+- [Resolving Document Conflicts](../../../client-api/cluster/document-conflicts-in-client-side)
+
+### Studio
+- [Compare Exchange View](../../../studio/database/documents/compare-exchange-view)
+
+### Server
+- [Conflict Resolution](../../../server/clustering/replication/replication-conflicts)
+- [Cluster-Wide Transactions](../../../server/clustering/cluster-transactions)
+
+### Code Walkthrough
+- [Create CmpXchg Item](https://demo.ravendb.net/demos/csharp/compare-exchange/create-compare-exchange)
+- [Index CmpXchg Values](https://demo.ravendb.net/demos/csharp/compare-exchange/index-compare-exchange)
+- [Create CmpXchg Item](https://demo.ravendb.net/demos/python/compare-exchange/create-compare-exchange)
+- [Index CmpXchg Values](https://demo.ravendb.net/demos/python/compare-exchange/index-compare-exchange)
+
+### Ayende @ Rahien Blog
+- [Consistency in a Globally Distributed System](https://ayende.com/blog/196769-B/data-ownership-in-a-distributed-system)
+
+### Compare Exchange
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)
+
+
+-->

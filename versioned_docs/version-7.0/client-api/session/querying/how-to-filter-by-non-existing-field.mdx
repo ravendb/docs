@@ -2,14 +2,15 @@
 title: "Filter by Non-Existing Field"
 sidebar_label: Filter by Non-Existing Field
 sidebar_position: 13
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
@@ -718,3 +719,22 @@ where exists("Company") and not exists("Freight")
 
 
 </LanguageContent>
+
+<!---
+### Client API
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+- [How to Filter by Field Presence](../../../client-api/session/querying/how-to-filter-by-field)
+
+### Querying
+- [Querying: Filtering](../../../indexes/querying/filtering)
+- [Query vs DocumentQuery](../../../client-api/session/querying/document-query/query-vs-document-query)
+- [RQL - Raven Query Language](../../../client-api/session/querying/what-is-rql)
+
+### Code Walkthrough
+- [Queries - Filtering Results - Basics](https://demo.ravendb.net/demos/csharp/queries/filtering-results-basics)
+- [Queries - Filtering with Multiple Conditions](https://demo.ravendb.net/demos/csharp/queries/filtering-results-multiple-conditions)
+- [Queries - Filtering Results - Basics](https://demo.ravendb.net/demos/python/queries/filtering-results-basics)
+- [Queries - Filtering with Multiple Conditions](https://demo.ravendb.net/demos/python/queries/filtering-results-multiple-conditions)
+
+
+-->

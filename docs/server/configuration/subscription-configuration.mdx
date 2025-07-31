@@ -1,7 +1,8 @@
 ---
-title: "Configuration: Subscription Options"
+title: "Configuration: Subscriptions"
 sidebar_label: Subscription Configuration
 sidebar_position: 24
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
@@ -11,11 +12,34 @@ import CodeBlock from '@theme/CodeBlock';
 import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
 import LanguageContent from "@site/src/components/LanguageContent";
 
-# Configuration: Subscription Options
+# Configuration: Subscriptions
+<Admonition type="note" title="Note">
+
+* The following configuration keys control various aspects of subscription behavior in RavenDB.  
+  Learn more about subscriptions in [Data subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions).
+
+* In this article:
+  * [Subscriptions.ArchivedDataProcessingBehavior](../../server/configuration/subscription-configuration#subscriptions.archiveddataprocessingbehavior)
+  * [Subscriptions.MaxNumberOfConcurrentConnections](../../server/configuration/subscription-configuration#subscriptions.maxnumberofconcurrentconnections)
+
+</Admonition>
+ 
+## Subscriptions.ArchivedDataProcessingBehavior
+
+The default processing behavior for archived documents in a subscription query.
+
+- **Type**: `enum ArchivedDataProcessingBehavior`:
+    * `ExcludeArchived`: only non-archived documents are processed by the subscription query.
+    * `IncludeArchived`: both archived and non-archived documents are processed by the subscription query.
+    * `ArchivedOnly`: only archived documents are processed by the subscription query.
+- **Default**: `ExcludeArchived`
+- **Scope**: Server-wide, or per database
+
+
 
 ## Subscriptions.MaxNumberOfConcurrentConnections
 
-Maximum allowed amount of concurrent subscription connections per database.
+The maximum number of concurrent subscription connections allowed per database.
 
 - **Type**: `int`
 - **Default**: `1000`

@@ -2,14 +2,15 @@
 title: "Resume Index Operation"
 sidebar_label: Resume Index
 sidebar_position: 10
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
@@ -312,3 +313,19 @@ const resumeIndexOp = new StartIndexOperation(indexName);
 
 
 </LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [How to Disable Index](../../../../client-api/operations/maintenance/indexes/disable-index)
+- [How to Pause Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+### Studio
+- [Resume index from Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)
+
+
+-->

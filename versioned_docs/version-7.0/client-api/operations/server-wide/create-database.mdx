@@ -2,14 +2,15 @@
 title: "Create Database Operation"
 sidebar_label: Create Database
 sidebar_position: 2
+hide_table_of_contents: true
 ---
 
 import Admonition from '@theme/Admonition';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import LanguageSwitcher from "@site/src/components/language-switcher";
-import LanguageContent from "@site/src/components/language-content";
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
 
 export const supportedLanguages = ["csharp", "java"];
 
@@ -383,7 +384,7 @@ The `DatabaseRecord` is a collection of database configurations:
 | **AutoIndexes**                    | `Dictionary<string, AutoIndexDefinition>`           | Auto-index definitions for the database.                                                                                                                                                                                                                                    |
 | **Client**                         | `ClientConfiguration`                               | [Client behavior](../../../studio/server/client-configuration) configuration.                                                                                                                                                                                               |
 | **ConflictSolverConfig**           | `ConflictSolver`                                    | Define the strategy used to resolve [Replication conflicts](../../../server/clustering/replication/replication-conflicts).                                                                                                                                                  |
-| **DataArchival**                   | `DataArchivalConfiguration`                         | [Data Archival](../../../server/extensions/archival) configuration for the database.                                                                                                                                                                                        |
+| **DataArchival**                   | `DataArchivalConfiguration`                         | [Data Archival](../../../data-archival/overview) configuration for the database.                                                                                                                                                                                        |
 | **DatabaseName**                   | `string`                                            | The database name.                                                                                                                                                                                                                                                          |
 | **Disabled**                       | `bool`                                              | Set the database initial state.<br/> `true` - disable the database.<br/> `false` - (default) the database will be enabled.<br/><br/>This can be modified later via [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state).          |
 | **DocumentsCompression**           | `DocumentsCompressionConfiguration`                 | Configuration settings for [Compressing documents](../../../server/storage/documents-compression).                                                                                                                                                                          |
@@ -578,7 +579,7 @@ public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFac
 | **autoIndexes**                    | `Map<String, AutoIndexDefinition>`           | Auto-index definitions for the database.                                                                                                                                                                                                                                    |
 | **client**                         | `ClientConfiguration`                        | [Client behavior](../../../studio/server/client-configuration) configuration.                                                                                                                                                                                               |
 | **conflictSolverConfig**           | `ConflictSolver`                             | Define the strategy used to resolve [Replication conflicts](../../../server/clustering/replication/replication-conflicts).                                                                                                                                                  |
-| **dataArchival**                   | `DataArchivalConfiguration`                  | [Data Archival](../../../server/extensions/archival) configuration for the database.                                                                                                                                                                                        |
+| **dataArchival**                   | `DataArchivalConfiguration`                  | [Data Archival](../../../data-archival/overview) configuration for the database.                                                                                                                                                                                        |
 | **databaseName**                   | `String`                                     | The database name.                                                                                                                                                                                                                                                          |
 | **disabled**                       | `boolean` (default: false)                   | Set the database initial state.<br/> `true` - disable the database.<br/> `false` - (default) the database will be enabled.<br/><br/>This can be modified later via [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state).          |
 | **documentsCompression**           | `DocumentsCompressionConfiguration`          | Configuration settings for [Compressing documents](../../../server/storage/documents-compression).                                                                                                                                                                          |
@@ -608,3 +609,9 @@ public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFac
 
 
 </LanguageContent>
+
+<!---
+- [Distributed Database](../../../server/clustering/distribution/distributed-database)
+- [Create Database via Studio](../../../studio/database/create-new-database/general-flow)
+
+-->
