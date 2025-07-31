@@ -1,0 +1,211 @@
+---
+title: "Operations: Server: How to delete a database?"
+sidebar_label: Delete Databases
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: Server: How to delete a database?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This operation is used to delete databases from a server, with a possibility to remove all the data from hard drive.
+
+## Syntax
+
+<TabItem value="something-something" label="delete_database_syntax">
+<CodeBlock language="csharp">
+{`public DeleteDatabasesOperation(
+    string databaseName,
+    bool hardDelete,
+    string fromNode = null,
+    TimeSpan? timeToWaitForConfirmation = null)
+\{
+\}
+
+public DeleteDatabasesOperation(DeleteDatabasesOperation.Parameters parameters)
+\{
+\}
+
+public class Parameters
+\{
+    public string[] DatabaseNames \{ get; set; \}
+
+    public bool HardDelete \{ get; set; \}
+
+    public string[] FromNodes \{ get; set; \}
+
+    public TimeSpan? TimeToWaitForConfirmation \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | string | Name of a database to delete |
+| **HardDelete** | bool | Should all data be removed (data files, indexing files, etc.). |
+| **FromNode** | string | Remove the database just from a specific node. Default: `null` which would delete from all |
+| **TimeToWaitForConfirmation** | TimeSpan | Time to wait for confirmation. Default: `null` will user server default (15 seconds) |
+
+## Example I
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var parameters = new DeleteDatabasesOperation.Parameters
+{
+    DatabaseNames = new[] { "MyNewDatabase", "OtherDatabaseToDelete" },
+    HardDelete = true,
+    FromNodes = new[] { "A", "C" },     // optional
+    TimeToWaitForConfirmation = TimeSpan.FromSeconds(30)    // optional
+};
+store.Maintenance.Server.Send(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var parameters = new DeleteDatabasesOperation.Parameters
+{
+    DatabaseNames = new[] { "MyNewDatabase", "OtherDatabaseToDelete" },
+    HardDelete = true,
+    FromNodes = new[] { "A", "C" },   // optional
+    TimeToWaitForConfirmation = TimeSpan.FromSeconds(30)    // optional
+};
+await store.Maintenance.Server.SendAsync(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Example II
+
+In order to delete just one database from a server, you can also use this simplified constructor
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`store.Maintenance.Server.Send(new DeleteDatabasesOperation("MyNewDatabase", hardDelete: true, fromNode: null, timeToWaitForConfirmation: null));
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await store.Maintenance.Server.SendAsync(new DeleteDatabasesOperation("MyNewDatabase", hardDelete: true, fromNode: null, timeToWaitForConfirmation: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+This operation is used to delete databases from a server, with a possibility to remove all the data from hard drive.
+
+## Syntax
+
+<TabItem value="something-something" label="delete_database_syntax">
+<CodeBlock language="java">
+{`public DeleteDatabasesOperation(String databaseName, boolean hardDelete)
+
+public DeleteDatabasesOperation(String databaseName, boolean hardDelete, String fromNode)
+
+public DeleteDatabasesOperation(String databaseName, boolean hardDelete, String fromNode, Duration timeToWaitForConfirmation)
+
+public DeleteDatabasesOperation(Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="delete_parameters">
+<CodeBlock language="java">
+{`public static class Parameters \{
+    private String[] databaseNames;
+    private boolean hardDelete;
+    private String[] fromNodes;
+    private Duration timeToWaitForConfirmation;
+
+    public String[] getDatabaseNames() \{
+        return databaseNames;
+    \}
+
+    public void setDatabaseNames(String[] databaseNames) \{
+        this.databaseNames = databaseNames;
+    \}
+
+    public boolean isHardDelete() \{
+        return hardDelete;
+    \}
+
+    public void setHardDelete(boolean hardDelete) \{
+        this.hardDelete = hardDelete;
+    \}
+
+    public String[] getFromNodes() \{
+        return fromNodes;
+    \}
+
+    public void setFromNodes(String[] fromNodes) \{
+        this.fromNodes = fromNodes;
+    \}
+
+    public Duration getTimeToWaitForConfirmation() \{
+        return timeToWaitForConfirmation;
+    \}
+
+    public void setTimeToWaitForConfirmation(Duration timeToWaitForConfirmation) \{
+        this.timeToWaitForConfirmation = timeToWaitForConfirmation;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | String | Name of a database to delete |
+| **HardDelete** | boolean | Should all data be removed (data files, indexing files, etc.). |
+| **FromNode** | String | Remove the database just from a specific node. Default: `null` which would delete from all |
+| **TimeToWaitForConfirmation** | Duration | Time to wait for confirmation. Default: `null` will user server default (15 seconds) |
+
+## Example I
+
+<TabItem value="something-something" label="DeleteDatabases">
+<CodeBlock language="java">
+{`DeleteDatabasesOperation.Parameters parameters = new DeleteDatabasesOperation.Parameters();
+parameters.setDatabaseNames(new String[]\{ "MyNewDatabase", "OtherDatabaseToDelete" \});
+parameters.setHardDelete(true);
+parameters.setFromNodes(new String[]\{ "A", "C" \}); //optional
+parameters.setTimeToWaitForConfirmation(Duration.ofSeconds(30)); // optional
+
+store.maintenance()
+    .server().send(new DeleteDatabasesOperation(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+In order to delete just one database from a server, you can also use this constructor
+
+<TabItem value="something-something" label="DeleteDatabase">
+<CodeBlock language="java">
+{`store.maintenance().server().send(
+    new DeleteDatabasesOperation("MyNewDatabase", true, null, null));
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>

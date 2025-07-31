@@ -1,0 +1,31 @@
+---
+title: "Glossary: StreamResult<T>"
+sidebar_label: StreamResult
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: StreamResult&lt;T&gt;
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Id** | string | Document ID |
+| **ChangeVector** | string | Document change vector |
+| **Metadata** | IMetadataDictionary | Document metadata |
+| **Document** | `T` | Document deserialized to a given generic type |
+
+</LanguageContent>

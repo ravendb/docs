@@ -1,0 +1,346 @@
+---
+title: "Delete Counter"
+sidebar_label: Delete Counter
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Delete Counter  
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use the `CountersFor.Delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+    * [`Delete ` usage](../../document-extensions/counters/delete#delete-usage)
+    * [Example](../../document-extensions/counters/delete#example)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
+
+</Admonition>
+## `Delete ` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `CountersFor`.  
+    * Either pass `CountersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `CountersFor.Delete`.
+* Call `session.SaveChanges` for the changes to take effect.  
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `SaveChanges()`.  
+* `Delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Example
+
+<TabItem value="something" label="counters_region_Delete">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Delete the "ProductLikes" Counter
+    documentCounters.Delete("ProductLikes");
+
+    // 4. Save changes to the session
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="Delete-definition">
+<CodeBlock language="csharp">
+{`void Delete(string counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| `counterName` | string | Counter's name |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
+    * [Example](../../document-extensions/counters/delete#example)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
+
+</Admonition>
+## `delete ` usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `countersFor`.
+    * Either pass `countersFor` an explicit document ID, -or-
+    * Pass it an entity tracked by the session, e.g. a document object returned from `session.query` or from `session.load`.
+* Call `countersFor.delete`.
+* Call `session.saveChanges` for the changes to take effect.
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `saveChanges()`.
+* `delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Example
+
+<TabItem value="something-something" label="counters_region_Delete">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass CountersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Delete the "productLikes" Counter
+    documentCounters.delete("productLikes");
+
+    // 4. Save changes to the session
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="Delete-definition">
+<CodeBlock language="java">
+{`void delete(String counterName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description     |
+|---------------|--------|-----------------|
+| `counterName` | String | Counter's name  |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use the `counters_for.delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
+    * [Example](../../document-extensions/counters/delete#example)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
+
+</Admonition>
+## `delete ` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `counters_for`.  
+    * Either pass `counters_for` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+* Call `document_counters.delete`.
+* Call `session.save_changes` for the changes to take effect.  
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `save_changes()`.  
+* `delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="Delete-definition">
+<CodeBlock language="python">
+{`def delete(self, counter: str) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| **counter** | `str` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+    * [`delete` usage](../../document-extensions/counters/delete#delete-usage)
+    * [Example](../../document-extensions/counters/delete#example)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
+
+</Admonition>
+## `delete` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+* Call `documentCounters.delete`.
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `saveChanges()`.  
+* `delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="Delete-definition">
+<CodeBlock language="php">
+{`public function delete(?string $counter): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type   | Description    |
+|---------------|--------|----------------|
+| **counter** | `string` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.delete` method to remove a specific Counter from a document.
+
+* All the document's Counters are deleted when the document itself is deleted.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
+    * [Example](../../document-extensions/counters/delete#example)
+    * [Syntax](../../document-extensions/counters/delete#syntax)
+
+</Admonition>
+## `delete ` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+* Call `countersFor.delete`.
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:
+
+* A Counter you deleted will be removed only after the execution of `saveChanges()`.  
+* `delete` will **not** generate an error if the Counter doesn't exist.
+* Deleting a document deletes all its Counters as well.
+
+
+
+## Example
+
+<TabItem value="something-something" label="delete">
+<CodeBlock language="nodejs">
+{`// Open a session
+const session = documentStore.openSession();
+       
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Delete the "ProductLikes" Counter
+documentCounters.delete("ProductLikes");
+
+// The 'Delete' is executed upon calling saveChanges
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`delete(counter);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter      | Type   | Description    |
+|----------------|--------|----------------|
+| `counter`      | string | Counter's name |
+
+
+
+
+</LanguageContent>

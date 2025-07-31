@@ -1,0 +1,40 @@
+---
+title: "Configuration: Update Options"
+sidebar_label: Updates Configuration
+sidebar_position: 28
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Configuration: Update Options
+
+## Updates.Channel
+
+Indicates what release channel should be used to perform latest version checks.
+
+- **Type**: `string`
+- **Default**: `Patch`
+- **Scope**: Server-wide only
+
+Possible values: 
+
+- `Stable`
+- `Patch`
+- `Dev`
+
+
+
+## Updates.BackgroundChecks.Disable
+
+Disable background latest version checks.
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+

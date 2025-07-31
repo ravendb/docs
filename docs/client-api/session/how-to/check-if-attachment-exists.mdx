@@ -1,0 +1,317 @@
+---
+title: "How to Check if an Attachment Exists"
+sidebar_label: ...check if attachment exists
+sidebar_position: 16
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# How to Check if an Attachment Exists
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* To check whether a document contains a certain attachment,  
+  use the method `Exists()` from the `Advanced.Attachments` session operations.  
+
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities) the document or the attachment to the session,  
+  and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool exists = session
+    .Advanced
+    .Attachments
+    .Exists("categories/1-A", "image.jpg");
+
+if (exists)
+{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`bool exists = await asyncSession
+    .Advanced
+    .Attachments
+    .ExistsAsync("categories/1-A", "image.jpg");
+
+if (exists)
+{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool Exists(string documentId, string attachmentName);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<bool> ExistsAsync(string documentId, string attachmentName, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **documentId** | `string` | The ID of the document you want to check |
+| **attachmentName** | `string` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - The specified attachment exists on the document<br/>`false` - The attachment does not exist on the document |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* To check whether a document contains a certain attachment, use the method `exists()` from the `session.advanced().attachments()` 
+operations.  
+
+* This does not [load the document](../../../client-api/session/loading-entities) or [the attachment](../../../document-extensions/attachments/loading) 
+from the server, and it does not cause the session to track the document.  
+
+* In this page:  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+  * [Example](../../../client-api/session/how-to/check-if-attachment-exists#example)  
+</Admonition>
+## Syntax
+
+<TabItem value="something-something" label="exists_1">
+<CodeBlock language="java">
+{`boolean exists(String documentId, String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **documentId** | `String` | The ID of the document you want to check for the attachment |
+| **name** | `String` | The name of the attachment you want to check the document for |
+
+| Return Value | Description |
+| - | - |
+| `boolean` | Indicates if a document with the specified ID exists in the database |
+
+
+
+## Example
+
+<TabItem value="something-something" label="exists_2">
+<CodeBlock language="java">
+{`boolean exists = session
+                    .advanced()
+                    .attachments()
+                    .exists("categories/1-A","image.jpg");
+
+if (exists) \{
+    // do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* To check whether a document contains a certain attachment,  
+  use the `session.advanced` operations `attachments.exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+  the document or the attachment to the session, and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python exists@clientapi\session\howto\attachmentexists.py /}">
+{`exists = session.advanced.attachments.exists("categories/1-A", "image.jpg")
+if exists:
+    ...  # attachment 'image.jpg' exists on document 'categories/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python syntax@clientapi\session\howto\attachmentexists.py /}">
+{`def exists(self, document_id: str, name: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **document_id** | `str` | The ID of the document you want to check |
+| **name** | `str` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `True` - The specified attachment exists for this document<br/>`False` - The attachment doesn't exist for the document |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* To check whether a document contains a certain attachment,  
+  use the `session.advanced` operations `attachments.exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+  the document or the attachment to the session, and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Php" label="Php">
+<CodeBlock language="php exists@clientapi\session\howto\attachmentexists.php /}">
+{`$exists = $session
+    ->advanced()
+    ->attachments()
+    ->exists("categories/1-A", "image.jpg");
+
+    if ($exists)
+    {
+        // attachment 'image.jpg' exists on document 'categories/1-A'
+    }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Php" label="Php">
+<CodeBlock language="php syntax@clientapi\session\howto\attachmentexists.php/}">
+{`function exists(?string $documentId, ?string $name): bool;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **$documentId** | `?string` | The ID of the document you want to check |
+| **$name** | `?string` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - The specified attachment exists for this document<br/>`false` - The attachment doesn't exist for the document |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* To check whether a document contains a certain attachment,  
+  use the method `exists()` from the `advanced.attachments` session operations.
+
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities) the document or the attachment to the session,  
+  and the session will not track them.
+
+* In this page:  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+</Admonition>
+## Check if attachment exists
+
+<TabItem value="something-something" label="exists">
+<CodeBlock language="nodejs">
+{`const exists = await session
+    .advanced
+    .attachments
+    .exists("categories/1-A", "image.jpg");
+
+if (exists) \{
+    // attachment 'image.jpg' exists on document 'categories/1-A'
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`session.advanced.attachments.exists(docId, attachmentName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **docId** | `string` | The ID of the document you want to check |
+| **attachmentName** | `string` | The name of the attachment you are looking for |
+
+| Return Value | Description |
+| - | - |
+| `Promise<boolean>` | `true` - The specified attachment exists on the document<br/>`false` - The attachment does not exist on the document |
+
+
+
+
+</LanguageContent>

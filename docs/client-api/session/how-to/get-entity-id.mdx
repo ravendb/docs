@@ -1,0 +1,171 @@
+---
+title: "Session: How to Get Entity ID"
+sidebar_label: ...get entity id
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: How to Get Entity ID
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what ID it is stored on the server, the `GetDocumentId` method was created.
+
+## Syntax
+
+<TabItem value="something" label="get_document_id_1">
+<CodeBlock language="csharp">
+{`string GetDocumentId(object entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity for which an ID will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked, or the ID will be generated on the server**. |
+
+## Example
+
+<TabItem value="something" label="get_document_id_3">
+<CodeBlock language="csharp">
+{`public class Comment
+\{
+	public string Author \{ get; set; \}
+
+	public string Message \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="get_document_id_2">
+<CodeBlock language="csharp">
+{`string commentId = session
+	.Advanced
+	.GetDocumentId(comment); // e.g. comments/1-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what ID it is stored on the server, the `getDocumentId` method was created.
+
+## Syntax
+
+<TabItem value="something-something" label="get_document_id_1">
+<CodeBlock language="java">
+{`String getDocumentId(Object entity)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | Object | Instance of an entity for which an ID will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked, or the ID will be generated on the server**. |
+
+## Example
+
+<TabItem value="something-something" label="get_document_id_3">
+<CodeBlock language="java">
+{`public class Comment \{
+    private String author;
+    private String message;
+
+    public String getAuthor() \{
+        return author;
+    \}
+
+    public void setAuthor(String author) \{
+        this.author = author;
+    \}
+
+    public String getMessage() \{
+        return message;
+    \}
+
+    public void setMessage(String message) \{
+        this.message = message;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="get_document_id_2">
+<CodeBlock language="java">
+{`String commentId = session
+    .advanced()
+    .getDocumentId(comment);// e.g. comments/1-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what ID it is stored on the server, the `getDocumentId()` method was created.
+
+## Syntax
+
+<TabItem value="something-something" label="get_document_id_1">
+<CodeBlock language="nodejs">
+{`session.advanced.getDocumentId(instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity for which an ID will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked, or the ID will be generated on the server**. |
+
+## Example
+
+<TabItem value="something-something" label="get_document_id_3">
+<CodeBlock language="nodejs">
+{`class Comment \{
+    constructor (author, message) \{
+        this.author = author;
+        this.message = message;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="get_document_id_2">
+<CodeBlock language="nodejs">
+{`const commentId = session.advanced.getDocumentId(comment);    // e.g. comments/1-A
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

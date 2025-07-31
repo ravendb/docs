@@ -1,0 +1,4015 @@
+---
+title: "Project Index Query Results"
+sidebar_label: Projections
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Project Index Query Results
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of projecting query results when querying a **static-index**.
+
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
+
+* In this page:  
+    * [Projection Methods](../../indexes/querying/projections#select):  
+      * [Select](../../indexes/querying/projections#select)  
+      * [ProjectInto](../../indexes/querying/projections#projectinto)  
+      * [SelectFields](../../indexes/querying/projections#selectfields)  
+    * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)  
+    * [OfType](../../indexes/querying/projections#oftype)  
+
+</Admonition>
+## Select
+
+<Admonition type="note" title="Note">
+
+**Example I - Projecting individual fields of the document**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+     // Query the index
+    .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+     // Can filter by any index-field, e.g.filter by index-field 'Title'
+    .Where(x => x.Title == "sales representative")
+     // Call 'Select' to return only the first and last name per matching document
+    .Select(x => new
+    {
+        EmployeeFirstName = x.FirstName,
+        EmployeeLastName = x.LastName
+    })
+    .ToList();
+
+// Each resulting object in the list is Not an 'Employee' entity,
+// it is a new object containing ONLY the fields specified in the Select
+// ('EmployeeFirstName' & 'EmployeeLastName').
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+     // Query the index
+    .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+     // Can filter by any index-field, e.g.filter by index-field 'Title'
+    .Where(x => x.Title == "sales representative")
+     // Call 'Select' to return only the first and last name per matching document
+    .Select(x => new 
+    {
+        EmployeeFirstName = x.FirstName,
+        EmployeeLastName = x.LastName
+    })
+    .ToListAsync();
+
+// Each resulting object in the list is Not an 'Employee' entity,
+// it is a new object containing ONLY the fields specified in the Select
+// ('EmployeeFirstName' & 'EmployeeLastName').
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByNameAndTitle : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+    }
+    
+    public Employees_ByNameAndTitle()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitle"
+where Title == "sales representative"
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* **Type of projection fields**:  
+
+  * In the above example, the fields to return by the projection that are specified in the `Select` method  
+    (`x.FirstName` & `x.LastName`) are recognized by the compiler as fields of the `IndexEntry` class.
+  
+  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections#oftype) that uses `OfType`.  
+
+* **Source of projection fields**:  
+
+  * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+    resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
+  
+  * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example II - Projecting stored fields**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
+        Employees_ByNameAndTitleWithStoredFields>()
+    .Select(x => new
+    {
+        // Project fields 'FirstName' and 'LastName' which are STORED in the index
+        EmployeeFirstName = x.FirstName,
+        EmployeeLastName = x.LastName
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
+        Employees_ByNameAndTitleWithStoredFields>()
+    .Select(x => new
+    {
+        // Project fields 'FirstName' and 'LastName' which are STORED in the index
+        EmployeeFirstName = x.FirstName,
+        EmployeeLastName = x.LastName
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByNameAndTitleWithStoredFields : AbstractIndexCreationTask<Employee>
+{    
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+    }
+    
+    public Employees_ByNameAndTitleWithStoredFields()
+    {
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title
+            };
+        
+        // Store some fields in the index:
+        Stores.Add(x => x.FirstName, FieldStorage.Yes);
+        Stores.Add(x => x.LastName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
+  so by default, the resulting values will come directly from the index and Not from the Employee document in the storage.
+
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example III - Projecting arrays and objects**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Orders_ByCompanyAndShipToAndLines.IndexEntry, Orders_ByCompanyAndShipToAndLines>()
+    .Where(x => x.Company == "companies/65-A")
+    .Select(x => new
+    {
+        // Retrieve a property from an object
+        ShipToCity = x.ShipTo.City,
+        // Retrieve all product names from the Lines array
+        Products = x.Lines.Select(y => y.ProductName)
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Orders_ByCompanyAndShipToAndLines.IndexEntry, Orders_ByCompanyAndShipToAndLines>()
+    .Where(x => x.Company == "companies/65-A")
+    .Select(x => new
+    {
+        // Retrieve a property from an object
+        ShipToCity = x.ShipTo.City,
+        // Retrieve all product names from the Lines array
+        Products = x.Lines.Select(y => y.ProductName)
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByCompanyAndShipToAndLines : AbstractIndexCreationTask<Order>
+{
+    public class IndexEntry
+    {
+        public string Company { get; set; }
+        public Address ShipTo { get; set; }
+        public List<OrderLine> Lines { get; set; }
+    }
+    
+    public Orders_ByCompanyAndShipToAndLines()
+    {
+        Map = orders => from order in orders
+            select new IndexEntry
+            {
+                Company = order.Company,
+                ShipTo = order.ShipTo,
+                Lines = order.Lines
+            };
+    }
+}
+
+// public class Address
+// {
+//     public string Line1 { get; set; }
+//     public string Line2 { get; set; }
+//     public string City { get; set; }
+//     public string Region { get; set; }
+//     public string PostalCode { get; set; }
+//     public string Country { get; set; }
+//     public Location Location { get; set; }
+// }
+
+// public class OrderLine
+// {
+//     public string Product { get; set; }
+//     public string ProductName { get; set; }
+//     public decimal PricePerUnit { get; set; }
+//     public int Quantity { get; set; }
+//     public decimal Discount { get; set; }
+// }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Using simple expression:
+from index "Orders/ByCompanyAndShipToAndLines"
+where Company == "companies/65-A"
+select ShipTo.City as ShipToCity, Lines[].ProductName as Products
+
+// Using JavaScript object literal syntax:
+from index "Orders/ByCompanyAndShipToAndLines" as x
+where Company == "companies/65-A"
+select {
+    ShipToCity: x.ShipTo.City,
+    Products: x.Lines.map(y => y.ProductName)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example IV - Projection with expression**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+    .Select(x => new
+    {
+        // Any expression can be provided for the projected content
+        FullName = x.FirstName + " " + x.LastName
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+    .Select(x => new
+    {
+        // Any expression can be provided for the projected content
+        FullName = x.FirstName + " " + x.LastName
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByNameAndTitle : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+    }
+    
+    public Employees_ByNameAndTitle()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitle" as x
+select 
+{ 
+    FullName : x.FirstName + " " + x.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example V - Projection with calculations**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Orders_ByCompanyAndShipToAndLines.IndexEntry, Orders_ByCompanyAndShipToAndLines>()
+    .Select(x => new
+    {
+        // Any calculations can be done within a projection
+        TotalProducts = x.Lines.Count,
+        TotalDiscountedProducts = x.Lines.Count(x => x.Discount > 0),
+        TotalPrice = x.Lines.Sum(l => l.PricePerUnit * l.Quantity)
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Orders_ByCompanyAndShipToAndLines.IndexEntry, Orders_ByCompanyAndShipToAndLines>()
+    .Select(x => new
+    {
+        // Any calculations can be done within a projection
+        TotalProducts = x.Lines.Count,
+        TotalDiscountedProducts = x.Lines.Count(x => x.Discount > 0),
+        TotalPrice = x.Lines.Sum(l => l.PricePerUnit * l.Quantity)
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByCompanyAndShipToAndLines : AbstractIndexCreationTask<Order>
+{
+    public class IndexEntry
+    {
+        public string Company { get; set; }
+        public Address ShipTo { get; set; }
+        public List<OrderLine> Lines { get; set; }
+    }
+    
+    public Orders_ByCompanyAndShipToAndLines()
+    {
+        Map = orders => from order in orders
+            select new IndexEntry
+            {
+                Company = order.Company,
+                ShipTo = order.ShipTo,
+                Lines = order.Lines
+            };
+    }
+}
+
+// public class Address
+// {
+//     public string Line1 { get; set; }
+//     public string Line2 { get; set; }
+//     public string City { get; set; }
+//     public string Region { get; set; }
+//     public string PostalCode { get; set; }
+//     public string Country { get; set; }
+//     public Location Location { get; set; }
+// }
+
+// public class OrderLine
+// {
+//     public string Product { get; set; }
+//     public string ProductName { get; set; }
+//     public decimal PricePerUnit { get; set; }
+//     public int Quantity { get; set; }
+//     public decimal Discount { get; set; }
+// }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCompanyAndShipToAndLines" as x
+select {
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                 .map(l => l.PricePerUnit * l.Quantity)
+                 .reduce((a, b) => a + b, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VI - Projecting using functions**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults =
+    // Use LINQ query syntax notation
+    (from x in session
+            .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+        // Define a function
+        let format =
+            (Func<Employees_ByNameAndTitle.IndexEntry, string>)(p =>
+                p.FirstName + " " + p.LastName)
+        select new
+        {
+            // Call the function from the projection
+            FullName = format(x)
+        })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults =
+    // Use LINQ query syntax notation
+    await (from x in asyncSession
+                .Query<Employees_ByNameAndTitle.IndexEntry, Employees_ByNameAndTitle>()
+            // Define a function
+            let format =
+                (Func<Employees_ByNameAndTitle.IndexEntry, string>)(p =>
+                    p.FirstName + " " + p.LastName)
+            select new
+            {
+                // Call the function from the projection
+                FullName = format(x)
+            })
+        .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByNameAndTitle : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+    }
+    
+    public Employees_ByNameAndTitle()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(x) {
+var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(x) };
+}
+from index "Employees/ByNameAndTitle" as e
+select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VII - Projecting using a loaded document**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = 
+    // Use LINQ query syntax notation
+    (from o in session
+            .Query<Orders_ByCompanyAndShippedAt.IndexEntry, Orders_ByCompanyAndShippedAt>()
+        // Use RavenQuery.Load to load the related Company document
+        let c = RavenQuery.Load<Company>(o.Company)
+        select new
+        {
+            CompanyName = c.Name,   // info from the related Company document
+            ShippedAt = o.ShippedAt // info from the Order document
+        })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Use LINQ query syntax notation
+var projectedResults = 
+    await (from o in asyncSession
+                .Query<Orders_ByCompanyAndShippedAt.IndexEntry, Orders_ByCompanyAndShippedAt>()
+        // Use RavenQuery.Load to load the related Company document
+        let c = RavenQuery.Load<Company>(o.Company)
+        select new
+        {
+            CompanyName = c.Name,   // info from the related Company document
+            ShippedAt = o.ShippedAt // info from the Order document
+        })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Orders_ByCompanyAndShippedAt : AbstractIndexCreationTask<Order>
+{
+    public class IndexEntry
+    {
+        public string Company { get; set; }
+        public DateTime? ShippedAt { get; set; }
+    }
+    
+    public Orders_ByCompanyAndShippedAt()
+    {
+        Map = orders => from order in orders
+            
+            select new IndexEntry
+            {
+                Company = order.Company,
+                ShippedAt = order.ShippedAt
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCompanyAndShippedAt" as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VIII - Projection with dates**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        DayOfBirth = x.Birthday.Day,
+        MonthOfBirth = x.Birthday.Month,
+        Age = DateTime.Today.Year - x.Birthday.Year
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        DayOfBirth = x.Birthday.Day,
+        MonthOfBirth = x.Birthday.Month,
+        Age = DateTime.Today.Year - x.Birthday.Year
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstNameAndBirthday : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public DateTime Birthday { get; set; }
+    }
+    
+    public Employees_ByFirstNameAndBirthday()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                Birthday = employee.Birthday
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstNameAndBirthday" as x 
+select { 
+    DayOfBirth: new Date(Date.parse(x.Birthday)).getDate(), 
+    MonthOfBirth: new Date(Date.parse(x.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(x.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example IX - Projection with raw JavaScript code**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        // Provide a JavaScript expression to the RavenQuery.Raw method
+        Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(x.Birthday))"),
+        Name = RavenQuery.Raw(x.FirstName, "substr(0,3)")
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        // Provide a JavaScript expression to the RavenQuery.Raw method
+        Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(x.Birthday))"),
+        Name = RavenQuery.Raw(x.FirstName, "substr(0,3)")
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstNameAndBirthday : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public DateTime Birthday { get; set; }
+    }
+    
+    public Employees_ByFirstNameAndBirthday()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                Birthday = employee.Birthday
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstNameAndBirthday" as x 
+select {
+    Date: new Date(Date.parse(x.Birthday)), 
+    Name: x.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example X - Projection with metadata**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        Name = x.FirstName,
+        Metadata = RavenQuery.Metadata(x) // Get the metadata
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Employees_ByFirstNameAndBirthday.IndexEntry, Employees_ByFirstNameAndBirthday>()
+    .Select(x => new
+    {
+        Name = x.FirstName,
+        Metadata = RavenQuery.Metadata(x) // Get the metadata
+    })
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstNameAndBirthday : AbstractIndexCreationTask<Employee>
+{
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public DateTime Birthday { get; set; }
+    }
+    
+    public Employees_ByFirstNameAndBirthday()
+    {
+        Map = employees => from employee in employees
+            
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                Birthday = employee.Birthday
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstNameAndBirthday" as x 
+select {
+     Name : x.FirstName, 
+     Metadata : getMetadata(x)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## ProjectInto
+
+* Instead of `Select`, you can use `ProjectInto` to project all public fields from a generic type.
+
+* The results will be projected into objects of the specified projection class.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+    .Where(x => x.ContactTitle == "owner")
+     // Call 'ProjectInto' instead of using 'Select'
+     // Pass the projection class
+    .ProjectInto<ContactDetails>()
+    .ToList();
+
+// Each resulting object in the list is Not a 'Company' entity,
+// it is an object of type 'ContactDetails'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`var projectedResults = await asyncSession
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+    .Where(x => x.ContactTitle == "owner")
+     // Call 'ProjectInto' instead of using 'Select'
+     // Pass the projection class
+    .ProjectInto<ContactDetails>()
+    .ToListAsync();
+
+// Each resulting object in the list is Not a 'Company' entity,
+// it is an object of type 'ContactDetails'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContactDetailsAndPhone : AbstractIndexCreationTask<Company>
+{
+    public class IndexEntry
+    {
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string Phone { get; set; }
+    }
+    
+    public Companies_ByContactDetailsAndPhone()
+    {
+        Map = companies => companies
+            .Select(x => new IndexEntry
+            {
+                ContactName = x.Contact.Name,
+                ContactTitle = x.Contact.Title,
+                Phone = x.Phone
+            });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="csharp">
+{`public class ContactDetails
+{
+    // The projection class contains field names from the index-fields
+    public string ContactName { get; set; }
+    public string ContactTitle { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+select ContactName, ContactTitle
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## SelectFields
+
+The `SelectFields` method can only be used by a [Document Query](../../client-api/session/querying/document-query/what-is-document-query).  
+It has two overloads:
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`// 1) Select fields to project by the projection class type
+IDocumentQuery<TProjection> SelectFields<TProjection>();
+
+// 2) Select specific fields to project
+IDocumentQuery<TProjection> SelectFields<TProjection>(params string[] fields);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+**Using projection class type**:
+
+* The projection class fields are the fields that you want to project from the 'IndexEntry' class.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Query an index with DocumentQuery
+var projectedResults = session.Advanced
+    .DocumentQuery<Products_ByNamePriceQuantityAndUnits.IndexEntry,
+        Products_ByNamePriceQuantityAndUnits>()
+     // Call 'SelectFields'
+     // Pass the projection class type
+    .SelectFields<ProductDetails>()
+    .ToList();
+
+// Each resulting object in the list is Not a 'Product' entity,
+// it is an object of type 'ProductDetails'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`// Query an index with DocumentQuery
+var projectedResults = await asyncSession.Advanced
+    .AsyncDocumentQuery<Products_ByNamePriceQuantityAndUnits.IndexEntry, 
+        Products_ByNamePriceQuantityAndUnits>()
+     // Call 'SelectFields'
+     // Pass the projection class type
+    .SelectFields<ProductDetails>()
+    .ToListAsync();
+
+// Each resulting object in the list is Not a 'Product' entity,
+// it is an object of type 'ProductDetails'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByNamePriceQuantityAndUnits : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        public string ProductName { get; set; }
+        public string QuantityPerUnit { get; set; }
+        public decimal PricePerUnit { get; set; }
+        public int UnitsInStock { get; set; }
+        public int UnitsOnOrder { get; set; }
+    }
+    
+    public Products_ByNamePriceQuantityAndUnits()
+    {
+        Map = products => from product in products
+            
+            select new IndexEntry
+            {
+                ProductName = product.Name,
+                QuantityPerUnit = product.QuantityPerUnit,
+                PricePerUnit = product.PricePerUnit,
+                UnitsInStock = product.UnitsInStock,
+                UnitsOnOrder = product.UnitsOnOrder
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="csharp">
+{`public class ProductDetails
+{
+    // The projection class contains field names from the index-fields
+    public string ProductName { get; set; }
+    public decimal PricePerUnit { get; set; }
+    public int UnitsInStock { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByNamePriceQuantityAndUnits"
+select ProductName, PricePerUnit, UnitsInStock
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Using specific fields**:
+
+* The fields specified are the fields that you want to project from the projection class.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Define an array with the field names that will be projected
+var fields = new string[] {
+    "ProductName",
+    "PricePerUnit"
+};
+
+// Query an index with DocumentQuery
+var projectedResults = session.Advanced
+    .DocumentQuery<Companies_ByContactDetailsAndPhone.IndexEntry,
+        Companies_ByContactDetailsAndPhone>()
+     // Call 'SelectFields'
+     // Pass the projection class type & the fields to be projected from it
+    .SelectFields<ProductDetails>(fields)
+    .ToList();
+
+// Each resulting object in the list is Not a 'Product' entity,
+// it is an object of type 'ProductDetails' containing data ONLY for the specified fields.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`// Define an array with the field names that will be projected
+var fields = new string[] {
+    "ProductName",
+    "PricePerUnit"
+};
+
+// Query an index with DocumentQuery
+var projectedResults = await asyncSession.Advanced
+    .AsyncDocumentQuery<Companies_ByContactDetailsAndPhone.IndexEntry,
+        Companies_ByContactDetailsAndPhone>()
+     // Call 'SelectFields'
+     // Pass the projection class type & the fields to be projected from it
+    .SelectFields<ProductDetails>(fields)
+    .ToListAsync();
+
+// Each resulting object in the list is Not a 'Product' entity,
+// it is an object of type 'ProductDetails' containing data ONLY for the specified fields.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByNamePriceQuantityAndUnits : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        public string ProductName { get; set; }
+        public string QuantityPerUnit { get; set; }
+        public decimal PricePerUnit { get; set; }
+        public int UnitsInStock { get; set; }
+        public int UnitsOnOrder { get; set; }
+    }
+    
+    public Products_ByNamePriceQuantityAndUnits()
+    {
+        Map = products => from product in products
+            
+            select new IndexEntry
+            {
+                ProductName = product.Name,
+                QuantityPerUnit = product.QuantityPerUnit,
+                PricePerUnit = product.PricePerUnit,
+                UnitsInStock = product.UnitsInStock,
+                UnitsOnOrder = product.UnitsOnOrder
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="csharp">
+{`public class ProductDetails
+{
+    // The projection class contains field names from the index-fields
+    public string ProductName { get; set; }
+    public decimal PricePerUnit { get; set; }
+    public int UnitsInStock { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Companies/ByContactDetailsAndPhone" 
+select ProductName, PricePerUnit
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Projection behavior with a static-index
+
+* **By default**, when querying a static-index and projecting query results,  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  If the index does Not store those fields then the fields' values will be retrieved from the documents.
+
+* This behavior can be modified by setting the **projection behavior**.
+
+* Note: Storing fields in the index can increase query performance when projecting,  
+  but this comes at the expense of the disk space used by the index.
+
+<Admonition type="note" title="Note">
+
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`var projectedResults = session
+    .Query<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
+        Employees_ByNameAndTitleWithStoredFields>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromIndexOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => new EmployeeDetails
+    {
+        FirstName = x.FirstName,
+        Title = x.Title
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`var projectedResults = session.Advanced
+    .DocumentQuery<Employees_ByNameAndTitleWithStoredFields.IndexEntry,
+        Employees_ByNameAndTitleWithStoredFields>()
+     // Pass the requested projection behavior to the 'SelectFields' method
+    .SelectFields<EmployeeDetails>(ProjectionBehavior.FromIndexOrThrow)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`var projectedResults = session.Advanced
+    // Define an RQL query that returns a projection
+    .RawQuery<EmployeeDetails>(
+        @"from index 'Employees/ByNameAndTitleWithStoredFields' select FirstName, Title")
+    // Pass the requested projection behavior to the 'Projection' method
+    .Projection(ProjectionBehavior.FromIndexOrThrow)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByNameAndTitleWithStoredFields : AbstractIndexCreationTask<Employee>
+{    
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+    }
+    
+    public Employees_ByNameAndTitleWithStoredFields()
+    {
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Title = employee.Title
+            };
+        
+        // Store some fields in the index:
+        Stores.Add(x => x.FirstName, FieldStorage.Yes);
+        Stores.Add(x => x.LastName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="csharp">
+{`public class EmployeeDetails
+{
+    public string FirstName { get; set; } 
+    public string Title { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName, Title
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The projection behavior in the above example is set to `FromIndexOrThrow` and so the following applies: 
+
+* Field `FirstName` is stored in the index so the server will fetch its values from the index.
+
+* However, field `Title` is Not stored in the index so an exception will be thrown when the query is executed.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax for projection behavior**:
+
+<CodeBlock language="csharp">
+{`// For Query:
+IDocumentQueryCustomization Projection(ProjectionBehavior projectionBehavior);
+
+// For DocumentQuery:
+IDocumentQuery<TProjection> SelectFields<TProjection>(
+    ProjectionBehavior projectionBehavior, params string[] fields);
+
+IDocumentQuery<TProjection> SelectFields<TProjection>(
+    ProjectionBehavior projectionBehavior);
+
+// Projection behavior options:
+public enum ProjectionBehavior {
+    Default,
+    FromIndex,
+    FromIndexOrThrow,
+    FromDocument,
+    FromDocumentOrThrow
+}
+`}
+</CodeBlock>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+</Admonition>
+
+
+
+## OfType
+
+* When making a projection query, converting the shape of the matching documents to the requested projection is done on the **server-side**.
+
+* On the other hand, `OfType` is a **client-side**  type conversion that is only used to map the resulting objects to the provided type.
+
+* We differentiate between the following cases:  
+  * Using _OfType_ with projection queries - resulting objects are Not tracked by the session  
+  * Using _OfType_ with non-projection queries - resulting documents are tracked by the session
+
+<Admonition type="note" title="Note">
+
+**Using OfType with projection queries**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Make a projection query:
+// ========================
+
+var projectedResults = session
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+     // Here we filter by an IndexEntry field
+     // The compiler recognizes 'x' as an IndexEntry type
+    .Where(x => x.ContactTitle == "owner")
+     // Now, if you wish to project based on the 'Company' document
+     // then use 'OfType' to let the compiler recognize the type
+    .OfType<Company>()
+     // Select which fields from the matching document will be returned
+    .Select(x => new
+    {
+        // The compiler now recognizes 'x' as a 'Company' class type
+        // e.g. 'Name' & 'Address.Country' are properties of the 'Company' document
+        CompanyName = x.Name,
+        CompanyCountry = x.Address.Country
+    })
+    .ToList();
+
+// Each resulting object has the 'CompanyName' & 'CompanyCountry' fields specified in the projection.
+// The resulting objects are NOT TRACKED by the session.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Make a projection query:
+// ========================
+
+var projectedResults = await asyncSession
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+     // Here we filter by an IndexEntry field
+     // The compiler recognizes 'x' as an IndexEntry type
+    .Where(x => x.ContactTitle == "owner")
+     // Now, if you wish to project based on the 'Company' document
+     // then use 'OfType' to let the compiler recognize the type
+    .OfType<Company>()
+     // Select which fields from the matching document will be returned
+    .Select(x => new
+    {
+        // The compiler now recognizes 'x' as a 'Company' class type
+        // e.g. 'Name' & 'Address.Country' are properties of the 'Company' document
+        CompanyName = x.Name,
+        CompanyCountry = x.Address.Country
+    })
+    .ToListAsync();
+
+// Each resulting object has the 'CompanyName' & 'CompanyCountry' fields specified in the projection.
+// The resulting objects are NOT TRACKED by the session.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContactDetailsAndPhone : AbstractIndexCreationTask<Company>
+{
+    public class IndexEntry
+    {
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string Phone { get; set; }
+    }
+    
+    public Companies_ByContactDetailsAndPhone()
+    {
+        Map = companies => companies
+            .Select(x => new IndexEntry
+            {
+                ContactName = x.Contact.Name,
+                ContactTitle = x.Contact.Title,
+                Phone = x.Phone
+            });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Using OfType with non-projection queries**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Make a non-projecting query:
+// ============================
+
+List<Company> results = session
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+     // Here we filter by an IndexEntry field
+     // The compiler recognizes 'x' as an IndexEntry type
+    .Where(x => x.ContactTitle == "owner")
+     // A type conversion is now required for the compiler to understand the resulting objects' shape.
+     // Use 'OfType to let the compiler know that resulting objects are of type 'Company' documents.
+    .OfType<Company>()
+    .ToList();
+
+// The resulting objects are full 'Company' document entities (not projected).
+// Each 'Company' entity is TRACKED by the session.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Make a non-projecting query:
+// ============================
+
+List<Company> results = await asyncSession
+    .Query<Companies_ByContactDetailsAndPhone.IndexEntry, Companies_ByContactDetailsAndPhone>()
+     // Here we filter by an IndexEntry field
+     // The compiler recognizes 'x' as an IndexEntry type
+    .Where(x => x.ContactTitle == "owner")
+     // A type conversion is now required for the compiler to understand the resulting objects' shape.
+     // Use 'OfType to let the compiler know that resulting objects are of type 'Company' documents.
+    .OfType<Company>()
+    .ToListAsync();
+
+// The resulting objects are full 'Company' document entities (not projected).
+// Each 'Company' entity is TRACKED by the session.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Companies_ByContactDetailsAndPhone : AbstractIndexCreationTask<Company>
+{
+    public class IndexEntry
+    {
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string Phone { get; set; }
+    }
+    
+    public Companies_ByContactDetailsAndPhone()
+    {
+        Map = companies => companies
+            .Select(x => new IndexEntry
+            {
+                ContactName = x.Contact.Name,
+                ContactTitle = x.Contact.Title,
+                Phone = x.Phone
+            });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Companies/ByContactDetailsAndPhone"
+where ContactTitle == "owner"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+There are couple of ways to perform projections in RavenDB:
+
+- projections using [SelectFields](../../indexes/querying/projections#selectfields)
+- using [OfType](../../indexes/querying/projections#oftype)
+
+## What are Projections and When to Use Them
+
+When performing a query, we usually pull the full document back from the server.
+
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
+
+The savings can be very significant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
+
+## Projections are Applied as the Last Stage in the Query
+
+It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
+
+## The Cost of Running a Projection
+
+Another consideration to take into account is the cost of running the projection. It is possible to make the projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the projection, and exceeding these (quite generous) limits will fail the query.
+
+## Projections and Stored Fields
+
+If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
+
+## SelectFields
+The most basic projection can be done using `selectFields` method:
+
+### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<FirstAndLastName> results = session
+    .query(Employee.class, Employees_ByFirstAndLastName.class)
+    .selectFields(FirstAndLastName.class, "FirstName", "LastName")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
+
+### Example II - Projecting Stored Fields
+
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<FirstAndLastName> results = session
+    .query(Employee.class, Employees_ByFirstAndLastNameWithStoredFields.class)
+    .selectFields(FirstAndLastName.class, "FirstName", "LastName")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastNameWithStoredFields() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+
+        storeAllFields(FieldStorage.YES); // firstName and lastName fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastNameWithStoredFields'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`QueryData queryData = new QueryData(new String[]{"ShipTo", "Lines[].ProductName"},
+    new String[]{"ShipTo", "Products"});
+
+List<ShipToAndProducts> results = session.query(Order.class)
+    .selectFields(ShipToAndProducts.class, queryData)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByShipToAndLines extends AbstractIndexCreationTask {
+    public Orders_ByShipToAndLines() {
+        map = "docs.Orders.Select(order => new {" +
+            "    ShipTo = order.ShipTo," +
+            "    Lines = order.Lines" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select 
+{ 
+    ShipTo: o.ShipTo, 
+    Products : o.Lines.map(function(y){return y.ProductName;}) 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IV - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<FullName> results = session.advanced().rawQuery(FullName.class, "from Employees as e " +
+    "select {" +
+    "    FullName : e.FirstName + \\" \\" + e.LastName " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e
+select 
+{ 
+    FullName : e.FirstName + " " + e.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example V - Projection with `declared function`
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> results = session.advanced().rawQuery(Employee.class, "declare function output(e) { " +
+    "    var format = function(p){ return p.FirstName + \\" \\" + p.LastName; }; " +
+    "    return { FullName : format(e) }; " +
+    "} " +
+    "from Employees as e select output(e)").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from index 'Employees/ByFirstAndLastName' as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VI - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Total> results = session.advanced().rawQuery(Total.class, "from Orders as o " +
+    "select { " +
+    "    Total : o.Lines.reduce( " +
+    "        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0) " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByShipToAndLines extends AbstractIndexCreationTask {
+    public Orders_ByShipToAndLines() {
+        map = "docs.Orders.Select(order => new {" +
+            "    ShipTo = order.ShipTo," +
+            "    Lines = order.Lines" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VII - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<OrderProjection> results = session.advanced().rawQuery(OrderProjection.class, "from Orders as o " +
+    "load o.company as c " +
+    "select { " +
+    "    CompanyName: c.Name," +
+    "    ShippedAt: o.ShippedAt" +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask {
+    public Orders_ByShippedAtAndCompany() {
+        map = "docs.Orders.Select(order => new {" +
+            "    ShippedAt = order.ShippedAt," +
+            "    Company = order.Company" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShippedAtAndCompany' as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example VIII - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
+    "select { " +
+    "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), " +
+    "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, " +
+    "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
+    public Employees_ByFirstNameAndBirthday() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    Birthday = employee.Birthday" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example IX - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
+    "select { " +
+    "    Date : new Date(Date.parse(e.Birthday)), " +
+    "    Name : e.FirstName.substr(0,3) " +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
+    public Employees_ByFirstNameAndBirthday() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    Birthday = employee.Birthday" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example X - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> results = session.advanced().rawQuery(Employee.class, "from Employees as e " +
+    "select {" +
+    "     Name : e.FirstName, " +
+    "     Metadata : getMetadata(e)" +
+    "}").toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    public Employees_ByFirstAndLastName() {
+        map = "docs.Employees.Select(employee => new {" +
+            "    FirstName = employee.FirstName," +
+            "    LastName = employee.LastName" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+## OfType
+
+`OfType` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
+
+
+
+## Projections and the Session
+Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when `saveChanges` is called.
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of projecting query results when querying a **static-index**.  
+
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
+
+* Projections can be applied using the `select_fields` and `select_fields_query_data` methods.  
+
+* In this page:  
+
+  * [What are Projections and When to Use Them](../../indexes/querying/projections#what-are-projections-and-when-to-use-them)
+  * [`select_fields`](../../indexes/querying/projections#select_fields)
+  * [Examples](../../indexes/querying/projections#examples)
+  * [Projection Behavior](../../indexes/querying/projections#projection-behavior)
+  * [Projections and the Session](../../indexes/querying/projections#projections-and-the-session)
+  * [Syntax](../../indexes/querying/projections#syntax)
+  
+</Admonition>
+## What are Projections and When to Use Them
+
+When performing a query, we usually pull the full document back from the server.
+
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking 
+just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce 
+the amount of traffic on the network.   
+
+The savings can be very significant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company 
+is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of 
+the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to 
+rename some fields, load external documents, and perform transformations on the results. 
+
+#### Projections are Applied as the Last Stage in the Query
+It is important to understand that projections are applied after the query has been processed, filtered, 
+sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results 
+that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately 
+after. It also means that we cannot do any filtering work as part of the projection. You can filter what will 
+be returned, but not which documents will be returned. That has already been determined earlier in the query 
+pipeline.  
+
+#### The Cost of Running a Projection
+Another consideration to take into account is the cost of running the projection. It is possible to make the 
+projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the 
+projection, and exceeding these (quite generous) limits will fail the query.
+
+#### Projections and Stored Fields
+If a projection function only requires fields that are stored, then the document will not be loaded from 
+storage and all data will come from the index directly. This can increase query performance (by the cost 
+of disk space used) in many situations when whole document is not needed. You can read more about field 
+storing [here](../../indexes/storing-data-in-index).
+
+
+
+## `select_fields`
+
+Projections can be applied using the `select_fields` and `select_fields_query_data` methods.
+
+The projection fields can be specified as a `str` array of field names,  
+and the projection type can be passed as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`fields = ["Name", "Phone"]
+results = list(
+    session.advanced.document_query_from_index_type(Companies_ByContact, Company).select_fields(
+        ContactDetails, fields
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Companies_ByContact(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "companies.Select(x => new {name = x.Contact.Name, phone = x.Phone})"
+        self._store_all_fields(FieldStorage.YES)  # Name and Phone fields can be retrieved directly from index
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="python">
+{`class ContactDetails:
+    def __init__(self, name: str = None, phone: str = None):
+        self.name = name
+        self.phone = phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The projection can also be defined by simply passing the projection type as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.document_query_from_index_type(Companies_ByContact, Company).select_fields(
+        ContactDetails
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Companies_ByContact(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "companies.Select(x => new {name = x.Contact.Name, phone = x.Phone})"
+        self._store_all_fields(FieldStorage.YES)  # Name and Phone fields can be retrieved directly from index
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="python">
+{`class ContactDetails:
+    def __init__(self, name: str = None, phone: str = None):
+        self.name = name
+        self.phone = phone
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Examples
+
+#### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Employees_ByFirstAndLastName, Employee).select_fields(
+        Employee, "FirstName", "LastName"
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " LastName = employee.LastName"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that 
+index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index 
+entry matches our query predicate, then we will try to extract all requested fields from that particular entry. 
+If all requested fields are available in there, then we do not download it from storage. 
+The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, 
+so the documents will be fetched from storage.
+#### Example II - Projecting Stored Fields
+
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, 
+then **the data will come from the index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Employees_ByFirstAndLastNameWithStoredFields, Employee).select_fields(
+        Employee, "FirstName", "LastName"
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastNameWithStoredFields(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new"
+            "{"
+            " FirstName = employee.FirstName,"
+            " LastName = employee.LastName"
+            "}"
+        )
+        self._store_all_fields(FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastNameWithStoredFields'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example III - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`query_data = QueryData(["ShipTo", "Lines[].ProductName"], ["ShipTo", "Products"])
+results = list(session.query(object_type=Order).select_fields_query_data(ShipToAndProducts, query_data))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Orders_ByShipToAndLines(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from order in docs.Orders select new { ShipTo = order.ShipTo, Lines = order.Lines}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select 
+{ 
+    ShipTo: o.ShipTo, 
+    Products : o.Lines.map(function(y){return y.ProductName;}) 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IV - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        'from Employees as e select { FullName: e.FirstName + " " + e.LastName }', FullName
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " LastName = employee.LastName"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e
+select 
+{ 
+    FullName : e.FirstName + " " + e.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example V - Projection with `let`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "declare function output (e) { "
+        '    var format = function(p){ return p.FirstName + " " + p.LastName; };'
+        "    return { FullName : format(e) }; "
+        "} "
+        "from Employees as e select output(e)",
+        Employee,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " LastName = employee.LastName"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from index 'Employees/ByFirstAndLastName' as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VI - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = session.advanced.raw_query(
+    "from Orders as o "
+    "select { "
+    "    Total : o.Lines.reduce( "
+    "        (acc, 1) => acc += l.PricePerUnit * l.Quantity, 0) "
+    "}",
+    Total,
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Orders_ByShipToAndLines(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from order in docs.Orders select new { ShipTo = order.ShipTo, Lines = order.Lines}"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VII - Projection With a Count() Predicate
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Orders_ByShippedAtAndCompany(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from order in docs.Orders "
+            "select new "
+            "{"
+            " ShippedAt = order.ShippedAt,"
+            " Company = order.Company"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders as o 
+load o.Company as c 
+select 
+{ 
+    CompanyName : c.Name, 
+    ShippedAt : o.ShippedAt, 
+    TotalProducts : o.Lines.length, 
+    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VIII - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from Orders as o "
+        "load o.company as c "
+        "select { "
+        "    CompanyName: c.Name,"
+        "    ShippedAt: o.ShippedAt"
+        "}",
+        OrderProjection,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Orders_ByShippedAtAndCompany(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from order in docs.Orders "
+            "select new "
+            "{"
+            " ShippedAt = order.ShippedAt,"
+            " Company = order.Company"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShippedAtAndCompany' as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IX - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from Employees as e "
+        "select { "
+        "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), "
+        "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, "
+        "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() "
+        "}"
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstNameAndBirthday(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " Birthday = employee.Birthday"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example X - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from Employees as e "
+        "select { "
+        "    Date : new Date(Date.parse(e.Birthday)), "
+        "    Name : e.FirstName.substr(0,3) "
+        "}",
+        EmployeeProjection,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstNameAndBirthday(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " Birthday = employee.Birthday"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example XI - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from Employee as e " "select {" "    Name : e.FirstName, " "    Metadata : getMetadata(e)" "}",
+        Employee,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFirstAndLastName(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "from employee in docs.Employees "
+            "select new "
+            "{"
+            " FirstName = employee.FirstName,"
+            " LastName = employee.LastName"
+            "}"
+        )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Projection Behavior
+The `select_fields` methods can also take a `ProjectionBehavior` parameter, which
+determines whether the query should retrieve indexed data or directly retrieve 
+document data, and what to do when the data can't be retrieved. Learn more 
+[here](../../client-api/session/querying/how-to-customize-query#projection).  
+
+
+
+## Projections and the Session
+As you work with projections rather than directly with documents, the data is _not_ tracked by the session.  
+Modifications to a projection will not modify the document when `save_changes` is called.
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_select_fields">
+<CodeBlock language="python">
+{`def select_fields(
+    self,
+    projection_class: Type[_TProjection],
+    *fields: str,
+    projection_behavior: Optional[ProjectionBehavior] = ProjectionBehavior.DEFAULT,
+) -> DocumentQuery[_TProjection]: ...
+
+def select_fields_query_data(
+    self, projection_class: Type[_TProjection], query_data: QueryData
+) -> DocumentQuery[_TProjection]: ...
+
+class QueryData:
+    def __init__(
+        self,
+        fields: List[str],
+        projections: List[str],
+        from_alias: Optional[str] = None,
+        declare_tokens: Optional[List[DeclareToken]] = None,
+        load_tokens: Optional[List[LoadToken]] = None,
+        is_custom_function: Optional[bool] = None,
+    ):
+        self.fields = fields
+        self.projections = projections
+        self.from_alias = from_alias
+        self.declare_tokens = declare_tokens
+        self.load_tokens = load_tokens
+        self.is_custom_function = is_custom_function
+
+        self.map_reduce: Union[None, bool] = None
+        self.project_into: Union[None, bool] = None
+        self.projection_behavior: Union[None, ProjectionBehavior] = None
+`}
+</CodeBlock>
+</TabItem>
+#### `ProjectionBehavior` Syntax:
+
+<TabItem value="something-something" label="ProjectionBehavior_syntax">
+<CodeBlock language="python">
+{`class ProjectionBehavior(Enum):
+    DEFAULT = "Default"
+    FROM_INDEX = "FromIndex"
+    FROM_INDEX_OR_THROW = "FromIndexOrThrow"
+    FROM_DOCUMENT = "FromDocument"
+    FROM_DOCUMENT_OR_THROW = "FromDocumentOrThrow"
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+ 
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of projecting query results when querying a **static-index**.  
+
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
+
+* Projections can be applied using the `selectFields` method.  
+
+* In this page:  
+
+  * [What are Projections and When to Use Them](../../indexes/querying/projections#what-are-projections-and-when-to-use-them)
+  * [`selectFields`](../../indexes/querying/projections#selectfields)
+  * [Examples](../../indexes/querying/projections#examples)
+  * [Projection Behavior](../../indexes/querying/projections#projection-behavior)
+  * [Projections and the Session](../../indexes/querying/projections#projections-and-the-session)
+  
+</Admonition>
+## What are Projections and When to Use Them
+
+When performing a query, we usually pull the full document back from the server.
+
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking 
+just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce 
+the amount of traffic on the network.   
+
+The savings can be very significant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company 
+is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of 
+the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to 
+rename some fields, load external documents, and perform transformations on the results. 
+
+#### Projections are Applied as the Last Stage in the Query
+It is important to understand that projections are applied after the query has been processed, filtered, 
+sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results 
+that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately 
+after. It also means that we cannot do any filtering work as part of the projection. You can filter what will 
+be returned, but not which documents will be returned. That has already been determined earlier in the query 
+pipeline.  
+
+#### The Cost of Running a Projection
+Another consideration to take into account is the cost of running the projection. It is possible to make the 
+projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the 
+projection, and exceeding these (quite generous) limits will fail the query.
+
+#### Projections and Stored Fields
+If a projection function only requires fields that are stored, then the document will not be loaded from 
+storage and all data will come from the index directly. This can increase query performance (by the cost 
+of disk space used) in many situations when whole document is not needed. You can read more about field 
+storing [here](../../indexes/storing-data-in-index).
+
+
+
+## `selectFields`
+
+Projections can be applied using the `selectFields` method.
+
+The projection fields can be specified as a `str` array of field names,  
+and the projection type can be passed as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$fields = [
+    "Name",
+    "Phone"
+];
+
+$results = $session
+    ->advanced()
+    ->documentQuery(Company::class, Companies_ByContact::class)
+    ->selectFields(ContactDetails::class, $fields)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Companies_ByContact extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "companies.Select(x => new {Name = x.Contact.Name, Phone = x.Phone})";
+
+        $this->storeAllFields(FieldStorage::yes()); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="php">
+{`class ContactDetails
+{
+    private ?string $name = null;
+    private ?string $phone = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The projection can also be defined by simply passing the projection type as a generic parameter.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+->advanced()
+->documentQuery(Company::class, Companies_ByContact::class)
+->selectFields(ContactDetails::class)
+->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Companies_ByContact extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "companies.Select(x => new {Name = x.Contact.Name, Phone = x.Phone})";
+
+        $this->storeAllFields(FieldStorage::yes()); // Name and Phone fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Class" label="Class">
+<CodeBlock language="php">
+{`class ContactDetails
+{
+    private ?string $name = null;
+    private ?string $phone = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies/ByContact'
+select Name, Phone
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Examples
+
+#### Example I - Projecting Individual Fields of the Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->query(Employee::class, Employees_ByFirstAndLastName::class)
+    ->selectFields(Employee::class, ["FirstName", "LastName"])
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that 
+index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index 
+entry matches our query predicate, then we will try to extract all requested fields from that particular entry. 
+If all requested fields are available in there, then we do not download it from storage. 
+The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, 
+so the documents will be fetched from storage.
+#### Example II - Projecting Stored Fields
+
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, 
+then **the data will come from the index directly**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->query(Employee::class, Employees_ByFirstAndLastNameWithStoredFields::class)
+    ->selectFields(Employee::class, ["FirstName", "LastName"])
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new" .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+
+        $this->storeAllFields(FieldStorage::yes()); // FirstName and LastName fields can be retrieved directly from index
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastNameWithStoredFields'
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example III - Projecting Arrays and Objects
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$queryData = new QueryData(["ShipTo", "Lines[].ProductName"], ["ShipTo", "Products"]);
+
+$results = $session
+    ->query(Order::class, Orders_ByShipToAndLines::class)
+    ->selectFields(ShipToAndProducts::class, $queryData)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShipToAndLines extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from order in docs.Orders" .
+            "select new { " .
+            "   ShipTo = order.ShipTo, " .
+            "   Lines = order.Lines " .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select 
+{ 
+    ShipTo: o.ShipTo, 
+    Products : o.Lines.map(function(y){return y.ProductName;}) 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IV - Projection with Expression
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session
+    ->rawQuery(FullName::class, 'from Employees as e select { FullName: e.FirstName + " " + e.LastName }')
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e
+select 
+{ 
+    FullName : e.FirstName + " " + e.LastName 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example V - Projection with `let`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Employee::class,
+    "declare function output(e) { " .
+        "    var format = function(p){ return p.FirstName + \\" \\" + p.LastName; }; " .
+        "    return { FullName : format(e) }; " .
+        "} " .
+        "from Employees as e select output(e)"
+    )
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from index 'Employees/ByFirstAndLastName' as e select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VI - Projection with Calculation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Total::class,
+    "from Orders as o " .
+    "select { " .
+    "    Total : o.Lines.reduce( " .
+    "        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0) " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShipToAndLines extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "from order in docs.Orders" .
+            "select new { " .
+            "   ShipTo = order.ShipTo, " .
+            "   Lines = order.Lines " .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShipToAndLines' as o
+select {
+    Total : o.Lines.reduce(
+        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VII - Projection With a Count() Predicate
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from order in docs.Orders " .
+            "select new " .
+            "{" .
+            "   ShippedAt = order.ShippedAt," .
+            "   Company = order.Company" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Orders as o 
+load o.Company as c 
+select 
+{ 
+    CompanyName : c.Name, 
+    ShippedAt : o.ShippedAt, 
+    TotalProducts : o.Lines.length, 
+    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example VIII - Projection Using a Loaded Document
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    OrderProjection::class,
+    "from Orders as o " .
+        "load o.company as c " .
+        "select { " .
+        "    CompanyName: c.Name," .
+        "    ShippedAt: o.ShippedAt" .
+        "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from order in docs.Orders " .
+            "select new " .
+            "{" .
+            "   ShippedAt = order.ShippedAt," .
+            "   Company = order.Company" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Orders/ByShippedAtAndCompany' as o
+load o.Company as c
+select {
+	CompanyName: c.Name,
+	ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example IX - Projection with Dates
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    EmployeeProjection::class,
+    "from Employees as e " .
+    "select { " .
+    "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), " .
+    "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, " .
+    "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   Birthday = employee.Birthday" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select { 
+    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
+    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1,
+    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() 
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example X - Projection with Raw JavaScript Code
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    EmployeeProjection::class,
+    "from Employees as e " .
+    "select { " .
+    "    Date : new Date(Date.parse(e.Birthday)), " .
+    "    Name : e.FirstName.substr(0,3) " .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   Birthday = employee.Birthday" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstNameAndBirthday' as e 
+select {
+    Date : new Date(Date.parse(e.Birthday)), 
+    Name : e.FirstName.substr(0,3)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Example XI - Projection with Metadata
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`$results = $session->advanced()->rawQuery(
+    Employee::class,
+    "from Employees as e " .
+    "select {" .
+    "     Name : e.FirstName, " .
+    "     Metadata : getMetadata(e)" .
+    "}")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map =
+            "from employee in docs.Employees " .
+            "select new " .
+            "{" .
+            "   FirstName = employee.FirstName," .
+            "   LastName = employee.LastName" .
+            "}";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName' as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Projection Behavior
+The `selectFields` methods can also take a `ProjectionBehavior` parameter, which
+determines whether the query should retrieve indexed data or directly retrieve 
+document data, and what to do when the data can't be retrieved. Learn more 
+[here](../../client-api/session/querying/how-to-customize-query#projection).  
+
+
+
+## Projections and the Session
+As you work with projections rather than directly with documents, the data is _not_ tracked by the session.  
+Modifications to a projection will not modify the document when `saveChanges` is called.
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of projecting query results when querying a **static-index**.
+
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+  for general knowledge about Projections and for dynamic-queries examples.  
+
+* In this page:
+   * [SelectFields](../../indexes/querying/projections#selectfields)
+   * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
+   * [ofType](../../indexes/querying/projections#oftype)
+
+</Admonition>
+## SelectFields
+
+<Admonition type="note" title="Note">
+
+**Example I - Projecting individual fields of the document**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Alias names for the projected fields can be defined using a QueryData object 
+const queryData = new QueryData(
+    ["FirstName", "LastName"],                   // Document-fields to project
+    ["EmployeeFirstName ", "EmployeeLastName"]); // An alias for each field
+
+const projectedResults = await session
+     // Query the index
+    .query({indexName: "Employees/ByNameAndTitle"})
+     // Can filter by any index-field, e.g.filter by index-field 'Title'
+    .whereEquals('Title', 'sales representative')
+     // Call 'selectFields' 
+     // Only the fields defined in 'queryData' will be returned per matching document
+    .selectFields(queryData)
+    .all();
+
+// Each resulting object in the list is Not an 'Employee' entity,
+// it is a new object containing ONLY the fields specified in the selectFields method
+// ('EmployeeFirstName' & 'EmployeeLastName').
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                LastName: e.LastName,
+                Title: e.Title
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitle"
+where Title == "sales representative"
+select FirstName as EmployeeFirstName, LastName as EmployeeLastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+  resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
+
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example II - Projecting stored fields**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session
+    .query({ indexName: "Employees/ByNameAndTitleWithStoredFields" })
+     // Call 'selectFields' 
+     // Project fields 'FirstName' and 'LastName' which are STORED in the index
+    .selectFields(["FirstName", "LastName"])
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByNameAndTitleWithStoredFields extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                LastName: e.LastName,
+                Title: e.Title
+            };
+        });
+
+        // Store some fields in the index:
+        this.store('FirstName', 'Yes');
+        this.store('LastName', 'Yes');
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName, LastName
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
+  so by default, the resulting values will come directly from the index and not from the Employee document in the storage.
+
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example III - Projecting arrays and objects**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const queryData = new QueryData(
+    // Retrieve the City property from the ShipTo object
+    // and all product names from the Lines array
+    [ "ShipTo.City", "Lines[].ProductName" ],
+    [ "ShipToCity", "Products" ]);
+
+const projectedResults = await session
+    .query({ indexName: "Employees/ByCompanyAndShipToAndLines" })
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Orders_ByCompanyAndShipToAndLines extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Orders", o => {
+            return {
+                Company : o.Company,
+                ShipTo: o.ShipTo,
+                Lines: o.Lines
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Using simple expression:
+from index "Orders/ByCompanyAndShipToAndLines"
+where Company == "companies/65-A"
+select ShipTo.City as ShipToCity, Lines[].ProductName as Products
+
+// Using JavaScript object literal syntax:
+from index "Orders/ByCompanyAndShipToAndLines" as x
+where Company == "companies/65-A"
+select {
+    ShipToCity: x.ShipTo.City,
+    Products: x.Lines.map(y => y.ProductName)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example IV - Projection with expression**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define the projected data expression within a custom function.
+// Any expression can be provided for the projected content.
+const queryData = QueryData.customFunction("e", \`{
+    FullName: e.FirstName + " " + e.LastName 
+}\`);
+
+const projectedResults = await session
+    .query({indexName: "Employees/ByNameAndTitle"})
+    .selectFields(queryData)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                LastName: e.LastName,
+                Title: e.Title
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitle" as e
+select {
+    FullName : e.FirstName + " " + e.LastName
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example V - Projection with calculations**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from index "Orders/ByCompanyAndShipToAndLines" as x
+               select {
+                   // Any calculations can be done within a projection
+                   TotalProducts: x.Lines.length,
+                   TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+                   TotalPrice: x.Lines
+                                .map(l => l.PricePerUnit * l.Quantity)
+                                .reduce((a, b) => a + b, 0)
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Orders_ByCompanyAndShipToAndLines extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Orders", o => {
+            return {
+                Company : o.Company,
+                ShipTo: o.ShipTo,
+                Lines: o.Lines
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCompanyAndShipToAndLines" as x
+select {
+    TotalProducts: x.Lines.length,
+    TotalDiscountedProducts: x.Lines.filter(x => x.Discount > 0).length,
+    TotalPrice: x.Lines
+                 .map(l => l.PricePerUnit * l.Quantity)
+                 .reduce((a, b) => a + b, 0)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VI - Projecting using functions**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`// Define a function
+               declare function output(x) {
+                   var format = p => p.FirstName + " " + p.LastName;
+                   return { FullName: format(x) };
+               }
+                
+               from index "Employees/ByNameAndTitle" as e
+               select output(e)\`)  // Call the function from the projection
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                LastName: e.LastName,
+                Title: e.Title
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`declare function output(x) {
+    var format = p => p.FirstName + " " + p.LastName;
+    return { FullName: format(x) };
+}
+
+from index "Employees/ByNameAndTitle" as e
+select output(e)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VII - Projecting using a loaded document**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from index "Orders/ByCompanyAndShippedAt" as o
+               load o.Company as c         // Load the related document to use in the projection
+               select {
+                   CompanyName: c.Name,    // Info from the related Company document
+                   ShippedAt: o.ShippedAt  // Info from the Order document
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Orders_ByCompanyAndShippedAt extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Orders", o => {
+            return {
+                Company: o.Company,
+                ShippedAt: o.ShippedAt
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Orders/ByCompanyAndShippedAt" as o
+load o.Company as c
+select {
+    CompanyName: c.Name,
+    ShippedAt: o.ShippedAt
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example VIII - Projection with dates**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from index "Employees/ByFirstNameAndBirthday" as x
+               select {
+                   DayOfBirth: new Date(Date.parse(x.Birthday)).getDate(),
+                   MonthOfBirth: new Date(Date.parse(x.Birthday)).getMonth() + 1,
+                   Age: new Date().getFullYear() - new Date(Date.parse(x.Birthday)).getFullYear()
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByFirstNameAndBirthday extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                Birthday: e.Birthday
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstNameAndBirthday" as x
+select {
+    DayOfBirth: new Date(Date.parse(x.Birthday)).getDate(),
+    MonthOfBirth: new Date(Date.parse(x.Birthday)).getMonth() + 1,
+    Age: new Date().getFullYear() - new Date(Date.parse(x.Birthday)).getFullYear()
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Example IX - Projection with metadata**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session.advanced
+    .rawQuery(\`from index "Employees/ByFirstNameAndBirthday" as x
+               select {
+                   Name: x.FirstName,
+                   Metadata: getMetadata(x) // Get the metadata
+               }\`)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByFirstNameAndBirthday extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                Birthday: e.Birthday
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByFirstNameAndBirthday" as x
+select {
+    Name : x.FirstName,
+    Metadata : getMetadata(x)
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Projection behavior with a static-index
+
+* **By default**, when querying a static-index and projecting query results,  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  If the index does Not store those fields then the fields' values will be retrieved from the documents.
+
+* This behavior can be modified by setting the **projection behavior**.
+
+* Note: Storing fields in the index can increase query performance when projecting,  
+  but this comes at the expense of the disk space used by the index.
+
+<Admonition type="note" title="Note">
+
+**Example**:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const projectedResults = await session
+    .query({ indexName: "Employees/ByNameAndTitleWithStoredFields" })
+     // Pass the requested projection behavior to the 'SelectFields' method
+    .selectFields(["FirstName", "Title"], ProjectionClass, "FromIndexOrThrow")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employees_ByNameAndTitleWithStoredFields extends AbstractJavaScriptIndexCreationTask  {
+    constructor() {
+        super();
+
+        this.map("Employees", e => {
+            return {
+                FirstName: e.FirstName,
+                LastName: e.LastName,
+                Title: e.Title
+            };
+        });
+
+        // Store some fields in the index:
+        this.store('FirstName', 'Yes');
+        this.store('LastName', 'Yes');
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Projection_class" label="Projection_class">
+<CodeBlock language="nodejs">
+{`class ProjectionClass {
+    constructor(firstName, title) {
+        // The projection class contains field names from the index-fields
+        this.FirstName = firstName;
+        this.Title = title;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Employees/ByNameAndTitleWithStoredFields"
+select FirstName, Title
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The projection behavior in the above example is set to `FromIndexOrThrow` and so the following applies:
+
+* Field `FirstName` is stored in the index so the server will fetch its values from the index.
+
+* However, field `Title` is Not stored in the index so an exception will be thrown when the query is executed.
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Projection behavior options**:
+
+* `"Default"`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+
+* `"FromIndex"`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+
+* `"FromIndexOrThrow"`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+
+* `"FromDocument"`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+
+* `"FromDocumentOrThrow"`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+</Admonition>
+
+
+
+## ofType
+
+* `ofType` is a client-side projection that is only used to map the resulting objects to the provided type.
+
+* As opposed to projection queries where results are not tracked by the session,  
+  In the case of non-projecting queries that use _ofType_, the session does track the resulting document entities.
+
+<TabItem value="something-something" label="projections_10">
+<CodeBlock language="nodejs">
+{`// Make a query without a projection
+const results = await session
+    .query(\{ indexName: "Employees/ByNameAndTitle" \})
+    .whereEquals('Title', 'sales representative')
+     // Call 'ofType'
+     // The resulting objects will be of type 'Employee'
+    .ofType(Employee)
+    .all();
+
+// In this case, the resulting objects are tracked by the session
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

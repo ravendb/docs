@@ -1,0 +1,1260 @@
+---
+title: "Multi-Map Indexes"
+sidebar_label: Multi-Map Indexes
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Multi-Map Indexes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap-&-addmapforall)
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
+
+</Admonition>
+
+## AddMap & AddMapForAll
+
+The `AddMap` method is used to map fields from a single collection, e.g. `Dogs`.  
+`AddMapForAll` gives you the ability to specify what fields will be indexed from a base class.  
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="csharp">
+{`public class Dog : Animal
+{
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="csharp">
+{`public class Cat : Animal
+{
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="csharp">
+{`public abstract class Animal : IAnimal
+{
+    public string Name { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IAnimal" label="IAnimal">
+<CodeBlock language="csharp">
+{`public interface IAnimal
+{
+    string Name { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+We can define our index using `AddMap` or `AddMapForAll` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AddMap" label="AddMap">
+<CodeBlock language="csharp">
+{`public class Animals_ByName : AbstractMultiMapIndexCreationTask
+{
+    public Animals_ByName()
+    {
+        AddMap<Cat>(cats => from c in cats select new { c.Name });
+
+        AddMap<Dog>(dogs => from d in dogs select new { d.Name });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="AddMapForAll" label="AddMapForAll">
+<CodeBlock language="csharp">
+{`public class Animals_ByName_ForAll : AbstractMultiMapIndexCreationTask
+{
+    public Animals_ByName_ForAll()
+    {
+        AddMapForAll<Animal>(parents => from p in parents select new { p.Name });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="csharp">
+{`public class Animals_ByName : AbstractJavaScriptIndexCreationTask
+{
+    public Animals_ByName()
+    {
+        Maps = new HashSet<string>()
+        {
+            @"map('cats', function (c){ return {Name: c.Name}})",
+            @"map('dogs', function (d){ return {Name: d.Name}})"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<IAnimal> results = session
+    .Query<IAnimal, Animals_ByName>()
+    .Where(x => x.Name == "Mitzy")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<IAnimal> results = session
+    .Advanced
+    .DocumentQuery<IAnimal, Animals_ByName>()
+    .WhereEquals(x => x.Name, "Mitzy")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="something" label="multi_map_1_0">
+<CodeBlock language="csharp">
+{`public class Smart_Search : AbstractMultiMapIndexCreationTask<Smart_Search.Result>
+\{
+    public class Result
+    \{
+        public string Id \{ get; set; \}
+
+        public string DisplayName \{ get; set; \}
+
+        public object Collection \{ get; set; \}
+
+        public string[] Content \{ get; set; \}
+    \}
+
+    public class Projection
+    \{
+        public string Id \{ get; set; \}
+
+        public string DisplayName \{ get; set; \}
+
+        public string Collection \{ get; set; \}
+    \}
+
+    public Smart_Search()
+    \{
+        AddMap<Company>(companies => from c in companies
+            select new Result
+            \{
+                Id = c.Id,
+                Content = new[]
+                \{
+                    c.Name
+                \},
+                DisplayName = c.Name,
+                Collection = MetadataFor(c)["@collection"]
+            \});
+
+        AddMap<Product>(products => from p in products
+            select new Result
+            \{
+                Id = p.Id,
+                Content = new[]
+                \{
+                    p.Name
+                \},
+                DisplayName = p.Name,
+                Collection = MetadataFor(p)["@collection"]
+            \});
+
+        AddMap<Employee>(employees => from e in employees
+            select new Result
+            \{
+                Id = e.Id,
+                Content = new[]
+                \{
+                    e.FirstName,
+                    e.LastName
+                \},
+                DisplayName = e.FirstName + " " + e.LastName,
+                Collection = MetadataFor(e)["@collection"]
+            \});
+
+        // mark 'Content' field as analyzed which enables full text search operations
+        Index(x => x.Content, FieldIndexing.Search);
+
+        // storing fields so when projection (e.g. ProjectInto)
+        // requests only those fields
+        // then data will come from index only, not from storage
+        Store(x => x.Id, FieldStorage.Yes);
+        Store(x => x.DisplayName, FieldStorage.Yes);
+        Store(x => x.Collection, FieldStorage.Yes);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="something" label="multi_map_1_1">
+<CodeBlock language="csharp">
+{`IList<Smart_Search.Projection> results = session
+    .Query<Smart_Search.Result, Smart_Search>()
+    .Search(x => x.Content, "Lau*")
+    .ProjectInto<Smart_Search.Projection>()
+    .ToList();
+
+foreach (Smart_Search.Projection result in results)
+\{
+    Console.WriteLine(result.Collection + ": " + result.DisplayName);
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products: Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [AddMap](../indexes/multi-map-indexes#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
+
+</Admonition>
+
+## AddMap
+
+The `AddMap` method is used to map fields from a single collection, e.g. `Dogs`.
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="java">
+{`public static class Dog extends Animal {
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="java">
+{`public static class Cate extends Animal {
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="java">
+{`public abstract static class Animal implements IAnimal {
+    private String name;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="IAnimal" label="IAnimal">
+<CodeBlock language="java">
+{`public interface IAnimal {
+    String getName();
+    void setName(String name);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we can define our index using `addMap` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="AddMap" label="AddMap">
+<CodeBlock language="java">
+{`public static class Animals_ByName extends AbstractMultiMapIndexCreationTask {
+    public Animals_ByName() {
+        addMap( "docs.Cats.Select(c => new { " +
+            "    Name = c.Name " +
+            "})");
+
+        addMap( "docs.Dogs.Select(d => new { " +
+            "    Name = d.Name " +
+            "})");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="java">
+{`public static class Animals_ByName extends AbstractJavaScriptIndexCreationTask {
+    public Animals_ByName() {
+        setMaps(Sets.newHashSet(
+            "map('cats', function (c){ return {name: c.name}})",
+            "map('dogs', function (d){ return {name: d.name}})"
+        ));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<IAnimal> results = session
+    .query(IAnimal.class, Animals_ByName.class)
+    .whereEquals("Name", "Mitzy")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="something-something" label="multi_map_1_0">
+<CodeBlock language="java">
+{`public static class Smart_Search extends AbstractMultiMapIndexCreationTask \{
+    public static class Result \{
+        private String id;
+        private String displayName;
+        private String collection;
+        private String content;
+
+        public String getId() \{
+            return id;
+        \}
+
+        public void setId(String id) \{
+            this.id = id;
+        \}
+
+        public String getDisplayName() \{
+            return displayName;
+        \}
+
+        public void setDisplayName(String displayName) \{
+            this.displayName = displayName;
+        \}
+
+        public String getCollection() \{
+            return collection;
+        \}
+
+        public void setCollection(String collection) \{
+            this.collection = collection;
+        \}
+
+        public String getContent() \{
+            return content;
+        \}
+
+        public void setContent(String content) \{
+            this.content = content;
+        \}
+    \}
+
+    public static class Projection \{
+        private String id;
+        private String displayName;
+        private String collection;
+
+        public String getId() \{
+            return id;
+        \}
+
+        public void setId(String id) \{
+            this.id = id;
+        \}
+
+        public String getDisplayName() \{
+            return displayName;
+        \}
+
+        public void setDisplayName(String displayName) \{
+            this.displayName = displayName;
+        \}
+
+        public String getCollection() \{
+            return collection;
+        \}
+
+        public void setCollection(String collection) \{
+            this.collection = collection;
+        \}
+    \}
+
+    public Smart_Search() \{
+
+        addMap("docs.Companies.Select(c => new \{ " +
+            "    Id = Id(c), " +
+            "    Content = new string[] \{ " +
+            "        c.Name " +
+            "    \}, " +
+            "    DisplayName = c.Name, " +
+            "    Collection = this.MetadataFor(c)[\\"@collection\\"] " +
+            "\})");
+
+        addMap("docs.Products.Select(p => new \{ " +
+            "    Id = Id(p), " +
+            "    Content = new string[] \{ " +
+            "        p.Name " +
+            "    \}, " +
+            "    DisplayName = p.Name, " +
+            "    Collection = this.MetadataFor(p)[\\"@collection\\"] " +
+            "\})");
+
+        addMap("docs.Employees.Select(e => new \{ " +
+            "    Id = Id(e), " +
+            "    Content = new string[] \{ " +
+            "        e.FirstName, " +
+            "        e.LastName " +
+            "    \}, " +
+            "    DisplayName = (e.FirstName + \\" \\") + e.LastName, " +
+            "    Collection = this.MetadataFor(e)[\\"@collection\\"] " +
+            "\})");
+
+        // mark 'content' field as analyzed which enables full text search operations
+        index("Content", FieldIndexing.SEARCH);
+
+        // storing fields so when projection (e.g. ProjectInto)
+        // requests only those fields
+        // then data will come from index only, not from storage
+        store("Id", FieldStorage.YES);
+        store("DisplayName", FieldStorage.YES);
+        store("Collection", FieldStorage.YES);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="something-something" label="multi_map_1_1">
+<CodeBlock language="java">
+{`List<Smart_Search.Projection> results = session
+    .query(Smart_Search.Result.class, Smart_Search.class)
+    .search("Content", "Lau*")
+    .selectFields(Smart_Search.Projection.class)
+    .toList();
+
+for (Smart_Search.Projection result : results) \{
+    System.out.println(result.getCollection() + ": " + result.getDisplayName());
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products: Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [`_add_map`](../indexes/multi-map-indexes#_add_map)
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
+
+</Admonition>
+
+## `_add_map`
+
+The `_add_map` method is used to map fields from a single collection, e.g. `Dogs`.  
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="python">
+{`class Dog(Animal): ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="python">
+{`class Cat(Animal): ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="python">
+{`class Animal(ABC):
+    def __init__(self, name: str = None):
+        self.name = name
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+We can define our index using `_add_map` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="_add_map" label="_add_map">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractMultiMapIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self._add_map("from c in docs.Cats select new { c.name }")
+        self._add_map("from d in docs.Dogs select new { d.name }")
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="python">
+{`class Animals_ByName(AbstractJavaScriptIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.maps = {
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})",
+        }
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(session.query_index_type(Animals_ByName, Animal).where_equals("name", "Mitzy"))
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="something-something" label="multi_map_1_0">
+<CodeBlock language="python">
+{`class Smart_Search(AbstractMultiMapIndexCreationTask):
+    class Result:
+        def __init__(
+            self, Id: str = None, display_name: str = None, collection: object = None, content: List[str] = None
+        ):
+            self.Id = Id
+            self.display_name = display_name
+            self.collection = collection
+            self.content = content
+
+    class Projection:
+        def __init__(self, Id: str = None, display_name: str = None, collection: str = None):
+            self.Id = Id
+            self.display_name = display_name
+            self.collection = collection
+
+    def __init__(self):
+        super().__init__()
+        self._add_map(
+            "from c in docs.Companies select new \{"
+            "Id = c.Id,"
+            "content = new[]"
+            "\{"
+            "    c.name"
+            "\},"
+            "display_name=  c.name, "
+            'collection = MetadataFor(c)["@collection"]'
+            "\}"
+        )
+
+        self._add_map(
+            "from p in docs.Products select new \{"
+            "Id = p.Id,"
+            "content = new[]"
+            "\{"
+            "    p.name"
+            "\},"
+            "display_name = p.name,"
+            'collection = MetadataFor(p)["@collection"]'
+            "\}"
+        )
+
+        self._add_map(
+            "from e in docs.Employees select new \{"
+            "Id = e.Id,"
+            "content = new[]"
+            "\{"
+            "    e.first_name,"
+            "    e.last_name"
+            "\},"
+            'display_name = e.first_name + " " + e.last_name,'
+            'collection = MetadataFor(e)["@collection"]'
+            "\}"
+        )
+
+        # mark 'content' field as analyzed which enables full text search operations
+        self._index("content", FieldIndexing.SEARCH)
+
+        # storing fields so when projection (e.g. ProjectInto) requests only those fields,
+        # data will come from index only, not from storage
+        self._store("Id", FieldStorage.YES)
+        self._store("display_name", FieldStorage.YES)
+        self._store("collection", FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="something-something" label="multi_map_1_1">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Smart_Search, Smart_Search.Result)
+    .search("content", "Lau*")
+    .select_fields(Smart_Search.Projection)
+)
+
+for result in results:
+    print(f"\{result.collection\}: \{result.display_name\}")
+    # Companies: Laughing Bacchus Wine Cellars
+    # Products: Laughing Lumberjack Lager
+    # Employees: Laura Callahan
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [`addMap`](../indexes/multi-map-indexes#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes#remarks)
+
+</Admonition>
+
+## `addMap`
+
+The `addMap` method is used to map fields from a single collection, e.g. `Dogs`.  
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="php">
+{`_1
+                /** @var array<Smart_Search_Projection> $results */
+                $results = $session
+                    ->documentQuery(Smart_Search_Result::class, Smart_Search::class)
+                    ->search("Content", "Lau*")
+                    ->selectFields(Smart_Search_Projection::class)
+                    ->toList();
+
+                /** @var Smart_Search_Projection $result */
+                foreach ($results as $result)
+                {
+                    echo $result->getCollection() . ": " . $result->getDisplayName();
+                    // Companies: Laughing Bacchus Wine Cellars
+                    // Products: Laughing Lumberjack Lager
+                    // Employees: Laura Callahan
+                }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="php">
+{`class Cat extends Animal
+{
+
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="php">
+{`abstract class Animal implements AnimalInterface
+{
+    public ?string $name = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+We can define our index using `addMap` and query it as follows:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="_add_map" label="_add_map">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractMultiMapIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addMap( "docs.Cats.Select(c => new { " .
+            "    Name = c.Name " .
+            "})");
+
+        $this->addMap( "docs.Dogs.Select(d => new { " .
+            "    Name = d.Name " .
+            "})");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="MultiMapJavaScript" label="MultiMapJavaScript">
+<CodeBlock language="php">
+{`class Animals_ByName extends AbstractJavaScriptIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setMaps([
+            "map('cats', function (c){ return {Name: c.Name}})",
+            "map('dogs', function (d){ return {Name: d.Name}})"
+        ]);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<AnimalInterface> $results */
+$results = $session
+    ->query(AnimalInterface::class, Animals_ByName::class)
+    ->whereEquals("Name", "Mitzy")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Animals/ByName'
+where Name = 'Mitzy'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="something-something" label="multi_map_1_0">
+<CodeBlock language="php">
+{`class Smart_Search_Result
+\{
+    private ?string $id = null;
+    private ?string $displayName = null;
+    private ?string $collection = null;
+    private ?string $content = null;
+
+    public function getId(): ?string
+    \{
+        return $this->id;
+    \}
+
+    public function setId(?string $id): void
+    \{
+        $this->id = $id;
+    \}
+
+    public function getDisplayName(): ?string
+    \{
+        return $this->displayName;
+    \}
+
+    public function setDisplayName(?string $displayName): void
+    \{
+        $this->displayName = $displayName;
+    \}
+
+    public function getCollection(): ?string
+    \{
+        return $this->collection;
+    \}
+
+    public function setCollection(?string $collection): void
+    \{
+        $this->collection = $collection;
+    \}
+
+    public function getContent(): ?string
+    \{
+        return $this->content;
+    \}
+
+    public function setContent(?string $content): void
+    \{
+        $this->content = $content;
+    \}
+\}
+
+class Smart_Search_Projection
+\{
+    private ?string $id = null;
+    private ?string $displayName = null;
+    private ?string $collection = null;
+
+    public function getId(): ?string
+    \{
+        return $this->id;
+    \}
+
+    public function setId(?string $id): void
+    \{
+        $this->id = $id;
+    \}
+
+    public function getDisplayName(): ?string
+    \{
+        return $this->displayName;
+    \}
+
+    public function setDisplayName(?string $displayName): void
+    \{
+        $this->displayName = $displayName;
+    \}
+
+    public function getCollection(): ?string
+    \{
+        return $this->collection;
+    \}
+
+    public function setCollection(?string $collection): void
+    \{
+        $this->collection = $collection;
+    \}
+\}
+
+class Smart_Search extends AbstractMultiMapIndexCreationTask
+\{
+    public function __construct()
+    \{
+        parent::__construct();
+
+        $this->addMap("docs.Companies.Select(c => new \{ " .
+            "    Id = Id(c), " .
+            "    Content = new string[] \{ " .
+            "        c.Name " .
+            "    \}, " .
+            "    DisplayName = c.Name, " .
+            "    Collection = this.MetadataFor(c)[\\"@collection\\"] " .
+            "\})");
+
+        $this->addMap("docs.Products.Select(p => new \{ " .
+            "    Id = Id(p), " .
+            "    Content = new string[] \{ " .
+            "        p.Name " .
+            "    \}, " .
+            "    DisplayName = p.Name, " .
+            "    Collection = this.MetadataFor(p)[\\"@collection\\"] " .
+            "\})");
+
+        $this->addMap("docs.Employees.Select(e => new \{ " .
+            "    Id = Id(e), " .
+            "    Content = new string[] \{ " .
+            "        e.FirstName, " .
+            "        e.LastName " .
+            "    \}, " .
+            "    DisplayName = (e.FirstName + \\" \\") + e.LastName, " .
+            "    Collection = this.MetadataFor(e)[\\"@collection\\"] " .
+            "\})");
+
+        // mark 'content' field as analyzed which enables full text search operations
+        $this->index("Content", FieldIndexing::search());
+
+        // storing fields so when projection (e.g. ProjectInto)
+        // requests only those fields
+        // then data will come from index only, not from storage
+        $this->store("Id", FieldStorage::yes());
+        $this->store("DisplayName", FieldStorage::yes());
+        $this->store("Collection", FieldStorage::yes());
+
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<TabItem value="something-something" label="multi_map_1_1">
+<CodeBlock language="php">
+{`/** @var array<Smart_Search_Projection> $results */
+$results = $session
+    ->documentQuery(Smart_Search_Result::class, Smart_Search::class)
+    ->search("Content", "Lau*")
+    ->selectFields(Smart_Search_Projection::class)
+    ->toList();
+
+/** @var Smart_Search_Projection $result */
+foreach ($results as $result)
+\{
+    echo $result->getCollection() . ": " . $result->getDisplayName();
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products: Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Multi-Map indexes allow you to index data from multiple collections, 
+  like polymorphic data or any data common to different types.  
+
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+
+* In this page:
+  * [Indexing multiple collections](../indexes/multi-map-indexes#indexing-multiple-collections)  
+  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)  
+  * [Remarks](../indexes/multi-map-indexes#remarks)  
+
+</Admonition>
+
+## Indexing multiple collections
+
+Let's assume that we have `Dog` and `Cat` classes, both inheriting from the class `Animal`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Dog" label="Dog">
+<CodeBlock language="nodejs">
+{`class Dog extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Cat" label="Cat">
+<CodeBlock language="nodejs">
+{`class Cat extends Animal { }
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Animal" label="Animal">
+<CodeBlock language="nodejs">
+{`class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Now we can define and query our index as follows:
+
+<TabItem value="something-something" label="multiMapIndex_1">
+<CodeBlock language="nodejs">
+{`class Animals_ByName extends AbstractJavaScriptMultiMapIndexCreationTask  \{
+    constructor() \{
+        super();
+
+        // Index field 'name' from the Cats collection
+        this.map('Cats', cat => \{
+            return \{
+                name: cat.name
+            \};
+        \});
+
+        // Index field 'name' from the Dogs collection
+        this.map('Dogs', dog => \{
+            return \{
+                name: dog.name
+            \};
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const results = await session
+     // Query the index
+    .query({ indexName: "Animals/ByName" })
+     // Look for all animals (either a cat or a dog) that are named 'Mitzy' :)
+    .whereEquals("name", "Mitzy")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Animals/ByName"
+where Name == "Mitzy"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Searching across multiple collections
+
+Another great usage of Multi-Map indexes is smart-search.  
+
+To search for products, companies, or employees by their name, you need to define the following index:
+<TabItem value="something-something" label="multiMapIndex_2">
+<CodeBlock language="nodejs">
+{`class Smart_Search extends AbstractJavaScriptMultiMapIndexCreationTask  \{
+    constructor() \{
+        super();
+       
+        this.map('Companies', company => \{
+            return \{
+                id: id(company),
+                content: company.Name,
+                displayName: company.Name,
+                collection: this.getMetadata(company)["@collection"]
+            \};
+        \});
+
+        this.map('Products', product => \{
+            return \{
+                id: id(product),
+                content: product.Name,
+                displayName: product.Name,
+                collection: this.getMetadata(product)["@collection"]
+            \};
+        \});
+
+        this.map('Employees', employee => \{
+            return \{
+                id: id(employee),
+                content: [employee.FirstName, employee.LastName],
+                displayName: employee.FirstName + " " +  employee.LastName,
+                collection: this.getMetadata(employee)["@collection"]
+            \};
+        \});
+
+        // Mark the 'content' field with 'Search' to enable full-text search queries
+        this.index("content", "Search");
+
+        // Store fields in index so that when projecting these fields from the query
+        // the data will come from the index, and not from the storage.
+        this.store("id", "Yes");
+        this.store("collection", "Yes");
+        this.store("displayName", "Yes");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and query it using:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const results = await session
+    .query({ indexName: "Smart/Search" })
+     // Search across all indexed collections
+    .search("content", "Lau*")
+     // Project results
+    .selectFields([ "id", "displayName", "collection" ])
+    .all();
+    
+// Results:
+// ========
+    
+for (const result of results) {
+    console.log(result.collection + ": " + result.displayName);
+    
+    // Companies: Laughing Bacchus Wine Cellars
+    // Products:  Laughing Lumberjack Lager
+    // Employees: Laura Callahan
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Smart/Search" 
+where search(content, "Lau*")
+select id() as id, displayName, collection
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Remember that all map functions **must** output objects 
+with an **identical** shape (the field names have to match).  
+</Admonition>
+
+
+
+
+</LanguageContent>

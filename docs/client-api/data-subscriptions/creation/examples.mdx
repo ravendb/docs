@@ -1,0 +1,1230 @@
+---
+title: "Data Subscription Creation Examples"
+sidebar_label: Examples
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "nodejs"];
+
+
+# Data Subscription Creation Examples
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This page contains examples of **creating a subscription**.  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).  
+
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).  
+
+* In this page:  
+   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)  
+   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)  
+   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)  
+   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)  
+   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)  
+   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)  
+   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples#create-subscription---subscribe-to-revisions)  
+   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples#create-subscription---via-update)
+   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)
+
+</Admonition>
+## Create subscription - for all documents in a collection
+
+Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
+The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>
+{
+    // Set a custom name for the subscription 
+    Name = "OrdersProcessingSubscription"
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = "From Orders",
+    Name = "OrdersProcessingSubscription"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Create subscription - filter documents
+
+Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100. 
+Only documents that match this condition will be sent from the server to a client connected to this subscription.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(x =>
+    // Only documents matching this criteria will be sent
+    x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              From Orders as o 
+              Where getOrderLinesSum(o) > 100"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Create subscription - filter and project fields
+
+Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
+However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    // The subscription criteria:
+    Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+    
+    // The object properties that will be sent for each matching document:
+    Projection = x => new
+    {
+        Id = x.Id,
+        Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity)
+    }
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              declare function projectOrder(doc) {
+                  return {
+                      Id: doc.Id,
+                      Total: getOrderLinesSum(doc)
+                  };
+              }
+
+              From Orders as o 
+              Where getOrderLinesSum(o) > 100
+              Select projectOrder(o)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Create subscription - project data from a related document 
+
+In this subscription, in addition to projecting the document fields,  
+we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `Load` method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(
+    new SubscriptionCreationOptions<Order>()
+    {
+        // The subscription criteria:
+        Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
+        
+        // The object properties that will be sent for each matching document:
+        Projection = x => new
+        {
+            Id = x.Id,
+            Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity),
+            ShipTo = x.ShipTo,
+            
+            // 'Load' the related Employee document and use its data in the projection
+            EmployeeName = RavenQuery.Load<Employee>(x.Employee).FirstName + " " +
+                           RavenQuery.Load<Employee>(x.Employee).LastName
+        }
+    });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function getOrderLinesSum(doc) {
+                  var sum = 0;
+                  for (var i in doc.Lines) {
+                      sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+                  }
+                  return sum;
+              }
+
+              declare function projectOrder(doc) {
+                  var employee = load(doc.Employee);
+                  return {
+                      Id: doc.Id,
+                      Total: getOrderLinesSum(doc),
+                      ShipTo: doc.ShipTo,
+                      EmployeeName: employee.FirstName + ' ' + employee.LastName
+                  };
+              }
+
+              From Orders as o 
+              Where getOrderLinesSum(o) > 100
+              Select projectOrder(o)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Create subscription - include documents
+
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.  
+
+In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client. 
+This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
+
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Builder-syntax" label="Builder-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+         // The documents whose IDs are specified in the 'Product' property
+         // will be included in the batch
+        .IncludeDocuments(x => x.Lines.Select(y => y.Product))
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-path-syntax" label="RQL-path-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders include Lines[].Product"
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-javascript-syntax" label="RQL-javascript-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"declare function includeProducts(doc) {
+                  let includedFields = 0;
+                  let linesCount = doc.Lines.length;
+
+                  for (let i = 0; i < linesCount; i++) {
+                      includedFields++;
+                      include(doc.Lines[i].Product);
+                  }
+
+                  return doc;
+              }
+
+              from Orders as o select includeProducts(o)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+**Include using builder**:
+
+Include statements can be added to the subscription with `ISubscriptionIncludeBuilder`.  
+This builder is assigned to the  `Includes` property in [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;).  
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
+These methods can be chained.
+
+To include related documents, use method `IncludeDocuments`.  
+(See the _Builder-syntax_ tab in the example above).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Include using RQL**:
+
+The include statements can be written in two ways:  
+ 
+1. Use the `include` keyword at the end of the query, followed by the paths to the fields containing the IDs of the documents to include.
+   It is recommended to prefer this approach whenever possible, both for the clarity of the query and for slightly better performance.  
+   (See the _RQL-path-syntax_ tab in the example above).
+
+2. Define the `include` within a JavaScript function that is called from the `select` clause.  
+   (See the _RQL-javascript-syntax_ tab in the example above).
+
+</Admonition>
+
+<Admonition type="info" title="Info">
+
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields), 
+the include will search for the specified paths in the projected fields rather than in the original document.
+
+</Admonition>
+
+
+## Create subscription - include counters
+
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.  
+In addition, values for the specified counters will be **included** in the batch.
+
+Note:  
+Modifying an existing counter's value after the document has been sent to the client does Not trigger re-sending.  
+However, adding a new counter to the document or removing an existing one will trigger re-sending the document.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Builder-syntax" label="Builder-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+{
+    Includes = builder => builder
+         // Values for the specified counters will be included in the batch
+        .IncludeCounters(new[] { "Pros", "Cons" })
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    Query = @"from Orders include counters('Pros'), counters('Cons')"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+`ISubscriptionIncludeBuilder` has three methods for including counters:  
+
+<TabItem value="something-something" label="include_builder_counter_methods">
+<CodeBlock language="csharp">
+{`// Include a single counter
+ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
+
+// Include multiple counters
+ISubscriptionIncludeBuilder<T> IncludeCounters(string[] names);
+
+// Include ALL counters from ALL documents that match the subscription criteria
+ISubscriptionIncludeBuilder<T> IncludeAllCounters();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type       | Description                                                                                                                                      |
+|------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**   | `string`   | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
+| **names**  | `string[]` | Array of counter names.                                                                                                                          |
+
+**All include methods can be chained**:  
+For example, the following subscription includes multiple counters and documents:
+
+<TabItem value="something-something" label="create_subscription_include_chained_builder">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
+\{
+    Includes = builder => builder
+        .IncludeCounter("Likes")
+        .IncludeCounters(new[] \{ "Pros", "Cons" \})
+        .IncludeDocuments("Employee")
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - subscribe to revisions
+
+Here we create a simple revisions subscription on the _Orders_ collection that will send pairs of subsequent document revisions to the client.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(
+    // Use <Revision<documentClassType>> as the type for the processed items
+    // e.g. <Revision<Order>>
+    new SubscriptionCreationOptions<Revision<Order>>());
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions()
+{
+    // Add (Revisions = true) to your subscription RQL
+    Query = @"From Orders (Revisions = true)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+
+
+
+## Create subscription - via update
+
+When attempting to update a subscription that does Not exist,  
+you can request a new subscription to be created by setting `CreateNew` to `true`.  
+In such a case, a new subscription will be created with the provided query.
+
+<TabItem value="something-something" label="create_by_update">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+\{
+    Name = "my subscription",
+    Query = "from Products where PricePerUnit > 20",
+    
+    // Set to true so that a new subscription will be created 
+    // if a subscription with name "mySubscription" does Not exist
+    CreateNew = true
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Update existing subscription
+
+**Update subscription by name**:  
+The subscription definition can be updated after it has been created.  
+In this example we update the filtering **query** of an existing subscription named "my subscription".  
+
+<TabItem value="something-something" label="update_subscription_example_0">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+\{
+    // Specify the subscription you wish to modify
+    Name = "my subscription",
+    
+    // Provide a new query
+    Query = "from Products where PricePerUnit > 50" 
+\});
+`}
+</CodeBlock>
+</TabItem>
+**Update subscription by id**:  
+In addition to the subscription name, each subscription is assigned a subscription ID when it is created by the server.
+This ID can be used instead of the name when updating the subscription.  
+
+<TabItem value="something-something" label="update_subscription_example_1">
+<CodeBlock language="csharp">
+{`// Get the subscription's ID
+SubscriptionState mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+long subscriptionId = mySubscription.SubscriptionId;
+
+// Update the subscription
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+\{
+    Id = subscriptionId,
+    Query = "from Products where PricePerUnit > 50" 
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Using the subscription ID allows you to modify the subscription name:
+
+<TabItem value="something-something" label="update_subscription_example_2">
+<CodeBlock language="csharp">
+{`// Get the subscription's ID
+mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
+subscriptionId = mySubscription.SubscriptionId;
+
+// Update the subscription name
+subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
+\{
+    Id = subscriptionId,
+    Name = "New name" 
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* This page contains examples of **creating a subscription**.  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
+
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
+
+* In this page:
+    * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)
+    * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)
+    * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)
+    * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)
+    * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)
+    * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)
+    * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
+
+</Admonition>
+## Create subscription - for all documents in a collection
+
+Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
+The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Generic-syntax" label="Generic-syntax">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_class(
+    Order, SubscriptionCreationOptions(name="OrdersProcessingSubscription")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_options(SubscriptionCreationOptions(query="From Orders"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Create subscription - filter documents
+
+Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
+Only documents that match this condition will be sent from the server to a client connected to this subscription.
+
+<TabItem value="something-something" label="create_filter_only_RQL">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query=(
+            "declare function getOrderLinesSum(doc) \{"
+            "    var sum = 0;"
+            "    for (var i in doc.Lines) \{"
+            "        sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;"
+            "    \}"
+            "    return sum;"
+            "\}"
+            "From Orders as o "
+            "Where getOrderLinesSum(o) > 100 "
+        )
+    ),
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - filter and project fields
+
+Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
+However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
+
+<TabItem value="something-something" label="create_filter_and_projection_RQL">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query="""
+        declare function getOrderLinesSum(doc) \{
+            var sum = 0;
+            for (var i in doc.Lines) \{
+                sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+            \}
+            return sum;
+        \}
+        
+        declare function projectOrder(doc) \{
+            return \{
+                Id: doc.Id,
+                Total: getOrderLinesSum(doc)
+            \};
+        \}
+        
+        From Orders as o
+        Where getOrderLinesSum(o) > 100
+        Select projectOrder(o)
+        """
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - project data from a related document
+
+In this subscription, in addition to projecting the document fields,  
+we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
+
+<TabItem value="something-something" label="create_filter_and_load_document_RQL">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query="""
+        declare function getOrderLinesSum(doc) \{
+            var sum = 0;
+            for (var i in doc.Lines) \{
+                sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+            \}
+            return sum;
+        \}
+       
+        declare function projectOrder(doc) \{
+            var employee = load(doc.Employee);
+            return \{
+                Id: doc.Id,
+                Total: getOrderLinesSum(doc),
+                ShipTo: doc.ShipTo,
+                EmployeeName: employee.FirstName + ' ' + employee.LastName
+            \};
+        \}
+       
+        From Orders as o
+        Where getOrderLinesSum(o) > 100
+        Select projectOrder(o)
+        """
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - include documents
+
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.
+
+In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client.
+This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
+
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Builder-syntax" label="Builder-syntax">
+<CodeBlock language="python">
+{`store.subscriptions.create_for_class(
+    Order,
+    SubscriptionCreationOptions(includes=lambda builder: builder.include_documents("Lines[].Product")),
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-path-syntax" label="RQL-path-syntax">
+<CodeBlock language="python">
+{`store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(query="from Orders include Lines[].Product")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-javascript-syntax" label="RQL-javascript-syntax">
+<CodeBlock language="python">
+{`store.subscriptions.create_for_options(
+    SubscriptionCreationOptions(
+        query="""
+        declare function includeProducts(doc) {
+            let includedFields = 0;
+            let linesCount = doc.Lines.length;
+
+            for (let i = 0; i < linesCount; i++) {
+                includedFields++;
+                include(doc.Lines[i].Product);
+            }
+
+            return doc;
+        }
+
+        from Orders as o select includeProducts(o)
+        """
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+**Include using builder**:
+
+Include statements can be added to the subscription with `SubscriptionIncludeBuilder`.  
+This builder is assigned to the  `includes` property in [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;).  
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters).
+These methods can be chained.  
+
+To include related documents, use method `include_documents`.  
+(See the _Builder-syntax_ tab in the example above).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Include using RQL**:
+
+The include statements can be written in two ways:
+
+1. Use the `include` keyword at the end of the query, followed by the paths to the fields containing the IDs of the documents to include.
+   It is recommended to prefer this approach whenever possible, both for the clarity of the query and for slightly better performance.  
+   (See the _RQL-path-syntax_ tab in the example above).
+
+2. Define the `include` within a JavaScript function that is called from the `select` clause.  
+   (See the _RQL-javascript-syntax_ tab in the example above).
+
+</Admonition>
+
+<Admonition type="info" title="Info">
+
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields),
+the include will search for the specified paths in the projected fields rather than in the original document.
+
+</Admonition>
+
+
+
+## Create subscription - include counters
+
+`SubscriptionIncludeBuilder` has three methods for including counters:  
+
+<TabItem value="something-something" label="include_builder_counter_methods">
+<CodeBlock language="python">
+{`def include_counter(self, name: str) -> SubscriptionIncludeBuilder: ...
+
+def include_counters(self, *names: str) -> SubscriptionIncludeBuilder: ...
+
+def include_all_counters(self) -> SubscriptionIncludeBuilder: ...
+`}
+</CodeBlock>
+</TabItem>
+
+`include_counter` is used to specify a single counter.  
+`include_counters` is used to specify multiple counters.  
+`include_all_counters` retrieves all counters from all subscribed documents.  
+
+| Parameter   | Type  | Description                                                                                                                                      |
+|-------------|-------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**    | `str` | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
+| **\*names** | `str` | Array of counter names.                                                                                                                          |
+
+The following subscription, which includes multiple counters in the batch sent to the client,  
+demonstrates how the methods can be chained.
+
+<TabItem value="something-something" label="create_subscription_include_counters_builder">
+<CodeBlock language="python">
+{`store.subscriptions.create_for_class(
+    Order,
+    SubscriptionCreationOptions(
+        includes=lambda builder: builder
+        .include_counter("Likes")
+        .include_counters("Pros", "Cons")
+    ),
+)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Update existing subscription
+
+The subscription definition can be updated after it has been created.  
+In this example we update the filtering query of an existing subscription named "my subscription".
+
+<TabItem value="something-something" label="update_subscription_example_0">
+<CodeBlock language="python">
+{`store.subscriptions.update(SubscriptionUpdateOptions(
+    name="My subscription", query="from Products where PricePerUnit > 50"))
+`}
+</CodeBlock>
+</TabItem>
+<Admonition type="note" title="Note">
+
+**Modifying the subscription's name**:
+
+In addition to the subscription name, each subscription is assigned a **subscription ID** when it is created by the server. 
+This ID can be used to identify the subscription, instead of the name, when updating the subscription.
+
+This allows users to change an existing subscription's **name** by specifying the subscription's ID  
+and submitting a new string in the `name` field of `SubscriptionUpdateOptions`.
+
+<TabItem value="something-something" label="update_subscription_example_1">
+<CodeBlock language="python">
+{`my_subscription = store.subscriptions.get_subscription_state("my subscription")
+
+subscription_id = my_subscription.subscription_id
+
+store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="new name"))
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This page contains examples of **creating a subscription**.  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
+
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
+
+* In this page:  
+   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)  
+   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)  
+   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)  
+   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)  
+   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)  
+   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)  
+   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples#create-subscription---subscribe-to-revisions)  
+   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples#create-subscription---via-update)
+   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)
+
+</Admonition>
+## Create subscription - for all documents in a collection
+
+Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
+The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
+
+<TabItem value="something-something" label="create_1">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.create(\{
+    // Optionally, provide a custom name for the subscription
+    name: "OrdersProcessingSubscription",
+    
+    // You can provide the collection name in the RQL string in the 'query' param 
+    query: "from Orders" 
+\});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="create_1_1">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.create(\{
+    name: "OrdersProcessingSubscription",
+    
+    // Or, you can provide the document type for the collection in the 'documentType' param
+    documentType: Order
+\});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="create_1_2">
+<CodeBlock language="nodejs">
+{`// Or, you can use the folllowing overload,
+// pass the document class type to the 'create' method
+const subscriptionName = await documentStore.subscriptions.create(Order);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - filter documents
+
+Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100. 
+Only documents that match this condition will be sent from the server to a client connected to this subscription.
+
+<TabItem value="something-something" label="create_2">
+<CodeBlock language="nodejs">
+{`// Define the filtering criteria
+const query = \`
+    declare function getOrderLinesSum(doc) \{
+        var sum = 0;
+        for (var i in doc.Lines) \{
+            sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+        \}
+        return sum;
+    \}
+    
+    from Orders as o 
+    where getOrderLinesSum(o) > 100\`;
+
+// Create the subscription with the defined query
+const subscriptionName = await documentStore.subscriptions.create(\{ query \});
+
+// In this case, the server will create a default name for the subscription
+// since no specific name was provided when creating the subscription.
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - filter and project fields
+
+Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
+However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
+
+<TabItem value="something-something" label="create_3">
+<CodeBlock language="nodejs">
+{`const query = \`
+    declare function getOrderLinesSum(doc) \{
+        var sum = 0; 
+        for (var i in doc.Lines) \{
+            sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+        \}
+        return sum;
+    \}
+    
+    declare function projectOrder(doc) \{
+         return \{
+             Id: doc.Id,
+             Total: getOrderLinesSum(doc)
+         \}
+    \}
+     
+    from order as o 
+    where getOrderLinesSum(o) > 100 
+    select projectOrder(o)\`;
+
+const subscriptionName = await documentStore.subscriptions.create(\{ query \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - project data from a related document 
+
+In this subscription, in addition to projecting the document fields,  
+we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
+
+<TabItem value="something-something" label="create_4">
+<CodeBlock language="nodejs">
+{`const query = \`
+    declare function getOrderLinesSum(doc) \{
+        var sum = 0;
+        for (var i in doc.Lines) \{
+            sum += doc.Lines[i].PricePerUnit * doc.Lines[i].Quantity;
+        \}
+        return sum;
+    \}
+    
+    declare function projectOrder(doc) \{
+        var employee = load(doc.Employee);
+        return \{
+            Id: doc.Id,
+            Total: getOrderLinesSum(doc),
+            ShipTo: doc.ShipTo,
+            EmployeeName: employee.FirstName + ' ' + employee.LastName
+        \}
+    \}
+     
+    from order as o
+    where getOrderLinesSum(o) > 100
+    select projectOrder(o)\`;
+
+const subscriptionName = await documentStore.subscriptions.create(\{ query \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - include documents
+
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.  
+
+In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client. 
+This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
+
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Builder-syntax" label="Builder-syntax">
+<CodeBlock language="nodejs">
+{`const options = {
+    // The documents whose IDs are specified in the 'Product' property
+    // will be included in the batch
+    includes: builder => builder.includeDocuments("Lines[].Product"),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-path-syntax" label="RQL-path-syntax">
+<CodeBlock language="nodejs">
+{`const query = \`from Orders include Lines[].Product\`;
+const subscriptionName = await documentStore.subscriptions.create({ query });
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-javascript-syntax" label="RQL-javascript-syntax">
+<CodeBlock language="nodejs">
+{`const query = \`
+    declare function includeProducts(doc) {
+        let includedFields = 0;
+        let linesCount = doc.Lines.length;
+
+        for (let i = 0; i < linesCount; i++) {
+            includedFields++;
+            include(doc.Lines[i].Product);
+        }
+
+        return doc;
+    }
+
+    from Orders as o select includeProducts(o)\`;
+
+const subscriptionName = await documentStore.subscriptions.create({ query });
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+**Include using builder**:
+
+Include statements can be added to the subscription with a _builder_ object.  
+This builder is assigned to the  `includes` property in the _options_ object.  
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
+These methods can be chained.
+
+See this [API overview](../../../client-api/data-subscriptions/creation/api-overview#include-methods) for all available include methods.
+
+To include related documents, use method `includeDocuments`.  
+(See the _Builder-syntax_ tab in the example above).
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Include using RQL**:
+
+The include statements can be written in two ways:  
+ 
+1. Use the `include` keyword at the end of the query, followed by the paths to the fields containing the IDs of the documents to include.
+   It is recommended to prefer this approach whenever possible, both for the clarity of the query and for slightly better performance.  
+   (See the _RQL-path-syntax_ tab in the example above).
+
+2. Define the `include` within a JavaScript function that is called from the `select` clause.  
+   (See the _RQL-javascript-syntax_ tab in the example above).
+
+</Admonition>
+
+<Admonition type="info" title="Info">
+
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields), 
+the include will search for the specified paths in the projected fields rather than in the original document.
+
+</Admonition>
+
+
+## Create subscription - include counters
+
+Here we create a subscription on the _Orders_ collection, which will send all the _Order_ documents.  
+In addition, values for the specified counters will be **included** in the batch.
+
+Note:  
+Modifying an existing counter's value after the document has been sent to the client does Not trigger re-sending.  
+However, adding a new counter to the document or removing an existing one will trigger re-sending the document.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Builder-syntax" label="Builder-syntax">
+<CodeBlock language="nodejs">
+{`const options = {
+    includes: builder => builder
+         // Values for the specified counters will be included in the batch
+        .includeCounters(["Pros", "Cons"]),
+    documentType: Order
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="nodejs">
+{`const options = {
+    query: "from Orders include counters('Pros'), counters('Cons')" 
+};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+**All include methods can be chained**:  
+For example, the following subscription includes multiple counters and documents:
+
+<TabItem value="something-something" label="create_8">
+<CodeBlock language="nodejs">
+{`const options = \{
+    includes: builder => builder
+        .includeCounter("Likes")
+        .includeCounters(["Pros", "Cons"])
+        .includeDocuments("Employee"),
+    documentType: Order
+\};
+
+const subscriptionName = await documentStore.subscriptions.create(options);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Create subscription - subscribe to revisions
+
+Here we create a simple revisions subscription on the _Orders_ collection that will send pairs of subsequent document revisions to the client.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentType-syntax" label="documentType-syntax">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.createForRevisions({
+    documentType: Order
+});
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL-syntax" label="RQL-syntax">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.createForRevisions({
+    query: "from Orders (Revisions = true)"
+});
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+
+
+
+## Create subscription - via update
+
+When attempting to update a subscription that does Not exist,  
+you can request a new subscription to be created by setting `createNew` to `true`.  
+In such a case, a new subscription will be created with the provided query.
+
+<TabItem value="something-something" label="update_0">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.update(\{
+    name: "my subscription",
+    query: "from Products where PricePerUnit > 20",
+
+    // Set to true so that a new subscription will be created 
+    // if a subscription with name "my subscription" does Not exist
+    createNew: true
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Update existing subscription
+
+**Update subscription by name**:  
+The subscription definition can be updated after it has been created.  
+In this example we update the filtering **query** of an existing subscription named "my subscription".
+
+<TabItem value="something-something" label="update_1">
+<CodeBlock language="nodejs">
+{`const subscriptionName = await documentStore.subscriptions.update(\{
+    // Specify the subscription you wish to modify
+    name: "my subscription",
+    
+    // Provide a new query
+    query: "from Products where PricePerUnit > 50" 
+\});
+`}
+</CodeBlock>
+</TabItem>
+**Update subscription by id**:  
+In addition to the subscription name, each subscription is assigned a subscription ID when it is created by the server.
+This ID can be used instead of the name when updating the subscription.
+
+<TabItem value="something-something" label="update_2">
+<CodeBlock language="nodejs">
+{`// Get the subscription's ID
+const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
+const subscriptionId = mySubscription.subscriptionId;
+
+// Update the subscription
+const subscriptionName = await documentStore.subscriptions.update(\{
+    id: subscriptionId,
+    query: "from Products where PricePerUnit > 50"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Using the subscription ID allows you to modify the subscription name:
+
+<TabItem value="something-something" label="update_3">
+<CodeBlock language="nodejs">
+{`// Get the subscription's ID
+const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
+const subscriptionId = mySubscription.subscriptionId;
+
+// Update the subscription's name
+const subscriptionName = await documentStore.subscriptions.update(\{
+    id: subscriptionId,
+    name: "new name"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

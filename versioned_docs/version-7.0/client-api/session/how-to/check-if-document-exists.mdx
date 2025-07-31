@@ -1,0 +1,292 @@
+---
+title: "How to Check if a Document Exists"
+sidebar_label: ...check if document exists
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# How to Check if a Document Exists
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* To check whether the database contains a certain document,  
+  use the method `Exists()` from the `Advanced` session operations.  
+
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities) the document entity to the session,  
+  and the session will not track it. 
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+</Admonition>
+## Check if document exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool exists = session.Advanced.Exists("employees/1-A");
+
+if (exists)
+{
+    // document 'employees/1-A exists
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`bool exists = await asyncSession.Advanced.ExistsAsync("employees/1-A");
+
+if (exists)
+{
+    // document 'employees/1-A exists
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`bool Exists(string id);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Task<bool> ExistsAsync(string documentId, CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | The ID of the document to check |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - the document exists in the database.<br/>`false` - The document does Not exist in the database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* To check whether the database contains a certain document, use the method `exists()` from the `advanced` session operations.  
+
+* This does not [load](../../../client-api/session/loading-entities) the document from the server or cause the session to track it.  
+
+* In this page:  
+  * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)  
+  * [Example](../../../client-api/session/how-to/check-if-document-exists#example)  
+
+</Admonition>
+## Syntax
+
+<TabItem value="something-something" label="exists_1">
+<CodeBlock language="java">
+{`boolean exists(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `String` | The ID of the document you want to check the database for |
+
+| Return Value | Description |
+| - | - |
+| `boolean` | Indicates whether a document with the specified ID exists in the database |
+
+
+
+## Example
+
+<TabItem value="something-something" label="exists_2">
+<CodeBlock language="java">
+{`boolean exists = session.advanced().exists("employees/1-A");
+
+if (exists) \{
+    // do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* To check whether the database contains a certain document,  
+  use the `session.advanced` operations `exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+  the document entity to the session, and the session will not track it.
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+</Admonition>
+## Check if document exists
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python exists_2@clientapi\session\howto\documentexists.py /}">
+{`exists = session.advanced.exists("employees/1-A")
+
+if exists:
+    ...  # Document 'employees/1-A' exists
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python exists_1@clientapi\session\howto\documentexists.py /}">
+{`def exists(self, key: str) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **key** | `str` | The ID of the document to look for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `True` - this document exists in the database.<br/>`False` - The document does Not exist in the database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* To check whether the database contains a certain document,  
+  use the `session.advanced` operations `exists` method.  
+
+* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+  the document entity to the session, and the session will not track it.
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+</Admonition>
+## Check if document exists
+
+<TabItem value="something-something" label="exists_2">
+<CodeBlock language="php">
+{`$exists = $session->advanced()->exists("employees/1-A");
+
+if ($exists)
+\{
+    // document 'employees/1-A exists
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="exists_1">
+<CodeBlock language="php">
+{`public function exists(?string $id): bool;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **$id** | `?string` | The ID of the document to look for |
+
+| Return Value | Description |
+| - | - |
+| `bool` | `true` - this document exists in the database.<br/>`false` - The document does Not exist in the database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+ 
+* To check whether the database contains a certain document,  
+  use the method `exists()` from the `advanced` session operations.
+
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities) the document entity to the session,  
+  and the session will not track it.
+
+* In this page:
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+</Admonition>
+## Check if document exists
+
+<TabItem value="something-something" label="exists">
+<CodeBlock language="nodejs">
+{`const exists = await session.advanced.exists("employees/1-A");
+if (exists) \{
+    // document 'employees/1-A exists
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`session.advanced.exists(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | The ID of the document to check |
+
+| Return Value | Description |
+| - | - |
+| `Promise<boolean>` | `true` - the document exists in the database.<br/>`false` - The document does Not exist in the database |
+
+
+
+
+</LanguageContent>

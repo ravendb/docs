@@ -1,0 +1,268 @@
+---
+title: "Delete Revisions Operation"
+sidebar_label: Delete Revisions
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Delete Revisions Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteRevisionsOperation` to delete document revisions.  
+  The document itself is not deleted, only its revisions will be deleted, as specified by the operation's params.
+
+* Existing revisions will be deleted regardless of the current [revisions settings](../../../../studio/database/settings/document-revisions),  
+  even if these settings are disabled.
+
+* When working with a secure server:  
+  * The delete revisions action will be logged in the [audit log](../../../../server/security/audit-log/audit-log).  
+  * This operation is only available for a client certificate with a [security clearance](../../../../server/security/authorization/security-clearance-and-permissions) of _DatabaseAdmin_ or higher.
+
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+
+* In this page:  
+  * [Delete all revisions - single document](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-all-revisions---single-document)
+  * [Delete revisions - multiple documents](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions---multiple-documents)
+  * [Delete revisions by time frame](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions-by-time-frame)  
+  * [Delete revisions by change vectors](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions-by-change-vectors)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/delete-revisions#syntax)  
+
+</Admonition>
+## Delete all revisions - single document
+
+In this example, we delete ALL revisions of a document.  
+Both types of revisions, those resulting from the [revisions settings](../../../../studio/database/settings/document-revisions) and those generated manually via  
+[force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation), will be deleted.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the delete revisions operation:
+
+// Delete ALL existing revisions for document "orders/830-A"
+var deleteRevisionsOp = new DeleteRevisionsOperation(documentId: "orders/830-A",
+    // Revisions that were created manually will also be removed
+    removeForceCreatedRevisions: true);
+
+// Execute the operation by passing it to Maintenance.Send
+var numberOfRevisionsDeleted = store.Maintenance.Send(deleteRevisionsOp);
+
+// Running the above code on RavenDB's sample data results in the removal of 29 revisions
+Assert.Equal(29, numberOfRevisionsDeleted.TotalDeletes);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the delete revisions operation:
+
+// Delete ALL existing revisions for document "orders/830-A"
+var deleteRevisionsOp = new DeleteRevisionsOperation(documentId: "orders/830-A",
+    // Revisions that were created manually will also be removed
+    removeForceCreatedRevisions: true);
+               
+// Execute the operation by passing it to Maintenance.SendAsync
+var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisionsOp);
+
+// Running the above code on RavenDB's sample data results in the removal of 29 revisions
+Assert.Equal(29, numberOfRevisionsDeleted.TotalDeletes);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Delete revisions - multiple documents
+
+You can specify multiple documents from which to delete revisions.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Delete existing revisions for the specified documents
+var deleteRevisionsOp = new DeleteRevisionsOperation(
+    documentIds: new List<string>() { "orders/829-A", "orders/828-A", "orders/827-A" },
+    // Revisions that were created manually will Not be removed
+    removeForceCreatedRevisions: false);
+
+var numberOfRevisionsDeleted = store.Maintenance.Send(deleteRevisionsOp);
+
+// Running the above on RavenDB's sample data results in the removal of 19 revisions
+Assert.Equal(19, numberOfRevisionsDeleted.TotalDeletes);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Delete existing revisions for the specified documents
+var deleteRevisionsOp = new DeleteRevisionsOperation(
+    documentIds: new List<string>() { "orders/829-A", "orders/828-A", "orders/827-A" },
+    // Revisions that were created manually will Not be removed
+    removeForceCreatedRevisions: false);
+
+var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisionsOp);
+
+// Running the above on RavenDB's sample data results in the removal of 19 revisions
+Assert.Equal(19, numberOfRevisionsDeleted.TotalDeletes);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Delete revisions by time frame
+
+You can specify a time frame from which to delete revisions.  
+Only revisions that were created within that time frame (inclusive) will be deleted.  
+The time should be specified in UTC.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var deleteFrom = DateTime.Parse("2018-07-27T09:11:52.0Z");
+var deleteTo = DateTime.Parse("2018-07-27T09:11:54.0Z");
+
+// Delete existing revisions within the specified time frame
+var deleteRevisionsOp =
+    new DeleteRevisionsOperation(documentId: "orders/826-A", from: deleteFrom, to: deleteTo);
+
+var numberOfRevisionsDeleted = store.Maintenance.Send(deleteRevisionsOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var deleteFrom = DateTime.Parse("2018-07-27T09:11:52.0Z");
+var deleteTo = DateTime.Parse("2018-07-27T09:11:54.0Z");
+
+// Delete existing revisions within the specified time frame
+var deleteRevisionsOp =
+    new DeleteRevisionsOperation(documentId: "orders/826-A", from: deleteFrom, to: deleteTo);
+
+var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisionsOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Delete revisions by change vectors
+
+Each revision has its own unique [change vector](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector).  
+You can specify which revisions to delete by providing their corresponding change vectors.  
+No exception is thrown if a change vector doesn’t match any revision.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Get the change-vectors for the revisions of the specified document
+var revisionsChangeVectors = session.Advanced.Revisions
+    .GetMetadataFor("orders/825-A")
+    .Select(m => m.GetString(Constants.Documents.Metadata.ChangeVector))
+    .ToList();
+                   
+// Delete the revisions by their change-vector 
+var revisionToDelete = 
+    new List<string>() { revisionsChangeVectors[0], revisionsChangeVectors[1] };
+                   
+var deleteRevisionsOp =
+    new DeleteRevisionsOperation(documentId: "orders/825-A", revisionToDelete);
+
+var numberOfRevisionsDeleted = store.Maintenance.Send(deleteRevisionsOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Get the change-vectors for the revisions of the specified document
+var metadata = await asyncSession.Advanced.Revisions
+    .GetMetadataForAsync("orders/825-A");
+    
+var revisionsChangeVectors = metadata
+    .Select(m => m.GetString(Constants.Documents.Metadata.ChangeVector))
+    .ToList();
+                   
+// Delete the revisions by their change-vector 
+var revisionToDelete = 
+    new List<string>() { revisionsChangeVectors[0], revisionsChangeVectors[1] };
+                   
+var deleteRevisionsOp =
+    new DeleteRevisionsOperation(documentId: "orders/825-A", revisionToDelete);
+
+var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisionsOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+Avoid deleting a "Delete Revision" using the `DeleteRevisionsOperation` operation.  
+Consider the following scenario:
+
+1. A document that has revisions is deleted.
+
+2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).
+
+3. The revisions of this deleted document remain accessible via the Revisions Bin.
+
+4. If you remove this "Delete Revision" by providing its change vector to `DeleteRevisionsOperation`,  
+   the "Delete Revision" will be removed from the Revisions Bin, causing the associated revisions to become orphaned.  
+   As a result, you will no longer have access to these revisions via the Revisions Bin.
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="csharp">
+{`Available overloads:
+====================
+public DeleteRevisionsOperation(string documentId, 
+    bool removeForceCreatedRevisions = false);
+    
+public DeleteRevisionsOperation(string documentId,
+    DateTime? from, DateTime? to, bool removeForceCreatedRevisions = false);
+    
+public DeleteRevisionsOperation(List<string> documentIds,
+    bool removeForceCreatedRevisions = false);
+    
+public DeleteRevisionsOperation(List<string> documentIds,
+    DateTime? from, DateTime? to, bool removeForceCreatedRevisions = false);
+    
+public DeleteRevisionsOperation(string documentId,
+    List<string> revisionsChangeVectors, bool removeForceCreatedRevisions = false);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter                       | Type           | Description                                                                                                                                                                           |
+|---------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **documentId**                  | `string`       | The ID of the document whose revisions you want to delete.                                                                                                                            |
+| **documentIds**                 | `List<string>` | A list of document IDs whose revisions you want to delete.                                                                                                                            |
+| **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../../document-extensions/revisions/overview#force-revision-creation) in the deletion.<br/>`false` - Exclude force-created revisions. |
+| **from**                        | `DateTime`     | The start of the date range for the revisions to delete (inclusive).                                                                                                                  |
+| **to**                          | `DateTime`     | The end of the date range for the revisions to delete (inclusive).                                                                                                                    |
+| **revisionsChangeVectors**      | `List<string>` | A list of change vectors corresponding to the revisions that you want to delete.                                                                                                      |
+
+
+
+
+</LanguageContent>

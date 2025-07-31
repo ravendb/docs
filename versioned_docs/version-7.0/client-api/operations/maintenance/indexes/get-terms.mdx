@@ -1,0 +1,287 @@
+---
+title: "Get Index Terms Operation"
+sidebar_label: Get Index Terms
+sidebar_position: 16
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Index Terms Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetTermsOperation` to retrieve the **terms of an index-field**.  
+
+* In this page:
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
+
+</Admonition>
+## Get Terms example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get terms operation
+// Pass the requested index-name, index-field, start value & page size
+var getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
+
+// Execute the operation by passing it to Maintenance.Send
+string[] fieldTerms = store.Maintenance.Send(getTermsOp);
+
+// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get terms operation
+// Pass the requested index-name, index-field, start value & page size
+var getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+string[] fieldTerms = await store.Maintenance.SendAsync(getTermsOp);
+
+// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="get_index_terms_syntax">
+<CodeBlock language="csharp">
+{`public GetTermsOperation(string indexName, string field, string fromValue, int? pageSize = null)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to get terms for |
+| **field** | `string` | Name of index-field to get terms for |
+| **fromValue** | `string` | The starting term from which to return results.<br/>This term is not included in the results.<br/>`null` - start from first term. |
+| **pageSize** | `int?` | Number of terms to get.<br/>`null` - return all terms.  |
+
+| Return value of `store.Maintenance.Send(getTermsOp)` | Description |
+| - |- |
+| string[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The **GetTermsOperation** will retrieve stored terms for a field of an index.
+
+## Syntax
+
+<TabItem value="something-something" label="get_terms1">
+<CodeBlock language="java">
+{`public GetTermsOperation(String indexName, String field, String fromValue)
+
+public GetTermsOperation(String indexName, String field, String fromValue, Integer pageSize)
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index to get terms for |
+| **field** | String | Name of field to get terms for |
+| **fromValue** | String | The starting term from which to return results |
+| **pageSize** | Integer | Number of terms to get |
+
+| Return Value | |
+| ------------- | ----- |
+| String[] | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+## Example
+
+<TabItem value="something-something" label="get_terms2">
+<CodeBlock language="java">
+{`String[] terms = store
+    .maintenance()
+    .send(
+        new GetTermsOperation("Orders/Totals", "Employee", null));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `GetTermsOperation` to retrieve the **terms of an index-field**.  
+
+* In this page:
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
+
+</Admonition>
+## Get Terms example
+
+<TabItem value="something-something" label="get_index_terms">
+<CodeBlock language="python">
+{`# Define the get terms operation
+# Pass the requested index-name, index-filed, start value & page size
+get_terms_op = GetTermsOperation("Orders/Totals", "Employee", "employees/5-A", 10)
+
+# Execute the operation by passing it to maintenance.send
+field_terms = store.maintenance.send(get_terms_op)
+
+# field_terms will contain alle the terms that come after term 'employees/5-A' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="get_index_terms_syntax">
+<CodeBlock language="python">
+{`class GetTermsOperation(MaintenanceOperation[List[str]]):
+    def __init__(self, index_name: str, field: str, from_value: Optional[str], page_size: int = None): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **index_name** | `str` | Name of an index to get terms for |
+| **field** | `str` | Name of index-field to get terms for |
+| **from_value** | `str` (optional) | The starting term from which to return results.<br/>This term is not included in the results.<br/>`None` - start from first term. |
+| **page_size** | `int` | Number of terms to get.<br/>`None` - return all terms.  |
+
+| Return value of `store.maintenance.send(GetTermsOperation)` | Description |
+| - |- |
+| `List[str]` | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `GetTermsOperation` to retrieve the **terms of an index-field**.  
+
+* In this page:
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
+
+</Admonition>
+## Get Terms example
+
+<TabItem value="something-something" label="get_index_terms">
+<CodeBlock language="php">
+{`// Define the get terms operation
+// Pass the requested index-name, index-field, start value & page size
+$getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
+
+// Execute the operation by passing it to Maintenance.Send
+/** @var StringArrayResult $fieldTerms */
+$fieldTerms = $store->maintenance()->send($getTermsOp);
+
+// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="get_index_terms_syntax">
+<CodeBlock language="php">
+{`GetTermsOperation(?string $indexName, ?string $field, ?string $fromValue, ?int $pageSize = null)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$indexName** | `?string` | Name of an index to get terms for |
+| **$field** | `?string` | Name of index-field to get terms for |
+| **$fromValue** | `?string` | The starting term to return results from.<br/>This term is not included in the results.<br/>`None` - start from first term. |
+| **$pageSize** | `?int` | Number of terms to get.<br/>`None` - return all terms.  |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `GetTermsOperation` to retrieve the **terms of an index-field**.
+
+* In this page:
+    * [Get Terms example](../../../../client-api/operations/maintenance/indexes/get-terms#get-terms-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-terms#syntax)
+
+</Admonition>
+## Get Terms example
+
+<TabItem value="something-something" label="get_index_terms">
+<CodeBlock language="nodejs">
+{`// Define the get terms operation
+// Pass the requested index-name, index-field, start value & page size
+const getTermsOp = new GetTermsOperation("Orders/Totals", "Employee", "employees/5-a", 10);
+
+// Execute the operation by passing it to maintenance.send
+const fieldTerms = await store.maintenance.send(getTermsOp);
+
+// fieldTerms will contain the all terms that come after term 'employees/5-a' for index-field 'Employee'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="get_index_terms_syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+const getTermsOp = new GetTermsOperation(indexName, field, fromValue);
+const getTermsOp = new GetTermsOperation(indexName, field, fromValue, pageSize);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to get terms for |
+| **field** | `string` | Name of index-field to get terms for |
+| **fromValue** | `string` | The starting term from which to return results.<br/>This term is not included in the results.<br/>`null` - start from first term. |
+| **pageSize** | `number` | Number of terms to get.<br/>`undefined/null` - return all terms.  |
+
+| Return value of `store.maintenance.send(getTermsOp)` | Description |
+| - |- |
+| `string[]` | List of terms for the requested index-field. <br/> Alphabetically ordered. |
+
+
+
+
+</LanguageContent>

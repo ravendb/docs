@@ -1,0 +1,31 @@
+---
+title: "Getting Started: Playground Server"
+sidebar_label: Playground Server
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Getting Started: Playground Server
+
+Our live-test server offers a full functionality of a RavenDB server and is available at [live-test.ravendb.net](http://live-test.ravendb.net/). We encourage you to use it and test various functionalities.
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+- Server accepts remote connectivity so you can build your applications locally for testing purposes and specify its address - `http://live-test.ravendb.net/` (more [here](../client-api/creating-document-store))
+- A sample database can be deployed as in any normal instance (more [here](../studio/database/tasks/create-sample-data))
+
+</Admonition>
+
+<Admonition type="warning" title="Important" id="important" href="#important">
+
+- All databases available at `live-test.ravendb.net` server are publicly available and can be accessed, managed, and copied by any user
+- Periodically, all databases will be removed
+
+</Admonition>
+

@@ -1,0 +1,330 @@
+---
+title: "Fuzzy Search"
+sidebar_label: Fuzzy Search
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Fuzzy Search
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, 
+  assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) or RQL.
+
+* Use the `Fuzzy` method when querying with `WhereEquals`.
+
+* In this page:
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+
+</Admonition>
+## Fuzzy search example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Company> companies = session.Advanced
+    .DocumentQuery<Company>()
+     // Query with a term that is misspelled
+    .WhereEquals(x => x.Name, "Ernts Hnadel")
+    // Call 'Fuzzy' 
+    // Pass the required similarity, a decimal param between 0.0 and 1.0
+    .Fuzzy(0.5m)
+    .ToList();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`List<Company> companies = await asyncSession.Advanced
+    .AsyncDocumentQuery<Company>()
+     // Query with a term that is misspelled
+    .WhereEquals(x => x.Name, "Ernts Hnadel")
+     // Call 'Fuzzy' 
+     // Pass the required similarity, a decimal param between 0.0 and 1.0
+    .Fuzzy(0.5m)
+    .ToListAsync();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Fuzzy(decimal fuzzy);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type      | Description                                                                                                       |
+|-------------|-----------|-------------------------------------------------------------------------------------------------------------------|
+| **fuzzy**   | `decimal` | A value between `0.0` and `1.0`.<br/>With a value closer to `1.0`, terms with a higher similarity will be matched. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Fuzzy search is supported via `fuzzy` method.  
+This method is available only from [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) level and can only be performed on single term values.  
+Because of that it can be used only right after `whereEquals` method.
+
+## Syntax
+
+<TabItem value="something-something" label="fuzzy_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> fuzzy(double var1);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `double` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Company.class)
+    .whereEquals("Name", "Ernts Hnadel")
+    .fuzzy(0.5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, 
+  assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Use the `fuzzy` method when querying with `where_equals`.
+
+* In this page:
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+
+</Admonition>
+## Fuzzy search example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`companies = list(
+    session.advanced.document_query(object_type=Company)
+    # Query with a term that is misspelled
+    .where_equals("Name", "Ernts Hhandel")
+    # Call 'fuzzy'
+    # Pass the required similarity, a decimal param between 0.0 and 1.0
+    .fuzzy(0.5)
+)
+# Running the above query on the Northwind sample data returns document: companies/20-A
+# which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`def fuzzy(self, fuzzy: float) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type      | Description                                                                                                       |
+|-------------|-----------|------------------|
+| **fuzzy** | `float` | A value between `0.0` and `1.0`.<br/>With a value closer to `1.0`, terms with a higher similarity are matched. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `DocumentQuery[_T]` | The same object used for the query |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* A **fuzzy search** retrieves documents containing terms that closely match a given term 
+  rather than exact matches, assisting in finding relevant results when the search term is 
+  misspelled or has minor variations.
+
+* In this page:
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+
+</Admonition>
+## Fuzzy search example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Company> $companies */
+$companies = $session->advanced()
+    ->documentQuery(Company::class)
+    // Query with a term that is misspelled
+    ->whereEquals("Name", "Ernts Hnadel")
+    // Call 'Fuzzy'
+    // Pass the required similarity, a decimal param between 0.0 and 1.0
+    ->fuzzy(0.5)
+    ->toList();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`public function fuzzy(float $fuzzy): DocumentQueryInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type      | Description |
+|-------------|-----------|-------------|
+| **$fuzzy** | `float` | A value between `0.0` and `1.0`.<br/>With a value closer to `1.0`, terms with a higher similarity are matched. |
+
+| Return Type | Description |
+| ----------- | ----------- |
+| `DocumentQueryInterface` | Query results |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* A __fuzzy search__ retrieves documents containing terms that closely match a given term instead of exact matches, 
+  assisting in finding relevant results when the search term is misspelled or has minor variations.
+
+* Use the `fuzzy` method when querying with `whereEquals`.
+
+* In this page:
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+
+</Admonition>
+## Fuzzy search example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const employees = await session
+    .query({ collection: "Companies" })
+     // Query with a term that is misspelled
+    .whereEquals("Name", "Ernts Hnadel")
+     // Call 'fuzzy' 
+     // Pass the required similarity, a number between 0.0 and 1.0
+    .fuzzy(0.5)
+    .all();
+
+// Running the above query on the Northwind sample data returns document: companies/20-A
+// which contains "Ernst Handel" in its Name field.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Companies"
+where fuzzy(Name = "Ernts Hnadel", 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`fuzzy(fuzzy);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type     | Description                                                                                                       |
+|-------------|----------|-------------------------------------------------------------------------------------------------------------------|
+| **fuzzy**   | `number` | A value between `0.0` and `1.0`.<br/>With a value closer to `1.0`, terms with a higher similarity will be matched. |
+
+
+
+
+</LanguageContent>

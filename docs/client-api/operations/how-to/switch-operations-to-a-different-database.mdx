@@ -1,0 +1,501 @@
+---
+title: "Switch Operations to a Different Database"
+sidebar_label: Switch operations to different database
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Switch Operations to a Different Database
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+
+* **To operate on a different database**, use the `ForDatabase` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `Operations.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.fordatabase)
+    * [Maintenance operation: `Maintenance.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.fordatabase)
+</Admonition>
+## Common operation: `Operations.ForDatabase`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+
+<TabItem value="something" label="for_database_1">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore)
+\{
+    // Use 'ForDatabase', get operation executor for another database
+    OperationExecutor opExecutor = documentStore.Operations.ForDatabase("AnotherDB");
+    
+    // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    var revisionsInAnotherDB = 
+        opExecutor.Send(new GetRevisionsOperation<Order>("Orders/1-A"));
+ 
+    // Without 'ForDatabase', the operation is executed "DefaultDB"
+    var revisionsInDefaultDB =
+        documentStore.Operations.Send(new GetRevisionsOperation<Company>("Company/1-A"));
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`OperationExecutor ForDatabase(string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `Maintenance.ForDatabase`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+
+<TabItem value="something" label="for_database_2">
+<CodeBlock language="csharp">
+{`// Define default database on the store
+var documentStore = new DocumentStore
+\{
+    Urls = new[] \{ "yourServerURL" \},
+    Database = "DefaultDB"
+\}.Initialize();
+
+using (documentStore = new DocumentStore())
+\{
+    // Use 'ForDatabase', get maintenance operation executor for another database
+    MaintenanceOperationExecutor opExecutor = documentStore.Maintenance.ForDatabase("AnotherDB");
+    
+    // Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    var statsForAnotherDB =
+        opExecutor.Send(new GetStatisticsOperation());
+    
+    // Without 'ForDatabase', the stats are retrieved for "DefaultDB"
+    var statsForDefaultDB =
+        documentStore.Maintenance.Send(new GetStatisticsOperation());
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`MaintenanceOperationExecutor ForDatabase(string databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+By default, the operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **forDatabase** method.
+
+## Operations.forDatabase
+
+<TabItem value="something-something" label="for_database_1">
+<CodeBlock language="java">
+{`OperationExecutor forDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database for which you want to get new Operations |
+
+| Return Value | |
+| ------------- | ----- |
+| OperationExecutor | New instance of Operations that is scoped to the requested database |
+
+### Example
+
+<TabItem value="something-something" label="for_database_3">
+<CodeBlock language="java">
+{`OperationExecutor operations = documentStore.operations().forDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## How to Switch Maintenance Operations to a Different Database
+
+As with `operations`, by default the `maintenance` operations available directly in store are working on a default database that was setup for that store. To switch maintenance operations to a different database use the **forDatabase** method.
+
+## Maintenance.forDatabase
+
+<TabItem value="something-something" label="for_database_2">
+<CodeBlock language="java">
+{`MaintenanceOperationExecutor forDatabase(String databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | String | Name of a database for which you want to get new maintenance operations |
+
+| Return Value | |
+| ------------- | ----- |
+| MaintenanceOperationExecutor | New instance of maintenance that is scoped to the requested database |
+
+### Example
+
+<TabItem value="something-something" label="for_database_4">
+<CodeBlock language="java">
+{`MaintenanceOperationExecutor maintenanceOperations = documentStore.maintenance().forDatabase("otherDatabase");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+
+* **To operate on a different database**, use the `for_database` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `operations.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.for_database)
+    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.for_database)
+</Admonition>
+## Common operation: `operations.for_database`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+
+<TabItem value="something-something" label="for_database_1">
+<CodeBlock language="python">
+{`# Define default database on the store
+document_store = DocumentStore(urls=["yourServerURL"], database="DefaultDB")
+document_store.initialize()
+
+with document_store:
+    # Use 'for_database', get operation executor for another database
+    op_executor = document_store.operations.for_database("AnotherDB")
+
+    # Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    revisions_in_another_db = op_executor.send(GetRevisionsOperation("Orders/1-A", Order))
+
+    # Without 'for_database', the operation is executed "DefaultDB"
+    revisions_in_default_db = document_store.operations.send(GetRevisionsOperation("Company/1-A", Company))
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="python">
+{`def for_database(self, database_name: str) -> OperationExecutor: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **database_name** | `str` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `maintenance.for_database`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+
+<TabItem value="something-something" label="for_database_2">
+<CodeBlock language="python">
+{`# Define default database on the store
+document_store = DocumentStore(urls=["yourServerURL"], database="DefaultDB")
+document_store.initialize()
+
+with DocumentStore() as document_store:
+    # Use 'for_database', get maintenance operation executor for another database
+    op_executor = document_store.maintenance.for_database("AnotherDB")
+    # Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    stats_for_another_db = op_executor.send(GetStatisticsOperation())
+    # Without 'for_database', the stats are retrieved for "DefaultDB"
+    stats_for_default_db = document_store.maintenance.send(GetStatisticsOperation())
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="python">
+{`def for_database(self, database_name: str) -> MaintenanceOperationExecutor: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **database_name** | `str` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+
+* **To operate on a different database**, use the `for_database` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-fordatabase)
+    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.for_database)
+</Admonition>
+## Common operation: `forDatabase`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+
+<TabItem value="something-something" label="for_database_1">
+<CodeBlock language="php">
+{`// Define default database on the store
+$documentStore = new DocumentStore(
+    ["yourServerURL"],
+    "DefaultDB"
+);
+$documentStore->initialize();
+
+try \{
+    // Use 'ForDatabase', get operation executor for another database
+    /** @var OperationExecutor $opExecutor */
+    $opExecutor = $documentStore->operations()->forDatabase("AnotherDB");
+
+    // Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+    $revisionsInAnotherDB = $opExecutor->send(new GetRevisionsOperation(Order::class, "Orders/1-A"));
+
+    // Without 'ForDatabase', the operation is executed "DefaultDB"
+    $revisionsInDefaultDB = $documentStore->operations()->send(new GetRevisionsOperation(Company::class, "Company/1-A"));
+\} finally \{
+    $documentStore->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="php">
+{`public function forDatabase(?string $databaseName): OperationExecutor;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `maintenance.for_database`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+
+<TabItem value="something-something" label="for_database_2">
+<CodeBlock language="php">
+{`// Define default database on the store
+$documentStore = new DocumentStore(
+    [ "yourServerURL" ],
+    "DefaultDB"
+);
+$documentStore->initialize();
+
+try \{
+    // Use 'ForDatabase', get maintenance operation executor for another database
+    /** @var MaintenanceOperationExecutor $opExecutor */
+    $opExecutor = $documentStore->maintenance()->forDatabase("AnotherDB");
+
+    // Send the maintenance operation, e.g. get database stats for "AnotherDB"
+    $statsForAnotherDB = $opExecutor->send(new GetStatisticsOperation());
+
+    // Without 'ForDatabase', the stats are retrieved for "DefaultDB"
+    $statsForDefaultDB = $documentStore->maintenance()->send(new GetStatisticsOperation());
+\} finally \{
+    $documentStore->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="php">
+{`public function forDatabase(?string $databaseName): MaintenanceOperationExecutor;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* By default, all operations work on the default database defined in the [document store](../../../client-api/creating-document-store).
+
+* **To operate on a different database**, use the `forDatabase` method.  
+  If the requested database doesn't exist on the server, an exception will be thrown.
+
+* In this page:
+    * [Common operation: `operations.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.fordatabase)
+    * [Maintenance operation: `maintenance.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.fordatabase)
+</Admonition>
+## Common operation: `operations.forDatabase`
+
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+
+<TabItem value="something-something" label="for_database_1">
+<CodeBlock language="nodejs">
+{`// Define default database on the store
+const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
+documentStore.initialize();
+
+// Use 'forDatabase', get operation executor for another database
+ const opExecutor = documentStore.operations.forDatabase("AnotherDB");
+
+// Send the operation, e.g. 'GetRevisionsOperation' will be executed on "AnotherDB"
+const revisionsInAnotherDB =
+    await opExecutor.send(new GetRevisionsOperation("Orders/1-A"));
+
+// Without 'forDatabase', the operation is executed "DefaultDB"
+const revisionsInDefaultDB =
+   await documentStore.operations.send(new GetRevisionsOperation("Company/1-A"));
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`store.operations.forDatabase(databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `OperationExecutor` | New instance of Operation Executor that is scoped to the requested database |
+
+
+
+## Maintenance operation: `maintenance.forDatabase`
+
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+
+<TabItem value="something-something" label="for_database_2">
+<CodeBlock language="nodejs">
+{`// Define default database on the store
+const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
+documentStore.initialize();
+
+// Use 'forDatabase', get maintenance operation executor for another database
+const opExecutor = documentStore.maintenance.forDatabase("AnotherDB");
+
+// Send the maintenance operation, e.g. get database stats for "AnotherDB"
+const statsForAnotherDB =
+    await opExecutor.send(new GetStatisticsOperation());
+
+// Without 'forDatabase', the stats are retrieved for "DefaultDB"
+const statsForDefaultDB =
+    await documentStore.maintenance.send(new GetStatisticsOperation());
+`}
+</CodeBlock>
+</TabItem>
+**Syntax**:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`store.maintenance.forDatabase(databaseName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of the database to operate on |
+
+| Return Value | Description |
+| - | - |
+| `MaintenanceOperationExecutor` | New instance of Maintenance Operation Executor that is scoped to the requested database |
+
+
+
+
+</LanguageContent>

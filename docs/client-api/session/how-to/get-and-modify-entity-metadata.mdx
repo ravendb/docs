@@ -1,0 +1,221 @@
+---
+title: "Session: How to Get and Modify Entity Metadata"
+sidebar_label: ...get and modify entity metadata
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: How to Get and Modify Entity Metadata
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `GetMetadataFor` method from the `Advanced` session operations.
+## Get the Metadata
+
+<TabItem value="something" label="get_metadata_1">
+<CodeBlock language="csharp">
+{`IMetadataDictionary GetMetadataFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which metadata will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| IMetadataDictionary | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
+
+### Example
+
+<TabItem value="something" label="get_metadata_2">
+<CodeBlock language="csharp">
+{`var employee = session.Load<Employee>("employees/1-A");
+var metadata = session.Advanced.GetMetadataFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Modify the Metadata
+After getting the metadata from `session.Advanced.GetMetadataFor` you can modify it just like any other dictionary.
+<Admonition type="note" title="Note">
+Keys in the metadata that starting with @ are reserved for RavenDB use
+</Admonition>
+
+### Example I
+<TabItem value="something" label="modify_metadata_1">
+<CodeBlock language="csharp">
+{`var user = new User
+\{
+    Name = "Idan"
+\};
+
+session.Store(user);
+var metadata = session.Advanced.GetMetadataFor(user);
+metadata["Permissions"] = "ReadOnly";
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+<TabItem value="something" label="modify_metadata_2">
+<CodeBlock language="csharp">
+{`var user = session.Load<User>("users/1-A");
+var metadata = session.Advanced.GetMetadataFor(user);
+
+metadata["Permissions"] = "ReadAndWrite";
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `getMetadataFor` method from the `advanced` session operations.
+
+## Get the Metadata
+
+<TabItem value="something-something" label="get_metadata_1">
+<CodeBlock language="java">
+{`<T> IMetadataDictionary getMetadataFor(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which metadata will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| IMetadataDictionary | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
+
+### Example
+
+<TabItem value="something-something" label="get_metadata_2">
+<CodeBlock language="java">
+{`Employee employee = session.load(Employee.class, "employees/1-A");
+IMetadataDictionary metadata = session.advanced().getMetadataFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Modify the Metadata
+After getting the metadata from `session.advanced().getMetadataFor` you can modify it just like any other map.
+<Admonition type="note" title="Note">
+Keys in the metadata that starting with @ are reserved for RavenDB use
+</Admonition>
+
+### Example I
+<TabItem value="something-something" label="modify_metadata_1">
+<CodeBlock language="java">
+{`User user = new User();
+user.setName("Idan");
+
+session.store(user);
+
+IMetadataDictionary metadata = session.advanced().getMetadataFor(user);
+metadata.put("Permissions", "READ_ONLY");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+<TabItem value="something-something" label="modify_metadata_2">
+<CodeBlock language="java">
+{`User user = session.load(User.class, "users/1-A");
+IMetadataDictionary metadata = session.advanced().getMetadataFor(user);
+metadata.put("Permissions", "READ_AND_WRITE");
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `getMetadataFor` method from the `advanced` session operations.
+
+## Get the Metadata
+
+<TabItem value="something-something" label="get_metadata_1">
+<CodeBlock language="nodejs">
+{`session.advanced.getMetadataFor(entity);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity for which metadata will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| object | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
+
+### Example
+
+<TabItem value="something-something" label="get_metadata_2">
+<CodeBlock language="nodejs">
+{`const employee = await session.load("employees/1-A");
+const metadata = session.advanced.getMetadataFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Modify the Metadata
+After getting the metadata from `session.advanced.getMetadataFor()` you can modify it.
+<Admonition type="note" title="Note">
+Keys in the metadata that starting with *@* are reserved for RavenDB use
+</Admonition>
+
+### Example I
+<TabItem value="something-something" label="modify_metadata_1">
+<CodeBlock language="nodejs">
+{`const user = new User();
+user.name = "Idan";
+
+await session.store(user);
+
+const metadata = session.advanced.getMetadataFor(user);
+metadata["Permissions"] = "READ_ONLY";
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+<TabItem value="something-something" label="modify_metadata_2">
+<CodeBlock language="nodejs">
+{`const user = await session.load("users/1-A");
+const metadata = session.advanced.getMetadataFor(user);
+metadata["Permissions"] = "READ_AND_WRITE";
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

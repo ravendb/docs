@@ -1,0 +1,80 @@
+---
+title: "Operations: How to Reset ETL"
+sidebar_label: Reset ETL
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Reset ETL
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+ETL is processing documents from the point where the last batch finished. To start the processing from the very beginning you can reset the ETL by using **ResetEtlOperation**.
+
+## Syntax
+
+<TabItem value="something" label="reset_etl_1">
+<CodeBlock language="csharp">
+{`public ResetEtlOperation(string configurationName, string transformationName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configurationName** | string | ETL configuration name |
+| **transformationName** | string | Name of ETL transformation |
+
+## Example
+
+<TabItem value="something" label="reset_etl_2">
+<CodeBlock language="csharp">
+{`ResetEtlOperation operation = new ResetEtlOperation("OrdersExport", "script1");
+store.Maintenance.Send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+ETL is processing documents from the point where the last batch finished. To start the processing from the very beginning you can reset the ETL by using **ResetEtlOperation**.
+
+## Syntax
+
+<TabItem value="something-something" label="reset_etl_1">
+<CodeBlock language="java">
+{`public ResetEtlOperation(String configurationName, String transformationName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ----- | ---- |
+| **configurationName** | String | ETL configuration name |
+| **transformationName** | String | Name of ETL transformation |
+
+## Example
+
+<TabItem value="something-something" label="reset_etl_2">
+<CodeBlock language="java">
+{`ResetEtlOperation resetEtlOperation = new ResetEtlOperation("OrdersExport", "script1");
+store.maintenance().send(resetEtlOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

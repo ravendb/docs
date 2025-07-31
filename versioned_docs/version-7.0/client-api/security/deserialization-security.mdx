@@ -1,0 +1,219 @@
+---
+title: "Security: Deserialization"
+sidebar_label: Deserialization Security
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Security: Deserialization
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Data deserialization can trigger the execution of gadgets that 
+  may initiate RCE attacks on the client machine.  
+* To handle this threat, RavenDB's default deserializer blocks the 
+  deserialization of known [`.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets).  
+* Users can easily modify the list of namespaces and object types 
+  that deserialization is forbidden or allowed for.  
+
+* In this page:  
+  * [Securing Deserialization](../../client-api/security/deserialization-security#securing-deserialization)  
+  * [Invoking a Gadget](../../client-api/security/deserialization-security#invoking-a-gadget)  
+  * [DefaultRavenSerializationBinder](../../client-api/security/deserialization-security#defaultravenserializationbinder)  
+     * [RegisterForbiddenNamespace](../../client-api/security/deserialization-security#section)  
+     * [RegisterForbiddenType](../../client-api/security/deserialization-security#section-1)  
+     * [RegisterSafeType](../../client-api/security/deserialization-security#section-2)  
+  * [Example](../../client-api/security/deserialization-security#example)  
+
+</Admonition>
+## Securing Deserialization
+
+* When a RavenDB client uses the [Newtonsoft library](https://www.newtonsoft.com/json/help/html/SerializingJSON.htm) 
+  to deserialize a JSON string to a `.NET` object, the object may include 
+  a reference to a **gadget** (a code segment) and the deserialization 
+  process may execute this gadget.  
+* Some gadgets attempt to exploit the deserialization process and initiate 
+  an RCE (Remote Code Execution) attack that may, for example, inject the 
+  system with malicious code. RCE attacks may sabotage the system, gain 
+  control over it, steal information, and so on.  
+* To prevent such exploitation, RavenDB's default deserializer 
+  blocks deserialization for suspicious namespaces and 
+  [known `.NET` RCE gadgets](https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html#known-net-rce-gadgets):  
+    `System.Configuration.Install.AssemblyInstaller`  
+    `System.Activities.Presentation.WorkflowDesigner`  
+    `System.Windows.ResourceDictionary`  
+    `System.Windows.Data.ObjectDataProvider`  
+    `System.Windows.Forms.BindingSource`  
+    `Microsoft.Exchange.Management.SystemManager.WinForms.ExchangeSettingsProvider`  
+    `System.Data.DataViewManager, System.Xml.XmlDocument/XmlDataDocument`  
+    `System.Management.Automation.PSObject`  
+
+* Users can easily [modify](../../client-api/security/deserialization-security#defaultravenserializationbinder) 
+  the list of namespaces and object types for which deserialization is forbidden 
+  or allowed.  
+
+  
+
+## Invoking a Gadget
+
+* **Directly-loaded gadgets Cannot be blocked using the default binder**.  
+  When a gadget is loaded directly its loading and execution during 
+  deserialization is **permitted** regardless of the content of the 
+  default deserializer list.  
+
+    E.g., the following segment will be executed,  
+<TabItem value="something" label="DeserializationSecurity_load-object">
+<CodeBlock language="csharp">
+{`// The object will be allowed to be deserialized
+// regardless of the default binder list.  
+session.Load<object>("Gadget");
+`}
+</CodeBlock>
+</TabItem>
+
+* **Indirectly-loaded gadgets Can be blocked using the default binder**.  
+  When a gadget is loaded indirectly its loading and execution during 
+  deserialization **can be blocked** using the default deserializer list.  
+
+    E.g., in the following sample, taken [from here](https://book.hacktricks.xyz/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net#abusing-json.net), 
+    a gadget is loaded indirectly: its name is included as a value 
+    and will only take its place and be used to execute the gadget 
+    during deserialization.  
+    Including this type in the default deserialization list will 
+    prevent the gadget's deserialization and execution.  
+<TabItem value="something" label="DeserializationSecurity_define-type">
+<CodeBlock language="csharp">
+{`string userdata = @"\{
+    '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, 
+            Culture=neutral, PublicKeyToken=31bf3856ad364e35',
+    'MethodName':'Start',
+    'MethodParameters':\{
+                '$type':'System.Collections.ArrayList, mscorlib, Version=4.0.0.0, 
+                        Culture=neutral, PublicKeyToken=b77a5c561934e089',
+        '$values':['cmd', '/c calc.exe']
+    \},
+    'ObjectInstance':\{'$type':'System.Diagnostics.Process, System, Version=4.0.0.0, 
+                                Culture=neutral, PublicKeyToken=b77a5c561934e089'\}
+\}";
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## `DefaultRavenSerializationBinder`
+
+Use the `DefaultRavenSerializationBinder` convention and its methods to 
+block the deserialization of suspicious namespaces and object types or 
+allow the deserialization of trusted object types.  
+
+Define a `DefaultRavenSerializationBinder` instance, use the dedicated 
+methods to forbid or allow the deserialization of entities, and register 
+the defined instance as a serialization convention as shown 
+[below](../../client-api/security/deserialization-security#example).  
+
+<Admonition type="note" title="Note">
+Be sure to update the default deserializer list **before** the initialization 
+of the document that you want the list to apply to.  
+</Admonition>
+### `RegisterForbiddenNamespace`  
+Use `RegisterForbiddenNamespace` to prevent the deserialization of objects loaded from a given namespace.
+
+<TabItem value="something" label="RegisterForbiddenNamespace_definition">
+<CodeBlock language="csharp">
+{`public void RegisterForbiddenNamespace(string @namespace)
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     |:-------------:|:-------------:|-------------|
+     | **@namespace** | `string` | The name of a namespace from which deserialization won't be allowed. |
+
+     <Admonition type="note" title="Exception" id="exception" href="#exception">
+     Attempting to deserialize a forbidden namespace will throw an 
+     `InvalidOperationException` exception with the following details:  
+     _"Cannot resolve type" + `type.FullName` + "because the namespace is on a blacklist due to 
+     security reasons. Please customize json deserializer in the conventions and override SerializationBinder 
+     with your own logic if you want to allow this type."_
+     </Admonition>
+### `RegisterForbiddenType`  
+Use `RegisterForbiddenType` to prevent the deserialization of a given object type.
+
+<TabItem value="something" label="RegisterForbiddenType_definition">
+<CodeBlock language="csharp">
+{`public void RegisterForbiddenType(Type type)
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     |:-------------:|:-------------:|-------------|
+     | **type** | `Type` | An object type whose deserialization won't be allowed. |
+
+     <Admonition type="note" title="Exception" id="exception" href="#exception">
+     Attempting to deserialize a forbidden object type will throw an 
+     `InvalidOperationException` exception with the following details:  
+     _"Cannot resolve type" + `type.FullName` + "because the type is on a blacklist due to 
+     security reasons. 
+     Please customize json deserializer in the conventions and override SerializationBinder 
+     with your own logic if you want to allow this type."_
+     </Admonition>
+### `RegisterSafeType`  
+Use `RegisterSafeType` to **allow** the deserialization of a given object type.
+
+<TabItem value="something" label="RegisterSafeType_definition">
+<CodeBlock language="csharp">
+{`public void RegisterSafeType(Type type)
+`}
+</CodeBlock>
+</TabItem>
+
+     | Parameter | Type | Description |
+     |:-------------:|:-------------:|-------------|
+     | **type** | `Type` | An object type whose deserialization **will** be allowed. |
+
+## Example
+
+<TabItem value="something" label="DefaultRavenSerializationBinder">
+<CodeBlock language="csharp">
+{`// Create a default serialization binder
+var binder = new DefaultRavenSerializationBinder();
+// Register a forbidden namespace
+binder.RegisterForbiddenNamespace("SuspiciousNamespace");
+// Register a forbidden object type
+binder.RegisterForbiddenType(suspiciousObject.GetType());
+// Register a trusted object type
+binder.RegisterSafeType(trustedObject.GetType());
+
+var store = new DocumentStore()
+\{
+    Conventions =
+    \{
+        Serialization = new NewtonsoftJsonSerializationConventions
+        \{
+            // Customize store deserialization using the defined binder
+            CustomizeJsonDeserializer = deserializer => deserializer.SerializationBinder = binder
+        \}
+    \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

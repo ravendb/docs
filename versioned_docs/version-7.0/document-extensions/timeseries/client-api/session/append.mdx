@@ -1,0 +1,818 @@
+---
+title: "Append & Update Time Series"
+sidebar_label: Append
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Append & Update Time Series
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `TimeSeriesFor.Append` for the following actions:
+    * **Creating a new time series**  
+      Appending an entry to a time series that doesn't exist yet  
+      will create the time series and add it the new entry.
+    * **Creating a new time series entry**  
+      Appending a new entry to an existing time series  
+      will add the entry to the series at the specified timestamp.
+    * **Modifying an existing time series entry**  
+      Use `Append` to update the data of an existing entry with the specified timestamp.
+
+* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+
+* To append **multiple** entries in a single transaction you can:  
+  * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).
+  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
+    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete). 
+* In this page:
+    * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
+        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
+        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+
+</Admonition>
+## `Append` usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `TimeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `TimeSeriesFor.Append` and pass it the time series entry details.
+* Call `session.SaveChanges` for the action to take effect on the server.
+
+**Note**:
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `SaveChanges` is executed.
+
+<TabItem value="something" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
+<CodeBlock language="csharp">
+{`var baseline = DateTime.Today;
+
+// Append 10 HeartRate values
+using (var session = store.OpenSession())
+\{
+    session.Store(new User \{ Name = "John" \}, "users/john");
+
+    ISessionDocumentTimeSeries tsf = session.TimeSeriesFor("users/john", "HeartRates");
+
+    for (int i = 0; i < 10; i++)
+    \{
+        tsf.Append(baseline.AddSeconds(i), new[] \{ 67d \}, "watches/fitbit");
+    \}
+
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    session.Store(new User { Name = "John" }, "users/john");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(1),
+        new[] { 52, 54, 63.5, 51.4, 9824 }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(2),
+        new[] { 54, 55, 61.5, 49.4, 8400 }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor("users/john", "StockPrices")
+    .Append(baseTime.AddDays(3),
+        new[] { 55, 57, 65.5, 50, 9020 }, "companies/kitchenAppliances");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    session.Store(new User { Name = "John" }, "users/john");
+
+    // Call 'Append' with the custom StockPrice class
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(1), new StockPrice
+    {
+        Open = 52,
+        Close = 54,
+        High = 63.5,
+        Low = 51.4,
+        Volume = 9824,
+    }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(2), new StockPrice
+    {
+        Open = 54,
+        Close = 55,
+        High = 61.5,
+        Low = 49.4,
+        Volume = 8400,
+    }, "companies/kitchenAppliances");
+
+    session.TimeSeriesFor<StockPrice>("users/john")
+    .Append(baseTime.AddDays(3), new StockPrice
+    {
+        Open = 55,
+        Close = 57,
+        High = 65.5,
+        Low = 50,
+        Volume = 9020,
+    }, "companies/kitchenAppliances");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="TimeSeriesFor-Append-definition-double">
+<CodeBlock language="csharp">
+{`// Append an entry with a single value (double)
+void Append(DateTime timestamp, double value, string tag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="TimeSeriesFor-Append-definition-inum">
+<CodeBlock language="csharp">
+{`// Append an entry with multiple values (IEnumerable)
+void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type                  | Description                   |
+|---------------|-----------------------|-------------------------------|
+| **timestamp** | `DateTime`            | Time series entry's timestamp |
+| **value**     | `double`              | Entry's value                 |
+| **values**    | `IEnumerable<double>` | Entry's values                |
+| **tag**       | `string`              | An optional tag for the entry |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `time_series_for.append_single` or `time_series_for.append` for the following actions:
+    * **Creating a new time series**  
+      Appending an entry to a time series that doesn't exist yet  
+      will create the time series and add it the new entry.
+    * **Creating a new time series entry**  
+      Appending a new entry to an existing time series  
+      will add the entry to the series at the specified timestamp.
+    * **Modifying an existing time series entry**  
+      Use `append_single` or `append` to update the data of an existing entry with the specified timestamp.
+
+* Each call to `append_single` handles a **single** time series value at 
+  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+  Each call to `append` can handle **multiple** time series values at 
+  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+
+* To append **multiple** entries in a single transaction you can:  
+   * Call `append_single` or `append` as many times as needed before calling `session.save_changes`, as shown in the examples below.  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
+   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
+     Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).  
+
+* In this page:
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append#usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
+       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+
+</Admonition>
+## Usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `time_series_for` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) 
+      or from [session.load](../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `time_series_for.append_single` or `time_series_for.append` and pass it the time series entry details.
+* Call `session.save_changes` for the action to take effect on the server.
+
+**Note**:
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `save_changes` is executed.
+
+<TabItem value="something-something" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
+<CodeBlock language="python">
+{`base_line = datetime.utcnow()
+
+# Append 10 HeartRate values
+with store.open_session() as session:
+    session.store(User(name="John"), "users/john")
+
+    tsf = session.time_series_for("users/john", "HeartRates")
+
+    for i in range(10):
+        tsf.append_single(base_line + timedelta(seconds=i), 67.0, "watches/fitbit")
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by naming the values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    session.store(User(name="John"), "users/john")
+
+    session.time_series_for("users/john", "StockPrices").append(
+        base_line + timedelta(days=1), [52, 54, 63.5, 51.4, 9824], "companies/kitchenAppliances"
+    )
+
+    session.time_series_for("users/john", "StockPrices").append(
+        base_line + timedelta(days=2), [54, 55, 61.5, 49.4, 8400], "companies/kitchenAppliances"
+    )
+
+    session.time_series_for("users/john", "StockPrices").append(
+        base_line + timedelta(days=3), [55, 57, 65.5, 50, 9020], "companies/kitchenAppliances"
+    )
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    session.store(User(name="John"), "users/john")
+
+    session.typed_time_series_for(StockPrice, "users/john").append_single(
+        base_line + timedelta(days=1), StockPrice(52, 54, 63.5, 51.4, 9824), "companies/kitchenAppliances"
+    )
+
+    session.typed_time_series_for(StockPrice, "users/john").append_single(
+        base_line + timedelta(days=2), StockPrice(54, 55, 61.5, 49.4, 8400), "companies/kitchenAppliances"
+    )
+
+    session.typed_time_series_for(StockPrice, "users/john").append_single(
+        base_line + timedelta(days=3), StockPrice(55, 57, 65.5, 50, 9020), "companies/kitchenAppliances"
+    )
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="TimeSeriesFor-Append-definition-double">
+<CodeBlock language="python">
+{`def append_single(self, timestamp: datetime, value: float, tag: Optional[str] = None) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="TimeSeriesFor-Append-definition-inum">
+<CodeBlock language="python">
+{`def append(self, timestamp: datetime, values: List[float], tag: Optional[str] = None) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| **timestamp** | `datetime` | Time series entry's timestamp |
+| **value** | `float` | Entry's value |
+| **values** | `List[float]` | Entry's values |
+| **tag** (Optional) | `str` | An optional tag for the entry |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `timeSeriesFor.append` to:
+   * **Create a new time series**  
+     Appending an entry to a time series that doesn't exist yet  
+     will create the time series and add it the new entry.
+   * **Create a new time series entry**  
+     Appending a new entry to an existing time series  
+     will add the entry to the series at the specified timestamp.
+   * **Modify an existing time series entry**  
+     Use `append` to update the data of an existing entry with the specified timestamp.
+
+* To append multiple entries in a single transaction you can:  
+   * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
+   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations).  
+
+* In this page:
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append#usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
+       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
+
+</Admonition>
+## Usage
+
+**Flow**:
+
+* Open a session.
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) 
+      or from [session.load](../../../../client-api/session/loading-entities#load).
+    * Specify the time series name.
+* Call `timeSeriesFor.append` and pass it the time series entry details.
+* Call `session.saveChanges` for the action to take effect on the server.
+
+**Note**:
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `saveChanges` is executed.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="append" label="append">
+<CodeBlock language="php">
+{`$baseTime = DateUtils::today();
+
+// Append 10 HeartRate values
+$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    $tsf = $session->timeSeriesFor("users/john", "HeartRates");
+
+    for ($i = 0; $i < 10; $i++)
+    {
+        $tsf->append((clone $baseTime)->add(new DateInterval("PT" . $i . "S")), [ 67 ], "watches/fitbit");
+    }
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by naming the values.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P1D")),
+        [ 52, 54, 63.5, 51.4, 9824 ],
+        "companies/kitchenAppliances"
+    );
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P2D")),
+            [ 54, 55, 61.5, 49.4, 8400 ],
+            "companies/kitchenAppliances"
+        );
+
+    $session->timeSeriesFor("users/john", "StockPrices")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P3D")),
+        [ 55, 57, 65.5, 50, 9020 ],
+        "companies/kitchenAppliances"
+    );
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try {
+    $user = new User();
+    $user->setName("John");
+    $session->store($user, "users/john");
+
+    // Call 'Append' with the custom StockPrice class
+    $sp = new StockPrice();
+    $sp->setOpen(52);
+    $sp->setClose(54);
+    $sp->setHigh(63.5);
+    $sp->setLow(51.4);
+    $sp->setVolume(9824);
+
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+    ->append(
+         (clone $baseTime)->add(new DateInterval("P1D")),
+        $sp,
+        "companies/kitchenAppliances"
+    );
+
+    $sp = new StockPrice();
+    $sp->setOpen(54);
+    $sp->setClose(55);
+    $sp->setHigh(61.5);
+    $sp->setLow(49.4);
+    $sp->setVolume(8400);
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P2D")),
+            $sp,
+            "companies/kitchenAppliances"
+        );
+
+    $sp = new StockPrice();
+    $sp->setOpen(55);
+    $sp->setClose(57);
+    $sp->setHigh(65.5);
+    $sp->setLow(50);
+    $sp->setVolume(9020);
+    $session->typedTimeSeriesFor(StockPrice::class, "users/john")
+        ->append(
+             (clone $baseTime)->add(new DateInterval("P3D")),
+            $sp,
+            "companies/kitchenAppliances"
+        );
+
+    $session->saveChanges();
+} finally {
+    $session->close();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `timeSeriesFor.append` for the following actions:
+  * **Creating a new time series**  
+    Appending an entry to a time series that doesn't exist yet  
+    will create the time series and add the new entry to it.
+  * **Creating a new time series entry**  
+    Appending a new entry to an existing time series  
+    will add the entry to the series at the specified timestamp.  
+  * **Modifying an existing time series entry**  
+    Use `append` to update the data of an existing entry with the specified timestamp.
+
+* Each call to `append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
+
+* To append **multiple** entries in a single transaction you can:
+    * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.
+    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
+    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
+      Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).
+* In this page:  
+  * [`append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)  
+  * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
+      * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)  
+      * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)  
+  * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+  
+</Admonition>
+## `append` usage
+
+**Flow**:  
+
+* Open a session.
+* Create an instance of `timeSeriesFor` and pass it the following:
+    * Provide an explicit document ID, -or-  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) or from [session.load](../../../../client-api/session/loading-entities#load).  
+    * Specify the time series name.
+* Call `timeSeriesFor.append` and pass it the time series entry details.
+* Call `session.saveChanges` for the action to take effect on the server.
+
+**Note**:  
+
+* A `DocumentDoesNotExistException` exception is thrown if the specified document does not exist.
+
+
+
+## Examples
+
+#### Append entries with a single value:
+
+* In this example, entries are appended with a single value.
+* Although a loop is used to append multiple entries,  
+  all entries are appended in a single transaction when `saveChanges` is executed.  
+
+<TabItem value="something-something" label="append_1">
+<CodeBlock language="nodejs">
+{`// Open a session and store a new document
+const session = documentStore.openSession();
+await session.store(new User("John"), "users/john");
+
+// Get an instance of 'timeSeriesFor'
+// Pass the document ID and the time series name
+const timeSeriesName = "HeartRates";
+const tsf = session.timeSeriesFor("users/john", timeSeriesName);
+  
+// Create time series and add entries:
+// ===================================
+
+// Define an optional tag and some base time for the first entry:
+const optionalTag = "watches/fitbit";
+const baseTime = new Date();
+baseTime.setUTCHours(0);
+
+// The first 'append' call will create the 'HeartRates' time series on the document
+// (since this series doesn't exist yet on the document) and insert the first entry
+tsf.append(baseTime, 65, optionalTag);
+
+// The next 'append' calls will add more entries to the 'HeartRates' time series
+for (let i = 1; i < 10; i++)
+\{
+    const nextMinute = new Date(baseTime.getTime() + 60_000 * i);
+    const nextMeasurement = 65 + i;
+    tsf.append(nextMinute, nextMeasurement, optionalTag);
+\}
+
+// Modify an existing entry:
+// =========================
+
+// Modify the last entry that was added
+// The entry with the specified time stamp will be updated
+tsf.append(new Date(baseTime.getTime() + 60_000 * 9), 60, optionalTag);
+
+// Save changes
+await session.saveChanges();
+
+// Results:
+// ========
+// * The document will contain a time series named "HeartRates" with 10 entries.
+// * The entries' timestamps are saved on the server in UTC.
+`}
+</CodeBlock>
+</TabItem>
+#### Append entries with multiple values:
+
+* In this example, we append multi-value StockPrice entries.  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Native" label="Native">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+await session.store(new User("John"), "users/john");
+
+const tsf = session.timeSeriesFor("users/john", "StockPrices");
+
+const optionalTag = "companies/kitchenAppliances";
+const baseTime = new Date();
+baseTime.setUTCHours(0);
+
+const oneDay = 24 * 60 * 60 * 1000;
+let nextDay = new Date(baseTime.getTime() + oneDay);
+
+// Provide multiple values to the entity
+tsf.append(nextDay, [ 52, 54, 63.5, 51.4, 9824 ], optionalTag);
+
+nextDay = new Date(baseTime.getTime() + oneDay * 2);
+tsf.append(nextDay, [ 54, 55, 61.5, 49.4, 8400 ], optionalTag);
+
+nextDay = new Date(baseTime.getTime() + oneDay * 3);
+tsf.append(nextDay, [ 55, 57, 65.5, 50, 9020 ], optionalTag);
+
+await session.saveChanges();
+
+// Results:
+// ========
+// * The document will contain a time series called "StockPrices" with 3 entries.
+// * Each entry will have 5 values.
+// * The entries' timestamps are saved on the server in UTC.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Using_named_values" label="Using_named_values">
+<CodeBlock language="nodejs">
+{`// Register the named values for the 'StockPrices' series on the server
+await documentStore.timeSeries.register("Users",
+    "StockPrices", ["open", "close", "high", "low", "volume"]);
+
+const session = documentStore.openSession();
+await session.store(new User("John"), "users/john");
+
+// Get an instance of 'timeSeriesFor', pass:
+// * the document ID
+// * the time series name
+// * the class that will hold the entry's values
+const tsf = session.timeSeriesFor("users/john", "StockPrices", StockPrice);
+
+const optionalTag = "companies/kitchenAppliances";
+const baseTime = new Date();
+baseTime.setUTCHours(0);
+const oneDay = 24 * 60 * 60 * 1000;
+
+// Provide the multiple values via the StockPrice class
+const price1 = new StockPrice();
+price1.open = 52;
+price1.close = 54;
+price1.high = 63.5;
+price1.low = 51.4;
+price1.volume = 9824;
+
+let nextDay = new Date(baseTime.getTime() + oneDay);
+tsf.append(nextDay, price1, optionalTag);
+
+const price2 = new StockPrice();
+price2.open = 54;
+price2.close = 55;
+price2.high = 61.5;
+price2.low = 49.4;
+price2.volume = 8400;
+
+nextDay = new Date(baseTime.getTime() + oneDay * 2);
+tsf.append(nextDay, price2, optionalTag);
+
+const price3 = new StockPrice();
+price3.open = 55;
+price3.close = 57;
+price3.high = 65.5;
+price3.low = 50;
+price3.volume = 9020;
+
+nextDay = new Date(baseTime.getTime() + oneDay * 3);
+tsf.append(nextDay, price3, optionalTag);
+
+await session.saveChanges();
+
+// Results:
+// ========
+// * The document will contain a time series called "StockPrices" with 3 entries.
+// * Each entry will have 5 named values.
+// * The entries' timestamps are saved on the server in UTC.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="StockPrice_class" label="StockPrice_class">
+<CodeBlock language="nodejs">
+{`// This class is used in the "Named Values" example
+class StockPrice {
+
+    // Define the names for the entry values
+    static TIME_SERIES_VALUES = ["open", "close", "high", "low", "volume"];
+    
+    constructor(
+        open = 0,
+        close = 0,
+        high = 0,
+        low = 0,
+        volume = 0
+    ) {
+        Object.assign(this, {
+            open,
+            close,
+            high,
+            low,
+            volume
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+append(timestamp, value);
+append(timestamp, value, tag);
+`}
+</CodeBlock>
+</TabItem>
+      
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`append(timestamp, values);
+append(timestamp, values, tag); 
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="nodejs">
+{`append(timestamp, entry);
+append(timestamp, entry, tag);
+append(entry);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type     | Description                    |
+|---------------|----------|--------------------------------|
+| **timestamp** | Date     | Time series entry's timestamp  |
+| **value**     | number   | Entry's value                  |
+| **values**    | number[] | Entry's values                 |
+| **tag**       | string   | An optional tag for the entry  |
+| **entry**     | object   | object with the entry's values |
+
+
+
+
+</LanguageContent>

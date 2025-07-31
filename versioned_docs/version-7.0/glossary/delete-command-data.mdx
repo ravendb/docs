@@ -1,0 +1,37 @@
+---
+title: "Glossary: DeleteCommandData"
+sidebar_label: DeleteCommandData
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: DeleteCommandData
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Id** | string | Document ID |
+| **Type** | CommandType | The Command Type (`DELETE`) |
+| **ChangeVector** | string | Document change-vector |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to Json. |
+
+
+</LanguageContent>

@@ -1,0 +1,593 @@
+---
+title: "Ends-With Query"
+sidebar_label: Ends-With Query
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Ends-With Query
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that ends with some specified string.
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* **Note**:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
+
+* In this page:
+    * [EndsWith](../../../../client-api/session/querying/text-search/ends-with-query#endswith)
+    * [EndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#endswith-(case-sensitive))
+    * [Negate EndsWith](../../../../client-api/session/querying/text-search/ends-with-query#negate-endswith)
+
+</Admonition>
+## EndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager"))
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager"))
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## EndsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .Where(x => x.Name.EndsWith("Lager"), exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .Where(x => x.Name.EndsWith("Lager"), exact: true)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .WhereEndsWith(x => x.Name, "Lager", exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate EndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager") == false)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+    .Query<Product>()
+     // Call 'EndsWith' on the field
+     // Pass the postfix to search by
+    .Where(x => x.Name.EndsWith("Lager") == false)
+    .ToListAsync();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'Not' to negate the next predicate
+    .Not
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that ends with some specified string.
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* **Note**:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
+
+* In this page:
+    * [where_ends_with](../../../../client-api/session/querying/text-search/ends-with-query#where_ends_with)
+    * [where_ends_with (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#where_ends_with-(case-sensitive))
+    * [Negate where_ends_with](../../../../client-api/session/querying/text-search/ends-with-query#negate-where_ends_with)
+
+</Admonition>
+## where_ends_with
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Call 'where_ends_with' on the field
+    # Pass the postfix to search by
+    .where_ends_with("Name", "Lager")
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## where_ends_with (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Pass 'exact=True' to search for an EXACT postfix match
+    .where_ends_with("Name", "Lager", exact=True)
+)
+
+# Results will contain only Product documents having a 'Name' field
+# that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate where_ends_with
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session.query(object_type=Product)
+    # Negate next statement
+    .not_()
+    # Call 'where_starts_with' on the field
+    # Pass the prefix to search by
+    .where_ends_with("Name", "Lager")
+)
+# Results will contain only Product documents having a 'Name' field
+# that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* You can query for documents having a field that ends with some specified string.
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* **Note**:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
+
+* In this page:
+    * [where_ends_with](../../../../client-api/session/querying/text-search/ends-with-query#where_ends_with)
+    * [where_ends_with (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#where_ends_with-(case-sensitive))
+    * [Negate where_ends_with](../../../../client-api/session/querying/text-search/ends-with-query#negate-where_ends_with)
+
+</Admonition>
+## where_ends_with
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    // Call 'whereEndsWith' on the field
+    // Pass the postfix to search by
+    ->whereEndsWith("Name", "Lager")
+    ->toList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## where_ends_with (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    // Pass 'exact: true' to search for an EXACT postfix match
+    ->whereEndsWith("Name", "Lager", true)
+    ->toList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'WhereEndsWith'
+     // Pass 'exact: true' to search for an EXACT postfix match
+    .WhereEndsWith(x => x.Name, "Lager", exact: true)
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate where_ends_with
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="query" label="query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+    ->query(Product::class)
+    // Call 'Not' to negate the next predicate
+    ->not()
+    // Call 'whereEndsWith' on the field
+    // Pass the postfix to search by
+    ->whereEndsWith("Name", "Lager")
+    ->toList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+    .DocumentQuery<Product>()
+     // Call 'Not' to negate the next predicate
+    .Not
+     // Call 'WhereEndsWith'
+     // Pass the document field and the postfix to search by
+    .WhereEndsWith(x => x.Name, "Lager")
+    .ToList();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where (true and not endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `whereEndsWith` to query for documents having a field that ends with some specified string.  
+
+* Unless explicitly specified, the string comparisons are case-insensitive by default.
+
+* **Note**:  
+  This postfix search causes the server to perform a full index scan.  
+  Instead, consider using a static index that indexes the field in reverse order  
+  and then query with a [prefix search](../../../../client-api/session/querying/text-search/starts-with-query), which is much faster.
+
+* In this page:
+    * [whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query#whereendswith)
+    * [whereEndsWith (case-sensitive)](../../../../client-api/session/querying/text-search/ends-with-query#whereendswith-(case-sensitive))
+    * [Negate whereEndsWith](../../../../client-api/session/querying/text-search/ends-with-query#negate-whereendswith)
+    * [Syntax](../../../../client-api/session/querying/text-search/ends-with-query#syntax)
+
+</Admonition>
+## whereEndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+     // Call 'whereEndsWith'
+     // Pass the document field and the postfix to search by
+    .whereEndsWith("Name", "Lager")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with any case variation of 'lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## whereEndsWith (case-sensitive)
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'whereEndsWith'
+    // Pass 'true' as the 3'rd parameter to search for an EXACT postfix match
+    .whereEndsWith("Name", "Lager", true)
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that ends with 'Lager'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exact(endsWith(Name, "Lager"))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Negate whereEndsWith
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    .query({ collection: "Products" })
+    // Call 'Not' to negate the next predicate
+    .not()
+    // Call 'whereEndWith'
+    // Pass the document field and the postfix to search by
+    .whereEndsWith("Name", "Lager")
+    .all();
+
+// Results will contain only Product documents having a 'Name' field
+// that does NOT end with 'lager' or any other case variations of it
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Products"
+where exists(Name) and not endsWith(Name, "Lager")
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+whereStartsWith(fieldName, value);
+whereStartsWith(fieldName, value, exact);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                               |
+|---------------|---------|---------------------------------------------------------------------------|
+| **fieldName** | string  | The field name in which to search                                         |
+| **value**     | string  | The **postfix** string to search by                                       |
+| **exact**     | boolean | `false` - search is case-insensitive<br/>`true` - search is case-sensitive |
+
+
+
+
+
+</LanguageContent>

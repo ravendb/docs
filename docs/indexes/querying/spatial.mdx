@@ -1,0 +1,1641 @@
+---
+title: "Query a Spatial Index"
+sidebar_label: Spatial
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs", "java"];
+
+
+# Query a Spatial Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * **Dynamic spatial query**  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * **Spatial index query**  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
+      and then make a spatial query on this index ( **described in this article** ).
+
+* A few examples of querying a spatial index are provided below.  
+  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
+
+</Admonition>
+## Search by radius
+
+* Query the spatial index:
+
+* Use the `WithinRadius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+List<Event> employeesWithinRadius = session
+    .Query<Event, Events_ByNameAndCoordinates>()
+     // Call 'Spatial' method
+    .Spatial(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Set the geographical area in which to search for matching documents
+        // Call 'WithinRadius', pass the radius and the center points coordinates  
+        criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+    .ToList();
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+List<Event> employeesWithinRadius = session.Advanced
+    .DocumentQuery<Event, Events_ByNameAndCoordinates>()
+     // Call 'Spatial' method
+    .Spatial(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Set the geographical area in which to search for matching documents
+        // Call 'WithinRadius', pass the radius and the center points coordinates  
+        criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+    .ToList();
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// Define an index with a spatial field
+public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
+{
+    public Events_ByNameAndCoordinates()
+    {
+        Map = events => from e in events
+            select new
+            {
+                Name = e.Name,
+                // Call 'CreateSpatialField' to create a spatial index-field
+                // Field 'Coordinates' will be composed of lat & lng supplied from the document
+                Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
+                
+                // Documents can be retrieved
+                // by making a spatial query on the 'Coordinates' index-field
+            };
+    }
+}
+
+public class Event
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Search by shape
+
+* Query the spatial index:  
+  Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
+
+* The shape in the query is specified as either a **circle** or a **polygon** in a WKT format.  
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonrules).
+
+* The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
+
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+List<EventWithWKT> employeesWithinShape = session
+    .Query<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
+    // Call 'Spatial' method
+    .Spatial(
+        // Pass the spatial index-field containing the spatial data
+        "WKT",
+        // Set the geographical search criteria, call 'RelatesToShape'
+        criteria => criteria.RelatesToShape(
+            // Specify the WKT string
+            shapeWkt: @"POLYGON ((
+                           -118.6527948 32.7114894,
+                           -95.8040242 37.5929338,
+                           -102.8344151 53.3349629,
+                           -127.5286633 48.3485664,
+                           -129.4620208 38.0786067,
+                           -118.7406746 32.7853769,
+                           -118.6527948 32.7114894
+                      ))",
+            // Specify the relation between the WKT shape and the documents spatial data
+            relation: SpatialRelation.Within))
+    .ToList();
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+List<EventWithWKT> employeesWithinShape = session.Advanced
+    .DocumentQuery<EventWithWKT, EventsWithWKT_ByNameAndWKT>()
+    // Call 'Spatial' method
+    .Spatial(
+        // Pass the spatial index-field containing the spatial data
+        "WKT",
+        // Set the geographical search criteria, call 'RelatesToShape'
+        criteria => criteria.RelatesToShape(
+            // Specify the WKT string
+            shapeWkt: @"POLYGON ((
+                           -118.6527948 32.7114894,
+                           -95.8040242 37.5929338,
+                           -102.8344151 53.3349629,
+                           -127.5286633 48.3485664,
+                           -129.4620208 38.0786067,
+                           -118.7406746 32.7853769,
+                           -118.6527948 32.7114894
+                      ))",
+            // Specify the relation between the WKT shape and the documents spatial data
+            relation: SpatialRelation.Within))
+    .ToList();
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// Define an index with a spatial field
+public class EventsWithWKT_ByNameAndWKT : AbstractIndexCreationTask<EventWithWKT>
+{
+    public EventsWithWKT_ByNameAndWKT()
+    {
+        Map = events => from e in events
+            select new
+            {
+                Name = e.Name,
+                // Call 'CreateSpatialField' to create a spatial index-field
+                // Field 'WKT' will be composed of the WKT string supplied from the document
+                WKT = CreateSpatialField(e.WKT)
+
+                // Documents can be retrieved
+                // by making a spatial query on the 'WKT' index-field
+            };
+    }
+}
+
+public class EventWithWKT
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string WKT { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.  
+
+
+
+## Sort results
+
+* Query the spatial index:  
+  Use `OrderByDistance` or `OrderByDistanceDescending` to sort the results by distance from a given point.
+
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+List<Event> employeesSortedByDistance = session
+    .Query<Event, Events_ByNameAndCoordinates>()
+     // Filter results by geographical criteria
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+     // Sort results, call 'OrderByDistance'
+    .OrderByDistance(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Sort the results by their distance from this point: 
+        47.623473, -122.3060097)
+    .ToList();
+
+// Return all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+List<Event> employeesSortedByDistance = session.Advanced
+    .DocumentQuery<Event, Events_ByNameAndCoordinates>()
+     // Filter results by geographical criteria
+    .Spatial(
+        "Coordinates",
+        criteria => criteria.WithinRadius(20, 47.623473, -122.3060097))
+     // Sort results, call 'OrderByDistance'
+    .OrderByDistance(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Sort the results by their distance from this point: 
+        47.623473, -122.3060097)
+    .ToList();
+
+// Return all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// Define an index with a spatial field
+public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
+{
+    public Events_ByNameAndCoordinates()
+    {
+        Map = events => from e in events
+            select new
+            {
+                Name = e.Name,
+                // Call 'CreateSpatialField' to create a spatial index-field
+                // Field 'Coordinates' will be composed of lat & lng supplied from the document
+                Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
+                
+                // Documents can be retrieved
+                // by making a spatial query on the 'Coordinates' index-field
+            };
+    }
+}
+
+public class Event
+{
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) article.
+
+* To get the **distance** for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query#getresultingdistance).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * **Dynamic spatial query**  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * **Spatial index query**  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
+      and then make a spatial query on this index ( **described in this article** ).
+
+* A few examples of querying a spatial index are provided below.  
+  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
+
+</Admonition>
+## Search by radius
+
+* Query the spatial index:
+
+* Use the `within_radius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Define a spatail query on index 'Events_ByNameAndCoordinates'
+employees_within_radius = list(
+    session.query_index_type(Events_ByNameAndCoordinates, Event)
+    # Call 'spatial' method
+    .spatial(
+        # Pass the spatial index-field containing the spatial data
+        "coordinates",
+        # Set the geographical area in which to search for matching documents
+        # Call 'within_radius', pass the radius and the center points coordinates
+        lambda criteria: criteria.within_radius(20, 47.623473, -122.3060097),
+    )
+)
+
+# The query returns all matching Event entities
+# that are located within 20 kilometers radius
+# from point (47.623473 latitude, -122.3060097 longitude)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`# Define an index with a spatial field
+class Events_ByNameAndCoordinates(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # Call 'CreateSpatialField' to create a spatial index-field
+        # Field 'coordinates' will be composed of lat & lng supplied from the document
+        self.map = (
+            "from e in docs.Events select new {"
+            "    name = e.name,"
+            "    coordinates = CreateSpatialField(e.latitude, e.longitude)"
+            "}"
+        )
+        # Documents can be retrieved
+        # by making a spatial query on the 'coordinates' index-field
+
+
+class Event:
+    def __init__(self, Id: str = None, name: str = None, latitude: float = None, longitude: float = None):
+        self.Id = Id
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Search by shape
+
+* Query the spatial index:  
+  Use the `relates_to_shape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
+
+* The shape in the query is specified as either a **circle** or a **polygon** in a WKT format.  
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonrules).
+
+* The relation to the shape can be one of: `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS`.
+
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+employees_within_radius = list(
+    session.query_index_type(EventsWithWKT_ByNameAndWKT, EventWithWKT)
+    # Call 'spatial' method
+    .spatial(
+        # Pass the spatial index-field containing the spatial data,
+        "WKT",
+        # Set the geographical search criteria, call 'relates_to_shape'
+        lambda criteria: criteria.relates_to_shape(
+            # Specify the WKT string
+            shape_wkt="""POLYGON ((
+                               -118.6527948 32.7114894,
+                               -95.8040242 37.5929338,
+                               -102.8344151 53.3349629,
+                               -127.5286633 48.3485664,
+                               -129.4620208 38.0786067,
+                               -118.7406746 32.7853769,
+                               -118.6527948 32.7114894
+                          ))""",
+            # Specify the relation between the WKT shape and the documents spatial data
+            relation=SpatialRelation.WITHIN,
+        ),
+    )
+)
+# The query returns all matching Event properties
+# that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`# Define an index with a spatial field
+class EventsWithWKT_ByNameAndWKT(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        self.map = "from e in docs.Events select new {" "    name = e.name," "    WKT = CreateSpatialField(e.WKT)" "}"
+
+
+class EventWithWKT:
+    def __init__(self, Id: str = None, name: str = None, WKT: str = None):
+        self.Id = Id
+        self.name = name
+        self.WKT = WKT
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.  
+
+
+
+## Sort results
+
+* Query the spatial index:  
+  Use `order_by_distance` or `order_by_distance_descending` to sort the results by distance from a given point.
+
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`# Define a spatial query on index 'Events_ByNameAndCoordinates'
+employees_sorted_by_distance = list(
+    session.query_index_type(Events_ByNameAndCoordinates, Event)
+    # Filter results by geographical criteria
+    .spatial("coordinates", lambda criteria: criteria.within_radius(20, 47.623473, -122.3060097))
+    # Sort results, call 'order_by_distance'
+    .order_by_distance(
+        # Pass the spatial index-field containing the spatial data
+        "coordinates",
+        # Sort the results by their distance from this point
+        47.623473,
+        -122.3060097,
+    )
+)
+# Return all matching Event entities located within 20 kilometers radius
+# from point (47.623473 latitude, -122.3060097 longitude).
+
+# Sort the results by their distance from a specified point,
+# the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`# Define an index with a spatial field
+class Events_ByNameAndCoordinates(AbstractIndexCreationTask):
+    def __init__(self):
+        super().__init__()
+        # Call 'CreateSpatialField' to create a spatial index-field
+        # Field 'coordinates' will be composed of lat & lng supplied from the document
+        self.map = (
+            "from e in docs.Events select new {"
+            "    name = e.name,"
+            "    coordinates = CreateSpatialField(e.latitude, e.longitude)"
+            "}"
+        )
+        # Documents can be retrieved
+        # by making a spatial query on the 'coordinates' index-field
+
+
+class Event:
+    def __init__(self, Id: str = None, name: str = None, latitude: float = None, longitude: float = None):
+        self.Id = Id
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) article.
+
+* To get the **distance** for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query#getresultingdistance).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * **Dynamic spatial query**  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * **Spatial index query**  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
+      and then make a spatial query on this index ( **described in this article** ).
+
+* A few examples of querying a spatial index are provided below.  
+  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
+
+</Admonition>
+## Search by radius
+
+* Query the spatial index:
+
+* Use the `withinRadius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+/** @var array<Event> $employeesWithinRadius */
+$employeesWithinRadius = $session
+    ->query(Event::class, Events_ByNameAndCoordinates::class)
+     // Call 'Spatial' method
+    ->spatial(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Set the geographical area in which to search for matching documents
+        // Call 'withinRadius', pass the radius and the center points coordinates
+        function ($criteria) { return $criteria->withinRadius(20, 47.623473, -122.3060097); })
+    ->toList();
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+$employeesWithinRadius = $session->advanced()
+    ->documentQuery(Event::class, Events_ByNameAndCoordinates::class)
+     // Call 'Spatial' method
+    ->spatial(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Set the geographical area in which to search for matching documents
+        // Call 'WithinRadius', pass the radius and the center points coordinates
+        function($criteria) { return $criteria->withinRadius(20, 47.623473, -122.3060097); })
+    ->toList();
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Event
+{
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+}
+
+class Events_ByNameAndCoordinates extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Events.Select(e => new { " .
+            "    name = e.name, " .
+            "    coordinates = this.CreateSpatialField(((double ? ) e.latitude), ((double ? ) e.longitude)) " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Search by shape
+
+* Query the spatial index:  
+  Use the `RelatesToShape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
+
+* The shape in the query is specified as either a **circle** or a **polygon** in a WKT format.  
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonrules).
+
+* The relation to the shape can be one of: `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS`.
+
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+/** @var array<EventWithWKT> $employeesWithinShape */
+$employeesWithinShape = $session
+    ->query(EventWithWKT::class, EventsWithWKT_ByNameAndWKT::class)
+    // Call 'spatial' method
+    ->spatial(
+        // Pass the spatial index-field containing the spatial data
+        "WKT",
+        // Set the geographical search criteria, call 'RelatesToShape'
+        function($criteria) { return $criteria->relatesToShape(
+            // Specify th   e WKT string
+            "POLYGON ((
+                           -118.6527948 32.7114894,
+                           -95.8040242 37.5929338,
+                           -102.8344151 53.3349629,
+                           -127.5286633 48.3485664,
+                           -129.4620208 38.0786067,
+                           -118.7406746 32.7853769,
+                           -118.6527948 32.7114894
+                      ))",
+            // Specify the relation between the WKT shape and the documents spatial data
+            SpatialRelation::within()); })
+    ->toList();
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'EventsWithWKT_ByNameAndWKT'
+/** @var array<EventWithWKT> $employeesWithinShape */
+$employeesWithinShape = $session->advanced()
+    ->documentQuery(EventWithWKT::class, EventsWithWKT_ByNameAndWKT::class)
+    // Call 'Spatial' method
+    ->spatial(
+        // Pass the spatial index-field containing the spatial data
+        "WKT",
+        // Set the geographical search criteria, call 'RelatesToShape'
+        function($criteria) { return $criteria->relatesToShape(
+            // Specify the WKT string
+            "POLYGON ((
+                   -118.6527948 32.7114894,
+                   -95.8040242 37.5929338,
+                   -102.8344151 53.3349629,
+                   -127.5286633 48.3485664,
+                   -129.4620208 38.0786067,
+                   -118.7406746 32.7853769,
+                   -118.6527948 32.7114894
+              ))",
+            // Specify the relation between the WKT shape and the documents spatial data
+            SpatialRelation::within()); })
+    ->toList();
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class EventWithWKT {
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?string $wkt = null;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getWkt(): ?string
+    {
+        return $this->wkt;
+    }
+
+    public function setWkt(?string $wkt): void
+    {
+        $this->wkt = $wkt;
+    }
+}
+
+class EventsWithWKT_ByNameAndWKT extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.EventWithWKTs.Select(e => new { " .
+            "    name = e.name, " .
+            "    wkt = this.CreateSpatialField(e.wkt) " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.  
+
+
+
+## Sort results
+
+* Query the spatial index:  
+  Use `OrderByDistance` to sort the results by distance from a given point.
+
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+/** @var array<Event> $employeesSortedByDistance */
+$employeesSortedByDistance = $session
+    ->query(Event::class, Events_ByNameAndCoordinates::class)
+     // Filter results by geographical criteria
+    ->spatial(
+        "Coordinates",
+        function($criteria) { return $criteria->withinRadius(20, 47.623473, -122.3060097); })
+     // Sort results, call 'OrderByDistance'
+    ->orderByDistance(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Sort the results by their distance from this point:
+        47.623473, -122.3060097)
+    ->toList();
+
+// Return all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+/** @var array<Event> $employeesSortedByDistance */
+$employeesSortedByDistance = $session->advanced()
+    ->documentQuery(Event::class, Events_ByNameAndCoordinates::class)
+     // Filter results by geographical criteria
+    ->spatial(
+        "Coordinates",
+        function($criteria) { return $criteria->withinRadius(20, 47.623473, -122.3060097); })
+     // Sort results, call 'OrderByDistance'
+    ->orderByDistance(
+        // Pass the spatial index-field containing the spatial data
+        "Coordinates",
+        // Sort the results by their distance from this point:
+        47.623473, -122.3060097)
+    ->toList();
+
+// Return all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Event
+{
+    private ?string $id = null;
+    private ?string $name = null;
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+}
+
+class Events_ByNameAndCoordinates extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Events.Select(e => new { " .
+            "    name = e.name, " .
+            "    coordinates = this.CreateSpatialField(((double ? ) e.latitude), ((double ? ) e.longitude)) " .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) article.
+
+* To get the **distance** for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query#getresultingdistance).
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="spatial_syntax_1">
+<CodeBlock language="php">
+{`object CreateSpatialField(double? lat, double? lng); // Latitude/Longitude coordinates
+object CreateSpatialField(string shapeWkt);          // Shape in WKT string format
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="spatial_syntax_2">
+<CodeBlock language="php">
+{`class SpatialOptionsFactory
+\{
+    public function geography(): GeographySpatialOptionsFactory
+    \{
+        return new GeographySpatialOptionsFactory();
+    \}
+
+    public function cartesian(): CartesianSpatialOptionsFactory
+    \{
+        return new CartesianSpatialOptionsFactory();
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="spatial_syntax_3">
+<CodeBlock language="php">
+{`interface GeographySpatialOptionsFactory
+\{
+    // if $circleRadiusUnits is not set SpatialUnits::kilometers() will be used
+
+    // Default is GeohashPrefixTree strategy with maxTreeLevel set to 9
+    public function defaultOptions(?SpatialUnits $circleRadiusUnits = null): SpatialOptions;
+
+    public function boundingBoxIndex(?SpatialUnits $circleRadiusUnits = null): SpatialOptions;
+
+    public function geohashPrefixTreeIndex(int $maxTreeLevel, ?SpatialUnits $circleRadiusUnits = null): SpatialOptions;
+
+    public function quadPrefixTreeIndex(int $maxTreeLevel, ?SpatialUnits $circleRadiusUnits = null): SpatialOptions;
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="spatial_syntax_4">
+<CodeBlock language="php">
+{`interface CartesianSpatialOptionsFactory
+\{
+    public function boundingBoxIndex(): SpatialOptions;
+    public function quadPrefixTreeIndex(int $maxTreeLevel, SpatialBounds $bounds): SpatialOptions;
+\}
+
+class SpatialBounds
+\{
+    private float $minX;
+    private float $maxX;
+    private float $minY;
+    private float $maxY;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Documents that contain spatial data can be queried by spatial queries that employ geographical criteria.  
+  You have two options:
+
+    * **Dynamic spatial query**  
+      Either make a dynamic spatial query on a collection (see [how to make a spatial query](../../client-api/session/querying/how-to-make-a-spatial-query)).  
+      An auto-index will be created by the server.
+
+    * **Spatial index query**  
+      Or, index your documents' spatial data in a static-index (see [indexing spatial data](../../indexes/indexing-spatial-data))  
+      and then make a spatial query on this index ( **described in this article** ).
+
+* A few examples of querying a spatial index are provided below.  
+  **A spatial query performed on a static-index is similar to the** [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query).  
+  Find all spatial API methods listed [here](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-api).  
+
+* Examples in this page:
+    * [Search by radius](../../indexes/querying/spatial#search-by-radius)
+    * [Search by shape](../../indexes/querying/spatial#search-by-shape)
+    * [Sort results](../../indexes/querying/spatial#sort-results)
+
+</Admonition>
+## Search by radius
+
+* Query the spatial index:
+
+* Use the `withinRadius` method to search for all documents containing spatial data that is located  
+  within the specified distance from the given center point.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define a spatial query on index 'Events/ByNameAndCoordinates'
+const employeesWithinRadius = await session
+    .query({ indexName: "Events/ByNameAndCoordinates"})
+     // Call 'spatial' method
+    .spatial(
+        /// Pass the spatial index-field containing the spatial data
+        "coordinates",
+        // Set the geographical area in which to search for matching documents
+        // Call 'withinRadius', pass the radius and the center points coordinates  
+        criteria => criteria.withinRadius(20, 47.623473, -122.3060097))
+    .all();
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`// Define an index with a spatial field
+class Events_ByNameAndCoordinates extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+        const { createSpatialField } = this.mapUtils();
+
+        this.map('events', e => {
+            return {
+                name: e.Name,
+                // Call 'createSpatialField' to create a spatial index-field
+                // Field 'coordinates' will be composed of lat & lng supplied from the document
+                coordinates: createSpatialField(
+                    e.latitude,
+                    e.longitude
+                )
+                
+                // Documents can be retrieved
+                // by making a spatial query on the 'coordinates' index-field
+            };
+        });
+    }
+}
+
+class Event {
+    constructor(id, name, latitude, longitude) {
+        this.id = id;
+        this.name = name;
+        this.latitude = latitude
+        this.longitude = longitude;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities
+// that are located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Search by shape
+
+* Query the spatial index:  
+  Use the `relatesToShape` method to search for all documents containing spatial data that is located  
+  in the specified relation to the given shape.
+
+* The shape in the query is specified as either a **circle** or a **polygon** in a WKT format.  
+  See polygon rules [here](../../client-api/session/querying/how-to-make-a-spatial-query#polygonrules).
+
+* The relation to the shape can be one of: `Within`, `Contains`, `Disjoint`, `Intersects`.
+
+* See more usage examples in the [dynamic search by shape](../../client-api/session/querying/how-to-make-a-spatial-query#search-by-shape) query.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define a spatial query on index 'EventsWithWKT/ByNameAndWKT'
+const employeesWithinShape = await session
+    .query({ indexName: "EventsWithWKT/ByNameAndWKT" })
+     // Call 'spatial' method
+    .spatial(
+        // Pass the spatial index-field containing the spatial data
+        "wkt",
+        // Set the geographical search criteria, call 'relatesToShape'
+        criteria => criteria.relatesToShape(
+            // Specify the WKT string
+            \`POLYGON ((
+                   -118.6527948 32.7114894,
+                   -95.8040242 37.5929338,
+                   -102.8344151 53.3349629,
+                   -127.5286633 48.3485664,
+                   -129.4620208 38.0786067,
+                   -118.7406746 32.7853769,
+                   -118.6527948 32.7114894
+            ))\`,
+            // Specify the relation between the WKT shape and the documents spatial data
+            "Within"
+        ))
+    .all();
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`// Define an index with a spatial field
+class EventsWithWKT_ByNameAndWKT extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+        const { createSpatialField } = this.mapUtils();
+
+        this.map('events', e => {
+            return {
+                name: e.Name,
+                // Call 'createSpatialField' to create a spatial index-field
+                // Field 'wkt' will be composed of the WKT string supplied from the document
+                wkt: createSpatialField(e.wkt)
+
+                // Documents can be retrieved by
+                // making a spatial query on the 'wkt' index-field
+            };
+        });
+    }
+}
+
+class EventWithWKT {
+    constructor(id, name, wkt) {
+        this.id = id;
+        this.name = name;
+        this.wkt = wkt;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "EventsWithWKT/ByNameAndWKT"
+where spatial.within(
+    WKT,
+    spatial.wkt("POLYGON ((
+        -118.6527948 32.7114894,
+        -95.8040242 37.5929338,
+        -102.8344151 53.3349629,
+        -127.5286633 48.3485664,
+        -129.4620208 38.0786067,
+        -118.7406746 32.7853769,
+        -118.6527948 32.7114894))")
+)
+
+// The query returns all matching Event entities
+// that are located within the specified polygon.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Note:  
+  The index in the above example indexes a WKT string in the spatial index-field.  
+  However, you can query by shape also on spatial data that is indexed as lat/lng coordinates.
+
+
+
+## Sort results
+
+* Query the spatial index:  
+  Use `orderByDistance` or `orderByDistanceDescending` to sort the results by distance from a given point.
+
+* By default, distance in RavenDB measured in **kilometers**.  
+  The distance can be rounded to a specific range.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// Define a spatial query on index 'Events_ByNameAndCoordinates'
+const employeesSortedByDistance = await session
+    .query({ indexName: "Events/ByNameAndCoordinates" })
+     // Filter results by geographical criteria
+    .spatial(
+        "coordinates",
+        criteria => criteria.withinRadius(20, 47.623473, -122.3060097))
+     // Sort results, call 'orderByDistance'
+    .orderByDistance(
+        // Pass the spatial index-field containing the spatial data
+        "coordinates",
+        // Sort the results by their distance from this point: 
+        47.623473, -122.3060097)
+    .all();
+
+// Return all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`// Define an index with a spatial field
+class Events_ByNameAndCoordinates extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+        const { createSpatialField } = this.mapUtils();
+
+        this.map('events', e => {
+            return {
+                name: e.Name,
+                // Call 'createSpatialField' to create a spatial index-field
+                // Field 'coordinates' will be composed of lat & lng supplied from the document
+                coordinates: createSpatialField(
+                    e.latitude,
+                    e.longitude
+                )
+                
+                // Documents can be retrieved
+                // by making a spatial query on the 'coordinates' index-field
+            };
+        });
+    }
+}
+
+class Event {
+    constructor(id, name, latitude, longitude) {
+        this.id = id;
+        this.name = name;
+        this.latitude = latitude
+        this.longitude = longitude;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Events/ByNameAndCoordinates"
+where spatial.within(
+    Coordinates,
+    spatial.circle(20, 47.623473, -122.3060097)
+)
+order by spatial.distance(
+    Coordinates,
+    spatial.point(47.623473, -122.3060097)
+)
+
+// The query returns all matching Event entities located within 20 kilometers radius
+// from point (47.623473 latitude, -122.3060097 longitude).
+
+// Sort the results by their distance from a specified point,
+// the closest results will be listed first.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* More sorting examples are available in the [dynamic spatial query](../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting) article.
+
+* To get the **distance** for each resulting entity see [get resulting distance](../../client-api/session/querying/how-to-make-a-spatial-query#getresultingdistance).
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To perform a spatial search, you can use the `spatial` method which contains a full spectrum of spatial capabilities. 
+You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-make-a-spatial-query).
+
+## Radius Search
+
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `withinRadius` method.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class)
+    .spatial(new PointField("latitude", "longitude"),
+        criteria -> criteria.withinRadius(500, 30, 30))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(latitude, longitude), spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Advanced Search
+
+The most advanced (and low-level) method available is `relatesToShape`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class)
+    .spatial(new PointField("latitude", "longitude"),
+        criteria -> criteria.relatesToShape(
+            "Circle(30 30 d=500.0000)",
+            SpatialRelation.WITHIN
+        ))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Events
+where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `within`, `contains`, `disjoint`, `intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+
+<Admonition type="info" title="Polygons" id="polygons" href="#polygons">
+When using `spatial.wkt()` to define a **polygon**, the vertices (points that form the corners of the polygon) must be listed 
+in a counter-clockwise order:  
+
+
+
+![NoSQL ACID DB - Query a Spatial Index](./assets/spatial_1.png)
+</Admonition>
+
+## Static Indexes
+
+All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Event> results = session
+    .query(Event.class, Events_ByCoordinates.class)
+    .spatial("coordinates",
+        criteria -> criteria.withinRadius(500, 30, 30))
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Events_ByCoordinates extends AbstractIndexCreationTask {
+    public Events_ByCoordinates() {
+        map = "docs.Events.Select(e => new {" +
+            "    Coordinates = this.CreateSpatialField(((double ? ) e.latitude), ((double ? ) e.longitude))" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Events/ByCoordinates'
+where spatial.within(coordinates, spatial.circle(500, 30, 30))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Info">
+If you want to know how to setup and customize a spatial field in static index please refer to [this](../../indexes/indexing-spatial-data) article.
+</Admonition>
+
+## Ordering
+
+In order to sort the results by distance, please use the `orderByDistance` or `orderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-make-a-spatial-query).
+
+## Remarks
+
+<Admonition type="info" title="Info">
+Distance in RavenDB by default is measured in **kilometers**.
+</Admonition>
+
+
+</LanguageContent>

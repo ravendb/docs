@@ -1,0 +1,611 @@
+---
+title: "Get Index Errors Operation"
+sidebar_label: Get Index Errors
+sidebar_position: 14
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Get Index Errors Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors#syntax)
+
+</Admonition>
+## Get errors for all indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get index errors operation
+var getIndexErrorsOp = new GetIndexErrorsOperation();
+
+// Execute the operation by passing it to Maintenance.Send
+IndexErrors[] indexErrors = store.Maintenance.Send(getIndexErrorsOp);
+
+// indexErrors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get index errors operation
+var getIndexErrorsOp = new GetIndexErrorsOperation();
+
+// Execute the operation by passing it to Maintenance.SendAsync
+IndexErrors[] indexErrors = await store.Maintenance.SendAsync(getIndexErrorsOp);
+
+// indexErrors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get errors for specific indexes
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the get index errors operation for specific indexes
+var getIndexErrorsOp = new GetIndexErrorsOperation(new[] { "Orders/Totals" });
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+IndexErrors[] indexErrors = store.Maintenance.Send(getIndexErrorsOp);
+
+// indexErrors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the get index errors operation for specific indexes
+var getIndexErrorsOp = new GetIndexErrorsOperation(new[] { "Orders/Totals" });
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if any of the specified indexes do not exist
+IndexErrors[] indexErrors = await store.Maintenance.SendAsync(getIndexErrorsOp);
+
+// indexErrors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public GetIndexErrorsOperation()                    // Get errors for all indexes
+public GetIndexErrorsOperation(string[] indexNames) // Get errors for specific indexes
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexNames** | `string[]` | List of index names to get errors for |
+
+| Return value of<br/>`store.Maintenance.Send(getIndexErrorsOp)`| Description |
+| - | - |
+| `IndexErrors[]` | List of `IndexErrors` classes - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class IndexErrors
+\{
+    public string Name \{ get; set; \}            // Index name
+    public IndexingError[] Errors \{ get; set; \} // List of errors for this index
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class IndexingError
+\{
+    // The error message
+    public string Error \{ get; set; \}
+    
+    // Time of error
+    public DateTime Timestamp \{ get; set; \}
+    
+    // If Action is 'Map'    - field will contain the document ID
+    // If Action is 'Reduce' - field will contain the Reduce key value
+    // For all other Actions - field will be null 
+    public string Document \{ get; set; \}
+    
+    // Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+    public string Action \{ get; set; \}      
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**GetIndexErrorsOperation** is used to return errors encountered during document indexing. 
+
+## Syntax
+
+<TabItem value="something-something" label="errors_1">
+<CodeBlock language="java">
+{`public GetIndexErrorsOperation()
+
+public GetIndexErrorsOperation(String[] indexNames)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="errors_2">
+<CodeBlock language="java">
+{`public class IndexErrors \{
+    private String name;
+    private IndexingError[] errors;
+
+    public IndexErrors() \{
+        errors = new IndexingError[0];
+    \}
+
+    public String getName() \{
+        return name;
+    \}
+
+    public void setName(String name) \{
+        this.name = name;
+    \}
+
+    public IndexingError[] getErrors() \{
+        return errors;
+    \}
+
+    public void setErrors(IndexingError[] errors) \{
+        this.errors = errors;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="errors_3">
+<CodeBlock language="java">
+{`public class IndexingError \{
+
+    private String error;
+    private Date timestamp;
+    private String document;
+    private String action;
+
+    public String getError() \{
+        return error;
+    \}
+
+    public void setError(String error) \{
+        this.error = error;
+    \}
+
+    public Date getTimestamp() \{
+        return timestamp;
+    \}
+
+    public void setTimestamp(Date timestamp) \{
+        this.timestamp = timestamp;
+    \}
+
+    public String getDocument() \{
+        return document;
+    \}
+
+    public void setDocument(String document) \{
+        this.document = document;
+    \}
+
+    public String getAction() \{
+        return action;
+    \}
+
+    public void setAction(String action) \{
+        this.action = action;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | | |
+| ------------- | ----- | ---- |
+| **Name** | String | Index name |
+| **Errors** | IndexingError\[\] | List of indexing errors |
+
+## Example I
+
+<TabItem value="something-something" label="errors_4">
+<CodeBlock language="java">
+{`// gets errors for all indexes
+IndexErrors[] indexErrors
+    = store.maintenance().send(new GetIndexErrorsOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="something-something" label="errors_5">
+<CodeBlock language="java">
+{`// gets errors only for 'Orders/Totals' index
+IndexErrors[] indexErrors
+    = store.maintenance()
+        .send(new GetIndexErrorsOperation(new String[]\{"Orders/Totals"\}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors#syntax)
+
+</Admonition>
+## Get errors for all indexes
+
+<TabItem value="something-something" label="get_errors_all">
+<CodeBlock language="python">
+{`# Define the get index errors operation
+get_index_errors_op = GetIndexErrorsOperation()
+
+# Execute the operation by passing it to maintenance.send
+index_errors = store.maintenance.send(get_index_errors_op)
+
+# index_errors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get errors for specific indexes
+
+<TabItem value="something-something" label="get_errors_specific">
+<CodeBlock language="python">
+{`# Define the get index errors operation for specific indexes
+get_index_errors_op = GetIndexErrorsOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if any of the specified indexes do not exist
+index_errors = store.maintenance.send(get_index_errors_op)
+
+# index_errors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="python">
+{`class GetIndexErrorsOperation(MaintenanceOperation[List[IndexErrors]]):
+    def __init__(self, *index_names: str):  # If no index_names provided, get errors for all indexes
+        ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **\*index_names** | `str` | List of index names to get errors for |
+
+| Return value of<br/>`store.maintenance.send(GetIndexErrorsOperation)` | Description |
+| - | - |
+| `List[IndexErrors]` | List of `IndexErrors` classes - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="python">
+{`class IndexErrors:
+    def __init__(self, name: Optional[str] = None, errors: Optional[List[IndexingError]] = None):
+        self.name = name  # Index name
+        self.errors = errors  # List of errors for this index
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="python">
+{`class IndexingError:
+    def __init__(
+        self,
+        error: Optional[str] = None,
+        timestamp: Optional[datetime.datetime] = None,
+        document: Optional[str] = None,
+        action: Optional[str] = None,
+    ):
+        # Error message
+        self.error = error
+
+        # Time of error
+        self.timestamp = timestamp
+
+        # If action is 'Map'    - field will contain the document ID
+        # If action is 'Reduce' - field will contain the Reduce key value
+        # For all other actions - field will be None
+        self.document = document
+
+        # Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+        self.action = action
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors#syntax)
+
+</Admonition>
+## Get errors for all indexes
+
+<TabItem value="something-something" label="get_errors_all">
+<CodeBlock language="php">
+{`// Define the get index errors operation
+$getIndexErrorsOp = new GetIndexErrorsOperation();
+
+// Execute the operation by passing it to maintenance.send
+/** @var IndexErrorsArray $indexErrors */
+$indexErrors = $store->maintenance()->send($getIndexErrorsOp);
+
+// indexErrors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get errors for specific indexes
+
+<TabItem value="something-something" label="get_errors_specific">
+<CodeBlock language="php">
+{`// Define the get index errors operation for specific indexes
+$getIndexErrorsOp = new GetIndexErrorsOperation([ "Orders/Totals" ]);
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if any of the specified indexes do not exist
+/** @var IndexErrorsArray $indexErrors */
+$indexErrors = $store->maintenance()->send($getIndexErrorsOp);
+
+// indexErrors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="php">
+{`// Available overloads:
+GetIndexErrorsOperation()                  // Get errors for all indexes
+GetIndexErrorsOperation(array $indexNames) // Get errors for specific indexes
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$indexNames** | `array` | List of index names to get errors for |
+
+| `$getIndexErrorsOp` operation Return value | Description |
+| - | - |
+| `?IndexingErrorArray` | List of `IndexingError` classes - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="php">
+{`public class IndexErrors
+\{
+    private ?string $name = null;               // Index name
+    private ?IndexingErrorArray $errors = null; // List of errors for this index
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="php">
+{`public class IndexingError
+\{
+    // The error message
+    private ?string $error = null;
+
+    // Time of error
+    private ?DateTimeInterface $timestamp = null;
+
+    // If Action is 'Map'    - field will contain the document ID
+    // If Action is 'Reduce' - field will contain the Reduce key value
+    // For all other Actions - field will be null
+    private ?string $document = null;
+
+    // Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+    private ?string $action = null;
+
+    // ... getters and setters
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `GetIndexErrorsOperation` to get errors encountered during indexing.
+
+* The index errors will be retrieved only from the server node defined by the current [client-configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).
+
+* To learn about clearing index errors, see [delete index errors](../../../../client-api/operations/maintenance/indexes/delete-index-errors). 
+
+* In this page:
+    * [Get errors for all indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-all-indexes)
+    * [Get errors for specific indexes](../../../../client-api/operations/maintenance/indexes/get-index-errors#get-errors-for-specific-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-errors#syntax)
+
+</Admonition>
+## Get errors for all indexes
+
+<TabItem value="something-something" label="get_errors_all">
+<CodeBlock language="nodejs">
+{`// Define the get index errors operation
+const getIndexErrorsOp = new GetIndexErrorsOperation();
+
+// Execute the operation by passing it to maintenance.send
+const indexErrors = await store.maintenance.send(getIndexErrorsOp);
+
+// indexErrors will contain errors for ALL indexes
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get errors for specific indexes
+
+<TabItem value="something-something" label="get_errors_specific">
+<CodeBlock language="nodejs">
+{`// Define the get index errors operation for specific indexes
+const getIndexErrorsOp = new GetIndexErrorsOperation(["Orders/Totals"]);
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if any of the specified indexes do not exist
+const indexErrors = await store.maintenance.send(getIndexErrorsOp);
+
+// indexErrors will contain errors only for index "Orders/Totals"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+const getIndexErrorsOp = new GetIndexErrorsOperation();           // Get errors for all indexes 
+const getIndexErrorsOp = new GetIndexErrorsOperation(indexNames); // Get errors for specific indexes
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexNames** | `string[]` | List of index names to get errors for |
+
+| Return value of<br/>`store.maintenance.send(getIndexErrorsOp)`| Description |
+| - | - |
+| `object[]` | List of 'index errors' objects - see definition below.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
+
+<Admonition type="note" title="Note">
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// An 'index errors' object:
+\{
+    name,  // Index name
+    errors // List of 'error objects' for this index
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="nodejs">
+{`// An 'error object':
+\{
+    // The error message
+    error,
+        
+    // Time of error
+    timestamp,
+
+    // If Action is 'Map'    - field will contain the document ID
+    // If Action is 'Reduce' - field will contain the Reduce key value
+    // For all other Actions - field will be null    
+    document,
+
+    // Area where error has occurred, e.g. Map/Reduce/Analyzer/Memory/etc.
+    action
+\}
+`}
+</CodeBlock>
+</TabItem>
+</Admonition>
+
+
+
+
+</LanguageContent>

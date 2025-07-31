@@ -1,0 +1,278 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+---
+
+## 7.0.5 (70025) - 2025/07/22
+
+### Server
+
+* `[Backup]` Server-wide tasks are now correctly skipped when restoring from a snapshot
+* `[Cluster]` Fixed an issue where a node with a database in a "Loading" state could be incorrectly considered for promotion
+* `[Corax]` Improved memory allocation tracking for `NativeList` by refining size and maximum capacity monitoring
+* `[Corax]` Fixed a server crash that could occur when splitting pages due to the use of a removed compact key
+* `[Corax]`  Added the ability to cancel an in-progress "Commit" operation
+* `[Corax]`  Improved performance when indexing large datasets
+* `[Database]` Escaped the database name in the `Database-Missing` header to prevent errors with characters not allowed in HTTP headers
+* `[Import/Export]` Added definitions of EmbeddingsGenerations and AiConnectionStrings as default items to export / import
+* `[Indexing]` Fixed dynamic returns detection for JS map indexes syntax
+* `[Indexing]` Prevented an exception from being thrown when attempting to start an index that is already running
+* `[Logging]` Reduced excessive logging of failures during disk stats checks
+* `[Logging]` Resolved a Traffic Watch issue that could disrupt certain queries
+* `[Logging]` Optimized subscription logging by reducing string allocations
+* `[Logging]` Improvements to Audit Log when doing import/export
+* `[Logging]` PostgreSQL calls are now visible in Traffic Watch
+* `[Logging]` Added logging for high-latency requests (over 30 seconds) and large response sizes (over 16MB)
+* `[Logging]`  Added `Logs.FileName` and `Security.AuditLog.FileName` configuration options
+* `[Replication]` Added a debug endpoint for finding missing attachments
+* `[Vector Search]` Performance optimizations
+* `[Vector Search]` Optimization of Tensor Primitives on CPU
+* `[Vector Search]` Vectors exposed as index terms in base64
+* `[Voron]` Fixed an issue with the Storage Report for vector indexes
+* `[.NET]` Updated to 8.0.17
+
+<hr/>
+
+### Client
+
+* `[Exceptions]` Improved the deserialization of `LicenseLimitException`
+* `[HiLo]` Added additional overloads to `IHiLoIdGenerator`
+* `[Indexes]` Unified behavior of `IndexCreation.CreateIndexesAsync` and `DocumentStore.ExecuteIndexesAsync`
+<hr/>
+
+### Studio
+
+* `[Atomic Guards]` Added the ability to delete an Atomic Guard.
+* `[Atomic Guards]` Added an informational warning that is displayed when editing an Atomic Guard.
+* `[Certificates]` Adjusted colors and icons for certificate database permissions for better clarity.
+* `[Certificates]` Replaced the "Regenerate" button with a "Clone" button to better reflect its function.
+* `[Client Configuration]` Apply client configuration properties based on enabled flags
+* `[Custom Sorters/Analyzers]` The license warning is no longer displayed before saving Custom Sorters or Analyzers
+* `[Data Archival Settings]` Added a UI toggle for the `MaxItemsToProcess` setting
+* `[Documents]` Added a confirmation checkbox to the "Delete All Documents" operation to prevent accidental data loss
+* `[Edit Document]` The "Copy document ID" button in the document editor is now always visible
+* `[Embeddings Generation]` Added info about Quantization + other tooltips
+* `[Indexes]` Improved pause/resume indexing in databases view
+
+## 7.0.4 (70023) - 2025/06/25
+
+### Studio
+
+* Fixed accessibility of Certificates view
+
+
+
+
+## 7.0.3 (70022) - 2025/06/10
+
+### Server
+
+* `[Attachments]` Fix the attachment key data extraction 
+* `[Audit Log]` Added logging on database settings/index configuration changes
+* `[Audit Log]` Added logging of opening a TCP connection
+* `[Audit Log]` Added logging of memory dumps endpoints usage
+* `[Audit Log]` Fixed a log message of a backup operation
+* `[Backup]` Fixed slow restore of a backup with revisions
+* `[Backup]` Enabled support for multi-part uploads up to 5TB to S3
+* `[Backup/Export]` Implemented rate limiting for backup/restore and import/export operations
+* `[Certificates]` Removed Oracle Key Usage support for newly generated client certificates to fix compatibility with .NET 9
+* `[Corax]` Added support for unbounded time queries in Corax between operations
+* `[Corax]` Optimized performance of cold queries on large data sets
+* `[Corax]` Made default value of `Indexing.Corax.MaxMemoizationSizeInMb` dependent on total physical installed memory
+* `[Corax]` Fixed query results deduplication when a query has projection and specific terms
+* `[Corax]` Adjusted the starts with behavior inside the `Search` method to match Lucene
+* `[Corax]` Fixed the handling of document double deletion in internal structures
+* `[Corax]` Fixed backward compatibility for indexes that do not have `NonExisting` posting list support
+* `[Data Archival]` Archived flag will not be removed when modifying an archived document
+* `[Debug]` Switched to Microsoft.SourceLink.GitHub and introduced .snupkg
+* `[Debug]` Fixed `/databases/*/admin/debug/txinfo` debug endpoint
+* `[Debug]` Fixed handling of cancellation gracefully in LogTrafficWatch and preventing immediate exit in Raven.Debug `traffic` command 
+* `[Debug]` Enhanced the replication debug endpoint functionality
+* `[Embeddings Generation]` Fixed waiting for embeddings to be stored in a task
+* `[Embeddings Generation]` Fixed embedding generation - skip whitespace / empty strings
+* `[ETL]` Connection string changes will now restart the relevant ETL process
+* `[JSON]` Fixed internal parsing of JSON due to invalid handling of escape positions
+* `[Logging]` Fixed log messages that contain "Raven.Server.Documents.DocumentDatabase" instead of actual database name
+* `[Memory]` Optimized unmanaged memory usage when doing deep paging and using encryption
+* `[Memory]` Fixed internal calculations of memory utilization 
+* `[Memory]` Enhanced low memory detection on Windows
+* `[Patching]` Added `WaitForIndexes` functionality for patch operations 
+* `[Performance]` Disabled performance impacting logging configuration
+* `[PowerBI]` Fixed experimental feature error confusion
+* `[Querying]` Return an empty query when an analyzer removes all terms in the search method instead of throwing OutOfRangeException
+* `[Subscriptions]` Fixed `OperationCanceledException` on waiting subscriptions
+* `[TestDriver]` Made `RavenTestDriver` testable and fixed testing of `ThrowOnInvalidOrMissingLicense`
+* `[Time Series]` Preserved time series name order after conflict resolution for Client API compatibility
+* `[Vector Search]` Fixed fetching of fields in auto index handling vectors 
+* `[Vector Search]` Fixed C# class generation for `RavenVector` fields
+* `[Vector Search]` Improved performance of vectors indexing by changing HNSW insert to parallel mode
+* `[Vector Search]` Added ability to query vector searching using a document ID
+* `[Vector Search]` Fixed auto vector search indexes that use quantization and load embeddings from a task
+* `[.NET]` Updated to 8.0.16
+
+
+<hr/>
+
+### Client
+
+* `[Querying]` Added support for `MemoryExtensions.Contains` and `MemoryExtensions.ContainsAny` in LINQ provider and LINQ to JS coverter
+* `[Qyerying]` Fixed an issue that query builder didn't handle properly `ContainsAll` of an empty array  
+* `[Querying]` Fixed the problem with `Query` improperly serializing an enum when it had an `EnumMember` attribute
+
+
+<hr/>
+
+### Smuggler
+
+* `[Certificates]` Revamped certificates filtering/sorting view
+* `[Export]` Added export to stream overload for Smuggler API
+
+<hr/>
+
+### Studio
+
+* `[Edit]` Added ability to save a document in Studio via cluster transaction  
+* `[Querying]` Vector Search - Autocomplete Enhancements
+* `[Revisions]` Added a button to copy revision dates
+
+## 7.0.2 (70014) - 2025/04/29
+
+### Server
+
+* `[Audit Log]` Logging enhancements
+* `[Certificates]` Fixed an issue with loading a certificate with a password after removing the password
+* `[Corax]` Fixed NRE when using wildcard search with multiple analyzers
+* `[Corax]` Optimizations and enhancements for deletions
+* `[Corax]` Performance optimizations for range queries on big datasets
+* `[Databases]` Improved management of database idleness detection timers
+* `[Embeddings Generation]` Fixing an error on creating Embeddings Generation task when some other is disabled
+* `[ETL]` Fixed testing functionality of SQL connection strings
+* `[Indexing]` Fixed an issue where indexes could start before custom analyzers and sorters had been loaded
+* `[Indexing]` Fixed memory corruption when indexing Vectors and optimized vector writes
+* `[Indexing]` Improved validation of an index definition when using Run Test functionality
+* `[Indexing]` Optimized vector writes
+* `[Indexing]` Throw relevant exception for embeddings length mismatch
+* `[Licensing]` Introduced grace period for upgrade required modal - 14 days
+* `[Logging]` Fixed logging levels in ETL tasks logs
+* `[Memory]` Prevented possible memory fragmentation in internal allocations
+* `[Monitoring]` Added SNMP endpoint for getting the time since the creation of oldest active transaction
+* `[Monitoring]` Fixed incorrect CPU usage calculation on machines with two physical processors
+* `[Performance]` Low level performance improvements
+* `[Querying]` Throw when using the `filter` together with `vector.search()`
+* `[Querying]` Merging scores of duplicated vectors when performing Vector Search
+* `[Replication]` Fixed an issue in which the incoming replication recreated a revision that has been deleted
+* `[Setup]` Fixed ports reservation for server
+* `[Subscriptions]` Snapshot backup restore will restore an original subscription name
+* `[TestDriver / Embedded]` Added more details on how to handle invalid or missing license
+* `[Voron]` Fixed a potential issue with missing removal of an active transaction from in-memory state in some edge conditions
+* `[.NET]` Updated to 8.0.15
+
+<hr/>
+
+### Client
+
+* `[Querying]` Added `RavenQuery.Include` method which extends existing include functionality to allow more complex operations
+
+<hr/>
+
+
+### Studio
+
+* `[Cluster]` Improvements to Cluster Debug view
+* `[Connection strings]` Fixed an issue where custom model & endpoint were not shown when editing AI connection string
+* `[Embeddings Generation]` Fixed layout of the creation of a new AI connection
+* `[Index Errors]` Opening the errors by default
+* `[Indexes]` Fixed filtering arrow icons
+* `[Revisions]` Exposed size of a revision
+* `[Tombstones view]` Exposed info about what is blocking tombstones deletion
+
+## 7.0.1 (70012) - 2025/03/27
+
+### Features
+
+* `[AI]` Added ability to generate embeddings via external AI providers or embedded model with the usage of Embeddings Generation Task [Docs](https://ravendb.net/docs/article-page/7.0/csharp/ai-integration/generating-embeddings/overview) | [Guide](https://ravendb.net/articles/embeddings-generation-with-ravendb)
+
+
+### Server
+
+* `[Backup]` Better selection of databases to wake up for to run a backup
+* `[Backup]` Enhanced backup operation status error reporting
+* `[Backup]` Fixed error when saving the periodic backup status
+* `[Backup]` Improved logic for determining when a backup should run
+* `[Configuration]` Removed obsolete "Storage.TransactionsModeDurationInMin" option
+* `[Configuration]` Default value of `Indexing.Corax.VectorSearch.DefaultMinimumSimilarity` got changed from 0.75 to 0
+* `[Corax]` Fixed and issue with duplicates when performing `AndWith` with `TermReader`
+* `[Corax]` Fixed invalid order of query results when using `order by`
+* `[Corax]` Fixed missing handling of non existing values in `MultiUnaryMatch`
+* `[Corax]` Fixed NRE on the dictionary training phase for indexes defined on @all_docs 
+* `[Corax]` Fixed querying regression introduced in 7.0.0 build which resulted in the increased latency
+* `[Counters]` Fixed the mechanism of counter tombstones cleanup
+* `[Indexing]` Fixed `WaitForIndexesAfterSaveChanges()` implementation to handle indexes defined on @all_docs
+* `[Logging]` Fixed logging levels of couple of too detailed messages
+* `[Memory]` Improvement to memory cleanup mechanism of Lucene's managed memory resources
+* `[Memory]` Improved the memory allocation mechanism in Lucene to reduce GC pressure
+* `[Memory]` Fixed calculation of unmanaged memory the debug stats
+* `[Memory]` Fixed an issue with unmanaged memory allocation for a specific pattern
+* `[Memory]` Fixed an issue with managed memoru usage during backups
+* `[Notifications]` Improved implementation of notifications storage
+* `[Revisions]` Fixed possible infinite loop when enforcing revision configuration
+* `[Security]` Added audit logs for export and import operations
+* `[Voron]` Fixed edge cases in `SeekBackwardFrom` implementation that could affect Time-Series retention
+* `[Voron]` Improved performance of the free space detection to allocate
+* `[.NET]` Updated to 8.0.13
+
+
+<hr/>
+
+### Client
+
+* `[Querying]` Fixed an issue that "Id" field was not populated in some projections
+* Fixed an issue that the Read balance behavior configuration changes was not triggering the speed test
+
+### Studio
+
+* `[AI]` Added new view in AI Hub to manage AI connection strings and Embeddings Generation tasks
+* `[Index View]` Fixed an issue with the default search analyzer not shown in UI
+* `[Ongoing Tasks View]` Better observability of replication tasks
+* `[Revisions]` Added revision bin cleaner to the settings
+
+
+## 7.0.0 (70006) - 2025/02/04
+
+### Features
+
+- `[Vector Search]` added support for vector search. [Docs](https://ravendb.net/docs/article-page/7.0/csharp/ai-integration/ravendb-as-vector-database) | [Guide](https://ravendb.net/articles/new-in-7-0-ravendbs-vector-search)
+- `[ETL]` added Amazon SQS support. [Docs](https://ravendb.net/docs/article-page/7.0/csharp/server/ongoing-tasks/etl/queue-etl/amazon-sqs) | [Guide](https://ravendb.net/articles/new-in-7-0-ravendb-and-amazon-sqs-etl)
+- `[ETL]` added Snowflake support. [Docs](https://ravendb.net/docs/article-page/7.0/csharp/server/ongoing-tasks/etl/snowflake) | [Guide](https://ravendb.net/articles/new-in-7-0-ravendb-to-snowflake)
+- `[Logging]` introduced new logging system. [Docs](https://ravendb.net/docs/article-page/7.0/csharp/server/troubleshooting/logging) | [Guide](https://ravendb.net/articles/new-in-7-0-nlog-logging-system) | [Article: Using Grafana Loki](https://ravendb.net/articles/sending-your-ravendb-7-0-logs-to-grafana-cloud)
+
+<hr />
+
+### Upgrading from previous versions
+
+- please refer to our [Server migration guide](https://ravendb.net/docs/article-page/7.0/csharp/migration/server/data-migration) before proceeding with Server update and check our list of Server breaking changes available [here](https://ravendb.net/docs/article-page/7.0/csharp/migration/server/server-breaking-changes), Client API breaking changes available [here](https://ravendb.net/docs/article-page/7.0/csharp/migration/client-api/client-breaking-changes)
+
+<hr />
+
+### Server
+
+- `[JavaScript]` updated to Jint 4.1.0
+- this version contains same set of changes as [RavenDB 6.2.3](https://ravendb.net/whats-new?buildNumber=62017)
+
+<hr />
+
+### Client API
+
+- `[Bulk Insert]` enabled compression by default
+- `[HTTP]` switched default http compression algorithm to zstd
+- this version contains same set of changes as [RavenDB 6.2.3](https://ravendb.net/whats-new?buildNumber=62017)
+
+<hr />
+
+### Studio
+
+- `[Admin Logs]` revamped view
+- `[Feedback]` revamped form
+- `[Revisions]` added new view to Studio for easier Revision management

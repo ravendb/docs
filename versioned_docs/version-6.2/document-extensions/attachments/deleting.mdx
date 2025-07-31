@@ -1,0 +1,200 @@
+---
+title: "Attachments: Deleting Attachments"
+sidebar_label: Deleting
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Attachments: Deleting Attachments
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**Delete** from `session.Advanced.Attachments` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="something" label="DeleteSyntax">
+<CodeBlock language="csharp">
+{`void Delete(string documentId, string name);
+void Delete(object entity, string name);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+{
+    Album album = session.Load<Album>("albums/1");
+    session.Advanced.Attachments.Delete(album, "001.jpg");
+    session.Advanced.Attachments.Delete("albums/1", "002.jpg");
+
+    session.SaveChanges();
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (var asyncSession = store.OpenAsyncSession())
+{
+    Album album = await asyncSession.LoadAsync<Album>("albums/1");
+    asyncSession.Advanced.Attachments.Delete(album, "001.jpg");
+    asyncSession.Advanced.Attachments.Delete("albums/1", "002.jpg");
+
+    await asyncSession.SaveChangesAsync();
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Delete** from `session.advanced().attachments()` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="something-something" label="DeleteSyntax">
+<CodeBlock language="java">
+{`void delete(String documentId, String name);
+
+void delete(Object entity, String name);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="DeleteAttachment">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Album album = session.load(Album.class, "albums/1");
+    session.advanced().attachments().delete(album, "001.jpg");
+    session.advanced().attachments().delete("albums/1", "002.jpg");
+
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+**Delete** from `session.advanced.attachments` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="something-something" label="DeleteSyntax">
+<CodeBlock language="python">
+{`def delete(self, entity_or_document_id, name): ...
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="DeleteAttachment">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    album = session.load("albums/1")
+    session.advanced.attachments.delete(album, "001.jpg")
+    session.advanced.attachments.delete("albums/1", "002.jpg")
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+**Delete** from `session.advanced.attachments` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="something-something" label="DeleteSyntax">
+<CodeBlock language="php">
+{`/**
+ * Marks the specified document's attachment for deletion.
+ * The attachment will be deleted when saveChanges is called.
+ */
+public function delete(object|string $idOrEntity, ?string $name): void;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="DeleteAttachment">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    $album = $session->load(Album::class, "albums/1");
+    $session->advanced()->attachments()->delete($album, "001.jpg");
+    $session->advanced()->attachments()->delete("albums/1", "002.jpg");
+
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+The method `session.advanced.attachments.delete()` is used to remove an attachment from a document.
+
+## Syntax
+
+<TabItem value="something-something" label="DeleteSyntax">
+<CodeBlock language="nodejs">
+{`session.advanced.attachments.delete(documentId, name);
+
+session.advanced.attachments.delete(entity, name);
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="something-something" label="DeleteAttachment">
+<CodeBlock language="nodejs">
+{`const session = store.openSession();
+const album = await session.load("albums/1");
+session.advanced.attachments.delete(album, "001.jpg");
+
+session.advanced.attachments.delete("albums/1", "002.jpg");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

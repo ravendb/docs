@@ -1,0 +1,71 @@
+---
+title: "What's New"
+breadcrumbs: false
+pagination_next: null
+pagination_prev: null
+---
+
+## 7.1.1 (71007) - 2025/07/22
+
+### Server
+
+* `[Backup]` Server-wide tasks are now correctly skipped when restoring from a snapshot
+* `[Cluster]` Fixed an issue where a node with a database in a "Loading" state could be incorrectly considered for promotion
+* `[Corax]` Improved memory allocation tracking for `NativeList` by refining size and maximum capacity monitoring
+* `[Corax]` Fixed a server crash that could occur when splitting pages due to the use of a removed compact key
+* `[Corax]`  Added the ability to cancel an in-progress "Commit" operation
+* `[Corax]`  Improved performance when indexing large datasets
+* `[Database]` Escaped the database name in the `Database-Missing` header to prevent errors with characters not allowed in HTTP headers
+* `[GenAI]` Stats enhancements 
+* `[GenAI]` Added ability to set and get a change vector of a document that will be processed next
+* `[Import/Export]` Added definitions of EmbeddingsGenerations and AiConnectionStrings as default items to export / import
+* `[Indexing]` Fixed dynamic returns detection for JS map indexes syntax
+* `[Indexing]` Prevented an exception from being thrown when attempting to start an index that is already running
+* `[Logging]` Reduced excessive logging of failures during disk stats checks
+* `[Logging]` Resolved a Traffic Watch issue that could disrupt certain queries
+* `[Logging]` Optimized subscription logging by reducing string allocations
+* `[Logging]` Improvements to Audit Log when doing import/export
+* `[Logging]` PostgreSQL calls are now visible in Traffic Watch
+* `[Logging]` Added logging for high-latency requests (over 30 seconds) and large response sizes (over 16MB)
+* `[Logging]`  Added `Logs.FileName` and `Security.AuditLog.FileName` configuration options
+* `[Replication]` Added a debug endpoint for finding missing attachments
+* `[Vector Search]` Performance optimizations
+* `[Vector Search]` Optimization of Tensor Primitives on CPU
+* `[Vector Search]` Vectors exposed as index terms in base64
+* `[Voron]` Fixed an issue with the Storage Report for vector indexes
+* `[.NET]` Updated to 8.0.17
+
+<hr/>
+
+### Client
+
+* `[Exceptions]` Improved the deserialization of `LicenseLimitException`
+* `[HiLo]` Added additional overloads to `IHiLoIdGenerator`
+* `[Indexes]` Unified behavior of `IndexCreation.CreateIndexesAsync` and `DocumentStore.ExecuteIndexesAsync`
+<hr/>
+
+### Studio
+
+* `[Atomic Guards]` Added the ability to delete an Atomic Guard.
+* `[Atomic Guards]` Added an informational warning that is displayed when editing an Atomic Guard.
+* `[Certificates]` Adjusted colors and icons for certificate database permissions for better clarity.
+* `[Certificates]` Replaced the "Regenerate" button with a "Clone" button to better reflect its function.
+* `[Client Configuration]` Apply client configuration properties based on enabled flags
+* `[Custom Sorters/Analyzers]` The license warning is no longer displayed before saving Custom Sorters or Analyzers
+* `[Data Archival Settings]` Added a UI toggle for the `MaxItemsToProcess` setting
+* `[Documents]` Added a confirmation checkbox to the "Delete All Documents" operation to prevent accidental data loss
+* `[Edit Document]` The "Copy document ID" button in the document editor is now always visible
+* `[Embeddings Generation]` Added info about Quantization + other tooltips
+* `[Indexes]` Improved pause/resume indexing in databases view
+
+## 7.1.0 (71005) - 2025/07/01
+
+### Features
+
+- `[GenAI]` added new feature. [Docs](https://ravendb.net/docs/article-page/7.1/csharp/ai-integration/gen-ai-integration/gen-ai-overview) | [Guide](https://ravendb.net/articles/survive-the-ai-tidal-wave-with-ravendb-genai)
+
+<hr />
+
+### Server
+
+- this version contains same set of changes as [RavenDB 7.0.4](https://ravendb.net/whats-new?buildNumber=70023)

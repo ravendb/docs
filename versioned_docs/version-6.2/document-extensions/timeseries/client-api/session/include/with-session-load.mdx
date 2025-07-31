@@ -1,0 +1,185 @@
+---
+title: "Include Time Series with Load"
+sidebar_label: With Load
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Include Time Series with&nbsp;`Load`
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* When loading a document via `session.Load`,  
+  you can _include_ all entries of a time series or a specific range of entries.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:
+   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#include-time-series-when-loading-a-document)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#syntax)
+
+</Admonition>
+## Include time series when loading a document
+
+In this example, we load a document using `session.Load`,  
+and include a selected range of entries from time series "HeartRates".
+
+<TabItem value="something" label="timeseries_region_Load-Document-And-Include-TimeSeries">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    var baseline = DateTime.Today;
+
+    // Load a document
+    User user = session.Load<User>("users/john", includeBuilder =>
+        // Call 'IncludeTimeSeries' to include time series entries, pass:
+        // * The time series name
+        // * Start and end timestamps indicating the range of entries to include
+        includeBuilder.IncludeTimeSeries("HeartRates", baseline.AddMinutes(3), baseline.AddMinutes(8)));
+
+    // The following call to 'Get' will Not trigger a server request,  
+    // the entries will be retrieved from the session's cache.  
+    IEnumerable<TimeSeriesEntry> entries = session.TimeSeriesFor("users/john", "HeartRates")
+        .Get(baseline.AddMinutes(3), baseline.AddMinutes(8));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+**`session.Load`**
+
+<TabItem value="something" label="Load-definition">
+<CodeBlock language="csharp">
+{`T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type                         | Description    |
+|--------------|------------------------------|----------------|
+| **id**       | `string`                     | Document ID    |
+| **includes** | `Action<IIncludeBuilder<T>>` | Include Object |
+
+**`Include`** builder methods:
+
+<TabItem value="something" label="IncludeTimeSeries-definition">
+<CodeBlock language="csharp">
+{`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type        | Description                                                           |
+|-----------|-------------|-----------------------------------------------------------------------|
+| **name**  | `string`    | Time series name.                                                     |
+| **from**  | `DateTime?` | Time series range start (inclusive).<br/>Default: `DateTime.MinValue`. |
+| **to**    | `DateTime?` | Time series range end (inclusive).<br/>Default: `DateTime.MaxValue`.   |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* When loading a document via `session.load`,  
+  you can _include_ all entries of a time series or a specific range of entries.
+
+* The included time series data is stored within the session   
+  and can be provided instantly when requested without any additional server calls.
+
+* In this page:
+   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#include-time-series-when-loading-a-document)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#syntax)
+
+</Admonition>
+## Include time series when loading a document
+
+In this example, we load a document using `session.load`,  
+and include a selected range of entries from time series "HeartRates".
+
+<TabItem value="something-something" label="include_1">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+
+const baseTime = new Date();
+const from = new Date(baseTime.getTime() + 60_000 * 3);
+const to = new Date(baseTime.getTime() + 60_000 * 8);
+
+// Load a document entity to the session
+const user = await session.load("users/john", \{
+    // Call 'includeTimeSeries' to include time series entries, pass:
+    // * The time series name
+    // * Start and end timestamps indicating the range of entries to include
+    includes: builder => builder.includeTimeSeries("HeartRates", from, to)
+\});
+
+const numberOfRequests1 = session.advanced.numberOfRequests;
+
+// The following call to 'get' will Not trigger a server request,  
+// the entries will be retrieved from the session's cache.  
+const entries = await session
+    .timeSeriesFor("users/john", "HeartRates")
+    .get(from, to);
+
+const numberOfRequests2 = session.advanced.numberOfRequests;
+assert.equal(numberOfRequests1, numberOfRequests2);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+**`session.load`**
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`load(id, options?);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                                                   |
+|--------------|----------|-----------------------------------------------------------------------------------------------|
+| **id**       | `string` | Document ID to load.                                                                          |
+| **options**  | `object` | object containing the `includes` builder that specifies which time series entries to include. |
+
+**`includes`** builder methods:
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`includeTimeSeries(name);
+includeTimeSeries(name, from, to);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type     | Description                                                          |
+|-----------|----------|----------------------------------------------------------------------|
+| **name**  | `string` | Time series name.                                                    |
+| **from**  | `Date`   | Time series range start (inclusive).<br/>Default: minimum date value. |
+| **to**    | `Date`   | Time series range end (inclusive).<br/>Default: maximum date value.   |
+
+
+
+
+</LanguageContent>

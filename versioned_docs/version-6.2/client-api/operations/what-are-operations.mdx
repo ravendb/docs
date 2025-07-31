@@ -1,0 +1,2414 @@
+---
+title: "What are Operations"
+sidebar_label: What are Operations
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# What are Operations
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The RavenDB Client API is built with the notion of layers.  
+  At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)**
+  and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
+
+* **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
+  directly to the server via DocumentStore Operations instead of using the higher-level Session API.
+
+* In this page:  
+  * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
+  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work) 
+  * **Operation types**: 
+      * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
+      * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+      * [Kill operation](../../client-api/operations/what-are-operations#kill-operation)  
+
+</Admonition>
+## Why use operations
+
+* Operations provide **management functionality** that is Not available in the context of the session, for example:
+    * Create/delete a database
+    * Execute administrative tasks
+    * Assign permissions
+    * Change server configuration, and more.
+
+* The operations are executed on the DocumentStore and are Not part of the session transaction.
+
+* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.Advanced.Patch()](../../client-api/operations/patching/single-document#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
+
+
+
+## How operations work
+
+* **Sending the request**:  
+  Each Operation is an encapsulation of a `RavenCommand`.  
+  The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
+  The DocumentStore `OperationExecutor` sends the request and processes the results.
+* **Target node**:  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, server-maintenance operations can be executed on a specific node by using the [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+* **Target database**:  
+  By default, operations work on the default database defined in the DocumentStore.  
+  However, common operations & maintenance operations can operate on a different database by using the [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+* **Transaction scope**:  
+  Operations execute as a single-node transaction.  
+  If needed, data will then replicate to the other nodes in the database-group.  
+* **Background operations**:  
+  Some operations may take a long time to complete and can be awaited for completion.   
+  Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
+
+
+
+## Common operations
+
+* All common operations implement the `IOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+
+* These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
+  document-extensions related operations such as getting/putting an attachment, and more.  
+  See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
+
+* To execute a common operation request,  
+  use the `Send` method on the `Operations` property in the DocumentStore.
+
+#### Example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. get all counters info for a document
+IOperation<CountersDetail> getCountersOp = new GetCountersOperation("products/1-A");
+
+// Execute the operation by passing the operation to Operations.Send
+CountersDetail allCountersResult = documentStore.Operations.Send(getCountersOp);
+
+// Access the operation result
+int numberOfCounters = allCountersResult.Counters.Count;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. get all counters info for a document
+IOperation<CountersDetail> getCountersOp = new GetCountersOperation("products/1-A");
+    
+// Execute the operation by passing the operation to Operations.Send
+CountersDetail allCountersResult = await documentStore.Operations.SendAsync(getCountersOp);
+
+// Access the operation result
+int numberOfCounters = allCountersResult.Counters.Count;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### Syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Available overloads:
+void Send(IOperation operation, SessionInfo sessionInfo = null);
+TResult Send<TResult>(IOperation<TResult> operation, SessionInfo sessionInfo = null);
+Operation Send(IOperation<OperationIdResult> operation, SessionInfo sessionInfo = null);
+
+PatchStatus Send(PatchOperation operation);
+PatchOperation.Result<TEntity> Send<TEntity>(PatchOperation<TEntity> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Available overloads:
+Task SendAsync(IOperation operation,
+    CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+Task<TResult> SendAsync<TResult>(IOperation<TResult> operation,
+    CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+Task<Operation> SendAsync(IOperation<OperationIdResult> operation,
+    CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null);
+
+Task<PatchStatus> SendAsync(PatchOperation operation,
+    CancellationToken token = default(CancellationToken));
+Task<PatchOperation.Result<TEntity>> SendAsync<TEntity>(PatchOperation<TEntity> operation,
+    CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
+* **Attachments**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)  
+
+* **Counters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [TimeSeriesBatchOperation](../../document-extensions/timeseries/client-api/operations/append-and-delete)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetMultipleTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RevertRevisionsByIdOperation](../../document-extensions/revisions/client-api/operations/revert-document-to-revision)  
+
+* **Patching**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
+
+* **Delete by query**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
+
+* **Compare-exchange**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutCompareExchangeValueOperation](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValuesOperation](../../client-api/operations/compare-exchange/get-compare-exchange-values)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCompareExchangeValueOperation](../../client-api/operations/compare-exchange/delete-compare-exchange-value)  
+
+</Admonition>
+
+
+## Maintenance operations
+
+* All maintenance operations implement the `IMaintenanceOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+
+* These operations include database management operations such as setting client configuration,  
+  managing indexes & ongoing-tasks operations, getting stats, and more.  
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
+ 
+* To execute a maintenance operation request,  
+  use the `Send` method on the `Maintenance` property in the DocumentStore.
+
+#### Example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. stop an index 
+IMaintenanceOperation stopIndexOp = new StopIndexOperation("Orders/ByCompany");
+    
+// Execute the operation by passing the operation to Maintenance.Send
+documentStore.Maintenance.Send(stopIndexOp);
+
+// This specific operation returns void
+// You can send another operation to verify the index running status
+IMaintenanceOperation<IndexStats> indexStatsOp = new GetIndexStatisticsOperation("Orders/ByCompany");
+IndexStats indexStats =  documentStore.Maintenance.Send(indexStatsOp);
+IndexRunningStatus status = indexStats.Status; // will be "Paused"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. stop an index 
+IMaintenanceOperation stopIndexOp = new StopIndexOperation("Orders/ByCompany");
+
+// Execute the operation by passing the operation to Maintenance.Send
+await documentStore.Maintenance.SendAsync(stopIndexOp);
+
+// This specific operation returns void
+// You can send another operation to verify the index running status
+IMaintenanceOperation<IndexStats> indexStatsOp = new GetIndexStatisticsOperation("Orders/ByCompany");
+IndexStats indexStats =  await documentStore.Maintenance.SendAsync(indexStatsOp);
+IndexRunningStatus status = indexStats.Status; // will be "Paused"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### Syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Available overloads:
+void Send(IMaintenanceOperation operation);
+TResult Send<TResult>(IMaintenanceOperation<TResult> operation);
+Operation Send(IMaintenanceOperation<OperationIdResult> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Available overloads:
+Task SendAsync(IMaintenanceOperation operation,
+    CancellationToken token = default(CancellationToken));
+Task<TResult> SendAsync<TResult>(IMaintenanceOperation<TResult> operation,
+    CancellationToken token = default(CancellationToken));
+Task<Operation> SendAsync(IMaintenanceOperation<OperationIdResult> operation,
+    CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
+* **Statistics**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-collection-stats)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
+
+* **Client Configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)  
+
+* **Indexes**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
+
+* **Analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAnalyzersOperation](../../indexes/using-analyzers#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
+
+* **Ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#delete-ongoing-task)  
+
+* **ETL tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
+
+* **Replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPullReplicationTasksInfoOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RegisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UnregisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
+
+* **Backup**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
+
+* **Connection strings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string)  
+
+* **Transaction recording**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StopTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
+
+* **Database settings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
+
+* **Identities**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteRevisionsOperation](../../document-extensions/revisions/client-api/operations/delete-revisions)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsBinCleanerOperation](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api)  
+
+* **Sorters**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
+
+* **Sharding**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)  
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
+
+</Admonition>
+
+
+## Server-maintenance operations
+
+* All server-maintenance operations implement the `IServerOperation` interface.  
+  The operation is executed within the **server scope**.   
+  Use [ForNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+
+* These operations include server management and configuration operations.  
+  See all available operations [below](../../client-api/operations/what-are-operations#server-list).
+
+* To execute a server-maintenance operation request,  
+  use the `Send` method on the `Maintenance.Server` property in the DocumentStore.
+
+#### Example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. get the server build number
+IServerOperation<BuildNumber> getBuildNumberOp = new GetBuildNumberOperation();
+    
+// Execute the operation by passing the operation to Maintenance.Server.Send
+BuildNumber buildNumberResult = documentStore.Maintenance.Server.Send(getBuildNumberOp);
+
+// Access the operation result
+int version = buildNumberResult.BuildVersion;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. get the server build number
+IServerOperation<BuildNumber> getBuildNumberOp = new GetBuildNumberOperation();
+    
+// Execute the operation by passing the operation to Maintenance.Server.Send
+BuildNumber buildNumberResult = await documentStore.Maintenance.Server.SendAsync(getBuildNumberOp);
+
+// Access the operation result
+int version = buildNumberResult.BuildVersion;
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### Syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Available overloads:
+void Send(IServerOperation operation);
+TResult Send<TResult>(IServerOperation<TResult> operation);
+Operation Send(IServerOperation<OperationIdResult> operation);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Available overloads:
+Task SendAsync(IServerOperation operation,
+    CancellationToken token = default(CancellationToken));
+Task<TResult> SendAsync<TResult>(IServerOperation<TResult> operation,
+    CancellationToken token = default(CancellationToken));
+Task<Operation> SendAsync(IServerOperation<OperationIdResult> operation,
+    CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
+* **Client certificates**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EditClientCertificateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
+
+* **Server-wide client configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)   
+
+* **Database management**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseRecordOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabasesLockOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateDatabaseOperationWithoutNameValidation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabaseDynamicDistributionOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyDatabaseTopologyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDatabaseOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateUnusedDatabasesOperation  
+
+* **Server-wide ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideTaskOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleServerWideTaskStateOperation  
+
+* **Server-wide replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
+
+* **Server-wide backup tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
+
+* **Server-wide analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideAnalyzersOperation](../../indexes/using-analyzers#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
+
+* **Server-wide sorters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
+
+* **Logs & debug**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
+
+* **Traffic watch**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
+
+</Admonition>
+
+
+## Manage lengthy operations
+
+* Some operations that run in the server background may take a long time to complete.  
+
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `Send` method will return an `Operation` object,  
+  which can be **awaited for completion** or **aborted (killed)**.  
+#### Wait for completion:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="With_Timeout" label="With_Timeout">
+<CodeBlock language="csharp">
+{`public void WaitForCompletionWithTimout(
+    TimeSpan timeout,
+    DocumentStore documentStore)
+{
+    // Define operation, e.g. delete all discontinued products 
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+    IOperation<OperationIdResult> deleteByQueryOp =
+        new DeleteByQueryOperation("from Products where Discontinued = true");
+        
+    // Execute the operation
+    // Send returns an 'Operation' object that can be awaited on
+    Operation operation = documentStore.Operations.Send(deleteByQueryOp);
+    
+    try
+    {
+        // Call method 'WaitForCompletion' to wait for the operation to complete.
+        // If a timeout is specified, the method will only wait for the specified time frame.
+        BulkOperationResult result =
+            (BulkOperationResult)operation.WaitForCompletion(timeout);
+        
+        // The operation has finished within the specified timeframe
+        long numberOfItemsDeleted = result.Total; // Access the operation result
+    }
+    catch (TimeoutException e)
+    {
+        // The operation did Not finish within the specified timeframe
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="With_Timout_async" label="With_Timout_async">
+<CodeBlock language="csharp">
+{`public async Task WaitForCompletionWithTimoutAsync(
+    TimeSpan timeout,
+    DocumentStore documentStore)
+{
+    // Define operation, e.g. delete all discontinued products 
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+    IOperation<OperationIdResult> deleteByQueryOp =
+        new DeleteByQueryOperation("from Products where Discontinued = true");
+        
+    // Execute the operation
+    // SendAsync returns an 'Operation' object that can be awaited on
+    Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
+    
+    try
+    {
+        // Call method 'WaitForCompletionAsync' to wait for the operation to complete.
+        // If a timeout is specified, the method will only wait for the specified time frame.
+        BulkOperationResult result = 
+            await operation.WaitForCompletionAsync(timeout)
+                .ConfigureAwait(false) as BulkOperationResult;
+        
+        // The operation has finished within the specified timeframe
+        long numberOfItemsDeleted = result.Total; // Access the operation result
+    }
+    catch (TimeoutException e)
+    {
+        // The operation did Not finish within the specified timeframe
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="With_CancellationToken" label="With_CancellationToken">
+<CodeBlock language="csharp">
+{`public void WaitForCompletionWithCancellationToken(
+    CancellationToken token,
+    DocumentStore documentStore)
+{
+    // Define operation, e.g. delete all discontinued products 
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+    IOperation<OperationIdResult> deleteByQueryOp =
+        new DeleteByQueryOperation("from Products where Discontinued = true");
+            
+    // Execute the operation
+    // Send returns an 'Operation' object that can be awaited on
+    Operation operation = documentStore.Operations.Send(deleteByQueryOp);
+    
+    try
+    {
+        // Call method 'WaitForCompletion' to wait for the operation to complete.
+        // Pass a CancellationToken in order to stop waiting upon a cancellation request.
+        BulkOperationResult result =
+            (BulkOperationResult)operation.WaitForCompletion(token);
+        
+        // The operation has finished, no cancellation request was made
+        long numberOfItemsDeleted = result.Total; // Access the operation result
+    }
+    catch (TimeoutException e)
+    {
+        // The operation did Not finish at cancellation time
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="With_CancellationToken_async" label="With_CancellationToken_async">
+<CodeBlock language="csharp">
+{`public async Task WaitForCompletionWithCancellationTokenAsync(
+    CancellationToken token,
+    DocumentStore documentStore)
+{
+    // Define operation, e.g. delete all discontinued products 
+    // Note: This operation implements interface: 'IOperation<OperationIdResult>'
+    IOperation<OperationIdResult> deleteByQueryOp =
+        new DeleteByQueryOperation("from Products where Discontinued = true");
+            
+    // Execute the operation
+    // SendAsync returns an 'Operation' object that can be awaited on
+    Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
+    
+    try
+    {
+        // Call method 'WaitForCompletionAsync' to wait for the operation to complete.
+        // Pass a CancellationToken in order to stop waiting upon a cancellation request.
+        BulkOperationResult result = 
+            await operation.WaitForCompletionAsync(token)
+                .ConfigureAwait(false) as BulkOperationResult;
+        
+        // The operation has finished, no cancellation request was made
+        long numberOfItemsDeleted = result.Total; // Access the operation result
+    }
+    catch (TimeoutException e)
+    {
+        // The operation did Not finish at cancellation time
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### Syntax:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public IOperationResult WaitForCompletion(TimeSpan? timeout = null)
+public IOperationResult WaitForCompletion(CancellationToken token)
+
+public TResult WaitForCompletion<TResult>(TimeSpan? timeout = null)
+    where TResult : IOperationResult
+public TResult WaitForCompletion<TResult>(CancellationToken token)
+    where TResult : IOperationResult
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public Task<IOperationResult> WaitForCompletionAsync(TimeSpan? timeout = null)
+public Task<IOperationResult> WaitForCompletionAsync(CancellationToken token)
+
+public async Task<TResult> WaitForCompletionAsync<TResult>(TimeSpan? timeout = null)
+    where TResult : IOperationResult
+public async Task<TResult> WaitForCompletionAsync<TResult>(CancellationToken token)
+    where TResult : IOperationResult
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+| Parameter   | Type                | Description                                                                                                                                                                                                                                                                                                                                           |
+|-------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **timeout** | `TimeSpan`          | &lt;ul&gt;&lt;li&gt; **When timespan is specified** - <br/>The server will throw a `TimeoutException` if operation has Not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>WaitForCompletion will wait for operation to complete forever.&lt;/li&gt;&lt;/ul&gt; |
+| **token**   | `CancellationToken` | &lt;ul&gt;&lt;li&gt; **When cancellation token is specified** - <br/>The server will throw a `TimeoutException` if operation has Not completed at cancellation time.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;/ul&gt;                                                                                      |
+
+| Return type        |                               |
+|--------------------|-------------------------------|
+| `IOperationResult` | The operation result content. |
+
+#### Kill operation:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Kill" label="Kill">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. delete all discontinued products 
+// Note: This operation implements interface: 'IOperation<OperationIdResult>'
+IOperation<OperationIdResult> deleteByQueryOp =
+    new DeleteByQueryOperation("from Products where Discontinued = true");
+    
+// Execute the operation
+// Send returns an 'Operation' object that can be 'killed'
+Operation operation = documentStore.Operations.Send(deleteByQueryOp);
+
+// Call 'Kill' to abort operation
+operation.Kill();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Kill_async" label="Kill_async">
+<CodeBlock language="csharp">
+{`// Define operation, e.g. delete all discontinued products 
+// Note: This operation implements interface: 'IOperation<OperationIdResult>'
+IOperation<OperationIdResult> deleteByQueryOp =
+    new DeleteByQueryOperation("from Products where Discontinued = true");
+    
+// Execute the operation
+// SendAsync returns an 'Operation' object that can be 'killed'
+Operation operation = await documentStore.Operations.SendAsync(deleteByQueryOp);
+
+// Call 'KillAsync' to abort operation
+await operation.KillAsync();
+
+// Assert that operation is no longer running
+await Assert.ThrowsAsync<TaskCanceledException>(() => 
+    operation.WaitForCompletionAsync(TimeSpan.FromSeconds(30)));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+##### Syntax:
+
+<TabItem value="something" label="kill_syntax">
+<CodeBlock language="csharp">
+{`// Available overloads:
+public void Kill()
+public async Task KillAsync(CancellationToken token = default)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type                | Description                                                          |
+|-------------|---------------------|----------------------------------------------------------------------|
+| **token**   | `CancellationToken` | Provide a cancellation token if needed to abort the KillAsync method |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work)**.
+
+They in turn, are built on top of the notion of Operations and Commands.
+
+Operations are an encapsulation of a set of low level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
+
+They are available in the DocumentStore under the **operations**, **maintenance**, and **maintenance().server** methods.
+
+## Common Operations
+
+Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based) or removal of documents by using queries (more can be read [here](../../client-api/operations/common/delete-by-query)).  
+There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment) and [Counters](../../client-api/operations/counters/counter-batch).
+
+### How to Send an Operation
+
+In order to execute an operation, you will need to use the `send` or `sendAsync` methods. Available overloads are:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="java">
+{`public void send(IVoidOperation operation)
+
+public void send(IVoidOperation operation, SessionInfo sessionInfo)
+
+public <TResult> TResult send(IOperation<TResult> operation)
+
+public <TResult> TResult send(IOperation<TResult> operation, SessionInfo sessionInfo)
+
+public PatchStatus send(PatchOperation operation, SessionInfo sessionInfo)
+
+public <TEntity> PatchOperation.Result<TEntity> send(Class<TEntity> entityClass, PatchOperation operation, SessionInfo sessionInfo)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="java">
+{`public Operation sendAsync(IOperation<OperationIdResult> operation)
+
+public Operation sendAsync(IOperation<OperationIdResult> operation, SessionInfo sessionInfo)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following operations are available:
+
+#### Compare Exchange
+
+* [CompareExchange](../../client-api/operations/compare-exchange/overview)   
+
+#### Attachments
+
+* [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)
+* [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)
+* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)
+
+#### Patching
+
+* [PatchByQueryOperation](../../client-api/operations/patching/set-based)   
+* [PatchOperation](../../client-api/operations/patching/single-document)   
+
+
+#### Counters
+
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch)   
+* [GetCountersOperation](../../client-api/operations/counters/get-counters)   
+
+
+#### Misc
+
+* [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
+
+### Example - Get Attachment
+
+<TabItem value="something-something" label="Client_Operations_1">
+<CodeBlock language="java">
+{`try (CloseableAttachmentResult fetchedAttachment = store
+    .operations()
+    .send(new GetAttachmentOperation("users/1", "file.txt", AttachmentType.DOCUMENT, null))) \{
+    // do stuff with the attachment stream --> fetchedAttachment.data
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Maintenance Operations
+
+Maintenance operations include operations for changing the configuration at runtime and for management of index operations.
+
+### How to Send an Operation
+
+<TabItem value="something-something" label="Maintenance_Operations_api">
+<CodeBlock language="java">
+{`public void send(IVoidMaintenanceOperation operation)
+
+public <TResult> TResult send(IMaintenanceOperation<TResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+
+### The following maintenance operations are available:
+
+#### Client Configuration
+
+* [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)   
+* [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)   
+
+#### Indexing
+
+* [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)   
+* [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
+* [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
+* [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
+* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)  
+* [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
+* [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
+* [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
+* [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
+* [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
+* [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
+* [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
+* [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
+* [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
+* [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
+
+#### Misc
+
+* [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats)   
+* [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats)     
+* [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)   
+
+### Example - Stop Index
+
+<TabItem value="something-something" label="Maintenance_Operations_1">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexOperation("Orders/ByCompany"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Server Operations
+
+These type of operations contain various administrative and miscellaneous configuration operations.
+
+### How to Send an Operation
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="java">
+{`public void send(IVoidServerOperation operation)
+
+public <TResult> TResult send(IServerOperation<TResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="java">
+{`public Operation sendAsync(IServerOperation<OperationIdResult> operation)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### The following server-wide operations are available:
+
+
+#### Cluster Management
+
+* [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
+* [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)   
+
+#### Miscellaneous
+
+* [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names)   
+
+### Example - Get Build Number
+
+<TabItem value="something-something" label="Server_Operations_1">
+<CodeBlock language="java">
+{`GetClientConfigurationOperation.Result result
+    = store.maintenance().send(new GetClientConfigurationOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+<Admonition type="note" title="Note">
+By default, operations available in `store.operations` or `store.maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method.
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* The RavenDB Client API is built with the notion of layers.  
+  At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store)**
+  and the **[session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
+
+* **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
+  directly to the server via DocumentStore Operations instead of using the higher-level Session API.
+
+* In this page:  
+  * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
+  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
+  * **Operation types**: 
+      * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
+      * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+      * [Kill operation](../../client-api/operations/what-are-operations#kill-operation)  
+
+</Admonition>
+## Why use operations
+
+* Operations provide **management functionality** that is Not available in the context of the session, for example:
+    * Create/delete a database
+    * Execute administrative tasks
+    * Assign permissions
+    * Change server configuration, and more.
+
+* The operations are executed on the DocumentStore and are Not part of the session transaction.
+
+* There are some client tasks, such as patching documents, that can be carried out either via the Session 
+  ([session.advanced.patch()](../../client-api/operations/patching/single-document#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
+
+
+
+## How operations work
+
+* **Sending the request**:  
+  Each Operation is an encapsulation of a `RavenCommand`.  
+  The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
+  The DocumentStore `OperationExecutor` sends the request and processes the results.
+* **Target node**:  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, server-maintenance operations can be executed on a specific node by using the [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+* **Target database**:  
+  By default, operations work on the default database defined in the DocumentStore.  
+  However, common operations & maintenance operations can operate on a different database by using the [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+* **Transaction scope**:  
+  Operations execute as a single-node transaction.  
+  If needed, data will then replicate to the other nodes in the database-group.  
+* **Background operations**:  
+  Some operations may take a long time to complete and can be awaited for completion.   
+  Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
+
+
+
+## Common operations
+
+* All common operations implement the `IOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+
+* These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
+  document-extensions related operations such as getting/putting an attachment, and more.  
+  See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
+
+* To execute a common operation request,  
+  use the `send` method on the `operations` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="operations_ex">
+<CodeBlock language="python">
+{`# Define operation, e.g. get all counters info for a document
+get_counters_op = GetCountersOperation("products/1-A")
+
+# Execute the operation by passing the operation to operations.send
+all_counters_result = store.operations.send(get_counters_op)
+
+# Access the operation result
+number_of_counters = len(all_counters_result.counters)
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="operations_send">
+<CodeBlock language="python">
+{`# Available overloads:
+def send(self, operation: IOperation[_Operation_T], session_info: SessionInfo = None) -> _Operation_T: ...
+
+def send_async(self, operation: IOperation[OperationIdResult]) -> Operation: ...
+
+def send_patch_operation(self, operation: PatchOperation, session_info: SessionInfo) -> PatchStatus: ...
+
+def send_patch_operation_with_entity_class(
+    self, entity_class: _T, operation: PatchOperation, session_info: Optional[SessionInfo] = None
+) -> PatchOperation.Result[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
+* **Attachments**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)  
+
+* **Counters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [TimeSeriesBatchOperation](../../document-extensions/timeseries/client-api/operations/append-and-delete)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetMultipleTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
+
+* **Patching**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
+
+* **Delete by query**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
+
+* **Compare-exchange**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutCompareExchangeValueOperation](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValuesOperation](../../client-api/operations/compare-exchange/get-compare-exchange-values)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCompareExchangeValueOperation](../../client-api/operations/compare-exchange/delete-compare-exchange-value)  
+
+</Admonition>
+
+
+## Maintenance operations
+
+* All maintenance operations implement the `IMaintenanceOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [for_database](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+
+* These operations include database management operations such as setting client configuration,  
+  managing indexes & ongoing-tasks operations, getting stats, and more.  
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
+ 
+* To execute a maintenance operation request,  
+  use the `send` method on the `maintenance` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="maintenance_ex">
+<CodeBlock language="python">
+{`# Define operation, e.g. stop an index
+stop_index_op = StopIndexOperation("Orders/ByCompany")
+
+# Execute the operation by passing the operation to maintenance.send
+store.maintenance.send(stop_index_op)
+
+# This specific operation returns void
+# You can send another operation to verify the index running status
+index_stats_op = GetIndexStatisticsOperation("Orders/ByCompany")
+index_stats = store.maintenance.send(index_stats_op)
+status = index_stats.status  # will be "Paused"
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="maintenance_send">
+<CodeBlock language="python">
+{`def send(
+    self, operation: Union[VoidMaintenanceOperation, MaintenanceOperation[_Operation_T]]
+) -> Optional[_Operation_T]: ...
+
+def send_async(self, operation: MaintenanceOperation[OperationIdResult]) -> Operation: ...
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
+* **Statistics**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-collection-stats)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
+
+* **Client Configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)  
+
+* **Indexes**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
+
+* **Analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutAnalyzersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
+
+* **Ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#delete-ongoing-task)  
+
+* **ETL tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
+
+* **Replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPullReplicationTasksInfoOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RegisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UnregisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
+
+* **Backup**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
+
+* **Connection strings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string)
+
+* **Transaction recording**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StopTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
+
+* **Database settings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
+
+* **Identities**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+
+* **Sorters**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
+
+* **Sharding**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
+
+</Admonition>
+
+
+## Server-maintenance operations
+
+* All server-maintenance operations implement the `IServerOperation` interface.  
+  The operation is executed within the **server scope**.   
+  Use [for_node](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+
+* These operations include server management and configuration operations.  
+  See all available operations [below](../../client-api/operations/what-are-operations#server-list).
+
+* To execute a server-maintenance operation request,  
+  use the `send` method on the `maintenance.server` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="server_ex">
+<CodeBlock language="python">
+{`# Define operation, e.g. get the server build number
+get_build_number_op = GetBuildNumberOperation()
+
+# Execute the operation by passing to maintenance.server.send
+build_number_result = store.maintenance.server.send(get_build_number_op)
+
+# Access the operation result
+version = build_number_result.build_version
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="server_send">
+<CodeBlock language="python">
+{`def send(self, operation: ServerOperation[_T_OperationResult]) -> Optional[_T_OperationResult]: ...
+
+def send_async(self, operation: ServerOperation[OperationIdResult]) -> Operation: ...
+
+test_examples(self):
+with self.embedded_server.get_document_store("WhatAreOperations") as store:
+    # region operations_ex
+    # Define operation, e.g. get all counters info for a document
+    get_counters_op = GetCountersOperation("products/1-A")
+
+    # Execute the operation by passing the operation to operations.send
+    all_counters_result = store.operations.send(get_counters_op)
+
+    # Access the operation result
+    number_of_counters = len(all_counters_result.counters)
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
+* **Client certificates**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EditClientCertificateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
+
+* **Server-wide client configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)   
+
+* **Database management**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseRecordOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabasesLockOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateDatabaseOperationWithoutNameValidation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabaseDynamicDistributionOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyDatabaseTopologyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDatabaseOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateUnusedDatabasesOperation  
+
+* **Server-wide ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideTaskOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleServerWideTaskStateOperation  
+
+* **Server-wide replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
+
+* **Server-wide backup tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
+
+* **Server-wide analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
+
+* **Server-wide sorters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
+
+* **Logs & debug**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
+
+* **Traffic watch**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
+
+</Admonition>
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* The RavenDB Client API is built with the notion of layers.  
+  At the top, and what you will usually interact with, are the **[documentStore](../../client-api/what-is-a-document-store)**
+  and the **[session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
+
+* **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
+  directly to the server via DocumentStore Operations instead of using the higher-level Session API.
+
+* In this page:  
+  * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
+  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
+  * **Operation types**: 
+      * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
+      * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)  
+
+</Admonition>
+## Why use operations
+
+* Operations provide **management functionality** that is Not available in the context of the session, for example:
+    * Create/delete a database
+    * Execute administrative tasks
+    * Assign permissions
+    * Change server configuration, and more.
+
+* The operations are executed on the DocumentStore and are Not part of the session transaction.
+
+* There are some client tasks, such as patching documents, that can be carried out either via the Session 
+  ([session.advanced.patch()](../../client-api/operations/patching/single-document#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
+
+
+
+## How operations work
+
+* **Sending the request**:  
+  Each Operation is an encapsulation of a `RavenCommand`.  
+  The RavenCommand creates the HTTP request message to be sent to the relevant server endpoint.  
+  The DocumentStore `OperationExecutor` sends the request and processes the results.
+* **Target node**:  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+* **Target database**:  
+  By default, operations work on the default database defined in the DocumentStore.  
+  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+* **Transaction scope**:  
+  Operations execute as a single-node transaction.  
+  If needed, data will then replicate to the other nodes in the database-group.  
+* **Background operations**:  
+  Some operations may take a long time to complete and can be awaited for completion.   
+  Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
+
+
+
+## Common operations
+
+* All common operations implement the `IOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+
+* These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
+  document-extensions related operations such as getting/putting an attachment, and more.  
+  See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
+
+* To execute a common operation request,  
+  use the `send` method on the `operations` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="operations_ex">
+<CodeBlock language="php">
+{`// Define operation, e.g. get all counters info for a document
+$getCountersOp = new GetCountersOperation("products/1-A");
+
+// Execute the operation by passing the operation to Operations.Send
+/** @var CountersDetail $allCountersResult */
+$allCountersResult = $documentStore->operations()->send($getCountersOp);
+
+// Access the operation result
+$numberOfCounters = count($allCountersResult->getCounters());
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="operations_send">
+<CodeBlock language="php">
+{`/**
+ * Usage and available overloads:
+ *
+ *   - send(?OperationInterface $operation, ?SessionInfo $sessionInfo = null): ResultInterface;
+ *   - send(string $entityClass, ?PatchOperation $operation, ?SessionInfo $sessionInfo = null): PatchOperationResult;
+ *   - send(?PatchOperation $operation, ?SessionInfo $sessionInfo = null): PatchStatus;
+ *
+ * @param mixed ...$parameters
+ */
+public function send(...$parameters);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="operations-list"&gt; **The following common operations are available:** &lt;/span&gt;
+* **Attachments**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)  
+
+* **Counters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [TimeSeriesBatchOperation](../../document-extensions/timeseries/client-api/operations/append-and-delete)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetMultipleTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTimeSeriesOperation](../../document-extensions/timeseries/client-api/operations/get)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
+
+* **Patching**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
+
+* **Delete by query**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
+
+* **Compare-exchange**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutCompareExchangeValueOperation](../../client-api/operations/compare-exchange/put-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCompareExchangeValuesOperation](../../client-api/operations/compare-exchange/get-compare-exchange-values)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCompareExchangeValueOperation](../../client-api/operations/compare-exchange/delete-compare-exchange-value)  
+
+</Admonition>
+
+
+## Maintenance operations
+
+* All maintenance operations implement the `IMaintenanceOperation` interface.  
+  The operation is executed within the **database scope**.  
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+
+* These operations include database management operations such as setting client configuration,  
+  managing indexes & ongoing-tasks operations, getting stats, and more.  
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
+ 
+* To execute a maintenance operation request,  
+  use the `send` method on the `maintenance` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="maintenance_ex">
+<CodeBlock language="php">
+{`// Define operation, e.g. stop an index
+$stopIndexOp = new StopIndexOperation("Orders/ByCompany");
+
+// Execute the operation by passing the operation to Maintenance.Send
+$documentStore->maintenance()->send($stopIndexOp);
+
+// This specific operation returns void
+// You can send another operation to verify the index running status
+$indexStatsOp = new GetIndexStatisticsOperation("Orders/ByCompany");
+/** @var IndexStats $indexStats */
+$indexStats =  $documentStore->maintenance()->send($indexStatsOp);
+
+/** @var IndexRunningStatus $status */
+$status = $indexStats->getStatus(); // will be "Paused"
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="maintenance_send">
+<CodeBlock language="php">
+{`public function send(MaintenanceOperationInterface $operation): ResultInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="maintenance-list"&gt; **The following maintenance operations are available:** &lt;/span&gt;
+* **Statistics**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-collection-stats)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
+
+* **Client Configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)  
+
+* **Indexes**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
+
+* **Analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutAnalyzersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
+
+* **Ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#delete-ongoing-task)  
+
+* **ETL tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
+
+* **Replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPullReplicationTasksInfoOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RegisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UnregisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
+
+* **Backup**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
+
+* **Connection strings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string)
+
+* **Transaction recording**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StopTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
+
+* **Database settings**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
+
+* **Identities**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)
+
+* **Time series**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+
+* **Sorters**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
+
+* **Sharding**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
+
+</Admonition>
+
+
+## Server-maintenance operations
+
+* All server-maintenance operations implement the `IServerOperation` interface.  
+  The operation is executed within the **server scope**.   
+  Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+
+* These operations include server management and configuration operations.  
+  See all available operations [below](../../client-api/operations/what-are-operations#server-list).
+
+* To execute a server-maintenance operation request,  
+  use the `send` method on the `maintenance.server` property in the DocumentStore.
+
+#### Example:
+
+<TabItem value="something-something" label="server_ex">
+<CodeBlock language="php">
+{`// Define operation, e.g. get the server build number
+$getBuildNumberOp = new GetBuildNumberOperation();
+
+// Execute the operation by passing the operation to Maintenance.Server.Send
+/** @var BuildNumber $buildNumberResult */
+$buildNumberResult = $documentStore->maintenance()->server()->send($getBuildNumberOp);
+
+// Access the operation result
+$version = $buildNumberResult->getBuildVersion();
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="server_send">
+<CodeBlock language="php">
+{`public function send(ServerOperationInterface $operation): ?object;
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="server-list"&gt; **The following server-maintenance operations are available:** &lt;/span&gt;
+* **Client certificates**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EditClientCertificateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
+
+* **Server-wide client configuration**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)   
+
+* **Database management**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseRecordOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabasesLockOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateDatabaseOperationWithoutNameValidation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabaseDynamicDistributionOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyDatabaseTopologyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDatabaseOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateUnusedDatabasesOperation  
+
+* **Server-wide ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideTaskOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleServerWideTaskStateOperation  
+
+* **Server-wide replication tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
+
+* **Server-wide backup tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation  
+
+* **Server-wide analyzers**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideAnalyzersOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation  
+
+* **Server-wide sorters**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation  
+
+* **Logs & debug**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation  
+
+* **Traffic watch**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
+
+* **Revisions**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+
+* **Misc**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation  
+
+</Admonition>
+
+
+## Manage lengthy operations
+
+* Some operations that run in the server background may take a long time to complete.  
+
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `Send` method will return an `Operation` object,  
+  which can be **awaited for completion**.  
+#### Wait for completion:
+
+<TabItem value="something-something" label="wait_timeout_ex">
+<CodeBlock language="php">
+{`public function WaitForCompletionWithTimeout(DocumentStore $documentStore, Duration $duration)
+\{
+    // Define operation, e.g. delete all discontinued products
+    // Note: This operation implements interface: 'OperationInterface'
+    $deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
+
+    // Execute the operation
+    // Send returns an 'Operation' object that can be awaited on
+
+    /** @var Operation $operation */
+    $operation = $documentStore->operations()->sendAsync($deleteByQueryOp);
+
+    try \{
+        // Call method 'waitForCompletion()' to wait for the operation to complete.
+
+        /** @var BulkOperationResult $result */
+        $result = $operation->waitForCompletion($duration);
+
+        // The operation has finished within the specified timeframe
+        $numberOfItemsDeleted = $result->getTotal(); // Access the operation result
+
+
+    \} catch (TimeoutException $exception) \{
+        // The operation did Not finish within the specified timeframe
+    \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+##### Syntax:
+
+<TabItem value="something-something" label="waitForCompletion_syntax">
+<CodeBlock language="php">
+{`/**
+ * Wait for operation completion.
+ *
+ * It throws TimeoutException if $duration is set and operation execution time elapses duration interval.
+ *
+ * Usage:
+ *   - waitForCompletion(): void;               // It will wait until operation is finished
+ *   - waitForCompletion(Duration $duration);   // It will wait for given duration
+ *   - waitForCompletion(int $seconds);         // It will wait for given seconds
+ *
+ * @param Duration|int|null $duration
+ */
+public function waitForCompletion(Duration|int|null $duration = null): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type         | Description                                                                                                                                                                                                                                                                                                                                           |
+|-------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **$duration** | `Duration` or `int` | &lt;ul&gt;&lt;li&gt; **When a duration is specified** - <br/>The server will throw a `TimeoutException` if the peration has Not completed within the specified time frame.<br/>The operation itself continues to run in the background,<br/>no rollback action takes place.&lt;/li&gt;&lt;li&gt;`null` - <br/>`waitForCompletion` will wait for the operation to complete indefinitely.&lt;/li&gt;&lt;/ul&gt; |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The RavenDB Client API is built with the notion of layers.  
+  At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)**
+  and the **[Session](../../client-api/session/what-is-a-session-and-how-does-it-work)**.  
+  They in turn are built on top of the lower-level **Operations** and **Commands** API.
+
+* **RavenDB provides direct access to this lower-level API**, allowing you to send requests  
+  directly to the server via DocumentStore Operations instead of using the higher-level Session API.
+
+* In this page:  
+  * [Why use operations](../../client-api/operations/what-are-operations#why-use-operations)  
+  * [How operations work](../../client-api/operations/what-are-operations#how-operations-work)  
+  * __Operation types__: 
+      * [Common operations](../../client-api/operations/what-are-operations#common-operations)  
+      * [Maintenance operations](../../client-api/operations/what-are-operations#maintenance-operations)  
+      * [Server-maintenance operations](../../client-api/operations/what-are-operations#server-maintenance-operations)  
+  * [Manage lengthy operations](../../client-api/operations/what-are-operations#manage-lengthy-operations)
+      * [Wait for completion](../../client-api/operations/what-are-operations#wait-for-completion)
+      * [Kill operation](../../client-api/operations/what-are-operations#killoperation)
+
+</Admonition>
+## Why use operations
+
+* Operations provide __management functionality__ that is Not available in the context of the session, for example:
+    * Create/delete a database
+    * Execute administrative tasks
+    * Assign permissions
+    * Change server configuration, and more.
+
+* The operations are executed on the DocumentStore and are Not part of the session transaction.
+
+* There are some client tasks, such as patching documents, that can be carried out either via the Session ([session.advanced.patch()](../../client-api/operations/patching/single-document#array-manipulation))
+  or via an Operation on the DocumentStore ([PatchOperation](../../client-api/operations/patching/single-document#operations-api)).
+
+
+
+## How operations work
+
+* __Sending the request__:  
+  Each Operation creates an HTTP request message to be sent to the relevant server endpoint.  
+  The DocumentStore `OperationExecutor` sends the request and processes the results.
+* __Target node__:  
+  By default, the operation will be executed on the server node that is defined by the [client configuration](../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  However, server-maintenance operations can be executed on a specific node by using the [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+* __Target database__:  
+  By default, operations work on the default database defined in the DocumentStore.  
+  However, common operations & maintenance operations can operate on a different database by using the [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) method.  
+* __Transaction scope__:  
+  Operations execute as a single-node transaction.  
+  If needed, data will then replicate to the other nodes in the database-group.
+* __Background operations__:  
+  Some operations may take a long time to complete and can be awaited for completion.   
+  Learn more [below](../../client-api/operations/what-are-operations#wait-for-completion).
+
+
+
+## Common operations
+
+<Admonition type="note" title="Note">
+
+* All common operations implement the `IOperation` interface.  
+  The operation is executed within the __database scope__.  
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.  
+
+* These operations include set-based operations such as _PatchOperation_, _CounterBatchOperation_,  
+  document-extensions related operations such as getting/putting an attachment, and more.  
+  See all available operations [below](../../client-api/operations/what-are-operations#operations-list).
+
+* To execute a common operation request,  
+  use the `send` method on the `operations` property in the DocumentStore.
+
+__Example__:
+
+<TabItem value="something-something" label="operations_ex">
+<CodeBlock language="nodejs">
+{`// Define operation, e.g. get all counters info for a document
+const getCountersOp = new GetCountersOperation("products/1-A");
+
+// Execute the operation by passing the operation to operations.send
+const allCountersResult = await documentStore.operations.send(getCountersOp);
+
+// Access the operation result
+const numberOfCounters = allCountersResult.counters.length;
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Send syntax__:
+
+<TabItem value="something-something" label="operations_send">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+await send(operation);
+await send(operation, sessionInfo);
+await send(operation, sessionInfo, documentType);
+
+await send(patchOperaton);
+await send(patchOperation, sessionInfo);
+await send(patchOperation, sessionInfo, resultType);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="operations-list"&gt; __The following common operations are available:__ &lt;/span&gt;
+* __Attachments__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)  
+
+* __Counters__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CounterBatchOperation](../../client-api/operations/counters/counter-batch)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCountersOperation](../../client-api/operations/counters/get-counters)  
+
+* __Time series__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TimeSeriesBatchOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetMultipleTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTimeSeriesStatisticsOperation  
+
+* __Revisions__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetRevisionsOperation](../../document-extensions/revisions/client-api/operations/get-revisions)  
+
+* __Patching__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchOperation](../../client-api/operations/patching/single-document)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PatchByQueryOperation](../../client-api/operations/patching/set-based)  
+
+* __Delete by query__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteByQueryOperation](../../client-api/operations/common/delete-by-query)   
+
+* __Compare-exchange__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutCompareExchangeValueOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCompareExchangeValueOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCompareExchangeValuesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteCompareExchangeValueOperation  
+
+</Admonition>
+
+
+## Maintenance operations
+
+<Admonition type="note" title="Note">
+
+* All maintenance operations implement the `IMaintenanceOperation` interface.  
+  The operation is executed within the __database scope__.  
+  Use [forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database) to operate on a specific database other than the default defined in the store.
+
+* These operations include database management operations such as setting client configuration,  
+  managing indexes & ongoing-tasks operations, getting stats, and more.  
+  See all available maintenance operations [below](../../client-api/operations/what-are-operations#maintenance-list).
+ 
+* To execute a maintenance operation request,  
+  use the `send` method on the `maintenance` property in the DocumentStore.
+
+__Example__:
+
+<TabItem value="something-something" label="maintenance_ex">
+<CodeBlock language="nodejs">
+{`// Define operation, e.g. stop an index 
+const stopIndexOp = new StopIndexOperation("Orders/ByCompany");
+
+// Execute the operation by passing the operation to maintenance.send
+await documentStore.maintenance.send(stopIndexOp);
+
+// This specific operation returns void
+// You can send another operation to verify the index running status
+const indexStatsOp = new GetIndexStatisticsOperation("Orders/ByCompany");
+const indexStats = await documentStore.maintenance.send(indexStatsOp);
+const status = indexStats.status; // will be "Paused"
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Send syntax__:
+
+<TabItem value="something-something" label="maintenance_send">
+<CodeBlock language="nodejs">
+{`await send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="maintenance-list"&gt; __The following maintenance operations are available:__ &lt;/span&gt;
+* __Statistics__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-collection-stats)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDetailedCollectionStatisticsOperation](../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
+
+* __Client Configuration__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)  
+
+* __Indexes__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexesStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexingStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetIndexStalenessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIndexNamesOperation](../../client-api/operations/maintenance/indexes/get-index-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteIndexErrorsOperation](../../client-api/operations/maintenance/indexes/delete-index-errors)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
+
+* __Analyzers__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutAnalyzersOperation](../../indexes/using-analyzers#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteAnalyzerOperation  
+
+* **Ongoing tasks**:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetOngoingTaskInfoOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#get-ongoing-task-info)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleOngoingTaskStateOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#toggle-ongoing-task-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteOngoingTaskOperation](../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations#delete-ongoing-task)  
+
+* __ETL tasks__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AddEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateEtlOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
+
+* __Replication tasks__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutPullReplicationAsHubOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPullReplicationTasksInfoOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetReplicationPerformanceStatisticsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RegisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UnregisterReplicationHubAccessOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePullReplicationAsSinkOperation
+
+* __Backup__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetPeriodicBackupStatusOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartBackupOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdatePeriodicBackupOperation  
+
+* __Connection strings__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/add-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-string)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-string)
+
+* __Transaction recording__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StopTransactionsRecordingOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplayTransactionsRecordingOperation  
+
+* __Database settings__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#put-database-settings-operation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseSettingsOperation](../../client-api/operations/maintenance/configuration/database-settings-operation#get-database-settings-operation)  
+
+* __Identities__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [NextIdentityForOperation](../../client-api/operations/maintenance/identities/increment-next-identity)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SeedIdentityForOperation](../../client-api/operations/maintenance/identities/seed-identity)
+
+* __Time series__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesPolicyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureTimeSeriesValueNamesOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RemoveTimeSeriesPolicyOperation  
+
+* __Revisions__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsOperation](../../document-extensions/revisions/client-api/operations/configure-revisions)  
+
+* __Sorters__:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutSortersOperation](../../client-api/operations/maintenance/sorters/put-sorter)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteSorterOperation  
+
+* **Sharding**:   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddPrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#add-prefixes-after-database-creation)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeletePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#removing-prefixes)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [UpdatePrefixedShardingSettingOperation](../../sharding/administration/sharding-by-prefix#updating-shard-configurations-for-prefixes)
+
+* __Misc__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureExpirationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConfigureRefreshOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDocumentsCompressionConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DatabaseHealthCheckOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetOperationStateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateSampleDataOperation  
+
+</Admonition>
+
+
+## Server-maintenance operations
+
+<Admonition type="note" title="Note">
+
+* All server-maintenance operations implement the `IServerOperation` interface.  
+  The operation is executed within the __server scope__.   
+  Use [forNode](../../client-api/operations/how-to/switch-operations-to-a-different-node) to operate on a specific node other than the default defined in the client configuration.
+
+* These operations include server management and configuration operations.  
+  See all available operations [below](../../client-api/operations/what-are-operations#server-list).
+
+* To execute a server-maintenance operation request,  
+  use the `send` method on the `maintenance.server` property in the DocumentStore.   
+
+__Example__:
+
+<TabItem value="something-something" label="server_ex">
+<CodeBlock language="nodejs">
+{`// Define operation, e.g. get the server build number
+const getBuildNumberOp = new GetBuildNumberOperation();
+
+// Execute the operation by passing the operation to maintenance.server.send
+const buildNumberResult = await documentStore.maintenance.server.send(getBuildNumberOp);
+
+// Access the operation result
+const version = buildNumberResult.buildVersion;
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Send syntax__:
+
+<TabItem value="something-something" label="server_send">
+<CodeBlock language="nodejs">
+{`await send(operation);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+&lt;span id="server-list"&gt; __The following server-maintenance operations are available:__ &lt;/span&gt;
+* __Client certificates__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EditClientCertificateOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetCertificateMetadataOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReplaceClusterCertificateOperation  
+
+* __Server-wide client configuration__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetServerWideClientConfigurationOperation](../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)   
+
+* __Database management__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetDatabaseNamesOperation](../../client-api/operations/server-wide/get-database-names)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [CompactDatabaseOperation](../../client-api/operations/server-wide/compact-database)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetDatabaseRecordOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabasesLockOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CreateDatabaseOperationWithoutNameValidation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetDatabaseDynamicDistributionOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyDatabaseTopologyOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateDatabaseOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UpdateUnusedDatabasesOperation  
+
+* __Server-wide ongoing tasks__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideTaskOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ToggleServerWideTaskStateOperation  
+
+* __Server-wide replication tasks__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideExternalReplicationsOperation  
+
+* __Server-wide backup tasks__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideBackupConfigurationsOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RestoreBackupOperation
+
+* __Server-wide analyzers__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideAnalyzersOperation](../../indexes/using-analyzers#add-custom-analyzer-via-client-api)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideAnalyzerOperation
+
+* __Server-wide sorters__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [PutServerWideSortersOperation](../../client-api/operations/server-wide/sorters/put-sorter-server-wide)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteServerWideSorterOperation
+
+* __Logs & debug__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetLogsConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetClusterDebugInfoPackageOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [GetBuildNumberOperation](../../client-api/operations/server-wide/get-build-number)  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetServerWideOperationStateOperation
+
+* __Traffic watch__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PutTrafficWatchConfigurationOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetTrafficWatchConfigurationOperation
+
+* __Revisions__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ConfigureRevisionsForConflictsOperation](../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration)  
+
+* __Misc__:  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ModifyConflictSolverOperation  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OfflineMigrationOperation
+
+</Admonition>
+
+
+## Manage lengthy operations
+
+* Some operations that run in the server background may take a long time to complete.
+
+* For Operations that implement an interface with type `OperationIdResult`,  
+  executing the operation via the `send` method will return a promise for `OperationCompletionAwaiter` object,  
+  which can then be __awaited for completion__ or __aborted (killed)__.
+<Admonition type="note" title="Note">
+
+<a id="wait-for-completion"/> __Wait for completion__:
+
+<TabItem value="something-something" label="wait_ex">
+<CodeBlock language="nodejs">
+{`// Define operation, e.g. delete all discontinued products 
+// Note: This operation implements interface: 'IOperation<OperationIdResult>'
+const deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
+
+// Execute the operation
+// 'send' returns an object that can be awaited on
+const asyncOperation = await documentStore.operations.send(deleteByQueryOp);
+
+// Call method 'waitForCompletion' to wait for the operation to complete 
+await asyncOperation.waitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+<a id="killOperation"/> __Kill operation__:
+
+<TabItem value="something-something" label="kill_ex">
+<CodeBlock language="nodejs">
+{`// Define operation, e.g. delete all discontinued products 
+// Note: This operation implements interface: 'IOperation<OperationIdResult>'
+const deleteByQueryOp = new DeleteByQueryOperation("from Products where Discontinued = true");
+
+// Execute the operation
+// 'send' returns an object that can be 'killed'
+const asyncOperation = await documentStore.operations.send(deleteByQueryOp);
+
+// Call method 'kill' to abort operation
+await asyncOperation.kill();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+##### Syntax:
+
+<TabItem value="something-something" label="wait_kill_syntax">
+<CodeBlock language="nodejs">
+{`await waitForCompletion();
+await kill();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+
+</LanguageContent>

@@ -1,0 +1,649 @@
+---
+title: "Server: Running an Embedded Instance"
+sidebar_label: Embedded
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Server: Running an Embedded Instance
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This page explains how to run RavenDB as an embedded server.
+
+* In this page:  
+
+  * [Overview](../server/embedded#overview)  
+  * [Prerequisites](../server/embedded#prerequisite)  
+  * [Installation](../server/embedded#installation)  
+  * [Starting the Server](../server/embedded#starting-the-server)  
+  * [Server Options](../server/embedded#server-options)  
+     * [Setting Server Directory](../server/embedded#setting-server-directory)  
+     * [Restarting the Server](../server/embedded#restarting-the-server)  
+     * [ServerProcessExited Event](../server/embedded#serverprocessexited-event)  
+     * [Licensing options](../server/embedded#licensing-options)  
+  * [.NET FrameworkVersion](../server/embedded#.net-frameworkversion)  
+  * [Security](../server/embedded#security)  
+  * [Document Store](../server/embedded#document-store)  
+  * [Get Server URL and Process ID](../server/embedded#get-server-url-and-process-id)  
+  * [Remarks](../server/embedded#remarks)  
+
+</Admonition>
+## Overview
+
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with a few easy steps. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer();
+using (var store = EmbeddedServer.Instance.GetDocumentStore("Embedded"))
+{
+    using (var session = store.OpenSession())
+    {
+        // Your code here
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer();
+using (var store = await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded"))
+{
+    using (var session = store.OpenAsyncSession())
+    {
+        // Your code here
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Prerequisite
+
+There is one prerequisite and one recommendation for the Embedded package:
+
+Prerequsite:
+
+- Install [.NET Core runtime](https://dotnet.microsoft.com/en-us/download) either manually or [along with a RavenDB full version](embedded#setting-server-directory)
+  - Be sure that the RavenDB server [FrameworkVersion](../server/embedded#net-frameworkversion) definition matches the .NET Core 
+    version that you install.  
+
+Recommendation:
+
+- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to 
+  `PackageReference` package management** (please refer to section below on how to achieve this)
+### .NET Core Runtime:
+
+RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
+
+By default, the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and 
+`ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+
+We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning 
+of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
+### Migrating from `packages.config` to `PackageReference` in old csproj projects:
+
+Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using 
+`PackageReference` instead of old `packages.config`. 
+
+The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read 
+following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
+
+Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj projects. 
+Not doing so might result in an assembly load exception e.g.
+
+```
+Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, 
+PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not 
+match the assembly reference. (Exception from HRESULT: 0x80131040)
+```
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sample App.config" label="Sample App.config">
+<CodeBlock language="xml">
+{`<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <startup> 
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
+    </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.4.1" newVersion="4.0.4.1" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Buffers" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.3.0" newVersion="4.0.3.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Installation
+
+* Create a new project (.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.6.1+).
+* Grab the package from our [NuGet](https://www.nuget.org/packages/RavenDB.Embedded)
+<TabItem value="something" label="powershell">
+<CodeBlock language="powershell">
+{`Install-Package RavenDB.Embedded -Version 4.1.0
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Starting the Server
+
+RavenDB Embedded Server is available under `EmbeddedServer.Instance`.  
+In order to start it, call `StartServer` method.
+
+<TabItem value="something" label="start_server">
+<CodeBlock language="csharp">
+{`// Start RavenDB Embedded Server with default options
+EmbeddedServer.Instance.StartServer();
+`}
+</CodeBlock>
+</TabItem>
+
+For more control on how to start the server, pass to `StartServer` method a `ServerOptions` object.
+
+
+
+## Server Options
+
+Set `ServerOptions` to change server settings such as .NET FrameworkVersion, DataDirectory, 
+and additional options:  
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **DataDirectory** | `string` | Indicates where your data should be stored |
+| **DotNetPath** | `string` | The path to exec `dotnet` (if it is in PATH, leave it)|
+| **AcceptEula** |  `bool` | If set to `false`, will ask to accept our terms & conditions |
+| **ServerUrl** | `string` | What address we want to start our server (default `127.0.0.1:0`) |
+| **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
+| **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
+| **ServerDirectory** | `string` | The path to the server binary files&lt;sup&gt;[*](../server/embedded#setting-server-directory) |
+
+<TabItem value="something" label="start_server_with_options">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer(new ServerOptions
+\{
+    DataDirectory = "C:\\\\RavenData",
+    ServerUrl = "http://127.0.0.1:8080"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+If `ServerOptions` is not provided, RavenDB server will start with a default value of `127.0.0.1:{Random Port}`.
+### Setting Server Directory:
+In case you're not interested in installing the .NET run-time environment on your system, you can -  
+
+* [Download](https://ravendb.net/download) a full RavenDB version.  
+  This version already includes a .NET run-time environment.  
+* Extract the downloaded version to a local folder.  
+  E.g. `C:\RavenDB`.  
+* Set the `ServerDirectory` server option to the RavenDB subfolder that contains -
+   * `Raven.Server.exe` in Windows  
+   * `Raven.Server` in Posix  
+
+<TabItem value="something" label="start_server_with_server_directory_option">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer(new ServerOptions
+\{
+    ServerDirectory = @"C:\\RavenDB\\Server"
+\});
+`}
+</CodeBlock>
+</TabItem>
+### Restarting the Server:
+To restart the server, use the method `<embedded server>.RestartServerAsync()`.
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public async Task RestartServerAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+In code:
+
+<TabItem value="something" label="restart_server">
+<CodeBlock language="csharp">
+{`await EmbeddedServer.Instance.RestartServerAsync();
+`}
+</CodeBlock>
+</TabItem>
+### ServerProcessExited Event:
+Use `<embedded server>.ServerProcessExited` to observe when the server has crashed or exited.  
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`event EventHandler<ServerProcessExitedEventArgs>? ServerProcessExited;
+`}
+</CodeBlock>
+</TabItem>
+
+Event data is of type `ServerProcessExitedEventArgs`.
+### Licensing options:
+A `ServerOptions.Licensing` class gathers configuration options related to the licensing of the embedded server:  
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **License** | `string` | Specifies the full license string directly in the configuration.<br/>If both `License` and `LicensePath` are defined, `License` takes precedence. |
+| **LicensePath** | `string` | Specifies a path to a license file.<br/>If both `License` and `LicensePath` are defined, `License` takes precedence.<br/>Default: `license.json` |
+| **EulaAccepted** |  `bool` | Set to `false` to present a request to accept our terms & conditions |
+| **DisableAutoUpdate** | `bool` | Disable automatic license updates (from both the `api.ravendb.net` license server **and** the `License` and `LicensePath` configuration options) |
+| **DisableAutoUpdateFromApi** | `bool` | Disable automatic license updates from the `api.ravendb.net` license server.<br/>Note: when disabled, the license **can** still be updated using the `License` and `LicensePath` configuration options |
+| **DisableLicenseSupportCheck** | `bool` | Control whether to verify the support status of the current license and display it within Studio.<br/>`true`: disable verification<br/>`false`: enable verification |
+| **ThrowOnInvalidOrMissingLicense** | `bool` | Throw an exception if the license is missing or cannot be validated |
+
+
+
+## .NET FrameworkVersion
+
+The default FrameworkVersion is defined to work with any .NET version from the time of the RavenDB server release 
+and newer by using the `+` moderator.  For example, `ServerOptions.FrameworkVersion = 3.1.17+`.  
+
+Thus, by leaving the default FrameworkVersion definition, RavenDB embedded servers will automatically look for the .NET 
+version that is currently running on the machine, starting from the version at the time of the server release.  
+
+<Admonition type="info" title="Making Sure That You Have the Right .NET Version" id="making-sure-that-you-have-the-right-net-version" href="#making-sure-that-you-have-the-right-net-version">
+
+Remember that each RavenDB release is compiled with the .NET version that was current at the time of release.  
+
+* To find what .NET version supports RavenDB 5.1, for example, open the [RavenDB 5.1 What's New](https://ravendb.net/docs/article-page/5.1/csharp/start/whats-new) page.
+  The correct .NET version for RavenDB 5.1, .NET 5.0.6., is listed at the bottom of the "Server" section."
+* By default, your RavenDB server will look for .NET 5.0.6, 5.0.7, etc. So, as long as you have at least one of these .NET versions running on your machine,
+  RavenDB will work well.  
+
+</Admonition>
+
+To stay within a major or minor .NET release, but ensure flexibility with patch releases, 
+use a floating integer `x`.  
+It will always use the newest version found on your machine.  
+
+For example, `ServerOptions.FrameworkVersion = 3.x` will look for the newest 3.x release.  
+`...= 3.2.x` will look for the newest 3.2 release.  
+Neither will look for 4.x.  
+
+| ServerOption Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **FrameworkVersion** | string | The .NET Core framework version to run the server with |
+
+| Parameter | Description |
+| --------- | ------------- |
+| null | The server will pick the newest .NET version installed on your machine. |
+| 3.1.17+ | Default setting (Actual version number is set at the time of server release.) In this example, the server will work properly with .NET patch releases that are greater than or equal to 3.1.17 |
+| 3.1.17 | The server will **only** work properly with this exact .NET release |
+| 3.1.x | The server will pick the newest .NET patch release on your machine |
+| 3.x | The server will pick the newest .NET minor releases and patch releases on your machine |
+
+<TabItem value="something" label="start_server_with_FrameworkVersion_defined">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.StartServer(new ServerOptions
+\{
+    FrameworkVersion = "3.1.15+",
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Security
+
+RavenDB Embedded supports running a secured server.
+Just run `Secured` method in the `ServerOptions` object.
+### Set up security using the certificate path:
+
+<TabItem value="something" label="security">
+<CodeBlock language="csharp">
+{`var serverOptions = new ServerOptions();
+serverOptions.Secured(
+    certificate: "PathToServerCertificate",
+    certPassword: "CertificatePassword");
+`}
+</CodeBlock>
+</TabItem>
+
+The first way to enable authentication is to set the [certificate with the path to your .pfx](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+server certificate. You may supply the certificate password using certPassword.  
+### Set up security using a custom script:
+
+To access the certificate via logic that is external to RavenDB, you can use the following approach: 
+
+<TabItem value="something" label="security2">
+<CodeBlock language="csharp">
+{`var serverOptionsWithExec = new ServerOptions();
+var certificate = new X509Certificate2();
+serverOptionsWithExec.Secured(
+    certLoadExec: "powershell",
+    certExecArgs: "C:\\\\secrets\\\\give_me_cert.ps1",
+    serverCertThumbprint: certificate.Thumbprint,
+    clientCert: certificate);
+`}
+</CodeBlock>
+</TabItem>
+
+This option is useful when you want to protect your certificate (private key) with other solutions such as 
+"Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, 
+so you can write your own scripts / mini-programs and apply the logic that you need.
+
+It creates a clean separation between RavenDB and the secret store in use.
+
+RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+
+
+
+## Document Store
+
+After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
+Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `GetDocumentStore` or `GetDocumentStoreAsync` 
+with the name of the database you like to work with. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`EmbeddedServer.Instance.GetDocumentStore("Embedded");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`await EmbeddedServer.Instance.GetDocumentStoreAsync("Embedded");
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+For more control on the process you can call the methods with `DatabaseOptions` object.
+
+<Admonition type="info" title="DatabaseOptions" id="databaseoptions" href="#databaseoptions">
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **DatabaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
+| **SkipCreatingDatabase** | bool | If set to true, will skip try creating the database  |
+
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var databaseOptions = new DatabaseOptions(new DatabaseRecord
+{
+    DatabaseName = "Embedded"
+});
+EmbeddedServer.Instance.GetDocumentStore(databaseOptions);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var databaseOptions = new DatabaseOptions(new DatabaseRecord
+{
+    DatabaseName = "Embedded"
+});
+await EmbeddedServer.Instance.GetDocumentStoreAsync(databaseOptions);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get Server URL and Process ID
+
+#### Server URL:
+
+The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, 
+because it waits for the server initialization to complete.
+The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
+
+<TabItem value="something" label="get_server_url_async">
+<CodeBlock language="csharp">
+{`Uri url = await EmbeddedServer.Instance.GetServerUriAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+#### Process ID:
+
+The `GetServerProcessIdAsync` method can be used to retrieve the system-generated process ID for the 
+embedded server.  
+
+<TabItem value="something" label="csharp">
+<CodeBlock language="csharp">
+{`public async Task<int> GetServerProcessIdAsync(CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="something" label="get_server_process_id">
+<CodeBlock language="csharp">
+{`int processID = await EmbeddedServer.Instance.GetServerProcessIdAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+* You can have only one instance of `EmbeddedServer`.  
+* The `EmbeddedServer.Instance.OpenStudioInBrowser()` method can be used to open a browser instance with Studio.  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+## Overview
+
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with few easy steps.
+
+<TabItem value="something-something" label="embedded_example">
+<CodeBlock language="java">
+{`EmbeddedServer.INSTANCE.startServer();
+
+try (IDocumentStore store = EmbeddedServer.INSTANCE.getDocumentStore("Embedded")) \{
+    try (IDocumentSession session = store.openSession()) \{
+        // your code here
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Prerequisites
+
+There is one prerequsite and one recommendation for the Embedded package:
+
+Prerequsite:
+
+- **.NET Core runtime** must be installed manually
+
+<Admonition type="note" title=".NET Core Runtime" id="net-core-runtime" href="#net-core-runtime">
+
+RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
+
+By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+
+We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning of the Server. The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download).
+
+</Admonition>
+
+
+
+## Getting Started
+
+### Installation
+
+* Create a new project 
+* Add package [net.ravendb:ravendb-embedded](https://search.maven.org/search?q=a:ravendb-embedded) as dependency
+
+### Starting the Server
+
+RavenDB Embedded Server is available under `EmbeddedServer.INSTANCE`. In order to start it call `startServer` method.
+
+<TabItem value="something-something" label="start_server">
+<CodeBlock language="java">
+{`// Start RavenDB Embedded Server with default options
+EmbeddedServer.INSTANCE.startServer();
+`}
+</CodeBlock>
+</TabItem>
+
+For more control on how to start the server just pass to `startServer` method a `ServerOptions` object and that`s it.
+
+<Admonition type="info" title="ServerOptions" id="serveroptions" href="#serveroptions">
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **frameworkVersion** | String | The .NET Core framework version to run the server with |
+| **dataDirectory** | String | Indicates where your data should be stored |
+| **dotNetPath** | String | The path to exec `dotnet` (if it is in PATH, leave it)|
+| **targetServerLocation** | String | The path to extract server binaries |
+| **acceptEula** |  boolean | If set to `false`, will ask to accept our terms & conditions |
+| **erverUrl** | String | What address we want to start our server (default `127.0.0.1:0`) |
+| **maxServerStartupTimeDuration** | `Duration` | The timeout for the server to start |
+| **commandLineArgs** | `List&lt;String&gt;` | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
+
+</Admonition>
+
+<TabItem value="something-something" label="start_server_with_options">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+// target location of RavenDB data
+serverOptions.setDataDirectory("C:\\\\RavenData");
+serverOptions.setServerUrl("http://127.0.0.1:8080");
+
+// location where server binaries will be extracted
+serverOptions.setTargetServerLocation("c:\\\\RavenServer");
+EmbeddedServer.INSTANCE.startServer(serverOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`
+</Admonition>
+
+### Security
+
+RavenDB Embedded support running a secured server.
+Just run `secured` method in `ServerOptions` object.
+
+We have two overloads to `secured`:
+<TabItem value="something-something" label="security">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+serverOptions.secured("PathToCertificate", "CertificatePassword");
+`}
+</CodeBlock>
+</TabItem>
+
+The first way to enable authentication is to set certificate with the path to your .pfx 
+server certificate. You may supply the certificate password using certPassword.
+
+<TabItem value="something-something" label="security2">
+<CodeBlock language="java">
+{`ServerOptions serverOptions = new ServerOptions();
+serverOptions.secured("powershell",
+    "c:\\\\secrets\\\\give_me_cert.ps1",
+    "a909502dd82ae41433e6f83886b00d4277a32a7b",
+    clientCertificate,
+    "PathToCaCertificateFile");
+`}
+</CodeBlock>
+</TabItem>
+
+This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. 
+RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
+RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+In this options you can control on your client certificate and to use in a different certificate for your client.
+
+### Document Store
+
+After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
+Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `getDocumentStore` with the name of the database you like to work with. 
+
+<TabItem value="something-something" label="get_document_store">
+<CodeBlock language="java">
+{`EmbeddedServer.INSTANCE.getDocumentStore("Embedded");
+`}
+</CodeBlock>
+</TabItem>
+
+For more control on the process you can call the methods with `DatabaseOptions` object.
+
+<Admonition type="info" title="DatabaseOptions" id="databaseoptions" href="#databaseoptions">
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **DatabaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
+| **SkipCreatingDatabase** | boolean | If set to true, will skip try creating the database  |
+
+</Admonition>
+
+<TabItem value="something-something" label="get_document_store_with_database_options">
+<CodeBlock language="java">
+{`DatabaseRecord databaseRecord = new DatabaseRecord();
+databaseRecord.setDatabaseName("Embedded");
+DatabaseOptions databaseOptions = new DatabaseOptions(databaseRecord);
+EmbeddedServer.INSTANCE.getDocumentStore(databaseOptions);
+`}
+</CodeBlock>
+</TabItem>
+
+### Get Server URL
+
+The `getServerUri` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
+The URL can be used for example for creating a custom document store, omitting the `getDocumentStore` method entirely.
+
+<TabItem value="something-something" label="get_server_url">
+<CodeBlock language="java">
+{`String serverUri = EmbeddedServer.INSTANCE.getServerUri();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Remarks
+
+* You can have only one instance of `EmbeddedServer`
+* Method `EmbeddedServer.INTANCE.openStudioInBrowser()` can be used to open an browser instance with Studio
+
+
+
+</LanguageContent>

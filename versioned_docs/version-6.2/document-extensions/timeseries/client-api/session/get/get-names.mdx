@@ -1,0 +1,299 @@
+---
+title: "Get Time Series Names"
+sidebar_label: Get Names
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Get Time Series Names
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `Advanced.GetTimeSeriesFor` to get the names of all time series for the specified entity.
+
+* In this page:   
+  * [`GetTimeSeriesFor` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names#gettimeseriesfor-usage)
+  * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names#syntax)
+
+</Admonition>
+## `GetTimeSeriesFor` usage
+
+**Flow**:  
+
+* Open a session.
+* Load an entity to the session either using [session.Load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.Query](../../../../../client-api/session/querying/how-to-query).  
+  In both cases, the resulting entity will be tracked by the session.
+* Call `Advanced.GetTimeSeriesFor`, pass the tracked entity.
+
+**Note**:  
+
+* If the entity is Not tracked by the session, an `ArgumentException` exception is thrown.
+
+
+
+## Example
+
+<TabItem value="something" label="timeseries_region_Retrieve-TimeSeries-Names">
+<CodeBlock language="csharp">
+{`// Open a session
+using (var session = store.OpenSession())
+\{
+    // Load a document entity to the session
+    User user = session.Load<User>("users/john");
+    
+    // Call GetTimeSeriesFor, pass the entity
+    List<string> tsNames = session.Advanced.GetTimeSeriesFor(user);
+    
+    // Results will include the names of all time series associated with document 'users/john'
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Syntax
+
+<TabItem value="something" label="json">
+<CodeBlock language="json">
+{`List<string> GetTimeSeriesFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+ 
+| Parameter    | Type  | Description                                         |
+|--------------|-------|-----------------------------------------------------|
+| **instance** | `T`   | The entity whose time series names you want to get. |
+
+| Return value   |                                                                                                       |
+|----------------|-------------------------------------------------------------------------------------------------------|
+| `List<string>` | A list of names of all the time series associated with the entity, sorted alphabetically by the name. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `advanced.get_time_series_for` to get the names of all time series for the specified entity.
+
+* In this page:   
+  * [`get_time_series_for` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names#get_time_series_for-usage)
+  * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names#syntax)
+
+</Admonition>
+## `get_time_series_for` usage
+
+**Flow**:  
+
+* Open a session.
+* Load an entity to the session either using [session.load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.query](../../../../../client-api/session/querying/how-to-query).  
+  In both cases, the resulting entity will be tracked by the session.
+* Call `advanced.get_time_series_for`, pass the tracked entity.
+
+**Note**:  
+
+* If the entity is Not tracked by the session, an `ArgumentException` exception is thrown.
+
+
+
+## Example
+
+<TabItem value="something-something" label="timeseries_region_Retrieve-TimeSeries-Names">
+<CodeBlock language="python">
+{`# Open a session
+with store.open_session() as session:
+    # Load a document entity to the session
+    user = session.load("users/john")
+
+    # Call GetTimeSeriesFor, pass the entity
+    ts_names = session.advanced.get_time_series_for(user)
+
+    # Results will include the names of all time series associated with document 'users/john'
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Syntax
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`def get_time_series_for(self, entity: object) -> List[str]:
+    ...
+`}
+</CodeBlock>
+</TabItem>
+ 
+| Parameter    | Type  | Description                                         |
+|--------------|-------|-----------------------------------------------------|
+| **entity** | `object` | The entity whose time series names you want to get |
+
+| Return value   |                                                                                                   |
+|----------------|---------------------------------------------------------------------------------------------------|
+| `List[str]` | A list of names of all the time series associated with the entity, sorted alphabetically by the name |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `advanced.getTimeSeriesFor` to get the names of all time series for the specified entity.
+
+* In this page:   
+  * [`getTimeSeriesFor` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names#gettimeseriesfor-usage)
+  * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names#syntax)
+
+</Admonition>
+## `getTimeSeriesFor` usage
+
+**Flow**:  
+
+* Open a session.
+* Load an entity to the session either using [session.load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.query](../../../../../client-api/session/querying/how-to-query).  
+  In both cases, the resulting entity will be tracked by the session.
+* Call `advanced.getTimeSeriesFor`, pass the tracked entity.
+
+**Note**:  
+
+* If the entity is Not tracked by the session, an `ArgumentException` exception is thrown.
+
+
+
+## Example
+
+<TabItem value="something-something" label="timeseries_region_Retrieve-TimeSeries-Names">
+<CodeBlock language="php">
+{`// Open a session
+$session = $store->openSession();
+try \{
+    // Load a document entity to the session
+    $user = $session->load(User::class, "users/john");
+
+    // Call GetTimeSeriesFor, pass the entity
+    $tsNames = $session->advanced()->getTimeSeriesFor($user);
+
+    // Results will include the names of all time series associated with document 'users/john'
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Syntax
+
+<TabItem value="something" label="php">
+<CodeBlock language="php">
+{`def get_time_series_for(self, entity: object) -> List[str]:
+    ...
+`}
+</CodeBlock>
+</TabItem>
+ 
+| Parameter    | Type  | Description                                         |
+|--------------|-------|-----------------------------------------------------|
+| **entity** | `object` | The entity whose time series names you want to get |
+
+| Return value   |                                                                                                   |
+|----------------|---------------------------------------------------------------------------------------------------|
+| `List[str]` | A list of names of all the time series associated with the entity, sorted alphabetically by the name |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `advanced.getTimeSeriesFor` to get the names of all time series for the specified entity.
+
+* In this page:   
+  * [`GetTimeSeriesFor` usage](../../../../../document-extensions/timeseries/client-api/session/get/get-names#gettimeseriesfor-usage)
+  * [Example](../../../../../document-extensions/timeseries/client-api/session/get/get-names#example)  
+  * [Syntax](../../../../../document-extensions/timeseries/client-api/session/get/get-names#syntax)
+
+</Admonition>
+## `getTimeSeriesFor` usage
+
+**Flow**:  
+
+* Open a session.
+* Load an entity to the session either using [session.load](../../../../../client-api/session/loading-entities#load) 
+  or by querying for the document via [session.query](../../../../../client-api/session/querying/how-to-query).  
+  In both cases, the resulting entity will be tracked by the session.
+* Call `advanced.getTimeSeriesFor`, pass the tracked entity.
+
+**Note**:  
+
+* If the entity is Not tracked by the session, an `ArgumentException` exception is thrown.
+
+
+
+## Example
+
+<TabItem value="something-something" label="get_names">
+<CodeBlock language="nodejs">
+{`// Open a session
+const session = documentStore.openSession();
+
+// Load a document entity to the session
+const user = await session.load("users/john");
+
+// Call getTimeSeriesFor, pass the entity
+const tsNames = session.advanced.getTimeSeriesFor(user);
+
+// Results will include the names of all time series associated with document 'users/john'
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`getTimeSeriesFor(instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                         |
+|--------------|----------|-----------------------------------------------------|
+| **instance** | `object` | The entity whose time series names you want to get. |
+
+| Return value |                                                                                                       |
+|--------------|-------------------------------------------------------------------------------------------------------|
+| `string[]`   | A list of names of all the time series associated with the entity, sorted alphabetically by the name. |
+
+
+
+
+</LanguageContent>

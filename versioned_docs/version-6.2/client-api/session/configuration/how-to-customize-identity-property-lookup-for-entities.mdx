@@ -1,0 +1,136 @@
+---
+title: "Session: How to Customize the Identity Property Lookup for Entities"
+sidebar_label: How to Customize Identity Property Lookup For Entities
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
+
+
+# Session: How to Customize the Identity Property Lookup for Entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+The client must know which property of your entity is considered as an identity. By default, it always looks for the `Id` property (case-sensitive). This behavior can be changed by overwriting one of our conventions called `FindIdentityProperty`.
+
+## Syntax
+
+<TabItem value="something" label="identity_1">
+<CodeBlock language="csharp">
+{`Func<MemberInfo, bool> FindIdentityProperty \{ get; set; \}
+`}
+</CodeBlock>
+</TabItem>
+
+`MemberInfo` will represent the member of a stored entity, and return value (bool) will indicate if given member is an identity property.
+
+## Example
+
+The simplest example would be to check if the property name is equal to 'Identifier'.
+
+<TabItem value="something" label="identity_2">
+<CodeBlock language="csharp">
+{`store.Conventions.FindIdentityProperty = memberInfo => memberInfo.Name == "Identifier";
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The client must know which property of your entity is considered as an identity. By default, it always looks for the `id` field (case-sensitive). This behavior can be changed by overwriting one of our conventions called `findIdentityProperty`.
+
+## Syntax
+
+<TabItem value="something-something" label="identity_1">
+<CodeBlock language="java">
+{`public void setFindIdentityProperty(Function<PropertyDescriptor, Boolean> findIdentityProperty);
+`}
+</CodeBlock>
+</TabItem>
+
+`PropertyDescriptor` will represent the property of a stored entity, and return value (bool) will indicate if given member is an identity property.
+
+## Example
+
+The simplest example would be to check if the property name is equal to 'Identifier'.
+
+<TabItem value="something-something" label="identity_2">
+<CodeBlock language="java">
+{`store.getConventions().setFindIdentityProperty(property -> "Identifier".equals(property.getName()));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+* When a client handles an entity, it must know which property is the entity's identifier.  
+  By default, the client always looks for the `Id` property (case-sensitive).  
+
+* This behavior can be changed by overwriting the `FindIdentityProperty` convention.  
+  To do so, use the `setFindIdentityProperty` method.  
+
+## Syntax
+
+<TabItem value="something-something" label="identity_1">
+<CodeBlock language="php">
+{`public function setFindIdentityProperty(?Closure $findIdentityProperty): void;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+The simplest example would be to check if the property name is equal to 'Identifier'.
+
+<TabItem value="something-something" label="identity_2">
+<CodeBlock language="php">
+{`$store->getConventions()->setFindIdentityProperty(function($property) \{
+        return "Identifier" == $property->getName();
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+The client must know which property of your entity is considered as an identity. By default, it always looks for the `id` field (case-sensitive). This behavior can be changed by overwriting one of our conventions called `identityProperty`.
+
+## Syntax
+
+<TabItem value="something-something" label="identity_1">
+<CodeBlock language="nodejs">
+{`store.conventions.identityProperty;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+Here's how to change it to `Identifier` field.
+
+<TabItem value="something-something" label="identity_2">
+<CodeBlock language="nodejs">
+{`store.conventions.identityProperty = "Identifier"; 
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

@@ -1,0 +1,368 @@
+---
+title: "Time Series: JavaScript Support"
+sidebar_label: JavaScript Support
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Time Series: JavaScript Support
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* With the introduction of time series, RavenDB has extended its [JavaScript support](../../../server/kb/javascript-engine)
+  to include manipulations involving time series data when patching [single](../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations)
+  or [multiple](../../../client-api/operations/patching/set-based) documents.
+
+* Time series capabilities can be achieved via JavaScript when using the following methods:
+  * [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch) - perform patch via the _Session_
+  * [PatchOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchoperation) - perform patch via a _Store_ operation
+  * [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation) - perform query & patch via a _Store_ operation
+
+* The server treats timestamps passed in the scripts as **UTC**, no conversion is applied by the client to local time.
+
+* In this page:  
+  * [JavaScript time series API methods](../../../document-extensions/timeseries/client-api/javascript-support#javascript-time-series-api-methods)  
+     * [timeseries - choose a time series](../../../document-extensions/timeseries/client-api/javascript-support#section)  
+     * [timeseries.append - append an entry](../../../document-extensions/timeseries/client-api/javascript-support#section-1)  
+     * [timeseries.delete - delete entries](../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
+     * [timeseries.get - get entries](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+  * [Examples](../../../document-extensions/timeseries/client-api/javascript-support#examples)  
+
+</Admonition>
+## JavaScript time series API methods
+
+The JavaScript time series API includes these methods:  
+#### `timeseries (doc, name)`  
+
+Choose a time series by the ID of its owner document and by the series name.  
+
+| Parameter | Type                                      | Description                                                                                              |
+|-----------|-------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| **doc**   | `string` <br/> or <br/> `document instance` | Document ID, e.g. `timeseries('users/1-A', 'StockPrice')` <br/><br/> e.g. `timeseries(this, 'StockPrice')` |
+| **name**  | `string`                                  | Time Series Name                                                                                         |
+
+#### `timeseries.append`  
+
+You can use two overloads, to append **tagged** or **untagged** time series entries.
+
+* `timeseries.append (timestamp, values)`     
+* `timeseries.append (timestamp, values, tag)`
+
+| Parameter     | Type       | Description  |
+|---------------|------------|--------------|
+| **timestamp** | `DateTime` | Timestamp    |
+| **values**    | `double[]` | Values       |
+| **tag**       | `string`   | Tag          |
+
+#### `timeseries.delete (from, to)`  
+
+Use this method to delete a range of entries from a document.  
+
+| Parameter           | Type       | Description                                                                                |
+|---------------------|------------|--------------------------------------------------------------------------------------------|
+| **from** (optional) | `DateTime` | Entries will be deleted starting at this timestamp (inclusive)<br/> Default: `DateTime.Min` |
+| **to** (optional)   | `DateTime` | Entries will be deleted up to this timestamp (inclusive)<br/> Default: `DateTime.Max`       |
+
+#### `timeseries.get (from, to)`  
+
+Use this method to retrieve a range of time series entries.  
+
+| Parameter           | Type       | Description                                                                                 |
+|---------------------|------------|---------------------------------------------------------------------------------------------|
+| **from** (optional) | `DateTime` | Get time series entries starting from this timestamp (inclusive)<br/>Default: `DateTime.Min` |
+| **to** (optional)   | `DateTime` | Get time series entries ending at this timestamp (inclusive)<br/>Default: `DateTime.Max`     |
+
+**Return Type**:  
+Values are returned in an array of time series entries, i.e. -
+
+<TabItem value="something" label="json">
+<CodeBlock language="json">
+{`[
+	\{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	\},
+	\{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	\}
+	...
+]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+* This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
+  The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+<TabItem value="something" label="TS_region-Session_Patch-Append-TS-Entries">
+<CodeBlock language="csharp">
+{`var baseTime = DateTime.UtcNow;
+
+// Create arrays of timestamps and random values to patch
+var values = new List<double>();
+var timeStamps = new List<DateTime>();
+
+for (var i = 0; i < 100; i++)
+\{
+    values.Add(68 + Math.Round(19 * new Random().NextDouble()));
+    timeStamps.Add(baseTime.AddMinutes(i));
+\}
+
+session.Advanced.Defer(new PatchCommandData("users/john", null,
+    new PatchRequest
+    \{
+        Script = @"
+            var i = 0;
+            for(i = 0; i < $values.length; i++)
+            \{
+                timeseries(id(this), $timeseries)
+                .append (
+                    new Date($timeStamps[i]), 
+                    $values[i], 
+                    $tag);
+            \}",
+
+        Values =
+        \{
+            \{ "timeseries", "HeartRates" \},
+            \{ "timeStamps", timeStamps \},
+            \{ "values", values \},
+            \{ "tag", "watches/fitbit" \}
+        \}
+    \}, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+* This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
+  The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
+<TabItem value="something" label="TS_region-PatchByQueryOperation-Delete-From-Multiple-Docs">
+<CodeBlock language="csharp">
+{`PatchByQueryOperation deleteByQueryOp = new PatchByQueryOperation(new IndexQuery
+\{
+    Query = @"from Users as u
+              where u.Age < 30
+              update
+              \{
+                  timeseries(u, $name).delete($from, $to)
+              \}",
+    
+    QueryParameters = new Parameters
+    \{
+        \{ "name", "HeartRates" \},
+        \{ "from", DateTime.MinValue \},
+        \{ "to", DateTime.MaxValue \}
+    \}
+\});
+
+// Execute the operation: 
+// Time series "HeartRates" will be deleted for all users with age < 30
+store.Operations.Send(deleteByQueryOp);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* With the introduction of time series, RavenDB has extended its [JavaScript support](../../../server/kb/javascript-engine)
+  to include manipulations involving time series data when patching [single](../../../client-api/operations/patching/single-document#patching-how-to-perform-single-document-patch-operations)
+  or [multiple](../../../client-api/operations/patching/set-based) documents.
+
+* Time series capabilities can be achieved via JavaScript when using the following methods:
+  * [session.advanced.defer](../../../document-extensions/timeseries/client-api/session/patch) - perform patch via the _session_
+  * [PatchOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchoperation) - perform patch via a _store_ operation
+  * [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation) - perform query & patch via a _store_ operation
+
+* The server treats timestamps passed in the scripts as **UTC**, no conversion is applied by the client to local time.
+
+* In this page:  
+  * [JavaScript time series API methods](../../../document-extensions/timeseries/client-api/javascript-support#javascript-time-series-api-methods)  
+     * [timeseries - choose a time series](../../../document-extensions/timeseries/client-api/javascript-support#section)  
+     * [timeseries.append - append an entry](../../../document-extensions/timeseries/client-api/javascript-support#section-1)  
+     * [timeseries.delete - delete entries](../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
+     * [timeseries.get - get entries](../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+  * [Examples](../../../document-extensions/timeseries/client-api/javascript-support#examples)  
+
+</Admonition>
+## JavaScript time series API methods
+
+The JavaScript time series API includes these methods:  
+#### `timeseries (doc, name)`  
+
+Choose a time series by the ID of its owner document and by the series name.  
+
+| Parameter | Type                                      | Description                                                                                              |
+|-----------|-------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| **doc**   | `string` <br/> or <br/> `document instance` | Document ID, e.g. `timeseries('users/1-A', 'StockPrice')` <br/><br/> e.g. `timeseries(this, 'StockPrice')` |
+| **name**  | `string`                                  | Time Series Name                                                                                         |
+
+#### `timeseries.append`  
+
+You can use two overloads, to append **tagged** or **untagged** time series entries.
+
+* `timeseries.append (timestamp, values)`     
+* `timeseries.append (timestamp, values, tag)`
+
+| Parameter     | Type       | Description  |
+|---------------|------------|--------------|
+| **timestamp** | `Date`     | Timestamp    |
+| **values**    | `number[]` | Values       |
+| **tag**       | `string`   | Tag          |
+
+#### `timeseries.delete (from, to)`  
+
+Use this method to delete a range of entries from a document.  
+
+| Parameter           | Type     | Description                                                                                         |
+|---------------------|----------|-----------------------------------------------------------------------------------------------------|
+| **from** (optional) | `Date`   | Entries will be deleted starting at this timestamp (inclusive).<br/>Default: the minimum date value. |
+| **to** (optional)   | `Date`   | Entries will be deleted up to this timestamp (inclusive).<br/>Default: the maximum date value.       |
+
+#### `timeseries.get (from, to)`  
+
+Use this method to retrieve a range of time series entries.  
+
+| Parameter           | Type     | Description                                                                                            |
+|---------------------|----------|--------------------------------------------------------------------------------------------------------|
+| **from** (optional) | `Date`   | Get time series entries starting from this timestamp (inclusive).<br/> Default: The minimum date value. |
+| **to** (optional)   | `Date`   | Get time series entries ending at this timestamp (inclusive).<br/> Default: The maximum date value.     |
+
+**Return Type**:  
+Values are returned in an array of time series entries, i.e. -
+
+<TabItem value="something" label="json">
+<CodeBlock language="json">
+{`[
+	\{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	\},
+	\{
+		"Timestamp" : ...
+		"Tag": ...
+		"Values": ...
+		"IsRollup": ...
+	\}
+	...
+]
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Examples
+
+* This example shows a script that appends 100 entries to time series "HeartRates" in document "Users/john".  
+  The script is passed to method [session.Advanced.Defer](../../../document-extensions/timeseries/client-api/session/patch).
+<TabItem value="something-something" label="js_support_1">
+<CodeBlock language="nodejs">
+{`const baseTime = new Date();
+
+// Prepare random values and timestamps to patch
+const values = [];
+const timeStamps = [];
+
+for (let i = 0; i < 100; i++) \{
+    const randomValue = 65 + Math.round(20 * Math.random());
+    values.push(randomValue);
+
+    // NOTE: the timestamp passed in the patch request script should be in UTC
+    const timeStamp = new Date(baseTime.getTime() + 60_000 * i);
+    const utcDate = new Date(timeStamp.getTime() + timeStamp.getTimezoneOffset() * 60_000);
+    timeStamps.push(utcDate);
+\}
+
+// Define the patch request
+// ========================
+
+const patchRequest = new PatchRequest();
+
+// Provide a JavaScript script, use the 'append' method
+// Note: "args." can be replaced with "$". E.g.: "args.tag" => "$tag"
+patchRequest.script = \`
+    for(var i = 0; i < args.values.length; i++)
+    \{
+        timeseries(id(this), args.timeseries)
+        .append (
+            new Date(args.timeStamps[i]),
+            args.values[i],
+            args.tag);
+    \}\`;
+
+// Provide values for the params used within the script
+patchRequest.values = \{
+    timeseries: "HeartRates",
+    timeStamps: timeStamps,
+    values: values,
+    tag: "watches/fitbit"
+\}
+
+// Define the patch command
+const patchCommand = new PatchCommandData("users/john", null, patchRequest, null)
+
+// Pass the patch command to 'defer'
+session.advanced.defer(patchCommand);
+
+// Call saveChanges for the patch request to execute on the server
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+* This example shows a script that deletes time series "HeartRates" for documents that match the specified query.
+  The script is passed to the [PatchByQueryOperation](../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation)  operation.
+<TabItem value="something-something" label="js_support_2">
+<CodeBlock language="nodejs">
+{`const indexQuery = new IndexQuery();
+
+indexQuery.query = \`
+    from users as u
+    where u.age < 30
+    update
+    \{
+        timeseries(u, "HeartRates").delete()
+    \}\`;
+
+const deleteByQueryOp = new PatchByQueryOperation(indexQuery);
+
+// Execute the operation: 
+// Time series "HeartRates" will be deleted for all users with age < 30
+await documentStore.operations.send(deleteByQueryOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

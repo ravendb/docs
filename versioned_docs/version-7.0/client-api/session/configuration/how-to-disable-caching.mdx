@@ -1,0 +1,150 @@
+---
+title: "Disable Caching per Session"
+sidebar_label: Disable Caching
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
+
+
+# Disable Caching per Session
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To reduce the overhead of sending the documents over the network, 
+client library is caching the HTTP responses and sends only ETags to Server. 
+
+If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` 
+without any content data or sending the up-to-date results, this will update the cache. 
+
+This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions#maxhttpcachesize)), 
+but can also be changed per session using the `SessionOptions.NoCaching` property.
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`using (IDocumentSession Session = store.OpenSession(new SessionOptions
+{
+    NoCaching = true
+}))
+{
+    // code here
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`using (IAsyncDocumentSession Session = store.OpenAsyncSession(new SessionOptions
+{
+    NoCaching = true
+}))
+{
+    // async code here
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+To reduce the overhead of sending the documents over the network, 
+client library is caching the HTTP responses and sends only ETags to Server. 
+
+If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` 
+without any content data or sending the up-to-date results, this will update the cache.  
+
+This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions#maxhttpcachesize)), 
+but can also be changed per session using the `sessionOptions.noCaching` property.
+
+## Example
+
+<TabItem value="something-something" label="disable_caching">
+<CodeBlock language="java">
+{`SessionOptions sessionOptions = new SessionOptions();
+sessionOptions.setNoCaching(true);
+try (IDocumentSession session = store.openSession(sessionOptions)) \{
+    // code here
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+To reduce the overhead of sending the documents over the network, 
+client library is caching the HTTP responses and sends only ETags to Server. 
+
+If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` 
+without any content data or sending the up-to-date results, this will update the cache. 
+
+This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions#maxhttpcachesize)).  
+It can also be changed per session, using the `setNoCaching` method.
+
+## Example
+
+<TabItem value="something-something" label="disable_caching">
+<CodeBlock language="php">
+{`$sessionOptions = new SessionOptions();
+$sessionOptions->setNoCaching(true);
+
+$session = $store->openSession($sessionOptions);
+try \{
+    // code here
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+To reduce the overhead of sending the documents over the network, 
+client library is caching the HTTP responses and sends only ETags to Server. 
+
+If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` 
+without any content data or sending the up-to-date results, this will update the cache. 
+
+This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions#maxhttpcachesize)), 
+but can also be changed per session using the `SessionOptions.noCaching` property.
+
+## Example
+
+<TabItem value="something-something" label="disable_caching">
+<CodeBlock language="nodejs">
+{`// Define the session's options object
+const sessionOptions: SessionOptions = \{
+    noCaching: true // Disable caching
+\};
+
+// Open the session, pass the options object 
+const session = store.openSession(sessionOptions);
+
+// The session will not cache any HTTP response data from the server
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>

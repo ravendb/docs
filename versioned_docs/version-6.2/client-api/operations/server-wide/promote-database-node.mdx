@@ -1,0 +1,50 @@
+---
+title: "Operations: Server: How to Promote a Database Node?"
+sidebar_label: Promote Database Node
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: Server: How to Promote a Database Node?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+This operation is used to promote a database node. After promotion, the node is considered as a `Member`. 
+
+## Syntax
+
+<TabItem value="something-something" label="promote_1">
+<CodeBlock language="csharp">
+{`public PromoteDatabaseNodeOperation(string databaseName, string node)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of a database |
+| **node** | string | Node tag to promote into database group `Member` |
+
+## Example
+
+<TabItem value="something-something" label="promote_2">
+<CodeBlock language="csharp">
+{`PromoteDatabaseNodeOperation promoteOperation = new PromoteDatabaseNodeOperation("Northwind", "C");
+store.Maintenance.Server.Send(promoteOperation);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+</LanguageContent>

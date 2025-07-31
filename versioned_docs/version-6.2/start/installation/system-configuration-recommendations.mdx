@@ -1,0 +1,85 @@
+---
+title: "Installation: System Configuration Recommendations"
+sidebar_label: System Configuration Recommendations
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Installation: System Configuration Recommendations
+
+## Linux - Ubuntu 16.04
+
+RavenDB uses the resources of the machine it is running on, limited to the configuration limitation. In order to benefit from higher resources usage, consider the following setup:
+
+* Note that this might affect different systems with different behaviors
+* Some of the settings require super user permissions
+### Set higher limit to max open file descriptors
+
+In order to handle more connections to more databases and indexes at once, higher limit to open file descriptors (which affects also max number of network connections) is required.
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`ulimit -n 65535
+`}
+</CodeBlock>
+</TabItem>
+### Enlarge local available port range
+
+In order to serve more connections at once (heavy traffic usage) from clients, a higher port range is required.
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+`}
+</CodeBlock>
+</TabItem>
+### Reuse TIME-WAIT sockets
+
+Time to make reuse of closing tcp sockets. This allows RavenDB to handle more requests faster.
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`sysctl -w net.ipv4.tcp_tw_reuse=1
+`}
+</CodeBlock>
+</TabItem>
+### Recycle TIME-WAIT sockets
+
+Similar usage to the above reuse. Not for use when working with NAT, or in Kernel 4.12+
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`sysctl -w net.ipv4.tcp_tw_recycle=1
+`}
+</CodeBlock>
+</TabItem>
+### Enlarge memory mapped max usage
+
+RavenDB uses memory mapped files (few per database, indexes, etc). Upper limit is required in order to server larger amounts of databases and indexes
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`sysctl -w vm.max_map_count=2000000
+`}
+</CodeBlock>
+</TabItem>
+### Select swap device
+
+Consider different swap physical drive.
+For details on current swapping partitions and priorities use:
+
+<TabItem value="something" label="bash">
+<CodeBlock language="bash">
+{`swapon
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -1,0 +1,480 @@
+---
+title: "Changes API: How to Subscribe to Index Changes"
+sidebar_label: How to Subscribe to Index Changes
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Changes API: How to Subscribe to Index Changes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Following methods allow you to subscribe to index changes:
+
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+
+## ForIndex
+
+Index changes for one index can be observed using `ForIndex` method.
+
+### Syntax
+
+<TabItem value="something" label="index_changes_1">
+<CodeBlock language="csharp">
+{`IChangesObservable<IndexChange> ForIndex(string indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="something" label="index_changes_2">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForIndex("Orders/All")
+    .Subscribe(
+        change =>
+        \{
+            switch (change.Type)
+            \{
+                case IndexChangeTypes.None:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.BatchCompleted:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexAdded:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexRemoved:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexDemotedToIdle:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexPromotedFromIdle:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexDemotedToDisabled:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexMarkedAsErrored:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.SideBySideReplace:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.IndexPaused:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.LockModeChanged:
+                    //Do someting
+                    break;
+                case IndexChangeTypes.PriorityChanged:
+                    //Do someting
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            \}
+        \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ForAllIndexes
+
+Index changes for all indexex can be observed using `ForAllIndexes` method.
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="something" label="index_changes_3">
+<CodeBlock language="csharp">
+{`IChangesObservable<IndexChange> ForAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="something" label="index_changes_4">
+<CodeBlock language="csharp">
+{`IDisposable subscription = store
+    .Changes()
+    .ForAllIndexes()
+    .Subscribe(change => Console.WriteLine("\{0\} on index \{1\}", change.Type, change.Name));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## IndexChange
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **Name** | string | Index name |
+| **Etag** | long? | Index Etag |
+
+
+
+## IndexChangeTypes
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **BatchCompleted** | `1` |
+| **IndexAdded** | `8` |
+| **IndexRemoved** | `16` |
+| **IndexDemotedToIdle** | `32` |
+| **IndexPromotedFromIdle** | `64` |
+| **IndexDemotedToDisabled** | `256` |
+| **IndexMarkedAsErrored** | `512` |
+| **SideBySideReplace** | `1024` |
+| **IndexPaused** | `4096` |
+| **LockModeChanged** | `8192` |
+| **PriorityChanged** | `16384` |
+
+
+
+## Remarks
+
+<Admonition type="warning" title="Warning">
+To get more method overloads, especially ones supporting **delegates**, please add the 
+[System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project.  
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Following methods allow you to subscribe to index changes:
+
+- [forIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+- [forAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+
+## forIndex
+
+Index changes for one index can be observed using `forIndex` method.
+
+### Syntax
+
+<TabItem value="something-something" label="index_changes_1">
+<CodeBlock language="java">
+{`IChangesObservable<IndexChange> forIndex(String indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="something-something" label="index_changes_2">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forIndex("Orders/All")
+    .subscribe(Observers.create(change -> \{
+        switch (change.getType()) \{
+            case NONE:
+                // do something
+                break;
+            case BATCH_COMPLETED:
+                // do something
+                break;
+            case INDEX_ADDED:
+                // do something
+                break;
+            case INDEX_REMOVED:
+                // do something
+                break;
+            case INDEX_DEMOTED_TO_IDLE:
+                // do something
+                break;
+            case INDEX_PROMOTED_FROM_IDLE:
+                // do something
+                break;
+            case INDEX_DEMOTED_TO_DISABLED:
+                // do something
+                break;
+            case INDEX_MARKED_AS_ERRORED:
+                // do something
+                break;
+            case SIDE_BY_SIDE_REPLACE:
+                // do something
+                break;
+            case RENAMED:
+                // do something
+                break;
+            case INDEX_PAUSED:
+                // do something
+                break;
+            case LOCK_MODE_CHANGED:
+                // do something
+                break;
+            case PRIORITY_CHANGED:
+                // do something
+                break;
+            default:
+                throw new IllegalArgumentException();
+        \}
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forAllIndexes
+
+Index changes for all indexex can be observed using `forAllIndexes` method.
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="something-something" label="index_changes_3">
+<CodeBlock language="java">
+{`IChangesObservable<IndexChange> forAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="something-something" label="index_changes_4">
+<CodeBlock language="java">
+{`CleanCloseable subscription = store
+    .changes()
+    .forAllIndexes()
+    .subscribe(Observers.create(change -> \{
+        System.out.println(change.getType() + " on index " + change.getName());
+    \}));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## IndexChange
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **Name** | String | Index name |
+| **Etag** | Long | Index Etag |
+
+
+
+## IndexChangeTypes
+
+| Name |
+| ---- |
+| **NONE** |
+| **BATCH_COMPLETED** |
+| **INDEX_ADDED** |
+| **INDEX_REMOVED** |
+| **INDEX_DEMOTED_TO_IDLE** |
+| **INDEX_PROMOTED_TO_IDLE** |
+| **INDEX_DEMOTED_TO_DISABLED** |
+| **INDEX_MARKED_AS_ERRORED** |
+| **SIDE_BY_SIDE_REPLACE** |
+| **RENAMED** |
+| **INDEX_PAUSED** |
+| **LOCK_MODE_CHANGED** |
+| **PRIORITY_CHANGED** |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Following methods allow you to subscribe to index changes:
+
+- [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+- [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+
+## forIndex
+
+Index changes for one index can be observed using `forIndex()` method.
+
+### Syntax
+
+<TabItem value="something-something" label="index_changes_1">
+<CodeBlock language="nodejs">
+{`store.changes().forIndex(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index for which notifications will be processed. |
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+
+### Example
+
+<TabItem value="something-something" label="index_changes_2">
+<CodeBlock language="nodejs">
+{`store.changes().forIndex("Orders/All")
+    .on("data", change => \{
+        switch (change.type) \{
+            case "None":
+                // do something
+                break;
+            case "BatchCompleted":
+                // do something
+                break;
+            case "IndexAdded":
+                // do something
+                break;
+            case "IndexRemoved":
+                // do something
+                break;
+            case "IndexDemotedToIdle":
+                // do something
+                break;
+            case "IndexPromotedFromIdle":
+                // do something
+                break;
+            case "IndexDemotedToDisabled":
+                // do something
+                break;
+            case "IndexMarkedAsErrored":
+                // do something
+                break;
+            case "SideBySideReplace":
+                // do something
+                break;
+            case "Renamed":
+                // do something
+                break;
+            case "IndexPaused":
+                // do something
+                break;
+            case "LockModeChanged":
+                // do something
+                break;
+            case "PriorityChanged":
+                // do something
+                break;
+            default:
+                throw new Error("Not supported.");
+        \}
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## forAllIndexes
+
+Index changes for all indexex can be observed using `forAllIndexes()` method.
+
+| Return value | |
+| ------------- | ----- |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+
+### Syntax
+
+<TabItem value="something-something" label="index_changes_3">
+<CodeBlock language="nodejs">
+{`store.changes().forAllIndexes();
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="something-something" label="index_changes_4">
+<CodeBlock language="nodejs">
+{`store.changes().forAllIndexes()
+    .on("data", change => \{
+        console.log(change.type + " on index " + change.name);
+    \});
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## IndexChange
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **name** | string | Index name |
+| **etag** | number | Index Etag |
+
+
+
+## IndexChangeTypes
+
+| Name |
+| ---- |
+| **None** |
+| **BatchCompleted** |
+| **IndexAdded** |
+| **IndexRemoved** |
+| **IndexDemotedToIdle** |
+| **IndexPromotedToIdle** |
+| **IndexDemotedToDisabled** |
+| **IndexMarkedAsErrored** |
+| **SideBySideReplace** |
+| **Renamed** |
+| **IndexPaused** |
+| **LockModeChanged** |
+| **PriorityChanged** |
+
+
+
+
+</LanguageContent>

@@ -1,0 +1,299 @@
+---
+title: "Reset Index Operation"
+sidebar_label: Reset Index
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Reset Index Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `ResetIndexOperation` to rebuild an index:  
+  * All existing indexed data will be removed.  
+  * All items matched by the index definition will be re-indexed.
+
+* **Indexes scope**:  
+  * Both static and auto indexes can be reset.
+
+* **Nodes scope**:  
+  * When resetting an index from the **client**:  
+    The index is reset only on the preferred node only, and Not on all the database-group nodes.  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+    The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
+
+* In this page:
+    * [Reset index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+
+</Admonition>
+## Reset index
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Define the reset index operation, pass index name
+var resetIndexOp = new ResetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.Send
+// An exception will be thrown if index does not exist
+store.Maintenance.Send(resetIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Define the reset index operation, pass index name
+var resetIndexOp = new ResetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if index does not exist
+await store.Maintenance.SendAsync(resetIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`public ResetIndexOperation(string indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to reset |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**ResetIndexOperation** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+## Syntax
+
+<TabItem value="something-something" label="reset_index_1">
+<CodeBlock language="java">
+{`public ResetIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to reset |
+
+
+## Example
+
+<TabItem value="something-something" label="reset_index_2">
+<CodeBlock language="java">
+{`store.maintenance()
+    .send(new ResetIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use `ResetIndexOperation` to rebuild an index:  
+  * All existing indexed data will be removed.  
+  * All items matched by the index definition will be re-indexed.
+
+* **Indexes scope**:  
+  * Both static and auto indexes can be reset.
+
+* **Nodes scope**:  
+  * When resetting an index from the **client**:  
+    The index is reset only on the preferred node only, and Not on all the database-group nodes.  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+    The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
+
+* In this page:
+    * [Reset index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+
+</Admonition>
+## Reset index
+
+<TabItem value="something-something" label="reset">
+<CodeBlock language="python">
+{`# Define the reset index operation, pass index name
+reset_index_op = ResetIndexOperation("Orders/Totals")
+
+# Execute the operation by passing it to maintenance.send
+# An exception will be thrown if index does not exist
+store.operations.send(reset_index_op)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`class ResetIndexOperation(VoidMaintenanceOperation):
+    def __init__(self, index_name: str): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **index_name** | `str` | Name of an index to reset |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use `ResetIndexOperation` to rebuild an index:  
+  * All existing indexed data will be removed.  
+  * All items matched by the index definition will be re-indexed.
+
+* **Indexes scope**:  
+  * Both static and auto indexes can be reset.
+
+* **Nodes scope**:  
+  * When resetting an index from the **client**:  
+    The index is reset only on the preferred node only, and Not on all the database-group nodes.  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+    The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
+
+* In this page:
+    * [Reset index](../../../../client-api/operations/maintenance/indexes/reset-index#reset-index)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/reset-index#syntax)
+
+</Admonition>
+## Reset index
+
+<TabItem value="something-something" label="reset">
+<CodeBlock language="php">
+{`// Define the reset index operation, pass index name
+$resetIndexOp = new ResetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to Maintenance.SendAsync
+// An exception will be thrown if index does not exist
+$store->maintenance()->send($resetIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`public ResetIndexOperation(?string $indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$indexName** | `?string` | Name of an index to reset |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use `ResetIndexOperation` to rebuild an index:  
+  * All existing indexed data will be removed.  
+  * All items matched by the index definition will be re-indexed.  
+
+* **Indexes scope**:  
+  * Both static and auto indexes can be reset.
+
+* **Nodes scope**:  
+  * When resetting an index from the **client**:  
+    The index is reset only on the preferred node only, and Not on all the database-group nodes.  
+  * When resetting an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+    The index is reset on the local node the browser is opened on, even if it is Not the preferred node.  
+
+* If the index is [disabled](../../../../client-api/operations/maintenance/indexes/disable-index) 
+  or [paused](../../../../client-api/operations/maintenance/indexes/stop-index), resetting the index 
+  will put it back to the **normal** running state on the local node where the action was performed.
+
+* In this page:
+    * [Reset index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+
+</Admonition>
+## Reset index
+
+<TabItem value="something-something" label="reset">
+<CodeBlock language="nodejs">
+{`// Define the reset index operation, pass index name
+const resetIndexOp = new ResetIndexOperation("Orders/Totals");
+
+// Execute the operation by passing it to maintenance.send
+// An exception will be thrown if index does not exist
+await store.maintenance.send(resetIndexOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`const resetIndexOp = new ResetIndexOperation(indexName);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **indexName** | `string` | Name of an index to reset |
+
+
+
+
+</LanguageContent>

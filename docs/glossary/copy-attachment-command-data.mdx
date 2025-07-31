@@ -1,0 +1,38 @@
+---
+title: "Glossary: CopyAttachmentCommandData"
+sidebar_label: CopyAttachmentCommandData
+sidebar_position: 18
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: CopyAttachmentCommandData
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **sourceDocumentId** | string | Source document id |
+| **sourceName** | string | Source attachment name |
+| **destinationDocumentId** | string | Destination document id |
+| **destinationName** | string | Destination attachment name |
+| **changeVector** | string | Document change-vector |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to Json. |
+
+</LanguageContent>

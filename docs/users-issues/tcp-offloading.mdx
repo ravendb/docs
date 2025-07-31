@@ -1,0 +1,31 @@
+---
+title: "TCP Offloading"
+sidebar_label: TCP Offloading
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+#TCP Offloading
+
+## Symptoms
+
+- An exception is thrown in RavenDB Client when accessing RavenDB Server, because of a socket timeout
+- A general slow operation of client system
+
+## Cause
+
+It appears that the machine hosting the RavenDB Server had the TCP offload functionality enabled, which seems to be causing connection drops, a problem experienced also by other applications like SQL Server.
+
+## Resolution
+
+Disable TCP Offloading.
+
+## Further read
+
+- [TCP Offloading Disabling](https://blogs.technet.microsoft.com/onthewire/2014/01/21/tcp-offloadingchimney-rsswhat-is-it-and-should-i-disable-it/)

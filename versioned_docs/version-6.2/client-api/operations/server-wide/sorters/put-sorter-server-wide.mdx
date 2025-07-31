@@ -1,0 +1,214 @@
+---
+title: "Put Custom Sorter (Server-Wide) Operation"
+sidebar_label: Put Custom Sorter
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Put Custom Sorter (Server-Wide) Operation  
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The Lucene indexing engine allows you to create your own __Custom Sorters__   
+  where you can define how query results will be ordered based on your specific requirements.
+
+* Use `PutServerWideSortersOperation` to deploy a custom sorter to the RavenDB server.  
+  Once deployed, you can use it to sort query results for all queries made on __all databases__ in your cluster.  
+
+* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database),  
+  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter).
+
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters).
+
+* In this page:
+    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#put-custom-sorter-server-wide)
+    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#syntax)
+
+</Admonition>
+## Put custom sorter server-wide
+
+* First, create your own sorter class that inherits from the Lucene class [Lucene.Net.Search.FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html).
+
+* Then, send the custom sorter to the server using the `PutServerWideSortersOperation`.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Assign the code of your custom sorter as a \`string\`
+string mySorterCode = "<code of custom sorter>";
+
+// Create the \`SorterDefinition\` object
+var customSorterDefinition = new SorterDefinition
+{
+    // The sorter Name must be the same as the sorter's class name in your code
+    Name = "MySorter",
+    // The Code must be compilable and include all necessary using statements
+    Code = mySorterCode
+};
+
+// Define the put sorters operation, pass the sorter definition
+// Note: multiple sorters can be passed, see syntax below
+var putSortersServerWideOp = new PutServerWideSortersOperation(customSorterDefinition);
+ 
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(putSortersServerWideOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Assign the code of your custom sorter as a \`string\`
+string mySorterCode = "<code of custom sorter>";
+
+// Create the \`SorterDefinition\` object
+var customSorterDefinition = new SorterDefinition
+{
+    // The sorter Name must be the same as the sorter's class name in your code
+    Name = "MySorter",
+    // The Code must be compilable and include all necessary using statements
+    Code = mySorterCode
+};
+
+// Define the put sorters operation, pass the sorter definition
+// Note: multiple sorters can be passed, see syntax below
+var putSortersServerWideOp = new PutServerWideSortersOperation(customSorterDefinition);
+ 
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+await store.Maintenance.Server.SendAsync(putSortersServerWideOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="Note">
+
+You can now order your query results using the custom sorter.  
+A query example is available [here](../../../../client-api/session/querying/sort-query-results#custom-sorters).
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="csharp">
+{`public PutServerWideSortersOperation(params SorterDefinition[] sortersToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type                 | Description                                          |
+|-------------------|----------------------|------------------------------------------------------|
+| __sortersToAdd__  | `SorterDefinition[]` | One or more Sorter Definitions to send to the server |
+
+
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class SorterDefinition
+\{
+    public string Name \{ get; set; \}
+    public string Code \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The Lucene indexing engine allows you to create your own __Custom Sorters__   
+  where you can define how query results will be ordered based on your specific requirements.
+
+* Use `PutServerWideSortersOperation` to deploy a custom sorter to the RavenDB server.  
+  Once deployed, you can use it to sort query results for all queries made on __all databases__ in your cluster.  
+
+* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database),  
+  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter).
+
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters).
+
+* In this page:
+    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#put-custom-sorter-server-wide)
+    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#syntax)
+
+</Admonition>
+## Put custom sorter server-wide
+
+* First, create your own sorter class that inherits from the Lucene class [Lucene.Net.Search.FieldComparator](https://lucenenet.apache.org/docs/3.0.3/df/d91/class_lucene_1_1_net_1_1_search_1_1_field_comparator.html).
+
+* Then, send the custom sorter to the server using the `PutServerWideSortersOperation`.
+
+<TabItem value="something-something" label="put_sorter">
+<CodeBlock language="nodejs">
+{`// Create the sorter definition object
+const sorterDefinition = \{
+    // The sorter name must be the same as the sorter's class name in your code
+    name: "MySorter",
+    // The code must be compilable and include all necessary using statements (C# code)
+    code: "<code of custom sorter>"
+\};
+
+// Define the put sorters operation, pass the sorter definition
+const putSortersServerWideOp = new PutServerWideSortersOperation(sorterDefinition);
+
+// Execute the operation by passing it to maintenance.server.send
+await documentStore.maintenance.server.send(putSortersServerWideOp );
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+You can now order your query results using the custom sorter.  
+A query example is available [here](../../../../client-api/session/querying/sort-query-results#custom-sorters).
+
+</Admonition>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`const putSortersServerWideOp = new PutServerWideSortersOperation(sortersToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter         | Type          | Description                                          |
+|-------------------|---------------|------------------------------------------------------|
+| __sortersToAdd__  | `...object[]` | One or more Sorter Definitions to send to the server |
+
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// The sorter definition object 
+\{
+    name: string;
+    code: string;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

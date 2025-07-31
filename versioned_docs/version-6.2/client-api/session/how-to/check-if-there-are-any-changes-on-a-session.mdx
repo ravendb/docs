@@ -1,0 +1,853 @@
+---
+title: "How to Check for Session Changes"
+sidebar_label: ...check for session changes
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# How to Check for Session Changes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `SaveChanges()` is called.
+
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
+ 
+* In this page:
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+
+</Admonition>
+## Check for session changes 
+
+* The session's advanced property `HasChanges` indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The _HasChanges_ property is cleared after calling `SaveChanges()`.
+<TabItem value="something" label="changes_1">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // No changes made yet - 'HasChanges' will be FALSE 
+    Assert.False(session.Advanced.HasChanges);
+    
+    // Store a new entity within the session
+    session.Store(new Employee \{ FirstName = "John", LastName = "Doe" \});
+    
+    // 'HasChanges' will now be TRUE 
+    Assert.True(session.Advanced.HasChanges);
+    
+    // 'HasChanges' will reset to FALSE after saving changes 
+    session.SaveChanges();
+    Assert.False(session.Advanced.HasChanges);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes 
+
+* Use the session's advanced method `WhatChanged()` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:  
+  * The name and path of the changed field   
+  * Its old and new values  
+  * The type of change  
+  
+* Note: `WhatChanged()` reports changes made prior to calling `SaveChanges()`.  
+  Calling it immediately after _SaveChanges_ will return no results, as the changes are cleared.
+##### Example I
+
+<TabItem value="something" label="changes_2">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Store (add) new entities, they will be tracked by the session
+    session.Store(new Employee \{ FirstName = "John", LastName = "Doe" \}, "employees/1-A");
+    session.Store(new Employee \{ FirstName = "Jane", LastName = "Doe" \}, "employees/2-A");
+
+    // Call 'WhatChanged' to get all changes in the session
+    IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+    Assert.Equal(changes.Count, 2); // 2 entities were added
+    
+    // Get the change details for an entity, specify the entity ID
+    DocumentsChanges[] changesForEmployee = changes["employees/1-A"];
+    Assert.Equal(changesForEmployee.Length, 1); // a single change for this entity (adding)
+    
+    // Get the change type
+    DocumentsChanges.ChangeType changeType = changesForEmployee[0].Change;
+    Assert.Equal(changeType, DocumentsChanges.ChangeType.DocumentAdded);
+    
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="something" label="changes_3">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Load the entities, they will be tracked by the session
+    Employee employee1 = session.Load<Employee>("employees/1-A");
+    Employee employee2 = session.Load<Employee>("employees/2-A");
+    
+    // Modify entities
+    employee1.FirstName = "Jim";
+    employee1.LastName = "Brown";
+    employee2.LastName = "Smith";
+    
+    // Delete an entity
+    session.Delete(employee2);
+
+    // Call 'WhatChanged' to get all changes in the session
+    IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+    
+    // Get the change details for an entity, specify the entity ID
+    DocumentsChanges[] changesForEmployee = changes["employees/1-A"];
+    
+    Assert.Equal(changesForEmployee[0].FieldName, "FirstName");                           // Field name
+    Assert.Equal(changesForEmployee[0].FieldNewValue, "Jim");                             // New value
+    Assert.Equal(changesForEmployee[0].Change, DocumentsChanges.ChangeType.FieldChanged); // Change type
+    
+    Assert.Equal(changesForEmployee[1].FieldName, "LastName");
+    Assert.Equal(changesForEmployee[1].FieldNewValue, "Brown");
+    Assert.Equal(changesForEmployee[1].Change, DocumentsChanges.ChangeType.FieldChanged);
+    
+    // Note: for employee2 - even though the LastName was changed to 'Smith',
+    // the only reported change is the latest modification, which is the delete action. 
+    changesForEmployee = changes["employees/2-A"];
+    Assert.Equal(changesForEmployee[0].Change, DocumentsChanges.ChangeType.DocumentDeleted);
+    
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`// HasChanges
+bool HasChanges \{ get; \}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`// WhatChanged
+IDictionary<string, DocumentsChanges[]> WhatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value                              |                                                       |
+|-------------------------------------------|-------------------------------------------------------|
+| `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID |
+
+<TabItem value="something" label="syntax_3">
+<CodeBlock language="csharp">
+{`public class DocumentsChanges
+\{
+    public object FieldOldValue \{ get; set; \}  // Previous field value
+    public object FieldNewValue \{ get; set; \}  // Current field value
+    public ChangeType Change \{ get; set; \}     // Type of change that occurred
+    public string FieldName \{ get; set; \}      // Name of field on which the change occurred
+    public string FieldPath \{ get; set; \}      // Path of field on which the change occurred
+    public string FieldFullName \{ get; \}       // Path + Name of field on which the change occurred
+\}
+
+public enum ChangeType
+\{
+    DocumentDeleted,
+    DocumentAdded,
+    FieldChanged,
+    NewField,
+    RemovedField,
+    ArrayValueChanged,
+    ArrayValueAdded,
+    ArrayValueRemoved
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. 
+Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
+
+## HasChanges
+
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
+
+<TabItem value="something-something" label="what_changed_1">
+<CodeBlock language="java">
+{`boolean hasChanges()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="something-something" label="what_changed_2">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Assert.assertFalse(session.advanced().hasChanges());
+
+    Employee employee = new Employee();
+    employee.setFirstName("John");
+    employee.setLastName("Doe");
+
+    session.store(employee);
+
+    Assert.assertTrue(session.advanced().hasChanges());
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WhatChanged
+
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
+
+<TabItem value="something-something" label="what_changed_3">
+<CodeBlock language="java">
+{`Map<String, List<DocumentsChanges>> whatChanged()
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | |
+| ------------- | ----- |
+| Map&lt;String, List&lt;DocumentsChanges&gt;&gt; | Map containing list of changes per document ID. |
+
+### Example I
+
+<TabItem value="something-something" label="what_changed_4">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee employee = new Employee();
+    employee.setFirstName("Joe");
+    employee.setLastName("Doe");
+    session.store(employee);
+
+    Map<String, List<DocumentsChanges>> changes = session.advanced().whatChanged();
+    List<DocumentsChanges> employeeChanges = changes.get("employees/1-A");
+    DocumentsChanges.ChangeType change
+        = employeeChanges.get(0).getChange(); // DocumentsChanges.ChangeType.DOCUMENT_ADDED
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="something-something" label="what_changed_5">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) \{
+    Employee employee = session.load(Employee.class, "employees/1-A");// 'Joe Doe'
+    employee.setFirstName("John");
+    employee.setLastName("Shmoe");
+
+    Map<String, List<DocumentsChanges>> changes = session.advanced().whatChanged();
+    List<DocumentsChanges> employeeChanges = changes.get("employees/1-A");
+    DocumentsChanges change1
+        = employeeChanges.get(0); //DocumentsChanges.ChangeType.FIELD_CHANGED
+    DocumentsChanges change2
+        = employeeChanges.get(1); //DocumentsChanges.ChangeType.FIELD_CHANGED
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `save_changes` is called.
+
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+ 
+* In this page:
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+
+</Admonition>
+## Check for session changes 
+
+* The advanced session `has_changes` property indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The `has_changes` property is cleared (reset to `False`) after calling `save_changes`.
+<TabItem value="something-something" label="changes_1">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # No changes made yet - 'has_changes' will be False
+    self.assertFalse(session.has_changes())
+
+    # Store a new entity within the session
+    session.store(Employee(first_name="John", last_name="Doe"))
+
+    # 'has_changes' will now be True
+    self.assertTrue(session.has_changes())
+
+    # 'has_changes' will reset to False after saving changes
+    session.save_changes()
+    self.assertFalse(session.has_changes())
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes 
+
+* Use the session's advanced method `what_changed` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:  
+  * The name and path of the changed field   
+  * Its old and new values  
+  * The type of change  
+
+* Note: `what_changed` reports changes made prior to calling `save_changes`.  
+  Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
+##### Example I
+
+<TabItem value="something-something" label="changes_2">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Store (add) new entities, they will be tracked by the session
+    session.store(Employee(first_name="John", last_name="Doe"), "employees/1-A")
+    session.store(Employee(first_name="Jane", last_name="Doe"), "employees/2-A")
+
+    # Call 'what_changed' to get all changes in the session
+    changes = session.advanced.what_changed()
+    self.assertEquals(2, len(changes))  # 2 entites were added
+
+    # Get the change details for an entity, specify the entity ID
+    changes_for_employee = changes["employees/1-A"]
+    self.assertEquals(1, len(changes_for_employee))  # a single change for this entity (adding)
+
+    # Get the change type
+    change_type = changes_for_employee[0].change
+    self.assertEquals(DocumentsChanges.ChangeType.DOCUMENT_ADDED, change_type)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="something-something" label="changes_3">
+<CodeBlock language="python">
+{`with store.open_session() as session:
+    # Load the entities, they will be tracked by the session
+    employee_1 = session.load("employees/1-A", Employee)
+    employee_2 = session.load("employees/2-A", Employee)
+
+    # Modify entities
+    employee_1.first_name = "Jim"
+    employee_1.last_name = "Brown"
+    employee_2.last_name = "Smith"
+
+    # Delete an entity
+    session.delete(employee_2)
+
+    # Call 'what_changed' to get all changes in the session
+    changes = session.advanced.what_changed()
+
+    # Get the change details for an entity, specify the entity ID
+    changes_for_employee = changes["employees/1-A"]
+
+    self.assertEquals("FirstName", changes_for_employee[0].field_name)  # Field name
+    self.assertEquals("Jim", changes_for_employee[0].field_new_value)  # New value
+    self.assertEquals(
+        DocumentsChanges.ChangeType.FIELD_CHANGED, changes_for_employee[0].change
+    )  # Change type
+
+    self.assertEquals("LastName", changes_for_employee[1].field_name)  # Field name
+    self.assertEquals("Brown", changes_for_employee[1].field_new_value)  # New value
+    self.assertEquals(
+        DocumentsChanges.ChangeType.FIELD_CHANGED, changes_for_employee[1].change
+    )  # Change type
+
+    # Note: for employee2 - even though the LastName was changed to 'Smith',
+    # the only reported change is the latest modification, which is the delete action.
+    changes_for_employee = changes["employees/2-A"]
+    self.assertEquals(DocumentsChanges.ChangeType.DOCUMENT_DELETED, changes_for_employee[0].change)
+
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="python">
+{`# has_changes
+def has_changes(self) -> bool: ...
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="python">
+{`# what_changed
+def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value                        |                                                       |
+|-------------------------------------|-------------------------------------------------------|
+| `Dict[str, List[DocumentsChanges]]` | Dictionary containing list of changes per document ID |
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="python">
+{`class DocumentsChanges:
+
+    def __init__(
+        self,
+        field_old_value: object,
+        field_new_value: object,
+        change: DocumentsChanges.ChangeType,
+        field_name: str = None,
+        field_path: str = None,
+    ): ...
+
+    class ChangeType(Enum):
+        DOCUMENT_DELETED = "DocumentDeleted"
+        DOCUMENT_ADDED = "DocumentAdded"
+        FIELD_CHANGED = "FieldChanged"
+        NEW_FIELD = "NewField"
+        REMOVED_FIELD = "RemovedField"
+        ARRAY_VALUE_CHANGED = "ArrayValueChanged"
+        ARRAY_VALUE_ADDED = "ArrayValueAdded"
+        ARRAY_VALUE_REMOVED = "ArrayValueRemoved"
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made in all the entities it has either loaded, stored, or queried for,  
+  and persists to the server only what is needed when `saveChanges` is called.
+
+* This article describes how to check for changes made in all tracked entities within the **session**.  
+  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+ 
+* In this page:
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+
+</Admonition>
+## Check for session changes 
+
+* The advanced session `hasChanges` property indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The `hasChanges` property is cleared (reset to `false`) after calling `saveChanges`.
+<TabItem value="something-something" label="changes_1">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // No changes made yet - 'hasChanges' will be FALSE
+    $this->assertFalse($session->advanced()->hasChanges());
+
+    // Store a new entity within the session
+    $employee = new Employee();
+    $employee->setFirstName("John");
+    $employee->setLastName("Doe");
+
+    $session->store($employee, "employees/1-A");
+
+    // 'hasChanges' will now be TRUE
+    $this->assertTrue($session->advanced()->hasChanges());
+
+    // 'HasChanges' will reset to FALSE after saving changes
+    $session->saveChanges();
+    $this->assertFalse($session->advanced()->hasChanges());
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes 
+
+* Use the session's advanced method `whatChanged` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:  
+   * The name and path of the changed field   
+   * Its old and new values  
+   * The type of change  
+##### Example I
+
+<TabItem value="something-something" label="changes_2">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Store (add) new entities, they will be tracked by the session
+    $employee = new Employee();
+    $employee->setFirstName("John");
+    $employee->setLastName("Doe");
+    $session->store($employee, "employees/1-A");
+
+    $employee = new Employee();
+    $employee->setFirstName("Jane");
+    $employee->setLastName("Doe");
+    $session->store($employee, "employees/2-A");
+
+    // Call 'WhatChanged' to get all changes in the session
+    $changes = $session->advanced()->whatChanged();
+
+    $this->assertCount(2, $changes); // 2 entities were added
+
+    // Get the change details for an entity, specify the entity ID
+    $changesForEmployee = $changes["employees/1-A"];
+    $this->assertCount(1, $changesForEmployee); // a single change for this entity (adding)
+
+    // Get the change type
+    $change = $changes[0]->getChange(); // ChangeType::DOCUMENT_ADDED
+    $this->assertTrue($change->isDocumentAdded());
+
+    $session->saveChanges();
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="something-something" label="changes_3">
+<CodeBlock language="php">
+{`$session = $store->openSession();
+try \{
+    // Load the entities, they will be tracked by the session
+    $employee1 = $session->load(Employee::class, "employees/1-A");// 'Joe Doe'
+    $employee2 = $session->load(Employee::class, "employees/2-A");// 'Jane Doe'
+
+    // Modify entities
+    $employee1->setFirstName("Jim");
+    $employee1->setLastName("Brown");
+    $employee2->setLastName("Smith");
+
+    // Delete an entity
+    $session->delete($employee2);
+
+    // Call 'WhatChanged' to get all changes in the session
+    $changes = $session->advanced()->whatChanged();
+
+    // Get the change details for an entity, specify the entity ID
+    $changesForEmployee = $changes["employees/1-A"];
+
+    $this->assertEquals("FirstName", $changesForEmployee[0]->getFieldName()); // Field name
+    $this->assertEquals("Jim", $changesForEmployee[0]->getFieldNewValue());   // New value
+    $this->assertTrue($changesForEmployee[0]->getChange()->isFieldChange());  // Change type
+
+    $this->assertEquals("LastName", $changesForEmployee[1]->getFieldName());  // Field name
+    $this->assertEquals("Brown", $changesForEmployee[1]->getFieldNewValue()); // New value
+    $this->assertTrue($changesForEmployee[1]->getChange()->isFieldChange());  // Change type
+
+    // Note: for employee2 - even though the LastName was changed to 'Smith',
+    // the only reported change is the latest modification, which is the delete action.
+    $changesForEmployee = $changes["employees/2-A"];
+    $this->assertTrue($changesForEmployee[0]->getChange()->isDocumentDeleted());
+
+    $session->saveChanges();
+
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="php">
+{`public function hasChanges(): bool;
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="php">
+{`public function whatChanged(): array; // array<string, DocumentsChangesArray>
+`}
+</CodeBlock>
+</TabItem>
+
+| ReturnValue | Description |
+|-------------|-------------|
+| `hasChanges(): bool;` | Indicates whether there were changes during the session |
+| `whatChanged(): array;` | Returns an array of changes per document ID |
+| `DocumentsChanges` | A list of changes made in an entity (see `ChangeType` class below for available change types) |
+
+<TabItem value="something-something" label="syntax_3">
+<CodeBlock language="php">
+{`class DocumentsChanges
+\{
+    private mixed $fieldOldValue = null;            // Previous field value
+    private mixed $fieldNewValue = null;            // Current field value
+    private ChangeType $change;                     // Type of change that occurred
+    private ?string $fieldName = null;              // Name of field on which the change occurred
+    private ?string $fieldPath = null;              // Path of field on which the change occurred
+
+    public function getFieldFullName(): ?string;    // Path + Name of field on which the change occurred
+
+    // ... getters and setters
+\}
+
+class ChangeType
+\{
+    public function isDocumentDeleted(): bool;
+    public function isDocumentAdded(): bool;
+    public function isFieldChanged(): bool;
+    public function isNewField(): bool;
+    public function isRemovedField(): bool;
+    public function isArrayValueChanged(): bool;
+    public function isArrayValueAdded(): bool;
+    public function isArrayValueRemoved(): bool;
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `saveChanges()` is called.
+
+* This article describes how to check for changes made to **all** tracked entities within the session.  
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
+
+* In this page:
+    * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
+    * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
+    * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+
+</Admonition>
+## Check for session changes
+
+* The session's advanced property `hasChanges` indicates whether any entities were added, modified, or deleted within the session.
+
+* Note: The _hasChanges_ property is cleared after calling `saveChanges()`.
+<TabItem value="something-something" label="changes_1">
+<CodeBlock language="nodejs">
+{`const session = store.openSession();
+
+// No changes made yet - 'hasChanges' will be FALSE
+assert.ok(!session.advanced.hasChanges());
+
+// Store a new entity within the session
+const employee = new Employee();
+employee.firstName = "John";
+employee.lastName = "Doe";
+
+await session.store(employee);
+
+// 'hasChanges' will now be TRUE
+assert.ok(session.advanced.hasChanges());
+
+// 'hasChanges' will reset to FALSE after saving changes 
+await session.saveChanges();
+assert.ok(!session.advanced.hasChanges());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Get session changes
+
+* Use the session's advanced method `whatChanged()` to get all changes made to all the entities tracked by the session.
+
+* For each entity that was modified, the details will include:
+    * The name and path of the changed field
+    * Its old and new values
+    * The type of change
+
+* Note: `whatChanged()` reports changes made prior to calling `saveChanges()`.  
+  Calling it immediately after _saveChanges_ will return no results, as the changes are cleared.
+##### Example I
+
+<TabItem value="something-something" label="changes_2">
+<CodeBlock language="nodejs">
+{`const session = store.openSession();
+
+// Store (add) new entities, they will be tracked by the session
+const employee1 = new Employee();
+employee1.firstName = "John";
+employee1.lastName = "Doe";
+
+const employee2 = new Employee();
+employee2.firstName = "Jane";
+employee2.lastName = "Doe";
+
+await session.store(employee1, "employees/1-A");
+await session.store(employee2, "employees/2-A");
+
+// Call 'WhatChanged' to get all changes in the session
+const changes = session.advanced.whatChanged();
+assert.equal(Object.keys(changes).length, 2);  // 2 entities were added
+
+// Get the change details for an entity, specify the entity ID
+const changesForEmployee = changes["employees/1-A"];
+assert.equal(Object.keys(changesForEmployee).length, 1); // a single change for this entity (adding)
+
+// Get the change type
+const changeType = changesForEmployee[0].change;
+assert.equal(changeType, "DocumentAdded");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+##### Example II
+
+<TabItem value="something-something" label="changes_3">
+<CodeBlock language="nodejs">
+{`const session = store.openSession();
+
+// Load the entities, they will be tracked by the session
+const employee1 = await session.load("employees/1-A");
+const employee2 = await session.load("employees/2-A");
+
+// Modify entities
+employee1.firstName = "Jim";
+employee1.lastName = "Brown";
+employee2.lastName = "Smith";
+
+// Delete an entity
+session.delete(employee2);
+
+// Call 'WhatChanged' to get all changes in the session
+const changes = session.advanced.whatChanged();
+
+// Get the change details for an entity, specify the entity ID
+let changesForEmployee = changes["employees/1-A"];
+
+assert.equal(changesForEmployee[0].fieldName, "firstName");  // Field name
+assert.equal(changesForEmployee[0].fieldNewValue, "Jim");    // New value
+assert.equal(changesForEmployee[0].change, "FieldChanged");  // Change type
+
+assert.equal(changesForEmployee[1].fieldName, "lastName");
+assert.equal(changesForEmployee[1].fieldNewValue, "Brown");
+assert.equal(changesForEmployee[1].change, "FieldChanged");
+
+// Note: for employee2 - even though the LastName was changed to 'Smith',
+// the only reported change is the latest modification, which is the delete action. 
+changesForEmployee = changes["employees/2-A"];
+assert.equal(changesForEmployee[0].change, "DocumentDeleted");
+
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`// HasChanges
+session.advanced.hasChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`// WhatChanged
+session.advanced.whatChanged();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value                       |                                                       |
+|------------------------------------|-------------------------------------------------------|
+| `Record<string, DocumentsChanges>` | Dictionary containing list of changes per document ID |
+
+| `DocumentsChanges`  | Type    | Description                                                                                                                                                                                      |
+|---------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **fieldOldValue**   | object  | Previous field value                                                                                                                                                                             |
+| **fieldNewValue**   | object  | Current field value                                                                                                                                                                              |
+| **change**          | string  | Type of change that occurred. Can be: <br/>`"DocumentDeleted"`, `"DocumentAdded"`,`"FieldChanged"`, `"NewField"`, `"RemovedField"`, `"ArrayValueChanged"`, `"ArrayValueAdded"`, `"ArrayValueRemoved"` |
+| **fieldName**       | string  | Name of field on which the change occurred                                                                                                                                                       |
+| **fieldPath**       | string  | Path of field on which the change occurred                                                                                                                                                       |
+| **fieldFullName**   | string  | Path + Name of field on which the change occurred                                                                                                                                                |
+
+
+
+
+</LanguageContent>

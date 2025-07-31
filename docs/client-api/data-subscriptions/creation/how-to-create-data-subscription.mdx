@@ -1,0 +1,420 @@
+---
+title: "How to Create a Data Subscription"
+sidebar_label: How to Create a Data Subscription
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
+
+
+# How to Create a Data Subscription
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* A subscription task can be created in two ways:
+  * **From the client API**:  
+    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation). 
+  * **From the Studio**:  
+    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.   
+
+* Once created, its definition and progress will be stored on the cluster, and not in a single server.  
+ 
+* Upon subscription creation, the cluster will choose a preferred node that will run the subscription  
+  (unless the client has stated a responsible node).  
+
+* From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
+
+* In this page:  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+
+</Admonition>
+## Subscription creation
+
+Data subscription is a batch processing mechanism that sends documents that meet specific criteria to connected clients.
+
+In order to create a data subscription, we first need to define the criteria.  
+The basic requirement is to specify the collection from which the subscription will retrieve documents.  
+However, the criteria can be a complex RQL-like expression defining JavaScript functions that filter documents and project their content.
+
+* The following is a simple subscription definition:
+ 
+<TabItem value="something" label="create_whole_collection_generic1">
+<CodeBlock language="csharp">
+{`// With the following subscription definition, the server will send ALL documents
+// from the 'Orders' collection to a client that connects to this subscription.
+subscriptionName = store.Subscriptions.Create<Order>();
+`}
+</CodeBlock>
+</TabItem>
+
+* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples).  
+ 
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+
+
+
+
+## Subscription name
+
+In order to consume a data subscription, a subscription name is required to identify it.  
+If you don't specify a name when creating the subscription, the server will automatically generate a default name.  
+However, you have the option to provide a custom name for the subscription.
+
+A dedicated name can be useful for use cases like dedicated, long-running batch processing mechanisms,  
+where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments 
+(as long as subscription creation is taken care of upfront).
+
+<TabItem value="something" label="create_whole_collection_generic_with_name">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>
+\{
+    // Set a custom name for the subscription 
+    Name = "OrdersProcessingSubscription"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Uniqueness" id="uniqueness" href="#uniqueness">
+Note that the subscription name is unique and it will not be possible to create two subscriptions with the same name in the same database.
+</Admonition>
+
+
+
+## Responsible node
+
+As stated above, upon creation, the cluster will choose a node that will be responsible for managing the subscription task on the server-side. 
+Once chosen, that node will be the only node to manage the subscription.
+
+There is an enterprise license level feature that supports subscription (and any other ongoing task) failover between nodes, 
+but eventually, as long as the originally assigned node is online, it will be the one to manage the data subscription task.  
+
+Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
+Provide the tag of the node you wish to be responsible in the `MentorNode` property as follows:
+
+<TabItem value="something" label="create_whole_collection_generic_with_mentor_node">
+<CodeBlock language="csharp">
+{`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
+\{
+    MentorNode = "D"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Manually setting the node can help choose a more suitable server based on factors such as resources, client proximity, or other considerations.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* A subscription task can be created in two ways:
+  * **From the client API**:  
+    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+  * **From the Studio**:  
+    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+
+* Once created, it's definition and progress will be stored on the cluster, and not in a single server.
+
+* Upon subscription creation, the cluster will choose a preferred node that will run the subscription  
+  (unless client has stated a mentor node).
+
+* From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
+
+* In this page:  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+
+</Admonition>
+## Subscription creation
+
+Data subscription is a batch processing mechanism that sends documents that meet specific criteria to connected clients.
+
+In order to create a data subscription, we first need to define the criteria.  
+The basic requirement is to specify the collection from which the subscription will retrieve documents.  
+However, the criteria can be a complex RQL-like expression defining JavaScript functions that filter documents and project their content.
+
+* The following is a simple subscription definition:  
+
+<TabItem value="something-something" label="create_whole_collection_generic1">
+<CodeBlock language="java">
+{`// With the following subscription definition, the server will send ALL documents
+// from the 'Orders' collection to a client that connects to this subscription.
+name = store.subscriptions().create(Order.class);
+`}
+</CodeBlock>
+</TabItem>
+
+* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples).
+
+
+
+## Subscription name
+
+In order to consume a data subscription, a subscription name is required to identify it.  
+If you don't specify a name when creating the subscription, the server will automatically generate a default name.  
+However, you have the option to provide a custom name for the subscription.  
+
+A dedicated name can be useful for use cases like dedicated, long-running batch processing mechanisms,  
+where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
+(as long as subscription creation is taken care of upfront).
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_name">
+<CodeBlock language="java">
+{`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+options.setName("OrdersProcessingSubscription");
+name = store.subscriptions().create(Order.class, options);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Uniqueness" id="uniqueness" href="#uniqueness">
+Note that subscription name is unique and it will not be possible to create two subscriptions with the same name in the same database.
+</Admonition>
+
+
+
+## Responsible node
+
+As stated above, upon creation, the cluster will choose a node that will be responsible for managing the subscription task on the server-side.
+Once chosen, that node will be the only node to manage the subscription.
+
+There is an enterprise license level feature that supports subscription (and any other ongoing task) failover between nodes,
+but eventually, as long as the originally assigned node is online, it will be the one to manage the data subscription task.
+
+Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
+Provide the tag of the node you wish to be responsible in the `MentorNode` property as follows:
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
+<CodeBlock language="java">
+{`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+options.setMentorNode("D");
+name = store.subscriptions().create(Order.class, options);
+`}
+</CodeBlock>
+</TabItem>
+
+Manually setting the node can help choose a more suitable server based on factors such as resources, client proximity, or other considerations.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* A subscription task can be created in two ways:
+    * **From the client API**:  
+      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+    * **From the Studio**:  
+      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+
+* Once created, its definition and progress will be stored on the cluster, and not in a single server.  
+
+* Upon subscription creation, the cluster will choose a preferred node that will run the subscription  
+  (unless the client has stated a responsible node).  
+
+* From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
+
+* In this page:  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+
+</Admonition>
+## Subscription creation
+
+Data subscription is a batch processing mechanism that sends documents that meet specific criteria to connected clients.
+
+In order to create a data subscription, we first need to define the criteria.  
+The basic requirement is to specify the collection from which the subscription will retrieve documents.  
+However, the criteria can be a complex RQL-like expression defining JavaScript functions that filter documents and project their content.
+
+* The following is a simple subscription definition:
+
+<TabItem value="something-something" label="create_whole_collection_generic1">
+<CodeBlock language="python">
+{`# With the following subscription definition, the server will send ALL documents
+# from the 'Orders' collection to a client that connects to this subscription.
+name = store.subscriptions.create_for_class(Order)
+`}
+</CodeBlock>
+</TabItem>
+
+* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples).
+
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+
+
+
+## Subscription name
+
+In order to consume a data subscription, a subscription name is required to identify it.  
+If you don't specify a name when creating the subscription, the server will automatically generate a default name.  
+However, you have the option to provide a custom name for the subscription.  
+
+A dedicated name can be useful for use cases like dedicated, long-running batch processing mechanisms,  
+where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
+(as long as subscription creation is taken care of upfront).
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_name">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_class(
+    Order, SubscriptionCreationOptions(name="OrdersProcessingSubscription")
+)
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Uniqueness" id="uniqueness" href="#uniqueness">
+Note that the subscription name is unique and it will not be possible to create two subscriptions with the same name in the same database.
+</Admonition>
+
+
+
+## Responsible node
+
+As stated above, upon creation, the cluster will choose a node that will be responsible for managing the subscription task on the server-side.
+Once chosen, that node will be the only node to manage the subscription.
+
+There is an enterprise license level feature that supports subscription (and any other ongoing task) failover between nodes,
+but eventually, as long as the originally assigned node is online, it will be the one to manage the data subscription task.
+
+Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
+Provide the tag of the node you wish to be responsible in the `mentor_node` property as follows:
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
+<CodeBlock language="python">
+{`name = store.subscriptions.create_for_class(Order, SubscriptionCreationOptions(mentor_node="D"))
+`}
+</CodeBlock>
+</TabItem>
+
+Manually setting the node can help choose a more suitable server based on factors such as resources, client proximity, or other considerations.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* A subscription task can be created in two ways:
+    * **From the client API**:  
+      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+    * **From the Studio**:  
+      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+
+* Once created, it's definition and progress will be stored on the cluster, and not in a single server.  
+
+* Upon subscription creation, the cluster will choose a preferred node that will run the subscription  
+  (unless client has stated a mentor node).  
+
+* From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
+
+* In this page:  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+
+</Admonition>
+## Subscription creation
+
+Data subscription is a batch processing mechanism that sends documents that meet specific criteria to connected clients.
+
+In order to create a data subscription, we first need to define the criteria.  
+The basic requirement is to specify the collection from which the subscription will retrieve documents.  
+However, the criteria can be a complex RQL-like expression defining JavaScript functions that filter documents and project their content.  
+
+* The following is a simple subscription definition:
+
+<TabItem value="something-something" label="create_whole_collection_generic1">
+<CodeBlock language="nodejs">
+{`// With the following subscription definition, the server will send ALL documents
+// from the 'Orders' collection to a client that connects to this subscription.
+const subscriptionName = await documentStore.subscriptions.create(\{
+    query: "from Orders"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples).
+
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+
+
+
+## Subscription name
+
+In order to consume a data subscription, a subscription name is required to identify it.  
+If you don't specify a name when creating the subscription, the server will automatically generate a default name.  
+However, you have the option to provide a custom name for the subscription.  
+
+A dedicated name can be useful for use cases like dedicated, long-running batch processing mechanisms,  
+where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
+(as long as subscription creation is taken care of upfront).
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_name">
+<CodeBlock language="nodejs">
+{`const name = await store.subscriptions.create(\{
+    query: "from Orders",
+    // Set a custom name for the subscription 
+    name: "OrdersProcessingSubscription"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Uniqueness" id="uniqueness" href="#uniqueness">
+Note that subscription name is unique and it will not be possible to create two subscriptions with the same name in the same database.
+</Admonition>
+
+
+
+## Responsible node
+
+As stated above, upon creation, the cluster will choose a node that will be responsible for managing the subscription task on the server-side.
+Once chosen, that node will be the only node to manage the subscription.
+
+There is an enterprise license level feature that supports subscription (and any other ongoing task) failover between nodes,
+but eventually, as long as the originally assigned node is online, it will be the one to manage the data subscription task.
+
+Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
+Provide the tag of the node you wish to be responsible in the `mentorNode` property as follows:
+
+<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
+<CodeBlock language="nodejs">
+{`const name = await store.subscriptions.create(\{
+    query: "from Orders",
+    // Set a responsible node for the subscritpion task 
+    mentorNode: "D"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Manually setting the node can help choose a more suitable server based on factors such as resources, client proximity, or other considerations.
+
+
+
+
+</LanguageContent>

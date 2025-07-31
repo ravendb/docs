@@ -1,0 +1,38 @@
+---
+title: "Glossary: MoveAttachmentCommandData"
+sidebar_label: MoveAttachmentCommandData
+sidebar_position: 19
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: MoveAttachmentCommandData
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **documentId** | string | Document id |
+| **name** | string | Attachment name |
+| **destinationDocumentId** | string | Destination document id |
+| **destinationName** | string | Attachment destination name. |
+| **changeVector** | string | Document change-vector |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to a Json. |
+
+</LanguageContent>

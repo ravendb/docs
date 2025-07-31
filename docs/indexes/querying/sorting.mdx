@@ -1,0 +1,1332 @@
+---
+title: "Sort Index Query Results"
+sidebar_label: Sorting
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Sort Index Query Results
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+
+</Admonition>
+## Order by index-field value
+
+* Use `OrderBy` or `OrderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+     // Query the index
+    .Query<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .Where(x => x.UnitsInStock > 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+     // Query the index
+    .Query<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .Where(x => x.UnitsInStock > 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToListAsync();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+     // Query the index
+    .DocumentQuery<Products_ByUnitsInStock.IndexEntry, Products_ByUnitsInStock>()
+     // Apply filtering (optional)
+    .WhereGreaterThan(x => x.UnitsInStock, 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    .OrderByDescending(x => x.UnitsInStock)
+    .OfType<Product>() 
+    .ToList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        public int UnitsInStock { get; set; }
+    }
+    
+    public Products_ByUnitsInStock()
+    {
+        Map = products => from product in products
+            select new IndexEntry()
+            {
+                UnitsInStock = product.UnitsInStock
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Info">
+
+**Ordering Type**:
+
+* By default, the `OrderBy` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
+
+* E.g. in the above example, ordering by `x => x.UnitsInStock` will result in `OrderingType.Long`  
+  because that property data type is an integer.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+
+* **When querying such index**, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Products_BySearchName : AbstractIndexCreationTask<Product>
+{
+    public class IndexEntry
+    {
+        // Index-field 'Name' will be configured below for full-text search
+        public string Name { get; set; }
+        
+        // Index-field 'NameForSorting' will be used for ordering query results 
+        public string NameForSorting { get; set; }
+    }
+
+    public Products_BySearchName()
+    {
+        Map = products => from product in products
+            select new
+            {
+                // Both index-fields are assigned the same content (the 'Name' from the document)
+                Name = product.Name,
+                NameForSorting = product.Name 
+            };
+
+        // Configure only the 'Name' index-field for FTS
+        Indexes.Add(x => x.Name, FieldIndexing.Search);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Product> products = session
+     // Query the index 
+    .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search(x => x.Name, "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy(x => x.NameForSorting)
+    .OfType<Product>()
+    .ToList();
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Product> products = await asyncSession
+     // Query the index 
+    .Query<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search(x => x.Name, "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy(x => x.NameForSorting)
+    .OfType<Product>()
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Product> products = session.Advanced
+     // Query the index
+    .DocumentQuery<Products_BySearchName.IndexEntry, Products_BySearchName>()
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    .Search("Name", "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    .OrderBy("NameForSorting")
+    .OfType<Product>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the **same** as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+## Basics
+
+Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+To start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByDescending("UnitsInStock")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Forcing ordering type" id="forcing-ordering-type" href="#forcing-ordering-type">
+
+By default, `orderBy` methods will determine `orderingType` from the property path expression (e.g. `x => x.unitsInStock` will result in `OrderingType.LONG` because property type is an integer), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `orderBy` methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByDescending("UnitsInStock", OrderingType.STRING)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by UnitsInStock desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+## Ordering by Score
+
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)).  
+This value is available in metadata information of the resulting query documents under `@index-score` (the higher the value, the better the match).  
+To order by this value you can use the `orderByScore` or the `orderByScoreDescending` methods:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderByScore()
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by score()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Chaining Orderings
+
+It is also possible to chain multiple orderings of the query results. 
+You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
+This can be achieved by using the `thenBy` (`thenByDescending`) and `thenByScore` (`thenByScoreDescending`) methods.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStockAndName.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderBy("UnitsInStock")
+    .orderByScore()
+    .orderByDescending("Name")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStockAndName extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStockAndName() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "    Name = product.Name" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStockAndName' 
+where UnitsInStock > 10
+order by UnitsInStock, score(), Name desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Random Ordering
+
+If you want to randomize the order of your results each time the query is executed, use the `randomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .randomOrdering()
+    .whereGreaterThan("UnitsInStock", 10)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock' 
+where UnitsInStock > 10
+order by random()
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Ordering When a Field is Searchable
+
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable, and sort by it.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByName_Search.class)
+    .search("Name", "Louisiana")
+    .orderByDescending("NameForSorting")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByName_Search extends AbstractIndexCreationTask {
+    public static class Result {
+        private String name;
+        private String nameForSorting;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getNameForSorting() {
+            return nameForSorting;
+        }
+
+        public void setNameForSorting(String nameForSorting) {
+            this.nameForSorting = nameForSorting;
+        }
+    }
+
+    public Products_ByName_Search() {
+        map = "docs.Products.Select(product => new {" +
+            "    Name = product.Name," +
+            "    NameForSorting = product.Name" +
+            "})";
+
+        index("Name", FieldIndexing.SEARCH);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByName/Search' 
+where search(Name, 'Louisiana')
+order by NameForSorting desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## AlphaNumeric Ordering
+
+Sometimes when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+
+For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
+
+If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+
+To order in this mode you can pass the `OrderingType.ALPHA_NUMERIC` type into `orderBy` or `orderByDescending`:   
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`List<Product> results = session
+    .query(Product.class, Products_ByUnitsInStock.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .orderBy("Name", OrderingType.ALPHA_NUMERIC)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
+    public Products_ByUnitsInStock() {
+        map = "docs.Products.Select(product => new {" +
+            "    UnitsInStock = product.UnitsInStock" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Products/ByUnitsInStock ' 
+where UnitsInStock > 10
+order by Name as alphanumeric
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Spatial Ordering
+
+If your data contains geographical locations, you might want to sort the query result by distance from a given point.
+
+This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-make-a-spatial-query)):
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Events> results = session
+    .query(Events.class, Events_ByCoordinates.class)
+    .spatial("Coordinates", criteria -> criteria.withinRadius(500, 30, 30))
+    .orderByDistance(new PointField("Latitude", "Longitude"), 32.1234, 23.4321)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="java">
+{`public static class Events_ByCoordinates extends AbstractIndexCreationTask {
+    public Events_ByCoordinates() {
+        map = "docs.Events.Select(e => new {" +
+            "   Coordinates = this.CreateSpatialField(e.Latitude, e.Longitude)" +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Events/ByCoordinates'
+where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+
+</Admonition>
+## Order by index-field value
+
+* Use `order_by` or `order_by_descending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session
+    # Query the index
+    .query_index_type(Products_ByUnitsInStock, Products_ByUnitsInStock.IndexEntry)
+    # Apply filtering (optional)
+    .where_greater_than("UnitsInStock", 10)
+    # Call 'order_by_descending', pass the index-field by which to order the results
+    .order_by_descending("UnitsInStock").of_type(Product)
+)
+
+# Results will be sorted by the 'UnitsInStock' value in descending order,
+# with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Products_ByUnitsInStock(AbstractIndexCreationTask):
+
+    class IndexEntry:
+        def __init__(self, units_in_stock: int = None):
+            self.units_in_stock = units_in_stock
+
+        # Handle different casing
+        @classmethod
+        def from_json(cls, json_dict: Dict[str, Any]):
+            return cls(json_dict["UnitsInStock"])
+
+    def __init__(self):
+        super().__init__()
+        self.map = "from p in products select new { UnitsInStock = p.UnitsInStock }"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Info">
+
+**Ordering Type**:
+
+* By default, the `order_by` methods will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
+
+* E.g., in the above example, ordering by `UnitsInStock` will result in `OrderingType.Int`
+  because that property data type is an integer.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) 
+  for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+
+* **When querying such index**, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Products_BySearchName(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, name: str = None, name_for_sorting: str = None):
+            # Index-field 'Name' will be configured below for full-text search
+            self.name = name
+
+            # Index-field 'NameForSorting' will be used for ordering query results
+            self.name_for_sorting = name_for_sorting
+
+        @classmethod
+        def from_json(cls, json_dict: Dict[str, Any]):
+            return cls(json_dict["Name"], json_dict["NameForSorting"])
+
+    def __init__(self):
+        super().__init__()
+        # Both index-fields are assigned the same content (The 'Name' from the document)
+        self.map = "from p in products select new {Name = p.Name, NameForSorting = p.Name}"
+
+        # Configure only the 'Name' index-field for FTS
+        self._index("Name", FieldIndexing.SEARCH)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`products = list(
+    session
+    # Query the index
+    .query_index_type(Products_BySearchName, Products_BySearchName.IndexEntry)
+    # Call 'search':
+    # Pass the index-field that was configured for FTS and the term to search for.
+    # Here we search for terms that start with "ch" within index-field 'Name'.
+    .search("Name", "ch*")
+    # Call 'order_by':
+    # Pass the other index-field by which to order the results.
+    .order_by("NameForSorting").of_type(Product)
+)
+# Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+# we get the following order:
+# =========================================================================================
+
+# "Chai"
+# "Chang"
+# "Chartreuse verte"
+# "Chef Anton's Cajun Seasoning"
+# "Chef Anton's Gumbo Mix"
+# "Chocolade"
+# "Jack's New England Clam Chowder"
+# "Pâté chinois"
+# "Teatime Chocolate Biscuits"
+
+# While ordering by the searchable 'Name' field would have produced the following order:
+# ======================================================================================
+
+# "Chai"
+# "Chang"
+# "Chartreuse verte"
+# "Chef Anton's Cajun Seasoning"
+# "Pâté chinois"
+# "Chocolade"
+# "Teatime Chocolate Biscuits"
+# "Chef Anton's Gumbo Mix"
+# "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the **same** as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+
+</Admonition>
+## Order by index-field value
+
+Use `orderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+     // Query the index
+    ->query(Products_ByUnitsInStock_IndexEntry::class, Products_ByUnitsInStock::class)
+     // Apply filtering (optional)
+    ->whereGreaterThan("UnitsInStock", 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    ->orderByDescending("UnitsInStock")
+    ->ofType(Product::class)
+    ->toList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+     // Query the index
+    ->documentQuery(Products_ByUnitsInStock_IndexEntry::class, Products_ByUnitsInStock::class)
+     // Apply filtering (optional)
+    ->whereGreaterThan("UnitsInStock", 10)
+     // Call 'OrderByDescending', pass the index-field by which to order the results
+    ->orderByDescending("UnitsInStock")
+    ->ofType(Product::class)
+    ->toList();
+
+// Results will be sorted by the 'UnitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Products_ByUnitsInStock_IndexEntry
+{
+    private ?int $unitsInStock = null;
+
+    public function getUnitsInStock(): ?int
+    {
+        return $this->unitsInStock;
+    }
+
+    public function setUnitsInStock(?int $unitsInStock): void
+    {
+        $this->unitsInStock = $unitsInStock;
+    }
+}
+class Products_ByUnitsInStock extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new {" .
+            "    UnitsInStock = product.UnitsInStock" .
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where UnitsInStock > 10
+order by UnitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Info">
+
+**Ordering Type**:
+
+* By default, `orderByDescending` will determine the `OrderingType` from the property path expression  
+  and specify that ordering type in the generated RQL that is sent to the server.
+
+* E.g., in the above example, ordering by `UnitsInStock` will result in `OrderingType::int`
+  because that property data type is an integer.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) 
+  for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+
+* **When querying such index**, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="php">
+{`class Products_BySearchName_IndexEntry
+{
+    // Index-field 'Name' will be configured below for full-text search
+    private ?string $name = null;
+
+    // Index-field 'NameForSorting' will be used for ordering query results
+    private ?string $nameForSorting = null;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getNameForSorting(): ?string
+    {
+        return $this->nameForSorting;
+    }
+
+    public function setNameForSorting(?string $nameForSorting): void
+    {
+        $this->nameForSorting = $nameForSorting;
+    }
+}
+class Products_BySearchName extends AbstractIndexCreationTask
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->map = "docs.Products.Select(product => new {" .
+            "    Name = product.Name," .
+            "    NameForSorting = product.Name" .
+            "})";
+
+        $this->index("Name", FieldIndexing::search());
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session
+     // Query the index
+    ->query(Products_BySearchName_IndexEntry::class, Products_BySearchName::class)
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    ->search("Name", "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    ->orderBy("NameForSorting")
+    ->ofType(Product::class)
+    ->toList();
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var array<Product> $products */
+$products = $session->advanced()
+     // Query the index
+    ->documentQuery(Products_BySearchName_IndexEntry::class, Products_BySearchName::class)
+     // Call 'Search':
+     // Pass the index-field that was configured for FTS and the term to search for.
+     // Here we search for terms that start with "ch" within index-field 'Name'.
+    ->search("Name", "ch*")
+     // Call 'OrderBy':
+     // Pass the other index-field by which to order the results.
+    ->orderBy("NameForSorting")
+    ->ofType(Product::class)
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(Name, "ch*")
+order by NameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the **same** as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* This article provides examples of sorting query results when querying a static-index.  
+
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+  and general knowledge about Sorting.
+
+* All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
+
+* In this page:
+    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+
+</Admonition>
+## Order by index-field value
+
+* Use `orderBy` or `orderByDescending` to order the results by the specified index-field.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+     // Query the index
+    .query({ indexName: "Products/ByUnitsInStock" })
+     // Apply filtering (optional)
+    .whereGreaterThan("unitsInStock", 10)
+     // Call 'orderByDescending'
+     // Pass the index-field by which to order the results and the ordering type
+    .orderByDescending("unitsInStock", "Long")
+    .all();
+
+// Results will be sorted by the 'unitsInStock' value in descending order,
+// with higher values listed first.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                unitsInStock: p.UnitsInStock
+            };
+        });
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/ByUnitsInStock"
+where unitsInStock > 10
+order by unitsInStock as long desc
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Info">
+
+**Ordering Type**:
+
+* If no ordering type is specified in the query then the server will apply the default lexicographical ordering.
+
+* In the above example, the ordering type was set to `Long`.
+
+* Different ordering can be forced.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
+  The same syntax used with dynamic queries also applies to queries made on indexes.
+
+</Admonition>
+
+
+
+## Order results when index-field is searchable
+
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+  the content of the index-field is broken down into terms at indexing time. 
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+
+* **When querying such index**, if you order by that searchable index-field, 
+  results will come back sorted based on the terms, and not based on the original text of the field.
+  
+* To overcome this, you can define another index-field that is not searchable and sort by it. 
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map("Products", p => {
+            return {
+                // Index-field 'name' will be configured below for full-text search
+                name: p.Name,
+                
+                // Index-field 'nameForSorting' will be used for ordering query results 
+                nameForSorting: p.Name
+
+                // Note:
+                // Both index-fields are assigned the same content (the 'Name' from the document)
+            };
+        });
+
+        // Configure only the 'name' index-field for FTS
+        this.index("name", "Search");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const products = await session
+    // Query the index
+    .query({ indexName: "Products/BySearchName"})
+    // Call 'search':
+    // Pass the index-field that was configured for FTS and the term to search for.
+    // Here we search for terms that start with "ch" within index-field 'name'.
+    .search("name", "ch*")
+    // Call 'orderBy':
+    // Pass the other index-field by which to order the results.
+    .orderBy("nameForSorting")
+    .all();
+
+
+// Running the above query on the NorthWind sample data, ordering by 'NameForSorting' field,
+// we get the following order:
+// =========================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Chef Anton's Gumbo Mix"
+// "Chocolade"
+// "Jack's New England Clam Chowder"
+// "Pâté chinois"
+// "Teatime Chocolate Biscuits"
+
+// While ordering by the searchable 'Name' field would have produced the following order:
+// ======================================================================================
+
+// "Chai"
+// "Chang"
+// "Chartreuse verte"
+// "Chef Anton's Cajun Seasoning"
+// "Pâté chinois"
+// "Chocolade"
+// "Teatime Chocolate Biscuits"
+// "Chef Anton's Gumbo Mix"
+// "Jack's New England Clam Chowder"
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index "Products/BySearchName" 
+where search(name, "ch*")
+order by nameForSorting
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Additional sorting options
+
+* When querying an index, the following sorting options are the **same** as when making a dynamic query.
+
+* Refer to the examples in the links below to see how each option is achieved.
+
+  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+
+  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+
+  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+
+  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+
+  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+
+
+
+
+</LanguageContent>

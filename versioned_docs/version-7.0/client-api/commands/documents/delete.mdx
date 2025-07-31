@@ -1,0 +1,383 @@
+---
+title: "Delete Document Command"
+sidebar_label: Delete Document
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Delete Document Command
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="note" title="Note">
+
+* Use the low-level `DeleteDocumentCommand` to remove a document from the database.
+
+* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities).  
+
+* In this page:
+
+    * [Examples](../../../client-api/commands/documents/delete#examples)
+    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="Note">
+
+**Delete document command - using the Store's request executor**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Delete_document" label="Delete_document">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    var command = new DeleteDocumentCommand("employees/1-A", null);
+    store.GetRequestExecutor().Execute(command, context);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Delete_document_async" label="Delete_document_async">
+<CodeBlock language="csharp">
+{`using (var store = new DocumentStore())
+using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var context))
+{
+    var command = new DeleteDocumentCommand("employees/1-A", null);
+    await store.GetRequestExecutor().ExecuteAsync(command, context);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Delete document command - using the Session's request executor**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Delete_document" label="Delete_document">
+<CodeBlock language="csharp">
+{`var command = new DeleteDocumentCommand("employees/1-A", null);
+session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Delete_document_async" label="Delete_document_async">
+<CodeBlock language="csharp">
+{`var command = new DeleteDocumentCommand("employees/1-A", null);
+await asyncSession.Advanced.RequestExecutor.ExecuteAsync(command, asyncSession.Advanced.Context);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Delete document command - with concurrency check**:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Delete_document" label="Delete_document">
+<CodeBlock language="csharp">
+{`// Load a document
+var employeeDocument = session.Load<Employee>("employees/2-A");
+var cv = session.Advanced.GetChangeVectorFor(employeeDocument);
+
+// Modify the document content and save changes
+// The change-vector of the stored document will change
+employeeDocument.Title = "Some new title";
+session.SaveChanges();
+
+try
+{
+    // Try to delete the document with the previous change-vector
+    var command = new DeleteDocumentCommand("employees/2-A", cv);
+    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
+}
+catch (Exception e)
+{
+    // A concurrency exception is thrown
+    // since the change-vector of the document in the database
+    // does not match the change-vector specified in the delete command
+    Assert.IsType<Raven.Client.Exceptions.ConcurrencyException>(e);
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Delete_document_async" label="Delete_document_async">
+<CodeBlock language="csharp">
+{`// Load a document
+var employeeDocument = await asyncSession.LoadAsync<Employee>("employees/2-A");
+var cv = asyncSession.Advanced.GetChangeVectorFor(employeeDocument);
+
+// Modify the document content and save changes
+// The change-vector of the stored document will change
+employeeDocument.Title = "Some new title";
+asyncSession.SaveChangesAsync();
+
+try
+{
+    // Try to delete the document with the previous change-vector
+    var command = new DeleteDocumentCommand("employees/2-A", cv);
+    await asyncSession.Advanced.RequestExecutor.ExecuteAsync(command, asyncSession.Advanced.Context);
+}
+catch (Exception e)
+{
+    // A concurrency exception is thrown
+    // since the change-vector of the document in the database
+    // does not match the change-vector specified in the delete command
+    Assert.IsType<Raven.Client.Exceptions.ConcurrencyException>(e);
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`public DeleteDocumentCommand(string id, string changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                                                                                                                                                                                             |
+|------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**Delete** is used to remove a document from a database.
+
+## Syntax
+
+<TabItem value="something-something" label="delete_interface">
+<CodeBlock language="java">
+{`public DeleteDocumentCommand(String id, String changeVector)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **id** | `String` | ID of a document to be deleted |
+| **changeVector** | `String` | Entity Change Vector, used for concurrency checks (`null` to skip check) |
+
+## Example
+
+<TabItem value="something-something" label="delete_sample">
+<CodeBlock language="java">
+{`DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
+session.advanced().getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteDocumentCommand` to remove a document from the database.
+
+* In this page:
+
+    * [Example](../../../client-api/commands/documents/delete#example)
+    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="something-something" label="delete_sample">
+<CodeBlock language="python">
+{`command = DeleteDocumentCommand("employees/1-A", None)
+session.advanced.request_executor.execute_command(command)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="delete_interface">
+<CodeBlock language="python">
+{`class DeleteDocumentCommand(VoidRavenCommand):
+    def __init__(self, key: str, change_vector: Optional[str] = None): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **key**           | `str` | ID of a document to be deleted |
+| **change_vector** | `str` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+
+<Admonition type="note" title="Note">
+
+* Use `DeleteDocumentCommand` to remove a document from the database.
+
+* In this page:
+
+    * [Example](../../../client-api/commands/documents/delete#example)
+    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+
+</Admonition>
+## Example
+
+<TabItem value="something-something" label="delete_sample">
+<CodeBlock language="php">
+{`$command = new DeleteDocumentCommand("employees/1-A", null);
+$session->advanced()->getRequestExecutor()->execute($command);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="delete_interface">
+<CodeBlock language="php">
+{`DeleteDocumentCommand(?string $idOrCopy, ?string $changeVector = null);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------|------|-------------|
+| **idOrCopy** | `string` | ID of a document to be deleted |
+| **changeVector** | `string` (optional) | Entity Change Vector, used for concurrency checks (`None` to skip check) |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+<Admonition type="note" title="Note">
+
+* Use the low-level `DeleteDocumentCommand` to remove a document from the database.
+
+* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities).
+
+* In this page:
+
+    * [Examples](../../../client-api/commands/documents/delete#examples)
+    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+
+</Admonition>
+## Examples
+
+<Admonition type="note" title="Note">
+
+**Delete document command - using the Store's request executor**:
+<TabItem value="something-something" label="delete_document_1">
+<CodeBlock language="nodejs">
+{`// Define the Delete Command
+// Pass the document ID & whether to make a concurrency check
+const command = new DeleteDocumentCommand("employees/1-A", null);
+
+// Send the command to the server using the Store's Request Executor
+await documentStore.getRequestExecutor().execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Delete document command - using the Session's request executor**:
+<TabItem value="something-something" label="delete_document_2">
+<CodeBlock language="nodejs">
+{`const command = new DeleteDocumentCommand("employees/1-A", null);
+
+// Send the command to the server using the Session's Request Executor
+await session.advanced.requestExecutor.execute(command);
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+**Delete document command - with concurrency check**:
+<TabItem value="something-something" label="delete_document_3">
+<CodeBlock language="nodejs">
+{`// Load a document
+const employeeDocument = await session.load('employees/2-A');
+const cv = session.advanced.getChangeVectorFor(employeeDocument);
+
+// Modify the document content and save changes
+// The change-vector of the stored document will change
+employeeDocument.Title = "Some new title";
+await session.saveChanges();
+
+try  \{
+    // Try to delete the document with the previous change-vector
+    const command = new DeleteDocumentCommand("employees/2-A", cv);
+    await session.advanced.requestExecutor.execute(command);
+\}
+catch (err) \{
+    // A concurrency exception is thrown 
+    // since the change-vector of the document in the database
+    // does not match the change-vector specified in the delete command
+    assert.equal(err.name, "ConcurrencyException");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`DeleteDocumentCommand(id, changeVector);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type     | Description                                                                                                                                                                                                                                             |
+|------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+
+
+
+
+</LanguageContent>

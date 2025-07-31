@@ -1,0 +1,322 @@
+---
+title: "Documents Compression"
+sidebar_label: Documents Compression
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# Documents Compression
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The **Documents Compression** feature employs the [Zstd compression algorithm](https://github.com/facebook/zstd)  
+  to achieve more efficient data storage with constantly improving compression ratios.  
+
+* Documents compression can be set for all collections, selected collections, and revisions.  
+  Default compression settings are [configurable](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault).  
+
+* When turned on, compression will be applied to:  
+  * **New documents**:  
+      * A new document that is saved will be compressed.  
+  * **Existing documents**:  
+      * Existing documents that are modified and saved will be compressed.  
+      * Existing documents that are Not modified will only be compressed when executing the    
+        [compact database operation](../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).  
+
+* Compression can be set from the [Studio](../../studio/database/settings/documents-compression),  
+  or by updating the database record from the Client API, see below.
+
+* In this page:  
+  * [Overview](../../server/storage/documents-compression#overview)
+  * [Compression -vs- Compaction](../../server/storage/documents-compression#compression--vs--compaction)
+  * [Set compression for all collections](../../server/storage/documents-compression#set-compression-for-all-collections)  
+  * [Set compression for selected collections](../../server/storage/documents-compression#set-compression-for-selected-collections)
+  * [Syntax](../../server/storage/documents-compression#syntax)
+
+</Admonition>
+## Overview
+
+* As a document database, RavenDB's schema-less nature presents many advantages,  
+  however, it requires us to manage the data structure on a per-document basis.  
+  In extreme cases, the majority of the data you store is the documents' structure.
+
+* The [Zstd compression algorithm](https://github.com/facebook/zstd) is used to learn your data model, identify common patterns,  
+  and create dictionaries that represent the redundant structural data across documents in a collection.  
+
+* The algorithm is trained by each compression operation and continuously improves its compression ratio  
+  to maintain the most efficient compression model.  
+  In many datasets, this can reduce the storage space by more than 50%.
+
+* Compression and decompression are fully transparent to the user.  
+  Reading and querying compressed large datasets is usually as fast as reading and querying  
+  their uncompressed versions because the compressed data is loaded much faster.  
+
+* Compression is Not applied to attachments, counters, and time series data,  
+  only to the content of documents and revisions.  
+
+* Detailed information about the database's physical storage is visible in the [Storage Report view](../../studio/database/stats/storage-report).
+
+
+
+## Compression -vs- Compaction
+
+* The following table summarizes the differences between Compression and Compaction:
+
+| **Compression** | |
+| - | - |
+| Action: | Reduce storage space using the `Zstd` compression algorithm |
+| Items that can be compressed: | **-** Documents in collections that are configured for compression<br/>**-** Revisions for all collections |
+| Triggered by: | The server |
+| Triggered when: | Compression feature is configured,<br/> **and** when either of the following occurs for the configured collections:<br/>&nbsp;&nbsp;&nbsp;**-** Storing new documents<br/>&nbsp;&nbsp;&nbsp;**-** Modifying & saving existing documents<br/>&nbsp;&nbsp;&nbsp;**-** Compact operation is triggered, existing documents will be compressed |
+
+| **Compaction** | |
+| - | - |
+| Action: | Remove empty gaps on disk that still occupy space after deletes |
+| Items that can be compacted: | Documents and/or indexes on the specified database |
+| Triggered by: | Client API code |
+| Triggered when: | Explicitly calling [compact database operation](../../client-api/operations/server-wide/compact-database) |
+
+
+
+## Set compression for all collections
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Compression is configured by setting the database record 
+
+// Retrieve the database record
+var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+
+// Set compression on ALL collections
+dbrecord.DocumentsCompression.CompressAllCollections = true;
+
+// Update the database record
+store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+`}
+</CodeBlock>
+</TabItem>  
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Compression is configured by setting the database record 
+
+// Retrieve the database record
+var dbrecord = await store.Maintenance.Server.SendAsync(new GetDatabaseRecordOperation(store.Database));
+
+// Set compression on ALL collections
+dbrecord.DocumentsCompression.CompressAllCollections = true;
+
+// Update the database record
+await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+`}
+</CodeBlock>
+</TabItem>  
+</Tabs>
+
+
+
+## Set compression for selected collections
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Retrieve the database record
+var dbrecord = store.Maintenance.Server.Send(new GetDatabaseRecordOperation(store.Database));
+
+// Turn on compression for specific collections
+dbrecord.DocumentsCompression.Collections = new[] { "Orders", "Employees" };
+
+// Turn off compression for all revisions, on all collections
+dbrecord.DocumentsCompression.CompressRevisions = false;
+
+// Update the database record
+store.Maintenance.Server.Send(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+`}
+</CodeBlock>
+</TabItem>  
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Retrieve the database record
+var dbrecord = await store.Maintenance.Server.SendAsync(new GetDatabaseRecordOperation(store.Database));
+
+// Turn on compression for specific collection
+dbrecord.DocumentsCompression.Collections = new[] { "Orders", "Employees" };
+
+// Turn off compression for all revisions, on all collections
+dbrecord.DocumentsCompression.CompressRevisions = false;
+
+// Update the database record
+await store.Maintenance.Server.SendAsync(new UpdateDatabaseOperation(dbrecord, dbrecord.Etag));
+`}
+</CodeBlock>
+</TabItem>  
+</Tabs>
+
+
+
+## Syntax
+
+* Documents compression is configured using the `DocumentsCompressionConfiguration` class in the database record.  
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="csharp">
+{`public class DocumentsCompressionConfiguration 
+\{
+    public string[] Collections \{ get; set; \}
+    public bool CompressRevisions \{ get; set; \}
+    public bool CompressAllCollections \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The **Documents Compression** feature employs the [Zstd compression algorithm](https://github.com/facebook/zstd)  
+  to achieve more efficient data storage with constantly improving compression ratios.
+
+* Documents compression can be set for all collections, selected collections, and revisions.  
+  Default compression settings are [configurable](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault).
+
+* When turned on, compression will be applied to:  
+  * **New documents**:  
+      * A new document that is saved will be compressed.  
+  * **Existing documents**:  
+      * Existing documents that are modified and saved will be compressed.  
+      * Existing documents that are Not modified will only be compressed when executing the    
+        [compact database operation](../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).  
+
+* Compression can be set from the [Studio](../../studio/database/settings/documents-compression),  
+  or by updating the database record from the Client API, see below.
+
+* In this page:  
+  * [Overview](../../server/storage/documents-compression#overview)
+  * [Compression -vs- Compaction](../../server/storage/documents-compression#compression--vs--compaction)
+  * [Set compression for all collections](../../server/storage/documents-compression#set-compression-for-all-collections)  
+  * [Set compression for selected collections](../../server/storage/documents-compression#set-compression-for-selected-collections)
+  * [Syntax](../../server/storage/documents-compression#syntax)
+
+</Admonition>
+## Overview
+
+* As a document database, RavenDB's schema-less nature presents many advantages,  
+  however, it requires us to manage the data structure on a per-document basis.  
+  In extreme cases, the majority of the data you store is the documents' structure.
+
+* The [Zstd compression algorithm](https://github.com/facebook/zstd) is used to learn your data model, identify common patterns,  
+  and create dictionaries that represent the redundant structural data across documents in a collection.  
+
+* The algorithm is trained by each compression operation and continuously improves its compression ratio  
+  to maintain the most efficient compression model.  
+  In many datasets, this can reduce the storage space by more than 50%.
+
+* Compression and decompression are fully transparent to the user.  
+  Reading and querying compressed large datasets is usually as fast as reading and querying  
+  their uncompressed versions because the compressed data is loaded much faster.  
+
+* Compression is Not applied to attachments, counters, and time series data,  
+  only to the content of documents and revisions.  
+
+* Detailed information about the database's physical storage is visible in the [Storage Report view](../../studio/database/stats/storage-report).
+
+
+
+## Compression -vs- Compaction
+
+* The following table summarizes the differences between Compression and Compaction:
+
+| **Compression** | |
+| - | - |
+| Action: | Reduce storage space using the `Zstd` compression algorithm |
+| Items that can be compressed: | **-** Documents in collections that are configured for compression<br/>**-** Revisions for all collections |
+| Triggered by: | The server |
+| Triggered when: | Compression feature is configured,<br/> **and** when either of the following occurs for the configured collections:<br/>&nbsp;&nbsp;&nbsp;**-** Storing new documents<br/>&nbsp;&nbsp;&nbsp;**-** Modifying & saving existing documents<br/>&nbsp;&nbsp;&nbsp;**-** Compact operation is triggered, existing documents will be compressed |
+
+| **Compaction** | |
+| - | - |
+| Action: | Remove empty gaps on disk that still occupy space after deletes |
+| Items that can be compacted: | Documents and/or indexes on the specified database |
+| Triggered by: | Client API code |
+| Triggered when: | Explicitly calling [compact database operation](../../client-api/operations/server-wide/compact-database) |
+
+
+
+## Set compression for all collections
+
+<TabItem value="something-something" label="compress_all">
+<CodeBlock language="nodejs">
+{`// Compression is configured by setting the database record 
+
+// Retrieve the database record
+const dbrecord = await store.maintenance.server.send(new GetDatabaseRecordOperation(store.database));
+
+// Set compression on ALL collections
+dbrecord.documentsCompression.compressAllCollections = true;
+
+// Update the the database record
+await store.maintenance.server.send(new UpdateDatabaseOperation(dbrecord, dbrecord.etag));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Set compression for selected collections
+
+<TabItem value="something-something" label="compress_specific">
+<CodeBlock language="nodejs">
+{`// Retrieve the database record
+const dbrecord = store.maintenance.server.send(new GetDatabaseRecordOperation(store.database));
+
+// Turn on compression for specific collections
+// Turn off compression for all revisions, on all collections
+dbrecord.documentsCompression = \{
+    collections: ["Orders", "Employees"], 
+    compressRevisions: false
+\};
+
+// Update the the database record
+store.maintenance.server.send(new UpdateDatabaseOperation(dbrecord, dbrecord.etag));
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+* Documents compression is configured using the following object in the database record:  
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`// The documentsCompression object
+\{
+    collections;            // string[], List of collections to compress 
+    compressRevisions;      // boolean, set to true to compress revisions 
+    compressAllCollections; // boolean, set to true to compress all collections
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+
+</LanguageContent>

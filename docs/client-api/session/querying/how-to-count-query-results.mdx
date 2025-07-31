@@ -1,0 +1,380 @@
+---
+title: "Count Query Results"
+sidebar_label: Count Query Results
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Count Query Results 
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The following options are available to **count query results**:
+
+    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
+  
+    * [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)
+  
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+
+</Admonition>
+## Count
+
+* When the number of resulting items is expected to be an **`Int32`** variable,  
+  use `Count` in a synchronous session (or `CountAsync` in an async session).  
+  
+* `Count` is implemented in `System.Linq`.  
+  `CountAsync` is implemented in `Raven.Client.Documents`.  
+
+* An `OverflowException` will be thrown if the number of items exceeds **`Int32.MaxValue`**. 
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// using System.Linq;
+// ==================
+
+int numberOfOrders = session
+    .Query<Order>()
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'Count' from System.Linq
+    .Count();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+int numberOfOrders = await asyncSession
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'CountAsync' from Raven.Client.Documents
+    .CountAsync();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents.Session;
+// =====================================
+
+int numberOfOrders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(order => order.ShipTo.Country, "UK")
+     // Calling 'Count' from Raven.Client.Documents.Session
+    .Count();
+
+// The query returns the NUMBER of orders shipped to UK (Int32)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## LongCount
+
+* When the number of resulting items is expected to be an **`Int64`** variable,  
+  use `LongCount` in a synchronous session (or `LongCountAsync` in an async session).
+  
+* `LongCount` is implemented in both `Raven.Client.Documents` & `System.Linq` (use as needed).  
+  `LongCountAsync` is implemented in `Raven.Client.Documents`.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+long numberOfOrders = session
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'LongCount' from Raven.Client.Documents
+    .LongCount();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents;
+// using Raven.Client.Documents.Linq;
+// ==================================
+
+long numberOfOrders = await asyncSession
+    .Query<Order>()
+     // Calling 'Where' from Raven.Client.Documents.Linq
+    .Where(order => order.ShipTo.Country == "UK")
+     // Calling 'LongCountAsync' from Raven.Client.Documents
+    .LongCountAsync();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// using Raven.Client.Documents.Session;
+// =====================================
+
+long numberOfOrders = session.Advanced
+    .DocumentQuery<Order>()
+    .WhereEquals(order => order.ShipTo.Country, "UK")
+     // Calling 'LongCount' from  Raven.Client.Documents.Session
+    .LongCount();
+
+// The query returns the NUMBER of orders shipped to UK (Int64)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get count from query stats
+
+* When executing a query, you can retrieve the query statistics, which include the total number of results.
+
+* The total number of results is available in the `TotalResults` property of the `QueryStatistics` object.  
+  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics). 
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* The following options are available to **count query results**:
+
+    * [`count`](../../../client-api/session/querying/how-to-count-query-results#count)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+
+</Admonition>
+## `count`
+
+Count query results using the `count` method.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`number_of_orders = (
+    session.advanced.document_query(object_type=Order).where_equals("ship_to.country", "UK").count()
+)
+# The query returns the NUMBER of orders shipped to UK (int)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ship_to.country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get count from query stats
+
+When executing a query, you can retrieve query statistics that include the total number of results.  
+To do this, define a callback function that takes `QueryStatistics` as an argument and applies whatever 
+logic you want to apply.  
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`def **statistics_callback(statistics: QueryStatistics) -> None:
+   # Read and interact with QueryStatistics here
+   total_results = statistics.total_results
+   duration_milliseconds = statistics.duration_in_ms
+   ...
+`}
+</CodeBlock>
+</TabItem>
+
+Then pass your function as an argument to the `query.statistics` method and use the retrieved `QueryStatistics` object.  
+
+<TabItem value="something" label="python">
+<CodeBlock language="python">
+{`employees = list(
+session.query(object_type=Employee)
+.where_equals("first_name", "Robert")
+.statistics(**statistics_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+
+Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* The following options are available to **count query results**:
+
+    * [`Count`](../../../client-api/session/querying/how-to-count-query-results#count)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+
+</Admonition>
+## `Count`
+
+Count query results using the `Count` method.  
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="documentQuery" label="documentQuery">
+<CodeBlock language="php">
+{`/** @var int $numberOfOrders */
+$numberOfOrders = $session->advanced()
+    ->documentQuery(Order::class)
+    ->whereEquals("ship_to.country", "UK")
+     // Calling 'Count' from Raven.Client.Documents.Session
+    ->Count();
+
+// The query returns the NUMBER of orders shipped to UK (int)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Get count from query stats
+
+When executing a query, you can retrieve the query statistics that include the total number of results.  
+Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The following options are available to **count query results**:
+
+    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
+  
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+
+</Admonition>
+## Count
+
+* Call `count` to get the number of items in the query results.
+
+* Method `longCount`, which is also available, produces exactly the same results as `count`.  
+  It is only included to be consistent with the .NET client.
+
+<Admonition type="note" title="Note">
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const numberOfOrders = await session
+    .query({ collection: "Orders" })
+    .whereEquals("ShipTo.Country", "UK")
+     // Call 'count' to get the number of results
+    .count();
+
+// The query returns the NUMBER of orders shipped to UK
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from "Orders"
+where ShipTo.Country == "UK" limit 0, 0
+
+// The RQL generated will trigger query execution
+// however, no documents are returned (limit is set 0)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+
+## Get count from query stats
+
+
+* When executing a query, you can retrieve the query statistics, which include the total number of results.
+
+* The total number of results is available in the `totalResults` property of the `QueryStatistics` object.  
+  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).
+
+
+
+
+</LanguageContent>

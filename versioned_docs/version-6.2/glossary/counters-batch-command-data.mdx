@@ -1,0 +1,37 @@
+---
+title: "Glossary: CountersBatchCommandData"
+sidebar_label: CountersBatchCommandData
+sidebar_position: 22
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: CountersBatchCommandData
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Id** | string | Document id |
+| **Counters** | [DocumentCountersOperation](../client-api/operations/counters/counter-batch#documentcountersoperation) | Counter operations to perform |
+| **ChangeVector** | string | The change-vector of the last-updated counter |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to a Json. |
+
+
+</LanguageContent>

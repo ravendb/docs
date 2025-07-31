@@ -1,0 +1,59 @@
+---
+title: "Troubleshooting: Logging"
+sidebar_label: Logging
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Troubleshooting: Logging
+
+RavenDB has extensive support for logging, enabling you to figure out exactly what is going on in the server.
+
+## Logging to Files
+
+The logging to files can be setup by [logs configuration](../../server/configuration/logs-configuration) defined in the [settings.json](../configuration/configuration-options#json) file. By default, the logging
+is turned on with the following options:
+
+- logging level: `Operations` (high level info for operational users)
+- logs directory: 'Logs' (next to RavenDB executables)
+
+If you want to see the low level debug information you need to set the logging level to `Information`. The server restart is required to apply the changes.
+
+<Admonition type="note" title="RavenCLI" id="ravencli" href="#ravencli">
+
+Modifying the [settings.json](../configuration/configuration-options#json) file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli). 
+
+This will change the logging level without the need of doing any server restarts, but will not modify the [settings.json](../configuration/configuration-options#json) file, so please bare in mind that after restart the logging level be read from configuration file again.
+
+<TabItem value="something" label="plain">
+<CodeBlock language="plain">
+{`log <on|off|http-on|http-off|none|operations|information>
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about the command [here](../../server/administration/cli#log).
+
+</Admonition>
+
+<Admonition type="note" title="Async log" id="async-log" href="#async-log">
+
+In order to not affect the server performance too much, even with debug info logging enabled, the RavenDB logging is asynchronous and 
+handled by the dedicated thread responsible for executing the I/O operations.
+
+</Admonition>
+
+
+
+## Studio: Admin Logs
+
+Another option that allows you to see the debug logging without the need to restart the server is to use the Admin Logs feature available in the Studio: `Manage Server -> Admin Logs`.
+
+
+

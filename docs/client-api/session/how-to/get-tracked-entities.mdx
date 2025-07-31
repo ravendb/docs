@@ -1,0 +1,288 @@
+---
+title: "How to Get Tracked Entities"
+sidebar_label: ...get tracked entities
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "nodejs"];
+
+
+# How to Get Tracked Entities
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `SaveChanges()` is called.
+
+* You can use the session's advanced `GetTrackedEntities()` method  
+  to retrieve the **list of all entities tracked by the session**.
+
+* To check what is the actual type of change made to the entities, see:  
+  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes), or
+  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes).
+ 
+* In this page:
+  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities#get-tracked-entities)
+  * [Syntax](../../../client-api/session/how-to/get-tracked-entities#syntax)
+
+</Admonition>
+## Get tracked entities 
+
+**Tracking stored entities**:
+<TabItem value="something" label="get_tracked_entities_1">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Store entities within the session:
+    Employee employee1 = new Employee \{FirstName = "John", LastName = "Doe"\};
+    Employee employee2 = new Employee \{FirstName = "David", LastName = "Brown"\};
+    Employee employee3 = new Employee \{FirstName = "Tom", LastName = "Miller"\};
+    session.Store(employee1, "employees/1-A");
+    session.Store(employee2, "employees/2-A");
+    session.Store(employee3, "employees/3-A");
+
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+
+    // The session tracks the 3 new stored entities:
+    Assert.Equal(3, trackedEntities.Keys.Count);
+    var entityInfo = trackedEntities["employees/1-A"];
+    Assert.Equal("employees/1-A", entityInfo.Id);
+    Assert.True(entityInfo.Entity is Employee);
+    
+    // Save changes:
+    session.SaveChanges();
+    
+    // The session keeps tracking the entities even after SaveChanges is called:
+    trackedEntities = session.Advanced.GetTrackedEntities();
+    Assert.Equal(3, trackedEntities.Keys.Count);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking loaded and deleted entities**:
+<TabItem value="something" label="get_tracked_entities_2">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Load entity:
+    Employee employee1 = session.Load<Employee>("employees/1-A");
+    
+    // Delete entity:
+    session.Delete("employees/3-A");
+    
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+    
+    // The session tracks the 2 entities:
+    Assert.Equal(2, trackedEntities.Keys.Count);
+    
+    // Note the 'IsDeleted' property that is set for deleted entities:
+    var entityInfo = trackedEntities["employees/3-A"];
+    Assert.True(entityInfo.IsDeleted);
+    
+    // Save changes:
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking queried entities**:
+<TabItem value="something" label="get_tracked_entities_3">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+    // Query for all employees:
+    var employees = session.Query<Employee>().ToList();
+    
+    // Get tracked entities:
+    IDictionary<string, EntityInfo> trackedEntities = session.Advanced.GetTrackedEntities();
+    
+    // The session tracks the entities loaded via the query:
+    Assert.Equal(2, trackedEntities.Keys.Count); 
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax_1">
+<CodeBlock language="csharp">
+{`IDictionary<string, EntityInfo> GetTrackedEntities();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class EntityInfo
+\{
+    public string Id \{ get; set; \}
+    public object Entity \{ get; set; \}
+    public bool IsDeleted \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+  made to all the entities it has either loaded, stored, deleted, or queried for,  
+  and persists to the server only what is needed when `saveChanges()` is called.
+
+* You can use the session's advanced `getTrackedEntities()` method  
+  to retrieve the **list of all entities tracked by the session**.
+
+* To check what is the actual type of change made to the entities, see:  
+  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes), or
+  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes).
+ 
+* In this page:
+  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities#get-tracked-entities)
+  * [Syntax](../../../client-api/session/how-to/get-tracked-entities#syntax)
+
+</Admonition>
+## Get tracked entities 
+
+**Tracking stored entities**:
+<TabItem value="something-something" label="get_tracked_entities_1">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+
+// Store entities within the session:
+let employee1 = new Employee();
+employee.firstName = "John";
+employee.lastName = "Doe";
+await session.store(employee, "employees/1-A");
+
+let employee2 = new Employee();
+employee.firstName = "David";
+employee.lastName = "Brown";
+await session.store(employee2, "employees/2-A");
+
+let employee3 = new Employee();
+employee.firstName = "Tom";
+employee.lastName = "Miller";
+await session.store(employee3, "employees/3-A");
+
+// Get tracked entities:
+let trackedEntities = session.advanced.getTrackedEntities();
+
+// The session tracks the new stored entities:
+const entityInfo = trackedEntities["employees/1-A"];
+assert.equal(entityInfo.id, "employees/1-A");
+assert.ok(entityInfo.entity instanceof Employee);
+
+// Save changes:
+await session.saveChanges();
+
+// The session keeps tracking the entities even after SaveChanges is called:
+trackedEntities = session.advanced.getTrackedEntities();
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking loaded and deleted entities**:
+<TabItem value="something-something" label="get_tracked_entities_2">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+
+// Load entity:
+const employee1 = await session.load("employees/1-A");
+
+// Delete entity:
+session.delete("employees/3-A");
+
+// Get tracked entities:
+const trackedEntities = session.advanced.getTrackedEntities();
+
+// The session tracks the 2 entities:
+
+// The loaded entity:
+const entityInfo1 = trackedEntities["employees/1-A"];
+assert.ok(!entityInfo1.isDeleted);
+
+// The deleted entity:
+const entityInfo2 = trackedEntities.get("employees/3-A");
+assert.ok(entityInfo2.isDeleted);
+
+// Save changes:
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+**Tracking queried entities**:
+<TabItem value="something-something" label="get_tracked_entities_3">
+<CodeBlock language="nodejs">
+{`const session = documentStore.openSession();
+
+// Query for all employees:
+const employees = await session.query(\{ collection: "employees"\}).all();
+
+// Get tracked entities:
+const trackedEntities = session.advanced.getTrackedEntities();
+
+// The session tracks the entities loaded via the query:
+const entityInfo1 = trackedEntities[employees[0].id];
+const entityInfo2 = trackedEntities[employees[1].id];
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="nodejs">
+{`getTrackedEntities();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return value              |                                                                  |
+|---------------------------|------------------------------------------------------------------|
+| `Map<string, EntityInfo>` | A dictionary that maps the entity id to the `EntityInfo` object. |
+
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="nodejs">
+{`class EntityInfo \{
+    // The tracked entity id
+    id;       // string
+    
+    // The tracked entity object
+    entity;   // object
+    
+    // isDeleted is true if entity was deleted
+    isDeleted // boolean
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>

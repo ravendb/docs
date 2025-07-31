@@ -1,0 +1,35 @@
+---
+title: "Glossary: DeleteCompareExchangeCommandData"
+sidebar_label: DeleteCompareExchangeCommandData
+sidebar_position: 21
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Glossary: DeleteCompareExchangeCommandData
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **key** | string | The key to be deleted |
+| **index** | long | The version number of the value to be deleted |
+
+### Methods
+
+| Signature | Description |
+| ---------- | ----------- |
+| **DynamicJsonValue ToJson(DocumentConventions conventions, JsonOperationContext context)** | Translate this instance to a Json. |
+
+</LanguageContent>

@@ -1,0 +1,137 @@
+---
+title: "Conventions: Deserialization"
+sidebar_label: DeSerialization
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Conventions: Deserialization
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions) 
+by which entities are deserialized as they are received by the client.  
+
+* In this page:  
+  * [CustomizeJsonDeserializer](../../client-api/configuration/deserialization#customizejsondeserializer)  
+  * [DeserializeEntityFromBlittable](../../client-api/configuration/deserialization#deserializeentityfromblittable)  
+  * [PreserveDocumentPropertiesNotFoundOnModel](../../client-api/configuration/deserialization#preservedocumentpropertiesnotfoundonmodel)  
+  * [DefaultRavenSerializationBinder](../../client-api/configuration/deserialization#defaultravenserializationbinder)  
+  * [Number Deserialization](../../client-api/configuration/deserialization#number-deserialization)  
+
+</Admonition>
+## Deserialization
+
+## CustomizeJsonDeserializer
+
+* The `JsonSerializer` object is used by the client to deserialize entities 
+  loaded from the server.  
+* Use the `CustomizeJsonDeserializer` convention to modify `JsonSerializer` 
+  by registering a deserialization customization action.  
+
+<TabItem value="something" label="customize_json_deserializer">
+<CodeBlock language="csharp">
+{`Conventions =
+\{
+    Serialization = new NewtonsoftJsonSerializationConventions
+    \{
+        CustomizeJsonDeserializer = serializer => throw new CodeOmitted()
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## DeserializeEntityFromBlittable
+
+* Use the `DeserializeEntityFromBlittable` convention to customize entity 
+  deserialization from a blittable JSON.  
+
+<TabItem value="something" label="DeserializeEntityFromBlittable">
+<CodeBlock language="csharp">
+{`Conventions =
+\{
+    Serialization = new NewtonsoftJsonSerializationConventions
+    \{
+        DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## PreserveDocumentPropertiesNotFoundOnModel
+
+* Some document properties are not deserialized to an object.  
+* Set the `PreserveDocumentPropertiesNotFoundOnModel` convention to `true` 
+  to **preserve** such properties when the document is saved.  
+* Set the `PreserveDocumentPropertiesNotFoundOnModel` convention to `false` 
+  to **remove** such properties when the document is saved.  
+* Default: `true`  
+
+<TabItem value="something" label="preserve_doc_props_not_found_on_model">
+<CodeBlock language="csharp">
+{`Conventions =
+\{
+    PreserveDocumentPropertiesNotFoundOnModel = true
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## DefaultRavenSerializationBinder
+
+Use the `DefaultRavenSerializationBinder` convention and its methods to 
+prevent gadgets from running RCE (Remote Code Execution) attacks while 
+data is deserialized by the client.  
+
+Read about this security convention and maintaining deserialization security 
+[here](../../client-api/security/deserialization-security).  
+
+
+## Number Deserialization
+
+* RavenDB client supports all common numeric value types (including `int`, `long`, 
+  `double`, `decimal`, etc.) out of the box.  
+* Note that although deserialization of `decimals` is fully supported, there are 
+  [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in this range.  
+* Other number types, like `BigInteger`, must be handled using custom deserialization.
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+## Customize ObjectMapper
+
+If you need to customize Jackson `ObjectMapper` object used by the client when sending entities to the server you can access and modify its instance:
+
+<TabItem value="something-something" label="customize_object_mapper">
+<CodeBlock language="java">
+{`ObjectMapper entityMapper = conventions.getEntityMapper();
+entityMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
+`}
+</CodeBlock>
+</TabItem>
+
+## Numbers (de)serialization
+
+RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double` etc.  
+Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
+Other number types like `BigInteger` must be treated using custom (de)serialization.
+
+
+</LanguageContent>

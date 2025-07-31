@@ -1,0 +1,441 @@
+---
+title: "Create or Modify Counters"
+sidebar_label: Create or Modify Counters
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Create or Modify Counters
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use the `CountersFor.Increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `Increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `Increment` will create it and set its initial value.  
+
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+  - [`Increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+
+</Admonition>
+## `Increment` usage
+
+ **Flow**:  
+
+* Open a session.  
+* Create an instance of `CountersFor`.  
+    * Either pass `CountersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `CountersFor.Increment`.
+* Call `session.SaveChanges` for the changes to take effect.  
+
+**Note**:
+
+* Modifying a Counter using `Increment` only takes effect when `session.SaveChanges()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `Increment` method.  
+
+
+
+## Example
+
+<TabItem value="something" label="counters_region_Increment">
+<CodeBlock language="csharp">
+{`// 1. Open a session
+using (var session = docStore.OpenSession())
+\{
+    // 2. pass CountersFor's constructor a document ID  
+    var documentCounters = session.CountersFor("products/1-C");
+
+    // 3. Use \`CountersFor.Increment\`
+    documentCounters.Increment("ProductLikes"); // Increase "ProductLikes" by 1, or create it with a value of 1
+    documentCounters.Increment("ProductDislikes", 1); // Increase "ProductDislikes" by 1, or create it with a value of 1
+    documentCounters.Increment("ProductPageViews", 15); // Increase "ProductPageViews" by 15, or create it with a value of 15
+    documentCounters.Increment("DaysLeftForSale", -10); // Decrease "DaysLeftForSale" by 10, or create it with a value of -10
+
+    // 4. Save changes to the session
+    session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something" label="Increment-definition">
+<CodeBlock language="csharp">
+{`void Increment(string counterName, long incrementValue = 1);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                                                                      |
+|---------------|---------|------------------------------------------------------------------------------------------------------------------|
+| `counterName` | string  | Counter's name                                                                                                   |
+| `delta`       | long    | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `increment` will create it and set its initial value.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+  - [`increment` uage](../../document-extensions/counters/create-or-modify#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+
+</Admonition>
+## `increment` usage
+
+**Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+     * Either pass `countersFor` an explicit document ID, -or-  
+     * Pass it an entity tracked by the session, e.g. a document object returned from `session.query` or from `session.load`.  
+* Call `countersFor.increment`. 
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:  
+
+* Modifying a Counter using `increment` only takes effect when `session.saveChanges()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
+
+
+
+## Example
+
+<TabItem value="something-something" label="counters_region_Increment">
+<CodeBlock language="java">
+{`// 1. Open a session
+try (IDocumentSession session = docStore.openSession()) \{
+    // 2. pass CountersFor's constructor a document ID
+    ISessionDocumentCounters documentCounters = session.countersFor("products/1-C");
+
+    // 3. Use \`countersFor.increment\`
+    documentCounters.increment("productLikes");  // Increase "productLikes" by 1, or create it with a value of 1
+    documentCounters.increment("productDislikes", 1); // Increase "productDislikes" by 1, or create it with a value of 1
+    documentCounters.increment("productPageViews", 15); // Increase "productPageViews" by 15, or create it with a value of 15
+    documentCounters.increment("daysLeftForSale", -10); // Decrease "daysLeftForSale" by 10, or create it with a value of -10
+
+    // 4. Save changes to the session
+    session.saveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="Increment-definition">
+<CodeBlock language="java">
+{`void increment(String counterName);
+
+void increment(String id, String name, long delta);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type   | Description                                                                                                      |
+|------------------|--------|------------------------------------------------------------------------------------------------------------------|
+| `counterName`    | String | Counter's name                                                                                                   |
+| `incrementValue` | Long   | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use the `counters_for .increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `increment` will create it and set its initial value.  
+
+* For all other `counters_for ` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+
+</Admonition>
+## `increment` usage
+
+ **Flow**:  
+
+* Open a session.  
+* Create an instance of `counters_for `.  
+    * Either pass `counters_for ` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `counters_for .increment`.
+* Call `session.save_changes` for the changes to take effect.  
+
+**Note**:
+
+* Modifying a Counter using `increment` only takes effect when `session.aave_changes()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
+
+
+
+## Example
+
+<TabItem value="something-something" label="counters_region_Increment">
+<CodeBlock language="python">
+{`# Open a session
+with store.open_session() as session:
+    # Pass CountersFor's constructor a document ID
+    document_counters = session.counters_for("products/1-A")
+
+    # Use 'CountersFor.increment'
+    # ===========================
+
+    # Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+    document_counters.increment("ProductLikes")
+
+    # Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+    document_counters.increment("ProductPageViews", 15)
+
+    # Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+    document_counters.increment("DaysLeftForSale", -10)
+
+    # Execute all changes by calling save_changes
+    session.save_changes()
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="Increment-definition">
+<CodeBlock language="python">
+{`def increment(self, counter: str, delta: int = 1) -> None: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **counter_name** | `str` | Counter's name  |
+| **delta**        | `int` | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `increment` will create it and set its initial value.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+
+</Admonition>
+## `increment` usage
+
+ **Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+* Call `countersFor.increment`.
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:
+
+* Modifying a Counter using `increment` only takes effect when `session.aaveChanges()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
+
+
+
+## Example
+
+<TabItem value="something-something" label="counters_region_Increment">
+<CodeBlock language="php">
+{`// Open a session
+$session = $docStore->openSession();
+try \{
+    // Pass the countersFor constructor a document ID
+    $documentCounters = $session->countersFor("products/1-A");
+
+    // Use \`countersFor.increment\`:
+    // ============================
+
+    // Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+    $documentCounters->increment("ProductLikes");
+
+    // Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+    $documentCounters->increment("ProductPageViews", 15);
+
+    // Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+    $documentCounters->increment("DaysLeftForSale", -10);
+
+    // Execute all changes by calling SaveChanges
+    $session->saveChanges();
+\} finally \{
+    $session->close();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="CountersFor-definition">
+<CodeBlock language="php">
+{`public function countersFor(string|object $idOrEntity): SessionDocumentCountersInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **idOrEntity** | `string` or `object`| The object to create or modify counters for |
+<TabItem value="something-something" label="Increment-definition">
+<CodeBlock language="php">
+{`public function increment(?string $counter, int $delta = 1): void;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type  | Description     |
+|------------------|-------|-----------------|
+| **counter** | `string` | Counter name  |
+| **delta** | `int` | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Use the `countersFor.increment` method to **create** a new Counter or **modify** an existing Counter's value.  
+
+*  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
+   If the Counter doesn't exist, `increment` will create it and set its initial value.  
+
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+
+* In this page:
+  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+
+</Admonition>
+## `Increment` usage
+
+ **Flow**:  
+
+* Open a session.  
+* Create an instance of `countersFor`.  
+    * Either pass `countersFor` an explicit document ID, -or-  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+* Call `countersFor.increment`.
+* Call `session.saveChanges` for the changes to take effect.  
+
+**Note**:
+
+* Modifying a Counter using `increment` only takes effect when `session.saveChanges()` is executed.  
+* To **decrease** a Counter's value, pass the method a negative number to the `increment` method.  
+
+
+
+## Example
+
+<TabItem value="something-something" label="create_or_modify">
+<CodeBlock language="nodejs">
+{`// Open a session
+const session = documentStore.openSession();        
+       
+// Pass a document ID to the countersFor constructor 
+const documentCounters = session.countersFor("products/1-A");
+
+// Use \`countersFor.increment\`:
+// ============================
+
+// Increase "ProductLikes" by 1, or create it if doesn't exist with a value of 1
+documentCounters.increment("ProductLikes", 1); 
+
+// Increase "ProductPageViews" by 15, or create it if doesn't exist with a value of 15
+documentCounters.increment("ProductPageViews", 15);
+
+// Decrease "DaysLeftForSale" by 10, or create it if doesn't exist with a value of -10
+documentCounters.increment("DaysLeftForSale", -10);
+
+// Save changes
+await session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`increment(counter);
+increment(counter, delta);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                                                                          |
+|---------------|---------|----------------------------------------------------------------------------------------------------------------------|
+| `counter`     | string  | The counter's name                                                                                                   |
+| `delta`       | long    | Increase Counter by this value.<br/>Default value is 1.<br/>For a new Counter, this number will be its initial value. |
+
+
+
+
+</LanguageContent>

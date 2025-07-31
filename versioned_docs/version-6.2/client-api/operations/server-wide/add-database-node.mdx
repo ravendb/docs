@@ -1,0 +1,398 @@
+---
+title: "Adding a Database Node"
+sidebar_label: Add Database Node
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
+
+
+# Adding a Database Node
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* When creating a database, you can specify the number of replicas for that database.  
+  This determines the number of database instances in the database-group.
+
+* **The number of replicas can be dynamically increased** even after the database is up and running,  
+  by adding more nodes to the database-group.  
+
+* The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
+
+* Once a new node is added to the database-group,  
+  the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
+
+* In this page:
+    * [Add database node - random](../../../client-api/operations/server-wide/add-database-node#add-database-node---random)
+    * [Add database node - specific](../../../client-api/operations/server-wide/add-database-node#add-database-node---specific)
+    * [Syntax](../../../client-api/operations/server-wide/add-database-node#syntax)  
+</Admonition>
+## Add database node - random
+
+* Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
+* The node added will be a random node from the existing cluster nodes.   
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create the AddDatabaseNodeOperation
+// Add a random node to 'Northwind' database-group
+var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
+
+// Execute the operation by passing it to Maintenance.Server.Send
+DatabasePutResult result = store.Maintenance.Server.Send(addDatabaseNodeOp);
+
+// Can access the new topology
+var numberOfReplicas = result.Topology.AllNodes.Count();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create the AddDatabaseNodeOperation
+// Add a random node to 'Northwind' database-group
+var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+DatabasePutResult result = await store.Maintenance.Server.SendAsync(addDatabaseNodeOp);
+
+// Can access the new topology
+var numberOfReplicas = result.Topology.AllNodes.Count();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Add database node - specific
+
+* You can specify the node tag to add.  
+* This node must already exist in the cluster topology.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create the AddDatabaseNodeOperation
+// Add node C to 'Northwind' database-group
+var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C");
+
+// Execute the operation by passing it to Maintenance.Server.Send
+DatabasePutResult result = store.Maintenance.Server.Send(addDatabaseNodeOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create the AddDatabaseNodeOperation
+// Add node C to 'Northwind' database-group
+var addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C");
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+DatabasePutResult result = await store.Maintenance.Server.SendAsync(addDatabaseNodeOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something" label="syntax">
+<CodeBlock language="csharp">
+{`public AddDatabaseNodeOperation(string databaseName, string nodeTag = null)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of a database for which to add the node. |
+| **nodeTag** | `string` | Tag of node to add.<br/>Default: a random node from the existing cluster topology will be added. |
+
+| Object returned by Send operation:<br/>`DatabasePutResult` | Type | Description |
+| - | - | - |
+| RaftCommandIndex | `long` | Index of the raft command that was executed |
+| Name | `string` | Database name |
+| Topology | `DatabaseTopology` | The database topology |
+| NodesAddedTo | `List<string>` | New nodes added to the cluster topology.<br/>Will be 0 for this operation. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* When creating a database, you can specify the number of replicas for that database.  
+  This determines the number of database instances in the database-group.
+
+* **The number of replicas can be dynamically increased** even after the database is up and running,  
+  by adding more nodes to the database-group.  
+
+* The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
+
+* Once a new node is added to the database-group,  
+  the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
+
+* In this page:
+    * [Add database node - random](../../../client-api/operations/server-wide/add-database-node#add-database-node---random)
+    * [Add database node - specific](../../../client-api/operations/server-wide/add-database-node#add-database-node---specific)
+    * [Syntax](../../../client-api/operations/server-wide/add-database-node#syntax)  
+</Admonition>
+## Add database node - random
+
+* Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
+* The node added will be a random node from the existing cluster nodes.   
+
+<TabItem value="something-something" label="add_1">
+<CodeBlock language="python">
+{`# Create the AddDatabaseNodeOperation
+# Add a random node to 'Northwind' database-group
+add_database_node_op = AddDatabaseNodeOperation("Northwind")
+
+# Execute the operation by passing it to maintenance.server.send
+result = store.maintenance.server.send(add_database_node_op)
+
+# Can access the new topology
+number_of_replicas = len(result.topology.all_nodes)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add database node - specific
+
+* You can specify the node tag to add.  
+* This node must already exist in the cluster topology.
+
+<TabItem value="something-something" label="add_2">
+<CodeBlock language="python">
+{`# Create the AddDatabaseNodeOperation
+# Add node C to 'Northwind
+add_database_node_op = AddDatabaseNodeOperation("Northwind", "C")
+
+# Execute the operation by passing it to maintenance.server.send
+result = store.maintenance.server.send(add_database_node_op)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="python">
+{`class AddDatabaseNodeOperation(ServerOperation[DatabasePutResult]):
+    def __init__(self, database_name: str, node_tag: str = None): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **database_name** | `str` | Name of a database for which to add the node. |
+| **node_tag** | `str` | Tag of node to add.<br/>Default: a random node from the existing cluster topology will be added. |
+
+| Object returned by Send operation:<br/>`DatabasePutResult` | Type | Description |
+| - | - | - |
+| raft_command_index | `int` | Index of the raft command that was executed |
+| name | `str` | Database name |
+| topology | `DatabaseTopology` | The database topology |
+| nodes_added_to | `list<str>` | New nodes added to the cluster topology.<br/>Will be 0 for this operation. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* When creating a database, you can specify the number of replicas for that database.  
+  This determines the number of database instances in the database-group.
+
+* **The number of replicas can be dynamically increased** even after the database is up and running,  
+  by adding more nodes to the database-group.  
+
+* The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
+
+* Once a new node is added to the database-group,  
+  the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
+
+* In this page:
+    * [Add database node - random](../../../client-api/operations/server-wide/add-database-node#add-database-node---random)
+    * [Add database node - specific](../../../client-api/operations/server-wide/add-database-node#add-database-node---specific)
+    * [Syntax](../../../client-api/operations/server-wide/add-database-node#syntax)  
+</Admonition>
+## Add database node - random
+
+* Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
+* The node added will be a random node from the existing cluster nodes.   
+
+<TabItem value="something-something" label="add_1">
+<CodeBlock language="php">
+{`// Create the AddDatabaseNodeOperation
+// Add a random node to 'Northwind' database-group
+$addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
+
+// Execute the operation by passing it to Maintenance.Server.Send
+/** @var DatabasePutResult $result */
+$result = $store->maintenance()->server()->send($addDatabaseNodeOp);
+
+// Can access the new topology
+$numberOfReplicas = count($result->getTopology()->getMembers());
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add database node - specific
+
+* You can specify the node tag to add.  
+* This node must already exist in the cluster topology.
+
+<TabItem value="something-something" label="add_2">
+<CodeBlock language="php">
+{`// Create the AddDatabaseNodeOperation
+// Add node C to 'Northwind' database-group
+$addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C");
+
+// Execute the operation by passing it to Maintenance.Server.Send
+/** @var DatabasePutResult $result */
+$result = $store->maintenance()->server()->send($addDatabaseNodeOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="php">
+{`AddDatabaseNodeOperation(?string $databaseName, ?string $nodeTag = null)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **$databaseName** | `?string` | Name of a database for which to add the node. |
+| **$nodeTag** | `?string` | Tag of node to add.<br/>Default: a random node from the existing cluster topology will be added. |
+
+| Object returned by Send operation:<br/>`DatabasePutResult` | Type | Description |
+| - | - | - |
+| $name | `string` | Database name |
+| $topology | `DatabaseTopology` | The database topology |
+| $nodesAddedTo | `StringArray` | New nodes added to the cluster topology.<br/>Will be 0 for this operation. |
+| $raftCommandIndex | `int` | Raft command index |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* When creating a database, you can specify the number of replicas for that database.  
+  This determines the number of database instances in the database-group.
+
+* **The number of replicas can be dynamically increased** even after the database is up and running,  
+  by adding more nodes to the database-group.  
+
+* The nodes added must already exist in the [cluster topology](../../../server/clustering/rachis/cluster-topology).
+
+* Once a new node is added to the database-group,  
+  the cluster assigns a mentor node (from the existing database-group nodes) to update the new node.
+
+* In this page:
+    * [Add database node - random](../../../client-api/operations/server-wide/add-database-node#add-database-node---random)
+    * [Add database node - specific](../../../client-api/operations/server-wide/add-database-node#add-database-node---specific)
+    * [Syntax](../../../client-api/operations/server-wide/add-database-node#syntax)  
+</Admonition>
+## Add database node - random
+
+* Use `AddDatabaseNodeOperation` to add another database-instance to the database-group.
+* The node added will be a random node from the existing cluster nodes.   
+
+<TabItem value="something-something" label="add_1">
+<CodeBlock language="nodejs">
+{`// Create the AddDatabaseNodeOperation
+// Add a random node to 'Northwind' database-group
+const addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind");
+
+// Execute the operation by passing it to maintenance.server.send
+const result = await documentStore.maintenance.server.send(addDatabaseNodeOp);
+
+// Can access the new topology
+const numberOfReplicas = getAllNodesFromTopology(result.topology).length;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Add database node - specific
+
+* You can specify the node tag to add.  
+* This node must already exist in the cluster topology.
+
+<TabItem value="something-something" label="add_2">
+<CodeBlock language="nodejs">
+{`// Create the AddDatabaseNodeOperation
+// Add node C to 'Northwind' database-group
+const addDatabaseNodeOp = new AddDatabaseNodeOperation("Northwind", "C"));
+
+// Execute the operation by passing it to maintenance.server.send
+const result = await documentStore.maintenance.server.send(addDatabaseNodeOp);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax">
+<CodeBlock language="nodejs">
+{`const addDatabaseNodeOp = new AddDatabaseNodeOperation(databaseName, nodeTag?);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - | - | - |
+| **databaseName** | `string` | Name of a database for which to add the node. |
+| **nodeTag** | `string` | Tag of node to add.<br/>Default: If not passed then a random node from the existing cluster topology will be added. |
+
+| Object returned by send operation has: | Type | Description |
+| - | - | - |
+| raftCommandIndex | `number` | Index of the raft command that was executed |
+| name | `string` | Database name |
+| topology | `DatabaseTopology` | The database topology |
+| nodesAddedTo | `string[]` | New nodes added to the cluster topology.<br/>Will be 0 for this operation. |
+
+
+
+
+
+
+
+
+</LanguageContent>

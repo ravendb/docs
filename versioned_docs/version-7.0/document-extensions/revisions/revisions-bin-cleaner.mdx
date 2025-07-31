@@ -1,0 +1,154 @@
+---
+title: "Revisions Bin Cleaner"
+sidebar_label: Revisions Bin Cleaner
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Revisions Bin Cleaner
+<Admonition type="note" title="Note">
+
+* The [Revisions Bin](../../studio/database/document-extensions/revisions/revisions-bin) stores revisions of deleted documents, ensuring they remain accessible.
+
+* While you can manually delete these revisions directly from the Revisions Bin,  
+  you can also set up a cleaner task to remove them automatically, as described below.
+
+* For a complete list of deletion methods, see [All ways to delete revisions](../../studio/database/document-extensions/revisions/all-revisions#all-ways-to-delete-revisions).
+  
+* In this page:
+    * [The revisions bin cleaner](../../document-extensions/revisions/revisions-bin-cleaner#the-revisions-bin-cleaner)
+    * [Setting the revisions bin cleaner - from the Studio](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-studio)
+    * [Setting the revisions bin cleaner - from the Client API](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api)
+    * [Syntax](../../document-extensions/revisions/revisions-bin-cleaner#syntax)
+
+</Admonition>
+## The revisions bin cleaner
+    
+Each entry in the [Revisions Bin](../../studio/database/document-extensions/revisions/revisions-bin) represents a "Delete Revision",
+which is a revision that marks a document as deleted and provides access to the revisions that were created for the document before it was deleted.
+
+<Admonition type="warning" title="Warning">
+When the cleaner removes a "Delete Revision" entry,  
+ALL the revisions associated with the deleted document are **permanently deleted**.
+</Admonition>
+* The Revisions Bin Cleaner is configured with the following parameters:
+    * **Frequency** - How often the cleaner runs.
+    * **Entries age to keep** - The cleaner deletes revision entries older than this value.
+
+* The cleaner task can be managed from:  
+  * The [Revisions bin cleaner view](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-studio) in the Studio
+  * The [Client API](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api).
+
+* When working with a secure server:
+   * Configuring the Revisions Bin Cleaner is logged in the [audit log](../../server/security/audit-log/audit-log).
+   * Deleting revisions is only available to a client certificate with a security clearance of [Database Admin](../../server/security/authorization/security-clearance-and-permissions#section) or higher.
+
+
+
+## Setting the revisions bin cleaner - from the Studio
+
+![Revisions bin cleaner view](./assets/revisions-bin-cleaner.png)
+
+1. Go to **Settings &gt; Revisions Bin Cleaner**   
+2. Toggle ON to enable the cleaner task.  
+3. Set the minimum entries age to keep:  
+   * When toggled ON:  
+       * Revisions Bin entries older than this value will be deleted.  
+       * Default: `30` days.  
+   * When toggled OFF:  
+       * ALL Revisions Bin entries will be deleted.  
+4. Set the custom cleaner frequency:  
+   * Define how often (in seconds) the Revisions Bin Cleaner runs.
+   * Default: `300` seconds (5 minutes).
+
+
+
+## Setting the revisions bin cleaner - from the Client API
+
+* Use `ConfigureRevisionsBinCleanerOperation` to configure the Revisions Bin Cleaner from the Client API.
+
+* By default, the operation will be applied to the [default database](../../client-api/setting-up-default-database).  
+  To operate on a different database see [switch operations to different database](../../client-api/operations/how-to/switch-operations-to-a-different-database).
+
+* In this example, we enable the cleaner and configure its execution frequency and retention policy.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`//Define the revisions bin cleaner configuration
+var config = new RevisionsBinConfiguration()
+{
+    // Enable the cleaner
+    Disabled = false,
+
+    // Set the cleaner execution frequency
+    CleanerFrequencyInSec = 24 * 60 * 60, // one day (in seconds)
+    
+    // Revisions bin entries older than the following value will be deleted
+    MinimumEntriesAgeToKeepInMin = 24 * 60 // one day (in minutes)
+};
+
+// Define the operation
+var configRevisionsBinCleanerOp = new ConfigureRevisionsBinCleanerOperation(config);
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(configRevisionsBinCleanerOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var config = new RevisionsBinConfiguration()
+{
+    Disabled = false,
+    CleanerFrequencyInSec = 24 * 60 * 60,
+    MinimumEntriesAgeToKeepInMin = 24 * 60 
+};
+
+var configRevisionsBinCleanerOp = new ConfigureRevisionsBinCleanerOperation(config);
+await store.Maintenance.SendAsync(configRevisionsBinCleanerOp);
+`}
+</CodeBlock>
+</TabItem>
+    </Tabs>
+
+
+
+## Syntax
+
+<TabItem value="something-something" label="syntax_1">
+<CodeBlock language="csharp">
+{`public ConfigureRevisionsBinCleanerOperation(RevisionsBinConfiguration configuration);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="something-something" label="syntax_2">
+<CodeBlock language="csharp">
+{`public class RevisionsBinConfiguration
+\{
+    // Set to true to enable the revisions bin cleaner.
+    // Default: false (cleaner is disabled).
+    public bool Disabled \{ get; set; \}
+    
+    // The minimum age (in minutes) for revisions-bin entries to be kept in the database.
+    // The cleaner deletes entries older than this value.
+    // When set to 0: ALL revisions-bin entries will be removed from the Revisions Bin
+    // Default: 30 days.
+    public int MinimumEntriesAgeToKeepInMin \{ get; set; \}
+    
+    // The frequency (in seconds) at which the revisions bin cleaner executes.
+    // Default: 300 seconds (5 minutes).
+    public long CleanerFrequencyInSec \{ get; set; \} = 5 * 60;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+

@@ -1,0 +1,129 @@
+---
+title: "Cloud: Microsoft Azure Marketplace"
+sidebar_label: Microsoft Azure Marketplace
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+# Cloud: Microsoft Azure Marketplace
+<Admonition type="note" title="Note">
+
+Access to *RavenDB Cloud* services is available through the *Microsoft Azure Marketplace*.
+
+* In this page:
+    * [Overview](../cloud/cloud-microsoft-azure-marketplace#overview)
+    * [Registration process](../cloud/cloud-microsoft-azure-marketplace#registration-process)
+    * [Subscription cancellation process](../cloud/cloud-microsoft-azure-marketplace#subscription-cancellation-process)
+    * [Conversion from a regular Cloud Account to an Azure Marketplace Account](../cloud/cloud-microsoft-azure-marketplace#conversion-from-a-regular-cloud-account-to-an-azure-marketplace-account)
+
+</Admonition>
+## Overview
+
+If you want to pay for *RavenDB Cloud* services using a credit card associated with your *Microsoft Azure* account, without re-entering the card in *RavenDB Cloud*, you can subscribe to [RavenDB Cloud offer](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/hibernatingrhinos.ravendb-cloud-payg?tab=Overview) on the *Microsoft Azure Marketplace*.
+
+*Microsoft Azure Cloud Account* created this way has a few differences in comparison to the regular *Cloud Account*:
+
+- Monthly invoices are issued by *Microsoft Azure*, not by *RavenDB Cloud*.
+- *Microsoft Azure Cloud Account* offering is limited to *Azure* products.
+- Billing and contact information are fully managed by *Microsoft Azure*. Changing the parameters is not possible via Cloud Portal.
+
+
+## Registration process
+
+To connect your *Microsoft Azure* account to the *RavenDB Cloud*, search for the **RavenDB Cloud** offer in *Microsoft Azure Marketplace* and click on it.
+
+!["Figure 1 - RavenDB Cloud offer in Microsoft Azure Marketplace"](./assets/microsoft-azure-marketplace-cloud-ravendb-offer.png)
+In the main page of the offer, click **Subscribe**.
+
+!["Figure 2 - Main page of the RavenDB Cloud offer in Microsoft Azure Marketplace"](./assets/microsoft-azure-marketplace-cloud-ravendb-offer-overview.png)
+Provide the necessary information required to subscribe to the offer:
+
+!["Figure 3 - RavenDB Cloud subscription configuration panel"](./assets/microsoft-azure-marketplace-cloud-ravendb-offer-configration.png)
+
+1.  **Subscription**  
+    Select the *Microsoft Azure subscription* from which your payment information will be used for this offer.
+
+2.  **Resource group**  
+    Select the *Microsoft Azure resource group* where the subscription will be located.
+
+3.  **Name**  
+    Provide a name for the subscription. 
+
+4.  **Recurring billing**  *
+    When recurring billing is on, your subscription will renew at the end of the billing term.
+
+<Admonition type="danger" title="Danger">
+If **recurring billing** option is **off**, your subscription **won't be renewed at the end of the billing term**.
+This means your subscription, account along with its Cloud products and data they held, **will be permanently lost** at the end of the billing term.
+**We highly recommend not changing this option**.
+</Admonition>
+
+After providing the information, please click **Review + subscribe**.
+The last page shows selected options and basic information about your *Microsoft Azure* account.
+
+!["Figure 4 - RavenDB Cloud subscription configuration panel - summary"](./assets/microsoft-azure-marketplace-cloud-ravendb-offer-summary.png)
+
+<Admonition type="info" title="Info">
+Providing *Primary phone number* **is not required**.
+</Admonition>
+
+After reviewing the information, please click **Subscribe**.
+Once you have subscribed, the next step is to configure the account in the *RavenDB Cloud*.
+
+!["Figure 5 - RavenDB Cloud subscription panel - redirect to the RavenDB Cloud page"](./assets/microsoft-azure-marketplace-cloud-ravendb-offer-almost-done-configuration.png)
+Provide the necessary information required to end the registration process:
+
+!["Figure 6 - RavenDB Cloud Azure Marketplace Landing Page"](./assets/cloud-ravendb-azure-marketplace-landing-page.png)
+
+1.  **Email Address**  
+   Provide an email address that you will use in RavenDB Cloud.
+
+2.  **Domain Name**  
+    Provide a Domain Name for the account.
+
+3.  **Account Type**  
+    Provide an Account Type for the account.
+
+4.  **T&C and privacy policy**  
+    Accept Terms & Conditions and the privacy policy.
+
+After providing the information, please click **Sign up**.
+Your account is now ready to use. To sign in to the account, click **Continue to sign in**.
+
+!["Figure 7 - RavenDB Cloud Azure Marketplace Landing Page - successfully registration"](./assets/cloud-ravendb-azure-marketplace-landing-page-thank-you.png)
+
+<Admonition type="info" title="Info">
+Successful registration process is also confirmed by an email from *Microsoft Azure Marketplace*.
+</Admonition>
+
+
+## Subscription cancellation process
+
+To cancel your subscription, go to your SaaS resource that is associated with the resource group you selected earlier. 
+Then click the **Cancel Subscription** button.
+
+!["Figure 8 - RavenDB Cloud subscription panel - cancel the subscription"](./assets/microsoft-azure-marketplace-cloud-ravendb-subscription-cancel-subscription.png)
+Fill the standard cancellation form and click **Cancel subscription**.
+
+!["Figure 9 - RavenDB Cloud subscription panel - subscription cancellation form"](./assets/microsoft-azure-marketplace-cloud-ravendb-subscription-cancel-subscription-reason-form.png)
+
+<Admonition type="danger" title="Danger">
+Subscription cancellation is **irreversible**. Your account and data and will be permanently lost.  
+</Admonition>
+
+<Admonition type="info" title="Info">
+Successful cancellation process is also confirmed by an email from *Microsoft Azure Marketplace*.
+</Admonition>
+
+
+## Conversion from a regular Cloud Account to an Azure Marketplace Account
+
+If you would like to convert your existing *Cloud Account* to an *Azure Marketplace Account* to pay for your services using a credit card associated with your *Azure* account, please submit a support request via the *RavenDB Cloud Portal*.
+
+

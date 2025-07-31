@@ -1,0 +1,2680 @@
+---
+title: "Customize Query"
+sidebar_label: Customize Query
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
+
+
+# Customize Query
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query).   
+  Can be set for both **dynamic** and **index** queries.
+
+* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API.
+
+* A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
+
+* Customization methods available:
+
+  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
+  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
+  - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+  - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query#projection)
+  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [Timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+
+
+</Admonition>
+## BeforeQueryExecuted
+
+* Use `BeforeQueryExecuted` to customize the query just before it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'BeforeQueryExecuted'
+    .Customize(x => x.BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    }))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'BeforeQueryExecuted'
+    .Customize(x => x.BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    }))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'BeforeQueryExecuted'
+    .BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'BeforeQueryExecuted'
+    .BeforeQueryExecuted(query =>
+    {
+        // Can modify query parameters
+        query.SkipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"Query to be executed is: {query.Query}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_1_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization BeforeQueryExecuted(Action<IndexQuery> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                     |
+|------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+
+</Admonition>
+
+
+
+## AfterQueryExecuted
+
+* Use `AfterQueryExecuted` to access the raw query result after it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterQueryExecuted'
+    .Customize(x => x.AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    }))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterQueryExecuted'
+    .Customize(x => x.AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    }))
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'AfterQueryExecuted'
+    .AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees'")
+     // Call 'AfterQueryExecuted'
+    .AfterQueryExecuted(rawResult =>
+    {
+        // Can access the raw query result
+        var queryDuration = rawResult.DurationInMs;
+        // Can apply any needed action, e.g. write to log
+        _logger.Info($"{rawResult.LastQueryTime}");
+    })
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_2_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization AfterQueryExecuted(Action<QueryResult> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                 |
+|------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+
+</Admonition>
+
+
+
+## AfterStreamExecuted
+
+* Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
+
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the query
+var query = session
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterStreamExecuted'
+    .Customize(x => x.AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size));
+    
+// Call 'Stream' to execute the query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the query
+var query = asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'AfterStreamExecuted'
+    .Customize(x => x.AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size));
+    
+// Call 'Stream' to execute the query
+var streamResults = await asyncSession.Advanced.StreamAsync(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the document query
+var query = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'AfterStreamExecuted'
+    .AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size);
+    
+// Call 'Stream' to execute the document query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`long totalStreamedResultsSize = 0;
+
+// Define the raw query
+var query = session.Advanced
+    .RawQuery<Employee>("from 'Employees'")
+     // Call 'AfterStreamExecuted'
+    .AfterStreamExecuted(streamResult =>
+        // Can access the stream result
+        totalStreamedResultsSize += streamResult.Size);
+
+// Call 'Stream' to execute the document query
+var streamResults = session.Advanced.Stream(query);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_3_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization AfterStreamExecuted(Action<BlittableJsonReaderObject> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                                                                                  |
+|------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
+
+</Admonition>
+
+
+
+## NoCaching
+
+* By default, query results are cached. 
+
+* You can use the `NoCaching` customization to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'NoCaching'
+    .Customize(x => x.NoCaching())
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'NoCaching'
+    .Customize(x => x.NoCaching())
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'NoCaching'
+    .NoCaching()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'NoCaching'
+    .NoCaching()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_4_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization NoCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## NoTracking
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `NoTracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'NoTracking'
+    .Customize(x => x.NoTracking())
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'NoTracking'
+    .Customize(x => x.NoTracking())
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'NoTracking'
+    .NoTracking()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'NoTracking'
+    .NoTracking()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_5_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization NoTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## Projection
+
+* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+  <Admonition type="note" title="Note">
+  Projecting means the query returns only specific document fields instead of the full document.  
+  </Admonition>
+
+* If the index does Not store these fields, the field values will be retrieved from the documents.
+
+* Use the `Projection` method to customize and modify this behavior.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+  
+  * [Project index query results](../../../indexes/querying/projections)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<string> results = session
+    .Query<Employees_ByFullName.IndexEntry, Employees_ByFullName>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromDocumentOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => x.FullName)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<string> results = await asyncSession
+    .Query<Employees_ByFullName.IndexEntry, Employees_ByFullName>()
+     // Call 'Customize'
+     // Pass the requested projection behavior to the 'Projection' method
+    .Customize(x => x.Projection(ProjectionBehavior.FromDocumentOrThrow))
+     // Select the fields that will be returned by the projection
+    .Select(x => x.FullName)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>("Employees/ByFullName")
+     // Pass the requested projection behavior to the 'SelectFields' method
+     // and specify the field that will be returned by the projection
+    .SelectFields<Employee>(ProjectionBehavior.FromDocumentOrThrow, "FullName")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+     // Define an RQL query that returns a projection
+    .RawQuery<Employee>(@"from index 'Employees/ByFullName' select FullName")
+     // Pass the requested projection behavior to the 'Projection' method
+    .Projection(ProjectionBehavior.FromDocumentOrThrow)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`public class Employees_ByFullName : AbstractIndexCreationTask<Employee, Employees_ByFullName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields.
+    public class IndexEntry
+    {
+        public string FullName { get; set; }
+    }
+        
+    public Employees_ByFullName()
+    {
+        // The 'Map' function defines the content of the index-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                FullName = $"{employee.FirstName} {employee.LastName}"
+            };
+        
+        // Store field 'FullName' in the index
+        Store(x => x.FullName, FieldStorage.Yes);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the above example:  
+
+  * Field _'FullName'_ is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FromDocumentOrThrow`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the property _'FullName'_.  
+    (based on the Northwind sample data).  
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_6_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization Projection(ProjectionBehavior projectionBehavior);
+
+public enum ProjectionBehavior \{
+    Default,
+    FromIndex,
+    FromIndexOrThrow,
+    FromDocument,
+    FromDocumentOrThrow
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+</Admonition>
+
+
+
+## RandomOrdering
+
+* Use `RandomOrdering` to order the query results randomly.  
+
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+    // Call 'Customize' with 'RandomOrdering'
+    .Customize(x => x.RandomOrdering())
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'RandomOrdering'
+    .Customize(x => x.RandomOrdering())
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+     // Call 'RandomOrdering'
+    .RandomOrdering()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+     // Define an RQL query that orders the results randomly
+    .RawQuery<Employee>("from 'Employees' order by random()")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_7_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization RandomOrdering();
+IDocumentQueryCustomization RandomOrdering(string seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                              |
+|------------| ------------- |-------------------------------------------------------------------------------------------------|
+| **seed**   | `string` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## Timings
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'Timings'
+     // Provide an out param for the timings results
+    .Customize(x => x.Timings(out QueryTimings timings))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'Timings'
+     // Provide an out param for the timings results
+    .Customize(x => x.Timings(out QueryTimings timings))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'Timings'.
+     // Provide an out param for the timings results
+    .Timings(out QueryTimings timings)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'Timings'.
+     // Provide an out param for the timings results
+    .Timings(out QueryTimings timings)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_9_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization Timings(out QueryTimings timings);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- | ----- |
+| **timings** | `QueryTimings` | An out param that will be filled with the timings results |
+
+</Admonition>
+
+
+
+## WaitForNonStaleResults
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+ 
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+  Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<Employee> results = session
+    .Query<Employee>()
+     // Call 'Customize' with 'WaitForNonStaleResults'
+    .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(10)))
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`List<Employee> results = await asyncSession
+    .Query<Employee>()
+     // Call 'Customize' with 'WaitForNonStaleResults'
+    .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(10)))
+    .Where(x => x.FirstName == "Robert")
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Call 'WaitForNonStaleResults'
+    .WaitForNonStaleResults(TimeSpan.FromSeconds(10))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`List<Employee> results = session.Advanced
+    .RawQuery<Employee>("from 'Employees' where FirstName == 'Robert'")
+     // Call 'WaitForNonStaleResults'
+    .WaitForNonStaleResults(TimeSpan.FromSeconds(10))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something" label="customize_8_5">
+<CodeBlock language="csharp">
+{`IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan? waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| **waitTimeout** | `TimeSpan?` | Time to wait for non-stale results. <br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+## Methods return value
+
+All of the above customization methods return the following:
+
+| `Query` return value         | |
+|-----------------------------| ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+| `DocumentQuery` return value      | |
+|---------------------------------| ----- |
+| IQueryBase | Returns self for easier method chaining. |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+The following query customization options are available in the `IDocumentQueryCustomization` interface:
+
+- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
+- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
+- [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+- [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
+- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
+- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
+</Admonition>
+## BeforeQueryExecuted
+
+Allows you to modify the index query just before it's executed.
+
+<TabItem value="something-something" label="customize_1_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+IDocumentQueryCustomization removeBeforeQueryExecutedListener(Consumer<IndexQuery> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;IndexQuery&gt; | Action that will modify IndexQuery. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_1_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().addBeforeQueryExecutedListener(
+        // set 'pageSize' to 10
+        q -> q.setPageSize(10)));
+
+session.query(Employee.class).toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterQueryExecuted
+
+Allows you to retrieve a raw query result after it's executed.
+
+<TabItem value="something-something" label="customize_1_0_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addAfterQueryExecutedListener(Consumer<QueryResult> action);
+IDocumentQueryCustomization removeAfterQueryExecutedListener(Consumer<QueryResult> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;QueryResult&gt; | Action that has the query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_1_1_0">
+<CodeBlock language="java">
+{`AtomicReference<Duration> queryDuration = new AtomicReference<>();
+
+session.query(Employee.class)
+    .addAfterQueryExecutedListener(result -> \{
+        queryDuration.set(Duration.ofMillis(result.getDurationInMs()));
+    \})
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## AfterStreamExecuted
+
+Allows you to retrieve a raw result of the streaming query.
+
+<TabItem value="something-something" label="customize_1_0_1">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization addAfterStreamExecutedListener(Consumer<ObjectNode> action);
+IDocumentQueryCustomization removeAfterStreamExecutedListener(Consumer<ObjectNode> action);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Consumer&lt;ObjectNode&gt; | Action that has the single query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_1_1_1">
+<CodeBlock language="java">
+{`Reference<Long> totalStreamedResultsSize = new Reference<Long>(0L);
+
+session.query(Employee.class)
+    .addAfterStreamExecutedListener(result -> \{
+        totalStreamedResultsSize.value += result.size();
+    \})
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoCaching
+
+By default, queries are cached. To disable query caching use the `noCaching` customization.
+
+<TabItem value="something-something" label="customize_2_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_2_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noCaching()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## NoTracking
+
+To disable entity tracking by `session` use `noTracking`. Usage of this option will prevent holding the query results in memory.
+
+<TabItem value="something-something" label="customize_3_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_3_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    ((sender, event) -> event.getQueryCustomization().noTracking()));
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## ProjectionBehavior
+
+By default, queries are satisfied with the values stored in the index. If the index 
+doesn't contain the requested values, they are retrieved from the documents 
+themselves.  
+
+This behavior can be configured using the `projection` option, which takes a 
+`ProjectionBehavior`:  
+
+<TabItem value="something-something" label="projectionbehavior">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization projection(ProjectionBehavior projectionBehavior);
+
+public enum ProjectionBehavior \{
+    DEFAULT,
+    FROM_INDEX,
+    FROM_INDEX_OR_THROW,
+    FROM_DOCUMENT,
+    FROM_DOCUMENT_OR_THROW
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default` - query will be satisfied with indexed data when possible, and directly 
+from the document when it is not.  
+* `FromIndex` - query will be satisfied with indexed data when possible, and when 
+it is not, the field is skipped.  
+* `FromIndexOrThrow` - query will be satisfied with indexed data. If the index does 
+not contain the requested data, an exception is thrown.  
+* `FromDocument` - query will be satisfied with document data when possible, and 
+when it is not, the field is skipped.  
+* `FromDocumentOrThrow` - query will be satisfied with document data. If the 
+document does not contain the requested data, an exception is thrown.  
+
+### Example
+
+<TabItem value="something-something" label="projectionbehavior_query">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener((sender, event)
+    -> event.getQueryCustomization().projection(ProjectionBehavior.DEFAULT));
+
+List<Employee> results = session.query(Employee.class)
+    .selectFields(Employee.class,"name")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## RandomOrdering
+
+To order results randomly, use the `randomOrdering` method.
+
+<TabItem value="something-something" label="customize_4_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization randomOrdering();
+
+IDocumentQueryCustomization randomOrdering(String seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **seed** | String | Seed used for ordering. Useful when repeatable random queries are needed. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_4_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().randomOrdering());
+
+//result will be ordered randomly each time
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## WaitForNonStaleResults
+
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults` method. If the query won't be able to return 
+non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
+
+Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
+
+<Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">
+If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
+It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
+
+If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
+</Admonition>
+
+
+<TabItem value="something-something" label="customize_8_0">
+<CodeBlock language="java">
+{`IDocumentQueryCustomization waitForNonStaleResults();
+
+IDocumentQueryCustomization waitForNonStaleResults(Duration waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | Duration | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+<TabItem value="something-something" label="customize_8_1">
+<CodeBlock language="java">
+{`session.advanced().addBeforeQueryListener(
+    (sender, event) -> event.getQueryCustomization().waitForNonStaleResults());
+
+List<Employee> results = session.query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query).  
+
+* The customization methods can be set for both **dynamic** and **index** queries.  
+
+* A query can be customized on the Store or Session level by calling various methods from the rich API.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
+
+* Customization methods available:
+
+  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query#before_query_executed)
+  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query#after_query_executed)
+  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query#after_stream_executed)
+  - [no_caching](../../../client-api/session/querying/how-to-customize-query#no_caching)
+  - [no_tracking](../../../client-api/session/querying/how-to-customize-query#no_tracking)
+  - [projection](../../../client-api/session/querying/how-to-customize-query#projection)
+  - [random_ordering](../../../client-api/session/querying/how-to-customize-query#random_ordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query#wait_for_non_stale_results)
+
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+
+
+</Admonition>
+## `before_query_executed`
+
+* Use `before_query_executed` to customize the query just before it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __before_query_executed_callback(query: IndexQuery):
+    # Can modify query parameters
+    query.skip_duplicate_checking = True
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"Query to be executed is: {query.query}")
+
+results = list(
+    session.query(object_type=Employee)
+    # Call 'add_before_query_executed_listener'
+    .add_before_query_executed_listener(__before_query_executed_callback).where_equals(
+        "first_name", "Robert"
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __before_query_executed_callback(query: IndexQuery):
+    # Can modify query parameters
+    query.skip_duplicate_checking = True
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"Query to be executed is: {query.query}")
+
+results = list(
+    session.advanced.raw_query("from 'Employees' where FirstName == 'Robert'")
+    # Call 'add_before_query_executed_listener'
+    .add_before_query_executed_listener(__before_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_1_5">
+<CodeBlock language="python">
+{`def add_before_query_executed_listener(self, action: Callable[[IndexQuery], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                     |
+|------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+
+</Admonition>
+
+
+
+## `after_query_executed`
+
+* Use `after_query_executed` to access the raw query result after it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __after_query_executed_callback(raw_result: QueryResult):
+    # Can access the raw query result
+    query_duration = raw_result.duration_in_ms
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"{raw_result.last_query_time}")
+
+results = list(
+    session.query(object_type=Employee)
+    # Call 'add_after_query_executed_listener'
+    .add_after_query_executed_listener(__after_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __after_query_executed_callback(raw_result: QueryResult):
+    # Can access the raw query result
+    query_duration = raw_result.duration_in_ms
+    # Can apply any needed action, e.g. write to log
+    logger.info(f"{raw_result.last_query_time}")
+
+result = list(
+    session.advanced.raw_query("from 'Employees'")
+    # Call 'add_after_query_executed_listener'
+    .add_after_query_executed_listener(__after_query_executed_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_2_5">
+<CodeBlock language="python">
+{`def add_after_query_executed_listener(self, action: Callable[[QueryResult], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                 |
+|------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+
+</Admonition>
+
+
+
+## `after_stream_executed`
+
+* Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
+
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_3_5">
+<CodeBlock language="python">
+{`def add_after_stream_executed_listener(self, action: Callable[[dict], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                                                                                                  |
+|------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **action** | `Callable[[dict], None])` | An _action_ method that recieves a single stream query result.<br/>The stream result is passed in the `dict` param. |
+
+</Admonition>
+
+
+
+## `no_caching`
+
+* By default, query results are cached. 
+
+* You can use the `no_caching` customization method to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'no_caching'
+    .no_caching().where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'no_caching'
+    .no_caching()
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_4_5">
+<CodeBlock language="python">
+{`def no_caching(self) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## `no_tracking`
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `no_tracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'no_tracking\`
+    .no_tracking().where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'no_tracking'
+    .no_tracking()
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_5_5">
+<CodeBlock language="python">
+{`def no_tracking(self) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## `projection`
+
+* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+  <Admonition type="note" title="Note">
+  Projecting means the query returns only specific document fields instead of the full document.  
+  </Admonition>
+
+* If these fields are not stored in the index, the field values will be retrieved from the documents.  
+
+* Use the `select_fields` method to customize and modify this behavior.  
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+    * [Project index query results](../../../indexes/querying/projections)
+    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query_index_type(Employees_ByFullName, Employees_ByFullName.IndexEntry)
+    # Pass the requested projection behavior to the 'select_fields' method
+    # and specify the field that will be returned to the projection
+    .select_fields(
+        Employees_ByFullName.IndexEntry,
+        "full_name",
+        projection_behavior=ProjectionBehavior.FROM_INDEX_OR_THROW,
+    )
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query(
+        "from index 'Employees/ByFullName' select full_name", Employees_ByFullName.IndexEntry
+    ).projection(ProjectionBehavior.FROM_DOCUMENT_OR_THROW)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="python">
+{`class Employees_ByFullName(AbstractIndexCreationTask):
+    class IndexEntry:
+        def __init__(self, full_name: str = None):
+            self.full_name = full_name
+
+    def __init__(self):
+        super().__init__()
+        self.map = (
+            "docs.Employees.Select(employee => new { "
+            "    full_name = (employee.first_name + ' ' + employee.last_name)"
+            "})"
+        )
+        self._store("full_name", FieldStorage.YES)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+In the above example:  
+
+  * The _'full_name'_ field is stored in the index (see index definition in the rightmost tab).  
+    However, the server will try to fetch the value from the document since the default behavior was modified to `FROM_DOCUMENT_OR_THROW`.  
+  * An exception will be thrown since an _'Employee'_ document does not contain the _'full_name'_ property.  
+    (based on the Northwind sample data).  
+
+</Admonition>
+
+
+<!--
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_6_5">
+<CodeBlock language="python">
+{`def projection(self, projection_behavior: ProjectionBehavior) -> DocumentQuery[_T]: ...
+
+class ProjectionBehavior(Enum):
+    DEFAULT = "Default"
+    FROM_INDEX = "FromIndex"
+    FROM_INDEX_OR_THROW = "FromIndexOrThrow"
+    FROM_DOCUMENT = "FromDocument"
+    FROM_DOCUMENT_OR_THROW = "FromDocumentOrThrow"
+`}
+</CodeBlock>
+</TabItem>
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+</Admonition>
+-->
+
+
+
+## `random_ordering`
+
+* Use `random_ordering` to order the query results randomly.  
+
+* Learn [here](../../../client-api/session/querying/sort-query-results) about additional ordering options.  
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'random_ordering'
+    .random_ordering()
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced
+    # Define an RQL query that orders the results randomly
+    .raw_query("from 'Employees' order by random()", Employee)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_7_5">
+<CodeBlock language="python">
+{`def random_ordering(self, seed: str = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                              |
+|------------| ------------- |-------------------------------------------------------------------------------------------------|
+| **seed**   | `str` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## `timings`
+
+* When executing a query, you can retrieve query statistics that include the time spent by the server on each part of the query.  
+
+* To do this, define a callback function that takes `QueryTimings` as an argument and applies whatever 
+  logic you want to apply.  
+
+* Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`def __timings_callback(timings: QueryTimings):
+    logger.log(logging.DEBUG, timings.duration_in_ms)
+
+results = list(
+    session.query(object_type=Employee).where_equals("first_name", "Robert")
+    # Call 'timings'.
+    # Provide a callback for the timings result - interact with QueryTimings inside the callback
+    .timings(__timings_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`def __timings_callback(timings: QueryTimings):
+    logger.log(logging.DEBUG, timings.duration_in_ms)
+
+results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'")
+    # Call 'timings'.
+    # Provide a callback for the timings result - interact with QueryTimings inside the callback
+    .timings(__timings_callback)
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_9_5">
+<CodeBlock language="python">
+{`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- | ----- |
+| **timings_callback** | `Callable[[QueryTimings], None]` | An _action_ that will be called with the timings results |
+
+</Admonition>
+
+
+
+## `wait_for_non_stale_results`
+
+* All RavenDB queries provide results using an index, even when an index is not specified.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* If `wait_for_non_stale_results` is used, the query will wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is unable to return non-stale results within the specified  
+  (or default) timeout.
+ 
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+  Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="python">
+{`results = list(
+    session.query(object_type=Employee)
+    # Call 'wait_for_non_stale_results\`
+    .wait_for_non_stale_results(timedelta(seconds=10)).where_equals("first_name", "Robert")
+)
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="python">
+{`results = list(
+    session.advanced.raw_query("from 'Employees' where first_name == 'Robert'", Employee)
+    # Call 'wait_for_non_stale_results\`
+    .wait_for_non_stale_results(timedelta(seconds=10))
+)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_8_5">
+<CodeBlock language="python">
+{`def wait_for_non_stale_results(self, wait_timeout: timedelta = None) -> DocumentQuery[_T]: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| **wait_timeout** | `timedelta` | Time to wait for non-stale results.<br/>Default: 15 seconds |
+
+</Admonition>
+
+
+
+## `Methods return value`
+
+All of the above customization methods return the following:
+
+| `document_query` return value | |
+|-------------------------------| ----- |
+| `DocumentQuery[_T]` | Returns self for easier method chaining |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="php">
+
+<Admonition type="note" title="Note">
+
+* Use the below methods to set customization options on a specific [query](../../../client-api/session/querying/how-to-query).  
+  Customizations can be set for both **dynamic** and **index** queries.
+
+* A query can also be customized on the store or session level by 
+  [subscribing to `OnBeforeQuery`](../../../client-api/session/how-to/subscribe-to-events). 
+
+* Available customization methods :
+  - [`addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query#addbeforequeryexecutedlistener-and-removebeforequeryexecutedlistener)
+  - [`addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query#addafterqueryexecutedlistener-and-removeafterqueryexecutedlistener)
+  - [`noCaching`](../../../client-api/session/querying/how-to-customize-query#nocaching)
+  - [`noTracking`](../../../client-api/session/querying/how-to-customize-query#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [`randomOrdering`](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [`waitForNonStaleResults`](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+
+
+</Admonition>
+## `addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`
+
+* Use these methods to customize the query just before it is executed.
+
+**Example**
+
+<TabItem value="something-something" label="customize_1_1">
+<CodeBlock language="php">
+{`$session->advanced()->addBeforeQueryListener(function ($sender, BeforeQueryEventArgs $event) \{
+    $event->getQueryCustomization()
+        ->addBeforeQueryExecutedListener(function($q) \{
+            // set 'pageSize' to 10
+            $q->setPageSize(10);
+        \});
+\});
+
+$session->query(Employee::class)->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_1_0">
+<CodeBlock language="php">
+{`public function addBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
+public function removeBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                          |
+|------------| ---- |------------------------------------------------------|
+| **$action** | `Closure` | An _$action_ method that operates on the query |
+
+</Admonition>
+
+
+
+## `addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`
+
+* Use these methods to access the raw query result after it is executed.
+
+**Example**
+
+<TabItem value="something-something" label="customize_1_1_0">
+<CodeBlock language="php">
+{`$queryDuration = null;
+
+$session->query(Employee::class)
+    ->addAfterQueryExecutedListener(function($result) use (&$queryDuration) \{
+        $queryDuration = Duration::ofMillis($result->getDurationInMs());
+    \})
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_1_0_0">
+<CodeBlock language="php">
+{`public function addAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
+public function removeAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ---- |-------------|
+| **$action** | `Closure` | An _Action_ method that receives the raw query result |
+
+</Admonition>
+
+
+
+## `noCaching`
+
+* By default, query results are cached. 
+
+* You can use the `noCaching` customization to disable query caching.
+
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+
+**Example**
+
+<TabItem value="something-something" label="customize_2_1">
+<CodeBlock language="php">
+{`$session->advanced()
+    ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
+        $event->getQueryCustomization()->noCaching();
+    \});
+
+$results = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_2_0">
+<CodeBlock language="php">
+{`public function noCaching(): DocumentQueryCustomizationInterface
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## `noTracking`
+
+* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `noTracking` customization to disable entity tracking.  
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+**Example**
+
+<TabItem value="something-something" label="customize_3_1">
+<CodeBlock language="php">
+{`$session->advanced()
+    ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
+        $event->getQueryCustomization()->noTracking();
+    \});
+
+$results = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_3_0">
+<CodeBlock language="php">
+{`public function noTracking(): DocumentQueryCustomizationInterface
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Projection
+
+* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+  <Admonition type="note" title="Note">
+  Projecting means the query returns only specific document fields instead of the full document.  
+  </Admonition>
+
+* If the index does Not store these fields, the field values will be retrieved from the documents.
+
+* Use the `projection` method to customize and modify this behavior.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:
+  
+  * [Project index query results](../../../indexes/querying/projections)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+
+**Example**
+
+<TabItem value="something-something" label="projectionbehavior_query">
+<CodeBlock language="php">
+{`$session->advanced()
+    ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
+        $event->getQueryCustomization()->projection(ProjectionBehavior::default());
+    \});
+
+$results = $session->query(Employee::class)
+    ->selectFields(Employee::class, "name")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**
+
+<TabItem value="something-something" label="projectionbehavior">
+<CodeBlock language="php">
+{`public function projection(ProjectionBehavior $projectionBehavior): DocumentQueryCustomizationInterface;
+
+class ProjectionBehavior
+\{
+    public static function default(): ProjectionBehavior;
+    public static function fromIndex(): ProjectionBehavior;
+    public static function fromIndexOrThrow(): ProjectionBehavior;
+    public static function fromDocument(): ProjectionBehavior;
+    public static function fromDocumentOrThrow(): ProjectionBehavior;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* `default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `fromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.  
+* `fromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.  
+* `fromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.  
+* `fromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.  
+
+
+
+## `randomOrdering`
+
+* Use `randomOrdering` to order the query results randomly.  
+
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
+
+**Example**
+
+<TabItem value="something-something" label="customize_4_1">
+<CodeBlock language="php">
+{`$session->advanced()
+    ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
+        $event->getQueryCustomization()->randomOrdering();
+    \});
+
+// Result will be ordered randomly each time
+$results = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_4_0">
+<CodeBlock language="php">
+{`public function randomOrdering(): DocumentQueryCustomizationInterface;
+public function randomOrdering(?string $seed): DocumentQueryCustomizationInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description                                                                                                |
+|------------| ------------- |---------------------------------------------------------------------------------------------------|
+| **$seed**   | `?string` | Order the search results randomly using this seed.<br/>Useful when executing repeated random queries. |
+
+
+
+## `waitForNonStaleResults`
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+ 
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_8_1">
+<CodeBlock language="php">
+{`$session->advanced()
+    ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
+        $event->getQueryCustomization()->waitForNonStaleResults();
+    \});
+
+$results = $session->query(Employee::class)
+    ->whereEquals("FirstName", "Robert")
+    ->toList();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_8_0">
+<CodeBlock language="php">
+{`public function waitForNonStaleResults(): DocumentQueryCustomizationInterface;
+public function waitForNonStaleResults(Duration $waitTimeout): DocumentQueryCustomizationInterface;
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+|------------| ------------- |-----------|
+| **$waitTimeout** | `Duration` | Time to wait for non-stale results. <br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+## Methods return value
+
+All of the above customization methods return the following:
+
+| Return value         | |
+|-----------------------------| ----- |
+| `DocumentQueryCustomizationInterface` | Returns self for easier method chaining |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* The following query customization methods that are available for the **.NET client** under `IDocumentQueryCustomization` 
+  are also available in the **Node.js client**.
+
+* These methods can be used for both a dynamic-query and an index-query.
+
+* A [query](../../../client-api/session/querying/how-to-query) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events).
+
+* Customization methods available:
+
+  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
+  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
+  - [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
+  - [noTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
+  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
+  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
+  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+
+</Admonition>
+## on (beforeQueryExecuted)
+
+* Use `on("beforeQueryExecuted")` to customize the query just before it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`const results = await session
+     // Query an index
+    .query(BlogPost, BlogPosts_ByTag)
+     // Provide a callback for the 'beforeQueryExecuted' event 
+    .on("beforeQueryExecuted", query => {
+        // Can modify query parameters
+        query.skipDuplicateChecking = true;
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`Query to be executed is: \${query.query}\`);
+    })
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map(BlogPost, b => {
+            const result = [];
+
+            b.tags.forEach(item => {
+                result.push({
+                    tag: item
+                });
+            });
+
+            return result;
+
+            // This fanout index outputs multiple index entries per each document,
+            // (an index-entry per tag in from the tags list).            
+            // The query can be customized to return the documents without the duplicates,
+            // (see the query example in the first tab).  
+        })
+    }
+}
+
+class BlogPost {
+    constructor() {
+        this.id = null;
+        this.title = null;
+        this.body = null;
+        this.tags = null;
+    }
+}
+
+class TagResult {
+    constructor() {
+        this.tag = null;
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_1_1">
+<CodeBlock language="nodejs">
+{`on("beforeQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters       | Type            | Description                                                                                                                           |
+|------------------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| **eventHandler** | (query) =&gt; void | A callback method that is invoked when the `beforeQueryExecuted` event is emitted.<br/>The passed query param is of type `IndexQuery`. |
+
+</Admonition>
+
+
+
+## on (afterQueryExecuted)
+
+* Use `on("afterQueryExecuted")` to access the raw query result after it is executed.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_2_0">
+<CodeBlock language="nodejs">
+{`let queryDuration = 0;
+
+const results = await session
+    .query(\{ collection: "employees" \})
+     // Provide a callback for the 'afterQueryExecuted' event 
+    .on("afterQueryExecuted", rawResult => \{
+        // Can access the raw query result
+        queryDuration = rawResult.durationInMs
+        // Can apply any needed action, e.g. write to log/console
+        console.log(\`$\{rawResult.lastQueryTime\}\`);
+     \})
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_2_1">
+<CodeBlock language="nodejs">
+{`on("afterQueryExecuted", eventHandler);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters               | Type                  | Description                                                                                                                            |
+|--------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| **eventHandler** | (queryResult) =&gt; void | A callback method that is invoked when the `afterQueryExecuted` event is emitted.<br/> The passed query param is of type `QueryResult`. |
+
+</Admonition>
+
+
+
+## noCaching
+ 
+* By default, query results are cached.
+
+* You can use the `noCaching` customization to disable query caching.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_3_0">
+<CodeBlock language="nodejs">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+     // Add a call to 'noCaching'
+    .noCaching()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_3_1">
+<CodeBlock language="nodejs">
+{`noCaching();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## noTracking
+
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+
+* You can use the `noTracking` customization to disable entity tracking.
+
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_4_0">
+<CodeBlock language="nodejs">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    .whereEquals("firstName", "Robert")
+    // Add a call to 'noTrcking'
+    .noTracking()
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_4_1">
+<CodeBlock language="nodejs">
+{`noTracking();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+
+## projectionBehavior
+
+* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
+  (projecting means the query returns only specific document fields instead of the full document)  
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).
+
+* If the index does Not store those fields then the fields' values will be retrieved from the documents store.
+
+* Use the `selectFields` method to customize and modify this behavior for the specified fields.
+
+* Note:  
+  Entities resulting from a projecting query are Not tracked by the session.  
+  Learn more about projections in:  
+    * [Projections](../../../indexes/querying/projections)
+    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="nodejs">
+{`// The projection class: 
+class EmployeeProjectedDetails {
+    constructor() {
+        this.fullName = null;
+    }
+}
+
+// Define a query with a projection
+const query = session
+     // Query an index that has stored fields
+    .query(Employee, Employee_ByFullName)
+     // Use 'selectFields' to project the query results
+     // Pass the requested projection behavior (3'rd param)
+    .selectFields(["fullName"], EmployeeProjectedDetails, "FromDocumentOrThrow")
+    .all();
+
+// * Field 'fullName' is stored in the index.
+//   However, the server will try to fetch the value from the document 
+//   since the default behavior was modified to \`FromDocumentOrThrow\`.
+
+// * An exception will be thrown -
+//   since an 'Employee' document does not contain the property 'fullName'.
+//   (based on the Northwind sample data).
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="nodejs">
+{`class Employee_ByFullName extends AbstractJavaScriptIndexCreationTask {
+    constructor() {
+        super();
+
+        this.map(Employee, e => {
+            return {
+                fullName: e.firstName + " " + e.lastName
+            }
+        })
+
+        // Store field 'fullName' in the index
+        this.store("fullName", "Yes");
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_5_1">
+<CodeBlock language="nodejs">
+{`selectFields(properties, projectionClass, projectionBehavior);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters             | Type     | Description                                                    |
+|------------------------|----------|----------------------------------------------------------------|
+| **properties**         | string[] | Fields' names for which to fetch values                        |
+| **projectionClass**    | object   | The projected results class                                    |
+| **projectionBehavior** | string   | The requested projection behavior, see available options below |
+
+* `Default`  
+  Retrieve values from the stored index fields when available.  
+  If fields are not stored then get values from the document,  
+  a field that is not found in the document is skipped.
+* `FromIndex`  
+  Retrieve values from the stored index fields when available.  
+  A field that is not stored in the index is skipped.
+* `FromIndexOrThrow`  
+  Retrieve values from the stored index fields when available.  
+  An exception is thrown if the index does not store the requested field.
+* `FromDocument`  
+  Retrieve values directly from the documents store.  
+  A field that is not found in the document is skipped.
+* `FromDocumentOrThrow`  
+  Retrieve values directly from the documents store.  
+  An exception is thrown if the document does not contain the requested field.
+
+</Admonition>
+
+
+
+## randomOrdering
+
+* Use `RandomOrdering` to order the query results randomly.
+
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_6_0">
+<CodeBlock language="nodejs">
+{`const results = await session
+    .query(\{ collection: "employees" \})
+    // Add a call to 'randomOrdering', can pass a seed
+    .randomOrdering("123")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_6_1">
+<CodeBlock language="nodejs">
+{`randomOrdering();
+randomOrdering(seed);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type   | Description                                                                                            |
+|------------|--------|--------------------------------------------------------------------------------------------------------|
+| **seed**   | string | Order the search results randomly using this seed. <br/> Useful when executing repeated random queries. |
+
+</Admonition>
+
+
+
+## timings
+
+* Use `Timings` to get detailed stats of the time spent by the server on each part of the query.
+
+* The timing statistics will be included in the query results.
+
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_7_0">
+<CodeBlock language="nodejs">
+{`let timingsResults;
+
+const results = await session.query(\{ collection: "Products" \})
+    .whereEquals("firstName", "Robert")
+     // Call 'timings', pass a callback function
+     // Output param 'timingsResults' will be filled with the timings details when query returns 
+    .timings(t => timingsResults = t)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_7_1">
+<CodeBlock language="nodejs">
+{`timings(timingsCallback)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |----------------| - |
+| **timings** | `QueryTimings` | An _out_ param that will be filled with the timings results |
+
+| `QueryTimings` |  |  |
+| - |-----------------------------------|---------------------------------------------------|
+| **DurationInMs** | long | Total duration |
+| **Timings** | IDictionary&lt;string, QueryTimings&gt; | Dictionary with _QueryTimings_ info per time part |
+
+
+</Admonition>
+
+
+
+## waitForNonStaleResults
+
+* All queries in RavenDB provide results using an index, even when you don't specify one.  
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+
+* Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
+
+* A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
+  (or default) timeout.
+
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+  Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
+
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+
+<Admonition type="note" title="Note">
+
+**Example**
+
+<TabItem value="something-something" label="customize_8_0">
+<CodeBlock language="nodejs">
+{`const results = await session.query(\{ collection: "Products" \})
+    .whereEquals("firstName", "Robert")
+     // Call 'waitForNonStaleResults', 
+     // Optionally, pass the time to wait. Default is 15 seconds.
+    .waitForNonStaleResults(10_000)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+**Syntax**
+
+<TabItem value="something-something" label="customize_8_1">
+<CodeBlock language="nodejs">
+{`waitForNonStaleResults();
+waitForNonStaleResults(waitTimeout);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters      | Type   | Description                                                                           |
+|-----------------|--------|---------------------------------------------------------------------------------------|
+| **waitTimeout** | number | Time (ms) to wait for an index to return non-stale results.<br/>Default is 15 seconds. |
+
+</Admonition>
+
+
+
+
+</LanguageContent>

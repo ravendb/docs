@@ -1,0 +1,708 @@
+---
+title: "Create and Update Subscription API"
+sidebar_label: API Overview
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/language-switcher";
+import LanguageContent from "@site/src/components/language-content";
+
+export const supportedLanguages = ["csharp", "python", "nodejs"];
+
+
+# Create and Update Subscription API
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* In this page:  
+   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview#create-subscription)
+   * [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;)
+   * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
+   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
+   * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions)  
+   * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
+
+</Admonition>
+## Create subscription
+
+Subscriptions can be created using the following `Create` methods available through the `Subscriptions` property of the `DocumentStore`.
+
+<TabItem value="something" label="subscriptionCreationOverloads">
+<CodeBlock language="csharp">
+{`string Create(SubscriptionCreationOptions options,
+              string database = null);
+
+string Create<T>(SubscriptionCreationOptions options = null,
+                 string database = null);
+
+string Create<T>(SubscriptionCreationOptions<T> options,
+                 string database = null);
+
+string Create<T>(Expression<Func<T, bool>> predicate = null,
+                 PredicateSubscriptionCreationOptions options = null,
+                 string database = null);
+
+Task<string> CreateAsync(SubscriptionCreationOptions options,
+                         string database = null,
+                         CancellationToken token = default);
+
+public Task<string> CreateAsync<T>(SubscriptionCreationOptions options = null,
+                                   string database = null,
+                                   CancellationToken token = default);
+
+Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options,
+                            string database = null,
+                            CancellationToken token = default);
+
+Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null,
+                            PredicateSubscriptionCreationOptions options = null,
+                            string database = null,
+                            CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter      | Type                             | Description                                                                                                                                                                                  |
+|----------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **predicate**  | `Expression<Func<T, bool>>`      | An optional lambda expression that returns a boolean.<br/>This predicate defines the filter criteria for the subscription documents.                                                          |
+| **options**    | `SubscriptionCreationOptions<T>` | Contains subscription creation options.<br/>See [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;)           |
+| **options**    | `SubscriptionCreationOptions`    | Contains subscription creation options - non-generic version.<br/>See [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions) |
+| **database**   | `string`                         | The name of the database where the subscription task will be created. If `null`, the default database configured in the DocumentStore will be used.                                          |
+| **token**      | `CancellationToken`              | Cancellation token used in to halt the subscription creation process.                                                                                                                  |
+
+| Return value  | Description                                                                                                                                                                            |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `string`      | The name of the created data subscription.<br/>If the name was provided in `SubscriptionCreationOptions`, it will be returned.<br/>Otherwise, a unique name will be generated by server. |
+
+
+
+## SubscriptionCreationOptions&lt;T&gt;
+
+A generic version of the subscription creation options object.
+
+<TabItem value="something" label="sub_create_options_strong">
+<CodeBlock language="csharp">
+{`public class SubscriptionCreationOptions<T>
+\{
+    public string Name \{ get; set; \}
+    public Expression<Func<T, bool>> Filter \{ get; set; \}
+    public Expression<Func<T, object>> Projection \{ get; set; \}
+    public Action<ISubscriptionIncludeBuilder<T>> Includes \{ get; set; \}
+    public string ChangeVector \{ get; set; \}
+    public bool Disabled \{ get; set; \}
+    public string MentorNode \{ get; set; \}
+    public bool PinToMentorNode \{ get; set; \}
+    public ArchivedDataProcessingBehavior? ArchivedDataProcessingBehavior \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Member           | Type                                     | Description                                                                                                                                                                                                                                                                                                                                                                                         |
+|------------------|------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **&lt;T&gt;**    | type                                     | Type of object from which the collection of documents managed by the subscription will be derived.                                                                                                                                                                                                                                                                                                  |
+| **Name**         | `string`                                 | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                                                                                                                                 |
+| **Filter**       | `Expression<Func<T, bool>>`              | Lambda expression defining the filter logic for the subscription. Will be translated to a JavaScript function.                                                                                                                                                                                                                                                                                      |
+| **Projection**   | `Expression<Func<T, object>>`            | Lambda expression defining the projection that will be sent by the subscription for each matching document. Will be translated to a JavaScript function.                                                                                                                                                                                                                                            |
+| **Includes**     | `Action<ISubscriptionIncludeBuilder<T>>` | An action that defines include clauses for the subscription. [Included documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents) and/or [included counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters) will be part of the batch sent by the subscription. Include methods can be chained. |
+| **ChangeVector** | `string`                                 | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                                  |
+| **MentorNode**   | `string`                                 | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                       |
+
+
+
+## SubscriptionCreationOptions
+
+A non-generic version of the subscription creation options object.
+
+| Member           | Type     | Description                                                                                                                                                                                                                                                                        |
+|------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **Name**         | `string` | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                |
+| **Query**        | `string` | RQL query that defines the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                 |
+| **ChangeVector** | `string` | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection. |
+| **MentorNode**   | `string` | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                       |
+
+
+
+## Update subscription
+
+Existing subscriptions can be modified using the following `Update` methods available through the `Subscriptions` property of the `DocumentStore`.
+
+<TabItem value="something" label="updating_subscription">
+<CodeBlock language="csharp">
+{`string Update(SubscriptionUpdateOptions options, string database = null);
+
+Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = null,
+                    CancellationToken token = default);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type                        | Description                                                                                                                                                        |
+|--------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **options**  | `SubscriptionUpdateOptions` | The subscription update options object.<br/>See [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions) |
+| **database** | `string`                    | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in the DocumentStore will be used.                    |
+| **token**    | `CancellationToken`         | Cancellation token used to halt the update process.                                                                                                                |
+
+| Return value  | Description                                |
+|---------------|--------------------------------------------|
+| `string`      | The name of the updated data subscription. |
+
+
+
+## SubscriptionUpdateOptions
+
+`SubscriptionUpdateOptions` inherits from [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)
+and adds two additional fields:
+
+<TabItem value="something" label="sub_update_options">
+<CodeBlock language="csharp">
+{`public class SubscriptionUpdateOptions : SubscriptionCreationOptions
+\{
+    public long? Id \{ get; set; \}
+    public bool CreateNew \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Id**        | `long?` | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status).<br/>When updating, the `Id` can be used instead of the `Name` field, and takes precedence over it. This allows you to modify the subscription's name: provide the Id and submit a new name in the Name field. |
+| **CreateNew** | `bool`  | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
+
+
+
+## Subscription query 
+
+All subscriptions are eventually translated to an RQL-like statement. These statements have the following parts:
+
+* Functions definition part, like in ordinary RQL. Those functions can contain any JavaScript code,
+  and also supports `load` and `include` operations.
+
+* From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
+
+* Where statement describing the criteria according to which it will be decided to either 
+  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
+  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  The subscriptions RQL does not support any of the known RQL searching keywords.
+
+* Select statement, that defines the projection to be performed. 
+  The select statements can contain function calls, allowing complex transformations.
+
+* Include statement allowing to define include path in document.  
+
+<Admonition type="info" title="Keywords" id="keywords" href="#keywords">
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Usage of JavaScript ES5 syntax is supported.
+</Admonition>
+
+<Admonition type="info" title="Paths" id="paths" href="#paths">
+Paths in subscriptions RQL statements are treated as JavaScript indirections and not like regular RQL paths.  
+It means that a query that in RQL would look like:  
+
+```
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+Will look like that in subscriptions RQL:
+
+```
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x=>x.Product == productId).length >0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+</Admonition>  
+
+<Admonition type="info" title="Revisions" id="revisions" href="#revisions">
+
+To define a data subscription that sends document revisions to the client,  
+you must first [configure revisions](../../../document-extensions/revisions/overview#defining-a-revisions-configuration)
+for the specific collection managed by the subscription.
+
+The subscription should be defined in a special way:  
+
+* In case of the generic API, the `SubscriptionCreationOptions<>` generic parameter should be of the generic type `Revision<>`, 
+  while it's generic parameter correlates to the collection to be processed.  Ex: `new SubscriptionCreationOptions<Revision<Order>>()`  
+* For RQL syntax, concatenate the `(Revisions = true)` clause to the collection being queried.  
+  For example: `From Orders(Revisions = true) as o`
+
+</Admonition>
+  
+
+
+
+</LanguageContent>
+<LanguageContent language="python">
+
+<Admonition type="note" title="Note">
+
+* In this page:  
+   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview#create-subscription)  
+   * [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
+   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
+   * [SubscriptionUpdateOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptionupdateoptions)  
+   * [Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
+
+</Admonition>
+## Create subscription
+
+Subscriptions can be created using the `create_for_options` and `create_for_class` methods.  
+<TabItem value="something-something" label="subscriptionCreationOverloads">
+<CodeBlock language="python">
+{`def create_for_options(self, options: SubscriptionCreationOptions, database: Optional[str] = None) -> str: ...
+
+def create_for_class(
+    self,
+    object_type: Type[_T],
+    options: Optional[SubscriptionCreationOptions] = None,
+    database: Optional[str] = None,
+) -> str: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ----- |
+| **options** | `SubscriptionCreationOptions` | Contains subscription creation options |
+| **database** (Optional) | `[str]` | The name of the database where the subscription task will be created. If `None`, default database configured in DocumentStore will be used. |
+| **object_type** | `Type[_T]` | Predicate describing the subscription documents filter |
+
+| Return value | Description |
+| ------------- | ----- |
+| `str` | Created data subscription name. If the name was provided in `SubscriptionCreationOptions`, it will be returned. Otherwise, a unique name will be generated by the server. |
+
+
+
+## SubscriptionCreationOptions
+
+An RQL statement will be built based on the fields.  
+<TabItem value="something-something" label="sub_create_options">
+<CodeBlock language="python">
+{`class SubscriptionCreationOptions:
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        query: Optional[str] = None,
+        includes: Optional[Callable[[SubscriptionIncludeBuilder], None]] = None,
+        change_vector: Optional[str] = None,
+        mentor_node: Optional[str] = None,
+    ):
+        self.name = name
+        self.query = query
+        self.includes = includes
+        self.change_vector = change_vector
+        self.mentor_node = mentor_node
+`}
+</CodeBlock>
+</TabItem>
+
+| Member                       | Type                                     | Description                                                                                                                                                                                                                                                                                                                                                                                  |
+|------------------------------|:-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **name** (Optional)          | `str`                                    | User-defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database.                                                                                                                                                                                                                                            |
+| **query** (Optional)         | `str`                                    | RQL query that describes the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.                                                                                                                                                                                          |
+| **change_vector** (Optional) | `str`                                    | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                                                                                           |
+| **mentor_node** (Optional)   | `str`                                    | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                                                                                                 |
+| **includes** (Optional)      | `[Callable[[SubscriptionIncludeBuilder]` | Action with a [SubscriptionIncludeBuilder](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents) parameter that allows you to define an include clause for the subscription. Methods can be chained to include documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). |
+
+
+
+## Update subscription
+
+Modifies an existing data subscription. These methods are accessible at `DocumentStore.Subscriptions`.  
+
+<TabItem value="something-something" label="updating_subscription">
+<CodeBlock language="python">
+{`def update(self, options: SubscriptionUpdateOptions, database: Optional[str] = None) -> str: ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **options** | `SubscriptionUpdateOptions` | A subscription update options object |
+| **database** (Optional) | `str` | The name of the database where the subscription task will be created. If `None`, default database configured in DocumentStore will be used. |
+
+| Return value | Description |
+| ------------- | ----- |
+| `str` | The updated data subscription's name. |
+
+
+
+## SubscriptionUpdateOptions
+
+Inherits from `SubscriptionCreationOptions` and has all the same fields (see [above](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)) plus the two additional fields described below:  
+
+<TabItem value="something-something" label="sub_update_options">
+<CodeBlock language="python">
+{`class SubscriptionUpdateOptions(SubscriptionCreationOptions):
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        query: Optional[str] = None,
+        includes: Optional[Callable[[SubscriptionIncludeBuilder], None]] = None,
+        change_vector: Optional[str] = None,
+        mentor_node: Optional[str] = None,
+        key: Optional[int] = None,
+        create_new: Optional[bool] = None,
+    ): ...
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **key** (Optional) | `int` | Unique server-side ID of the data subscription. `key` can be used instead of the subscription update options `name` field, and takes precedence over it. This allows you to change the subscription's name: submit a subscription's ID, and submit a different name in the `name` field. |
+| **create_new** (Optional) | `bool` | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`   |
+
+
+
+## Subscription query 
+
+All subscriptions are eventually translated to an RQL-like statement. These statements have the following parts:
+
+* Functions definition part, like in ordinary RQL. Those functions can contain any JavaScript code,
+  and also supports `load` and `include` operations.
+
+* From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
+
+* Where statement describing the criteria according to which it will be decided to either 
+  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
+  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  The subscriptions RQL does not support any of the known RQL searching keywords.
+
+* Select statement, that defines the projection to be performed. 
+  The select statements can contain function calls, allowing complex transformations.
+
+* Include statement allowing to define include path in document.  
+
+<Admonition type="info" title="Keywords" id="keywords" href="#keywords">
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Usage of JavaScript ES5 syntax is supported.
+</Admonition>
+
+<Admonition type="info" title="Paths" id="paths" href="#paths">
+Paths in subscriptions RQL statements are treated as JavaScript indirections and not like regular RQL paths.  
+It means that a query that in RQL would look like:  
+
+```
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+Will look like that in subscriptions RQL:
+
+```
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x=>x.Product == productId).length >0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+</Admonition>  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* In this page:  
+   * [Create subscription](../../../client-api/data-subscriptions/creation/api-overview#create-subscription)
+   * [Subscription creation options](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation-options)  
+   * [Include methods](../../../client-api/data-subscriptions/creation/api-overview#include-methods)  
+   * [Update subscription](../../../client-api/data-subscriptions/creation/api-overview#update-subscription)  
+   * [Subscription update options](../../../client-api/data-subscriptions/creation/api-overview#subscription-update-options)  
+   * [Subscribe to revisions](../../../client-api/data-subscriptions/creation/api-overview#subscribe-to-revisions)  
+   * [Subscription RQL](../../../client-api/data-subscriptions/creation/api-overview#subscription-rql)  
+
+</Admonition>
+## Create subscription
+
+Subscriptions can be created using the following `create` methods available through the `subscriptions` property of the `DocumentStore`.
+
+<TabItem value="something-something" label="create_syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+create(options);
+
+create(options, database);
+
+create(documentType);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter        | Type      | Description                                                                                                                                            |
+|------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **options**      | `object`  | The [subscription creation options](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation-options).                       |
+| **database**     | `string`  | The name of the database where the subscription task will be created.<br/>If `null`, the default database configured in the DocumentStore will be used. |
+| **documentType** | `object`  | The class type from which the collection of documents managed by the subscription will be derived.                                                     |
+
+| Return value  |  Description                                                                                                                                                                                                                                                                                                                                     |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Promise`     | A Promise that resolves to the **name** of the created data subscription (a `string`).<br/>If the name was provided in the [subscription creation options](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation-options), it will be returned.<br/>Otherwise, a unique name will be generated by server. |
+
+Examples for creating subscriptions are available [here](../../../client-api/data-subscriptions/creation/examples).
+
+
+
+## Subscription creation options
+
+<TabItem value="something-something" label="create_syntax_2">
+<CodeBlock language="nodejs">
+{`// The SubscriptionCreationOptions object:
+// =======================================
+\{
+    name;
+    query;
+    includes;
+    changeVector;
+    mentorNode;
+    pinToMentorNode;
+    disabled;
+    documentType;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Member              | Type                | Description                                                                                                                                                                                                                                                                                                           |
+|---------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| **name**            | `string`            | User defined name for the subscription.<br/>The name must be unique in the database.                                                                                                                                                                                                                                   |
+| **query**           | `string`            | RQL query that defines the subscription. This RQL comes with additional support to JavaScript functions inside the `where` clause and special semantics for subscriptions on documents revisions.<br/>Learn more in [subscription RQL](../../../client-api/data-subscriptions/creation/api-overview#subscription-rql). |
+| **includes**        | `(builder) => void` | A function that accepts a builder object, which allows you to include related documents, counters, and time series in the batch that is sent to the client.<br/>See [Include methods](../../../client-api/data-subscriptions/creation/api-overview#include-methods).                                                   |
+| **changeVector**    | `string`            | Allows to define a change vector from which the subscription will start processing. Useful for ad-hoc processes that need to process only recent changes. In such cases, you can set the field to _"LastDocument"_ to start processing from the latest document in the collection.                                    |
+| **mentorNode**      | `string`            | Allows to define a specific node in the cluster to handle the subscription. Useful when you prefer a specific server due to its stronger hardware, closer geographic proximity to clients, or other reasons.                                                                                                          |
+| **pinToMentorNode** | `boolean`           | `true` - task will only be handled by the specified mentor node.<br/>`false` - When the specified mentor node is down, the cluster selects another node from the Database Group to handle the task.<br/>Learn more in [pinning a task](../../../server/clustering/distribution/highly-available-tasks#pinning-a-task).  |
+| **disabled**        | `boolean`           | `true` - the created subscription will be in a disabled state.<br/>`false` (default) - the created subscription will be enabled.                                                                                                                                                                                       |
+| **documentType**    | `object`            | The class type from which the collection of documents managed by the subscription will be derived.                                                                                                                                                                                                                    |
+
+
+
+
+## Include methods
+
+**Including documents**:  
+
+<TabItem value="something-something" label="include_syntax_1">
+<CodeBlock language="nodejs">
+{`includeDocuments(path);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type       | Description                                                    |
+|-----------|------------|----------------------------------------------------------------|
+| **path**  | `string`   | Path to the property which contains ID of document to include. |
+
+An example of including documents is available [here](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents).
+**Including counters**:
+
+<TabItem value="something-something" label="include_syntax_2">
+<CodeBlock language="nodejs">
+{`// Include a single counter
+includeCounter(name);
+
+// Include multiple counters
+includeCounters(names);
+
+// Include ALL counters from ALL documents that match the subscription criteria
+includeAllCounters();
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter  | Type       | Description                                                                                                                                      |
+|------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**   | `string`   | The name of a counter. The subscription will include all counters with this name that are contained in the documents the subscription retrieves. |
+| **names**  | `string[]` | Array of counter names.                                                                                                                          |
+
+An example of including counters is available [here](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters).
+**Including time series**:
+
+<TabItem value="something-something" label="include_syntax_3">
+<CodeBlock language="nodejs">
+{`includeTimeSeries(name, type, time);
+includeTimeSeries(name, type, count);
+
+includeTimeSeries(names, type, time);
+includeTimeSeries(names, type, count);
+
+includeAllTimeSeries(type, time);
+includeAllTimeSeries(type, count);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter   | Type        | Description                                                                                                                                                                          |
+|-------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **name**    | `string`    | The name of the time series to include.                                                                                                                                              |
+| **names**   | `string[]`  | The names of the time series to include.                                                                                                                                             |
+| **type**    | `string`    | Indicates how to retrieve the time series entries.<br/>Range type can be: `"None"` or `"Last"`.<br/>When set to _Last_, retrieve the last X entries, where X is determined by _count_. |
+| **time**    | `TimeValue` | The time range to consider when retrieving time series entries.<br/>E.g.: `TimeValue.ofDays(7)`                                                                                       |
+| **count**   | `number`    | The maximum number of entries to take when retrieving time series entries.                                                                                                           |
+
+
+
+## Update subscription
+
+Existing subscriptions can be modified using the following `update` methods available through the `subscriptions` property of the `DocumentStore`.
+
+<TabItem value="something-something" label="update_syntax_1">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+update(options);
+
+update(options, database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type                | Description                                                                                                                                    |
+|--------------|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| **options**  | `object`            | The [subscription update options](../../../client-api/data-subscriptions/creation/api-overview#subscription-update-options).                   |
+| **database** | `string`            | The name of the database where the subscription task resides.<br/>If `null`, the default database configured in the DocumentStore will be used. |
+
+| Return value  | Description                                                                                       |
+|---------------|----------------------------------------------------------------------------------------|
+| `Promise`     | A Promise that resolves to the **name** of the updated data subscription (a `string`). |
+
+Examples for updating an existing subscription are available [here](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+
+
+
+## Subscription update options
+
+The subscription update options object extends the [creation options object](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation-options)
+and adds two additional fields:
+
+<TabItem value="something-something" label="update_syntax_2">
+<CodeBlock language="nodejs">
+{`// The SubscriptionUpdateOptions object:
+// =====================================
+\{
+    id;
+    createNew;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter     | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **id**        | `number`  | The unique ID that was assigned to the subscription by the server at creation time.<br/>You can retrieve it by [getting the subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status).<br/>When updating, the `id` can be used instead of the `name` field, and takes precedence over it. This allows you to modify the subscription's name: provide the id and submit a new name in the name field. |
+| **createNew** | `boolean` | Determines the behavior when the subscription you wish to update does Not exist.<br/>`true` - a new subscription is created with the provided option parameters.<br/>`false` - an exception will be thrown.<br/>Default: `false`                                                                                                                                                                                                                                            |
+
+
+
+
+## Subscribe to revisions
+
+To define a data subscription that sends document revisions to the client,  
+you must first [configure revisions](../../../document-extensions/revisions/overview#defining-a-revisions-configuration)
+for the specific collection managed by the subscription.
+
+Create a subscription that sends document revisions using the following `createForRevisions` methods:
+
+<TabItem value="something-something" label="create_syntax_3">
+<CodeBlock language="nodejs">
+{`// Available overloads:
+// ====================
+
+createForRevisions(options);
+
+createForRevisions(options, database);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter    | Type     | Description                                                                                                                                            |
+|--------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **options**  | `object` | The [subscription creation options](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation-options).                       |
+| **database** | `string` | The name of the database where the subscription task will be created.<br/>If `null`, the default database configured in the DocumentStore will be used. |
+
+When providing raw RQL to the `query` param in the options object,  
+concatenate the `(Revisions = true)` clause to the collection being queried.  
+For example: `From Orders(Revisions = true) as o`
+
+Learn more about subscribing to revisions in [revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+
+
+
+## Subscription RQL 
+
+All subscriptions are eventually translated to an RQL-like statement. These statements have the following parts:
+
+* Functions definition part, like in ordinary RQL. Those functions can contain any JavaScript code,
+  and also supports `load` and `include` operations.
+
+* From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
+
+* Where statement describing the criteria according to which it will be decided to either 
+  send the documents to the worker or not. Those statements support either RQL like `equality` operations (`=`, `==`) ,  
+  plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
+  The subscriptions RQL does not support any of the known RQL searching keywords.
+
+* Select statement, that defines the projection to be performed. 
+  The select statements can contain function calls, allowing complex transformations.
+
+* Include statement allowing to define include path in document.  
+
+<Admonition type="info" title="Keywords" id="keywords" href="#keywords">
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Usage of JavaScript ES5 syntax is supported.
+</Admonition>
+
+<Admonition type="info" title="Paths" id="paths" href="#paths">
+Paths in subscriptions RQL statements are treated as JavaScript indirections and not like regular RQL paths.  
+It means that a query that in RQL would look like:  
+
+```
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+Will look like that in subscriptions RQL:
+
+```
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x=>x.Product == productId).length >0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+</Admonition>
+
+
+
+</LanguageContent>
