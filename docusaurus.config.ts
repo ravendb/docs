@@ -7,7 +7,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "RavenDB Documentation",
   tagline:
-    "Everything you need to know about our product, from getting started to advanced features.",
+    "High-performance NoSQL database that just works.",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -15,24 +15,13 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here
   url: "https://test.docs.ravendb.net/",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
-  projectName: "docusaurus", // Usually your repo name.
 
   onBrokenLinks: "ignore",
   onBrokenMarkdownLinks: "ignore",
   onBrokenAnchors: "ignore",
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -53,10 +42,9 @@ const config: Config = {
               path: "/7.1"
             }
           }
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl:
-          //  'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          //  'https://github.com/ravendb/docs/new-docs/main/'
         },
         blog: false,
         theme: {
@@ -137,6 +125,16 @@ const config: Config = {
           crossorigin: "anonymous",
         },
       },
+    ],
+    metadata: [
+      {
+        name: 'keywords',
+        content: 'nosql, document database'
+      },
+      {
+        name: 'description',
+        content: 'Official RavenDB documentation. Learn installation, querying, indexing, scaling, security, and every advanced feature of the fully ACID NoSQL database that combines performance with ease of use.'
+      }
     ],
     colorMode: {
       defaultMode: "dark",
@@ -236,8 +234,6 @@ const config: Config = {
 
       // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
       insights: false,
-
-      //... other Algolia params
     },
   } satisfies Preset.ThemeConfig,
 };
