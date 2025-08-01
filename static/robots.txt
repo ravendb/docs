@@ -2,16 +2,5 @@
 User-agent: *
 Allow: /
 
-# Block duplicate or low-value paths
-Disallow: /test/
-Disallow: /wip/
-
-# AI crawlers you want to exclude
-User-agent: GPTBot
-Disallow: /
-
-User-agent: Google-Extended
-Allow: /           # allow search, deny AI training
-
 # Sitemaps
 Sitemap: https://test.docs.ravendb.net/sitemap.xml
