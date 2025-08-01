@@ -3,27 +3,32 @@ TeamCity PowerShell Build Script
 --------------------------------
 Deploys a Docusaurus static site with RavenDB changelogs to AWS S3 and
 invalidates CloudFront cache.
-This version enables all operational steps except **3** (changelog download)
-and **4** (Python patcher), which remain placeholders. Everything else now runs
-for real.
-    $env:NODE_OPTIONS = "--max-old-space-size=8192"
-    docusaurus build --dev
-Required parameters (passed as TeamCity build step parameters or CLI args):
-  -AwsRegion <string>                 # e.g. eu-central-1
+
+**Change log**
+- **Removed** explicit `-AwsRegion` argument; region comes from `AWS_DEFAULT_REGION`.
+- **Removed** intermediate `$EnvCreds` hashtable; credentials are checked directly
+  from environment variables.
+- Steps 3 (download changelogs) and 4 (Python patcher) remain placeholders.
+
+Usage example:
+```
+pwsh.exe teamcity_ravendb_deploy.ps1 -S3BucketName my-docs-bucket -CloudFrontDistributionId ABCD1234
+```
+
+Required parameters:
   -S3BucketName <string>              # destination bucket name
+
 Optional parameters:
   -ChangelogApiKey <string>           # api.web.ravendb.net key (if omitted, changelogs are skipped)
   -CloudFrontDistributionId <string>  # distribution to invalidate (if omitted, no invalidation)
   -Versions <string[]>                # explicit list of RavenDB versions (e.g. 6.0,6.2,7.0,7.1)
+
 Version convenience switches (alias-based, can be combined):
   -6.0  -6.2  -7.0  -7.1
 ------------------------------------------------------------------------------!#>
 
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$AwsRegion,
-
     [Parameter(Mandatory=$true)]
     [string]$S3BucketName,
 
@@ -66,7 +71,7 @@ function Ensure-Dependencies {
     }
     Write-Host "Node.js version: $(node -v)" -ForegroundColor Gray
 
-    # npm check (usually ships with Node)
+    # npm check (ships with Node)
     if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
         throw "npm CLI is required but was not found in PATH."
     }
@@ -77,9 +82,9 @@ function Ensure-Dependencies {
     }
     Write-Host "AWS CLI version: $(aws --version)" -ForegroundColor Gray
 
-    # Ensure Docusaurus CLI is available (docusaurus.cmd / docusaurus)
+    # Ensure Docusaurus CLI is available
     if (-not (Get-Command docusaurus -ErrorAction SilentlyContinue)) {
-        Write-Host "Docusaurus CLI not found – installing locally (no‑save)..." -ForegroundColor Yellow
+        Write-Host "Docusaurus CLI not found – installing locally (no-save)..." -ForegroundColor Yellow
         npm install --no-save @docusaurus/core@latest @docusaurus/cli@latest | Out-Null
         if (-not (Get-Command docusaurus -ErrorAction SilentlyContinue)) {
             throw "Docusaurus CLI installation failed."
@@ -91,20 +96,14 @@ function Ensure-Dependencies {
 Ensure-Dependencies
 
 # ---------------------------------------------------------------------------
-# 1. Gather AWS credentials from environment
+# 1. Validate AWS environment
 # ---------------------------------------------------------------------------
-$EnvCreds = @{ 
-    AccessKey = $Env:AWS_ACCESS_KEY_ID
-    Secret    = $Env:AWS_SECRET_ACCESS_KEY
-    Session   = $Env:AWS_SESSION_TOKEN
-}
-ThrowIfEmpty $EnvCreds.AccessKey "AWS_ACCESS_KEY_ID environment variable not set"
-ThrowIfEmpty $EnvCreds.Secret    "AWS_SECRET_ACCESS_KEY environment variable not set"
+ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID  "AWS_ACCESS_KEY_ID environment variable not set"
+ThrowIfEmpty $Env:AWS_SECRET_ACCESS_KEY "AWS_SECRET_ACCESS_KEY environment variable not set"
+# Session token is optional (for temporary creds)
 
-# export region for downstream CLI calls
-$Env:AWS_REGION = $AwsRegion
-
-Write-Host "Using AWS region $AwsRegion and bucket $S3BucketName" -ForegroundColor Cyan
+$CurrentRegion = $Env:AWS_DEFAULT_REGION
+Write-Host "Using AWS region '$CurrentRegion' (from AWS_DEFAULT_REGION) and bucket '$S3BucketName'" -ForegroundColor Cyan
 
 # ---------------------------------------------------------------------------
 # 2. Resolve RavenDB version list
@@ -162,7 +161,6 @@ if (Test-Path package.json) {
     }
 }
 
-# Run Docusaurus build in dev mode
 Write-Host "Running 'docusaurus build --dev'" -ForegroundColor Gray
 docusaurus build --dev
 if ($LASTEXITCODE -ne 0) { throw "Docusaurus build failed" }
@@ -174,7 +172,7 @@ ThrowIfEmpty (Test-Path $BuildDir) "Docusaurus build folder was not produced ($B
 # 6. Sync build output to S3
 # ---------------------------------------------------------------------------
 Write-Host "Uploading to s3://$S3BucketName/ ..." -ForegroundColor Cyan
-aws s3 sync $BuildDir "s3://$S3BucketName/" --delete --region $AwsRegion
+aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
 if ($LASTEXITCODE -ne 0) { throw "aws s3 sync failed" }
 
 # ---------------------------------------------------------------------------
@@ -182,7 +180,7 @@ if ($LASTEXITCODE -ne 0) { throw "aws s3 sync failed" }
 # ---------------------------------------------------------------------------
 if ($CloudFrontDistributionId) {
     Write-Host "Creating CloudFront invalidation on distribution $CloudFrontDistributionId" -ForegroundColor Cyan
-    aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*" --region $AwsRegion | Out-Null
+    aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*" | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "CloudFront invalidation failed" }
 }
 
