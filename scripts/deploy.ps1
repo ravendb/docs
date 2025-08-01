@@ -4,27 +4,25 @@ TeamCity PowerShell Build Script
 Deploys a Docusaurus static site with RavenDB changelogs to AWS S3 and
 invalidates CloudFront cache.
 
-**Change log**
-- **Removed** explicit `-AwsRegion` argument; region comes from `AWS_DEFAULT_REGION`.
-- **Removed** intermediate `$EnvCreds` hashtable; credentials are checked directly
-  from environment variables.
-- Steps 3 (download changelogs) and 4 (Python patcher) remain placeholders.
+Prerequisites
+-------------
+* **Node.js ≥ 18** (with npm)
+* **Python ≥ 3** (`python` in PATH) – used by the changelog patcher
+* **AWS CLI v2** – credentials via `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
+  `AWS_DEFAULT_REGION` (and optional `AWS_SESSION_TOKEN`)
+* Environment variable **`RAVENDB_API_KEY`** set (only required when changelogs
+  for specific RavenDB versions are processed)
+* Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
 
-Usage example:
+Example
+-------
+```powershell
+# RAVENDB_API_KEY must be set if you request specific versions
+$env:RAVENDB_API_KEY = 'YOUR-API-KEY'
+
+pwsh teamcity_ravendb_deploy.ps1 -S3BucketName my-docs-bucket `
+     -CloudFrontDistributionId ABCD1234 -6.0 -7.0
 ```
-pwsh.exe teamcity_ravendb_deploy.ps1 -S3BucketName my-docs-bucket -CloudFrontDistributionId ABCD1234
-```
-
-Required parameters:
-  -S3BucketName <string>              # destination bucket name
-
-Optional parameters:
-  -ChangelogApiKey <string>           # api.web.ravendb.net key (if omitted, changelogs are skipped)
-  -CloudFrontDistributionId <string>  # distribution to invalidate (if omitted, no invalidation)
-  -Versions <string[]>                # explicit list of RavenDB versions (e.g. 6.0,6.2,7.0,7.1)
-
-Version convenience switches (alias-based, can be combined):
-  -6.0  -6.2  -7.0  -7.1
 ------------------------------------------------------------------------------!#>
 
 [CmdletBinding()]
@@ -32,16 +30,10 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$S3BucketName,
 
-    [Parameter(Mandatory=$false)]
-    [string]$ChangelogApiKey,
-
-    [Parameter(Mandatory=$false)]
     [string]$CloudFrontDistributionId,
-
-    [Parameter(Mandatory=$false)]
     [string[]]$Versions = @(),
 
-    # convenience switches; dot aliases allow calling with literal "-6.0"
+    # Convenience switches; dot aliases allow literal "-6.0" etc.
     [Alias('6.0')][switch]$v6_0,
     [Alias('6.2')][switch]$v6_2,
     [Alias('7.0')][switch]$v7_0,
@@ -51,46 +43,30 @@ param(
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-# Path to the external Python patcher; update when script moves.
-$PythonPatcherPath = Join-Path $PSScriptRoot 'tools/patch_changelogs.py'
+$PythonPatcherPath = Join-Path $PSScriptRoot 'scripts/patch_changelogs.py'
 
 function ThrowIfEmpty {
-    param([string]$Value,[string]$Message)
+    param([string]$Value, [string]$Message)
     if (-not $Value) { throw $Message }
 }
 
 # ---------------------------------------------------------------------------
-# Step 0. Verify / install runtime dependencies
+# 0. Verify runtime dependencies
 # ---------------------------------------------------------------------------
 function Ensure-Dependencies {
-    Write-Host "Checking runtime dependencies..." -ForegroundColor Cyan
+    Write-Host "Verifying runtime dependencies…" -ForegroundColor Cyan
 
-    # Node.js check
-    if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-        throw "Node.js runtime is required but was not found in PATH."
-    }
-    Write-Host "Node.js version: $(node -v)" -ForegroundColor Gray
+    if (-not (Get-Command node   -ErrorAction SilentlyContinue)) { throw "Node.js not found in PATH" }
+    if (-not (Get-Command npm    -ErrorAction SilentlyContinue)) { throw "npm CLI not found in PATH" }
+    if (-not (Get-Command python -ErrorAction SilentlyContinue)) { throw "Python not found in PATH" }
+    if (-not (Get-Command aws    -ErrorAction SilentlyContinue)) { throw "AWS CLI v2 not found in PATH" }
 
-    # npm check (ships with Node)
-    if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-        throw "npm CLI is required but was not found in PATH."
-    }
+    $nodeVer   = (node -v).Trim()
+    $npmVer    = (npm --version).Trim()
+    $pythonVer = (python --version 2>&1).Trim()
+    $awsVer    = (aws --version).Trim()
 
-    # AWS CLI check
-    if (-not (Get-Command aws -ErrorAction SilentlyContinue)) {
-        throw "AWS CLI v2 is required but was not found in PATH."
-    }
-    Write-Host "AWS CLI version: $(aws --version)" -ForegroundColor Gray
-
-    # Ensure Docusaurus CLI is available
-    if (-not (Get-Command docusaurus -ErrorAction SilentlyContinue)) {
-        Write-Host "Docusaurus CLI not found – installing locally (no-save)..." -ForegroundColor Yellow
-        npm install --no-save @docusaurus/core@latest @docusaurus/cli@latest | Out-Null
-        if (-not (Get-Command docusaurus -ErrorAction SilentlyContinue)) {
-            throw "Docusaurus CLI installation failed."
-        }
-    }
-    Write-Host "Dependencies are satisfied." -ForegroundColor Green
+    Write-Host "Node.js $nodeVer | npm $npmVer | Python $pythonVer | AWS $awsVer" -ForegroundColor Gray
 }
 
 Ensure-Dependencies
@@ -98,12 +74,13 @@ Ensure-Dependencies
 # ---------------------------------------------------------------------------
 # 1. Validate AWS environment
 # ---------------------------------------------------------------------------
-ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID  "AWS_ACCESS_KEY_ID environment variable not set"
-ThrowIfEmpty $Env:AWS_SECRET_ACCESS_KEY "AWS_SECRET_ACCESS_KEY environment variable not set"
-# Session token is optional (for temporary creds)
+ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID      "AWS_ACCESS_KEY_ID not set"
+ThrowIfEmpty $Env:AWS_SECRET_ACCESS_KEY "AWS_SECRET_ACCESS_KEY not set"
 
 $CurrentRegion = $Env:AWS_DEFAULT_REGION
-Write-Host "Using AWS region '$CurrentRegion' (from AWS_DEFAULT_REGION) and bucket '$S3BucketName'" -ForegroundColor Cyan
+ThrowIfEmpty $CurrentRegion "AWS_DEFAULT_REGION not set"
+
+Write-Host "Region: '$CurrentRegion' | Bucket: '$S3BucketName'" -ForegroundColor Cyan
 
 # ---------------------------------------------------------------------------
 # 2. Resolve RavenDB version list
@@ -115,73 +92,58 @@ if ($v7_0) { $flagVersions += '7.0' }
 if ($v7_1) { $flagVersions += '7.1' }
 
 $AllVersions = ($Versions + $flagVersions) | Sort-Object -Unique
-Write-Host "Versions targeted: $($AllVersions -join ', ')" -ForegroundColor Yellow
+Write-Host "Target versions: $($AllVersions -join ', ')" -ForegroundColor Yellow
 
-# ---------------------------------------------------------------------------
-# 3. Placeholder: Download changelog files (still commented)
-# ---------------------------------------------------------------------------
-function Download-Changelogs {
-    param([string]$ApiKey,[string[]]$Versions)
-    Write-Host "[TODO] Downloading changelogs from api.web.ravendb.net for versions: $($Versions -join ', ')" -ForegroundColor Gray
-    # Placeholder only – external call intentionally skipped
-}
-
-if ($ChangelogApiKey -and $AllVersions.Count -gt 0) {
-    Download-Changelogs -ApiKey $ChangelogApiKey -Versions $AllVersions
+# Fetch API key from environment when needed
+$RavenDbApiKey = $Env:RAVENDB_API_KEY
+if ($AllVersions) {
+    ThrowIfEmpty $RavenDbApiKey "RAVENDB_API_KEY env var must be set when specifying versions"
 }
 
 # ---------------------------------------------------------------------------
-# 4. Placeholder: Call external Python script to patch changelog contents (still commented)
+# 3. Process changelogs (download & patch) – placeholder
 # ---------------------------------------------------------------------------
-function Patch-ChangelogsWithPython {
-    param([string[]]$Versions)
-    Write-Host "[SKIPPED] Placeholder: would call python patcher at $PythonPatcherPath for versions: $($Versions -join ', ')" -ForegroundColor DarkGray
-    # Example real call (disabled):
-    # & python $PythonPatcherPath --versions $Versions
-    # if ($LASTEXITCODE -ne 0) { throw "Python patcher failed with exit code $LASTEXITCODE" }
+function Process-Changelogs {
+    param([string]$ApiKey, [string[]]$Versions)
+    Write-Host "[TODO] Would download & patch changelogs via $PythonPatcherPath" -ForegroundColor Gray
 }
 
-if ($AllVersions.Count -gt 0) {
-    Patch-ChangelogsWithPython -Versions $AllVersions
+if ($RavenDbApiKey -and $AllVersions) {
+    Process-Changelogs -ApiKey $RavenDbApiKey -Versions $AllVersions
 }
 
 # ---------------------------------------------------------------------------
-# 5. Build static site with Docusaurus (increased memory)
+# 4. Install JS dependencies & build site
 # ---------------------------------------------------------------------------
-Write-Host "Building Docusaurus site (dev mode, 8 GiB heap)..." -ForegroundColor Cyan
+Write-Host "Installing JS dependencies (npm ci)…" -ForegroundColor Cyan
 $env:NODE_OPTIONS = "--max-old-space-size=8192"
 
-# Ensure node modules (if package.json exists)
-if (Test-Path package.json) {
-    if (Test-Path package-lock.json -or Test-Path yarn.lock) {
-        Write-Host "Using cached node_modules" -ForegroundColor Gray
-    } else {
-        Write-Host "Installing NPM dependencies" -ForegroundColor Gray
-        npm ci --no-audit --fund false
-    }
-}
+if (-not (Test-Path package.json)) { throw "package.json not found" }
 
-Write-Host "Running 'docusaurus build --dev'" -ForegroundColor Gray
-docusaurus build --dev
-if ($LASTEXITCODE -ne 0) { throw "Docusaurus build failed" }
+npm ci --no-audit --fund false
+if ($LASTEXITCODE) { throw "npm ci failed" }
 
-$BuildDir = Join-Path $PSScriptRoot "build"
-ThrowIfEmpty (Test-Path $BuildDir) "Docusaurus build folder was not produced ($BuildDir)"
+Write-Host "Running 'npx docusaurus build --dev'…" -ForegroundColor Gray
+npx docusaurus build --dev
+if ($LASTEXITCODE) { throw "Docusaurus build failed" }
+
+$BuildDir = Join-Path $PSScriptRoot 'build'
+ThrowIfEmpty (Test-Path $BuildDir) "Build folder not produced ($BuildDir)"
 
 # ---------------------------------------------------------------------------
-# 6. Sync build output to S3
+# 5. Sync build output to S3
 # ---------------------------------------------------------------------------
-Write-Host "Uploading to s3://$S3BucketName/ ..." -ForegroundColor Cyan
+Write-Host "Syncing to s3://$S3BucketName/ …" -ForegroundColor Cyan
 aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
-if ($LASTEXITCODE -ne 0) { throw "aws s3 sync failed" }
+if ($LASTEXITCODE) { throw "aws s3 sync failed" }
 
 # ---------------------------------------------------------------------------
-# 7. Invalidate CloudFront
+# 6. Invalidate CloudFront (optional)
 # ---------------------------------------------------------------------------
 if ($CloudFrontDistributionId) {
-    Write-Host "Creating CloudFront invalidation on distribution $CloudFrontDistributionId" -ForegroundColor Cyan
-    aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths "/*" | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw "CloudFront invalidation failed" }
+    Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
+    aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
+    if ($LASTEXITCODE) { throw "CloudFront invalidation failed" }
 }
 
 Write-Host "Deployment completed successfully." -ForegroundColor Green
