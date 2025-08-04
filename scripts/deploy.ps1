@@ -37,8 +37,11 @@ param(
     [Parameter(HelpMessage = 'CloudFront distribution ID to invalidate (optional)')]
     [string]$CloudFrontDistributionId,
 
-    [Parameter(ValueFromRemainingArguments = $false, HelpMessage = "Versions to regenerate What's New for – e.g. 6.0 7.0 8.0")]
-    [string[]]$Versions = @()
+    [Parameter(ValueFromRemainingArguments = $false, HelpMessage = "Versions to regenerate Whats New for – e.g. 6.0 7.0 8.0")]
+    [string[]]$Versions = @(),
+
+    [Parameter(HelpMessage = 'Dry run mode. If enabled, no sync to S3 or CloudFront invalidation will occur.')]
+    [switch]$DryRun
 )
 
 # ---------------------------------------------------------------------------
@@ -131,20 +134,26 @@ if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 $BuildDir = Join-Path $PSScriptRoot 'build'
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
-# ---------------------------------------------------------------------------
-# 5. Sync build output to S3
-# ---------------------------------------------------------------------------
-Write-Host "Syncing to s3://$S3BucketName/ …" -ForegroundColor Cyan
-aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
-if ($LASTEXITCODE) { throw 'aws s3 sync failed' }
+if ($DryRun) {
+    Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/ and CloudFront invalidation." -ForegroundColor Yellow
+} else {
 
-# ---------------------------------------------------------------------------
-# 6. Invalidate CloudFront (optional)
-# ---------------------------------------------------------------------------
-if ($CloudFrontDistributionId) {
-    Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
-    aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
-    if ($LASTEXITCODE) { throw 'CloudFront invalidation failed' }
+    # ---------------------------------------------------------------------------
+    # 5. Sync build output to S3
+    # ---------------------------------------------------------------------------
+    Write-Host "Syncing to s3://$S3BucketName/ …" -ForegroundColor Cyan
+    aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
+    if ($LASTEXITCODE) { throw 'aws s3 sync failed' }
+
+    # ---------------------------------------------------------------------------
+    # 6. Invalidate CloudFront (optional)
+    # ---------------------------------------------------------------------------
+    if ($CloudFrontDistributionId) {
+        Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
+        aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
+        if ($LASTEXITCODE) { throw 'CloudFront invalidation failed' }
+    }
+
 }
 
 Write-Host 'Deployment completed successfully.' -ForegroundColor Green
