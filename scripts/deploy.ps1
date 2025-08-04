@@ -37,7 +37,7 @@ param(
     [Parameter(HelpMessage = 'CloudFront distribution ID to invalidate (optional)')]
     [string]$CloudFrontDistributionId,
 
-    [Parameter(ValueFromRemainingArguments = $false, HelpMessage = "Versions to regenerate What's New for – e.g. 6.0 7.0 8.0")]
+    [Parameter(ValueFromRemainingArguments = $false, HelpMessage = "Versions to regenerate Whats New for – e.g. 6.0 7.0 8.0")]
     [string[]]$Versions = @(),
 
     [Parameter(HelpMessage = 'Dry run mode. If enabled, no sync to S3 or CloudFront invalidation will occur.')]
