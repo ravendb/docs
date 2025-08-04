@@ -24,15 +24,15 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * Queries can retrieve data from the entire time series or from a specific range of entries,  
   such as those collected in the last 7 days.
 
-* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
 
 * In this page:
-    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
-    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
-       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range-in-a-query)
+       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#specify-range)
+       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range---rql-syntax)
+       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and-)
+       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and--1)
 
 </Admonition>
 ## Choose range in a query
@@ -242,9 +242,9 @@ select getHeartRates(e)
 </TabItem>
 </Tabs>
 
-* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view.mdx).  
   Using Studio, you can apply parameters as follows for a clearer query.  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`$from = "2020-05-17T00:00:00.0000000Z"
 $to = "2020-05-17T01:00:00.0000000Z"
@@ -264,7 +264,7 @@ select timeseries(
   Use `last` to specify the time frame from the end of the time series.  
   A query function can use either `first` or `last`, but not both. E.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"
@@ -276,7 +276,7 @@ select timeseries(
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
 from "Employees"
@@ -310,15 +310,15 @@ select timeseries(
 * Queries can retrieve data from the entire time series or from a specific range of entries,  
   such as those collected in the last 7 days.
 
-* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
 
 * In this page:
-    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
-    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
-      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range-in-a-query)
+      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#specify-range)
+      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range---rql-syntax)
+      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and-)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and--1)
 
 </Admonition>
 ## Choose range in a query
@@ -333,7 +333,7 @@ select timeseries(
 
 * In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Employees" as employee
 where employee.Address.Country == "UK"
@@ -354,7 +354,7 @@ select timeseries(
 
 * In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Employees" as e 
 select timeseries(
@@ -409,9 +409,9 @@ select getHeartRates(e)
 </TabItem>
 </Tabs>
 
-* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view.mdx).  
   Using Studio, you can apply parameters as follows for a clearer query.  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`$from = "2020-05-17T00:00:00.0000000Z"
 $to = "2020-05-17T01:00:00.0000000Z"
@@ -431,7 +431,7 @@ select timeseries(
   Use `last` to specify the time frame from the end of the time series.  
   A query function can use either `first` or `last`, but not both. E.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"
@@ -443,7 +443,7 @@ select timeseries(
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
 from "Employees"
@@ -478,12 +478,12 @@ select timeseries(
   such as those collected in the last 7 days.
 
 * In this page:
-    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
-    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
-      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range-in-a-query)
+      * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#specify-range)
+      * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range---rql-syntax)
+      * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and-)
+      * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and--1)
 
 </Admonition>
 ## Choose range in a query
@@ -498,7 +498,7 @@ select timeseries(
 
 * In this example, we specify a 10-minute range from which we retrieve UK employees "HeartRates" entries.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Employees" as employee
 where employee.Address.Country == "UK"
@@ -519,7 +519,7 @@ select timeseries(
 
 * In this example, we select only entries in the last 30 minutes of the "HeartRates" time series.
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Employees" as e 
 select timeseries(
@@ -574,9 +574,9 @@ select getHeartRates(e)
 </TabItem>
 </Tabs>
 
-* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view.mdx).  
   Using Studio, you can apply parameters as follows for a clearer query.  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`$from = "2020-05-17T00:00:00.0000000Z"
 $to = "2020-05-17T01:00:00.0000000Z"
@@ -596,7 +596,7 @@ select timeseries(
   Use `last` to specify the time frame from the end of the time series.  
   A query function can use either `first` or `last`, but not both. E.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"
@@ -608,7 +608,7 @@ select timeseries(
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
 from "Employees"
@@ -642,15 +642,15 @@ select timeseries(
 * Queries can retrieve data from the entire time series or from a specific range of entries,  
   such as those collected in the last 7 days.
 
-* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying).
+* For an overview of the available time series queries and their syntax, please refer to [Time series querying](../../../document-extensions/timeseries/client-api/session/querying.mdx).
 
 * In this page:
-    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range-in-a-query)
-       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range#specify-range)
-       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range#retrieve-first-or-last-entries)
-    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range#choose-range---rql-syntax)
-       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range#and-)
-       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range#and--1)
+    * [Choose range in a query](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range-in-a-query)
+       * [Specify range](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#specify-range)
+       * [Retrieve first or last entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#retrieve-first-or-last-entries)
+    * [Choose range - RQL syntax](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#choose-range---rql-syntax)
+       * [`between` and `and`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and-)
+       * [`first` and `last`](../../../document-extensions/timeseries/querying/choosing-query-range.mdx#and--1)
 
 </Admonition>
 ## Choose range in a query
@@ -669,7 +669,7 @@ select timeseries(
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the time series query part (expressed in RQL):
 const tsQueryText = \`
     from HeartRates
@@ -697,7 +697,7 @@ const tsValue = tsEntry.value;
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_using_params" label="Query_using_params">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const from = new Date("2020-05-17T00:00:00.0000000");
 const to = new Date("2020-05-17T00:10:00.0000000");
 
@@ -729,7 +729,7 @@ const tsValue = tsEntry.value;
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     from "Employees" as employee
     where employee.Address.Country == "UK"
@@ -747,7 +747,7 @@ const result = await query.all();
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery_using_params" label="RawQuery_using_params">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     from "Employees" as employee
     where employee.Address.Country == "UK"
@@ -807,7 +807,7 @@ select timeseries(
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the time series query part (expressed in RQL):
 const tsQueryText = \`
     from HeartRates
@@ -824,7 +824,7 @@ const results = await query.all();
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     from "Employees" as employee
     select timeseries(
@@ -895,9 +895,9 @@ select getHeartRates(e)
 </TabItem>
 </Tabs>
 
-* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view).  
+* RQL queries can be executed from Studio's [query view](../../../studio/database/queries/query-view.mdx).  
   Using Studio, you can apply parameters as follows for a clearer query.  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`$from = "2020-05-17T00:00:00.0000000Z"
 $to = "2020-05-17T01:00:00.0000000Z"
@@ -917,7 +917,7 @@ select timeseries(
   Use `last` to specify the time frame from the end of the time series.  
   A query function can use either `first` or `last`, but not both. E.g. -  
   
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve all entries from the last day, starting from the end of time series "HeartRates"
 from "Employees"
@@ -929,7 +929,7 @@ select timeseries(
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Retrieve the first 10 minutes of entries from the beginning of time series "HeartRates"
 from "Employees"

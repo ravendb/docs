@@ -26,7 +26,7 @@ To modify the solver configuration, use **ModifyConflictSolverOperation**.
 
 ## Syntax
 
-<TabItem value="something" label="solver_1">
+<TabItem value="solver_1" label="solver_1">
 <CodeBlock language="csharp">
 {`public ModifyConflictSolverOperation(
     string database, 
@@ -36,7 +36,7 @@ To modify the solver configuration, use **ModifyConflictSolverOperation**.
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="solver_2">
+<TabItem value="solver_2" label="solver_2">
 <CodeBlock language="csharp">
 {`public class ScriptResolver
 \{
@@ -61,7 +61,7 @@ To modify the solver configuration, use **ModifyConflictSolverOperation**.
 
 ## Example I
 
-<TabItem value="something" label="solver_3">
+<TabItem value="solver_3" label="solver_3">
 <CodeBlock language="csharp">
 {`// resolve conflict to latest version
 ModifyConflictSolverOperation operation = 
@@ -74,7 +74,7 @@ store.Maintenance.Server.Send(operation);
 
 ## Example II
 
-<TabItem value="something" label="solver_4">
+<TabItem value="solver_4" label="solver_4">
 <CodeBlock language="csharp">
 {`// resolve conflict by finding max value 
 string script = @"

@@ -21,7 +21,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Prior to this article, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) to learn about the `Search` method.  
+* Prior to this article, please refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) to learn about the `Search` method.  
 
 * **All capabilities** provided by `Search` with a dynamic query can also be used when querying a static-index.
 
@@ -32,23 +32,23 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers#selecting-an-analyzer-for-a-field).    
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
 * In this article:
-  * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
-  * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
-  * [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards)
-      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
-      * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
-      * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+  * [Searching with wildcards](../../indexes/querying/searching.mdx#searching-with-wildcards)
+      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching.mdx#when-usingoror)
+      * [When using a custom analyzer](../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
+      * [When using the Exact analyzer](../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
 
 </Admonition>
 ## Indexing single field for FTS
 
 #### The index:
 
-<TabItem value="something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="csharp">
 {`public class Employees_ByNotes :
     AbstractIndexCreationTask<Employee, Employees_ByNotes.IndexEntry>
@@ -87,7 +87,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `Search` to make a full-text search when querying the index.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available **Search options**,  
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
@@ -160,7 +160,7 @@ where search(EmployeeNotes, "French")
 
 #### The index:
 
-<TabItem value="something" label="index_2">
+<TabItem value="index_2" label="index_2">
 <CodeBlock language="csharp">
 {`public class Employees_ByEmployeeData : 
     AbstractIndexCreationTask<Employee, Employees_ByEmployeeData.IndexEntry>
@@ -291,7 +291,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   </Admonition>
 #### The index:
 
-<TabItem value="something" label="index_6">
+<TabItem value="index_6" label="index_6">
 <CodeBlock language="csharp">
 {`public class Products_ByAllValues : 
     AbstractIndexCreationTask<Product, Products_ByAllValues.IndexEntry>
@@ -401,10 +401,10 @@ where search(AllValues, "tofu")
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  
-    Refer to article [indexes - boosting](../../indexes/boosting).
+    Refer to article [indexes - boosting](../../indexes/boosting.mdx).
 
   * Add a boost value to the queried terms **at query time**.  
-    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results).
+    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx).
 
 
 
@@ -412,14 +412,14 @@ where search(AllValues, "tofu")
 
 * When making a full-text search with wildcards in the search terms, 
   the presence of wildcards (`*`) in the terms sent to the search engine is determined by the transformations applied by the
-  [analyzer](../../indexes/using-analyzers) used in the index.
+  [analyzer](../../indexes/using-analyzers.mdx) used in the index.
 
 * Note the different behavior in the following cases, as described below:  
-  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
-  * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
-  * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching.mdx#when-usingoror)
+  * [When using a custom analyzer](../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
+  * [When using the Exact analyzer](../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
 
-* When using [Corax](../../indexes/search-engine/corax) as the search engine,  
+* When using [Corax](../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
 <Admonition type="note" title="Note">
 
@@ -429,12 +429,12 @@ before they are sent to the search engine to retrieve matching documents.
 
 **However, in the following cases**:
 
-* When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search)
-* or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers#using-the-default-search-analyzer)
-* or when querying a static index that uses the [StandardAnalyzer](../../indexes/using-analyzers#analyzers-that-remove-common-stop-words)
-* or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
+* When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search.mdx)
+* or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)
+* or when querying a static index that uses the [StandardAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)
+* or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
 
-the queried terms in the _Search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers#using-the-default-analyzer)  
+the queried terms in the _Search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)  
 before being sent to the search engine.
 
 This analyzer does Not remove the `*`, so the terms are sent with `*`, as provided in the search terms.  
@@ -569,7 +569,7 @@ include explanations()
 <Admonition type="note" title="Note">
 
 ##### When using a custom analyzer:
-* When setting a [custom analyzer](../../indexes/using-analyzers#creating-custom-analyzers) in your index to tokenize field content,
+* When setting a [custom analyzer](../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
   then when querying the index, the search terms in the query will be processed according to the **custom analyzer's logic**.
 
 * The `*` will remain in the terms if the custom analyzer allows it.
@@ -751,7 +751,7 @@ include explanations()
 <Admonition type="note" title="Note">
 
 ##### When using the Exact analyzer:
-When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers#using-the-default-exact-analyzer)),  
+When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  
 then when querying the index, the wildcards in your search terms remain untouched.  
 The terms are sent to the search engine exactly as produced by the analyzer.
 
@@ -989,7 +989,7 @@ You can specify the logic of a search expression. It can be either:
 
 The following query:
 
-<TabItem value="something-something" label="search_7_0">
+<TabItem value="search_7_0" label="search_7_0">
 <CodeBlock language="java">
 {`List<User> users = session
     .query(User.class)
@@ -1003,7 +1003,7 @@ The following query:
 
 will be translated into
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Users
 where search(Hobbies, 'computers') or search(Name, 'James') and Age = 20
@@ -1013,7 +1013,7 @@ where search(Hobbies, 'computers') or search(Name, 'James') and Age = 20
 
 You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follows:
 
-<TabItem value="something-something" label="search_8_0">
+<TabItem value="search_8_0" label="search_8_0">
 <CodeBlock language="java">
 {`List<User> users = session
     .query(User.class)
@@ -1027,7 +1027,7 @@ You can also specify what exactly the query logic should be. The applied option 
 
 will result in the following RQL query:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Users
 where search(Name, 'Adam') and search(Hobbies, 'sport')
@@ -1037,7 +1037,7 @@ where search(Name, 'Adam') and search(Hobbies, 'sport')
 
 If you want to negate the term use `not`:
 
-<TabItem value="something-something" label="search_9_0">
+<TabItem value="search_9_0" label="search_9_0">
 <CodeBlock language="java">
 {`List<User> users = session
     .query(User.class)
@@ -1050,7 +1050,7 @@ If you want to negate the term use `not`:
 
 According to RQL syntax it will be transformed into the query:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Users
 where exists(Name) and not search(James, 'Adam')
@@ -1060,7 +1060,7 @@ where exists(Name) and not search(James, 'Adam')
 
 You can also combine search options:
 
-<TabItem value="something-something" label="search_10_1">
+<TabItem value="search_10_1" label="search_10_1">
 <CodeBlock language="java">
 {`List<User> users = session
     .query(User.class)
@@ -1075,7 +1075,7 @@ You can also combine search options:
 
 It will produce the following RQL query:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Users
 where search(Name, 'Adam') and (exists(Hobbies) and not search(Hobbies, 'sport'))
@@ -1137,13 +1137,13 @@ Consider if you really need to find substrings. In most cases, looking for whole
 
 ## Static Indexes
 
-All of the previous examples demonstrated searching capabilities by executing dynamic queries and were using auto indexes underneath. The same set of queries can be done when static indexes are used, and also those capabilities can be customized by changing the [analyzer](../using-analyzers) or setting up full text search on multiple fields.
+All of the previous examples demonstrated searching capabilities by executing dynamic queries and were using auto indexes underneath. The same set of queries can be done when static indexes are used, and also those capabilities can be customized by changing the [analyzer](../using-analyzers.mdx) or setting up full text search on multiple fields.
 
 ### Example I - Basics
 
 To be able to search you need to set `Indexing` to `Search` on a desired field.
 
-<TabItem value="something" label="search_20_2">
+<TabItem value="search_20_2" label="search_20_2">
 <CodeBlock language="java">
 {`public static class Users_ByName extends AbstractIndexCreationTask \{
     public Users_ByName() \{
@@ -1202,7 +1202,7 @@ where search(Query, 'John')
 
 This indexing method is supported only when using **Lucene** as the indexing engine.
 
-<TabItem value="something-something" label="index_all_fields">
+<TabItem value="index_all_fields" label="index_all_fields">
 <CodeBlock language="java">
 {`public static class Products_ByAllValues extends AbstractIndexCreationTask \{
     public static class IndexEntry \{
@@ -1267,7 +1267,7 @@ where search(allValues, "tofu")
 
 <Admonition type="note" title="Note">
 
-* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) 
+* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
 
 * **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
@@ -1279,19 +1279,19 @@ where search(allValues, "tofu")
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers#selecting-an-analyzer-for-a-field).    
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
 * In this article:
-  * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
-  * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
 
 </Admonition>
 ## Indexing single field for FTS
 
 #### The index:
 
-<TabItem value="something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="python">
 {`class Employees_ByNotes(AbstractIndexCreationTask):
     # The IndexEntry class defines the index-fields
@@ -1321,7 +1321,7 @@ where search(allValues, "tofu")
 
 * Use `Search` to make a full-text search when querying the index.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available **Search options**,  
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
@@ -1357,7 +1357,7 @@ where search(EmployeeNotes, "French")
 
 #### The index:
 
-<TabItem value="something" label="index_2">
+<TabItem value="index_2" label="index_2">
 <CodeBlock language="python">
 {`class Employees_ByEmployeeData(AbstractIndexCreationTask):
     class IndexEntry:
@@ -1443,7 +1443,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   </Admonition>
 #### The index:
 
-<TabItem value="something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="python">
 {`class Products_ByAllValues(AbstractIndexCreationTask):
     class IndexEntry:
@@ -1507,10 +1507,10 @@ where search(all_values, "tofu")
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  
-    Refer to the indexes [Boosting](../../indexes/boosting) article.  
+    Refer to the indexes [Boosting](../../indexes/boosting.mdx) article.  
 
   * Add a boost value to the queried terms **at query time**.  
-    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results) article.  
+    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
 
 
 
@@ -1520,7 +1520,7 @@ where search(all_values, "tofu")
 
 <Admonition type="note" title="Note">
 
-* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) 
+* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
 
 * **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
@@ -1532,19 +1532,19 @@ where search(all_values, "tofu")
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers#selecting-an-analyzer-for-a-field).    
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).    
 * In this article:
-  * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
-  * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
 
 </Admonition>
 ## Indexing single field for FTS
 
 #### The index:
 
-<TabItem value="something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="php">
 {`// The IndexEntry class defines the index-fields
 class Employees_ByNotes_IndexEntry
@@ -1594,7 +1594,7 @@ class Employees_ByNotes extends AbstractIndexCreationTask
 
 * Use `search` to make a full-text search when querying the index.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available **Search options**,  
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**,  
   such as using wildcards, searching for multiple terms, etc.
 
 <Tabs groupId='languageSyntax'>
@@ -1651,7 +1651,7 @@ where search(EmployeeNotes, "French")
 
 #### The index:
 
-<TabItem value="something" label="index_2">
+<TabItem value="index_2" label="index_2">
 <CodeBlock language="php">
 {`class EmployeeData
 \{
@@ -1782,7 +1782,7 @@ where (search(EmployeeData, "Manager") or search(EmployeeData, "French Spanish",
   </Admonition>
 #### The index:
 
-<TabItem value="something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="php">
 {`class Products_ByAllValues_IndexEntry
 \{
@@ -1854,10 +1854,10 @@ where search(allValues, "tofu")
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  
-    Refer to the indexes [Boosting](../../indexes/boosting) article.  
+    Refer to the indexes [Boosting](../../indexes/boosting.mdx) article.  
 
   * Add a boost value to the queried terms **at query time**.  
-    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results) article.  
+    Refer to the [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx) article.  
 
 
 
@@ -1867,7 +1867,7 @@ where search(allValues, "tofu")
 
 <Admonition type="note" title="Note">
 
-* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) 
+* Prior to reading this article, please refer to [full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) 
   to learn about the `search` method.  
 
 * **All capabilities** provided by `search` with a dynamic query can also be used when querying a static-index.
@@ -1879,24 +1879,24 @@ where search(allValues, "tofu")
       See examples below.  
       
     * You can configure which analyzer will be used to tokenize this field.  
-      See [selecting an analyzer](../../indexes/using-analyzers#selecting-an-analyzer-for-a-field).
+      See [selecting an analyzer](../../indexes/using-analyzers.mdx#selecting-an-analyzer-for-a-field).
 * In this article:
-  * [Indexing single field for FTS](../../indexes/querying/searching#indexing-single-field-for-fts)
-  * [Indexing multiple fields for FTS](../../indexes/querying/searching#indexing-multiple-fields-for-fts)
-  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching#indexing-all-fields-for-fts-(using-asjson))
-  * [Boosting search results](../../indexes/querying/searching#boosting-search-results)
-  * [Searching with wildcards](../../indexes/querying/searching#searching-with-wildcards)
-      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
-      * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
-      * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+  * [Indexing single field for FTS](../../indexes/querying/searching.mdx#indexing-single-field-for-fts)
+  * [Indexing multiple fields for FTS](../../indexes/querying/searching.mdx#indexing-multiple-fields-for-fts)
+  * [Indexing all fields for FTS (using AsJson)](../../indexes/querying/searching.mdx#indexing-all-fields-for-fts-(using-asjson))
+  * [Boosting search results](../../indexes/querying/searching.mdx#boosting-search-results)
+  * [Searching with wildcards](../../indexes/querying/searching.mdx#searching-with-wildcards)
+      * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching.mdx#when-usingoror)
+      * [When using a custom analyzer](../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
+      * [When using the Exact analyzer](../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
 
 </Admonition>
 ## Indexing single field for FTS
 
 #### The index:
 
-<TabItem value="something" label="index_1">
-<CodeBlock language="nodejs">
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
 {`class Employees_ByNotes extends AbstractJavaScriptIndexCreationTask \{
 
     constructor() \{
@@ -1927,11 +1927,11 @@ where search(allValues, "tofu")
 * Using the `search` method has the advantage of using any of its functionalities,  
   such as using wildcards, searching for multiple terms, etc.  
 
-* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search) for all available **Search options**.
+* Refer to [Full-Text search with dynamic queries](../../client-api/session/querying/text-search/full-text-search.mdx) for all available **Search options**.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const employees = await session
      // Query the index
     .query({ indexName: "Employees/ByNotes" })
@@ -1962,8 +1962,8 @@ where search(employeeNotes, "French")
 
 #### The index:
 
-<TabItem value="something" label="index_2">
-<CodeBlock language="nodejs">
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="js">
 {`class Employees_ByEmployeeData extends AbstractJavaScriptIndexCreationTask \{
 
     constructor() \{
@@ -1991,7 +1991,7 @@ where search(employeeNotes, "French")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const employees = await session
      // Query the static-index
     .query({ indexName: "Employees/ByEmployeeData" })
@@ -2039,8 +2039,8 @@ where (search(employeeData, "Manager") or search(employeeData, "French Spanish",
   </Admonition>
 #### The index:
 
-<TabItem value="something" label="index_6">
-<CodeBlock language="nodejs">
+<TabItem value="index_6" label="index_6">
+<CodeBlock language="js">
 {`// Extend the index class from 'AbstractCsharpIndexCreationTask':
 class Products_ByAllValues extends AbstractCsharpIndexCreationTask \{
     constructor () \{
@@ -2069,7 +2069,7 @@ class Products_ByAllValues extends AbstractCsharpIndexCreationTask \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
     .query({ indexName: "Products/ByAllValues" })
     .search("AllValues", "tofu")
@@ -2099,10 +2099,10 @@ where search(AllValues, "tofu")
   This can be applied by either of the following:
 
   * Add a boost value to the relevant index-field **inside the index definition**.  
-    Refer to article [indexes - boosting](../../indexes/boosting).
+    Refer to article [indexes - boosting](../../indexes/boosting.mdx).
 
   * Add a boost value to the queried terms **at query time**.  
-    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results).
+    Refer to article [Boost search results](../../client-api/session/querying/text-search/boost-search-results.mdx).
 
 
 
@@ -2110,14 +2110,14 @@ where search(AllValues, "tofu")
 
 * When making a full-text search with wildcards in the search terms,
   the presence of wildcards (`*`) in the terms sent to the search engine is determined by the transformations applied by the
-  [analyzer](../../indexes/using-analyzers) used in the index.
+  [analyzer](../../indexes/using-analyzers.mdx) used in the index.
 
 * Note the different behavior in the following cases, as described below:
-  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching#when-usingoror)
-  * [When using a custom analyzer](../../indexes/querying/searching#when-using-a-custom-analyzer)
-  * [When using the Exact analyzer](../../indexes/querying/searching#when-using-the-exact-analyzer)
+  * [When using RavenStandardAnalyzer or StandardAnalyzer or NGramAnalyzer](../../indexes/querying/searching.mdx#when-usingoror)
+  * [When using a custom analyzer](../../indexes/querying/searching.mdx#when-using-a-custom-analyzer)
+  * [When using the Exact analyzer](../../indexes/querying/searching.mdx#when-using-the-exact-analyzer)
 
-* When using [Corax](../../indexes/search-engine/corax) as the search engine,  
+* When using [Corax](../../indexes/search-engine/corax.mdx) as the search engine,  
   this behavior will only apply to indexes that are newly created or have been reset.
 <Admonition type="note" title="Note">
 
@@ -2127,12 +2127,12 @@ before they are sent to the search engine to retrieve matching documents.
 
 **However, in the following cases**:
 
-* When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search)
-* or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers#using-the-default-search-analyzer)
-* or when querying a static index that uses the [StandardAnalyzer](../../indexes/using-analyzers#analyzers-that-remove-common-stop-words)
-* or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
+* When making a [dynamic search query](../../client-api/session/querying/text-search/full-text-search.mdx)
+* or when querying a static index that uses the default [RavenStandardAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-search-analyzer)
+* or when querying a static index that uses the [StandardAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words)
+* or when querying a static index that uses the [NGramAnalyzer](../../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters)
 
-the queried terms in the _search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers#using-the-default-analyzer)  
+the queried terms in the _search_ method are processed with the [LowerCaseKeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-analyzer)  
 before being sent to the search engine.
 
 This analyzer does Not remove the `*`, so the terms are sent with `*`, as provided in the search terms.  
@@ -2140,7 +2140,7 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNotes_usingDefaultAnalyzer extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
@@ -2166,7 +2166,7 @@ For example:
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`let explanations;
 
 const employees = await session
@@ -2206,7 +2206,7 @@ include explanations()
 <Admonition type="note" title="Note">
 
 ##### When using a custom analyzer:
-* When setting a [custom analyzer](../../indexes/using-analyzers#creating-custom-analyzers) in your index to tokenize field content,
+* When setting a [custom analyzer](../../indexes/using-analyzers.mdx#creating-custom-analyzers) in your index to tokenize field content,
   then when querying the index, the search terms in the query will be processed according to the custom analyzer's logic.
 
 * The `*` will remain in the terms if the custom analyzer allows it.
@@ -2220,7 +2220,7 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNotes_usingCustomAnalyzer extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
@@ -2241,7 +2241,7 @@ For example:
 </CodeBlock>
 </TabItem>
 <TabItem value="Custom_analyzer" label="Custom_analyzer">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The custom analyzer:
 // ====================
 
@@ -2288,7 +2288,7 @@ await documentStore.maintenance.send(new PutAnalyzersOperation(analyzerDefinitio
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`let explanations;
 
 const employees = await session
@@ -2331,7 +2331,7 @@ include explanations()
 <Admonition type="note" title="Note">
 
 ##### When using the Exact analyzer:
-When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers#using-the-default-exact-analyzer)),  
+When using the default Exact analyzer in your index (which is [KeywordAnalyzer](../../indexes/using-analyzers.mdx#using-the-default-exact-analyzer)),  
 then when querying the index, the wildcards in your search terms remain untouched.  
 The terms are sent to the search engine exactly as produced by the analyzer.
 
@@ -2339,7 +2339,7 @@ For example:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByFirstName_usingExactAnalyzer extends AbstractJavaScriptIndexCreationTask {
 
     constructor() {
@@ -2358,7 +2358,7 @@ For example:
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`let explanations;
 
 const employees = await session

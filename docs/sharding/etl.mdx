@@ -25,17 +25,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   its own local ETL task, based on the user's settings.  
 * Resharding may result in the transfer of some documents more than 
   once to the ETL destination. It is the user's responsibility to 
-  [detect and handle](../sharding/etl#etl-and-resharding) such duplicates.  
-* ETL tasks information is available [per database and per shard](../sharding/etl#retrieving-shard-specific-etl-task-info).  
+  [detect and handle](../sharding/etl.mdx#etl-and-resharding) such duplicates.  
+* ETL tasks information is available [per database and per shard](../sharding/etl.mdx#retrieving-shard-specific-etl-task-info).  
 
 * In this page:  
-  * [ETL](../sharding/etl#etl)  
-     * [Sharded and Non-Sharded ETL Tasks](../sharding/etl#sharded-and-non-sharded-etl-tasks)  
-     * [Non-Sharded Database ETL Tasks](../sharding/etl#non-sharded-database-etl-tasks)  
-     * [Sharded Database ETL Tasks](../sharding/etl#sharded-database-etl-tasks)  
-  * [ETL and Resharding](../sharding/etl#etl-and-resharding)  
-  * [ETL Queries](../sharding/etl#etl-queries)  
-  * [Retrieving Shard-Specific ETL Task Info](../sharding/etl#retrieving-shard-specific-etl-task-info)  
+  * [ETL](../sharding/etl.mdx#etl)  
+     * [Sharded and Non-Sharded ETL Tasks](../sharding/etl.mdx#sharded-and-non-sharded-etl-tasks)  
+     * [Non-Sharded Database ETL Tasks](../sharding/etl.mdx#non-sharded-database-etl-tasks)  
+     * [Sharded Database ETL Tasks](../sharding/etl.mdx#sharded-database-etl-tasks)  
+  * [ETL and Resharding](../sharding/etl.mdx#etl-and-resharding)  
+  * [ETL Queries](../sharding/etl.mdx#etl-queries)  
+  * [Retrieving Shard-Specific ETL Task Info](../sharding/etl.mdx#retrieving-shard-specific-etl-task-info)  
 
 </Admonition>
 ## ETL
@@ -58,7 +58,7 @@ and modifications no matter how large the overall database gets.
 
 * A complete replica of the database is kept by each cluster node.  
 * Any node can therefore be made 
-  [responsible](../server/clustering/distribution/highly-available-tasks#responsible-node) 
+  [responsible](../server/clustering/distribution/highly-available-tasks.mdx#responsible-node) 
   for ETL by the cluster.  
 * The responsible node runs the ETL task periodically to update 
   the ETL destination with any data changes.  
@@ -74,7 +74,7 @@ and modifications no matter how large the overall database gets.
   its own, based on the user-defined task.  
   This creation of multiple ETL tasks, one per shard, is 
   automatic and requires no additional actions from the user.  
-* Each shard appoints [one of its nodes](../sharding/overview#shard-replication) 
+* Each shard appoints [one of its nodes](../sharding/overview.mdx#shard-replication) 
   responsible for the execution of the shard's ETL task.  
 * The shards' ETL tasks behave just like an ETL task of 
   a non-sharded database would, **E**xtractng relevant 
@@ -92,13 +92,13 @@ Queries used by an ETL task's transform script on a sharded
 database are basically no different than queries executed over 
 a non-sharded database.  
 However, as some querying features are 
-[not yet implemented](../sharding/querying#unsupported-querying-features) 
+[not yet implemented](../sharding/querying.mdx#unsupported-querying-features) 
 on a sharded database (e.g. loading a document that resides 
 on a different shard will fail) and others behave a little 
 differently than their non-sharded equivalents (e.g. 
-[filer](../sharding/querying#filtering-results-in-a-sharded-database)), 
-it is recommended to read the pages dedicated to [indexing](../sharding/indexing) 
-and [querying](../sharding/querying) on a sharded database.  
+[filer](../sharding/querying.mdx#filtering-results-in-a-sharded-database)), 
+it is recommended to read the pages dedicated to [indexing](../sharding/indexing.mdx) 
+and [querying](../sharding/querying.mdx) on a sharded database.  
 
 
 
@@ -110,22 +110,22 @@ be sent from one shard by the shard's ETL task, resharded, and then
 sent again to the ETL destination by its new shard's ETL task.  
 
 Some ETL destinations will store duplicate incoming documents instead 
-of their former copies. Others, like OLAP and [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview) 
+of their former copies. Others, like OLAP and [Queue ETL](../server/ongoing-tasks/etl/queue-etl/overview.mdx) 
 destinations, will **Not** automatically recognize such events.  
 It is the user's responsibility to verify that the loaded documents 
 are handled as expected when they arrive.  
 
 <Admonition type="note" title="Note">
 OLAP helps users detect duplications using `lastModified`, see a more 
-thorough discussion of this [here](../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts) 
-and relevant code samples [here](../server/ongoing-tasks/etl/olap#athena-examples).  
+thorough discussion of this [here](../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#transform-scripts) 
+and relevant code samples [here](../server/ongoing-tasks/etl/olap.mdx#athena-examples).  
 </Admonition>
 
 
 
 ## Retrieving Shard-Specific ETL Task Info
 
-* The [GetOngoingTaskInfoOperation](../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations) 
+* The [GetOngoingTaskInfoOperation](../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx) 
   store operation can be used on a non-sharded database to retrieve a task's information.  
 
 * `GetOngoingTaskInfoOperation` can also be used on a sharded database.  
@@ -139,7 +139,7 @@ and relevant code samples [here](../server/ongoing-tasks/etl/olap#athena-example
      shard's task.  
      Much more information is available here, including details of the 
      responsible and mentor nodes.  
-<TabItem value="something" label="get-shard-specific-info">
+<TabItem value="get-shard-specific-info" label="get-shard-specific-info">
 <CodeBlock language="csharp">
 {`// Get basic info regarding the user-defined task
 var ongoingTask = store.Maintenance.Send(

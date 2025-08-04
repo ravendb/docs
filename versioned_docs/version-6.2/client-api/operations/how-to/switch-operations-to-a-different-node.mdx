@@ -23,19 +23,19 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 
 * By default, when working with multiple nodes,  
   all client requests will access the server node that is defined by the client configuration.  
-  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview)).
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx)).
 
 * However, **server maintenance operations** can be executed on a specific node by using the `ForNode` method.  
   (An exception is thrown if that node is not available).
 
 * In this page:
-    * [Server-maintenance operations - ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node#server-maintenance-operations---fornode)
+    * [Server-maintenance operations - ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx#server-maintenance-operations---fornode)
 </Admonition>
 ## Server maintenance operations - ForNode
 
-* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations#server-maintenance-operations).
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).
 
-<TabItem value="something" label="for_node_1">
+<TabItem value="for_node_1" label="for_node_1">
 <CodeBlock language="csharp">
 {`// Default node access can be defined on the store
 var documentStore = new DocumentStore
@@ -65,7 +65,7 @@ using (documentStore)
 
 **Syntax**:
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`ServerOperationExecutor ForNode(string nodeTag);
 `}
@@ -90,19 +90,19 @@ using (documentStore)
 
 * By default, when working with multiple nodes,  
   all client requests will access the server node that is defined by the client configuration.  
-  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview)).
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx)).
 
 * However, **server maintenance operations** can be executed on a specific node by using the `forNode` method.  
   (An exception is thrown if that node is not available).
 
 * In this page:
-    * [Server-maintenance operations - ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node#server-maintenance-operations---fornode)
+    * [Server-maintenance operations - ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx#server-maintenance-operations---fornode)
 </Admonition>
 ## Server maintenance operations - ForNode
 
-* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations#server-maintenance-operations).
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).
 
-<TabItem value="something-something" label="for_node_1">
+<TabItem value="for_node_1" label="for_node_1">
 <CodeBlock language="php">
 {`// Default node access can be defined on the store
 $documentStore = new DocumentStore(
@@ -135,7 +135,7 @@ try \{
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`public function forNode(string $nodeTag): ServerOperationExecutor
 `}
@@ -160,20 +160,20 @@ try \{
 
 * By default, when working with multiple nodes,  
   all client requests will access the server node that is defined by the client configuration.  
-  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview)).
+  (Learn more in: [Load balancing client requests](../../../client-api/configuration/load-balance/overview.mdx)).
 
 * However, **server maintenance operations** can be executed on a specific node by using the `forNode` method.  
   (An exception is thrown if that node is not available).
 
 * In this page:
-    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node#server-maintenance-operations---fornode)
+    * [Server maintenance operations - forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx#server-maintenance-operations---fornode)
 </Admonition>
 ## Server maintenance operations - forNode
 
-* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations#server-maintenance-operations).
+* For reference, all server maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#server-maintenance-operations).
 
-<TabItem value="something-something" label="for_node_1">
-<CodeBlock language="nodejs">
+<TabItem value="for_node_1" label="for_node_1">
+<CodeBlock language="js">
 {`// Default node access can be defined on the store        
 const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
 
@@ -196,8 +196,8 @@ const dbNames = await serverOpExecutor.send(new GetDatabaseNamesOperation(0, 25)
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`await store.maintenance.server.forNode(nodeTag);
 `}
 </CodeBlock>

@@ -23,16 +23,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
   (see the different types below).
 
 * __Conflicts__, which may be involved when the data replicates,  
-  are resolved according to the defined [conflict resolution](../../../server/clustering/replication/replication-conflicts) policy on the receiving end.
+  are resolved according to the defined [conflict resolution](../../../server/clustering/replication/replication-conflicts.mdx) policy on the receiving end.
 
 * In this page:  
-    * [Replication types](../../../server/clustering/replication/replication#replication-types)  
-      * [Internal replication](../../../server/clustering/replication/replication#internal-replication)
-      * [External replication](../../../server/clustering/replication/replication#external-replication)
-      * [Hub/Sink replication](../../../server/clustering/replication/replication#hubsink-replication)
-    * [What is replicated](../../../server/clustering/replication/replication#what-is-replicated)  
-    * [How replication works](../../../server/clustering/replication/replication#how-replication-works)  
-    * [Replication & transaction boundary](../../../server/clustering/replication/replication#replication-&-transaction-boundary)  
+    * [Replication types](../../../server/clustering/replication/replication.mdx#replication-types)  
+      * [Internal replication](../../../server/clustering/replication/replication.mdx#internal-replication)
+      * [External replication](../../../server/clustering/replication/replication.mdx#external-replication)
+      * [Hub/Sink replication](../../../server/clustering/replication/replication.mdx#hubsink-replication)
+    * [What is replicated](../../../server/clustering/replication/replication.mdx#what-is-replicated)  
+    * [How replication works](../../../server/clustering/replication/replication.mdx#how-replication-works)  
+    * [Replication & transaction boundary](../../../server/clustering/replication/replication.mdx#replication-&-transaction-boundary)  
 
 </Admonition>
 ## Replication types
@@ -40,7 +40,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### Internal replication
 
 * __Replicate between__: All database-group nodes.  
-  __Handled by__: Automatically handled by the [Database-Group](../../../studio/database/settings/manage-database-group) nodes.  
+  __Handled by__: Automatically handled by the [Database-Group](../../../studio/database/settings/manage-database-group.mdx) nodes.  
   __Direction__: Master-to-master replication among all database-group nodes.  
   __Filtering__: No filtering is available. Data is replicated as exists on the source.  
   __Conflicts__: Handled by the database resolution policy, which is the same for all the database instances.  
@@ -54,7 +54,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### External replication
 
 * __Replicate between__: Two databases that are typically set on different clusters.   
-  __Handled by__: Handled by the ongoing [External Replication Task](../../../server/ongoing-tasks/external-replication) defined by the user.  
+  __Handled by__: Handled by the ongoing [External Replication Task](../../../server/ongoing-tasks/external-replication.mdx) defined by the user.  
   __Direction__: One-way replication.  
   __Filtering__: No filtering is available. Data is replicated as exists on the source.  
   __Conflicts__: Handled as defined by the destination database resolution policy.  
@@ -67,7 +67,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### Hub/Sink replication
  
 * __Replicate between__: Multiple Sinks that connect to a single Hub on different clusters.  
-  __Handled by__: Handled by the ongoing [Hub/Sink Replication Tasks](../../../server/ongoing-tasks/hub-sink-replication) defined by the user.  
+  __Handled by__: Handled by the ongoing [Hub/Sink Replication Tasks](../../../server/ongoing-tasks/hub-sink-replication.mdx) defined by the user.  
   __Direction__: Hub to Sink only, Sink to Hub only, or both directions (as defined by the task).  
   __Filtering__: Documents filtering is available when working with secure servers.  
   __Conflicts__: Handled as defined by the destination database resolution policy.  
@@ -94,7 +94,7 @@ __The following database-items are replicated__:
 __Content replicated__:
 
 * The content of the replicated items data is Not changed.  
-* If content change is required then consider using [ETL tasks](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task) that use transformation scripts.
+* If content change is required then consider using [ETL tasks](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task--vs--replication-task) that use transformation scripts.
 </Admonition>
 <Admonition type="note" title="Note">
 __The following cluster-level features are Not replicated__:  
@@ -106,7 +106,7 @@ __The following cluster-level features are Not replicated__:
 * Conflict resolution scripts
 * __With internal replication__:  
   When you define a cluster-level behavior, i.e. create an index,  
-  then consistency between the database instances in the database-group is achieved by the [Raft Protocol](../../../server/clustering/rachis/what-is-rachis).
+  then consistency between the database instances in the database-group is achieved by the [Raft Protocol](../../../server/clustering/rachis/what-is-rachis.mdx).
 
 * __With a replication task__:    
   Replication controls only the flow of the data without dictating how it's going to be processed on the receiving end,
@@ -159,11 +159,11 @@ __Transactions atomicity__
 <Admonition type="note" title="Note">
 __Replication & cluster-wide transactions__
 
-* A [cluster-wide transaction](../../../client-api/session/cluster-transaction/overview), which is implemented by the [Raft Protocol](../../../server/clustering/rachis/consensus-operations#consensus-operations),  
+* A [cluster-wide transaction](../../../client-api/session/cluster-transaction/overview.mdx), which is implemented by the [Raft Protocol](../../../server/clustering/rachis/consensus-operations.mdx#consensus-operations),  
   is either persisted on all database group nodes or rolled back on all upon failure.  
 
 * After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.  
-  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication#what-is-replicated), 
+  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication.mdx#what-is-replicated), 
   then the node will __replicate__ them to the other nodes via the replication process.  
 
 * A node that receives such replication will accept this write,  

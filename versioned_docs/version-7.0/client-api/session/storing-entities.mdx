@@ -26,7 +26,7 @@ To store entities inside the **session** object, use one of the three `Store` me
 
 First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
 
-<TabItem value="something" label="store_entities_1">
+<TabItem value="store_entities_1" label="store_entities_1">
 <CodeBlock language="csharp">
 {`void Store(object entity);
 `}
@@ -35,7 +35,7 @@ First overload: Stores the entity in a session, then extracts the ID from the en
 
 Second overload: Stores the entity in a session with given ID.
 
-<TabItem value="something" label="store_entities_2">
+<TabItem value="store_entities_2" label="store_entities_2">
 <CodeBlock language="csharp">
 {`void Store(object entity, string id);
 `}
@@ -44,7 +44,7 @@ Second overload: Stores the entity in a session with given ID.
 
 Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-<TabItem value="something" label="store_entities_3">
+<TabItem value="store_entities_3" label="store_entities_3">
 <CodeBlock language="csharp">
 {`void Store(object entity, string changeVector, string id);
 `}
@@ -60,7 +60,7 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ## Example
 
-<TabItem value="something" label="store_entities_5">
+<TabItem value="store_entities_5" label="store_entities_5">
 <CodeBlock language="csharp">
 {`// generate Id automatically
 session.Store(new Employee
@@ -86,7 +86,7 @@ To store entities inside the **session** object, use one of the three `store` me
 
 First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
 
-<TabItem value="something-something" label="store_entities_1">
+<TabItem value="store_entities_1" label="store_entities_1">
 <CodeBlock language="java">
 {`void store(Object entity);
 `}
@@ -95,7 +95,7 @@ First overload: Stores the entity in a session, then extracts the ID from the en
 
 Second overload: Stores the entity in a session with given ID.
 
-<TabItem value="something-something" label="store_entities_2">
+<TabItem value="store_entities_2" label="store_entities_2">
 <CodeBlock language="java">
 {`void store(Object entity, String id);
 `}
@@ -104,7 +104,7 @@ Second overload: Stores the entity in a session with given ID.
 
 Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-<TabItem value="something-something" label="store_entities_3">
+<TabItem value="store_entities_3" label="store_entities_3">
 <CodeBlock language="java">
 {`void store(Object entity, String changeVector, String id);
 `}
@@ -120,7 +120,7 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ## Example
 
-<TabItem value="something-something" label="store_entities_5">
+<TabItem value="store_entities_5" label="store_entities_5">
 <CodeBlock language="java">
 {`Employee employee = new Employee();
 employee.setFirstName("John");
@@ -146,7 +146,7 @@ To store entities inside the **session** object, use the `store` method.
 
 Stores the entity in a session, then extracts the ID from the entity or if not available generates a new one.
 
-<TabItem value="something-something" label="store_entities_1">
+<TabItem value="store_entities_1" label="store_entities_1">
 <CodeBlock language="python">
 {`def store(self, entity: object, key: Optional[str] = None, change_vector: Optional[str] = None) -> None:
     ...
@@ -162,7 +162,7 @@ Stores the entity in a session, then extracts the ID from the entity or if not a
 
 ## Example
 
-<TabItem value="something-something" label="store_entities_5">
+<TabItem value="store_entities_5" label="store_entities_5">
 <CodeBlock language="python">
 {`session.store(Employee(first_name="John", last_name="Doe"))
 
@@ -183,7 +183,7 @@ To store entities inside the **session** object, use one of the three `store` me
 
 First overload: Stores the entity in a session, then extracts the ID from the entity or generates a new one if it's not available.
 
-<TabItem value="something-something" label="store_entities_1">
+<TabItem value="store_entities_1" label="store_entities_1">
 <CodeBlock language="php">
 {`public function store(?object $entity): void;
 `}
@@ -192,7 +192,7 @@ First overload: Stores the entity in a session, then extracts the ID from the en
 
 Second overload: Stores the entity in a session with given ID.
 
-<TabItem value="something-something" label="store_entities_2">
+<TabItem value="store_entities_2" label="store_entities_2">
 <CodeBlock language="php">
 {`public function store(?object $entity, ?string $id): void;
 `}
@@ -201,7 +201,7 @@ Second overload: Stores the entity in a session with given ID.
 
 Third overload: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-<TabItem value="something-something" label="store_entities_3">
+<TabItem value="store_entities_3" label="store_entities_3">
 <CodeBlock language="php">
 {`public function store(?object $entity, ?string $id, ?string $changeVector): void;
 `}
@@ -217,7 +217,7 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ## Example
 
-<TabItem value="something-something" label="store_entities_5">
+<TabItem value="store_entities_5" label="store_entities_5">
 <CodeBlock language="php">
 {`$employee = new Employee();
 $employee->setFirstName("John");
@@ -245,8 +245,8 @@ You can pass the following arguments to the `store()` method:
 
 - entity only: Stores the entity in the session, then extracts the ID from the entity or generates a new one if it's not available.
 
-<TabItem value="something-something" label="store_entities_1">
-<CodeBlock language="nodejs">
+<TabItem value="store_entities_1" label="store_entities_1">
+<CodeBlock language="js">
 {`session.store(entity, [documentType]);
 `}
 </CodeBlock>
@@ -254,8 +254,8 @@ You can pass the following arguments to the `store()` method:
 
 - entity and an id: Stores the entity in a session with given ID.
 
-<TabItem value="something-something" label="store_entities_2">
-<CodeBlock language="nodejs">
+<TabItem value="store_entities_2" label="store_entities_2">
+<CodeBlock language="js">
 {`session.store(entity, id);
 `}
 </CodeBlock>
@@ -263,8 +263,8 @@ You can pass the following arguments to the `store()` method:
 
 - entity, an id and store options: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-<TabItem value="something-something" label="store_entities_3">
-<CodeBlock language="nodejs">
+<TabItem value="store_entities_3" label="store_entities_3">
+<CodeBlock language="js">
 {`session.store(entity, id, [options]);
 session.store(entity, id, [documentType]);
 `}
@@ -292,8 +292,8 @@ session.store(entity, id, [documentType]);
 <Admonition type="info" title="On collection name when storing object literals " id="on-collection-name-when-storing-object-literals" href="#on-collection-name-when-storing-object-literals">
 In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
 
-<TabItem value="something-something" label="storing_literals_1">
-<CodeBlock language="nodejs">
+<TabItem value="storing_literals_1" label="storing_literals_1">
+<CodeBlock language="js">
 {`const store = new DocumentStore(urls, database);
 store.conventions.findCollectionNameForObjectLiteral = entity => entity["collection"];
 // ...
@@ -308,8 +308,8 @@ This needs to be done before an `initialize()` call on `DocumentStore` instance.
 
 ## Example
 
-<TabItem value="something-something" label="store_entities_5">
-<CodeBlock language="nodejs">
+<TabItem value="store_entities_5" label="store_entities_5">
+<CodeBlock language="js">
 {`const employee = new Employee("John", "Doe");
 
 // generate Id automatically

@@ -9,22 +9,22 @@ export default function DocumentExtensionsFeaturesGrid() {
   const DocumentExtensionsFeaturesList = [
     {
       title: "Revisions",
-      url: `${activeVersion.label}/document-extensions/revisions/overview`,
+      url: `/${activeVersion.label}/document-extensions/revisions/overview`,
       description: "Short description",
     },
     {
       title: "Time series",
-      url: `${activeVersion.label}/document-extensions/timeseries/overview`,
+      url: `/${activeVersion.label}/document-extensions/timeseries/overview`,
       description: "Short description",
     },
     {
       title: "Attachments",
-      url: `${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
+      url: `/${activeVersion.label}/document-extensions/attachments/what-are-attachments`,
       description: "Short description",
     },
     {
       title: "Documents compression",
-      url: `${activeVersion.label}/server/storage/documents-compression`,
+      url: `/${activeVersion.label}/server/storage/documents-compression`,
       description: "Short description",
     },
     {

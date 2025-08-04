@@ -38,28 +38,28 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily#operations-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#load-entities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#load-entities-with-include)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#load-entities-starting-with)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditional-load)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily#run-query)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#get-revisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#get-compare-exchange-value)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---implicitly)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---explicitly)
+    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-with-include)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-starting-with)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditional-load)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#run-query)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-revisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-compare-exchange-value)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---implicitly)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---explicitly)
 
 </Admonition>
 ## Operations that can be executed lazily
 
 ### Load entities
 
-[Load](../../../client-api/session/loading-entities#load) loads a document entity from 
+[Load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
 the database into the session.  
 Loading entities can be executed **lazily**.   
 
-<TabItem value="something" label="lazy_Load">
+<TabItem value="lazy_Load" label="lazy_Load">
 <CodeBlock language="csharp">
 {`Lazy<Employee> lazyEmployee = session
      // Add a call to Lazily 
@@ -74,7 +74,7 @@ Employee employee = lazyEmployee.Value; // 'Load' operation is executed here
 </TabItem>
 ### Load entities with include
 
-[Load with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
+[Load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
 Loading entities with include can be executed **lazily**.
 
 <Tabs groupId='languageSyntax'>
@@ -113,10 +113,10 @@ Supplier supplier = session.Load<Supplier>(product.SupplierId);
 </Tabs>
 ### Load entities starting with
 
-[LoadStartingWith](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+[LoadStartingWith](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
 Loading entities with a common prefix can be executed **lazily**.
 
-<TabItem value="something" label="lazy_LoadStartingWith">
+<TabItem value="lazy_LoadStartingWith" label="lazy_LoadStartingWith">
 <CodeBlock language="csharp">
 {`Lazy<Dictionary<string, Employee>> lazyEmployees = session
      // Add a call to Lazily 
@@ -132,7 +132,7 @@ var employees = lazyEmployees.Value; // 'Load' operation is executed here
 </TabItem>
 ### Conditional load
 
-[ConditionalLoad](../../../client-api/session/loading-entities#conditionalload) logic is: 
+[ConditionalLoad](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
 
 * If the entity is already loaded to the session:  
   no server call is made, the tracked entity is returned.  
@@ -141,7 +141,7 @@ var employees = lazyEmployees.Value; // 'Load' operation is executed here
   method is older than the one in the server (i.e. if the document in the server is newer).  
 * Loading entities conditionally can be executed **lazily**.  
 
-<TabItem value="something" label="lazy_ConditionalLoad">
+<TabItem value="lazy_ConditionalLoad" label="lazy_ConditionalLoad">
 <CodeBlock language="csharp">
 {`// Create document and get its change-vector:
 string changeVector; 
@@ -177,9 +177,9 @@ using (var session2 = store.OpenSession())
 ### Run query
 
 A Query can be executed **lazily**.  
-Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
+Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
-<TabItem value="something" label="lazy_Query">
+<TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="csharp">
 {`// Define a lazy query:
 Lazy<IEnumerable<Employee>> lazyEmployees = session
@@ -197,9 +197,9 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
 </TabItem>
 ### Get revisions
 
-All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed **lazily**.
+All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed **lazily**.
 
-<TabItem value="something" label="lazy_Revisions">
+<TabItem value="lazy_Revisions" label="lazy_Revisions">
 <CodeBlock language="csharp">
 {`Lazy<List<Employee>> lazyRevisions = session
      // Add a call to Lazily 
@@ -217,10 +217,10 @@ List<Employee> revisions = lazyRevisions.Value; // Getting revisions is executed
 </TabItem>
 ### Get compare-exchange value
 
-[Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
+[Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 values can be executed **lazily**.
 
-<TabItem value="something" label="lazy_CompareExchange">
+<TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">
 <CodeBlock language="csharp">
 {`using (var session =
        store.OpenSession(new SessionOptions \{ TransactionMode = TransactionMode.ClusterWide \}))
@@ -257,7 +257,7 @@ Accessing the value of ANY of the lazy instances will trigger
 the execution of ALL pending lazy requests held up by the session, 
 in a SINGLE server call.  
 
-<TabItem value="something" label="lazy_ExecuteAll_Implicit">
+<TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
 <CodeBlock language="csharp">
 {`// Define multiple lazy requests
 Lazy<User> lazyUser1 = session.Advanced.Lazily.Load<User>("users/1-A");
@@ -287,7 +287,7 @@ IEnumerable<Product> products = lazyProducts.Value;
 Explicitly calling `ExecuteAllPendingLazyOperations` will execute 
 ALL pending lazy requests held up by the session, in a SINGLE server call.  
 
-<TabItem value="something" label="lazy_ExecuteAll_Explicit">
+<TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
 <CodeBlock language="csharp">
 {`// Define multiple lazy requests
 Lazy<User> lazyUser1 = session.Advanced.Lazily.Load<User>("users/1-A");
@@ -338,28 +338,28 @@ IEnumerable<Product> products = lazyProducts.Value;
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily#operations-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#load-entities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#load-entities-with-include)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#load-entities-starting-with)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditional-load)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily#run-query)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#get-revisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#get-compare-exchange-value)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---implicitly)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---explicitly)
+    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-with-include)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-starting-with)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditional-load)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#run-query)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-revisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-compare-exchange-value)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---implicitly)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---explicitly)
 
 </Admonition>
 ## Operations that can be executed lazily
 
 ### Load entities
 
-[load](../../../client-api/session/loading-entities#load) loads a document entity from 
+[load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
 the database into the session.  
 Loading entities can be executed **lazily**.   
 
-<TabItem value="something-something" label="lazy_Load">
+<TabItem value="lazy_Load" label="lazy_Load">
 <CodeBlock language="python">
 {`lazy_employee = (
     session
@@ -376,7 +376,7 @@ employee = lazy_employee.value  # 'load' operation is executed here
 </TabItem>
 ### Load entities with include
 
-[load with include](../../../client-api/session/loading-entities#load-with-includes) loads 
+[load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads 
 both the document and the specified related document.  
 Loading entities with include can be executed **lazily**.
 
@@ -416,11 +416,11 @@ supplier = session.load(product.SupplierId)
 </Tabs>
 ### Load entities starting with
 
-[load_starting_with](../../../client-api/session/loading-entities#loadstartingwith) loads 
+[load_starting_with](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads 
 entities whose ID starts with the specified prefix.  
 Loading entities with a common prefix can be executed **lazily**.
 
-<TabItem value="something-something" label="lazy_LoadStartingWith">
+<TabItem value="lazy_LoadStartingWith" label="lazy_LoadStartingWith">
 <CodeBlock language="python">
 {`lazy_employees = (
     session
@@ -438,7 +438,7 @@ employees = lazy_employees.value  # 'load' operation is executed here
 </TabItem>
 ### Conditional load
 
-[conditional_load](../../../client-api/session/loading-entities#conditionalload) logic is: 
+[conditional_load](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
 
 * If the entity is already loaded to the session:  
   no server call is made, the tracked entity is returned.    
@@ -447,7 +447,7 @@ employees = lazy_employees.value  # 'load' operation is executed here
   method is older than the one in the server (i.e. if the document in the server is newer).
 * Loading entities conditionally can be executed **lazily**.  
 
-<TabItem value="something-something" label="lazy_ConditionalLoad">
+<TabItem value="lazy_ConditionalLoad" label="lazy_ConditionalLoad">
 <CodeBlock language="python">
 {`# Create document and get is change-vector:
 change_vector: Optional[str] = None
@@ -480,9 +480,9 @@ with store.open_session() as session2:
 ### Run query
 
 A query can be executed **lazily**.  
-Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
+Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
-<TabItem value="something-something" label="lazy_Query">
+<TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="python">
 {`# Define a lazy query:
 lazy_employees = (
@@ -499,9 +499,9 @@ employees = lazy_employees.value  # query is executed here
 </TabItem>
 ### Get revisions
 
-All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed **lazily**.
+All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed **lazily**.
 
-<TabItem value="something-something" label="lazy_Revisions">
+<TabItem value="lazy_Revisions" label="lazy_Revisions">
 <CodeBlock language="python">
 {`lazy_revisions = (
     session.
@@ -521,10 +521,10 @@ revisions = lazy_revisions.value  # Getting revisions is executed here
 </TabItem>
 ### Get compare-exchange value
 
-[get_compare_exchange_value](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
+[get_compare_exchange_value](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 can be executed **lazily**.
 
-<TabItem value="something-something" label="lazy_CompareExchange">
+<TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">
 <CodeBlock language="python">
 {`with store.open_session(
     session_options=SessionOptions(transaction_mode=TransactionMode.CLUSTER_WIDE)
@@ -560,7 +560,7 @@ Accessing the value of ANY of the lazy instances will trigger
 the execution of ALL pending lazy requests held up by the session, 
 in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Implicit">
+<TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
 <CodeBlock language="python">
 {`# Define multiple lazy requests
 lazy_user_1 = session.advanced.lazily.load("users/1-A")
@@ -587,7 +587,7 @@ products = lazy_products.value
 Explicitly calling `execute_all_pending_lazy_operations` will execute 
 ALL pending lazy requests held up by the session, in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Explicit">
+<TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
 <CodeBlock language="python">
 {`# Define multiple lazy requests
 lazy_user_1 = session.advanced.lazily.load("users/1-A")
@@ -635,28 +635,28 @@ products = lazy_products.value
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily#operations-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#load-entities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#load-entities-with-include)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#load-entities-starting-with)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditional-load)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily#run-query)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#get-revisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#get-compare-exchange-value)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---implicitly)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#execute-all-requests---explicitly)
+    * [Requests that can be executed lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx#operations-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-with-include)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#load-entities-starting-with)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditional-load)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#run-query)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-revisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#get-compare-exchange-value)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---implicitly)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#execute-all-requests---explicitly)
 
 </Admonition>
 ## Operations that can be executed lazily
 
 ### Load entities
 
-[load](../../../client-api/session/loading-entities#load) loads a document entity from 
+[load](../../../client-api/session/loading-entities.mdx#load) loads a document entity from 
 the database into the session.  
 Loading entities can be executed `lazily`.   
 
-<TabItem value="something-something" label="lazy_Load">
+<TabItem value="lazy_Load" label="lazy_Load">
 <CodeBlock language="php">
 {`/** @var Lazy<Employee> $lazyEmployee */
 $lazyEmployee = $session
@@ -672,7 +672,7 @@ $employee = $lazyEmployee->getValue(); // 'Load' operation is executed here
 </TabItem>
 ### Load entities with include
 
-[load with include](../../../client-api/session/loading-entities#load-with-includes) loads 
+[load with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads 
 both the document and the specified related document.  
 Loading entities with include can be executed `lazily`.
 
@@ -743,11 +743,11 @@ $supplier = $session->load(Supplier::class, $product->getSuppierId());
 </Tabs>
 ### Load entities starting with
 
-[load_starting_with](../../../client-api/session/loading-entities#loadstartingwith) loads 
+[load_starting_with](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads 
 entities whose ID starts with the specified prefix.  
 Loading entities with a common prefix can be executed `lazily`.
 
-<TabItem value="something-something" label="lazy_LoadStartingWith">
+<TabItem value="lazy_LoadStartingWith" label="lazy_LoadStartingWith">
 <CodeBlock language="php">
 {`/** @var Lazy<array<Employee>> $lazyEmployees */
 $lazyEmployees = $session
@@ -764,7 +764,7 @@ $employees = $lazyEmployees->getValue(); // 'Load' operation is executed here
 </TabItem>
 ### Conditional load
 
-[conditional_load](../../../client-api/session/loading-entities#conditionalload) logic is: 
+[conditional_load](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
 
 * If the entity is already loaded to the session:  
   no server call is made, the tracked entity is returned.    
@@ -773,7 +773,7 @@ $employees = $lazyEmployees->getValue(); // 'Load' operation is executed here
   method is older than the one in the server (i.e. if the document in the server is newer).
 * Loading entities conditionally can be executed `lazily`.  
 
-<TabItem value="something-something" label="lazy_ConditionalLoad">
+<TabItem value="lazy_ConditionalLoad" label="lazy_ConditionalLoad">
 <CodeBlock language="php">
 {`// Create document and get its change-vector:
 $changeVector = null;
@@ -814,9 +814,9 @@ try \{
 ### Run query
 
 A query can be executed `lazily`.  
-Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
+Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
-<TabItem value="something-something" label="lazy_Query">
+<TabItem value="lazy_Query" label="lazy_Query">
 <CodeBlock language="php">
 {`// Define a
 // lazy query:
@@ -835,9 +835,9 @@ $employees = $lazyEmployees->getValue(); // Query is executed here
 </TabItem>
 ### Get revisions
 
-All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed `lazily`.
+All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed `lazily`.
 
-<TabItem value="something-something" label="lazy_Revisions">
+<TabItem value="lazy_Revisions" label="lazy_Revisions">
 <CodeBlock language="php">
 {`/** @var Lazy<array<Employee>> $lazyRevisions */
 $lazyRevisions = $session
@@ -857,10 +857,10 @@ $revisions = $lazyRevisions->getValue(); // Getting revisions is executed here
 </TabItem>
 ### Get compare-exchange value
 
-[get_compare_exchange_value](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
+[get_compare_exchange_value](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 can be executed `lazily`.
 
-<TabItem value="something-something" label="lazy_CompareExchange">
+<TabItem value="lazy_CompareExchange" label="lazy_CompareExchange">
 <CodeBlock language="php">
 {`$sessionOptions = new SessionOptions();
 $sessionOptions->setTransactionMode(TransactionMode::clusterWide());
@@ -901,7 +901,7 @@ Accessing the value of ANY of the lazy instances will trigger
 the execution of ALL pending lazy requests held up by the session, 
 in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Implicit">
+<TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
 <CodeBlock language="php">
 {`// Define multiple lazy requests
 $lazyUser1 = $session->advanced()->lazily()->load(User::class, "users/1-A");
@@ -931,7 +931,7 @@ $products = $lazyProducts->getValue();
 Explicitly calling `executeAllPendingLazyOperations` will execute 
 ALL pending lazy requests held up by the session, in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Explicit">
+<TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
 <CodeBlock language="php">
 {`// Define multiple lazy requests
 $lazyUser1 = $session->advanced()->lazily->load(User::class, "users/1-A");
@@ -982,17 +982,17 @@ $products = $lazyProducts->getValue();
       This can help reduce the number of remote calls made to the server over the network.
 
 * In this page:
-    * [Requests that can be executed lazily:](../../../client-api/session/how-to/perform-operations-lazily#requests-that-can-be-executed-lazily)
-        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily#loadentities)
-        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily#loadwithinclude)
-        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily#loadstartingwith)
-        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily#conditionalload)
-        * [Run query](../../../client-api/session/how-to/perform-operations-lazily#runquery)
-        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily#getrevisions)
-        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily#getcompareexchange)
-    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily#multiple-lazy-requests)
-        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily#implicit)
-        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily#explicit)
+    * [Requests that can be executed lazily:](../../../client-api/session/how-to/perform-operations-lazily.mdx#requests-that-can-be-executed-lazily)
+        * [Load entities](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadentities)
+        * [Load entities with include](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadwithinclude)
+        * [Load entities starting with](../../../client-api/session/how-to/perform-operations-lazily.mdx#loadstartingwith)
+        * [Conditional load](../../../client-api/session/how-to/perform-operations-lazily.mdx#conditionalload)
+        * [Run query](../../../client-api/session/how-to/perform-operations-lazily.mdx#runquery)
+        * [Get revisions](../../../client-api/session/how-to/perform-operations-lazily.mdx#getrevisions)
+        * [Get compare-exchange value](../../../client-api/session/how-to/perform-operations-lazily.mdx#getcompareexchange)
+    * [Multiple lazy requests](../../../client-api/session/how-to/perform-operations-lazily.mdx#multiple-lazy-requests)
+        * [Execute all requests - implicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#implicit)
+        * [Execute all requests - explicitly](../../../client-api/session/how-to/perform-operations-lazily.mdx#explicit)
 
 </Admonition>
 ## Operations that can be executed lazily
@@ -1000,11 +1000,11 @@ $products = $lazyProducts->getValue();
 <Admonition type="note" title="Note">
 <a id="loadEntities"/> __Load entities__
 
-* ['load'](../../../client-api/session/loading-entities#load) loads a document entity from the database into the session.  
+* ['load'](../../../client-api/session/loading-entities.mdx#load) loads a document entity from the database into the session.  
   Loading entities can be executed __lazily__.   
 
-<TabItem value="something-something" label="lazy_load">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_load" label="lazy_load">
+<CodeBlock language="js">
 {`const lazyEmployee = session
      // Add a call to lazily 
     .advanced.lazily
@@ -1021,12 +1021,12 @@ const employee = await lazyEmployee.getValue(); // 'load' operation is executed 
 <Admonition type="note" title="Note">
 <a id="loadWithInclude"/> __Load entities with include__
 
-* ['load' with include](../../../client-api/session/loading-entities#load-with-includes) loads both the document and the specified related document.    
+* ['load' with include](../../../client-api/session/loading-entities.mdx#load-with-includes) loads both the document and the specified related document.    
   Loading entities with include can be executed __lazily__.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Lazy_load_with_include" label="Lazy_load_with_include">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const lazyProduct = session
      // Add a call to lazily 
     .advanced.lazily
@@ -1047,7 +1047,7 @@ const supplier = await session.load(product.supplierId)
 </CodeBlock>
 </TabItem>
 <TabItem value="The_document" label="The_document">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Sample product document
 class Product {
     constructor(name, supplierId) {
@@ -1065,11 +1065,11 @@ class Product {
 <Admonition type="note" title="Note">
 <a id="loadStartingWith"/> __Load entities starting with__
 
-* ['loadStartingWith'](../../../client-api/session/loading-entities#loadstartingwith) loads entities whose ID starts with the specified prefix.  
+* ['loadStartingWith'](../../../client-api/session/loading-entities.mdx#loadstartingwith) loads entities whose ID starts with the specified prefix.  
   Loading entities with a common prefix can be executed __lazily__.
 
-<TabItem value="something-something" label="lazy_loadStartingWith">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_loadStartingWith" label="lazy_loadStartingWith">
+<CodeBlock language="js">
 {`const lazyEmployees = session
      // Add a call to lazily 
     .advanced.lazily
@@ -1087,7 +1087,7 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 <Admonition type="note" title="Note">
 <a id="conditionalLoad"/> __Conditional load__
 
-* ['conditionalLoad'](../../../client-api/session/loading-entities#conditionalload) logic is: 
+* ['conditionalLoad'](../../../client-api/session/loading-entities.mdx#conditionalload) logic is: 
   * If the entity is already loaded to the session:  
     no server call is made, the tracked entity is returned.    
   * If the entity is Not already loaded to the session:  
@@ -1095,8 +1095,8 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
     (i.e. if the document in the server is newer).
   * Loading entities conditionally can be executed __lazily__.  
 
-<TabItem value="something-something" label="lazy_conditionalLoad">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_conditionalLoad" label="lazy_conditionalLoad">
+<CodeBlock language="js">
 {`// Create document and get its change-vector:
 \{
     const session1 = documentStore.openSession();
@@ -1134,10 +1134,10 @@ const employees = await lazyEmployees.getValue(); // 'load' operation is execute
 <a id="runQuery"/> __Run query__
 
 * A Query can be executed __lazily__.  
-  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily).
+  Learn more about running queries lazily in [lazy queries](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx).
 
-<TabItem value="something-something" label="lazy_query">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_query" label="lazy_query">
+<CodeBlock language="js">
 {`// Define a lazy query:
 const lazyEmployees = session
     .query(\{ collection: "employees" \})
@@ -1157,10 +1157,10 @@ const employees = await lazyEmployees.getValue(); // Query is executed here
 <Admonition type="note" title="Note">
 <a id="getRevisions"/> __Get revisions__
 
-* All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading) and their metadata can be executed __lazily__.
+* All methods for [getting revisions](../../../document-extensions/revisions/client-api/session/loading.mdx) and their metadata can be executed __lazily__.
 
-<TabItem value="something-something" label="lazy_revisions">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_revisions" label="lazy_revisions">
+<CodeBlock language="js">
 {`var lazyRevisions = session
      // Add a call to lazily 
     .advanced.revisions.lazily
@@ -1180,10 +1180,10 @@ const revisions = lazyRevisions.getValue(); // Getting revisions is executed her
 <Admonition type="note" title="Note">
 <a id="getCompareExchange"/> __Get compare-exchange value__
 
-* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) values can be executed __lazily__.
+* [Getting compare-exchange](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) values can be executed __lazily__.
 
-<TabItem value="something-something" label="lazy_compareExchange">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_compareExchange" label="lazy_compareExchange">
+<CodeBlock language="js">
 {`const session = documentStore.openSession(\{ transactionMode: "ClusterWide" \});
 
 // Create compare-exchange value:
@@ -1219,8 +1219,8 @@ Accessing the value of ANY of the lazy instances will trigger
 the execution of ALL pending lazy requests held up by the session, 
 in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Implicit">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_ExecuteAll_Implicit" label="lazy_ExecuteAll_Implicit">
+<CodeBlock language="js">
 {`// Define multiple lazy requests
 const lazyUser1 = session.advanced.lazily.load("users/1-A");
 const lazyUser2 = session.advanced.lazily.load("users/2-A");
@@ -1253,8 +1253,8 @@ const products = await lazyProducts.getValue();
 Explicitly calling `executeAllPendingLazyOperations` will execute 
 ALL pending lazy requests held up by the session, in a SINGLE server call.  
 
-<TabItem value="something-something" label="lazy_ExecuteAll_Explicit">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_ExecuteAll_Explicit" label="lazy_ExecuteAll_Explicit">
+<CodeBlock language="js">
 {`// Define multiple lazy requests
 const lazyUser1 = session.advanced.lazily.load("users/1-A");
 const lazyUser2 = session.advanced.lazily.load("users/2-A");

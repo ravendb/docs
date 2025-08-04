@@ -24,12 +24,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * A `RAVEN_License` environment variable can be set.  
 
 * In this page:  
-  * [Prerequisites](../../start/licensing/license-under-docker#prerequisites)  
-  * [Licensing a RavenDB docker image](../../start/licensing/license-under-docker#licensing-a-ravendb-docker-image)  
-     * [Passing a Path to the License File via CLI](../../start/licensing/license-under-docker#passing-a-path-to-the-license-file-via-cli)  
-     * [Providing a License in `settings.json`](../../start/licensing/license-under-docker#providing-a-license-in-)  
-     * [Setting a `RAVEN_License` Environment Variable](../../start/licensing/license-under-docker#setting-a--environment-variable)  
-  * [Licensing RavenDB under Linux](../../start/licensing/license-under-docker#licensing-ravendb-under-linux)  
+  * [Prerequisites](../../start/licensing/license-under-docker.mdx#prerequisites)  
+  * [Licensing a RavenDB docker image](../../start/licensing/license-under-docker.mdx#licensing-a-ravendb-docker-image)  
+     * [Passing a Path to the License File via CLI](../../start/licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli)  
+     * [Providing a License in `settings.json`](../../start/licensing/license-under-docker.mdx#providing-a-license-in-)  
+     * [Setting a `RAVEN_License` Environment Variable](../../start/licensing/license-under-docker.mdx#setting-a--environment-variable)  
+  * [Licensing RavenDB under Linux](../../start/licensing/license-under-docker.mdx#licensing-ravendb-under-linux)  
 
 </Admonition>
 ## Prerequisites
@@ -40,7 +40,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Docker images of RavenDB `6.0` and on are executed by a **regular user** for 
   security reasons, requiring that this user would be explicitly permitted to access 
   RavenDB properties, including any mounted license folder.  
-* Read more about this in the dedicated [migration page](../../migration/server/docker).  
+* Read more about this in the dedicated [migration page](../../migration/server/docker.mdx).  
 
 
 ## Licensing a RavenDB docker image  
@@ -55,7 +55,7 @@ Allow RavenDB to access the license by **mounting the license folder** when you 
 using Docker's CLI.  
 
 * From Docker's CLI, use this syntax:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`docker run -v <host_dir>:<container_dir> -e <env.var>
 `}
@@ -66,7 +66,7 @@ using Docker's CLI.
     The `-e` option sets the Docker `RAVEN_License_Path` environment variable with the license.  
 
 * **Example**:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`docker run -v "C:\\docker-license\\config:/ravendb/license" -e RAVEN_License_Path=/ravendb/license/license.json  
 `}
@@ -85,8 +85,8 @@ and then open the **About** view.
 Provide the license as a property of the `settings.json` configuration file in one of the following ways.  
 
 * Add `settings.json` the **full license string** as the value of the "License" key 
-  [as explained here](../../server/configuration/license-configuration).  
-  Mount `settings.json` as [explained above](../../start/licensing/license-under-docker#passing-a-path-to-the-license-file-via-cli), 
+  [as explained here](../../server/configuration/license-configuration.mdx).  
+  Mount `settings.json` as [explained above](../../start/licensing/license-under-docker.mdx#passing-a-path-to-the-license-file-via-cli), 
   using the location of `settings.json` instead of the location of a license file.  
 * Alternatively, add `settings.json` the **license path** as the value of the “License.Path” key and mount the license directory.  
 
@@ -97,7 +97,7 @@ The full license string can also be added as a docker `RAVEN_License` environmen
 * Special characters must be escaped.  
 * Each line of the license key is provided as a single string.  
 * **Example**:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`docker run -e 'RAVEN_License=\{ 
  \\"Id\\": \\"4b167357-42f5-48a8-bef5-29ca557ef0ce\\",  
@@ -126,7 +126,7 @@ The full license string can also be added as a docker `RAVEN_License` environmen
 To license RavenDB under Linux, pass a license **file** rather than a **directory**.  
 
 * **Example**:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`docker run -v "/home/ubuntu/ravendb-docker-license/license.json:/ravendb/license" -e RAVEN_License_Path=/ravendb/license
 `}

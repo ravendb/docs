@@ -9,17 +9,17 @@ export default function AdministrationFeaturesGrid() {
   const AdministrationFeaturesList = [
     {
       title: "Studio",
-      url: `${activeVersion.label}/studio/overview`,
+      url: `/${activeVersion.label}/studio/overview`,
       description: "Short description",
     },
     {
       title: "RavenCLI",
-      url: `${activeVersion.label}/server/administration/cli`,
+      url: `/${activeVersion.label}/server/administration/cli`,
       description: "Short description",
     },
     {
       title: "NLog",
-      url: `${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
+      url: `/${activeVersion.label}/server/troubleshooting/logging#configuring-and-using-nlog`,
       description: "Short description",
     },
   ];

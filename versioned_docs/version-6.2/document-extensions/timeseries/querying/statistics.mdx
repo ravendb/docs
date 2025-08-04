@@ -23,8 +23,8 @@ one measure for the first values in each entry, another measure for the
 second values in each entry, and so on.  
 
 * In this page:  
-  * [Syntax](../../../document-extensions/timeseries/querying/statistics#syntax)  
-  * [Examples](../../../document-extensions/timeseries/querying/statistics#examples)  
+  * [Syntax](../../../document-extensions/timeseries/querying/statistics.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/statistics.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -48,7 +48,7 @@ series or range of time series entries. It takes one `double` value that is grea
 0 and less than or equal to 100. This represents the percent of the time series values that 
 should be smaller than the result.  
 
-See examples [below](../../../document-extensions/timeseries/querying/statistics#examples).  
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
 ### Slope  
 
 * RQL method: `slope()`  
@@ -58,13 +58,13 @@ The slope of a time series or range of time series entries is the difference
 between the first and last values of the range (disregarding the values in 
 between) divided by the difference in time.  
 
-Queries that use this method must also [aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
+Queries that use this method must also [aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 the time series, grouping the entries into whole numbers of time units.  
 
-The difference in time is measured in milliseconds. Use [scaling](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)
+The difference in time is measured in milliseconds. Use [scaling](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)
 to adjust the results to your preferred units.  
 
-See examples [below](../../../document-extensions/timeseries/querying/statistics#examples).  
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
 ### Standard Deviation
 
 * RQL method: `stddev()`  
@@ -73,12 +73,12 @@ See examples [below](../../../document-extensions/timeseries/querying/statistics
 These methods return the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation) 
 of time series values.  
 
-See examples [below](../../../document-extensions/timeseries/querying/statistics#examples).  
+See examples [below](../../../document-extensions/timeseries/querying/statistics.mdx#examples).  
 ### Result Format
 
 Queries with these methods return results with the following format:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "From": <first entry's timestamp>,

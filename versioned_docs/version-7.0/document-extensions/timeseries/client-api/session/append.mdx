@@ -31,19 +31,19 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
     * **Modifying an existing time series entry**  
       Use `Append` to update the data of an existing entry with the specified timestamp.
 
-* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+* Each call to `Append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
 
 * To append **multiple** entries in a single transaction you can:  
   * Call `Append` as many times as needed before calling `session.SaveChanges`, as shown in the examples below.
-  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).
-  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
-    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete). 
+  * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).
+  * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
+    Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx). 
 * In this page:
-    * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
-        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+    * [`Append` usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+        * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+        * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
 
 </Admonition>
 ## `Append` usage
@@ -53,8 +53,8 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * Open a session.
 * Create an instance of `TimeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
-      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query) or from [session.Load](../../../../client-api/session/loading-entities#load).
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.Query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `TimeSeriesFor.Append` and pass it the time series entry details.
 * Call `session.SaveChanges` for the action to take effect on the server.
@@ -73,7 +73,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * Although a loop is used to append multiple entries,  
   all entries are appended in a single transaction when `SaveChanges` is executed.
 
-<TabItem value="something" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
+<TabItem value="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
 <CodeBlock language="csharp">
 {`var baseline = DateTime.Today;
 
@@ -97,7 +97,7 @@ using (var session = store.OpenSession())
 #### Append entries with multiple values:
 
 * In this example, we append multi-value StockPrice entries.  
-* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
@@ -171,7 +171,7 @@ using (var session = store.OpenSession())
 
 ## Syntax
 
-<TabItem value="something" label="TimeSeriesFor-Append-definition-double">
+<TabItem value="TimeSeriesFor-Append-definition-double" label="TimeSeriesFor-Append-definition-double">
 <CodeBlock language="csharp">
 {`// Append an entry with a single value (double)
 void Append(DateTime timestamp, double value, string tag = null);
@@ -179,7 +179,7 @@ void Append(DateTime timestamp, double value, string tag = null);
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="TimeSeriesFor-Append-definition-inum">
+<TabItem value="TimeSeriesFor-Append-definition-inum" label="TimeSeriesFor-Append-definition-inum">
 <CodeBlock language="csharp">
 {`// Append an entry with multiple values (IEnumerable)
 void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
@@ -213,22 +213,22 @@ void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
       Use `append_single` or `append` to update the data of an existing entry with the specified timestamp.
 
 * Each call to `append_single` handles a **single** time series value at 
-  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+  a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
   Each call to `append` can handle **multiple** time series values at 
-  a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).  
+  a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).  
 
 * To append **multiple** entries in a single transaction you can:  
    * Call `append_single` or `append` as many times as needed before calling `session.save_changes`, as shown in the examples below.  
-   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
-   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
-     Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
+     Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx).  
 
 * In this page:
-    * [Usage](../../../../document-extensions/timeseries/client-api/session/append#usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
-       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
-    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
+    * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -238,9 +238,9 @@ void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
 * Open a session.
 * Create an instance of `time_series_for` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
-      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) 
-      or from [session.load](../../../../client-api/session/loading-entities#load).
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `time_series_for.append_single` or `time_series_for.append` and pass it the time series entry details.
 * Call `session.save_changes` for the action to take effect on the server.
@@ -259,7 +259,7 @@ void Append(DateTime timestamp, IEnumerable<double> values, string tag = null);
 * Although a loop is used to append multiple entries,  
   all entries are appended in a single transaction when `save_changes` is executed.
 
-<TabItem value="something-something" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
+<TabItem value="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range" label="timeseries_region_TimeSeriesFor-Append-TimeSeries-Range">
 <CodeBlock language="python">
 {`base_line = datetime.utcnow()
 
@@ -330,14 +330,14 @@ with store.open_session() as session:
 
 ## Syntax
 
-<TabItem value="something-something" label="TimeSeriesFor-Append-definition-double">
+<TabItem value="TimeSeriesFor-Append-definition-double" label="TimeSeriesFor-Append-definition-double">
 <CodeBlock language="python">
 {`def append_single(self, timestamp: datetime, value: float, tag: Optional[str] = None) -> None: ...
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="TimeSeriesFor-Append-definition-inum">
+<TabItem value="TimeSeriesFor-Append-definition-inum" label="TimeSeriesFor-Append-definition-inum">
 <CodeBlock language="python">
 {`def append(self, timestamp: datetime, values: List[float], tag: Optional[str] = None) -> None: ...
 `}
@@ -371,14 +371,14 @@ with store.open_session() as session:
 
 * To append multiple entries in a single transaction you can:  
    * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.  
-   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
-   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations).  
+   * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+   * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx).  
 
 * In this page:
-    * [Usage](../../../../document-extensions/timeseries/client-api/session/append#usage)
-    * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)
-       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)
+    * [Usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#usage)
+    * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+       * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)
+       * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)
 
 </Admonition>
 ## Usage
@@ -388,9 +388,9 @@ with store.open_session() as session:
 * Open a session.
 * Create an instance of `timeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern),
-      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) 
-      or from [session.load](../../../../client-api/session/loading-entities#load).
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern),
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.load](../../../../client-api/session/loading-entities.mdx#load).
     * Specify the time series name.
 * Call `timeSeriesFor.append` and pass it the time series entry details.
 * Call `session.saveChanges` for the action to take effect on the server.
@@ -554,19 +554,19 @@ try {
   * **Modifying an existing time series entry**  
     Use `append` to update the data of an existing entry with the specified timestamp.
 
-* Each call to `append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design#time-series-entries).
+* Each call to `append` handles a **single** [time series entry](../../../../document-extensions/timeseries/design.mdx#time-series-entries).
 
 * To append **multiple** entries in a single transaction you can:
     * Call `append` as many times as needed before calling `session.saveChanges`, as shown in the examples below.
-    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch).  
-    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations). 
-      Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete).
+    * Use patching to update the time series. Learn more in [Patch time series entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx).  
+    * Append entries directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx). 
+      Learn more in [Append time series operations](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx).
 * In this page:  
-  * [`append` usage](../../../../document-extensions/timeseries/client-api/session/append#append-usage)  
-  * [Examples](../../../../document-extensions/timeseries/client-api/session/append#examples)
-      * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-a-single-value)  
-      * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values)  
-  * [Syntax](../../../../document-extensions/timeseries/client-api/session/append#syntax)
+  * [`append` usage](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-usage)  
+  * [Examples](../../../../document-extensions/timeseries/client-api/session/append.mdx#examples)
+      * [Append entries with a single value](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-a-single-value)  
+      * [Append entries with multiple values](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values)  
+  * [Syntax](../../../../document-extensions/timeseries/client-api/session/append.mdx#syntax)
   
 </Admonition>
 ## `append` usage
@@ -576,8 +576,8 @@ try {
 * Open a session.
 * Create an instance of `timeSeriesFor` and pass it the following:
     * Provide an explicit document ID, -or-  
-      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work#unit-of-work-pattern), 
-      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query) or from [session.load](../../../../client-api/session/loading-entities#load).  
+      pass an [entity tracked by the session](../../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#unit-of-work-pattern), 
+      e.g. a document object returned from [session.query](../../../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../../../client-api/session/loading-entities.mdx#load).  
     * Specify the time series name.
 * Call `timeSeriesFor.append` and pass it the time series entry details.
 * Call `session.saveChanges` for the action to take effect on the server.
@@ -596,8 +596,8 @@ try {
 * Although a loop is used to append multiple entries,  
   all entries are appended in a single transaction when `saveChanges` is executed.  
 
-<TabItem value="something-something" label="append_1">
-<CodeBlock language="nodejs">
+<TabItem value="append_1" label="append_1">
+<CodeBlock language="js">
 {`// Open a session and store a new document
 const session = documentStore.openSession();
 await session.store(new User("John"), "users/john");
@@ -647,11 +647,11 @@ await session.saveChanges();
 #### Append entries with multiple values:
 
 * In this example, we append multi-value StockPrice entries.  
-* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+* Notice the clarity gained by [naming the values](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 await session.store(new User("John"), "users/john");
 
@@ -684,7 +684,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Using_named_values" label="Using_named_values">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Register the named values for the 'StockPrices' series on the server
 await documentStore.timeSeries.register("Users",
     "StockPrices", ["open", "close", "high", "low", "volume"]);
@@ -745,7 +745,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="StockPrice_class" label="StockPrice_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// This class is used in the "Named Values" example
 class StockPrice {
 
@@ -777,8 +777,8 @@ class StockPrice {
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 // ====================
 
@@ -788,16 +788,16 @@ append(timestamp, value, tag);
 </CodeBlock>
 </TabItem>
       
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`append(timestamp, values);
 append(timestamp, values, tag); 
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`append(timestamp, entry);
 append(timestamp, entry, tag);
 append(entry);

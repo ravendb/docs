@@ -23,15 +23,15 @@ export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
 When working in a RavenDB cluster, a database can reside on multiple nodes.  
 When the client needs to send a request to the server, it can have several nodes to choose from.
 
-The client uses [this logic](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node) to determine which node to send the request to.  
-Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview).
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
 
 Use the `GetCurrentSessionNode` method  from the `Advanced` session operations   
 to find out what is the current node that the session sends its requests to.
 
 ## Syntax
 
-<TabItem value="something" label="current_session_node_1">
+<TabItem value="current_session_node_1" label="current_session_node_1">
 <CodeBlock language="csharp">
 {`Task<ServerNode> GetCurrentSessionNode();
 `}
@@ -41,7 +41,7 @@ to find out what is the current node that the session sends its requests to.
 ### Return Value
 
 The return value of `GetCurrentSessionNode` is a **ServerNode** object
-<TabItem value="something" label="current_session_node_2">
+<TabItem value="current_session_node_2" label="current_session_node_2">
 <CodeBlock language="csharp">
 {`public class ServerNode
 \{
@@ -65,7 +65,7 @@ The return value of `GetCurrentSessionNode` is a **ServerNode** object
 
 ## Example
 
-<TabItem value="something" label="current_session_node_3">
+<TabItem value="current_session_node_3" label="current_session_node_3">
 <CodeBlock language="csharp">
 {`ServerNode serverNode = await session.Advanced.GetCurrentSessionNode();
 Console.WriteLine(serverNode.Url);
@@ -81,15 +81,15 @@ Console.WriteLine(serverNode.Url);
 When working in a RavenDB cluster, a database can reside on multiple nodes.  
 When the client needs to send a request to the server, it can have several nodes to choose from.
 
-The client uses [this logic](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node) to determine which node to send the request to.  
-Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview).
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
 
 Use the `GetCurrentSessionNode` method  from the `Advanced` session operations   
 to find out what is the current node that the session sends its requests to.
 
 ## Syntax
 
-<TabItem value="something-something" label="current_session_node_1">
+<TabItem value="current_session_node_1" label="current_session_node_1">
 <CodeBlock language="java">
 {`ServerNode getCurrentSessionNode();
 `}
@@ -99,7 +99,7 @@ to find out what is the current node that the session sends its requests to.
 ### Return Value
 
 The return value of `getCurrentSessionNode` is a **ServerNode** object
-<TabItem value="something-something" label="current_session_node_2">
+<TabItem value="current_session_node_2" label="current_session_node_2">
 <CodeBlock language="java">
 {`public class ServerNode \{
     private String url;
@@ -122,7 +122,7 @@ public enum Role \{
 
 ## Example
 
-<TabItem value="something-something" label="current_session_node_3">
+<TabItem value="current_session_node_3" label="current_session_node_3">
 <CodeBlock language="java">
 {`ServerNode serverNode = session.advanced().getCurrentSessionNode();
 System.out.println(serverNode.getUrl());
@@ -138,16 +138,16 @@ System.out.println(serverNode.getUrl());
 When working in a RavenDB cluster, a database can reside on multiple nodes.  
 When the client needs to send a request to the server, it can have several nodes to choose from.
 
-The client uses [this logic](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node) 
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) 
 to determine which node to send the request to.  
-Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview).
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
 
 Use the `getCurrentSessionNode` method from the `advanced` session operations 
 to find out what is the current node that the session sends its requests to.
 
 ## Syntax
 
-<TabItem value="something-something" label="current_session_node_1">
+<TabItem value="current_session_node_1" label="current_session_node_1">
 <CodeBlock language="php">
 {`public function getCurrentSessionNode(): ServerNode;
 `}
@@ -157,7 +157,7 @@ to find out what is the current node that the session sends its requests to.
 ### Return Value
 
 The return value of `getCurrentSessionNode` is a `ServerNode` object
-<TabItem value="something-something" label="current_session_node_2">
+<TabItem value="current_session_node_2" label="current_session_node_2">
 <CodeBlock language="php">
 {`class ServerNode
 \{
@@ -187,7 +187,7 @@ class ServerNodeRole
 
 ## Example
 
-<TabItem value="something-something" label="current_session_node_3">
+<TabItem value="current_session_node_3" label="current_session_node_3">
 <CodeBlock language="php">
 {`$serverNode = $session->advanced()->getCurrentSessionNode();
 echo $serverNode->getUrl();
@@ -203,16 +203,16 @@ echo $serverNode->getUrl();
 When working in a RavenDB cluster, a database can reside on multiple nodes.  
 When the client needs to send a request to the server, it can have several nodes to choose from.
 
-The client uses [this logic](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node) to determine which node to send the request to.  
-Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview).
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
 
 Use the `GetCurrentSessionNode` method  from the `advanced` session operations   
 to find out what is the current node that the session sends its requests to.
 
 ## Syntax
 
-<TabItem value="something-something" label="current_session_node_1">
-<CodeBlock language="nodejs">
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="js">
 {`session.advanced.getCurrentSessionNode();
 `}
 </CodeBlock>
@@ -222,8 +222,8 @@ to find out what is the current node that the session sends its requests to.
 
 The return value of `getCurrentSessionNode()` is a **ServerNode** object
 
-<TabItem value="something-something" label="current_session_node_2">
-<CodeBlock language="nodejs">
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="js">
 {`ServerNode \{
     url: "https://localhost:8080",
     database: "Database",
@@ -236,8 +236,8 @@ The return value of `getCurrentSessionNode()` is a **ServerNode** object
 
 ## Example
 
-<TabItem value="something-something" label="current_session_node_3">
-<CodeBlock language="nodejs">
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="js">
 {`const serverNode = session.advanced.getCurrentSessionNode();
 console.log(serverNode.url);
 `}

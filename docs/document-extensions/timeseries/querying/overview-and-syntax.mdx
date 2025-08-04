@@ -24,34 +24,34 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * Querying time series entries enables comprehending how a process gradually populates a time series over time and locating documents related to chosen time series entries.
 
 * Querying time series data is native to RavenDB's queries.  
-  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql).
+  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing).  
+* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing.mdx).  
 
 * In this page:  
-  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax#time-series-query-capabilities)
-  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax#server-and-client-queries)  
-  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax#dynamic-and-index-queries)  
-  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)  
-  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#rql-syntax)  
-     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
-  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-custom-functions)  
-  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax#use-studio-to-experiment)  
+  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#time-series-query-capabilities)
+  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#server-and-client-queries)  
+  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#dynamic-and-index-queries)  
+  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)  
+  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)  
+     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
+  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-custom-functions)  
+  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#use-studio-to-experiment)  
 
 </Admonition>
 ## Time series query capabilities
 
 Time series query can -  
 
-* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range) to query from.  
-* [Filter](../../../document-extensions/timeseries/querying/filtering) time series entries by their tags, values and timestamps. 
-* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections)  time series entries into groups by a chosen time resolution,  
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to query from.  
+* [Filter](../../../document-extensions/timeseries/querying/filtering.mdx) time series entries by their tags, values and timestamps. 
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx)  time series entries into groups by a chosen time resolution,  
   e.g. gather the prices of a stock that's been collected over the past two months to week-long groups.   
   Entries can also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group,  
-  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) them to the client.  
-* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics): the percentile, slope, or standard deviation of a time series.  
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) them to the client.  
+* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics.mdx): the percentile, slope, or standard deviation of a time series.  
 
 
 
@@ -71,10 +71,10 @@ so they require very little client computation resources.
 * **Dynamic queries**:  
   * Time series indexes are Not created automatically by the server when making a dynamic query.  
   * Use dynamic queries when time series you query are not indexed,  
-    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
     E.g. -
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for time series named "HeartRates" in employees hired after 1994
 from Employees as e
@@ -88,8 +88,8 @@ select timeseries(
 
 * **Index queries**:
   * Static time series indexes can be created by clients (or using Studio).  
-    To learn how to create such indexes, see [indexing time series](../../../document-extensions/timeseries/indexing).  
-  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes).
+    To learn how to create such indexes, see [indexing time series](../../../document-extensions/timeseries/indexing.mdx).  
+  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes.mdx).
 
 
 
@@ -147,7 +147,7 @@ select timeseries(
 A typical time series query can start by locating the documents whose time series we want to query.  
 For example, we can query for employees above 30:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`from Employees as e
 where Birthday < '1994-01-01'
@@ -157,13 +157,13 @@ where Birthday < '1994-01-01'
 
 Then, you can query their time series entries using either of the following two equivalent syntaxes:
 
-* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
+* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
 ### `select timeseries`
 
 This syntax allows you to encapsulate your query's time series functionality in a `select timeseries` section.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for entries from time series "HeartRates" for employees above 30
 // ======================================================================
@@ -234,7 +234,7 @@ select timeseries(
 
 * The custom function returns a flat set of values rather than a nested array, to ease the projection of retrieved values.
 
-* Note the generated RQL in the second tab, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare).
+* Note the generated RQL in the second tab, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql.mdx#declare).
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ" label="LINQ">
@@ -308,7 +308,7 @@ select
 
 This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LINQ sample:  
 
-<TabItem value="something" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
+<TabItem value="DefineCustomFunctions_ModifiedTimeSeriesEntry" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
 <CodeBlock language="csharp">
 {`private class ModifiedTimeSeriesEntry
 \{
@@ -324,7 +324,7 @@ This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LIN
 
 ## Use Studio to experiment
 
-You can use [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
+You can use [Studio](../../../studio/database/document-extensions/time-series.mdx) to try the RQL samples provided in this article and test your own queries.  
 
 !["Time Series Query in Studio"](./assets/time-series-query.png)
 
@@ -340,34 +340,34 @@ You can use [Studio](../../../studio/database/document-extensions/time-series) t
 * Querying time series entries enables comprehending how a process gradually populates a time series over time and locating documents related to chosen time series entries.
 
 * Querying time series data is native to RavenDB's queries.  
-  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql).
+  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing).  
+* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing.mdx).  
 
 * In this page:  
-  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax#time-series-query-capabilities)
-  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax#server-and-client-queries)  
-  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax#dynamic-and-index-queries)  
-  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)  
-  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#rql-syntax)  
-     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
-  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-custom-functions)  
-  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax#use-studio-to-experiment)  
+  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#time-series-query-capabilities)
+  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#server-and-client-queries)  
+  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#dynamic-and-index-queries)  
+  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)  
+  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)  
+     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
+  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-custom-functions)  
+  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#use-studio-to-experiment)  
 
 </Admonition>
 ## Time series query capabilities
 
 Time series query can -  
 
-* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range) to query from.  
-* [Filter](../../../document-extensions/timeseries/querying/filtering) time series entries by their tags, values and timestamps. 
-* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections)  time series entries into groups by a chosen time resolution,  
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to query from.  
+* [Filter](../../../document-extensions/timeseries/querying/filtering.mdx) time series entries by their tags, values and timestamps. 
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx)  time series entries into groups by a chosen time resolution,  
   e.g. gather the prices of a stock that's been collected over the past two months to week-long groups.   
   Entries can also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group,  
-  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) them to the client.  
-* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics): the percentile, slope, or standard deviation of a time series.  
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) them to the client.  
+* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics.mdx): the percentile, slope, or standard deviation of a time series.  
 
 
 
@@ -387,10 +387,10 @@ so they require very little client computation resources.
 * **Dynamic queries**:  
   * Time series indexes are Not created automatically by the server when making a dynamic query.  
   * Use dynamic queries when time series you query are not indexed,  
-    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
     E.g. -
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for time series named "HeartRates" in employees hired after 1994
 from Employees as e
@@ -405,7 +405,7 @@ select timeseries(
 * **Index queries**:
   * Static time series indexes can be created by clients (or using Studio).  
     To learn how to create such indexes, see [indexing time series](document-extensions/timeseries/indexing).  
-  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes).
+  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes.mdx).
 
 
 
@@ -463,7 +463,7 @@ select timeseries(
 A typical time series query can start by locating the documents whose time series we want to query.  
 For example, we can query for employees above 30:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`from Employees as e
 where Birthday < '1994-01-01'
@@ -473,13 +473,13 @@ where Birthday < '1994-01-01'
 
 Then, you can query their time series entries using either of the following two equivalent syntaxes:
 
-* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
+* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
 ### `select timeseries`
 
 This syntax allows you to encapsulate your query's time series functionality in a `select timeseries` section.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for entries from time series "HeartRates" for employees above 30
 // ======================================================================
@@ -551,9 +551,9 @@ select timeseries(
 
 * The custom function returns a flat set of values rather than a nested array, to ease the projection of retrieved values.
 
-* Note the generated RQL, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare).
+* Note the generated RQL, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql.mdx#declare).
  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// The time series function:
 // =========================
@@ -592,7 +592,7 @@ select
 
 This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LINQ sample:  
 
-<TabItem value="something-something" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
+<TabItem value="DefineCustomFunctions_ModifiedTimeSeriesEntry" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
 <CodeBlock language="python">
 {`class ModifiedTimeSeriesEntry:
     def __init__(self, timestamp: datetime = None, value: float = None, tag: str = None):
@@ -607,7 +607,7 @@ This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LIN
 
 ## Use Studio to experiment
 
-You can use [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
+You can use [Studio](../../../studio/database/document-extensions/time-series.mdx) to try the RQL samples provided in this article and test your own queries.  
 
 !["Time Series Query in Studio"](./assets/time-series-query.png)
 
@@ -623,34 +623,34 @@ You can use [Studio](../../../studio/database/document-extensions/time-series) t
 * Querying time series entries enables comprehending how a process gradually populates a time series over time and locating documents related to chosen time series entries.
 
 * Querying time series data is native to RavenDB's queries.  
-  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql).
+  Clients can express time series queries in high-level LINQ expressions or directly in [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing).  
+* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing.mdx).  
 
 * In this page:  
-  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax#time-series-query-capabilities)
-  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax#server-and-client-queries)  
-  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax#dynamic-and-index-queries)  
-  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)  
-  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#rql-syntax)  
-     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
-  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-custom-functions)  
-  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax#use-studio-to-experiment)  
+  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#time-series-query-capabilities)
+  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#server-and-client-queries)  
+  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#dynamic-and-index-queries)  
+  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)  
+  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)  
+     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
+  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-custom-functions)  
+  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#use-studio-to-experiment)  
 
 </Admonition>
 ## Time series query capabilities
 
 Time series query can -  
 
-* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range) to query from.  
-* [Filter](../../../document-extensions/timeseries/querying/filtering) time series entries by their tags, values and timestamps. 
-* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections)  time series entries into groups by a chosen time resolution,  
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to query from.  
+* [Filter](../../../document-extensions/timeseries/querying/filtering.mdx) time series entries by their tags, values and timestamps. 
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx)  time series entries into groups by a chosen time resolution,  
   e.g. gather the prices of a stock that's been collected over the past two months to week-long groups.   
   Entries can also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group,  
-  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) them to the client.  
-* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics): the percentile, slope, or standard deviation of a time series.  
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) them to the client.  
+* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics.mdx): the percentile, slope, or standard deviation of a time series.  
 
 
 
@@ -670,10 +670,10 @@ so they require very little client computation resources.
 * **Dynamic queries**:  
   * Time series indexes are Not created automatically by the server when making a dynamic query.  
   * Use dynamic queries when time series you query are not indexed,  
-    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
     E.g. -
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for time series named "HeartRates" in employees hired after 1994
 from Employees as e
@@ -687,7 +687,7 @@ select timeseries(
 
 * **Index queries**:
   * Static time series indexes can be created by clients (or using Studio).  
-  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes).
+  * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes.mdx).
 
 
 
@@ -745,7 +745,7 @@ select timeseries(
 A typical time series query can start by locating the documents whose time series we want to query.  
 For example, we can query for employees above 30:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`from Employees as e
 where Birthday < '1994-01-01'
@@ -755,13 +755,13 @@ where Birthday < '1994-01-01'
 
 Then, you can query their time series entries using either of the following two equivalent syntaxes:
 
-* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
+* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
 ### `select timeseries`
 
 This syntax allows you to encapsulate your query's time series functionality in a `select timeseries` section.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for entries from time series "HeartRates" for employees above 30
 // ======================================================================
@@ -833,9 +833,9 @@ select timeseries(
 
 * The custom function returns a flat set of values rather than a nested array, to ease the projection of retrieved values.
 
-* Note the generated RQL, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare).
+* Note the generated RQL, where the custom function is translated to a [custom JavaScript function](../../../client-api/session/querying/what-is-rql.mdx#declare).
  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// The time series function:
 // =========================
@@ -874,7 +874,7 @@ select
 
 This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LINQ sample:  
 
-<TabItem value="something-something" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
+<TabItem value="DefineCustomFunctions_ModifiedTimeSeriesEntry" label="DefineCustomFunctions_ModifiedTimeSeriesEntry">
 <CodeBlock language="php">
 {`class ModifiedTimeSeriesEntry
 \{
@@ -892,7 +892,7 @@ This is the custom `ModifiedTimeSeriesEntry` class that is used in the above LIN
 
 ## Use Studio to experiment
 
-You can use [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
+You can use [Studio](../../../studio/database/document-extensions/time-series.mdx) to try the RQL samples provided in this article and test your own queries.  
 
 !["Time Series Query in Studio"](./assets/time-series-query.png)
 
@@ -908,34 +908,34 @@ You can use [Studio](../../../studio/database/document-extensions/time-series) t
 * Querying time series entries enables comprehending how a process gradually populates a time series over time and locating documents related to chosen time series entries.
  
 * Time series querying is native to RavenDB's queries.  
-  Clients can express time series queries in high-level queries or directly in [RQL](../../../client-api/session/querying/what-is-rql).
+  Clients can express time series queries in high-level queries or directly in [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing).
+* Queries can be executed as dynamic queries or over [time series indexes](../../../document-extensions/timeseries/indexing.mdx).
 
 * In this page:  
-  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax#time-series-query-capabilities)
-  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax#server-and-client-queries)  
-  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax#dynamic-and-index-queries)  
-  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax#scaling-query-results)  
-  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#rql-syntax)  
-     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
-  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-custom-functions)  
-  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax#use-studio-to-experiment)  
+  * [Time series query capabilities](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#time-series-query-capabilities)
+  * [Server and client queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#server-and-client-queries)  
+  * [Dynamic and index queries](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#dynamic-and-index-queries)  
+  * [Scaling query results](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#scaling-query-results)  
+  * [RQL syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#rql-syntax)  
+     * [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+     * [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
+  * [Combine time series and custom functions](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-custom-functions)  
+  * [Use Studio To experiment](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#use-studio-to-experiment)  
 
 </Admonition>
 ## Time series query capabilities
 
 Time series query can -  
 
-* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range) to query from.  
-* [Filter](../../../document-extensions/timeseries/querying/filtering) time series entries by their tags, values and timestamps. 
-* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections)  time series entries into groups by a chosen time resolution,  
+* [Choose a range of time series entries](../../../document-extensions/timeseries/querying/choosing-query-range.mdx) to query from.  
+* [Filter](../../../document-extensions/timeseries/querying/filtering.mdx) time series entries by their tags, values and timestamps. 
+* [Aggregate](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx)  time series entries into groups by a chosen time resolution,  
   e.g. gather the prices of a stock that's been collected over the past two months to week-long groups.   
   Entries can also be aggregated by their tags.  
 * Select entries by various criteria, e.g. by the min and max values of each aggregated group,  
-  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections) them to the client.  
-* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics): the percentile, slope, or standard deviation of a time series.  
+  and [project](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) them to the client.  
+* Calculate [statistical measures](../../../document-extensions/timeseries/querying/statistics.mdx): the percentile, slope, or standard deviation of a time series.  
 
 
 
@@ -955,12 +955,12 @@ so they require very little client computation resources.
 * **Dynamic queries**:  
   * Time series indexes are Not created automatically by the server when making a dynamic query.  
   * Use dynamic queries when time series you query are not indexed,  
-    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+    or when you prefer that RavenDB would choose an index automatically. See [queries always use an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
     E.g. -
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the time series query text
 const tsQueryText = "from HeartRates";
 
@@ -1002,7 +1002,7 @@ select timeseries (
 * **Index queries**:
     * Static time series indexes can be created by clients (or using Studio).  
       To learn how to create such indexes, see [indexing time series](document-extensions/timeseries/indexing).
-    * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes).
+    * Examples of querying a static time series index can be found in [querying time series indexes](../../../document-extensions/timeseries/querying/using-indexes.mdx).
 
 
 
@@ -1024,7 +1024,7 @@ select timeseries (
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add 'scale <number>' to your time series query text 
 const tsQueryText = "from HeartRates scale 10";
 
@@ -1056,7 +1056,7 @@ select timeseries(
 A typical time series query can start by locating the documents whose time series we want to query.  
 For example, we can query for employees above 30:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`from Employees as e
 where Birthday < '1994-01-01'
@@ -1066,13 +1066,13 @@ where Birthday < '1994-01-01'
 
 Then, you can query their time series entries using either of the following two equivalent syntaxes:
 
-* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section)  
-* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax#section-1)  
+* [`select timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section)  
+* [`declare timeseries` syntax](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#section-1)  
 ### `select timeseries`
 
 This syntax allows you to encapsulate your query's time series functionality in a `select timeseries` section.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Query for entries from time series "HeartRates" for employees above 30
 // ======================================================================
@@ -1135,7 +1135,7 @@ select timeseries(
 
 ## Combine time series and custom functions
 
-* You can declare and use both time series functions and [custom JavaScript function](../../../client-api/session/querying/what-is-rql#declare) in a query.  
+* You can declare and use both time series functions and [custom JavaScript function](../../../client-api/session/querying/what-is-rql.mdx#declare) in a query.  
   The custom functions can call the time series functions, pass them arguments, and use their results.
 
 * In the example below, a custom function (`customFunc`) is called by the query `select` clause to fetch and format a set of time series entries, which are then projected by the query.  
@@ -1145,7 +1145,7 @@ select timeseries(
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const queryResults = await session.advanced
      // Provide RQL to rawQuery
     .rawQuery(\`
@@ -1228,7 +1228,7 @@ select
 
 ## Use Studio to experiment
 
-You can use [Studio](../../../studio/database/document-extensions/time-series) to try the RQL samples provided in this article and test your own queries.  
+You can use [Studio](../../../studio/database/document-extensions/time-series.mdx) to try the RQL samples provided in this article and test your own queries.  
 
 !["Time Series Query in Studio"](./assets/time-series-query.png)
 

@@ -21,7 +21,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* When the [Revisions feature](../../../document-extensions/revisions/overview) is enabled, a document revision is created with each change made to the document.  
+* When the [Revisions feature](../../../document-extensions/revisions/overview.mdx) is enabled, a document revision is created with each change made to the document.  
   Each revision contains a snapshot of the document at the time of modification, forming a complete audit trail.
   
 * The **Data Subscription** feature supports subscribing not only to documents but also to their **revisions**.  
@@ -31,11 +31,11 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   See how to create and consume it in the examples below.
 
 * In this page:  
-  * [Regular subscription vs Revisions subscription](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#regular-subscription-vs-revisions-subscription)
-  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
-  * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption)   
-  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#filtering-revisions)   
-  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions)   
+  * [Regular subscription vs Revisions subscription](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#regular-subscription-vs-revisions-subscription)
+  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-order)  
+  * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-creation-and-consumption)   
+  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#filtering-revisions)   
+  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#projecting-fields-from-revisions)   
 
 </Admonition>
 ## Regular subscription vs Revisions subscription
@@ -62,13 +62,13 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * **Query access scope**:  
   For each revision, the subscription query running on the server has access to both the currently processed revision and its previous revision.
 * **Data sent to client**:  
-  By default, unless the subscription query is [projecting specific fields](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions),
+  By default, unless the subscription query is [projecting specific fields](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#projecting-fields-from-revisions),
   each item in the batch sent to the client contains both the processed revision (`Result.Current`) and its preceding revision (`Result.Previous`).
   If the document has just been created, the previous revision will be `null`. 
 <Admonition type="warning" title="Warning">
 
 * In order for the revisions subscription to work,  
-  [Revisions must be configured](../../../document-extensions/revisions/overview#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
+  [Revisions must be configured](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
 
 * A document that has no revisions will Not be processed,
   so make sure that your revisions configuration does not purge revisions before the subscription has a chance to process them.
@@ -83,7 +83,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 In the revisions subscription, revisions are processed in pairs of subsequent entries.  
 For example, consider the following User document:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     Name: "James",
@@ -139,7 +139,7 @@ Here we set up a basic revisions subscription that will deliver pairs of consecu
 
 **Consume subscription**:
 
-<TabItem value="something" label="use_simple_revision_subscription_generic">
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
 <CodeBlock language="csharp">
 {`SubscriptionWorker<Revision<Order>> revisionsWorker = 
     // Specify <Revision<Order>> as the type of the processed items
@@ -203,7 +203,7 @@ Here we set up a revisions subscription that will send the client only document 
 
 **Consume subscription**:
 
-<TabItem value="something" label="consume_filtered_revisions_subscription">
+<TabItem value="consume_filtered_revisions_subscription" label="consume_filtered_revisions_subscription">
 <CodeBlock language="csharp">
 {`SubscriptionWorker<Revision<Order>> worker =
     store.Subscriptions.GetSubscriptionWorker<Revision<Order>>(subscriptionName);
@@ -301,9 +301,9 @@ Here we define a revisions subscription that will filter the revisions and send 
 
 Since the revision fields are projected into the `OrderRevenues` class in the subscription definition,  
 each item received in the batch has the format of this projected class instead of the default `Result.Previous` and `Result.Current` fields, 
-as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption).
+as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-creation-and-consumption).
 
-<TabItem value="something" label="consume_revisions_subscription_generic">
+<TabItem value="consume_revisions_subscription_generic" label="consume_revisions_subscription_generic">
 <CodeBlock language="csharp">
 {`SubscriptionWorker<OrderRevenues> revenuesComparisonWorker =
     // Use the projected class type 'OrderRevenues' for the items the worker will process
@@ -331,10 +331,10 @@ await revenuesComparisonWorker.Run(batch =>
 
 <Admonition type="note" title="Note">
 
-* The **Data Subscription** feature supports subscribing not only to documents, but also to [document revisions](../../../document-extensions/revisions/overview).  
+* The **Data Subscription** feature supports subscribing not only to documents, but also to [document revisions](../../../document-extensions/revisions/overview.mdx).  
 
 * The revisions support is defined within the subscription.  
-  A [Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions) must be defined for the subscribed collection.  
+  A [Revisions Configuration](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) must be defined for the subscribed collection.  
 
 * While a regular subscription processes a single document, a Revisions subscription processes **pairs of subsequent document revisions**.  
     
@@ -343,16 +343,16 @@ await revenuesComparisonWorker.Run(batch =>
     Both revisions are accessible for filtering and projection.  
 
 * In this page:  
-  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
-  * [Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
-  * [Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
+  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-order)  
+  * [Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-declaration-and-usage)   
+  * [Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-and-projection)  
 
 </Admonition>
 ## Revisions processing order
 
 The Revisions feature allows the tracking of changes made in a document, by storing the audit trail of its changes over time. 
 An audit trail entry is called a **Document Revision**, and is comprised of a document snapshot.  
-Read more about revisions [here](../../../document-extensions/revisions/overview).  
+Read more about revisions [here](../../../document-extensions/revisions/overview.mdx).  
 
 In a data subscription, revisions will be processed in pairs of subsequent entries.  
 For example, consider the following User document:  
@@ -405,7 +405,7 @@ name = store.subscriptions().createForRevisions(Order.class, options);
 </Tabs>
 
 Consumption:
-<TabItem value="something-something" label="use_simple_revision_subscription_generic">
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
 <CodeBlock language="java">
 {`SubscriptionWorker<Revision<Order>> revisionWorker = store
     .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
@@ -429,7 +429,7 @@ revisionWorker.run(x -> \{
 Here we declare a revisions subscription that will filter and project data from revisions pairs:
 
 Creation:
-<TabItem value="something-something" label="create_projected_revisions_subscription_RQL">
+<TabItem value="create_projected_revisions_subscription_RQL" label="create_projected_revisions_subscription_RQL">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
 options.setQuery("declare function getOrderLinesSum(doc) \{" +
@@ -451,7 +451,7 @@ name = store.subscriptions().create(options);
 </TabItem>
 
 Consumption:
-<TabItem value="something-something" label="use_simple_revision_subscription_generic">
+<TabItem value="use_simple_revision_subscription_generic" label="use_simple_revision_subscription_generic">
 <CodeBlock language="java">
 {`SubscriptionWorker<Revision<Order>> revisionWorker = store
     .subscriptions().getSubscriptionWorkerForRevisions(Order.class, name);
@@ -476,7 +476,7 @@ revisionWorker.run(x -> \{
 
 <Admonition type="note" title="Note">
 
-* When the [Revisions feature](../../../document-extensions/revisions/overview) is enabled, a document revision is created with each change made to the document.  
+* When the [Revisions feature](../../../document-extensions/revisions/overview.mdx) is enabled, a document revision is created with each change made to the document.  
   Each revision contains a snapshot of the document at the time of modification, forming a complete audit trail.
   
 * The **Data Subscription** feature supports subscribing not only to documents but also to their **revisions**.  
@@ -486,11 +486,11 @@ revisionWorker.run(x -> \{
   See how to create and consume it in the examples below.
 
 * In this page:  
-  * [Regular subscription vs Revisions subscription](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#regular-subscription-vs-revisions-subscription)
-  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
-  * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption)   
-  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#filtering-revisions)
-  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#projecting-fields-from-revisions)
+  * [Regular subscription vs Revisions subscription](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#regular-subscription-vs-revisions-subscription)
+  * [Revisions processing order](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#revisions-processing-order)  
+  * [Simple creation and consumption](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-creation-and-consumption)   
+  * [Filtering revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#filtering-revisions)
+  * [Projecting fields from revisions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#projecting-fields-from-revisions)
 
 </Admonition>
 ## Regular subscription vs Revisions subscription
@@ -523,7 +523,7 @@ revisionWorker.run(x -> \{
 <Admonition type="warning" title="Warning">
 
 * In order for the revisions subscription to work,  
-  [Revisions must be configured](../../../document-extensions/revisions/overview#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
+  [Revisions must be configured](../../../document-extensions/revisions/overview.mdx#defining-a-revisions-configuration) and enabled for the collection the subscription manages.
 
 * A document that has no revisions will Not be processed,
   so make sure that your revisions configuration does not purge revisions before the subscription has a chance to process them.
@@ -538,7 +538,7 @@ revisionWorker.run(x -> \{
 In the revisions subscription, revisions are processed in pairs of subsequent entries.  
 For example, consider the following User document:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     Name: "James",
@@ -570,8 +570,8 @@ Here we set up a basic revisions subscription that will deliver pairs of consecu
 
 **Create subscription**:
 
-<TabItem value="something-something" label="revisions_1">
-<CodeBlock language="nodejs">
+<TabItem value="revisions_1" label="revisions_1">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.create(\{
     // Add (Revisions = true) to your subscription RQL
     query: "From Orders (Revisions = true)"
@@ -582,8 +582,8 @@ Here we set up a basic revisions subscription that will deliver pairs of consecu
 
 **Consume subscription**:
 
-<TabItem value="something-something" label="revisions_2">
-<CodeBlock language="nodejs">
+<TabItem value="revisions_2" label="revisions_2">
+<CodeBlock language="js">
 {`const workerOptions = \{ subscriptionName \};
 
 const worker = 
@@ -618,8 +618,8 @@ Here we set up a revisions subscription that will send the client only document 
 
 **Create subscription**:
 
-<TabItem value="something-something" label="revisions_3">
-<CodeBlock language="nodejs">
+<TabItem value="revisions_3" label="revisions_3">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.create(\{
     // Provide filtering logic
     // Only revisions that where shipped to Mexico will be sent to subscribed clients
@@ -636,8 +636,8 @@ Here we set up a revisions subscription that will send the client only document 
 
 **Consume subscription**:
 
-<TabItem value="something-something" label="revisions_4">
-<CodeBlock language="nodejs">
+<TabItem value="revisions_4" label="revisions_4">
+<CodeBlock language="js">
 {`const workerOptions = \{ subscriptionName \};
 
 const worker =
@@ -671,7 +671,7 @@ Here we define a revisions subscription that will filter the revisions and send 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Subscription_definition" label="Subscription_definition">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.create({
     // Filter revisions by the revenue delta.
     // The subscription will only process revisions where the revenue
@@ -703,7 +703,7 @@ Here we define a revisions subscription that will filter the revisions and send 
 </CodeBlock>
 </TabItem>
 <TabItem value="Projection_class" label="Projection_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class OrderRevenues {
     constructor() {
         this.previousRevenue;
@@ -719,10 +719,10 @@ Here we define a revisions subscription that will filter the revisions and send 
 
 Since the revision fields are projected into the `OrderRevenues` class in the subscription definition,  
 each item received in the batch has the format of this projected class instead of the default `result.previous` and `result.current` fields,
-as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-creation-and-consumption).
+as was demonstrated in the [simple example](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx#simple-creation-and-consumption).
 
-<TabItem value="something-something" label="revisions_6">
-<CodeBlock language="nodejs">
+<TabItem value="revisions_6" label="revisions_6">
+<CodeBlock language="js">
 {`const workerOptions = \{ 
     subscriptionName: subscriptionName,
     documentType: OrderRevenues

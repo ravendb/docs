@@ -18,24 +18,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 
 * RavenDB's time-series 
-  [Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support) 
+  [Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) 
   has been extended to support incremental time series.  
 
-* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#timeseries.increment) 
+* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseries.increment) 
   method to create and modify incremental time series and their entries.  
-  The method behaves the same way it does when it is called [using C#](../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment).  
+  The method behaves the same way it does when it is called [using C#](../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx).  
 
 * Incremental time series **cannot** use the non-incremental time series 
-  [timeseries.append](../../../../document-extensions/timeseries/client-api/javascript-support#section-1) method.  
+  [timeseries.append](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-1) method.  
 
 * Other Javascript methods available for an incremental time series:  
-   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support#section-2)   
-   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)   
+   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
 
 * In this page:  
-  * [The `timeseries` Interface](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#the-timeseries-interface)  
-  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#timeseries.increment)  
-  * [Usage Sample](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#usage-sample)  
+  * [The `timeseries` Interface](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
+  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseries.increment)  
+  * [Usage Sample](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#usage-sample)  
 
 </Admonition>
 
@@ -50,9 +50,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
        | name | `string` | Incremental time series Name (e.g. `INC:StockPrice`) 
 
 * Use one of the following methods to access the chosen time series:  
-   * [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support#the-timeseries-interface)  
-   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support#section-2)  
-   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support#section-3)  
+   * [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
+   * [timeseries.delete](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-2)  
+   * [timeseries.get](../../../../document-extensions/timeseries/client-api/javascript-support.mdx#section-3)  
 
 
 
@@ -60,7 +60,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * There are four `Increment` methods:  
    * Increment a time series entry's array of values at the provided timestamp.   
-<TabItem value="something" label="incremental_declaration_increment-values-array-at-provided-timestamp">
+<TabItem value="incremental_declaration_increment-values-array-at-provided-timestamp" label="incremental_declaration_increment-values-array-at-provided-timestamp">
 <CodeBlock language="csharp">
 {`// Increment a time series entry's array of values at the provided timestamp
 void Increment(DateTime timestamp, IEnumerable<double> values);
@@ -68,7 +68,7 @@ void Increment(DateTime timestamp, IEnumerable<double> values);
 </CodeBlock>
 </TabItem>
    * Increment a time series entry's array of values at the current time.  
-<TabItem value="something" label="incremental_declaration_increment-values-array-at-current-time">
+<TabItem value="incremental_declaration_increment-values-array-at-current-time" label="incremental_declaration_increment-values-array-at-current-time">
 <CodeBlock language="csharp">
 {`// Increment a time series entry's array of values at the current time
 void Increment(IEnumerable<double> values);
@@ -78,7 +78,7 @@ void Increment(IEnumerable<double> values);
    * Increment an entry value at the provided timestamp.  
      (If the entry exists and has more than one value, only the first 
      value in its list will be incremented by the passed value.)  
-<TabItem value="something" label="incremental_declaration_increment-value-at-provided-timestamp">
+<TabItem value="incremental_declaration_increment-value-at-provided-timestamp" label="incremental_declaration_increment-value-at-provided-timestamp">
 <CodeBlock language="csharp">
 {`// Increment an entry value at the provided timestamp
 void Increment(DateTime timestamp, double value);
@@ -88,7 +88,7 @@ void Increment(DateTime timestamp, double value);
    * Increment an entry value at the current time.  
      (If the entry exists and has more than one value, only the first 
      value in its list will be incremented by the passed value.)  
-<TabItem value="something" label="incremental_declaration_increment-value-at-current-time">
+<TabItem value="incremental_declaration_increment-value-at-current-time" label="incremental_declaration_increment-value-at-current-time">
 <CodeBlock language="csharp">
 {`// Increment an entry value at the current time
 void Increment(double value);
@@ -112,11 +112,11 @@ void Increment(double value);
 ## Usage Sample
 
 In this sample we use 
-[session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch#patching-using-session.advanced.defer) 
+[session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-using-session.advanced.defer) 
 to patch an incremental time series.  
 We go through a series of collected stock prices, and add a **2** factor to each collected stock price, 
 that has been originally miscalculated.  
-<TabItem value="something" label="incremental_PatchIncrementalTimeSeries">
+<TabItem value="incremental_PatchIncrementalTimeSeries" label="incremental_PatchIncrementalTimeSeries">
 <CodeBlock language="csharp">
 {`session.Advanced.Defer(new PatchCommandData("users/1-A", null,
     new PatchRequest

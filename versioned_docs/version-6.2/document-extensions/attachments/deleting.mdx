@@ -24,7 +24,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something" label="DeleteSyntax">
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
 <CodeBlock language="csharp">
 {`void Delete(string documentId, string name);
 void Delete(object entity, string name);
@@ -72,7 +72,7 @@ void Delete(object entity, string name);
 
 ## Syntax
 
-<TabItem value="something-something" label="DeleteSyntax">
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
 <CodeBlock language="java">
 {`void delete(String documentId, String name);
 
@@ -83,7 +83,7 @@ void delete(Object entity, String name);
 
 ## Example
 
-<TabItem value="something-something" label="DeleteAttachment">
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Album album = session.load(Album.class, "albums/1");
@@ -105,7 +105,7 @@ void delete(Object entity, String name);
 
 ## Syntax
 
-<TabItem value="something-something" label="DeleteSyntax">
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
 <CodeBlock language="python">
 {`def delete(self, entity_or_document_id, name): ...
 `}
@@ -114,7 +114,7 @@ void delete(Object entity, String name);
 
 ## Example
 
-<TabItem value="something-something" label="DeleteAttachment">
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     album = session.load("albums/1")
@@ -135,7 +135,7 @@ void delete(Object entity, String name);
 
 ## Syntax
 
-<TabItem value="something-something" label="DeleteSyntax">
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
 <CodeBlock language="php">
 {`/**
  * Marks the specified document's attachment for deletion.
@@ -148,7 +148,7 @@ public function delete(object|string $idOrEntity, ?string $name): void;
 
 ## Example
 
-<TabItem value="something-something" label="DeleteAttachment">
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -173,8 +173,8 @@ The method `session.advanced.attachments.delete()` is used to remove an attachme
 
 ## Syntax
 
-<TabItem value="something-something" label="DeleteSyntax">
-<CodeBlock language="nodejs">
+<TabItem value="DeleteSyntax" label="DeleteSyntax">
+<CodeBlock language="js">
 {`session.advanced.attachments.delete(documentId, name);
 
 session.advanced.attachments.delete(entity, name);
@@ -184,8 +184,8 @@ session.advanced.attachments.delete(entity, name);
 
 ## Example
 
-<TabItem value="something-something" label="DeleteAttachment">
-<CodeBlock language="nodejs">
+<TabItem value="DeleteAttachment" label="DeleteAttachment">
+<CodeBlock language="js">
 {`const session = store.openSession();
 const album = await session.load("albums/1");
 session.advanced.attachments.delete(album, "001.jpg");

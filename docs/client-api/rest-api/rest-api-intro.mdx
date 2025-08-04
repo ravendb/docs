@@ -25,10 +25,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * [REST API Tutorial website](https://www.restapitutorial.com/)
 
 * In this page:
-  * [cURL Basics](../../client-api/rest-api/rest-api-intro#curl-basics)
-  * [Document Format and Structure](../../client-api/rest-api/rest-api-intro#document-format-and-structure)
-  * [Using cURL With HTTPS](../../client-api/rest-api/rest-api-intro#using-curl-with-https)
-  * [Common HTTP Status Codes](../../client-api/rest-api/rest-api-intro#common-http-status-codes)
+  * [cURL Basics](../../client-api/rest-api/rest-api-intro.mdx#curl-basics)
+  * [Document Format and Structure](../../client-api/rest-api/rest-api-intro.mdx#document-format-and-structure)
+  * [Using cURL With HTTPS](../../client-api/rest-api/rest-api-intro.mdx#using-curl-with-https)
+  * [Common HTTP Status Codes](../../client-api/rest-api/rest-api-intro.mdx#common-http-status-codes)
 
 </Admonition>
 ## cURL Basics
@@ -41,7 +41,7 @@ This page just covers the basics you'll need to interact with RavenDB.
 All cURL commands begin with the keyword `curl` and contain the URL of your RavenDB server or one of its endpoints. This command retrieves the first document from 
 a database named "Demo" located on our public [playground server](http://live-test.ravendb.net), and prints it in your CLI:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl http://live-test.ravendb.net/databases/demo/docs?pagesize=1
 `}
@@ -61,13 +61,13 @@ The other parameters of the HTTP request are specified using 'options'. These ar
 
 This request uploads a document to a database on the playground server from a local file:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X PUT http://live-test.ravendb.net/databases/demo/docs?id=example -T <path to file>document.txt
 `}
 </CodeBlock>
 </TabItem>
-[More about how to upload documents](../../client-api/rest-api/document-commands/put-documents)
+[More about how to upload documents](../../client-api/rest-api/document-commands/put-documents.mdx)
 
 
 
@@ -76,7 +76,7 @@ This request uploads a document to a database on the playground server from a lo
 In RavenDB all documents have a standard [JSON](https://www.json.org/) format. In essence, every JSON object is composed of a series 
 of key-value pairs. A document with a complex structure might look something like this:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "<key>": <value>,
@@ -109,7 +109,7 @@ Sending raw JSON in the body faces us with a problem: the body itself is wrapped
 so the double quotes within the JSON will be interpreted by the parser as the end of the body. The solution is to escape every double quote 
 by putting a backslash `\` before it, like this:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`-d "\{
     \\"a string\\": \\"some text\\",
@@ -121,22 +121,22 @@ by putting a backslash `\` before it, like this:
 
 
 #### Binary data
-In addition to JSON, pure binary data can be stored as an [attachment](../../document-extensions/attachments/what-are-attachments) 
+In addition to JSON, pure binary data can be stored as an [attachment](../../document-extensions/attachments/what-are-attachments.mdx) 
 associated with an existing document. Files can be added to the request with the `-T` option. Some types of requests, though, allow you to include raw binary in the body - such as the 
-[Put Attachment Command](../../client-api/rest-api/document-commands/batch-commands#put-attachment-command).  
+[Put Attachment Command](../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command).  
 
 
 
 ## Using cURL With HTTPS
 
 HTTPS adds public-key encryption on top of standard HTTP to protect information during transit between client and server. It has 
-become increasingly common throughout the internet in recent years. Our [setup wizard](../../start/installation/setup-wizard) makes 
+become increasingly common throughout the internet in recent years. Our [setup wizard](../../start/installation/setup-wizard.mdx) makes 
 it very simple to set up server secure using a free [Let's Encrypt](https://letsencrypt.org/) certificate.  
 
 To communicate with a secure server over https, you need to specify the paths to the your client certificate and private key 
 files with the `--cert` and `--key` options respectively:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl --cert <path to your certificate file> --key <path to your private key file> "<server url>"
 `}
@@ -160,7 +160,7 @@ These are a few of the HTTP status codes we use in our REST API, and what we mea
 | 201 | Created | Confirms the success of document `PUT` requests |
 | 304 | Not Modified | When prompted, the server can check if the requested data has been modified since the previous request. If it hasn't, the server responds with this status code to tell the client that it can continue to use the locally cached copy of the data. This is a mechanism we often use to minimize traffic over the network. |
 | 404 | Not Found | Sometimes used to indicate that the request was valid but the requested data could not be found |
-| 409 | Conflict | Indicates that the database has received [conflicting commands](../../server/clustering/replication/replication-conflicts). This happens in clusters when different nodes receive commands to modify the same data at the same time - before the modification could be passed on to the rest of the cluster. |
+| 409 | Conflict | Indicates that the database has received [conflicting commands](../../server/clustering/replication/replication-conflicts.mdx). This happens in clusters when different nodes receive commands to modify the same data at the same time - before the modification could be passed on to the rest of the cluster. |
 | 500 | Internal Server Error | Used for exceptions that occur on the server side |
 
 

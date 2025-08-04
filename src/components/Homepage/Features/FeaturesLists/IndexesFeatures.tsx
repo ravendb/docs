@@ -9,12 +9,12 @@ export default function IndexesFeaturesGrid() {
     const IndexesFeaturesList = [
         {
             title: "Static indexes",
-            url: `${activeVersion.label}/indexes/creating-and-deploying`,
+            url: `/${activeVersion.label}/indexes/creating-and-deploying`,
             description: "Short description",
         },
         {
             title: "Auto indexes",
-            url: `${activeVersion.label}/indexes/creating-and-deploying#auto-indexes`,
+            url: `/${activeVersion.label}/indexes/creating-and-deploying#auto-indexes`,
             description: "Short description",
         },
     ];

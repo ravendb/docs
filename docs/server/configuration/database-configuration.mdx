@@ -19,26 +19,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:
     * Server-wide scope:  
-      [Databases.Compression.CompressAllCollectionsDefault](../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault)  
-      [Databases.Compression.CompressRevisionsDefault](../../server/configuration/database-configuration#databases.compression.compressrevisionsdefault)  
-      [Databases.ConcurrentLoadTimeoutInSec](../../server/configuration/database-configuration#databases.concurrentloadtimeoutinsec)  
-      [Databases.FrequencyToCheckForIdleInSec](../../server/configuration/database-configuration#databases.frequencytocheckforidleinsec)  
-      [Databases.MaxConcurrentLoads](../../server/configuration/database-configuration#databases.maxconcurrentloads)
+      [Databases.Compression.CompressAllCollectionsDefault](../../server/configuration/database-configuration.mdx#databases.compression.compressallcollectionsdefault)  
+      [Databases.Compression.CompressRevisionsDefault](../../server/configuration/database-configuration.mdx#databases.compression.compressrevisionsdefault)  
+      [Databases.ConcurrentLoadTimeoutInSec](../../server/configuration/database-configuration.mdx#databases.concurrentloadtimeoutinsec)  
+      [Databases.FrequencyToCheckForIdleInSec](../../server/configuration/database-configuration.mdx#databases.frequencytocheckforidleinsec)  
+      [Databases.MaxConcurrentLoads](../../server/configuration/database-configuration.mdx#databases.maxconcurrentloads)
 
     * Server-wide, or database scope:  
-      [Databases.CollectionOperationTimeoutInSec](../../server/configuration/database-configuration#databases.collectionoperationtimeoutinsec)  
-      [Databases.DeepCleanupThresholdInMin](../../server/configuration/database-configuration#databases.deepcleanupthresholdinmin)  
-      [Databases.MaxIdleTimeInSec](../../server/configuration/database-configuration#databases.maxidletimeinsec)  
-      [Databases.OperationTimeoutInSec](../../server/configuration/database-configuration#databases.operationtimeoutinsec)  
-      [Databases.PulseReadTransactionLimitInMb](../../server/configuration/database-configuration#databases.pulsereadtransactionlimitinmb)  
-      [Databases.QueryOperationTimeoutInSec](../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)  
-      [Databases.QueryTimeoutInSec](../../server/configuration/database-configuration#databases.querytimeoutinsec)  
-      [Databases.RegularCleanupThresholdInMin](../../server/configuration/database-configuration#databases.regularcleanupthresholdinmin)
+      [Databases.CollectionOperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databases.collectionoperationtimeoutinsec)  
+      [Databases.DeepCleanupThresholdInMin](../../server/configuration/database-configuration.mdx#databases.deepcleanupthresholdinmin)  
+      [Databases.MaxIdleTimeInSec](../../server/configuration/database-configuration.mdx#databases.maxidletimeinsec)  
+      [Databases.OperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databases.operationtimeoutinsec)  
+      [Databases.PulseReadTransactionLimitInMb](../../server/configuration/database-configuration.mdx#databases.pulsereadtransactionlimitinmb)  
+      [Databases.QueryOperationTimeoutInSec](../../server/configuration/database-configuration.mdx#databases.queryoperationtimeoutinsec)  
+      [Databases.QueryTimeoutInSec](../../server/configuration/database-configuration.mdx#databases.querytimeoutinsec)  
+      [Databases.RegularCleanupThresholdInMin](../../server/configuration/database-configuration.mdx#databases.regularcleanupthresholdinmin)
 
 </Admonition>
 ## Databases.Compression.CompressAllCollectionsDefault
 
-Set whether [documents compression](../../server/storage/documents-compression) is enabled by default for ALL COLLECTIONS in newly created databases.  
+Set whether [documents compression](../../server/storage/documents-compression.mdx) is enabled by default for ALL COLLECTIONS in newly created databases.  
 Setting this to _false_ does not prevent you from enabling compression later, after a database is created.
 
 - **Type**: `bool`
@@ -49,7 +49,7 @@ Setting this to _false_ does not prevent you from enabling compression later, af
 
 ## Databases.Compression.CompressRevisionsDefault
 
-Set whether [documents compression](../../server/storage/documents-compression) is enabled by default for REVISIONS in newly created databases.  
+Set whether [documents compression](../../server/storage/documents-compression.mdx) is enabled by default for REVISIONS in newly created databases.  
 It may be useful to disable this option if the database is expected to run on very low-end hardware.  
 Setting this to _false_ does not prevent you from enabling compression later, after a database is created.
 

@@ -34,18 +34,18 @@ export const supportedLanguages = ["csharp", "nodejs"];
   basics of Azure Function apps.
   </Admonition>
 
-* Watch our tutorial video [below](../../../start/guides/azure-functions/overview#tutorial-video) 
+* Watch our tutorial video [below](../../../start/guides/azure-functions/overview.mdx#tutorial-video) 
   or [on YouTube](https://www.youtube.com/watch?v=1vnpfsD3bSE&).  
 
 * In this page: 
-    * [Before We Get Started](../../../start/guides/azure-functions/overview#before-we-get-started)  
-    * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview#create-a-local-azure-function-app)  
-    * [Configuring Local Connection to RavenDB](../../../start/guides/azure-functions/overview#configuring-local-connection-to-ravendb)  
-    * [Creating Function App Resources in Azure](../../../start/guides/azure-functions/overview#creating-function-app-resources-in-azure)  
-    * [Deploying to Azure](../../../start/guides/azure-functions/overview#deploying-to-azure)  
-    * [Verify the Connection Works](../../../start/guides/azure-functions/overview#verify-the-connection-works)  
-    * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview#using-ravendb-in-the-azure-functions-app)  
-    * [Tutorial Video](../../../start/guides/azure-functions/overview#tutorial-video)  
+    * [Before We Get Started](../../../start/guides/azure-functions/overview.mdx#before-we-get-started)  
+    * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview.mdx#create-a-local-azure-function-app)  
+    * [Configuring Local Connection to RavenDB](../../../start/guides/azure-functions/overview.mdx#configuring-local-connection-to-ravendb)  
+    * [Creating Function App Resources in Azure](../../../start/guides/azure-functions/overview.mdx#creating-function-app-resources-in-azure)  
+    * [Deploying to Azure](../../../start/guides/azure-functions/overview.mdx#deploying-to-azure)  
+    * [Verify the Connection Works](../../../start/guides/azure-functions/overview.mdx#verify-the-connection-works)  
+    * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview.mdx#using-ravendb-in-the-azure-functions-app)  
+    * [Tutorial Video](../../../start/guides/azure-functions/overview.mdx#tutorial-video)  
 
 </Admonition>
 
@@ -77,7 +77,7 @@ The template repository lists each clone method you can copy & paste directly.
 
 **Using `npx` and the [degit][tool-degit] tool if you have Node.js installed:**  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npx degit ravendb/templates/azure-functions/csharp-http my-project
 cd my-project
@@ -88,7 +88,7 @@ git init
 
 **Using Bash or PowerShell:**
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`git clone https://github.com/ravendb/templates my-project
 cd my-project
@@ -104,7 +104,7 @@ git init
 
 After cloning the repository locally, restore .NET dependencies with `dotnet`:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet restore
 `}
@@ -118,7 +118,7 @@ Since this is only for testing purposes, next you will configure the app to conn
 
 You can start the Azure Function locally using:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`func start
 `}
@@ -140,7 +140,7 @@ To configure the local version of your Azure Functions app to connect to RavenDB
 the `appsettings.json` file with the `RavenSettings:Urls` value and `RavenSettings:DatabaseName` value.  
 The default is:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "RavenSettings": \{
@@ -161,7 +161,7 @@ To specify the path to a `.pfx` file, specify a relative or absolute file path u
 
 To specify a PFX password, use the .NET User Secrets tool to add a secret locally:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet user-secrets init
 dotnet user-secrets set RavenSettings:CertPassword "<CERT_PASSWORD>"
@@ -173,7 +173,7 @@ Replace `<CERT_PASSWORD>` with your PFX password.
 
 Example `appsettings.json`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "RavenSettings": \{
@@ -193,7 +193,7 @@ You can also specify a certificate to use from the `CurrentUser\My` Windows cert
 
 Example `appsettings.json`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "RavenSettings": \{
@@ -330,7 +330,7 @@ invocation which you can inject into Function classes.
 
 Pass the `IAsyncDocumentSession` in a function class constructor to make it available to trigger functions:  
 
-<TabItem value="something" label="HttpTrigger1">
+<TabItem value="HttpTrigger1" label="HttpTrigger1">
 <CodeBlock language="csharp">
 {`private readonly IAsyncDocumentSession session;
 
@@ -358,7 +358,7 @@ You can also inject an `IDocumentStore` to get a reference to the current store 
 
 ### Example: Loading a user
 
-<TabItem value="something" label="HttpTrigger2">
+<TabItem value="HttpTrigger2" label="HttpTrigger2">
 <CodeBlock language="csharp">
 {`private readonly IAsyncDocumentSession session;
 
@@ -425,18 +425,18 @@ Watch our _Using Azure Functions with RavenDB .NET_ tutorial:
   and the basics of Azure Function apps.
   </Admonition>
 
-* Watch our tutorial video [below](../../../start/guides/azure-functions/overview#tutorial-video) 
+* Watch our tutorial video [below](../../../start/guides/azure-functions/overview.mdx#tutorial-video) 
   or [on YouTube](https://www.youtube.com/watch?v=TJdJ3TJK-Sg).  
 
 * In this page: 
-    * [Before We Get Started](../../../start/guides/azure-functions/overview#before-we-get-started)  
-    * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview#create-a-local-azure-function-app)  
-    * [Connecting to RavenDB](../../../start/guides/azure-functions/overview#connecting-to-ravendb)
-    * [Creating a Function App in Azure](../../../start/guides/azure-functions/overview#creating-a-function-app-in-azure)
-    * [Deploying to Azure](../../../start/guides/azure-functions/overview#deploying-to-azure)  
-    * [Verify the Connection Works](../../../start/guides/azure-functions/overview#verify-the-connection-works)  
-    * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview#using-ravendb-in-the-azure-functions-app)  
-    * [Tutorial Video](../../../start/guides/azure-functions/overview#tutorial-video)  
+    * [Before We Get Started](../../../start/guides/azure-functions/overview.mdx#before-we-get-started)  
+    * [Create a Local Azure Function App](../../../start/guides/azure-functions/overview.mdx#create-a-local-azure-function-app)  
+    * [Connecting to RavenDB](../../../start/guides/azure-functions/overview.mdx#connecting-to-ravendb)
+    * [Creating a Function App in Azure](../../../start/guides/azure-functions/overview.mdx#creating-a-function-app-in-azure)
+    * [Deploying to Azure](../../../start/guides/azure-functions/overview.mdx#deploying-to-azure)  
+    * [Verify the Connection Works](../../../start/guides/azure-functions/overview.mdx#verify-the-connection-works)  
+    * [Using RavenDB in the Azure Functions App](../../../start/guides/azure-functions/overview.mdx#using-ravendb-in-the-azure-functions-app)  
+    * [Tutorial Video](../../../start/guides/azure-functions/overview.mdx#tutorial-video)  
 
 </Admonition>
 
@@ -468,7 +468,7 @@ a new Git repository.
 The template repository lists each clone method you can copy & paste directly, but the fastest 
 way is by using [degit][tool-degit].
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npx degit ravendb/templates/azure-functions/node-http my-project
 cd my-project
@@ -481,7 +481,7 @@ git init
 
 After cloning the repository locally, install the Node.js dependencies with `npm`:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npm install
 `}
@@ -514,7 +514,7 @@ To configure the local version of your Azure Functions app to connect to RavenDB
 you will need to update the `local.settings.json` file with the `DB_URLS` value and `DB_NAME` value.  
 The default is:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "IsEncrypted": false,
@@ -663,7 +663,7 @@ being added. Import the `createDbMiddleware` function and pass it as the second 
 
 ### Example: Passing the database middleware to an Azure function handler
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ Context, HttpRequest \} from "@azure/functions";
 
@@ -693,7 +693,7 @@ The middleware injects a `db` parameter on the `context` object of type `IDocume
 
 ### Example: Loading a user
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`const httpTrigger = async function (
   context: Context,

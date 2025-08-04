@@ -18,7 +18,7 @@ RavenDB has extensive support for logging, enabling you to figure out exactly wh
 
 ## Logging to Files
 
-The logging to files can be setup by [logs configuration](../../server/configuration/logs-configuration) defined in the [settings.json](../configuration/configuration-options#json) file. By default, the logging
+The logging to files can be setup by [logs configuration](../../server/configuration/logs-configuration.mdx) defined in the [settings.json](../configuration/configuration-options.mdx#json) file. By default, the logging
 is turned on with the following options:
 
 - logging level: `Operations` (high level info for operational users)
@@ -28,18 +28,18 @@ If you want to see the low level debug information you need to set the logging l
 
 <Admonition type="note" title="RavenCLI" id="ravencli" href="#ravencli">
 
-Modifying the [settings.json](../configuration/configuration-options#json) file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli). 
+Modifying the [settings.json](../configuration/configuration-options.mdx#json) file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli.mdx). 
 
-This will change the logging level without the need of doing any server restarts, but will not modify the [settings.json](../configuration/configuration-options#json) file, so please bare in mind that after restart the logging level be read from configuration file again.
+This will change the logging level without the need of doing any server restarts, but will not modify the [settings.json](../configuration/configuration-options.mdx#json) file, so please bare in mind that after restart the logging level be read from configuration file again.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`log <on|off|http-on|http-off|none|operations|information>
 `}
 </CodeBlock>
 </TabItem>
 
-You can read more about the command [here](../../server/administration/cli#log).
+You can read more about the command [here](../../server/administration/cli.mdx#log).
 
 </Admonition>
 

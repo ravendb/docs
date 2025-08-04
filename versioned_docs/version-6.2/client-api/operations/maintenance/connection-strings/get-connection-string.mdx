@@ -24,19 +24,19 @@ export const supportedLanguages = ["csharp"];
 * Use `GetConnectionStringsOperation` to retrieve properties for a specific connection string  
   or for all connection strings defined in the databse.
 
-* To learn how to create a new connection string, see [Add Connection String Operation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string).
+* To learn how to create a new connection string, see [Add Connection String Operation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx).
 
 * In this page:
-  * [Get connection string by name and type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#get-connection-string-by-name-and-type)
-  * [Get all connection strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#get-all-connnection-strings)  
-  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/get-connection-string#syntax)
+  * [Get connection string by name and type](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#get-connection-string-by-name-and-type)
+  * [Get all connection strings](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#get-all-connnection-strings)  
+  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/get-connection-string.mdx#syntax)
 
 </Admonition>
 ## Get connection string by name and type
 
 The following example retrieves a RavenDB Connection String:
 
-<TabItem value="something" label="get_connection_string_by_name">
+<TabItem value="get_connection_string_by_name" label="get_connection_string_by_name">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore())
 \{
@@ -66,7 +66,7 @@ The following example retrieves a RavenDB Connection String:
 
 ## Get all connnection strings
 
-<TabItem value="something" label="get_all_connection_strings">
+<TabItem value="get_all_connection_strings" label="get_all_connection_strings">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore())
 \{
@@ -109,7 +109,7 @@ The following example retrieves a RavenDB Connection String:
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public GetConnectionStringsOperation()
 public GetConnectionStringsOperation(string connectionStringName, ConnectionStringType type)
@@ -122,7 +122,7 @@ public GetConnectionStringsOperation(string connectionStringName, ConnectionStri
 | **connectionStringName** | `string`               | Connection string name                                                         |
 | **type**                 | `ConnectionStringType` | Connection string type:<br/>`Raven`, `Sql`, `Olap`, `ElasticSearch`, or `Queue` |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public enum ConnectionStringType
 \{
@@ -140,7 +140,7 @@ public GetConnectionStringsOperation(string connectionStringName, ConnectionStri
 |--------------------------------------------------------------------------|---------------------------------------------------------------|
 | `GetConnectionStringsResult`                                             | Class with all connection strings are defined on the database |
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public class GetConnectionStringsResult
 \{
@@ -155,7 +155,7 @@ public GetConnectionStringsOperation(string connectionStringName, ConnectionStri
 </TabItem>
 
 <Admonition type="note" title="Note">
-A detailed syntax for each connection string type is available in article [Add connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string).
+A detailed syntax for each connection string type is available in article [Add connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx).
 </Admonition>
 
 

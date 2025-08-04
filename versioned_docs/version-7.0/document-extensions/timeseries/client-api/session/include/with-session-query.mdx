@@ -28,8 +28,8 @@ export const supportedLanguages = ["csharp", "nodejs"];
   and can be provided instantly when requested without any additional server calls.
 
 * In this page:  
-   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#include-time-series-when-making-a-query)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#syntax)
+   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#include-time-series-when-making-a-query)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#syntax)
 
 </Admonition>
 ## Include time series when making a query
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 In this example, we retrieve a document using `session.Query`  
 and _include_ entries from the document's "HeartRates" time series.
 
-<TabItem value="something" label="timeseries_region_Query-Document-And-Include-TimeSeries">
+<TabItem value="timeseries_region_Query-Document-And-Include-TimeSeries" label="timeseries_region_Query-Document-And-Include-TimeSeries">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -62,7 +62,7 @@ and _include_ entries from the document's "HeartRates" time series.
 
 **`Include`** builder methods:
 
-<TabItem value="something" label="IncludeTimeSeries-definition">
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
 <CodeBlock language="csharp">
 {`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
 `}
@@ -90,8 +90,8 @@ and _include_ entries from the document's "HeartRates" time series.
   and can be provided instantly when requested without any additional server calls.
 
 * In this page:  
-   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#include-time-series-when-making-a-query)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query#syntax)
+   * [Include time series when making a query](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#include-time-series-when-making-a-query)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx#syntax)
 
 </Admonition>
 ## Include time series when making a query
@@ -101,7 +101,7 @@ and _include_ entries from the document's "HeartRates" time series.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for a document and include a whole time-series
 const user = await session.query({ collection: "users" })
     .whereEquals("name", "John")
@@ -142,8 +142,8 @@ limit null, 1
 
 **`include`** builder methods:
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`includeTimeSeries(name);
 includeTimeSeries(name, from, to);
 `}

@@ -30,21 +30,21 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
 
 * **Operation scope**:  
   `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
   if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
-  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) will Not be deleted.
 
   * To avoid issues when recreating such documents using a cluster-wide session, 
-    see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+    see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
   * To learn more about the differences between transaction types,
-    see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+    see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction).
 * In this article:  
-   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
-   * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
-   * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query.mdx#syntax)
 
 </Admonition>
 
@@ -144,7 +144,7 @@ var result = await store.Operations.SendAsync(deleteByQueryOp);
 
 ##### A sample Map-index
 
-<TabItem value="something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="csharp">
 {`// The index definition:
 // =====================
@@ -334,7 +334,7 @@ var documentIdThatWasDeleted = details[0].ToJson()["Id"];
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Available overload:
 // ===================
@@ -367,7 +367,7 @@ DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
 | **expression**    | `Expression<Func<T, bool>>` | The expression that defines the query criteria             |
 | **options**       | `QueryOperationOptions`     | Object holding different setting options for the operation |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class QueryOperationOptions
 \{
@@ -409,7 +409,7 @@ This operation is performed in the background on the server.
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_by_query">
+<TabItem value="delete_by_query" label="delete_by_query">
 <CodeBlock language="java">
 {`public DeleteByQueryOperation(IndexQuery queryToDelete)
 
@@ -546,15 +546,15 @@ so it can happen than a document has been updated or deleted meanwhile.
 * **Operation scope**:  
   `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
   if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
-  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) will Not be deleted.
 
     * To avoid issues when recreating such documents using a cluster-wide session,
-      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
     * To learn more about the differences between transaction types,
-      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction).
 * In this article:  
-   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
-   * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
 
 </Admonition>
 
@@ -627,7 +627,7 @@ operation = store.operations.send_async(delete_by_query_op)
 
 ##### A sample Map-index
 
-<TabItem value="something-something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="python">
 {`# The index definition:
 # =====================
@@ -744,21 +744,21 @@ document_id_that_was_deleted = details[0]["Id"]
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
 
 * **Operation scope**:  
   `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
   if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
-  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) will Not be deleted.
 
     * To avoid issues when recreating such documents using a cluster-wide session,
-      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
     * To learn more about the differences between transaction types,
-      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction).
 * In this article:  
-   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
-   * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
-   * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query.mdx#syntax)
 
 </Admonition>
 
@@ -831,7 +831,7 @@ $operation = $store->operations()->send($deleteByQueryOp);
 
 ##### A sample Map-index
 
-<TabItem value="something-something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="php">
 {`// The index definition:
 // =====================
@@ -957,7 +957,7 @@ $documentIdThatWasDeleted = $details[0]->getId();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`class DeleteByQueryOperation implements OperationInterface
 \{
@@ -988,7 +988,7 @@ $documentIdThatWasDeleted = $details[0]->getId();
 | **$queryToDelete** | `IndexQuery`             | Holds all the information required to query an index       |
 | **$options**       | `?QueryOperationOptions` | Object holding different setting options for the operation |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class QueryOperationOptions
 \{
@@ -1036,21 +1036,21 @@ $documentIdThatWasDeleted = $details[0]->getId();
 
 * **Background operation**:  
   This operation is performed in the background on the server.  
-  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations#wait-for-completion).
+  If needed, you can wait for the operation to complete. See: [Wait for completion](../../../client-api/operations/what-are-operations.mdx#wait-for-completion).
 
 * **Operation scope**:  
   `DeleteByQueryOperation` runs as a single-node transaction, not a cluster-wide transaction. As a result,  
   if you use this operation to delete documents that were originally created using a cluster-wide transaction,  
-  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards) will Not be deleted.
+  their associated [Atomic guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx) will Not be deleted.
 
     * To avoid issues when recreating such documents using a cluster-wide session,
-      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
+      see [Best practice when storing a document](../../../client-api/session/cluster-transaction/atomic-guards.mdx#best-practice-when-storing-a-document-in-a-cluster-wide-transaction).
     * To learn more about the differences between transaction types,
-      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction).
+      see [Cluster-wide transaction vs. Single-node transaction](../../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction).
 * In this article:  
-   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query#delete-by-dynamic-query)
-   * [Delete by index query](../../../client-api/operations/common/delete-by-query#delete-by-index-query)
-   * [Syntax](../../../client-api/operations/common/delete-by-query#syntax)
+   * [Delete by dynamic query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-dynamic-query)
+   * [Delete by index query](../../../client-api/operations/common/delete-by-query.mdx#delete-by-index-query)
+   * [Syntax](../../../client-api/operations/common/delete-by-query.mdx#syntax)
 
 </Admonition>
 
@@ -1062,7 +1062,7 @@ $documentIdThatWasDeleted = $details[0]->getId();
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the delete by query operation, pass an RQL querying a collection
 const deleteByQueryOp = new DeleteByQueryOperation("from 'Orders'");
 
@@ -1088,7 +1088,7 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the delete by query operation, pass an RQL querying a collection
 const deleteByQueryOp = new DeleteByQueryOperation("from 'Orders' where Freight > 30");
 
@@ -1123,8 +1123,8 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 ##### A sample Map-index
 
-<TabItem value="something-something" label="the_index">
-<CodeBlock language="nodejs">
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="js">
 {`// The index definition:
 // =====================
 
@@ -1150,7 +1150,7 @@ class Products_ByPrice extends AbstractJavaScriptIndexCreationTask \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the delete by query operation, pass an RQL querying the index
 const deleteByQueryOp = 
     new DeleteByQueryOperation("from index 'Products/ByPrice' where Price > 10");
@@ -1163,7 +1163,7 @@ const operation = await store.operations.send(deleteByQueryOp);
 </CodeBlock>
 </TabItem>
 <TabItem value="DeleteByQueryOperation_overload" label="DeleteByQueryOperation_overload">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the index query, provide an RQL querying the index
 const indexQuery = new IndexQuery();
 indexQuery.query = "from index 'Products/ByPrice' where Price > 10";
@@ -1193,7 +1193,7 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DeleteByQueryOperation" label="DeleteByQueryOperation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// QUERY: Define the index query, provide an RQL querying the index
 const indexQuery = new IndexQuery();
 indexQuery.query = "from index 'Products/ByPrice' where Price > 10";
@@ -1232,8 +1232,8 @@ const operation = await store.operations.send(deleteByQueryOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overload:
 // ===================
 const deleteByQueryOp = new DeleteByQueryOperation(indexQuery);
@@ -1248,8 +1248,8 @@ const deleteByQueryOp = new DeleteByQueryOperation(indexQuery, options);
 | **queryToDelete** | `IndexQuery` | Holds all the information required to query an index       |
 | **options**       | `object`     | Object holding different setting options for the operation |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// options object
 \{
     // Indicates whether operations are allowed on stale indexes.

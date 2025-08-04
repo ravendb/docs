@@ -18,25 +18,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Use this endpoint with the **`GET`** method to retrieve documents from the database according to their document IDs:  
 `<server URL>/databases/<database name>/docs?id=<document ID>`  
 
-* Query parameters can be used to include [related documents](../../../client-api/how-to/handle-document-relationships#includes) and 
-[counters](../../../document-extensions/counters/overview).  
+* Query parameters can be used to include [related documents](../../../client-api/how-to/handle-document-relationships.mdx#includes) and 
+[counters](../../../document-extensions/counters/overview.mdx).  
 
 * In this page:  
-  * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-id#basic-example)  
-  * [Request Format](../../../client-api/rest-api/document-commands/get-documents-by-id#request-format)  
-  * [Response Format](../../../client-api/rest-api/document-commands/get-documents-by-id#response-format)  
-  * [More Examples](../../../client-api/rest-api/document-commands/get-documents-by-id#more-examples)  
-      * [Get Multiple Documents](../../../client-api/rest-api/document-commands/get-documents-by-id#get-multiple-documents)  
-      * [Get Related Documents](../../../client-api/rest-api/document-commands/get-documents-by-id#get-related-documents)  
-      * [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-id#get-document-metadata-only)  
-      * [Get Document Counters](../../../client-api/rest-api/document-commands/get-documents-by-id#get-document-counters)  
+  * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#basic-example)  
+  * [Request Format](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#request-format)  
+  * [Response Format](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#response-format)  
+  * [More Examples](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#more-examples)  
+      * [Get Multiple Documents](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-multiple-documents)  
+      * [Get Related Documents](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-related-documents)  
+      * [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-document-metadata-only)  
+      * [Get Document Counters](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-document-counters)  
 </Admonition>  
 ## Basic Example
 
 This is a cURL request to retrieve one document named "products/48-A" from a database named "Example" on our 
 [playground server](http://live-test.ravendb.net):  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?id=products/48-A"
 `}
@@ -45,7 +45,7 @@ This is a cURL request to retrieve one document named "products/48-A" from a dat
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -90,7 +90,7 @@ Raven-Server-Version: 4.2.4.42
 
 This is the general format of a cURL request that uses all parameters:  
 
-<TabItem value="something" label="batch">
+<TabItem value="batch" label="batch">
 <CodeBlock language="batch">
 {`curl -X GET "<server URL>/databases/<database name>/docs?
             id=<document ID>
@@ -109,11 +109,11 @@ Linebreaks are added for clarity.
 | Parameter | Description | Required / # |
 | - | - | - |
 | **id** | ID of a document to retrieve.
-If no IDs are specified, all the documents in the database are retrieved in descending order of their [change vectors](../../../server/clustering/replication/change-vector). | Yes;
+If no IDs are specified, all the documents in the database are retrieved in descending order of their [change vectors](../../../server/clustering/replication/change-vector.mdx). | Yes;
 Can be used more than once |
-| **include** | Path to a field containing the ID of another, 'related' document. [See: How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships#includes). | No;
+| **include** | Path to a field containing the ID of another, 'related' document. [See: How to Handle Document Relationships](../../../client-api/how-to/handle-document-relationships.mdx#includes). | No;
 Can be used more than once |
-| **counter** | Name of a [counter](../../../document-extensions/counters/overview) to retrieve. Set this parameter to `@all_counters` to retrieve all counters of the specified documents. Counters of _included_ documents, however, will not be retrieved. | No;
+| **counter** | Name of a [counter](../../../document-extensions/counters/overview.mdx) to retrieve. Set this parameter to `@all_counters` to retrieve all counters of the specified documents. Counters of _included_ documents, however, will not be retrieved. | No;
 Can be used more than once |
 | **metadataOnly** | Set this parameter to `true` to retrieve only the metadata of each document. This does not apply to included documents which are retrieved with their complete contents. | No;
 Used once |
@@ -151,7 +151,7 @@ parameter is set to `true`).
 
 This is the general JSON format of the response body:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Results": [ 
@@ -191,19 +191,19 @@ Linebreaks are added for clarity.
 
 ## More Examples
 
-[About Northwind](../../../start/about-examples), the database used in our examples.
+[About Northwind](../../../start/about-examples.mdx), the database used in our examples.
 
 In this section:  
 
-* [Get Multiple Documents](../../../client-api/rest-api/document-commands/get-documents-by-id#get-multiple-documents)  
-* [Get Related Documents](../../../client-api/rest-api/document-commands/get-documents-by-id#get-related-documents)  
-* [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-id#get-document-metadata-only)  
-* [Get Document Counters](../../../client-api/rest-api/document-commands/get-documents-by-id#get-document-counters)  
+* [Get Multiple Documents](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-multiple-documents)  
+* [Get Related Documents](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-related-documents)  
+* [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-document-metadata-only)  
+* [Get Document Counters](../../../client-api/rest-api/document-commands/get-documents-by-id.mdx#get-document-counters)  
 ### Get Multiple Documents
 
 Example cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             id=shippers/1-A
@@ -215,7 +215,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -260,7 +260,7 @@ Raven-Server-Version: 4.2.4.42
 
 Example cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Demo/docs?
             id=products/48-A
@@ -273,7 +273,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -360,7 +360,7 @@ Raven-Server-Version: 4.2.4.42
 
 Example cURL request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             id=orders/19-A
@@ -372,7 +372,7 @@ Linebreaks are added for clarity.
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -406,7 +406,7 @@ Raven-Server-Version: 4.2.4.42
 
 Example cURL request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             id=products/48-A
@@ -418,7 +418,7 @@ Linebreaks are added for clarity.
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -471,8 +471,8 @@ Raven-Server-Version: 4.2.4.42
 </CodeBlock>
 </TabItem>
 
-(Note that the standard [Northwind data](../../../start/about-examples) does not contain any [counters](../../../document-extensions/counters/overview) 
-when it is [generated in the studio](../../../studio/database/document-extensions/counters) - counters were added to "products/48-A" for this example)  
+(Note that the standard [Northwind data](../../../start/about-examples.mdx) does not contain any [counters](../../../document-extensions/counters/overview.mdx) 
+when it is [generated in the studio](../../../studio/database/document-extensions/counters.mdx) - counters were added to "products/48-A" for this example)  
 
 
 

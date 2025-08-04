@@ -25,13 +25,13 @@ export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 <Admonition type="info" title="Info">
 
 * Including explanations is available only when using **Lucene** as the underlying search engine.  
-* You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax#selecting-the-search-engine).
+* You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
 
 </Admonition>
 ## Syntax
 
 
-<TabItem value="something-something" label="explain_1">
+<TabItem value="explain_1" label="explain_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> includeExplanations(Reference<Explanations> explanations);
 `}
@@ -80,24 +80,24 @@ Sample explanation:
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
-  to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
+  to [order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
 * **To get the score details** and see how it was calculated,  
-  use method `IncludeExplanations`, which is available in the [IDocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) interface.
+  use method `IncludeExplanations`, which is available in the [IDocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) interface.
 
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine.  
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * This article provides examples of including explanations when making a **dynamic-query**.  
-  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations).
+  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations.mdx).
 
 * In this page:
-    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
-    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
-    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations.mdx#include-explanations-in-a-query)  
+    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx#view-explanations)  
+    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations.mdx#syntax)  
 </Admonition>
 ## Include explanations in a query
 
@@ -216,7 +216,7 @@ include explanations()
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`IDocumentQuery<T> IncludeExplanations(out Explanations explanations);
 `}
@@ -240,7 +240,7 @@ include explanations()
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
-  to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
+  to [order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
@@ -248,12 +248,12 @@ include explanations()
 
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * In this page:
-    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
-    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
-    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations.mdx#include-explanations-in-a-query)  
+    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx#view-explanations)  
+    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations.mdx#syntax)  
 
 </Admonition>
 ## Include explanations in a query
@@ -314,7 +314,7 @@ include explanations()
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def include_explanations(
     self,
@@ -343,7 +343,7 @@ include explanations()
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
-  to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
+  to [order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
@@ -351,12 +351,12 @@ include explanations()
 
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * In this page:
-    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
-    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
-    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations.mdx#include-explanations-in-a-query)  
+    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx#view-explanations)  
+    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations.mdx#syntax)  
 </Admonition>
 ## Include explanations in a query
 
@@ -408,7 +408,7 @@ If you intend to use the default options, just paste `null` instead of the optio
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`public function includeExplanations(?ExplanationOptions $options, Explanations &$explanations): DocumentQueryInterface;
 `}
@@ -429,7 +429,7 @@ If you intend to use the default options, just paste `null` instead of the optio
 
 * When making a query, each document in the query results is assigned a **score**.  
   This score determines the order by which the documents come back in the results when requesting   
-  to [order by score](../../../../client-api/session/querying/sort-query-results#order-by-score).
+  to [order by score](../../../../client-api/session/querying/sort-query-results.mdx#order-by-score).
 
 * Each document in the results includes this score under the `@index-score` property in its metadata.
 
@@ -437,21 +437,21 @@ If you intend to use the default options, just paste `null` instead of the optio
 
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine.
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * This article provides examples of including explanations when making a **dynamic-query**.  
-  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations).
+  For including explanations when querying a **static-index** see [Include explanations in index query](../../../../indexes/querying/include-explanations.mdx).
 
 * In this page:
-    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations#include-explanations-in-a-query)  
-    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations#view-explanations)  
-    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations#syntax)  
+    * [Include explanations in a query](../../../../client-api/session/querying/debugging/include-explanations.mdx#include-explanations-in-a-query)  
+    * [View explanations](../../../../client-api/session/querying/debugging/include-explanations.mdx#view-explanations)  
+    * [Syntax](../../../../client-api/session/querying/debugging/include-explanations.mdx#syntax)  
 </Admonition>
 ## Include explanations in a query
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an object that will receive the explanations results
 let explanationsResults;
 
@@ -498,8 +498,8 @@ include explanations()
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`query.includeExplanations(explanationsCallback)
 `}
 </CodeBlock>
@@ -509,8 +509,8 @@ include explanations()
 |--------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **explanationsCallback** | `(explanationsResults) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `Explanations` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The Explanations object:
 // ========================
 

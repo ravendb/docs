@@ -17,17 +17,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Ongoing tasks are **work tasks** defined for the database.
  
-* Each task is assigned a responsible node from the [Database Group nodes](../../../../studio/database/settings/manage-database-group) to handle the work.  
-    * If not specified by the user, the cluster decides which node will be responsible for the task. See [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties).  
+* Each task is assigned a responsible node from the [Database Group nodes](../../../../studio/database/settings/manage-database-group.mdx) to handle the work.  
+    * If not specified by the user, the cluster decides which node will be responsible for the task. See [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties).  
     * If a node is down, the cluster will reassign the work to another node for the duration.  
 
 * Once enabled, an **ongoing task** runs in the background,  
   and its responsible node executes the defined task work whenever relevant data changes occur.
 
 * In this page:
-    * [The ongoing tasks](../../../../studio/database/tasks/ongoing-tasks/general-info#the-ongoing-tasks)
-    * [The ongoing tasks list - View](../../../../studio/database/tasks/ongoing-tasks/general-info#the-ongoing-tasks-list---view)
-    * [The ongoing tasks list - Actions](../../../../studio/database/tasks/ongoing-tasks/general-info#the-ongoing-tasks-list---actions)
+    * [The ongoing tasks](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks)
+    * [The ongoing tasks list - View](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list---view)
+    * [The ongoing tasks list - Actions](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#the-ongoing-tasks-list---actions)
 
 </Admonition>
 ## The ongoing tasks
@@ -38,10 +38,10 @@ The available ongoing tasks are:
 
 **Replication:**
 
-* **[External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)**  
+* **[External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)**  
     Create a live replica of your database in another RavenDB database in another cluster.  
     This replication is initiated by the source database.  
-* **[Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)**  
+* **[Hub/Sink Replication](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)**  
     Create a live replica of your database, or a part of it, in another RavenDB database.  
     The replication is initiated by the *Sink* task.  
     The replication can be *bidirectional* or limited to a *single direction*.  
@@ -49,41 +49,41 @@ The available ongoing tasks are:
 
 **Backups & Subscriptions:**
 
-* **[Backup](../../../../studio/database/tasks/backup-task)**  
+* **[Backup](../../../../studio/database/tasks/backup-task.mdx)**  
     Schedule a backup or a snapshot of the database at a specified point in time.  
-* **[Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions)**  
+* **[Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)**  
     Send batches of documents that match a pre-defined query for processing on a client.
 
 **ETL (RavenDB =&gt; Target):**
 
-* **[RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)**  
+* **[RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx)**  
     Write all or chosen database documents to another RavenDB database.  
     Data can be filtered and modified with transformation scripts.  
-* **[SQL ETL](../../../../server/ongoing-tasks/etl/sql)**  
+* **[SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx)**  
     Write the database data to a relational database.  
     Data can be filtered and modified with transformation scripts.  
-* **[OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task)**  
+* **[OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx)**  
     Convert database data to the _Parquet_ file format for OLAP purposes.  
     Data can be filtered and modified with transformation scripts.  
-* **[Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task)**  
+* **[Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx)**  
     Write all or chosen database documents to an Elasticsearch destination.  
     Data can be filtered and modified with transformation scripts.  
-* **[Kafka ETL](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)**  
+* **[Kafka ETL](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx)**  
     Write all or chosen database documents to topics of a Kafka broker.  
     Data can be filtered and modified with transformation scripts.  
-* **[RabbitMQ ETL](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)**  
+* **[RabbitMQ ETL](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)**  
     Write all or chosen database documents to a RabbitMQ exchange.  
     Data can be filtered and modified with transformation scripts.  
-* **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl)**  
+* **[Azure Queue Storage ETL](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx)**  
     Write all or chosen database documents to Azure Queue Storage.  
     Data can be filtered and modified with transformation scripts.  
 
 **Sink (Source =&gt; RavendB)**
 
-* **[Kafka Sink](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink)**  
+* **[Kafka Sink](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx)**  
     Consume and process incoming messages from Kafka topics.  
     Add scripts to Load, Put, or Delete documents in RavenDB based on the incoming messages.  
-* **[RabbitMQ Sink](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink)**  
+* **[RabbitMQ Sink](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-queue-sink.mdx)**  
     Consume and process incoming messages from RabbitMQ queues.  
     Add scripts to Load, Put, or Delete documents in RavenDB based on the incoming messages.  
 
@@ -113,6 +113,6 @@ The available ongoing tasks are:
 4. **Edit** - Click to edit the task.
 5. **Delete** the task.
 
-The ongoing tasks can also be managed via the Client API. See [Ongoing tasks operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations).
+The ongoing tasks can also be managed via the Client API. See [Ongoing tasks operations](../../../../client-api/operations/maintenance/ongoing-tasks/ongoing-task-operations.mdx).
 
 

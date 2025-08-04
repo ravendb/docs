@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # RQL Code Assistance
 <Admonition type="note" title="Note">
 
-* All queries addressed to the RavenDB server use [RQL](../../client-api/session/querying/what-is-rql), 
+* All queries addressed to the RavenDB server use [RQL](../../client-api/session/querying/what-is-rql.mdx), 
   RavenDB's rich query language.  
 * The **query structure** exposes the **order of the query operations** 
   handled by the RavenDB server when serving a query.  
@@ -26,30 +26,30 @@ import LanguageContent from "@site/src/components/LanguageContent";
   for you to select, speeding up the writing process and making the creation 
   of intelligent queries an enjoyable task.  
 * In addition, the query syntax is checked and potential errors are highlighted.  
-* Code Assistance is available in the [Query](../../studio/database/queries/query-view#query-view), 
-  [Patch](../../studio/database/documents/patch-view#patch-view), 
-  and [Subscription Task Definition](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition) 
+* Code Assistance is available in the [Query](../../studio/database/queries/query-view.mdx#query-view), 
+  [Patch](../../studio/database/documents/patch-view.mdx#patch-view), 
+  and [Subscription Task Definition](../../studio/database/tasks/ongoing-tasks/subscription-task.mdx#subscription-task-definition) 
   views.  
 
 * In this page:  
-  * [Auto-Completion](../../studio/database/code-assistance#auto-completion)  
-  * [Syntax Verification](../../studio/database/code-assistance#syntax-verification)  
+  * [Auto-Completion](../../studio/database/code-assistance.mdx#auto-completion)  
+  * [Syntax Verification](../../studio/database/code-assistance.mdx#syntax-verification)  
 </Admonition>
 ## Auto-Completion
 
 * RQL code assistance is available in the following views:  
-   - [Query View](../../studio/database/queries/query-view#query-view)  
-   - [Patch View](../../studio/database/documents/patch-view#patch-view)  
-   - [Subscription Task View](../../studio/database/tasks/ongoing-tasks/subscription-task#subscription-task-definition)  
+   - [Query View](../../studio/database/queries/query-view.mdx#query-view)  
+   - [Patch View](../../studio/database/documents/patch-view.mdx#patch-view)  
+   - [Subscription Task View](../../studio/database/tasks/ongoing-tasks/subscription-task.mdx#subscription-task-definition)  
 * To invoke auto-completion, click **CTRL+Space** while writing RQL.  
 * The relevant options for the current cursor location will be listed.  
 * Clicking a list item will add it to the query.  
 **At the very beginning of a query**, the suggested options will be the 
 most basic ones:  
 
-* [from](../../client-api/session/querying/what-is-rql#from) - to select a collection to query on  
+* [from](../../client-api/session/querying/what-is-rql.mdx#from) - to select a collection to query on  
 * `from index` - to select an index to query on  
-* [declare function](../../client-api/session/querying/what-is-rql#declare) - to create a JavaScript function  
+* [declare function](../../client-api/session/querying/what-is-rql.mdx#declare) - to create a JavaScript function  
 
 !["Click CTRL+Space To See Available Options"](./assets/code-assistance-1.png)
 

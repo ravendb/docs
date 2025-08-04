@@ -18,7 +18,7 @@ Running RavenDB as a console application provides basic information along with a
 
 RavenDB can operate as service/daemon without console input. It is possible to access the CLI through a provided `rvn` (`rvn.exe` in Windows) tool included in each distribution package. The process is as follows:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`rvn admin-channel [RavenDB process ID]
 `}
@@ -37,7 +37,7 @@ The `rvn` executable can be found in the distribution package under **Server** d
 
 Prints basic information to the console, including build version information, process ID (PID), bitness, and system hardware information.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> info
   Node A in cluster eabe7a24-054a-48ef-9391-7f7b7707969d
@@ -55,7 +55,7 @@ Prints basic information to the console, including build version information, pr
 
 Online display of memory usage by RavenDB. You can separate into Working Set, Native Mem, Managed Mem, and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware not to hit Ctrl+C / Break to avoid unintended a shutdown of the server).
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> stats
   Showing stats, press any key to close...
@@ -71,7 +71,7 @@ Online display of memory usage by RavenDB. You can separate into Working Set, Na
 
 Enable (or disable) online log printing to the console.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`log <on|off|http-on|http-off|none|operations|information>
 `}
@@ -82,9 +82,9 @@ Enable (or disable) online log printing to the console.
 | ------------- | ------------- |
 | `on` or `off` | enables or disables log printing |
 | `http-on` or `http-off` | enables or disables HTTP request log information |
-| `none`, `operations` or `information` | sets the log mode to desired [level](../../server/configuration/logs-configuration#logs.mode) |
+| `none`, `operations` or `information` | sets the log mode to desired [level](../../server/configuration/logs-configuration.mdx#logs.mode) |
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> log on
 `}
@@ -101,14 +101,14 @@ If log is enabled using `rvn admin-channel`, the information will be displayed i
 
 Force Garbage Collection to a specific generation (0, 1 or 2).  See [GC.Collect Method](https://docs.microsoft.com/en-us/dotnet/api/system.gc.collect?redirectedfrom=MSDN&view=netframework-4.7.2#System_GC_Collect_System_Int32_)
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`gc <0|1|2>
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> gc 2
 Before collecting, managed memory used: 48.92 MBytes
@@ -124,7 +124,7 @@ After collecting, managed memory used:  10.09 MBytes at 0.0078154 Seconds
 
 Gracefully shuts down the Server.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> q
 
@@ -145,7 +145,7 @@ Shutdown completed
 
 Gracefully shut down and restart the Server.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> restartServer
 
@@ -167,7 +167,7 @@ ravendb>
 
 The two commands are equivalent.  
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> resetServer
 
@@ -194,14 +194,14 @@ ravendb>
 
 Executes Admin JavaScript patches.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`script <server|database> [database name]
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> script database ProductionDB
 
@@ -226,7 +226,7 @@ Running scripts can harm the database beyond recovery. Use with care.
 
 Generate a new trusted client certificate with `ClusterAdmin` security clearance.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> generateClientCert <name> <path to output folder> <number of months until expiration> [password]
 `}
@@ -246,7 +246,7 @@ Generate a new trusted client certificate with `ClusterAdmin` security clearance
 
 Register a server certificate of another node to be trusted on this server. This is required when building a cluster where each node has a different certificate.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> trustServerCert <name> <path to pfx> [password]
 `}
@@ -265,7 +265,7 @@ Register a server certificate of another node to be trusted on this server. This
 
 Register a client certificate to be trusted on this server with `ClusterAdmin` security clearance.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> trustClientCert <name> <path to pfx> [password]
 `}
@@ -287,7 +287,7 @@ Replace the cluster certificate.
 If **replaceImmediately** is specified, RavenDB will replace the certificate by force, even if some nodes are not responding. In that case, you will have to manually replace the certificate in those nodes. Use with care.
 </Admonition>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> replaceClusterCert [-replaceImmediately] <name> <path to pfx> [password]
 `}
@@ -309,7 +309,7 @@ If **replaceImmediately** is specified, RavenDB will replace the certificate by 
 
 Clears the screen.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> clear
 `}
@@ -324,7 +324,7 @@ For usage type **helpPrompt**.
 
 Can be used to show memory information used by **stats** while using `rvn`.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> prompt %M
 `}
@@ -337,7 +337,7 @@ Can be used to show memory information used by **stats** while using `rvn`.
 
 Exits CLI back to the terminal (with `rvn admin-channel` use only).
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> logout
 `}
@@ -350,7 +350,7 @@ Exits CLI back to the terminal (with `rvn admin-channel` use only).
 
 Prints initial logo.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> logo
 `}
@@ -363,7 +363,7 @@ Prints initial logo.
 
 Display help screen.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> help
 `}
@@ -382,7 +382,7 @@ Debugging command. Not intended for normal use.
 
 Simulates low memory state in RavenDB.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> lowMem
 `}
@@ -399,7 +399,7 @@ Debugging command. Not intended for normal use.
 
 Enable (or disable) candidate selection timer (Rachis), or fires timeout immediately.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`timer <on|off|fire>
 `}

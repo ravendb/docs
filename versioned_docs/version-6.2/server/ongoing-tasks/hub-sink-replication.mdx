@@ -26,24 +26,24 @@ Hub whenever they are online.
 
 <Admonition type="info" title="Info">
 
-* Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview).  
+* Learn more about **Hub/Sink replication** [Here](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx).  
 * You can use the Studio to define 
-  [Hub](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task) 
-  and [Sink](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task) 
+  [Hub](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task.mdx) 
+  and [Sink](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx) 
   tasks.  
 
 </Admonition>  
 
 * In this page:  
-   * [What is and is not replicated?](../../server/ongoing-tasks/hub-sink-replication#what-is-and-is-not-replicated?)  
-   * [Defining Replication Tasks](../../server/ongoing-tasks/hub-sink-replication#defining-replication-tasks)  
-     * [Defining a Replication Hub](../../server/ongoing-tasks/hub-sink-replication#defining-a-replication-hub)  
-     * [Defining a Hub Access](../../server/ongoing-tasks/hub-sink-replication#defining-a-hub-access)  
-     * [Defining a Replication Sink](../../server/ongoing-tasks/hub-sink-replication#defining-a-replication-sink)  
-     * [Defining a Connection String](../../server/ongoing-tasks/hub-sink-replication#defining-a-connection-string)  
-   * [Usage Sample](../../server/ongoing-tasks/hub-sink-replication#usage-sample)  
-   * [Failover](../../server/ongoing-tasks/hub-sink-replication#failover)  
-   * [Backward Compatibility](../../server/ongoing-tasks/hub-sink-replication#backward-compatibility)  
+   * [What is and is not replicated?](../../server/ongoing-tasks/hub-sink-replication.mdx#what-is-and-is-not-replicated?)  
+   * [Defining Replication Tasks](../../server/ongoing-tasks/hub-sink-replication.mdx#defining-replication-tasks)  
+     * [Defining a Replication Hub](../../server/ongoing-tasks/hub-sink-replication.mdx#defining-a-replication-hub)  
+     * [Defining a Hub Access](../../server/ongoing-tasks/hub-sink-replication.mdx#defining-a-hub-access)  
+     * [Defining a Replication Sink](../../server/ongoing-tasks/hub-sink-replication.mdx#defining-a-replication-sink)  
+     * [Defining a Connection String](../../server/ongoing-tasks/hub-sink-replication.mdx#defining-a-connection-string)  
+   * [Usage Sample](../../server/ongoing-tasks/hub-sink-replication.mdx#usage-sample)  
+   * [Failover](../../server/ongoing-tasks/hub-sink-replication.mdx#failover)  
+   * [Backward Compatibility](../../server/ongoing-tasks/hub-sink-replication.mdx#backward-compatibility)  
 </Admonition>
 ## What is and is not replicated?
 
@@ -52,7 +52,7 @@ Hub whenever they are online.
 After the tasks are defined, **changed** documents whose replication is allowed by 
 both the Hub and the Sink filters will replicate.  
 
-If you want the entire database to be replicated in the destination, you can [import the database](../../studio/database/tasks/import-data/import-from-ravendb) 
+If you want the entire database to be replicated in the destination, you can [import the database](../../studio/database/tasks/import-data/import-from-ravendb.mdx) 
 into the destination.  
 
 After the data is in the destination server, setting up a hub/sink replication ongoing task will keep the two databases up to date.  
@@ -62,23 +62,23 @@ After the data is in the destination server, setting up a hub/sink replication o
 **What is being replicated:**  
 
   * All database documents and related data:  
-    * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-    * [Revisions](../../document-extensions/revisions/overview)  
-    * [Counters](../../document-extensions/counters/overview)
-    * [Time Series](../../document-extensions/timeseries/overview)
+    * [Attachments](../../document-extensions/attachments/what-are-attachments.mdx)  
+    * [Revisions](../../document-extensions/revisions/overview.mdx)  
+    * [Counters](../../document-extensions/counters/overview.mdx)
+    * [Time Series](../../document-extensions/timeseries/overview.mdx)
 
 **What is _not_ being replicated:**  
 
   * Server and cluster level features:  
-    * [Indexes](../../indexes/creating-and-deploying)  
-    * [Conflict resolver definitions](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)  
-    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview)
-    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
-    * [Identities](../../server/kb/document-identifier-generation#strategy--3)  
+    * [Indexes](../../indexes/creating-and-deploying.mdx)  
+    * [Conflict resolver definitions](../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)  
+    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview.mdx)
+    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+    * [Identities](../../server/kb/document-identifier-generation.mdx#strategy--3)  
     * Ongoing tasks
-      * [ETL](../../server/ongoing-tasks/etl/basics)
-      * [Backup](../../studio/database/tasks/backup-task)
-      * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+      * [ETL](../../server/ongoing-tasks/etl/basics.mdx)
+      * [Backup](../../studio/database/tasks/backup-task.mdx)
+      * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
 <Admonition type="note" title="Why are some cluster-level features not replicated?" id="why-are-some-cluster-level-features-not-replicated" href="#why-are-some-cluster-level-features-not-replicated">
 To provide for architecture that prevents conflicts between clusters, especially when ACID transactions are important, 
@@ -115,7 +115,7 @@ To start replication via Hub and Sink tasks, you need to define -
 Use `PutPullReplicationAsHubOperation` to register a new Hub task,  
 and configure it using a `PullReplicationDefinition` class.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`await store.Maintenance.SendAsync(new PutPullReplicationAsHubOperation 
     (new PullReplicationDefinition \{
@@ -128,7 +128,7 @@ and configure it using a `PullReplicationDefinition` class.
 </TabItem>
 
 * **`PutPullReplicationAsHubOperation` definition**
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public PutPullReplicationAsHubOperation(string name)  
 public PutPullReplicationAsHubOperation(PullReplicationDefinition pullReplicationDefinition)
@@ -152,7 +152,7 @@ public PutPullReplicationAsHubOperation(PullReplicationDefinition pullReplicatio
 Use `RegisterReplicationHubAccessOperation` to define a Hub Access,  
 and configure it using a `ReplicationHubAccess` class.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`await store.Maintenance.SendAsync(new RegisterReplicationHubAccessOperation
    ("Hub1_Bidirectional", new ReplicationHubAccess \{
@@ -172,7 +172,7 @@ and configure it using a `ReplicationHubAccess` class.
 </TabItem>
 
 * **`RegisterReplicationHubAccessOperation` definition**
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public RegisterReplicationHubAccessOperation(string hubName, ReplicationHubAccess access)  
 `}
@@ -192,7 +192,7 @@ and configure it using a `ReplicationHubAccess` class.
 To **Remove** an existing Access, use `UnregisterReplicationHubAccessOperation`.  
 
 * **`UnregisterReplicationHubAccessOperation` definition**:
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public UnregisterReplicationHubAccessOperation(string hubName, string thumbprint)  
 `}
@@ -206,7 +206,7 @@ To **Remove** an existing Access, use `UnregisterReplicationHubAccessOperation`.
 Use `UpdatePullReplicationAsSinkOperation` to define a Sink task,  
 and configure it using a `PullReplicationAsSink` class.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`await store.Maintenance.SendAsync(new UpdatePullReplicationAsSinkOperation
    (new PullReplicationAsSink \{
@@ -228,7 +228,7 @@ and configure it using a `PullReplicationAsSink` class.
 </TabItem>
 
 * **`UpdatePullReplicationAsSinkOperation` definition**
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public UpdatePullReplicationAsSinkOperation(PullReplicationAsSink pullReplication)  
 `}
@@ -253,7 +253,7 @@ The Sink needs a connection string to locate the Hub task it is to use.
 Use `PutConnectionStringOperation` to define a connection string,  
 and configure it using a `RavenConnectionString` class.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`await storeA.Maintenance.SendAsync(
     new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
@@ -266,14 +266,14 @@ and configure it using a `RavenConnectionString` class.
 </CodeBlock>
 </TabItem>
 
-Learn about Connection Strings [here](../../client-api/operations/maintenance/connection-strings/add-connection-string#operations-how-to-add-a-connection-string).  
+Learn about Connection Strings [here](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#operations-how-to-add-a-connection-string).  
 
 
 
 
 ## Usage Sample
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Issue a certificate
 var pullCert = new X509Certificate2("/path/to/cert.pfx", 

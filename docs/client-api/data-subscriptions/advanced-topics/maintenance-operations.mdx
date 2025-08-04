@@ -24,13 +24,13 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * This article covers data subscriptions maintenance operations.  
 
 * In this page:  
-   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
-   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#delete-subscription)  
-   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disable-subscription)  
-   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enable-subscription)  
-   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#update-subscription)
-   * [Drop Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#drop-connection)
-   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscription-state)  
+   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#documentsubscriptions-class)  
+   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#delete-subscription)  
+   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#disable-subscription)  
+   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#enable-subscription)  
+   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#update-subscription)
+   * [Drop Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#drop-connection)
+   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#get-subscription-state)  
 
 </Admonition>
 ## DocumentSubscriptions class
@@ -73,7 +73,7 @@ Subscriptions can be entirely deleted from the system.
 
 This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
-<TabItem value="something" label="interface_subscription_deletion">
+<TabItem value="interface_subscription_deletion" label="interface_subscription_deletion">
 <CodeBlock language="csharp">
 {`void Delete(string name, string database = null);
 Task DeleteAsync(string name, string database = null, CancellationToken token = default);
@@ -83,7 +83,7 @@ Task DeleteAsync(string name, string database = null, CancellationToken token = 
 
 usage: 
 
-<TabItem value="something" label="subscription_deletion">
+<TabItem value="subscription_deletion" label="subscription_deletion">
 <CodeBlock language="csharp">
 {`store.Subscriptions.Delete(subscriptionName);
 `}
@@ -96,7 +96,7 @@ usage:
 
 Existing subscription tasks can be disabled from the client.
 
-<TabItem value="something" label="interface_subscription_disabling">
+<TabItem value="interface_subscription_disabling" label="interface_subscription_disabling">
 <CodeBlock language="csharp">
 {`void Disable(string name, string database = null);
 Task DisableAsync(string name, string database = null, CancellationToken token = default);
@@ -106,7 +106,7 @@ Task DisableAsync(string name, string database = null, CancellationToken token =
 
 usage: 
 
-<TabItem value="something" label="subscription_disabling">
+<TabItem value="subscription_disabling" label="subscription_disabling">
 <CodeBlock language="csharp">
 {`store.Subscriptions.Disable(subscriptionName);
 `}
@@ -120,7 +120,7 @@ usage:
 Existing subscription tasks can be enabled from the client.  
 This operation can be useful for already disabled subscriptions.
 
-<TabItem value="something" label="interface_subscription_enabling">
+<TabItem value="interface_subscription_enabling" label="interface_subscription_enabling">
 <CodeBlock language="csharp">
 {`void Enable(string name, string database = null);
 Task EnableAsync(string name, string database = null, CancellationToken token = default);
@@ -130,7 +130,7 @@ Task EnableAsync(string name, string database = null, CancellationToken token = 
 
 usage: 
 
-<TabItem value="something" label="subscription_enabling">
+<TabItem value="subscription_enabling" label="subscription_enabling">
 <CodeBlock language="csharp">
 {`store.Subscriptions.Enable(subscriptionName);
 `}
@@ -141,10 +141,10 @@ usage:
 
 ## Update subscription
 
-See [examples](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
-and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+See [examples](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription) 
+and [API description](../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription).  
 
-<TabItem value="something" label="updating_subscription">
+<TabItem value="updating_subscription" label="updating_subscription">
 <CodeBlock language="csharp">
 {`string Update(SubscriptionUpdateOptions options, string database = null);
 
@@ -161,7 +161,7 @@ Task<string> UpdateAsync(SubscriptionUpdateOptions options, string database = nu
 Active subscription connections established by workers can be dropped remotely from the client.  
 Once dropped, the worker will not attempt to reconnect to the server.
 
-<TabItem value="something" label="interface_subscription_dropping">
+<TabItem value="interface_subscription_dropping" label="interface_subscription_dropping">
 <CodeBlock language="csharp">
 {`void DropConnection(string name, string database = null);
 Task DropConnectionAsync(string name, string database = null, CancellationToken token = default);
@@ -171,7 +171,7 @@ Task DropConnectionAsync(string name, string database = null, CancellationToken 
 
 usage:
 
-<TabItem value="something" label="connection_dropping">
+<TabItem value="connection_dropping" label="connection_dropping">
 <CodeBlock language="csharp">
 {`store.Subscriptions.DropConnection(subscriptionName);
 `}
@@ -182,7 +182,7 @@ usage:
 
 ## Get subscription state
 
-<TabItem value="something" label="interface_subscription_state">
+<TabItem value="interface_subscription_state" label="interface_subscription_state">
 <CodeBlock language="csharp">
 {`SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
 Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, string database = null, CancellationToken token = default);
@@ -192,7 +192,7 @@ Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, strin
 
 usage: 
 
-<TabItem value="something" label="subscription_state">
+<TabItem value="subscription_state" label="subscription_state">
 <CodeBlock language="csharp">
 {`var subscriptionState = store.Subscriptions.GetSubscriptionState(subscriptionName);
 `}
@@ -226,11 +226,11 @@ usage:
 <Admonition type="note" title="Note">
 
 * This page covers data subscriptions maintenance operations:  
-   * [Deleting subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deleting-subscription)  
-   * [Dropping connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
-   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
-   * [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
-   * [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+   * [Deleting subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#deleting-subscription)  
+   * [Dropping connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#dropping-connection)  
+   * [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#disabling-subscription)  
+   * [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#updating-subscription)  
+   * [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#getting-subscription-status)  
 
 </Admonition>
 ## Deleting subscription
@@ -239,7 +239,7 @@ Subscriptions can be entirely deleted from the system.
 
 This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
-<TabItem value="something-something" label="interface_subscription_deletion">
+<TabItem value="interface_subscription_deletion" label="interface_subscription_deletion">
 <CodeBlock language="java">
 {`void delete(String name);
 
@@ -250,7 +250,7 @@ void delete(String name, String database);
 
 usage: 
 
-<TabItem value="something-something" label="subscription_deletion">
+<TabItem value="subscription_deletion" label="subscription_deletion">
 <CodeBlock language="java">
 {`store.subscriptions().delete(subscriptionName);
 `}
@@ -264,7 +264,7 @@ usage:
 Subscription connections with workers can be dropped remotely.  
 A dropped worker will not try to reconnect to the server.
 
-<TabItem value="something-something" label="interface_subscription_dropping">
+<TabItem value="interface_subscription_dropping" label="interface_subscription_dropping">
 <CodeBlock language="java">
 {`void dropConnection(String name);
 
@@ -275,7 +275,7 @@ void dropConnection(String name, String database);
 
 usage: 
 
-<TabItem value="something-something" label="connection_dropping">
+<TabItem value="connection_dropping" label="connection_dropping">
 <CodeBlock language="java">
 {`store.subscriptions().dropConnection(subscriptionName);
 `}
@@ -302,7 +302,7 @@ This operation can only be performed through the management studio
 
 ## Getting subscription status
 
-<TabItem value="something-something" label="interface_subscription_state">
+<TabItem value="interface_subscription_state" label="interface_subscription_state">
 <CodeBlock language="java">
 {`SubscriptionState getSubscriptionState(String subscriptionName);
 
@@ -313,7 +313,7 @@ SubscriptionState getSubscriptionState(String subscriptionName, String database)
 
 usage: 
 
-<TabItem value="something-something" label="subscription_state">
+<TabItem value="subscription_state" label="subscription_state">
 <CodeBlock language="java">
 {`SubscriptionState subscriptionState = store.subscriptions().getSubscriptionState(subscriptionName);
 `}
@@ -386,28 +386,28 @@ The class is available through `DocumentStore`'s `subscriptions()` method.
 * This article covers data subscriptions maintenance operations.  
 
 * In this page:  
-   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#delete-subscription)  
-   * [Disable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disable-subscription)  
-   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enable-subscription)  
-   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#update-subscription)
-   * [Drop connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#drop-connection)
-   * [Get subscriptions](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscriptions)
-   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#get-subscription-state)
-   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)
+   * [Delete subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#delete-subscription)  
+   * [Disable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#disable-subscription)  
+   * [Enable subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#enable-subscription)  
+   * [Update subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#update-subscription)
+   * [Drop connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#drop-connection)
+   * [Get subscriptions](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#get-subscriptions)
+   * [Get subscription state](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#get-subscription-state)
+   * [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations.mdx#documentsubscriptions-class)
 
 </Admonition>
 ## Delete subscription
 
 Subscription tasks can be entirely deleted from the system.  
 
-<TabItem value="something-something" label="delete">
-<CodeBlock language="nodejs">
+<TabItem value="delete" label="delete">
+<CodeBlock language="js">
 {`await documentStore.subscriptions.delete("subscriptionNameToDelete");
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="delete_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="delete_syntax" label="delete_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 delete(name);
 delete(name, database);
@@ -421,14 +421,14 @@ delete(name, database);
 
 Existing subscription tasks can be disabled from the client.
 
-<TabItem value="something-something" label="disable">
-<CodeBlock language="nodejs">
+<TabItem value="disable" label="disable">
+<CodeBlock language="js">
 {`await documentStore.subscriptions.disable("subscriptionNameToDisable");
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="disable_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="disable_syntax" label="disable_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 disable(name);
 disable(name, database);
@@ -443,14 +443,14 @@ disable(name, database);
 Existing subscription tasks can be enabled from the client.  
 This operation can be useful for already disabled subscriptions.
 
-<TabItem value="something-something" label="enable">
-<CodeBlock language="nodejs">
+<TabItem value="enable" label="enable">
+<CodeBlock language="js">
 {`await documentStore.subscriptions.enable("subscriptionNameToEnable");
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="enable_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="enable_syntax" label="enable_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 enable(name);
 enable(name, database);
@@ -462,11 +462,11 @@ enable(name, database);
 
 ## Update subscription
 
-See [examples](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription) 
-and [API description](../../../client-api/data-subscriptions/creation/api-overview#update-subscription).  
+See [examples](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription) 
+and [API description](../../../client-api/data-subscriptions/creation/api-overview.mdx#update-subscription).  
 
-<TabItem value="something-something" label="update">
-<CodeBlock language="nodejs">
+<TabItem value="update" label="update">
+<CodeBlock language="js">
 {`const updateOptions = \{
     id: "<theSubscriptionId>",
     query: "<theSubscriptionQuery>"
@@ -476,8 +476,8 @@ await documentStore.subscriptions.update(updateOptions);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="update_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="update_syntax" label="update_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 update(options);
 update(options, database);
@@ -492,8 +492,8 @@ update(options, database);
 Active subscription connections established by workers can be dropped remotely from the client.  
 Once dropped, the worker will not attempt to reconnect to the server.
 
-<TabItem value="something-something" label="drop_connection">
-<CodeBlock language="nodejs">
+<TabItem value="drop_connection" label="drop_connection">
+<CodeBlock language="js">
 {`// Drop all connections to the subscription:
 // =========================================
 
@@ -518,8 +518,8 @@ await documentStore.subscriptions.dropConnection(worker);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="drop_connection_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="drop_connection_syntax" label="drop_connection_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 dropConnection(options);
 dropConnection(options, database);
@@ -535,14 +535,14 @@ dropSubscriptionWorker(worker, database);
 
 Get a list of all existing subscription tasks in the database.
 
-<TabItem value="something-something" label="get_subscriptions">
-<CodeBlock language="nodejs">
+<TabItem value="get_subscriptions" label="get_subscriptions">
+<CodeBlock language="js">
 {`const subscriptions = await documentStore.subscriptions.getSubscriptions(0, 10);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="get_subscriptions_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="get_subscriptions_syntax" label="get_subscriptions_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 getSubscriptions(start, take);
 getSubscriptions(start, take, database);
@@ -554,15 +554,15 @@ getSubscriptions(start, take, database);
 
 ## Get subscription state
 
-<TabItem value="something-something" label="get_state">
-<CodeBlock language="nodejs">
+<TabItem value="get_state" label="get_state">
+<CodeBlock language="js">
 {`const subscriptionState = 
     await documentStore.subscriptions.getSubscriptionState("subscriptionName");
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="get_state_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="get_state_syntax" label="get_state_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 getSubscriptionState(subscriptionName);
 getSubscriptionState(subscriptionName, database);

@@ -21,14 +21,14 @@ export const supportedLanguages = ["csharp", "java"];
 
 <Admonition type="note" title="Note">
 
-Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions) 
+Use the methods described in this page to customize the [conventions](../../client-api/configuration/conventions.mdx) 
 by which entities are serialized as they are sent by the client to the server.  
 
 * In this page:  
-  * [CustomizeJsonSerializer](../../client-api/configuration/serialization#customizejsonserializer)  
-  * [JsonContractResolver](../../client-api/configuration/serialization#jsoncontractresolver)  
-  * [BulkInsert.TrySerializeEntityToJsonStream](../../client-api/configuration/serialization#bulkinsert.tryserializeentitytojsonstream)  
-  * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../client-api/configuration/serialization#ignorebyrefmembers-and-ignoreunsafemembers)  
+  * [CustomizeJsonSerializer](../../client-api/configuration/serialization.mdx#customizejsonserializer)  
+  * [JsonContractResolver](../../client-api/configuration/serialization.mdx#jsoncontractresolver)  
+  * [BulkInsert.TrySerializeEntityToJsonStream](../../client-api/configuration/serialization.mdx#bulkinsert.tryserializeentitytojsonstream)  
+  * [IgnoreByRefMembers and IgnoreUnsafeMembers](../../client-api/configuration/serialization.mdx#ignorebyrefmembers-and-ignoreunsafemembers)  
 
 </Admonition>
 ## Serialization
@@ -40,7 +40,7 @@ by which entities are serialized as they are sent by the client to the server.
 * Use the `CustomizeJsonSerializer ` convention to modify `JsonSerializer` 
   by registering a serialization customization action.  
 
-<TabItem value="something" label="customize_json_serializer">
+<TabItem value="customize_json_serializer" label="customize_json_serializer">
 <CodeBlock language="csharp">
 {`Serialization = new NewtonsoftJsonSerializationConventions
 \{
@@ -57,7 +57,7 @@ by which entities are serialized as they are sent by the client to the server.
 * Change this behavior by providing your own implementation of the `IContractResolver` 
   interface.  
 
-<TabItem value="something" label="json_contract_resolver">
+<TabItem value="json_contract_resolver" label="json_contract_resolver">
 <CodeBlock language="csharp">
 {`Serialization = new NewtonsoftJsonSerializationConventions
 \{
@@ -67,7 +67,7 @@ by which entities are serialized as they are sent by the client to the server.
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="custom_json_contract_resolver">
+<TabItem value="custom_json_contract_resolver" label="custom_json_contract_resolver">
 <CodeBlock language="csharp">
 {`public class CustomJsonContractResolver : IContractResolver
 \{
@@ -83,7 +83,7 @@ by which entities are serialized as they are sent by the client to the server.
 * You can also customize the behavior of the **default resolver** by inheriting 
   from `DefaultRavenContractResolver` and overriding specific methods.  
 
-<TabItem value="something" label="custom_json_contract_resolver_based_on_default">
+<TabItem value="custom_json_contract_resolver_based_on_default" label="custom_json_contract_resolver_based_on_default">
 <CodeBlock language="csharp">
 {`public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
 \{
@@ -102,11 +102,11 @@ by which entities are serialized as they are sent by the client to the server.
 
 ## BulkInsert.TrySerializeEntityToJsonStream
 
-* Adjust [Bulk Insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation) 
+* Adjust [Bulk Insert](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation.mdx) 
   behavior by using the `TrySerializeEntityToJsonStream` convention to register a custom 
   serialization implementation.  
 
-<TabItem value="something" label="TrySerializeEntityToJsonStream">
+<TabItem value="TrySerializeEntityToJsonStream" label="TrySerializeEntityToJsonStream">
 <CodeBlock language="csharp">
 {`BulkInsert =
 \{
@@ -119,7 +119,7 @@ by which entities are serialized as they are sent by the client to the server.
 ## IgnoreByRefMembers and IgnoreUnsafeMembers
 
 * By default, if you try to store an entity with `ref` or unsafe members, 
-  the Client will throw an exception when [`session.SaveChanges()`](../../client-api/session/saving-changes) 
+  the Client will throw an exception when [`session.SaveChanges()`](../../client-api/session/saving-changes.mdx) 
   is called.  
 * Set the `IgnoreByRefMembers` convention to `true` to simply ignore `ref` 
   members when an attempt to store an entity with `ref` members is made.  
@@ -143,7 +143,7 @@ by which entities are serialized as they are sent by the client to the server.
 
 If you need to customize Jackson `ObjectMapper` object used by the client when sending entities to the server you can access and modify its instance:
 
-<TabItem value="something-something" label="customize_object_mapper">
+<TabItem value="customize_object_mapper" label="customize_object_mapper">
 <CodeBlock language="java">
 {`ObjectMapper entityMapper = conventions.getEntityMapper();
 entityMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
@@ -154,7 +154,7 @@ entityMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
 ## Numbers (de)serialization
 
 RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double` etc.  
-Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
+Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb.mdx) to numbers in that range.  
 Other number types like `BigInteger` must be treated using custom (de)serialization.
 
 

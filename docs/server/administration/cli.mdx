@@ -22,25 +22,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page lists available CLI commands and explains their usage.  
 
 * In this page:  
-   * [`rvn`](../../server/administration/cli#rvn)  
-   * [`info`](../../server/administration/cli#info)  
-   * [`stats`](../../server/administration/cli#stats)  
-   * [`log`](../../server/administration/cli#log)  
-   * [`gc`](../../server/administration/cli#gc)  
-   * [`shutdown | q`](../../server/administration/cli#shutdown-|-q)  
-   * [`restartServer`, `resetServer`](../../server/administration/cli#restartserver,-resetserver)  
-   * [`script`](../../server/administration/cli#script)  
-   * [`generateClientCert`](../../server/administration/cli#generateclientcert)  
-   * [`trustServerCert`](../../server/administration/cli#trustservercert)  
-   * [`trustClientCert`](../../server/administration/cli#trustclientcert)  
-   * [`replaceClusterCert`](../../server/administration/cli#replaceclustercert)  
-   * [`clear`](../../server/administration/cli#clear)  
-   * [`prompt`](../../server/administration/cli#prompt)  
-   * [`logout`](../../server/administration/cli#logout)  
-   * [`logo`](../../server/administration/cli#logo)  
-   * [`help`](../../server/administration/cli#help)  
-   * [`lowMem`](../../server/administration/cli#lowmem)  
-   * [`timer`](../../server/administration/cli#timer)  
+   * [`rvn`](../../server/administration/cli.mdx#rvn)  
+   * [`info`](../../server/administration/cli.mdx#info)  
+   * [`stats`](../../server/administration/cli.mdx#stats)  
+   * [`log`](../../server/administration/cli.mdx#log)  
+   * [`gc`](../../server/administration/cli.mdx#gc)  
+   * [`shutdown | q`](../../server/administration/cli.mdx#shutdown-|-q)  
+   * [`restartServer`, `resetServer`](../../server/administration/cli.mdx#restartserver,-resetserver)  
+   * [`script`](../../server/administration/cli.mdx#script)  
+   * [`generateClientCert`](../../server/administration/cli.mdx#generateclientcert)  
+   * [`trustServerCert`](../../server/administration/cli.mdx#trustservercert)  
+   * [`trustClientCert`](../../server/administration/cli.mdx#trustclientcert)  
+   * [`replaceClusterCert`](../../server/administration/cli.mdx#replaceclustercert)  
+   * [`clear`](../../server/administration/cli.mdx#clear)  
+   * [`prompt`](../../server/administration/cli.mdx#prompt)  
+   * [`logout`](../../server/administration/cli.mdx#logout)  
+   * [`logo`](../../server/administration/cli.mdx#logo)  
+   * [`help`](../../server/administration/cli.mdx#help)  
+   * [`lowMem`](../../server/administration/cli.mdx#lowmem)  
+   * [`timer`](../../server/administration/cli.mdx#timer)  
 
 </Admonition>
 ## `rvn`
@@ -51,7 +51,7 @@ It is possible to access the CLI through a provided `rvn` (`rvn.exe` in Windows)
 tool included in each distribution package. 
 
 The process is as follows:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`rvn admin-channel [RavenDB process ID]
 `}
@@ -73,7 +73,7 @@ The `rvn` executable can be found in the distribution package under **Server** d
 Prints basic information to the console, including build version information, process ID (PID), 
 bitness, and system hardware information.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> info
   Node A in cluster eabe7a24-054a-48ef-9391-7f7b7707969d
@@ -93,7 +93,7 @@ Online display of memory usage by RavenDB. You can separate into Working Set, Na
 Managed Mem, and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware 
 not to hit Ctrl+C / Break to avoid an unintended shutdown of the server).
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> stats
   Showing stats, press any key to close...
@@ -109,7 +109,7 @@ not to hit Ctrl+C / Break to avoid an unintended shutdown of the server).
 
 Enable (or disable) online log printing to the console.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`log [on|off] [http-]<on|off> [info|debug] [no-console]
 `}
@@ -119,14 +119,14 @@ Enable (or disable) online log printing to the console.
 | Parameters | Description |
 | ------------- | ------------- |
 | `http-on` or `http-off` | Enables or disables HTTP requests log information |
-| `info`, `debug` | Sets logging to the requested [level](../../server/configuration/logs-configuration#logs.minlevel) |
+| `info`, `debug` | Sets logging to the requested [level](../../server/configuration/logs-configuration.mdx#logs.minlevel) |
 | `on` or `off` | Enables or disables log printing |
 | `no-console` | Disables logging to console |
 
 <Admonition type="note" title="Examples" id="examples" href="#examples">
 
 Print to log:
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> log on
 `}
@@ -134,7 +134,7 @@ Print to log:
 </TabItem>
 
 Set logging to `debug` level:
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> log debug
 `}
@@ -142,7 +142,7 @@ Set logging to `debug` level:
 </TabItem>
 
 Set logging to `debug` level but do not log to the console:
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> log debug no-console
 `}
@@ -163,14 +163,14 @@ log output in the service log.
 Force Garbage Collection to a specific generation (0, 1 or 2).  
 See [GC.Collect Method](https://docs.microsoft.com/en-us/dotnet/api/system.gc.collect?redirectedfrom=MSDN&view=netframework-4.7.2#System_GC_Collect_System_Int32_)
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`gc <0|1|2>
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> gc 2
 Before collecting, managed memory used: 48.92 MBytes
@@ -186,7 +186,7 @@ After collecting, managed memory used:  10.09 MBytes at 0.0078154 Seconds
 
 Gracefully shuts down the Server.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> q
 
@@ -207,7 +207,7 @@ Shutdown completed
 
 Gracefully shut down and restart the Server.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> restartServer
 
@@ -229,7 +229,7 @@ ravendb>
 
 The two commands are equivalent.  
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> resetServer
 
@@ -256,14 +256,14 @@ ravendb>
 
 Executes Admin JavaScript patches.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`script <server|database> [database name]
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> script database ProductionDB
 
@@ -288,7 +288,7 @@ Running scripts can harm the database beyond recovery. Use with care.
 
 Generate a new trusted client certificate with `ClusterAdmin` security clearance.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> generateClientCert <name> <path to output folder> <number of months until expiration> [password]
 `}
@@ -309,7 +309,7 @@ Generate a new trusted client certificate with `ClusterAdmin` security clearance
 Register a server certificate of another node to be trusted on this server.  
 This is required when building a cluster where each node has a different certificate.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> trustServerCert <name> <path to pfx> [password]
 `}
@@ -328,7 +328,7 @@ This is required when building a cluster where each node has a different certifi
 
 Register a client certificate to be trusted on this server with `ClusterAdmin` security clearance.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> trustClientCert <name> <path to pfx> [password]
 `}
@@ -352,7 +352,7 @@ even if some nodes are not responding. In that case, you will have to manually r
 certificate in those nodes. Use with care. 
 </Admonition>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> replaceClusterCert [-replaceImmediately] <name> <path to pfx> [password]
 `}
@@ -374,7 +374,7 @@ certificate in those nodes. Use with care.
 
 Clears the screen.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> clear
 `}
@@ -389,7 +389,7 @@ For usage type **helpPrompt**.
 
 Can be used to show memory information used by **stats** while using `rvn`.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> prompt %M
 `}
@@ -402,7 +402,7 @@ Can be used to show memory information used by **stats** while using `rvn`.
 
 Exits CLI back to the terminal (with `rvn admin-channel` use only).
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> logout
 `}
@@ -415,7 +415,7 @@ Exits CLI back to the terminal (with `rvn admin-channel` use only).
 
 Prints initial logo.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> logo
 `}
@@ -428,7 +428,7 @@ Prints initial logo.
 
 Display help screen.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> help
 `}
@@ -447,7 +447,7 @@ Debugging command. Not intended for normal use.
 
 Simulates low memory state in RavenDB.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> lowMem
 `}
@@ -464,7 +464,7 @@ Debugging command. Not intended for normal use.
 
 Enable (or disable) candidate selection timer (Rachis), or fires timeout immediately.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`timer <on|off|fire>
 `}

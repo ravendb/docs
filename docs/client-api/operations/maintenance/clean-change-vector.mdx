@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Clean Change Vector
 <Admonition type="note" title="Note">
 
-* A database's [change vector](../../../server/clustering/replication/change-vector) contains entries from each instance of the database 
+* A database's [change vector](../../../server/clustering/replication/change-vector.mdx) contains entries from each instance of the database 
 in the database group. However, even when an instance no longer exists (because it was removed or replaced) its entry will remain in the 
 database change vector. These entries can build up over time, leading to longer change vectors that take up unnecessary space.  
 
@@ -28,7 +28,7 @@ change vector will not include the obsolete entries.
 </Admonition>
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public UpdateUnusedDatabasesOperation(string database, HashSet<string> unusedDatabaseIds)
 `}
@@ -44,10 +44,10 @@ change vector will not include the obsolete entries.
 
 ## Example
 
-In the 'General Stats' view in the [management studio](../../../studio/overview), you can see your database's current change vector (it's 
+In the 'General Stats' view in the [management studio](../../../studio/overview.mdx), you can see your database's current change vector (it's 
 the same as the change vector of the database's most recently updated/created document).  
 
-Below we see the change vector of an [example database](../../../start/about-examples) "NorthWind". It includes three entries: one of the 
+Below we see the change vector of an [example database](../../../start/about-examples.mdx) "NorthWind". It includes three entries: one of the 
 NorthWind instance currently housed on cluster node A (whose ID begins with `N79J...`), and two of instances that were also previously 
 housed on node A but which no longer exist.  
 

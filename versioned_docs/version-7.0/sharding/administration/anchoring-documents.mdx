@@ -15,19 +15,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Anchoring Documents to a Bucket
 <Admonition type="note" title="Note">
 
-* By default, RavenDB selects the bucket for storing a document based on a [hash code](../../sharding/overview#buckets-population) derived from the entire document ID.
+* By default, RavenDB selects the bucket for storing a document based on a [hash code](../../sharding/overview.mdx#buckets-population) derived from the entire document ID.
   To give you more control over the document's bucket selection, RavenDB allows you to **Anchor documents to a bucket**,
   which ensures that multiple documents **share the same bucket**.
 
 * Making documents share a bucket is useful when, for example, the documents are related and are expected to be frequently loaded in the same transaction.  
 
-* To gain control over which specific shard a document will reside in, see [sharding by prefix](../../sharding/administration/sharding-by-prefix). 
+* To gain control over which specific shard a document will reside in, see [sharding by prefix](../../sharding/administration/sharding-by-prefix.mdx). 
 
 * In this page:  
-  * [Overview](../../sharding/administration/anchoring-documents#overview)  
-  * [Anchor multiple documents to the same bucket as a specific document](../../sharding/administration/anchoring-documents#anchor-multiple-documents-to-the-same-bucket-as-a-specific-document)  
-  * [Anchor multiple documents using a common suffix](../../sharding/administration/anchoring-documents#anchor-multiple-documents-using-a-common-suffix)  
-  * [Examples](../../sharding/administration/anchoring-documents#examples)  
+  * [Overview](../../sharding/administration/anchoring-documents.mdx#overview)  
+  * [Anchor multiple documents to the same bucket as a specific document](../../sharding/administration/anchoring-documents.mdx#anchor-multiple-documents-to-the-same-bucket-as-a-specific-document)  
+  * [Anchor multiple documents using a common suffix](../../sharding/administration/anchoring-documents.mdx#anchor-multiple-documents-using-a-common-suffix)  
+  * [Examples](../../sharding/administration/anchoring-documents.mdx#examples)  
   
 </Admonition>
 ## Overview
@@ -86,7 +86,7 @@ that cannot be split and resharded if needed to balance the database.
 Explicitly store a document with another document's name as a suffix, to keep both documents in the same bucket.  
 In this case, keep an invoice in the same bucket as its order.  
 
-<TabItem value="something" label="storeInvoiceInOrderBucketExplicitNaming">
+<TabItem value="storeInvoiceInOrderBucketExplicitNaming" label="storeInvoiceInOrderBucketExplicitNaming">
 <CodeBlock language="csharp">
 {`// The invoice will be stored with the order ID as a suffix
 session.Store(invoice, invoice.Id + "$" + order.Id);
@@ -100,7 +100,7 @@ Define and use a naming convention for invoices.
 Whenever an invoice is stored, the $ symbol and an order ID are automatically added to the invoice's ID  
 to assure that invoices and orders are kept in the same bucket.
 
-<TabItem value="something" label="storeInvoiceInOrderBucketNamingConvention">
+<TabItem value="storeInvoiceInOrderBucketNamingConvention" label="storeInvoiceInOrderBucketNamingConvention">
 <CodeBlock language="csharp">
 {`// Store an invoice document in the same bucket as its order document
 

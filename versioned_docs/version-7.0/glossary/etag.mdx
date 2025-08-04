@@ -27,7 +27,7 @@ Etags are local to each node and are meaningless in the context of the cluster.
 Both etags and change vectors are used to track document changes. Etags have meaning local to cluster nodes, and change vectors have meaning cluster-wide.
 
 * An etag is only incremented when a document is modified locally
-* [Change Vector](../server/clustering/replication/change-vector) may be changed when a document is modified locally or replicated
+* [Change Vector](../server/clustering/replication/change-vector.mdx) may be changed when a document is modified locally or replicated
 
 ### Etags In-Depth
 
@@ -40,7 +40,7 @@ Etags are used to track changes to the following:
 * Cluster Topology
 * ETL
 
-For developing with the RavenDB client API, etags are not needed. Etags are used as a "building block" of a [Change Vector](../server/clustering/replication/change-vector).
+For developing with the RavenDB client API, etags are not needed. Etags are used as a "building block" of a [Change Vector](../server/clustering/replication/change-vector.mdx).
 
 ### Etags and Clustering
 

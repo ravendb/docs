@@ -22,7 +22,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <Admonition type="note" title="Note">
 
 * RavenDB's Client API is structured in layers.  
-  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work),  
+  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store.mdx) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
   which handle most common database tasks like loading, saving, and querying documents.
 
 * Beneath this high-level interface are Operations and Commands:
@@ -32,7 +32,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
         * Operations provide management functionality outside the session's context,  
           like creating a database, performing bulk actions, or managing server-wide configurations.
 
-        * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations).
+        * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations.mdx).
 
     * **Commands**:
 
@@ -45,23 +45,23 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
         * Commands are responsible for sending the appropriate request to the server using a `Request Executor`,  
           and parsing the server's response.
 
-        * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-store)
-          or the [Session's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-session),  
+        * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-store)
+          or the [Session's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-session),  
           regardless of whether the command is session-related or not.
 
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
-    * [Execute command - using the Store Request Executor](../../client-api/commands/overview#execute-command---using-the-store-request-executor)
-    * [Execute command - using the Session Request Executor](../../client-api/commands/overview#execute-command---using-the-session-request-executor)
-    * [Available commands](../../client-api/commands/overview#available-commands)
-    * [Syntax](../../client-api/commands/overview#syntax)
+    * [Execute command - using the Store Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-store-request-executor)
+    * [Execute command - using the Session Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-session-request-executor)
+    * [Available commands](../../client-api/commands/overview.mdx#available-commands)
+    * [Syntax](../../client-api/commands/overview.mdx#syntax)
 
 </Admonition>
 ## Execute command - using the Store Request Executor
 
 This example shows how to execute the low-level `CreateSubscriptionCommand` via the **Store**.  
-(For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples)).
+(For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples.mdx)).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Execute_command" label="Execute_command">
@@ -115,7 +115,7 @@ using (store.GetRequestExecutor().ContextPool.AllocateOperationContext(out var c
 ## Execute command - using the Session Request Executor
 
 This example shows how to execute the low-level `GetDocumentsCommand` via the **Session**.  
-(For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities)).
+(For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities.mdx)).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Execute_command" label="Execute_command">
@@ -172,10 +172,10 @@ using (var asyncSession = store.OpenAsyncSession())
 </Tabs>
 
 * Note that the transaction created for the HTTP request when executing the command  
-  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes) method,  
+  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes.mdx) method,  
   even if both are called within the same code block.
 
-* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support).
+* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support.mdx).
 
 
 
@@ -185,14 +185,14 @@ using (var asyncSession = store.OpenAsyncSession())
 
     * ConditionalGetDocumentsCommand  
     * CreateSubscriptionCommand  
-    * [DeleteDocumentCommand](../../client-api/commands/documents/delete)  
+    * [DeleteDocumentCommand](../../client-api/commands/documents/delete.mdx)  
     * DeleteSubscriptionCommand  
     * DropSubscriptionConnectionCommand  
     * ExplainQueryCommand  
     * GetClusterTopologyCommand  
     * GetConflictsCommand  
     * GetDatabaseTopologyCommand  
-    * [GetDocumentsCommand](../../client-api/commands/documents/get)  
+    * [GetDocumentsCommand](../../client-api/commands/documents/get.mdx)  
     * GetIdentitiesCommand  
     * GetNextOperationIdCommand  
     * GetNodeInfoCommand  
@@ -212,19 +212,19 @@ using (var asyncSession = store.OpenAsyncSession())
     * MultiGetCommand  
     * NextHiLoCommand  
     * NextIdentityForCommand  
-    * [PutDocumentCommand](../../client-api/commands/documents/put)  
+    * [PutDocumentCommand](../../client-api/commands/documents/put.mdx)  
     * PutSecretKeyCommand  
     * QueryCommand  
     * QueryStreamCommand  
     * SeedIdentityForCommand
-    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)  
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)  
     * WaitForRaftIndexCommand  
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="execute_syntax">
+<TabItem value="execute_syntax" label="execute_syntax">
 <CodeBlock language="csharp">
 {`void Execute<TResult>(RavenCommand<TResult> command,
         JsonOperationContext context,
@@ -247,7 +247,7 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
 <Admonition type="note" title="Note">
 
 * RavenDB's Client API is structured in layers.  
-  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work),  
+  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store.mdx) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
   which handle most common database tasks like loading, saving, and querying documents.
 
 * Beneath this high-level interface are Operations and Commands:
@@ -257,7 +257,7 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
      * Operations provide management functionality outside the session's context,  
        like creating a database, performing bulk actions, or managing server-wide configurations.
      
-     * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations).
+     * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations.mdx).
 
    * **Commands**:  
 
@@ -276,16 +276,16 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
-    * [Examples](../../client-api/commands/overview#examples)  
-    * [Available commands](../../client-api/commands/overview#available-commands)  
-    * [Syntax](../../client-api/commands/overview#syntax)  
+    * [Examples](../../client-api/commands/overview.mdx#examples)  
+    * [Available commands](../../client-api/commands/overview.mdx#available-commands)  
+    * [Syntax](../../client-api/commands/overview.mdx#syntax)  
 
 </Admonition>
 ## Examples
 
 #### GetDocumentsCommand
 
-<TabItem value="something-something" label="commands_1">
+<TabItem value="commands_1" label="commands_1">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     GetDocumentsCommand command = new GetDocumentsCommand("orders/1-A", null, false);
@@ -298,7 +298,7 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
 
 #### DeleteDocumentCommand
 
-<TabItem value="something-something" label="commands_2">
+<TabItem value="commands_2" label="commands_2">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
@@ -315,14 +315,14 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
 * **The Following low-level commands are available**:
     * ConditionalGetDocumentsCommand
     * CreateSubscriptionCommand
-    * [DeleteDocumentCommand](../../client-api/commands/documents/delete)
+    * [DeleteDocumentCommand](../../client-api/commands/documents/delete.mdx)
     * DeleteSubscriptionCommand
     * DropSubscriptionConnectionCommand
     * ExplainQueryCommand
     * GetClusterTopologyCommand
     * GetConflictsCommand
     * GetDatabaseTopologyCommand
-    * [GetDocumentsCommand](../../client-api/commands/documents/get)
+    * [GetDocumentsCommand](../../client-api/commands/documents/get.mdx)
     * GetIdentitiesCommand
     * GetNextOperationIdCommand
     * GetNodeInfoCommand
@@ -342,19 +342,19 @@ Task ExecuteAsync<TResult>(RavenCommand<TResult> command,
     * MultiGetCommand
     * NextHiLoCommand
     * NextIdentityForCommand
-    * [PutDocumentCommand](../../client-api/commands/documents/put)
+    * [PutDocumentCommand](../../client-api/commands/documents/put.mdx)
     * PutSecretKeyCommand
     * QueryCommand
     * QueryStreamCommand
     * SeedIdentityForCommand
-    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)
     * WaitForRaftIndexCommand
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="java">
 {`public <TResult> void execute(RavenCommand<TResult> command);
 
@@ -372,7 +372,7 @@ public <TResult> void execute(RavenCommand<TResult> command, SessionInfo session
 <Admonition type="note" title="Note">
 
 * RavenDB's Client API is structured in layers.  
-  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work),  
+  At the highest layer, you interact with the [document store](../../client-api/what-is-a-document-store.mdx) and the [document session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx),  
   which handle most common database tasks like loading, saving, and querying documents.
 
 * Beneath this high-level interface are Operations and Commands:
@@ -382,7 +382,7 @@ public <TResult> void execute(RavenCommand<TResult> command, SessionInfo session
         * Operations provide management functionality outside the session's context,  
           like creating a database, performing bulk actions, or managing server-wide configurations.
 
-        * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations).
+        * Learn more about Operations in [what are Operations](../../client-api/operations/what-are-operations.mdx).
 
     * **Commands**:
 
@@ -395,26 +395,26 @@ public <TResult> void execute(RavenCommand<TResult> command, SessionInfo session
         * Commands are responsible for sending the appropriate request to the server using a `Request Executor`,  
           and parsing the server's response.
 
-      * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-store)
-        or the [Session's _Request Executor_](../../client-api/commands/overview#execute-command---using-the-session),  
+      * All commands can be executed using either the [Store's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-store)
+        or the [Session's _Request Executor_](../../client-api/commands/overview.mdx#execute-command---using-the-session),  
         regardless of whether the command is session-related or not.
 
 * This layered structure lets you work at any level, depending on your needs.
 
 * In this page:
-    * [Execute command - using the Store Request Executor](../../client-api/commands/overview#execute-command---using-the-store-request-executor)
-    * [Execute command - using the Session Request Executor](../../client-api/commands/overview#execute-command---using-the-session-request-executor)
-    * [Available commands](../../client-api/commands/overview#available-commands)
-    * [Syntax](../../client-api/commands/overview#syntax)
+    * [Execute command - using the Store Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-store-request-executor)
+    * [Execute command - using the Session Request Executor](../../client-api/commands/overview.mdx#execute-command---using-the-session-request-executor)
+    * [Available commands](../../client-api/commands/overview.mdx#available-commands)
+    * [Syntax](../../client-api/commands/overview.mdx#syntax)
 
 </Admonition>
 ## Execute command - using the Store Request Executor
 
 This example shows how to execute the low-level `CreateSubscriptionCommand` via the **Store**.  
-(For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples)).
+(For examples of creating a subscription using higher-level methods, see [subscription creation examples](../../client-api/data-subscriptions/creation/examples.mdx)).
 
-<TabItem value="something-something" label="execute_1">
-<CodeBlock language="nodejs">
+<TabItem value="execute_1" label="execute_1">
+<CodeBlock language="js">
 {`// Define a command
 const cmd = new CreateSubscriptionCommand(\{
     name: "Orders subscription",
@@ -433,10 +433,10 @@ await documentStore.getRequestExecutor().execute(cmd);
 ## Execute command - using the Session Request Executor
 
 This example shows how to execute the low-level `GetDocumentsCommand` via the **Session**.  
-(For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities)).
+(For loading a document using higher-level methods, see [loading entities](../../client-api/session/loading-entities.mdx)).
 
-<TabItem value="something-something" label="execute_2">
-<CodeBlock language="nodejs">
+<TabItem value="execute_2" label="execute_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Define a command
@@ -455,10 +455,10 @@ const orderedAt = order.OrderedAt;
 </TabItem>
 
 * Note that the transaction created for the HTTP request when executing the command  
-  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes) method,  
+  is separate from the transaction initiated by the session's [SaveChanges](../../client-api/session/saving-changes.mdx) method,  
   even if both are called within the same code block.
 
-* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support).
+* Learn more about transactions in RavenDB in [Transaction support](../../client-api/faq/transaction-support.mdx).
 
 
 
@@ -467,14 +467,14 @@ const orderedAt = order.OrderedAt;
 * **The Following low-level commands are available**:
     * ConditionalGetDocumentsCommand
     * CreateSubscriptionCommand
-    * [DeleteDocumentCommand](../../client-api/commands/documents/delete)
+    * [DeleteDocumentCommand](../../client-api/commands/documents/delete.mdx)
     * DeleteSubscriptionCommand
     * DropSubscriptionConnectionCommand
     * ExplainQueryCommand
     * GetClusterTopologyCommand
     * GetConflictsCommand
     * GetDatabaseTopologyCommand
-    * [GetDocumentsCommand](../../client-api/commands/documents/get)
+    * [GetDocumentsCommand](../../client-api/commands/documents/get.mdx)
     * GetIdentitiesCommand
     * GetNextOperationIdCommand
     * GetNodeInfoCommand
@@ -494,20 +494,20 @@ const orderedAt = order.OrderedAt;
     * MultiGetCommand
     * NextHiLoCommand
     * NextIdentityForCommand
-    * [PutDocumentCommand](../../client-api/commands/documents/put)
+    * [PutDocumentCommand](../../client-api/commands/documents/put.mdx)
     * PutSecretKeyCommand
     * QueryCommand
     * QueryStreamCommand
     * SeedIdentityForCommand
-    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+    * [SingleNodeBatchCommand](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx)
     * WaitForRaftIndexCommand
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="execute_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="execute_syntax" label="execute_syntax">
+<CodeBlock language="js">
 {`execute(command);
 execute(command, sessionInfo);
 execute(command, sessionInfo, executeOptions);

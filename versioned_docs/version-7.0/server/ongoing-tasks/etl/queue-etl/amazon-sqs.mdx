@@ -29,26 +29,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="info" title="Info">
 This article focuses on the creation of an Amazon SQS ETL task using the Client API.  
-To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl).  
-For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).
+To define an Amazon SQS ETL task from Studio, see [Studio: Amazon SQS ETL Task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx).  
+For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 </Admonition>
 
 * In this page:  
-  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#ravendb-etl-and-amazon-sqs)  
-  * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#queue-methods)  
-      * [Standard queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#standard-queueing)  
-      * [FIFO queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#fifo-queueing)  
-      * [Caution: ETL message size -vs- Queue message size](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#caution-etl-message-size--vs--queue-message-size)  
-  * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-connection-string)  
-      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#authentication-methods)  
-      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#example)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#syntax)
-  * [Add an Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#add-an-amazon-sqs-etl-task)  
-      * [Example: Add SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#example-add-sqs-etl-task)  
-      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#delete-processed-documents)  
-      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#syntax-1)
-  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-transformation-script)
-      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-loadto-method)  
+  * [RavenDB ETL and Amazon SQS](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#ravendb-etl-and-amazon-sqs)  
+  * [Queue methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#queue-methods)  
+      * [Standard queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#standard-queueing)  
+      * [FIFO queueing](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#fifo-queueing)  
+      * [Caution: ETL message size -vs- Queue message size](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#caution-etl-message-size--vs--queue-message-size)  
+  * [Add an Amazon SQS connection string](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#add-an-amazon-sqs-connection-string)  
+      * [Authentication methods](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#authentication-methods)  
+      * [Example](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#example)  
+      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#syntax)
+  * [Add an Amazon SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#add-an-amazon-sqs-etl-task)  
+      * [Example: Add SQS ETL task](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#example-add-sqs-etl-task)  
+      * [Delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#delete-processed-documents)  
+      * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#syntax-1)
+  * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-transformation-script)
+      * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-loadto-method)  
 
 </Admonition>
 ## RavenDB ETL and Amazon SQS
@@ -91,8 +91,8 @@ the delivery of each message exactly once, in exchange for a much slower transfe
 than that of the Standard Queueing method.  
 
 To load messages to a FIFO queue, add `.fifo` to the queue name while calling the 
-transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#the-loadto-method):  
-<TabItem value="something" label="sqs_fifo">
+transformation script's [loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#the-loadto-method):  
+<TabItem value="sqs_fifo" label="sqs_fifo">
 <CodeBlock language="csharp">
 {`Script = @"// Create an orderData object
            // ==========================
@@ -156,7 +156,7 @@ by properties of the connection string it uses, as shown in the example below.
 
 #### Example
 
-<TabItem value="something" label="add_sqs_connection_string">
+<TabItem value="add_sqs_connection_string" label="add_sqs_connection_string">
 <CodeBlock language="csharp">
 {`// Prepare the connection string:
 // ==============================
@@ -205,7 +205,7 @@ var res = store.Maintenance.Send(
    * `RegionName`  
 #### Syntax
 
-<TabItem value="something" label="amazon_sqs_con_str_settings">
+<TabItem value="amazon_sqs_con_str_settings" label="amazon_sqs_con_str_settings">
 <CodeBlock language="csharp">
 {`public class AmazonSqsConnectionSettings
 \{
@@ -221,7 +221,7 @@ public class Basic
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="queue_connection_string">
+<TabItem value="queue_connection_string" label="queue_connection_string">
 <CodeBlock language="csharp">
 {`public class QueueConnectionString : ConnectionString
 \{
@@ -243,7 +243,7 @@ public class Basic
 `}
 </CodeBlock>
 </TabItem> 
-<TabItem value="something" label="queue_broker_type">
+<TabItem value="queue_broker_type" label="queue_broker_type">
 <CodeBlock language="csharp">
 {`public enum QueueBrokerType
 \{
@@ -269,7 +269,7 @@ public class Basic
   * Load the `orderData` object to the "OrdersQueue" queue on an SQS destination.  
 * For more details about the script and the `loadTo` method, see the transromation script section below.  
 
-<TabItem value="something" label="add_amazon_sqs_etl_task">
+<TabItem value="add_amazon_sqs_etl_task" label="add_amazon_sqs_etl_task">
 <CodeBlock language="csharp">
 {`// Define a transformation script for the task: 
 // ============================================
@@ -333,7 +333,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 * To do this, set the optional `Queues` property in the ETL configuration with the list of SQS queues for which 
   processed documents are to be deleted.
 
-<TabItem value="something" label="sqs_delete_documents">
+<TabItem value="sqs_delete_documents" label="sqs_delete_documents">
 <CodeBlock language="csharp">
 {`var etlTask = new QueueEtlConfiguration()
 \{
@@ -366,7 +366,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 </TabItem>
 #### Syntax
 
-<TabItem value="something" label="etl_configuration">
+<TabItem value="etl_configuration" label="etl_configuration">
 <CodeBlock language="csharp">
 {`public class QueueEtlConfiguration
 \{
@@ -411,7 +411,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of an Amazon SQS ETL script 
+The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of an Amazon SQS ETL script 
 are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which SQS Queue to **load** the data to.
@@ -421,7 +421,7 @@ To specify which SQS queue to load the data to, use either of the following meth
 The two methods are equivalent, offering alternative syntax:
 
 * **`loadTo&lt;QueueName&gt;(obj, {attributes})`**  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`loadToOrdersQueue(orderData, \{
       Id: id(this),
@@ -436,7 +436,7 @@ The two methods are equivalent, offering alternative syntax:
       it is simply a string literal of the target's name.
 
 * **`loadTo('QueueName', obj, {attributes})`**  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`loadTo('OrdersQueue', orderData, \{
 Id: id(this),
@@ -451,7 +451,7 @@ Source: '/promotion-campaigns/summer-sale'
       like `'-'` and `'.'` in target names.  
       This is not possible when the `loadTo&lt;QueueName&gt;` syntax is used because including special 
       characters in the name of a JavaScript function makes it invalid.  
-    * To deliver messages to a [FIFO queue](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#fifo-queueing), 
+    * To deliver messages to a [FIFO queue](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#fifo-queueing), 
       use this format and add `.fifo` to the queue name.  
       `loadTo('QueueName.fifo', obj, {attributes})`
 
@@ -459,7 +459,7 @@ Source: '/promotion-campaigns/summer-sale'
    |----------------|--------|----------------------------------------------------------------------------------------------------------------------------------|
    | **QueueName**  | string | The name of the SQS Queue                                                                                                        |
    | **obj**        | object | The object to transfer                                                                                                           |
-   | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents) |
+   | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents) |
 
 For example, the following two calls, which load data to "OrdersQueue", are equivalent:
 
@@ -467,7 +467,7 @@ For example, the following two calls, which load data to "OrdersQueue", are equi
 * `loadTo('OrdersQueue', obj, {attributes})`
 The following is a sample script that processes documents from the Orders collection:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Create an orderData object
 // ==========================

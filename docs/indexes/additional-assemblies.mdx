@@ -25,24 +25,24 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Indexes can be enhanced with capabilities like [machine learning image recognition](https://ayende.com/blog/192001-B/using-machine-learning-with-ravendb) 
   or [full text searching in Office files](https://ayende.com/blog/192385-A/ravendb-5-1-features-searching-in-office-documents).  
 
-* This feature is similar to the [Additional Sources](../indexes/extending-indexes) feature, 
+* This feature is similar to the [Additional Sources](../indexes/extending-indexes.mdx) feature, 
   that can be used to add methods and classes to an index in the form of a file or pure text.  
   These two features can be used together: an index's Additional Sources code has access to 
   all of the index's Additional Assemblies.  
 
 * In this page:  
-   * [Syntax](../indexes/additional-assemblies#syntax)  
-   * [Examples](../indexes/additional-assemblies#examples)  
-       * [Basic Example](../indexes/additional-assemblies#basic-example)
-       * [Complex Example](../indexes/additional-assemblies#complex-example)
-       * [Pre-Release Packages](../indexes/additional-assemblies#pre-release-packages)
+   * [Syntax](../indexes/additional-assemblies.mdx#syntax)  
+   * [Examples](../indexes/additional-assemblies.mdx#examples)  
+       * [Basic Example](../indexes/additional-assemblies.mdx#basic-example)
+       * [Complex Example](../indexes/additional-assemblies.mdx#complex-example)
+       * [Pre-Release Packages](../indexes/additional-assemblies.mdx#pre-release-packages)
 
 </Admonition>
 ## Syntax
 
 Additional assemblies are defined using the `AdditionalAssembly` object.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AdditionalAssembly
 \{
@@ -72,7 +72,7 @@ Additional assemblies are defined using the `AdditionalAssembly` object.
 The `AdditionalAssembly`s are collected in `AdditionalAssemblies`, a property of 
 `IndexDefinition`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public HashSet<AdditionalAssembly> AdditionalAssemblies;
 `}
@@ -89,7 +89,7 @@ This index is able to use the method `GetFileName()` from the class `Path`
 because the namespace `System.IO` has been imported as an additional assembly. 
 It takes a `string` file path and retrieves just the file name and extension.  
 
-<TabItem value="something-something" label="simple_index">
+<TabItem value="simple_index" label="simple_index">
 <CodeBlock language="csharp">
 {`var runtimeindex = new IndexDefinition
 \{
@@ -117,7 +117,7 @@ This index uses a machine learning algorithm imported from NuGet that can
 recognize the contents of images and classify them with an appropriate tag. 
 These tags are then stored in the index just like any other term.  
 
-<TabItem value="something-something" label="complex_index">
+<TabItem value="complex_index" label="complex_index">
 <CodeBlock language="csharp">
 {`store.Maintenance.Send(new PutIndexesOperation(new IndexDefinition
 \{
@@ -167,7 +167,7 @@ These tags are then stored in the index just like any other term.
 
 Additional assemblies are allowed to include pre-release packages.
 
-<TabItem value="something-something" label="prerelease_assembly">
+<TabItem value="prerelease_assembly" label="prerelease_assembly">
 <CodeBlock language="csharp">
 {`AdditionalAssemblies = \{
     AdditionalAssembly.FromNuGet("FlexiMvvm.Common.PreRelease", "0.10.8-prerelease")

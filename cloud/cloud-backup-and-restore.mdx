@@ -15,26 +15,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Cloud: Backup And Restore
 <Admonition type="note" title="Note">
 
-* RavenDB cloud instances of the [Free](../cloud/cloud-instances#a-free-cloud-node) and 
-  [Production](../cloud/cloud-instances#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
+* RavenDB cloud instances of the [Free](../cloud/cloud-instances.mdx#a-free-cloud-node) and 
+  [Production](../cloud/cloud-instances.mdx#a-production-cloud-cluster) tiers are regularly and automatically backed up.  
 
 * You can also define custom backup tasks, as you would with an on-premises RavenDB server.  
 
-* [Development](../cloud/cloud-instances#a-development-cloud-server) products do **not** offer mandatory backup by RavenDB Cloud.  
+* [Development](../cloud/cloud-instances.mdx#a-development-cloud-server) products do **not** offer mandatory backup by RavenDB Cloud.  
   You **can** define custom backup tasks for them.  
 
 * In this page:  
-  * [The Mandatory-Backup Routine](../cloud/cloud-backup-and-restore#the-mandatory-backup-routine)  
-  * [Backup storage](../cloud/cloud-backup-and-restore#backup-storage)  
-  * [Charging For Backup storage](../cloud/cloud-backup-and-restore#charging-for-backup-storage)  
-  * [Backup Encryption](../cloud/cloud-backup-and-restore#backup-encryption)  
-  * [Creating a Custom Backup](../cloud/cloud-backup-and-restore#creating-a-custom-backup)  
-  * [Restore Mandatory-Backup Files](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files)  
+  * [The Mandatory-Backup Routine](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine)  
+  * [Backup storage](../cloud/cloud-backup-and-restore.mdx#backup-storage)  
+  * [Charging For Backup storage](../cloud/cloud-backup-and-restore.mdx#charging-for-backup-storage)  
+  * [Backup Encryption](../cloud/cloud-backup-and-restore.mdx#backup-encryption)  
+  * [Creating a Custom Backup](../cloud/cloud-backup-and-restore.mdx#creating-a-custom-backup)  
+  * [Restore Mandatory-Backup Files](../cloud/cloud-backup-and-restore.mdx#restore-mandatory-backup-files)  
 </Admonition>
 ## The Mandatory-Backup Routine
 
 Each database you create using a RavenDB cloud product, is assigned a mandatory-backup task that 
-stores a [full backup](../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental) 
+stores a [full backup](../7.1/server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental) 
 **every 24 hours** and an **incremental backup every 1 hour** with all the changes that took 
 place since the last backup.  
 
@@ -44,7 +44,7 @@ The mandatory backup process cannot be disabled.
 
 <Admonition type="info" title="Info">
 We keep your backup files for no less than 14 days.  
-You can [contact support](../cloud/portal/cloud-portal-support-tab) to prolong this period, but not reduce it.  
+You can [contact support](../cloud/portal/cloud-portal-support-tab.mdx) to prolong this period, but not reduce it.  
 </Admonition>
 #### The Backup Task
 
@@ -60,9 +60,9 @@ To view or activate the mandatory backup task, open your product's management st
 ## Backup storage
 
 #### Mandatory-Backup Storage
-Backups created by the [mandatory backup routine](../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) are stored in a RavenDB 
+Backups created by the [mandatory backup routine](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine) are stored in a RavenDB 
 cloud you have no direct access to.  
-You can [view and restore](../cloud/cloud-backup-and-restore#restore-mandatory-backup-files) them using your portal's Backups tab and the 
+You can [view and restore](../cloud/cloud-backup-and-restore.mdx#restore-mandatory-backup-files) them using your portal's Backups tab and the 
 management Studio.  
 
 <Admonition type="note" title="Note">
@@ -80,7 +80,7 @@ Upon backup geographically closest AWS S3 bucket is used for backup storage e.g.
 - if your RavenDB Cloud cluster has been created in the US, it backs up to AWS S3 buckets in the US.
 </Admonition>
 #### Custom-Backup Storage
-[Custom-backup](../cloud/cloud-backup-and-restore#creating-a-custom-backup) files can be kept using an Amazon service 
+[Custom-backup](../cloud/cloud-backup-and-restore.mdx#creating-a-custom-backup) files can be kept using an Amazon service 
 (S3 or S3 Glacier) or a Microsoft service (Azure).  
 We recommend that you use a backup method **local to your host cloud**. If your product is hosted by Amazon AWS for example, 
 you can store your backup files on an Amazon S3 bucket.  

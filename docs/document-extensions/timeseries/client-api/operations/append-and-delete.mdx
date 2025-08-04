@@ -24,17 +24,17 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * Use `TimeSeriesBatchOperation` to Append and Delete multiple time series entries on a single document.  
   A list of predefined Append and Delete actions will be executed in this single batch operation.
 
-* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation).
+* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation).
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations).
+* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-   * [Usage](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#usage)
-   * [Examples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#examples)
-       * [Append multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append-multiple-entries)
-       * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#delete-multiple-entries)
-       * [Append & Delete entries in the same batch](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch)
-   * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage)
+   * [Examples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#examples)
+       * [Append multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append-multiple-entries)
+       * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#delete-multiple-entries)
+       * [Append & Delete entries in the same batch](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch)
+   * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -55,7 +55,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 **Note**:
 
 * All the added Append and Delete operations will be executed in a single-node transaction.
-* Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch).
+* Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch).
 * Appending entries to a time series that doesn't yet exist yet will create the time series.
 * An exception will be thrown if the specified document does Not exist.
 
@@ -67,7 +67,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 In this example, we append four entries to a time series.
 
-<TabItem value="something" label="timeseries_region_Append-Using-TimeSeriesBatchOperation">
+<TabItem value="timeseries_region_Append-Using-TimeSeriesBatchOperation" label="timeseries_region_Append-Using-TimeSeriesBatchOperation">
 <CodeBlock language="csharp">
 {`var baseTime = DateTime.Today;
 
@@ -117,7 +117,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 In this example, we delete a range of two entries from a time series.  
 
-<TabItem value="something" label="timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation">
+<TabItem value="timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation" label="timeseries_region_Delete-Range-Using-TimeSeriesBatchOperation">
 <CodeBlock language="csharp">
 {`var baseTime = DateTime.Today;
 
@@ -145,7 +145,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 * Note: the Delete actions are executed **before** all Append actions.
 
-<TabItem value="something" label="timeseries_region-Append-and-Delete-TimeSeriesBatchOperation">
+<TabItem value="timeseries_region-Append-and-Delete-TimeSeriesBatchOperation" label="timeseries_region-Append-and-Delete-TimeSeriesBatchOperation">
 <CodeBlock language="csharp">
 {`var baseTime = DateTime.Today;
 
@@ -201,7 +201,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 #### `TimeSeriesBatchOperation`
 
-<TabItem value="something" label="TimeSeriesBatchOperation-definition">
+<TabItem value="TimeSeriesBatchOperation-definition" label="TimeSeriesBatchOperation-definition">
 <CodeBlock language="csharp">
 {`public TimeSeriesBatchOperation(string documentId, TimeSeriesOperation operation)
 `}
@@ -215,7 +215,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 #### `TimeSeriesOperation`  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class TimeSeriesOperation
 \{
@@ -235,7 +235,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 #### `AppendOperation`
     
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AppendOperation
 \{
@@ -255,7 +255,7 @@ store.Operations.Send(timeSeriesBatchOp);
 
 #### `DeleteOperation`
  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class DeleteOperation
 \{
@@ -281,17 +281,17 @@ store.Operations.Send(timeSeriesBatchOp);
 * Use `TimeSeriesBatchOperation` to Append and Delete multiple time series entries on a single document.  
   A list of predefined Append and Delete actions will be executed in this single batch operation.
 
-* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch#patchbyqueryoperation).
+* To Append and Delete multiple time series entries on multiple documents, see [PatchByQueryOperation](../../../../document-extensions/timeseries/client-api/operations/patch.mdx#patchbyqueryoperation).
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations).
+* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-   * [Usage](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#usage)
-   * [Examples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#examples)
-       * [Append multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append-multiple-entries)
-       * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#delete-multiple-entries)
-       * [Append & delete entries in the same batch](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch)
-   * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#usage)
+   * [Examples](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#examples)
+       * [Append multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append-multiple-entries)
+       * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#delete-multiple-entries)
+       * [Append & delete entries in the same batch](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch)
+   * [Syntax](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -312,7 +312,7 @@ store.Operations.Send(timeSeriesBatchOp);
 **Note**:
 
    * All the added Append and Delete operations will be executed in a single-node transaction.
-   * Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete#append--delete-entries-in-the-same-batch).
+   * Delete actions are executed **before** Append actions. As seen in [this example](../../../../document-extensions/timeseries/client-api/operations/append-and-delete.mdx#append--delete-entries-in-the-same-batch).
    * Appending entries to a time series that doesn't yet exist yet will create the time series.
    * An exception will be thrown if the specified document does Not exist.
 
@@ -324,8 +324,8 @@ store.Operations.Send(timeSeriesBatchOp);
 
 In this example, we append four entries to a time series.
 
-<TabItem value="something-something" label="operation_1">
-<CodeBlock language="nodejs">
+<TabItem value="operation_1" label="operation_1">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 // Define the Append operations:
@@ -362,8 +362,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 In this example, we delete a range of two entries from a time series.  
 
-<TabItem value="something-something" label="operation_2">
-<CodeBlock language="nodejs">
+<TabItem value="operation_2" label="operation_2">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 const from = new Date(baseTime.getTime() + 60_000 * 2);
@@ -392,8 +392,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 * Note: the Delete actions are executed **before** all Append actions.
 
-<TabItem value="something-something" label="operation_3">
-<CodeBlock language="nodejs">
+<TabItem value="operation_3" label="operation_3">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 // Define some Append operations:
@@ -442,8 +442,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 #### `TimeSeriesBatchOperation`
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`TimeSeriesBatchOperation(documentId, operation)
 `}
 </CodeBlock>
@@ -456,8 +456,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 #### `TimeSeriesOperation`  
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class TimeSeriesOperation \{
     name;
     append;
@@ -475,8 +475,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 #### `AppendOperation`
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class AppendOperation \{
     timestamp;
     values;
@@ -494,8 +494,8 @@ await documentStore.operations.send(timeSeriesBatchOp);
 
 #### `DeleteOperation`
 
-<TabItem value="something-something" label="syntax_4">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
 {`class DeleteOperation \{
     from;
     to;

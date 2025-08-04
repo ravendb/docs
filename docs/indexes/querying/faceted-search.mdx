@@ -27,12 +27,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ![Facets](./assets/CNET_faceted_search.jpg)
 * In this page
-   * [Define an index](../../indexes/querying/faceted-search#define-an-index)
-   * [Facets - Basics](../../indexes/querying/faceted-search#facets---basics)
-   * [Facets - Options](../../indexes/querying/faceted-search#facets---options)
-   * [Facets - Aggregations](../../indexes/querying/faceted-search#facets---aggregations)
-   * [Storing facets definition in a document](../../indexes/querying/faceted-search#storing-facets-definition-in-a-document)
-   * [Syntax](../../indexes/querying/faceted-search#syntax)
+   * [Define an index](../../indexes/querying/faceted-search.mdx#define-an-index)
+   * [Facets - Basics](../../indexes/querying/faceted-search.mdx#facets---basics)
+   * [Facets - Options](../../indexes/querying/faceted-search.mdx#facets---options)
+   * [Facets - Aggregations](../../indexes/querying/faceted-search.mdx#facets---aggregations)
+   * [Storing facets definition in a document](../../indexes/querying/faceted-search.mdx#storing-facets-definition-in-a-document)
+   * [Syntax](../../indexes/querying/faceted-search.mdx#syntax)
    
 </Admonition>
 ## Define an index
@@ -131,7 +131,7 @@ using (var session = store.OpenSession())
     * `Facet` - returns a count for each unique term found in the specified index-field.
     * `RangeFacet` - returns a count per range within the specified index-field.
   
-<TabItem value="something" label="facets_1">
+<TabItem value="facets_1" label="facets_1">
 <CodeBlock language="csharp">
 {`// Define a list of facets to query by:
 // ====================================
@@ -281,7 +281,7 @@ select
 
 * Using the sample data from this article, the resulting aggregations will be:
 
-<TabItem value="something" label="facets_6">
+<TabItem value="facets_6" label="facets_6">
 <CodeBlock language="csharp">
 {`// The resulting aggregations per display name will contain:
 // =========================================================
@@ -302,7 +302,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="facets_7">
+<TabItem value="facets_7" label="facets_7">
 <CodeBlock language="csharp">
 {`// Get facets results for index-field 'Brand' using the display name specified:
 // ============================================================================
@@ -340,7 +340,7 @@ Assert.Equal(3, facetValue.Count); // Number of documents in this range
 * For example, if the user selects Fuji and Nikon,  
   then your next query can include a filter to focus only on those selected brands.
 
-<TabItem value="something" label="facets_8">
+<TabItem value="facets_8" label="facets_8">
 <CodeBlock language="csharp">
 {`Dictionary<string, FacetResult> filteredResults = session
     .Query<Cameras_ByFeatures.IndexEntry, Cameras_ByFeatures>()
@@ -369,7 +369,7 @@ Assert.Equal(3, facetValue.Count); // Number of documents in this range
     * `IncludeRemainingTerms` - Show summary of items that didn't make it into the requested PageSize.  
     * `TermSortMode` - Set the sort order on the resulting items. 
 
-<TabItem value="something" label="facets_9">
+<TabItem value="facets_9" label="facets_9">
 <CodeBlock language="csharp">
 {`// Define the list of facets to query by:
 // ======================================
@@ -477,7 +477,7 @@ select facet(Brand, $p0)
 </Tabs>
 #### Query results:
 
-<TabItem value="something" label="facets_14">
+<TabItem value="facets_14" label="facets_14">
 <CodeBlock language="csharp">
 {`// The resulting items will contain:
 // =================================
@@ -491,7 +491,7 @@ select facet(Brand, $p0)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="facets_15">
+<TabItem value="facets_15" label="facets_15">
 <CodeBlock language="csharp">
 {`// Get facets results for index-field 'Brand':
 // ===========================================
@@ -528,7 +528,7 @@ Assert.Equal(4, facetValue.Count);
 
 * Multiple operations can be added on each facet, for multiple fields.
 
-<TabItem value="something" label="facets_16">
+<TabItem value="facets_16" label="facets_16">
 <CodeBlock language="csharp">
 {`// Define the list of facets to query by:
 // ======================================
@@ -764,7 +764,7 @@ select
 </Tabs>
 #### Query results:
 
-<TabItem value="something" label="facets_21">
+<TabItem value="facets_21" label="facets_21">
 <CodeBlock language="csharp">
 {`// The resulting items will contain (Showing partial results):
 // ===========================================================
@@ -797,7 +797,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="facets_22">
+<TabItem value="facets_22" label="facets_22">
 <CodeBlock language="csharp">
 {`// Get results for the 'Brand' Facets:
 // ==========================================
@@ -838,7 +838,7 @@ Assert.Equal(17, facetValue.Sum);
 
 * That document can then be used by a faceted search query.
 
-<TabItem value="something" label="facets_23">
+<TabItem value="facets_23" label="facets_23">
 <CodeBlock language="csharp">
 {`// Create a FacetSetup object:
 // ===========================
@@ -944,7 +944,7 @@ select facet(id("customDocumentID"))
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`IAggregationQuery<T> AggregateBy<T>(FacetBase facet);
 IAggregationQuery<T> AggregateBy<T>(IEnumerable<FacetBase> facets);
@@ -1019,7 +1019,7 @@ public class RangeFacet<T>
 
 **Fluent API builder methods**:
 
-<TabItem value="something" label="syntax_6">
+<TabItem value="syntax_6" label="syntax_6">
 <CodeBlock language="csharp">
 {`IFacetOperations<T> ByField(string fieldName);
 IFacetOperations<T> ByField(Expression<Func<T, object>> path);
@@ -1043,7 +1043,7 @@ IFacetOperations<T> AverageOn(Expression<Func<T, object>> path);
 
 **Options**:
 
-<TabItem value="something" label="syntax_7">
+<TabItem value="syntax_7" label="syntax_7">
 <CodeBlock language="csharp">
 {`public class FacetOptions
 \{
@@ -1080,7 +1080,7 @@ image below. **Note** how the count of each category within the current search i
 &lt;br /&gt;
 Let's start with defining a document like this:
 
-<TabItem value="something-something" label="camera">
+<TabItem value="camera" label="camera">
 <CodeBlock language="java">
 {`public class Camera \{
     private Date dateOfListing;
@@ -1155,7 +1155,7 @@ Let's start with defining a document like this:
 
 Create an index to work against. 
 
-<TabItem value="something-something" label="step_2">
+<TabItem value="step_2" label="step_2">
 <CodeBlock language="java">
 {`public class Cameras_ByManufacturerModelCostDateOfListingAndMegapixels extends AbstractIndexCreationTask \{
     public Cameras_ByManufacturerModelCostDateOfListingAndMegapixels() \{
@@ -1177,7 +1177,7 @@ Create an index to work against.
 
 Setup your facet definitions:
 
-<TabItem value="something-something" label="step_1">
+<TabItem value="step_1" label="step_1">
 <CodeBlock language="java">
 {`Facet facet1 = new Facet();
 facet1.setFieldName("manufacturer");
@@ -1276,7 +1276,7 @@ select facet(manufacturer), facet(cost <= 200, cost between 200 and 400, cost be
 
 This data represents the sample faceted data that satisfies the above query:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`[
     \{
@@ -1359,7 +1359,7 @@ This data represents the sample faceted data that satisfies the above query:
 
 If you do not have to change your facets dynamically, you can store your facets as a `FacetSetup` document and pass the document ID instead of the list each time:
 
-<TabItem value="something-something" label="step_4_0">
+<TabItem value="step_4_0" label="step_4_0">
 <CodeBlock language="java">
 {`FacetSetup facetSetup = new FacetSetup();
 facetSetup.setFacets(facets);
@@ -1424,7 +1424,7 @@ The faceted search does not take into account a staleness of an index. You can w
 
 ### Fluent API
 
-As an alternative for creating a list of facets and passing it to the `aggregateBy` method, RavenDB also exposes a dynamic API where you can create your facets using a builder. You can read more about those methods in our dedicated Client API article [here](../../client-api/session/querying/how-to-perform-a-faceted-search).
+As an alternative for creating a list of facets and passing it to the `aggregateBy` method, RavenDB also exposes a dynamic API where you can create your facets using a builder. You can read more about those methods in our dedicated Client API article [here](../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 
 
 </LanguageContent>
@@ -1438,12 +1438,12 @@ As an alternative for creating a list of facets and passing it to the `aggregate
 
 ![Facets](./assets/CNET_faceted_search.jpg)
 * In this page
-   * [Define an index](../../indexes/querying/faceted-search#define-an-index)
-   * [Facets - Basics](../../indexes/querying/faceted-search#facets---basics)
-   * [Facets - Options](../../indexes/querying/faceted-search#facets---options)
-   * [Facets - Aggregations](../../indexes/querying/faceted-search#facets---aggregations)
-   * [Storing facets definition in a document](../../indexes/querying/faceted-search#storing-facets-definition-in-a-document)
-   * [Syntax](../../indexes/querying/faceted-search#syntax)
+   * [Define an index](../../indexes/querying/faceted-search.mdx#define-an-index)
+   * [Facets - Basics](../../indexes/querying/faceted-search.mdx#facets---basics)
+   * [Facets - Options](../../indexes/querying/faceted-search.mdx#facets---options)
+   * [Facets - Aggregations](../../indexes/querying/faceted-search.mdx#facets---aggregations)
+   * [Storing facets definition in a document](../../indexes/querying/faceted-search.mdx#storing-facets-definition-in-a-document)
+   * [Syntax](../../indexes/querying/faceted-search.mdx#syntax)
    
 </Admonition>
 ## Define an index
@@ -1547,7 +1547,7 @@ with store.open_session() as session:
     * `Facet` - returns a count for each unique term found in the specified index-field.
     * `RangeFacet` - returns a count per range within the specified index-field.
   
-<TabItem value="something-something" label="facets_1">
+<TabItem value="facets_1" label="facets_1">
 <CodeBlock language="python">
 {`# Define a Facet:
 # ===============
@@ -1682,7 +1682,7 @@ select
 
 * Using the sample data from this article, the resulting aggregations will be:
 
-<TabItem value="something-something" label="facets_6">
+<TabItem value="facets_6" label="facets_6">
 <CodeBlock language="python">
 {`# The resulting aggregations per display name will contain:
 # =========================================================
@@ -1703,7 +1703,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_7">
+<TabItem value="facets_7" label="facets_7">
 <CodeBlock language="python">
 {`# Get facets results for index-field 'brand' using the display name specified:
 # ============================================================================
@@ -1741,7 +1741,7 @@ self.assertEqual(3, facet_value.count_)
 * For example, if the user selects Fuji and Nikon,  
   then your next query can include a filter to focus only on those selected brands.
 
-<TabItem value="something-something" label="facets_8">
+<TabItem value="facets_8" label="facets_8">
 <CodeBlock language="python">
 {`filtered_results = list(
     session.query_index_type(Cameras_ByFeatures, Cameras_ByFeatures.IndexEntry)
@@ -1770,7 +1770,7 @@ self.assertEqual(3, facet_value.count_)
     * `include_remaining_terms` - Show summary of items that didn't make it into the requested PageSize.  
     * `term_sort_mode` - Set the sort order on the resulting items. 
 
-<TabItem value="something-something" label="facets_9">
+<TabItem value="facets_9" label="facets_9">
 <CodeBlock language="python">
 {`# Define the list of facets to query by:
 # ======================================
@@ -1862,7 +1862,7 @@ select facet(Brand, $p0)
 </Tabs>
 #### Query results:
 
-<TabItem value="something-something" label="facets_14">
+<TabItem value="facets_14" label="facets_14">
 <CodeBlock language="python">
 {`# The resulting items will contain:
 # =================================
@@ -1874,7 +1874,7 @@ select facet(Brand, $p0)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_15">
+<TabItem value="facets_15" label="facets_15">
 <CodeBlock language="python">
 {`# Get facets results for index-field 'brand':
 # ===========================================
@@ -1911,7 +1911,7 @@ self.assertEqual(4, facet_value.count_)
 
 * Multiple operations can be added on each facet, for multiple fields.
 
-<TabItem value="something-something" label="facets_16">
+<TabItem value="facets_16" label="facets_16">
 <CodeBlock language="python">
 {`# Define the list of facets to query by:
 # =====================================
@@ -2105,7 +2105,7 @@ select
 </Tabs>
 #### Query results:
 
-<TabItem value="something-something" label="facets_21">
+<TabItem value="facets_21" label="facets_21">
 <CodeBlock language="python">
 {`# The resulting items will contain (Showing partial results):
 # ===========================================================
@@ -2138,7 +2138,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_22">
+<TabItem value="facets_22" label="facets_22">
 <CodeBlock language="python">
 {`# Get results for the 'brand' facets:
 # ========================================
@@ -2179,7 +2179,7 @@ self.assertEqual(17, facet_value.sum_)
 
 * That document can then be used by a faceted search query.
 
-<TabItem value="something-something" label="facets_23">
+<TabItem value="facets_23" label="facets_23">
 <CodeBlock language="python">
 {`facet_setup = FacetSetup()
 # Provide  the ID of the document in which the facet setup will be stored.
@@ -2251,7 +2251,7 @@ select facet(id("customDocumentID"))
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`def aggregate_by(
     self, builder_or_facet: Union[Callable[[FacetBuilder], None], FacetBase]
@@ -2314,7 +2314,7 @@ def aggregate_using(self, facet_setup_document_id: str) -> AggregationDocumentQu
 
 **Fluent API builder methods**:
 
-<TabItem value="something-something" label="syntax_6">
+<TabItem value="syntax_6" label="syntax_6">
 <CodeBlock language="python">
 {`def by_ranges(self, range_: RangeBuilder, *ranges: RangeBuilder) -> FacetOperations[_T]: ...
 
@@ -2348,7 +2348,7 @@ def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOper
 
 **Options**:
 
-<TabItem value="something-something" label="syntax_7">
+<TabItem value="syntax_7" label="syntax_7">
 <CodeBlock language="python">
 {`class FacetOptions:
     def __init__(self):
@@ -2381,12 +2381,12 @@ def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOper
 
 ![Facets](./assets/CNET_faceted_search.jpg)
 * In this page
-   * [Define an index](../../indexes/querying/faceted-search#define-an-index)
-   * [Facets - Basics](../../indexes/querying/faceted-search#facets---basics)
-   * [Facets - Options](../../indexes/querying/faceted-search#facets---options)
-   * [Facets - Aggregations](../../indexes/querying/faceted-search#facets---aggregations)
-   * [Storing facets definition in a document](../../indexes/querying/faceted-search#storing-facets-definition-in-a-document)
-   * [Syntax](../../indexes/querying/faceted-search#syntax)
+   * [Define an index](../../indexes/querying/faceted-search.mdx#define-an-index)
+   * [Facets - Basics](../../indexes/querying/faceted-search.mdx#facets---basics)
+   * [Facets - Options](../../indexes/querying/faceted-search.mdx#facets---options)
+   * [Facets - Aggregations](../../indexes/querying/faceted-search.mdx#facets---aggregations)
+   * [Storing facets definition in a document](../../indexes/querying/faceted-search.mdx#storing-facets-definition-in-a-document)
+   * [Syntax](../../indexes/querying/faceted-search.mdx#syntax)
    
 </Admonition>
 ## Define an index
@@ -2604,7 +2604,7 @@ try {
     * `Facet` - returns a count for each unique term found in the specified index-field.
     * `RangeFacet` - returns a count per range within the specified index-field.
   
-<TabItem value="something-something" label="facets_1">
+<TabItem value="facets_1" label="facets_1">
 <CodeBlock language="php">
 {`// Define a list of facets to query by:
 // ====================================
@@ -2737,7 +2737,7 @@ select
 
 * Using the sample data from this article, the resulting aggregations will be:
 
-<TabItem value="something-something" label="facets_6">
+<TabItem value="facets_6" label="facets_6">
 <CodeBlock language="php">
 {`// The resulting aggregations per display name will contain:
 // =========================================================
@@ -2758,7 +2758,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_7">
+<TabItem value="facets_7" label="facets_7">
 <CodeBlock language="php">
 {`// Get facets results for index-field 'Brand' using the display name specified:
 // ============================================================================
@@ -2801,7 +2801,7 @@ $this->assertEquals(3, $facetValue->getCount()); // Number of documents in this 
 * For example, if the user selects Fuji and Nikon,  
   then your next query can include a filter to focus only on those selected brands.
 
-<TabItem value="something-something" label="facets_8">
+<TabItem value="facets_8" label="facets_8">
 <CodeBlock language="php">
 {`$filteredResults = $session
     ->query(Cameras_ByFeatures_IndexEntry::class, Cameras_ByFeatures::class)
@@ -2829,7 +2829,7 @@ $this->assertEquals(3, $facetValue->getCount()); // Number of documents in this 
     * `IncludeRemainingTerms` - Show summary of items that didn't make it into the requested PageSize.  
     * `TermSortMode` - Set the sort order on the resulting items. 
 
-<TabItem value="something-something" label="facets_9">
+<TabItem value="facets_9" label="facets_9">
 <CodeBlock language="php">
 {`// Define the list of facets to query by:
 // ======================================
@@ -2915,7 +2915,7 @@ select facet(Brand, $p0)
 </Tabs>
 #### Query results:
 
-<TabItem value="something-something" label="facets_14">
+<TabItem value="facets_14" label="facets_14">
 <CodeBlock language="php">
 {`// The resulting items will contain:
 // =================================
@@ -2929,7 +2929,7 @@ select facet(Brand, $p0)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_15">
+<TabItem value="facets_15" label="facets_15">
 <CodeBlock language="php">
 {`// Get facets results for index-field 'Brand':
 // ===========================================
@@ -2968,7 +2968,7 @@ $this->assertEquals(4, $facetValue->getCount());
 
 * Multiple operations can be added on each facet, for multiple fields.
 
-<TabItem value="something-something" label="facets_16">
+<TabItem value="facets_16" label="facets_16">
 <CodeBlock language="php">
 {`// Define the list of facets to query by:
 // ======================================
@@ -3169,7 +3169,7 @@ select
 </Tabs>
 #### Query results:
 
-<TabItem value="something-something" label="facets_21">
+<TabItem value="facets_21" label="facets_21">
 <CodeBlock language="php">
 {`// The resulting items will contain (Showing partial results):
 // ===========================================================
@@ -3202,7 +3202,7 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_22">
+<TabItem value="facets_22" label="facets_22">
 <CodeBlock language="php">
 {`// Get results for the 'Brand' Facets:
 // ==========================================
@@ -3247,7 +3247,7 @@ $this->assertEquals(17, $facetValue->getSum());
 
 * That document can then be used by a faceted search query.
 
-<TabItem value="something-something" label="facets_23">
+<TabItem value="facets_23" label="facets_23">
 <CodeBlock language="php">
 {`// Create a FacetSetup object:
 // ===========================
@@ -3327,7 +3327,7 @@ select facet(id("customDocumentID"))
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`public function aggregateBy(Callable|FacetBase|FacetBaseArray|array ...$builderOrFacets): AggregationDocumentQueryInterface;
 
@@ -3408,7 +3408,7 @@ public function aggregateUsing(?string $facetSetupDocumentId): AggregationDocume
 
 **Fluent API builder methods**:
 
-<TabItem value="something-something" label="syntax_6">
+<TabItem value="syntax_6" label="syntax_6">
 <CodeBlock language="php">
 {`public function byField(string $fieldName): FacetOperationsInterface;
 public function byRanges(?RangeBuilder $range, ?RangeBuilder ...$ranges): FacetOperationsInterface;
@@ -3437,7 +3437,7 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 
 **Options**:
 
-<TabItem value="something-something" label="syntax_7">
+<TabItem value="syntax_7" label="syntax_7">
 <CodeBlock language="php">
 {`class FacetOptions
 \{
@@ -3473,12 +3473,12 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 
 ![Facets](./assets/CNET_faceted_search.jpg)
 * In this page
-   * [Define an index](../../indexes/querying/faceted-search#define-an-index)
-   * [Facets - Basics](../../indexes/querying/faceted-search#facets---basics)
-   * [Facets - Options](../../indexes/querying/faceted-search#facets---options)
-   * [Facets - Aggregations](../../indexes/querying/faceted-search#facets---aggregations)
-   * [Storing facets definition in a document](../../indexes/querying/faceted-search#storing-facets-definition-in-a-document)
-   * [Syntax](../../indexes/querying/faceted-search#syntax)
+   * [Define an index](../../indexes/querying/faceted-search.mdx#define-an-index)
+   * [Facets - Basics](../../indexes/querying/faceted-search.mdx#facets---basics)
+   * [Facets - Options](../../indexes/querying/faceted-search.mdx#facets---options)
+   * [Facets - Aggregations](../../indexes/querying/faceted-search.mdx#facets---aggregations)
+   * [Storing facets definition in a document](../../indexes/querying/faceted-search.mdx#storing-facets-definition-in-a-document)
+   * [Syntax](../../indexes/querying/faceted-search.mdx#syntax)
    
 </Admonition>
 ## Define an index
@@ -3489,7 +3489,7 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Class" label="Class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Camera {
     constructor(
         manufacturer = '',
@@ -3511,7 +3511,7 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Cameras_ByFeatures extends AbstractJavaScriptIndexCreationTask {
     constructor () {
         super();
@@ -3531,7 +3531,7 @@ public function averageOn(string $path, ?string $displayName = null): FacetOpera
 </CodeBlock>
 </TabItem>
 <TabItem value="Sample_data" label="Sample_data">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Creating sample data for the examples in this article:
 // ======================================================
 const bulkInsert = store.bulkInsert();
@@ -3574,8 +3574,8 @@ await bulkInsert.finish();
     * `Facet` - returns a count for each unique term found in the specified index-field.
     * `RangeFacet` - returns a count per range within the specified index-field.
   
-<TabItem value="something-something" label="facets_1">
-<CodeBlock language="nodejs">
+<TabItem value="facets_1" label="facets_1">
+<CodeBlock language="js">
 {`// Define a Facet:
 // ===============
 const brandFacet = new Facet();
@@ -3620,7 +3620,7 @@ const facets = [brandFacet, priceRangeFacet];
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
      // Query the index
     .query({ indexName: "Cameras/ByFeatures" })
@@ -3632,7 +3632,7 @@ const facets = [brandFacet, priceRangeFacet];
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_FluentAPI" label="Query_FluentAPI">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the index-field (e.g. 'price') that will be used by the range-facet in the query below 
 const range = RangeBuilder.forPath("price");
 
@@ -3662,7 +3662,7 @@ const results = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.advanced
      // Query the index
      // Provide the RQL string to the rawQuery method
@@ -3704,8 +3704,8 @@ select
 
 * Using the sample data from this article, the resulting aggregations will be:
 
-<TabItem value="something-something" label="facets_4">
-<CodeBlock language="nodejs">
+<TabItem value="facets_4" label="facets_4">
+<CodeBlock language="js">
 {`// The resulting aggregations per display name will contain:
 // =========================================================
 
@@ -3725,8 +3725,8 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_5">
-<CodeBlock language="nodejs">
+<TabItem value="facets_5" label="facets_5">
+<CodeBlock language="js">
 {`// Get facets results for index-field 'brand' using the display name specified:
 // ============================================================================
 const brandFacets = results["Camera Brand"];
@@ -3764,8 +3764,8 @@ assert.equalfacetValue.count, 3); // Number of documents in this range
 * For example, if the user selects Fuji and Nikon,  
   then your next query can include a filter to focus only on those selected brands.
 
-<TabItem value="something-something" label="facets_6">
-<CodeBlock language="nodejs">
+<TabItem value="facets_6" label="facets_6">
+<CodeBlock language="js">
 {`const filteredResults = await session
     .query(\{ indexName: "Cameras/ByFeatures" \})
      // Limit query results to the selected brands: 
@@ -3794,8 +3794,8 @@ assert.equalfacetValue.count, 3); // Number of documents in this range
     * `includeRemainingTerms` - Show summary of items that didn't make it into the requested pageSize.  
     * `termSortMode` - Set the sort order on the resulting items. 
 
-<TabItem value="something-something" label="facets_7">
-<CodeBlock language="nodejs">
+<TabItem value="facets_7" label="facets_7">
+<CodeBlock language="js">
 {`// Define a Facet:
 // ===============
 const facet = new Facet();
@@ -3821,7 +3821,7 @@ facet.options = facetOptions;
 **Query the index for facets results**:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
      // Query the index
     .query({ indexName: "Cameras/ByFeatures" })
@@ -3833,7 +3833,7 @@ facet.options = facetOptions;
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_FluentAPI" label="Query_FluentAPI">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Set facet options to use in the following query 
 // E.g.: Return top 3 brands with most items count
 const facetOptions = new FacetOptions();
@@ -3855,7 +3855,7 @@ const results = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.advanced
      // Query the index
      // Provide the RQL string to the rawQuery method
@@ -3883,8 +3883,8 @@ select facet(brand, $p0)
 <Admonition type="note" title="Note">
 
 **Query results**:
-<TabItem value="something-something" label="facets_10">
-<CodeBlock language="nodejs">
+<TabItem value="facets_10" label="facets_10">
+<CodeBlock language="js">
 {`// The resulting items will contain:
 // =================================
 
@@ -3897,8 +3897,8 @@ select facet(brand, $p0)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_11">
-<CodeBlock language="nodejs">
+<TabItem value="facets_11" label="facets_11">
+<CodeBlock language="js">
 {`// Get facets results for index-field 'brand':
 // ===========================================
 const brandFacets = results["brand"];
@@ -3937,8 +3937,8 @@ assert.equal(facetValue.count, 4);
 
 * Multiple operations can be added on each facet, for multiple fields.
 
-<TabItem value="something-something" label="facets_12">
-<CodeBlock language="nodejs">
+<TabItem value="facets_12" label="facets_12">
+<CodeBlock language="js">
 {`// Define a Facet:
 // ===============
 const facet = new Facet();
@@ -3992,7 +3992,7 @@ const facetsWithAggregations = [facet, rangeFacet];
 **Query the index for facets results**:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
      // Query the index
     .query({ indexName: "Cameras/ByFeatures" })
@@ -4004,7 +4004,7 @@ const facetsWithAggregations = [facet, rangeFacet];
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_FluentAPI" label="Query_FluentAPI">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the index-field (e.g. 'price') that will be used by the range-facet in the query below 
 const range = RangeBuilder.forPath("price");
 
@@ -4042,7 +4042,7 @@ const results = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.advanced
      // Query the index
      // Provide the RQL string to the rawQuery method
@@ -4108,8 +4108,8 @@ select
 <Admonition type="note" title="Note">
 
 **Query results**:
-<TabItem value="something-something" label="facets_15">
-<CodeBlock language="nodejs">
+<TabItem value="facets_15" label="facets_15">
+<CodeBlock language="js">
 {`// The resulting items will contain (Showing partial results):
 // ===========================================================
 
@@ -4141,8 +4141,8 @@ select
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="facets_16">
-<CodeBlock language="nodejs">
+<TabItem value="facets_16" label="facets_16">
+<CodeBlock language="js">
 {`// Get results for the 'brand' Facets:
 // ==========================================
 const brandFacets = results["brand"];
@@ -4187,8 +4187,8 @@ assert.equal(facetValue.sum, 17);
 
 * That document can then be used by a faceted search query.
 
-<TabItem value="something-something" label="facets_17">
-<CodeBlock language="nodejs">
+<TabItem value="facets_17" label="facets_17">
+<CodeBlock language="js">
 {`// Create a FacetSetup object:
 // ===========================
 const facetSetup = new FacetSetup();
@@ -4231,7 +4231,7 @@ await session.saveChanges();
 **Query using facets from document**:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     // Query the index
     .query({ indexName: "Cameras/ByFeatures" })
@@ -4243,7 +4243,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.advanced
      // Query the index
      // Provide the RQL string to the rawQuery method
@@ -4269,8 +4269,8 @@ select facet(id("customDocumentID"))
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Aggregate data by Facets:
 aggregateBy(facet);
 aggregateBy(...facet);
@@ -4295,7 +4295,7 @@ aggregateUsing(facetSetupDocumentId);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Facet" label="Facet">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Facet {
     fieldName;
 }
@@ -4303,7 +4303,7 @@ aggregateUsing(facetSetupDocumentId);
 </CodeBlock>
 </TabItem>
 <TabItem value="RangeFacet" label="RangeFacet">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class RangeFacet {
     ranges;
 }
@@ -4311,7 +4311,7 @@ aggregateUsing(facetSetupDocumentId);
 </CodeBlock>
 </TabItem>
 <TabItem value="FacetBase" label="FacetBase">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class FacetBase {
     displayFieldName;
     options;
@@ -4324,8 +4324,8 @@ aggregateUsing(facetSetupDocumentId);
 
 **builder methods**:
 
-<TabItem value="something-something" label="syntax_5">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
 {`byField(fieldName);
 byRanges(range, ...ranges);
 
@@ -4356,8 +4356,8 @@ averageOn(path, displayName);
 
 **Options**:
 
-<TabItem value="something-something" label="syntax_6">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_6" label="syntax_6">
+<CodeBlock language="js">
 {`class FacetOptions \{
     termSortMode;
     includeRemainingTerms; 

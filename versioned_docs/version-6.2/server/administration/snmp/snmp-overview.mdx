@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # SNMP Support
 <Admonition type="info" title="Info">
 
-SNMP support is available for [Enterprise](../../../start/licensing/licensing-overview#enterprise) licenses only.
+SNMP support is available for [Enterprise](../../../start/licensing/licensing-overview.mdx#enterprise) licenses only.
 
 </Admonition>
 
@@ -24,14 +24,14 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 * This page explains how to use SNMP to monitor RavenDB and what metrics can be accessed.  
 
 * In this page:  
-  * [Overview](../../../server/administration/snmp/snmp#overview)
-  * [Enabling SNMP in RavenDB](../../../server/administration/snmp/snmp#enabling-snmp-in-ravendb)
-  * [SNMP Configuration options](../../../server/administration/snmp/snmp#snmp-configuration-options)
-  * [The Metrics](../../../server/administration/snmp/snmp#the-metrics)
-      * [Access metrics via monitoring tools](../../../server/administration/snmp/snmp#access-metrics-via-monitoring-tools)
-      * [Access metrics via SNMP agents](../../../server/administration/snmp/snmp#access-metrics-via-snmp-agents)
-      * [Access metrics via HTTP](../../../server/administration/snmp/snmp#access-metrics-via-http)
-  * [List of OIDs](../../../server/administration/snmp/snmp#list-of-oids)
+  * [Overview](../../../server/administration/snmp/snmp.mdx#overview)
+  * [Enabling SNMP in RavenDB](../../../server/administration/snmp/snmp.mdx#enabling-snmp-in-ravendb)
+  * [SNMP Configuration options](../../../server/administration/snmp/snmp.mdx#snmp-configuration-options)
+  * [The Metrics](../../../server/administration/snmp/snmp.mdx#the-metrics)
+      * [Access metrics via monitoring tools](../../../server/administration/snmp/snmp.mdx#access-metrics-via-monitoring-tools)
+      * [Access metrics via SNMP agents](../../../server/administration/snmp/snmp.mdx#access-metrics-via-snmp-agents)
+      * [Access metrics via HTTP](../../../server/administration/snmp/snmp.mdx#access-metrics-via-http)
+  * [List of OIDs](../../../server/administration/snmp/snmp.mdx#list-of-oids)
 
 </Admonition>
 ## Overview
@@ -44,7 +44,7 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 
 * In RavenDB we have support for SNMP which allows monitoring tools like [Zabbix](https://www.zabbix.com), 
   [PRTG](https://www.paessler.com/prtg), and [Datadog](https://www.datadoghq.com/) direct access to the 
-  internal details of RavenDB. We expose a long [list of metrics](../../../server/administration/snmp/snmp#list-of-oids): CPU and memory usage, server total requests, 
+  internal details of RavenDB. We expose a long [list of metrics](../../../server/administration/snmp/snmp.mdx#list-of-oids): CPU and memory usage, server total requests, 
   the loaded databases, and database-specific metrics like the number of indexed items per second, 
   document writes per second, storage space each database takes, and more.  
 
@@ -57,14 +57,14 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 
 ## Enabling SNMP in RavenDB
 
-* To monitor RavenDB using SNMP you __must__ first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration#monitoring.snmp.enabled) configuration key to _true_.
+* To monitor RavenDB using SNMP you __must__ first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.enabled) configuration key to _true_.
 
-* To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options) article,  
+* To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options.mdx) article,  
   which outlines all available options.
 
 * For example, add this key to your _settings.json_ file and restart the server.
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     ...
@@ -82,43 +82,43 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 There are several configurable SNMP properties in RavenDB:
 ##### For SNMPv1:
 
-* [Monitoring.Snmp.Port](../../../server/configuration/monitoring-configuration#monitoring.snmp.port)  
+* [Monitoring.Snmp.Port](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.port)  
   The SNMP port.  
   Default: `161`  
-* [Monitoring.Snmp.SupportedVersions](../../../server/configuration/monitoring-configuration#monitoring.snmp.supportedversions)  
+* [Monitoring.Snmp.SupportedVersions](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.supportedversions)  
   List of supported SNMP versions.  
   Default: `"V2C;V3"`
 
 ##### For SNMPv2c:
 
-* [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration#monitoring.snmp.community)   
+* [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.community)   
   The community string is used as a password.  
   It is sent with each SNMP `GET` request and allows or denies access to the monitored device.  
   Default: `"ravendb"`
 
 ##### For SNMPv3:
 
-* [Monitoring.Snmp.AuthenticationProtocol](../../../server/configuration/monitoring-configuration#monitoring.snmp.authenticationprotocol)  
+* [Monitoring.Snmp.AuthenticationProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationprotocol)  
   Authentication protocol.  
   Default: `"SHA1"`  
-* [Monitoring.Snmp.AuthenticationUser](../../../server/configuration/monitoring-configuration#monitoring.snmp.authenticationuser)  
+* [Monitoring.Snmp.AuthenticationUser](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationuser)  
   The user for authentication.  
   Default: `"ravendb"`  
-* [Monitoring.Snmp.AuthenticationPassword](../../../server/configuration/monitoring-configuration#monitoring.snmp.authenticationpassword)  
+* [Monitoring.Snmp.AuthenticationPassword](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationpassword)  
   The authentication password.
   When set to `null` the community string is used instead.  
   Default: `null` 
-* [Monitoring.Snmp.PrivacyProtocol](../../../server/configuration/monitoring-configuration#monitoring.snmp.privacyprotocol)  
+* [Monitoring.Snmp.PrivacyProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.privacyprotocol)  
   Privacy protocol.  
   Default: `None`   
-* [Monitoring.Snmp.PrivacyPassword](../../../server/configuration/monitoring-configuration#monitoring.snmp.privacypassword)  
+* [Monitoring.Snmp.PrivacyPassword](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.privacypassword)  
   Privacy password.  
   Default: `"ravendb"`
 <Admonition type="info" title="Info">
 
-* See article [Monitoring Options](../../../server/configuration/monitoring-configuration) for the full list of __SNMP configuration keys__.
+* See article [Monitoring Options](../../../server/configuration/monitoring-configuration.mdx) for the full list of __SNMP configuration keys__.
  
-* To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options) article,  
+* To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options.mdx) article,  
   which outlines all available options.
 </Admonition>
 
@@ -130,7 +130,7 @@ There are several configurable SNMP properties in RavenDB:
 
 #### Access metrics via monitoring tools
 
-* Querying the exposed metrics using a monitoring tool is typically straightforward (see this [Zabbix example](../../../server/administration/snmp/setup-zabbix)).
+* Querying the exposed metrics using a monitoring tool is typically straightforward (see this [Zabbix example](../../../server/administration/snmp/setup-zabbix.mdx)).
 
 * For a simplified setup, we have provided a few templates which can be found [here](https://github.com/ravendb/ravendb/tree/v4.0/src/Raven.Server/Monitoring/Snmp/Templates).   
   These templates include the metrics and their associated OIDs.
@@ -145,11 +145,11 @@ There are several configurable SNMP properties in RavenDB:
   Each metric has a unique object identifier (OID) and can be accessed individually.  
 
 * The most basic SNMP commands are `snmpget`, `snmpset` and `snmpwalk`.  
-  For example, you can execute the following _snmpget_ commands to retrieve the server's [up-time metric](../../../server/administration/snmp/snmp#1.3).
+  For example, you can execute the following _snmpget_ commands to retrieve the server's [up-time metric](../../../server/administration/snmp/snmp.mdx#1.3).
 
     ##### For SNMPv2c:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`// Request:
 snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
@@ -160,13 +160,13 @@ iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
 </CodeBlock>
 </TabItem>
 
-    * `ravendb` is the community string (set via the [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration#monitoring.snmp.community) configuration key).   
+    * `ravendb` is the community string (set via the [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.community) configuration key).   
     * `"live-test.ravendb.net"` is the host.  
 
     ##### For SNMPv3:
 
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`snmpget -v 3 -l authNoPriv -u ravendb -a SHA \\
         -A ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.3
@@ -189,9 +189,9 @@ __Access single OID value__:
 * An individual OID value can be retrieved via HTTP `GET` endpoint:  
   `<serverUrl>/monitoring/snmp?oid=<oid>`  
 
-* For example, a cURL request for the server [up-time metric](../../../server/administration/snmp/snmp#1.3):
+* For example, a cURL request for the server [up-time metric](../../../server/administration/snmp/snmp.mdx#1.3):
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`// Request:
 curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1.1.1.3
@@ -206,9 +206,9 @@ __Access multiple OID values__:
 * Multiple OID values can be retrieved by making either a `GET` or a `POST` request to the following HTTP endpoint:
   `<serverUrl>/monitoring/snmp/bulk`
 
-* For example, cURL requests for the server [managed memory](../../../server/administration/snmp/snmp#1.6.7) and [unmanaged memory](../../../server/administration/snmp/snmp#1.6.8) metrics:
+* For example, cURL requests for the server [managed memory](../../../server/administration/snmp/snmp.mdx#1.6.7) and [unmanaged memory](../../../server/administration/snmp/snmp.mdx#1.6.8) metrics:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/monitoring/snmp/bulk? \\
              oid=1.3.6.1.4.1.45751.1.1.1.6.7&oid=1.3.6.1.4.1.45751.1.1.1.6.8"
@@ -216,7 +216,7 @@ __Access multiple OID values__:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST \\
      -H "Content-Type: application/json" \\
@@ -226,7 +226,7 @@ __Access multiple OID values__:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`\{
     "Results": [
@@ -312,7 +312,7 @@ __Access multiple OID values__:
 | <a id="value-1.6.11.X.14"/> 1.6.11.`X`.14           | GC info for `X`.<br/>Gets the total available memory (in MB) for the garbage collector to use when the last garbage collection occurred.                                                                                                                                        |
 | <a id="value-1.6.11.X.15"/> 1.6.11.`X`.15           | GC info for `X`.<br/>Gets the total committed MB of the managed heap.                                                                                                                                                                                                           |
 | <a id="value-1.6.11.X.16.3"/> 1.6.11.`X`.16.3       | GC info for `X`.<br/>Gets the large object heap size (in MB) after the last garbage collection of given kind occurred.                                                                                                                                                          |
-| <a id="value-1.6.12.{0}"/> 1.6.12.{0}               | Monitor [/proc/meminfo/](https://man7.org/linux/man-pages/man5/proc.5.html) metrics (unix/linux).<br/>The description of each metric is available via endpoint `<serverUrl>/monitoring/snmp/oids`.<br/> See [Get all OIDs](../../../server/administration/snmp/snmp#getalloids). |
+| <a id="value-1.6.12.{0}"/> 1.6.12.{0}               | Monitor [/proc/meminfo/](https://man7.org/linux/man-pages/man5/proc.5.html) metrics (unix/linux).<br/>The description of each metric is available via endpoint `<serverUrl>/monitoring/snmp/oids`.<br/> See [Get all OIDs](../../../server/administration/snmp/snmp.mdx#getalloids). |
 | <a id="value-1.6.13"/> 1.6.13                       | Available memory for processing (in MB)                                                                                                                                                                                                                                        |
 | <a id="value-1.7.1"/> 1.7.1                         | Number of concurrent requests                                                                                                                                                                                                                                                  |
 | <a id="value-1.7.2"/> 1.7.2                         | Total number of requests since server startup                                                                                                                                                                                                                                  |

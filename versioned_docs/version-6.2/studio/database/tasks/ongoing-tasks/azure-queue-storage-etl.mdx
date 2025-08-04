@@ -28,14 +28,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
   [Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cextensionv5&pivots=programming-language-csharp) 
   can be triggered to access and consume messages when the enqueued messages advance to the queue head.
 * This page explains how to create an Azure Queue Storage ETL task using Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue) how to define an Azure Queue Storage ETL task using the Client API.  
+  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx) how to define an Azure Queue Storage ETL task using the Client API.  
  
 * In this page:  
-  * [Open Azure Queue Storage ETL task view](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#open-azure-queue-storage-etl-task-view)  
-  * [Define Azure Queue Storage ETL task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#define-azure-queue-storage-etl-task)  
-  * [Authentication method](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#authentication-method)  
-  * [Options per queue](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#options-per-queue)  
-  * [Add transformation script](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#add-transformation-script)  
+  * [Open Azure Queue Storage ETL task view](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#open-azure-queue-storage-etl-task-view)  
+  * [Define Azure Queue Storage ETL task](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#define-azure-queue-storage-etl-task)  
+  * [Authentication method](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#authentication-method)  
+  * [Options per queue](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#options-per-queue)  
+  * [Add transformation script](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#add-transformation-script)  
 
 </Admonition>
 ## Open Azure Queue Storage ETL task view
@@ -65,15 +65,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Disabled - No documents are transformed and sent.  
 
 3. **Set Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Create new Azure Queue Storage connection String**  
    * The connection string contains the necessary information to connect to an Azure storage account.  
      Toggle OFF to select an existing connection string from the list, or toggle ON to create a new one.  
    * **Name** - Enter a name for the connection string.  
    * **Authentication method** - Select the authentication method by which to connect to an Azure storage account.  
-     Learn more about the available authentication methods [below](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#authentication-method).  
+     Learn more about the available authentication methods [below](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#authentication-method).  
 
 5. **Test Connection**  
    After defining the connection string, click to test the connection to the Azure storage account.  
@@ -83,7 +83,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Click to add a transformation script.
 
 7. **Advanced**  
-   Click to open the [advanced section](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl#options-per-queue) where you can configure the deletion of RavenDB documents per queue.
+   Click to open the [advanced section](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx#options-per-queue) where you can configure the deletion of RavenDB documents per queue.
 
   
 
@@ -155,7 +155,7 @@ You can configure the ETL process to delete documents from RavenDB that have alr
 2. **Script** - Edit the transformation script.  
    Sample script:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     // Define a "document object" whose contents will be extracted from RavenDB documents 

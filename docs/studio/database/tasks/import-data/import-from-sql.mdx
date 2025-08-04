@@ -34,16 +34,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Changes made while preparing the data model maintain data integrity and cohesion.  
 
 * In this page:
-  * [Import Data From SQL Source](../../../../studio/database/tasks/import-data/import-from-sql#import-data-from-sql-source)  
-     * [Create a New Import Configuration](../../../../studio/database/tasks/import-data/import-from-sql#create-a-new-import-configuration)  
-     * [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-sql#advanced-import-options)  
-     * [Run an Existing Import Configuration](../../../../studio/database/tasks/import-data/import-from-sql#run-an-existing-import-configuration)  
-  * [SQL Migration](../../../../studio/database/tasks/import-data/import-from-sql#sql-migration)  
-     * [Data Conversion: General Settings](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-general-settings)  
-     * [Data Conversion: Table/Collection Settings](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-tablecollection-settings)  
-  * [Filtering and Transforming Documents](../../../../studio/database/tasks/import-data/import-from-sql#filtering-and-transforming-documents)  
-  * [Handling Relationships](../../../../studio/database/tasks/import-data/import-from-sql#handling-relationships)  
-  * [Data integrity Helpers](../../../../studio/database/tasks/import-data/import-from-sql#data-integrity-helpers)  
+  * [Import Data From SQL Source](../../../../studio/database/tasks/import-data/import-from-sql.mdx#import-data-from-sql-source)  
+     * [Create a New Import Configuration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#create-a-new-import-configuration)  
+     * [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-sql.mdx#advanced-import-options)  
+     * [Run an Existing Import Configuration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#run-an-existing-import-configuration)  
+  * [SQL Migration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#sql-migration)  
+     * [Data Conversion: General Settings](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-general-settings)  
+     * [Data Conversion: Table/Collection Settings](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-tablecollection-settings)  
+  * [Filtering and Transforming Documents](../../../../studio/database/tasks/import-data/import-from-sql.mdx#filtering-and-transforming-documents)  
+  * [Handling Relationships](../../../../studio/database/tasks/import-data/import-from-sql.mdx#handling-relationships)  
+  * [Data integrity Helpers](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-integrity-helpers)  
 </Admonition>
 ## Import Data From SQL Source
 
@@ -55,15 +55,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Click to import data.  
 3. **From SQL**  
    Click to import data from an SQL source.  
-4. [Create new import configuration](../../../../studio/database/tasks/import-data/import-from-sql#create-a-new-import-configuration)  
+4. [Create new import configuration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#create-a-new-import-configuration)  
    Create a new import configuration from scratch.  
    The configuration can be exported and reused.  
-5. [Continue existing migration](../../../../studio/database/tasks/import-data/import-from-sql#run-an-existing-import-configuration)  
+5. [Continue existing migration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#run-an-existing-import-configuration)  
    Run an existing import configuration.  
 ### Create a New Import Configuration
 
 Use this option to enter a new import configuration.  
-The configuration can then be exported and [reused](../../../../studio/database/tasks/import-data/import-from-sql#run-an-existing-import-configuration).  
+The configuration can then be exported and [reused](../../../../studio/database/tasks/import-data/import-from-sql.mdx#run-an-existing-import-configuration).  
 
 ![Create New Import Configuration](./assets/sql-migration-create-new-import.png)
 
@@ -83,10 +83,10 @@ The configuration can then be exported and [reused](../../../../studio/database/
     <Admonition type="note" title="Note">
     Click the **Syntax** caption to display valid connection strings for the different SQL sources.  
     </Admonition>
-3. [Advanced](../../../../studio/database/tasks/import-data/import-from-sql#advanced-import-options)  
+3. [Advanced](../../../../studio/database/tasks/import-data/import-from-sql.mdx#advanced-import-options)  
    Click for advanced import options.  
 
-4. [Create new import](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-general-settings)  
+4. [Create new import](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-general-settings)  
    Click to connect the SQL source and import the database schema and data.  
 
 5. **Test Connection**  
@@ -128,7 +128,7 @@ you can locate and run it here.
 ![Use Existing Import Configuration](./assets/sql-migration-use-existing-configuration.png)
 
 1. Click to locate an existing import configuration on the file system.  
-2. Click to [run the selected configuration](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-general-settings) 
+2. Click to [run the selected configuration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-general-settings) 
    and migrate data from the SQL source.  
 
 
@@ -146,7 +146,7 @@ In _NoSQL_, this can be modeled as a list of foreign object IDs and requires no 
 </Admonition>
 ### Data Conversion: General Settings
 
-When an [import configuration](../../../../studio/database/tasks/import-data/import-from-sql#create-a-new-import-configuration) 
+When an [import configuration](../../../../studio/database/tasks/import-data/import-from-sql.mdx#create-a-new-import-configuration) 
 is executed RavenDB connects the SQL source, obtains information about database tables 
 and keys, and displays the following view to allow the user to alter the migration and 
 target documents structure.  
@@ -189,7 +189,7 @@ target documents structure.
            Please note that limiting the migration may break links between documents.  
            </Admonition>
 
-7. [Table/Collection Conversion Tuning](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-tablecollection-settings)  
+7. [Table/Collection Conversion Tuning](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-tablecollection-settings)  
    Specific details related to the transfer of each table can be altered as well.  
    See additional details below.  
 ### Data Conversion: Table/Collection Settings
@@ -211,7 +211,7 @@ target documents structure.
    Click for details regarding each relationship, and to select whether 
    to skip each relationship or embed it in the document.  
 
-5. [Filter/Transform](../../../../studio/database/tasks/import-data/import-from-sql#filtering-and-transforming-documents)  
+5. [Filter/Transform](../../../../studio/database/tasks/import-data/import-from-sql.mdx#filtering-and-transforming-documents)  
    Click to alter the **filter query** executed over the source database, 
    and/or the **transform script** used to shape the imported data.  
    
@@ -241,7 +241,7 @@ Filtering the read data is gained by altering the query RavenDB
 runs over the SQL server to fetch the data.  
 transforming written documents is done using a transform script 
 through which all incoming data passes.  
-Learn [here](../../../../studio/database/tasks/import-data/import-from-sql#data-conversion-general-settings) 
+Learn [here](../../../../studio/database/tasks/import-data/import-from-sql.mdx#data-conversion-general-settings) 
 how to connect the source database and open the filter/transform dialog.  
 ![Filter and Transform](./assets/sql-migration-filter-and-export-I.png)
 
@@ -254,7 +254,7 @@ how to connect the source database and open the filter/transform dialog.
       A **where** SQL statement can be included in the query to filter 
       the data as you please.  
       E.g. -  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`select * from \`shop\`, \`orders\`
 where year(Date) >= 2022
@@ -270,7 +270,7 @@ where year(Date) >= 2022
       or any part of the imported data and shape the final documents 
       as you please.  
       E.g. -  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var linesCount = this.OrderLines.Length;
 if (linesCount < 3) \{
@@ -312,7 +312,7 @@ The database contains 2 relationships, which can be represented as additional do
 These settings will present us with a document with the following structure:  
 
 * **OrderLine**  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Quantity": 10,
@@ -324,7 +324,7 @@ These settings will present us with a document with the following structure:
 </TabItem>
 
 * **Order**  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Date": "2018-05-05",
@@ -336,7 +336,7 @@ These settings will present us with a document with the following structure:
 </TabItem>
 
 * **Product**  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "Phone",
@@ -352,7 +352,7 @@ we don't need this artificial collection), we end up with the following structur
 ![SQL Migration - Relationships](./assets/sql-migration-embed.png)
 
 * **Order**  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Date": "2018-05-05",
@@ -369,7 +369,7 @@ we don't need this artificial collection), we end up with the following structur
 </TabItem>
 
 * **Product**  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "Phone",

@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Audit Log
 <Admonition type="note" title="Note">
 
-* [Authorization](../../../server/security/authorization/security-clearance-and-permissions) controls who can access RavenDB and what operations they can perform.
+* [Authorization](../../../server/security/authorization/security-clearance-and-permissions.mdx) controls who can access RavenDB and what operations they can perform.
 
 * In addition, RavenDB provides an optional **Audit Log** to track who connects to the system and when.  
   Audit logs are available only when using a secure server.
@@ -24,25 +24,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
   See the full list of what is being logged below.
 
 * In this page:
-  * [Enabling the audit log](../../../server/security/audit-log/audit-log#enabling-the-audit-log)
-  * [What is being logged](../../../server/security/audit-log/audit-log#what-is-being-logged)
-  * [Things to consider](../../../server/security/audit-log/audit-log#things-to-consider)
+  * [Enabling the audit log](../../../server/security/audit-log/audit-log.mdx#enabling-the-audit-log)
+  * [What is being logged](../../../server/security/audit-log/audit-log.mdx#what-is-being-logged)
+  * [Things to consider](../../../server/security/audit-log/audit-log.mdx#things-to-consider)
 
 </Admonition>
 ## Enabling the audit log
 
 * **To enable writing to the audit log**, set the following configuration key: 
-  * [Security.AuditLog.FolderPath](../../../server/configuration/security-configuration#security.auditlog.folderpath) - set the path to a folder where RavenDB will store the audit logs.
+  * [Security.AuditLog.FolderPath](../../../server/configuration/security-configuration.mdx#security.auditlog.folderpath) - set the path to a folder where RavenDB will store the audit logs.
 
 * In addition, the following configurations are available:
-  * [Security.AuditLog.ArchiveAboveSizeInMb](../../../server/configuration/security-configuration#security.auditlog.archiveabovesizeinmb)  
+  * [Security.AuditLog.ArchiveAboveSizeInMb](../../../server/configuration/security-configuration.mdx#security.auditlog.archiveabovesizeinmb)  
     The maximum size an audit log file may reach before it is archived and logging is directed to a new file.
-  * [Security.AuditLog.EnableArchiveFileCompression](../../../server/configuration/security-configuration#security.auditlog.enablearchivefilecompression) - determine whether to compress the audit log files.
-  * [Security.AuditLog.MaxArchiveDays](../../../server/configuration/security-configuration#security.auditlog.maxarchivedays) - the maximum number of days that an archived audit log file is kept.
-  * [Security.AuditLog.MaxArchiveFiles](../../../server/configuration/security-configuration#security.auditlog.maxarchivefiles) - the maximum number of archived audit log files to keep.
-  * [Logs.ArchiveAboveSizeInMb](../../../server/configuration/logs-configuration#logs.archiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
+  * [Security.AuditLog.EnableArchiveFileCompression](../../../server/configuration/security-configuration.mdx#security.auditlog.enablearchivefilecompression) - determine whether to compress the audit log files.
+  * [Security.AuditLog.MaxArchiveDays](../../../server/configuration/security-configuration.mdx#security.auditlog.maxarchivedays) - the maximum number of days that an archived audit log file is kept.
+  * [Security.AuditLog.MaxArchiveFiles](../../../server/configuration/security-configuration.mdx#security.auditlog.maxarchivefiles) - the maximum number of archived audit log files to keep.
+  * [Logs.ArchiveAboveSizeInMb](../../../server/configuration/logs-configuration.mdx#logs.archiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
 
-* Learn how to set configuration keys in this [configuration overview](../../../server/configuration/configuration-options).
+* Learn how to set configuration keys in this [configuration overview](../../../server/configuration/configuration-options.mdx).
 
 
 

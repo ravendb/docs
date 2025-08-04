@@ -23,7 +23,7 @@ export const supportedLanguages = ["csharp", "java"];
 ## What are conflicts?
 When two or more changes of a single document are done concurrently in two separate nodes, 
 RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts).  
+For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
 
 <Admonition type="note" title="Note">
 By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
@@ -36,7 +36,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 ## How can the conflict can be resolved from the client side?
  * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
 
-<TabItem value="something" label="PUT_Sample">
+<TabItem value="PUT_Sample" label="PUT_Sample">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -49,7 +49,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 
  * DELETE of a conflicted document will resolve its conflict.  
 
-<TabItem value="something" label="DELETE_Sample">
+<TabItem value="DELETE_Sample" label="DELETE_Sample">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -60,11 +60,11 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 </CodeBlock>
 </TabItem>
 
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector).
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector.mdx).
 
 ## Modifying conflict resolution from the client-side
 In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.
-<TabItem value="something" label="Modify_conflict_resolution_sample">
+<TabItem value="Modify_conflict_resolution_sample" label="Modify_conflict_resolution_sample">
 <CodeBlock language="csharp">
 {`using (var documentStore = new DocumentStore
 \{
@@ -127,7 +127,7 @@ In RavenDB we can resolve conflicts either by resolving to the latest or by usin
 ## What are conflicts?
 When two or more changes of a single document are done concurrently in two separate nodes, 
 RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts).  
+For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts.mdx).  
 
 <Admonition type="note" title="Note">
 By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'.
@@ -140,7 +140,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 ## How can the conflict can be resolved from the client side?
  * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
 
-<TabItem value="something-something" label="PUT_Sample">
+<TabItem value="PUT_Sample" label="PUT_Sample">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     User user = new User();
@@ -157,7 +157,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 
  * DELETE of a conflicted document will resolve its conflict.  
 
-<TabItem value="something-something" label="DELETE_Sample">
+<TabItem value="DELETE_Sample" label="DELETE_Sample">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     session.delete("users/123"); // users/123 is a conflicted document
@@ -167,11 +167,11 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 </CodeBlock>
 </TabItem>
 
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector).
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector.mdx).
 
 ## Modifying conflict resolution from the client-side
 In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.
-<TabItem value="something-something" label="Modify_conflict_resolution_sample">
+<TabItem value="Modify_conflict_resolution_sample" label="Modify_conflict_resolution_sample">
 <CodeBlock language="java">
 {`try (IDocumentStore documentStore = new DocumentStore(
     new String[] \{ "http://<url of a database>" \}, "<database name>")) \{

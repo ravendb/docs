@@ -25,7 +25,7 @@ Pending session operations like `Store`, `Delete`, and many others. will not be 
 <Admonition type="info" title="Info">
 
 Whenever you execute `SaveChanges()` to send a batch of operations like put, update, or delete in a request,  
-the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) upon execution in the database.  
+the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) upon execution in the database.  
 
 Either all operations will be saved as a single, atomic transaction or none of them will be.  
 Once `SaveChanges()` returns successfully, it is guaranteed that all changes are persisted in the database.  
@@ -133,7 +133,7 @@ await asyncSession.SaveChangesAsync();
 
 Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `SaveChanges` returns.
 It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
-when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) and need to ensure the next request from the user 
+when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) and need to ensure the next request from the user 
 will be able to read what he or she just wrote (the next open session might access a different node).
 
 You can ask the server to wait until the replication is caught up with those particular changes.
@@ -198,9 +198,9 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 ## Transaction Mode - Cluster Wide
 
-Setting `TransactionMode` to `TransactionMode.ClusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions) feature.
+Setting `TransactionMode` to `TransactionMode.ClusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
 
-With this feature enabled the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work) will support the following _write_ commands:
+With this feature enabled the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
 
 - `Store`/`StoreAsync`
 - `Delete`
@@ -280,7 +280,7 @@ Pending session operations like `store`, `delete`, and many others, will not be 
 <Admonition type="info" title="Info">
 
 Whenever you execute `saveChanges()` to send a batch of operations like put, update, or delete in a request,  
-the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) upon execution in the database.
+the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) upon execution in the database.
 
 Either all operations will be saved as a single, atomic transaction or none of them will be.  
 Once `saveChanges()` returns successfully, it is guaranteed that all changes are persisted in the database.
@@ -289,7 +289,7 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ## Syntax
 
-<TabItem value="something-something" label="saving_changes_1">
+<TabItem value="saving_changes_1" label="saving_changes_1">
 <CodeBlock language="java">
 {`void saveChanges();
 `}
@@ -298,7 +298,7 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ### Example
 
-<TabItem value="something-something" label="saving_changes_2">
+<TabItem value="saving_changes_2" label="saving_changes_2">
 <CodeBlock language="java">
 {`Employee employee = new Employee();
 employee.setFirstName("John");
@@ -319,7 +319,7 @@ You can ask the server to wait until the indexes are caught up with changes made
 * You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
 by this write.
 
-<TabItem value="something-something" label="saving_changes_3">
+<TabItem value="saving_changes_3" label="saving_changes_3">
 <CodeBlock language="java">
 {`session.advanced().waitForIndexesAfterSaveChanges(builder -> \{
     builder.withTimeout(Duration.ofSeconds(30))
@@ -343,7 +343,7 @@ by this write.
 
 Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `saveChanges` returns.
 It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
-when you customize [the read balance behavior](../../client-api/configuration/load-balance/overview) and need to ensure the next request from the user 
+when you customize [the read balance behavior](../../client-api/configuration/load-balance/overview.mdx) and need to ensure the next request from the user 
 will be able to read what he or she just wrote (the next open session might access a different node).
 
 You can ask the server to wait until the replication is caught up with those particular changes.
@@ -353,7 +353,7 @@ You can ask the server to wait until the replication is caught up with those par
 * You can specify to how many replicas (nodes) the currently saved write must be replicated, before the `saveChanges` returns (default: 1).
 * You can specify whether the `saveChanges` will return only when the current write was replicated to majority of the nodes (default: `false`).
 
-<TabItem value="something-something" label="saving_changes_4">
+<TabItem value="saving_changes_4" label="saving_changes_4">
 <CodeBlock language="java">
 {`session
     .advanced()
@@ -391,9 +391,9 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 ## Transaction Mode - Cluster Wide
 
-Setting `transactionMode` to `TransactionMode.CLUSTER_WIDE` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions) feature.
+Setting `transactionMode` to `TransactionMode.CLUSTER_WIDE` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
 
-With this feature enabled the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work) will support the following _write_ commands:
+With this feature enabled the [Session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
 
 - `store`
 - `delete`
@@ -404,7 +404,7 @@ With this feature enabled the [Session](../../client-api/session/what-is-a-sessi
 
 Here is an example of creating a unique user with cluster wide.
 
-<TabItem value="something-something" label="cluster_store_with_compare_exchange">
+<TabItem value="cluster_store_with_compare_exchange" label="cluster_store_with_compare_exchange">
 <CodeBlock language="java">
 {`try (IDocumentStore store = new DocumentStore()) \{
     SessionOptions sessionOptions = new SessionOptions();
@@ -442,7 +442,7 @@ Pending session operations e.g. `store`, `delete` and many others will not be se
 <Admonition type="info" title="Info">
 
 Whenever you execute `save_changes()` to send a batch of operations like put, update, or delete in a request,  
-the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) upon execution in the database.  
+the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) upon execution in the database.  
 
 Either all operations will be saved as a single, atomic transaction or none of them will be.  
 Once `save_changes()` returns successfully, it is guaranteed that all changes are persisted in the database.  
@@ -451,7 +451,7 @@ Once `save_changes()` returns successfully, it is guaranteed that all changes ar
 
 ## Syntax
 
-<TabItem value="something-something" label="saving_changes_1">
+<TabItem value="saving_changes_1" label="saving_changes_1">
 <CodeBlock language="python">
 {`def save_changes(self) -> None:
     ...
@@ -461,7 +461,7 @@ Once `save_changes()` returns successfully, it is guaranteed that all changes ar
 
 ### Example
 
-<TabItem value="something-something" label="saving_changes_2">
+<TabItem value="saving_changes_2" label="saving_changes_2">
 <CodeBlock language="python">
 {`session.store(Employee(first_name="John", last_name="Doe"))
 
@@ -480,7 +480,7 @@ You can ask the server to wait until the indexes are caught up with changes made
 * You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
 by this write.
 
-<TabItem value="something-something" label="saving_changes_3">
+<TabItem value="saving_changes_3" label="saving_changes_3">
 <CodeBlock language="python">
 {`def _build_wait(idx_wait_opt_builder: InMemoryDocumentSessionOperations.IndexesWaitOptsBuilder) -> None:
     idx_wait_opt_builder.with_timeout(timedelta(seconds=30))
@@ -503,7 +503,7 @@ session.save_changes()
 
 Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `save_changes` returns.
 It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
-when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) and need to ensure the next request from the user 
+when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) and need to ensure the next request from the user 
 will be able to read what he or she just wrote (the next open session might access a different node).
 
 You can ask the server to wait until the replication is caught up with those particular changes.
@@ -513,7 +513,7 @@ You can ask the server to wait until the replication is caught up with those par
 * You can specify to how many replicas (nodes) the currently saved write must be replicated, before the `save_changes` returns (default: 1).
 * You can specify whether the `save_changes` will return only when the current write was replicated to majority of the nodes (default: `False`).
 
-<TabItem value="something-something" label="saving_changes_4">
+<TabItem value="saving_changes_4" label="saving_changes_4">
 <CodeBlock language="python">
 {`def _build_wait(
     repl_wait_builder: InMemoryDocumentSessionOperations.ReplicationWaitOptsBuilder,
@@ -548,9 +548,9 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 ## Transaction Mode - Cluster Wide
 
-Setting `TransactionMode` to `TransactionMode.CLUSTER_WIDE` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions) feature.
+Setting `TransactionMode` to `TransactionMode.CLUSTER_WIDE` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
 
-With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work) will support the following _write_ commands:
+With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
 
 - `store`
 - `delete`
@@ -561,7 +561,7 @@ With this feature enabled the [session](../../client-api/session/what-is-a-sessi
 
 Here is an example of creating a unique user with cluster wide.
 
-<TabItem value="something-something" label="cluster_store_with_compare_exchange">
+<TabItem value="cluster_store_with_compare_exchange" label="cluster_store_with_compare_exchange">
 <CodeBlock language="python">
 {`DocumentStore = DocumentStoreFake
 with DocumentStore() as store:
@@ -596,7 +596,7 @@ Pending session operations like `store`, `delete`, and many others, will not be 
 <Admonition type="info" title="Info">
 
 When `saveChanges()` is applied to send a batch of operations (e.g. `put`, `update`, and `delete`) 
-in a request, the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) 
+in a request, the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) 
 upon execution in the database.  
 
 Either all operations are performed as a single, atomic transaction, or none of them are.  
@@ -606,7 +606,7 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ## Syntax
 
-<TabItem value="something-something" label="saving_changes_1">
+<TabItem value="saving_changes_1" label="saving_changes_1">
 <CodeBlock language="php">
 {`public function saveChanges(): void;
 `}
@@ -615,7 +615,7 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ### Example
 
-<TabItem value="something-something" label="saving_changes_2">
+<TabItem value="saving_changes_2" label="saving_changes_2">
 <CodeBlock language="php">
 {`$employee = new Employee();
 $employee->setFirstName("John");
@@ -637,7 +637,7 @@ the current session before `saveChanges` returns.
 * You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
 by this write.
 
-<TabItem value="something-something" label="saving_changes_3">
+<TabItem value="saving_changes_3" label="saving_changes_3">
 <CodeBlock language="php">
 {`$session->advanced()->waitForIndexesAfterSaveChanges(function ($builder) use ($session) \{
     $builder->withTimeout(Duration::ofSeconds(30))
@@ -660,9 +660,9 @@ by this write.
 
 ## Transaction Mode - Cluster Wide
 
-Setting `TransactionMode` to `TransactionMode.clusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions) feature.
+Setting `TransactionMode` to `TransactionMode.clusterWide` will enable the [Cluster Transactions](../../server/clustering/cluster-transactions.mdx) feature.
 
-With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work) will support the following _write_ commands:
+With this feature enabled the [session](../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) will support the following _write_ commands:
 
 - `store`
 - `delete`
@@ -672,7 +672,7 @@ With this feature enabled the [session](../../client-api/session/what-is-a-sessi
 
 Here is an example of creating a unique user with cluster wide.
 
-<TabItem value="something-something" label="cluster_store_with_compare_exchange">
+<TabItem value="cluster_store_with_compare_exchange" label="cluster_store_with_compare_exchange">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -716,7 +716,7 @@ Pending session operations like `store()`, `delete()`, and many others, will not
 <Admonition type="info" title="Info">
 
 Whenever you execute `saveChanges()` to send a batch of operations like put, update, or delete in a request,  
-the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support) upon execution in the database.
+the server will wrap these operations in a [transaction](../../client-api/faq/transaction-support.mdx) upon execution in the database.
 
 Either all operations will be saved as a single, atomic transaction or none of them will be.  
 Once `saveChanges()` returns successfully, it is guaranteed that all changes are persisted in the database.
@@ -725,8 +725,8 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ## Syntax
 
-<TabItem value="something-something" label="saving_changes_1">
-<CodeBlock language="nodejs">
+<TabItem value="saving_changes_1" label="saving_changes_1">
+<CodeBlock language="js">
 {`session.saveChanges();
 `}
 </CodeBlock>
@@ -738,8 +738,8 @@ Once `saveChanges()` returns successfully, it is guaranteed that all changes are
 
 ### Example
 
-<TabItem value="something-something" label="saving_changes_2">
-<CodeBlock language="nodejs">
+<TabItem value="saving_changes_2" label="saving_changes_2">
+<CodeBlock language="js">
 {`const employee = new Employee("John", "Doe");
 await session.store(employee);
 await session.saveChanges();
@@ -756,8 +756,8 @@ You can ask the server to wait until the indexes are caught up with changes made
 * You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
 by this write.
 
-<TabItem value="something-something" label="saving_changes_3">
-<CodeBlock language="nodejs">
+<TabItem value="saving_changes_3" label="saving_changes_3">
+<CodeBlock language="js">
 {`session.advanced.waitForIndexesAfterSaveChanges(\{
     indexes: ["index/1", "index/2"],
     throwOnTimeout: true,
@@ -777,7 +777,7 @@ await session.saveChanges();
 
 Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `saveChanges()` returns.
 It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
-when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior) and need to ensure the next request from the user 
+when you customize [the read balance behavior](../../client-api/configuration/load-balance/read-balance-behavior.mdx) and need to ensure the next request from the user 
 will be able to read what he or she just wrote (the next open session might access a different node).
 
 You can ask the server to wait until the replication is caught up with those particular changes.
@@ -787,8 +787,8 @@ You can ask the server to wait until the replication is caught up with those par
 * You can specify to how many replicas (nodes) the currently saved write must be replicated, before the `saveChanges` returns (default: 1).
 * You can specify whether the `saveChanges()` will return only when the current write was replicated to majority of the nodes (default: `false`).
 
-<TabItem value="something-something" label="saving_changes_4">
-<CodeBlock language="nodejs">
+<TabItem value="saving_changes_4" label="saving_changes_4">
+<CodeBlock language="js">
 {`session.advanced
     .waitForReplicationAfterSaveChanges(\{
         throwOnTimeout: false, // default true

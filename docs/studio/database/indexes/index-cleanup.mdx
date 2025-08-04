@@ -29,11 +29,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
     </Admonition>
 
 * In this page:  
-  * [Merge indexes](../../../studio/database/indexes/index-cleanup#merge-indexes)  
-  * [Remove sub-indexes](../../../studio/database/indexes/index-cleanup#remove-sub-indexes)  
-  * [Remove unused indexes](../../../studio/database/indexes/index-cleanup#remove-unused-indexes)  
-  * [Indexes that will not be merged](../../../studio/database/indexes/index-cleanup#indexes-that-will-not-be-merged)  
-  * [Merge suggestions errors](../../../studio/database/indexes/index-cleanup#merge-suggestions-errors)  
+  * [Merge indexes](../../../studio/database/indexes/index-cleanup.mdx#merge-indexes)  
+  * [Remove sub-indexes](../../../studio/database/indexes/index-cleanup.mdx#remove-sub-indexes)  
+  * [Remove unused indexes](../../../studio/database/indexes/index-cleanup.mdx#remove-unused-indexes)  
+  * [Indexes that will not be merged](../../../studio/database/indexes/index-cleanup.mdx#indexes-that-will-not-be-merged)  
+  * [Merge suggestions errors](../../../studio/database/indexes/index-cleanup.mdx#merge-suggestions-errors)  
 
 </Admonition>
 ## Merge indexes
@@ -115,15 +115,15 @@ Review the list and consider deleting any unnecessary indexes.
 
 * **Static-indexes** that belong to the following categories will Not be considered by the server for merging or for removing a sub-index.
   These indexes will be listed under the **Unmergeable indexes** tab, with a specific reason provided for each index.
-   * [Map-reduce indexes](../../../indexes/map-reduce-indexes)
-   * [Multi map indexes](../../../indexes/multi-map-indexes)
-   * [Fanout indexes](../../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document)
-   * [Indexes that use a `where` clause](../../../indexes/map-indexes#filtering-data-within-fields) in their index definition
-   * [Indexes that load a related document](../../../indexes/indexing-related-documents) in their index definition
-   * Indexes that use `let` in their LINQ index definition - only when deployed via the [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation-with-indexdefinition) syntax
+   * [Map-reduce indexes](../../../indexes/map-reduce-indexes.mdx)
+   * [Multi map indexes](../../../indexes/multi-map-indexes.mdx)
+   * [Fanout indexes](../../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document)
+   * [Indexes that use a `where` clause](../../../indexes/map-indexes.mdx#filtering-data-within-fields) in their index definition
+   * [Indexes that load a related document](../../../indexes/indexing-related-documents.mdx) in their index definition
+   * Indexes that use `let` in their LINQ index definition - only when deployed via the [PutIndexesOperation](../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition) syntax
    * Indexes for which the server did not find any other index to merge with
 
-* [JavaScript indexes](../../../indexes/javascript-indexes) are also excluded from merging but are Not listed in this view.
+* [JavaScript indexes](../../../indexes/javascript-indexes.mdx) are also excluded from merging but are Not listed in this view.
 
 * **Auto-indexes** are automatically merged by the server and will Not be listed in this view.  
 ![Index cleanup - Unmergeable indexes](./assets/index-cleanup-10.png)

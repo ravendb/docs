@@ -20,14 +20,14 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageContent language="csharp">
 #Type-Specific Identifier Generation
 
-[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+[In the previous article](../../../client-api/configuration/identifier-generation/global.mdx), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
 Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
 
 To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
 
 
 
-<TabItem value="something" label="register_id_convention_method_async">
+<TabItem value="register_id_convention_method_async" label="register_id_convention_method_async">
 <CodeBlock language="csharp">
 {`DocumentConventions RegisterAsyncIdConvention<TEntity>(Func<string, TEntity, Task<string>> func);
 `}
@@ -55,7 +55,7 @@ The database name parameter is passed to the register convention methods to allo
 Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
 (for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
 
-<TabItem value="something" label="employees_custom_async_convention">
+<TabItem value="employees_custom_async_convention" label="employees_custom_async_convention">
 <CodeBlock language="csharp">
 {`store.Conventions.RegisterAsyncIdConvention<Employee>(
     (dbname, employee) =>
@@ -66,7 +66,7 @@ Let's say that you want to use semantic identifiers for `Employee` objects. Inst
 
 Now, when you store a new entity:
 
-<TabItem value="something" label="employees_custom_convention_example">
+<TabItem value="employees_custom_convention_example" label="employees_custom_convention_example">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -92,7 +92,7 @@ Registered conventions are inheritance-aware so all types that can be assigned f
 
 If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, both types will use the following:
 
-<TabItem value="something" label="employees_custom_convention_inheritance">
+<TabItem value="employees_custom_convention_inheritance" label="employees_custom_convention_inheritance">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -116,7 +116,7 @@ If we create a new class `EmployeeManager` that will derive from our `Employee` 
 
 If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
 
-<TabItem value="something" label="custom_convention_inheritance_2">
+<TabItem value="custom_convention_inheritance_2" label="custom_convention_inheritance_2">
 <CodeBlock language="csharp">
 {`store.Conventions.RegisterAsyncIdConvention<Employee>(
     (dbname, employee) =>
@@ -151,14 +151,14 @@ using (var session = store.OpenSession())
 <LanguageContent language="java">
 #Type-Specific Identifier Generation
 
-[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+[In the previous article](../../../client-api/configuration/identifier-generation/global.mdx), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
 Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
 
 To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
 
 
 
-<TabItem value="something-something" label="register_id_convention_method_async">
+<TabItem value="register_id_convention_method_async" label="register_id_convention_method_async">
 <CodeBlock language="java">
 {`public <TEntity> DocumentConventions registerIdConvention(Class<TEntity> clazz, BiFunction<String, TEntity, String> function);
 `}
@@ -182,7 +182,7 @@ The database name parameter is passed to the register convention methods to allo
 Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
 (for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
 
-<TabItem value="something-something" label="employees_custom_async_convention">
+<TabItem value="employees_custom_async_convention" label="employees_custom_async_convention">
 <CodeBlock language="java">
 {`store.getConventions().registerIdConvention(Employee.class,
     (dbName, employee) ->
@@ -193,7 +193,7 @@ Let's say that you want to use semantic identifiers for `Employee` objects. Inst
 
 Now, when you store a new entity:
 
-<TabItem value="something-something" label="employees_custom_convention_example">
+<TabItem value="employees_custom_convention_example" label="employees_custom_convention_example">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Employee employee = new Employee();
@@ -217,7 +217,7 @@ Registered conventions are inheritance-aware so all types that can be assigned f
 
 If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, both types will use the following:
 
-<TabItem value="something-something" label="employees_custom_convention_inheritance">
+<TabItem value="employees_custom_convention_inheritance" label="employees_custom_convention_inheritance">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Employee adam = new Employee();
@@ -238,7 +238,7 @@ If we create a new class `EmployeeManager` that will derive from our `Employee` 
 
 If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
 
-<TabItem value="something-something" label="custom_convention_inheritance_2">
+<TabItem value="custom_convention_inheritance_2" label="custom_convention_inheritance_2">
 <CodeBlock language="java">
 {`store.getConventions().registerIdConvention(Employee.class,
     (dbName, employee) ->
@@ -272,15 +272,15 @@ try (IDocumentSession session = store.openSession()) \{
 <LanguageContent language="nodejs">
 #Type-Specific Identifier Generation
 
-[In the previous article](../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+[In the previous article](../../../client-api/configuration/identifier-generation/global.mdx), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
 Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
 
 To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
 
 
 
-<TabItem value="something-something" label="register_id_convention_method_async">
-<CodeBlock language="nodejs">
+<TabItem value="register_id_convention_method_async" label="register_id_convention_method_async">
+<CodeBlock language="js">
 {`conventions.registerIdConvention(clazz, idConvention);
 `}
 </CodeBlock>
@@ -304,8 +304,8 @@ The database name parameter is passed to the register convention methods to allo
 Let's say that you want to use semantic identifiers for `Employee` objects. Instead of `employee/[identity]` you want to have identifiers like `employees/[lastName]/[firstName]`
 (for the sake of simplicity, let us not consider the uniqueness of such identifiers). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` properties of an employee.
 
-<TabItem value="something-something" label="employees_custom_async_convention">
-<CodeBlock language="nodejs">
+<TabItem value="employees_custom_async_convention" label="employees_custom_async_convention">
+<CodeBlock language="js">
 {`store.conventions.registerIdConvention(Employee,
     (dbName, entity) => Promise.resolve(\`employees/$\{entity.lastName\}/$\{entity.firstName\}\`)); 
 
@@ -318,8 +318,8 @@ store.conventions.registerIdConvention(Employee,
 
 Now, when you store a new entity:
 
-<TabItem value="something-something" label="employees_custom_convention_example">
-<CodeBlock language="nodejs">
+<TabItem value="employees_custom_convention_example" label="employees_custom_convention_example">
+<CodeBlock language="js">
 {`const session = store.openSession();
 const employee = new Employee("James", "Bond");
 
@@ -337,8 +337,8 @@ ID convention function must return a Promise since it *can* be asynchronous.
 
 ### Example: Object literal based entities
 
-<TabItem value="something-something" label="employees_custom_async_convention_typedescriptor">
-<CodeBlock language="nodejs">
+<TabItem value="employees_custom_async_convention_typedescriptor" label="employees_custom_async_convention_typedescriptor">
+<CodeBlock language="js">
 {`// for object literal based entities you can pass type descriptor object
 const typeDescriptor = \{
     name: "Employee",

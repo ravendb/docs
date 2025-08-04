@@ -18,16 +18,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Starting from version `6.0` RavenDB for Docker introduces an 
   improved security model, using a dedicated user rather than `root`.  
 * RavenDB `6.0` and up also use a Debian archive file 
-  ([.deb package](../../start/installation/gnu-linux/deb)), 
+  ([.deb package](../../start/installation/gnu-linux/deb.mdx)), 
   applying a uniform internal structure for Ubuntu OS platforms.  
 * To conform with these changes, installing RavenDB `6.0` or higher 
   in a system that already hosts RavenDB `5.x` or lower requires 
   the migration procedure explained below.  
-* Read [here](../../start/containers/image-usage) more about running a RavenDB Docker image.  
+* Read [here](../../start/containers/image-usage.mdx) more about running a RavenDB Docker image.  
 
 * In this page:  
-  * [Changes Made In RavenDB `6.0` And Up](../../migration/server/docker#changes-made-in-ravendb-6.0-and-up)  
-  * [Migrating To `6.0` And Up](../../migration/server/docker#migrating-to-6.0-and-up)  
+  * [Changes Made In RavenDB `6.0` And Up](../../migration/server/docker.mdx#changes-made-in-ravendb-6.0-and-up)  
+  * [Migrating To `6.0` And Up](../../migration/server/docker.mdx#migrating-to-6.0-and-up)  
 
 </Admonition>
 ## Changes Made In RavenDB 6.0 And Up  
@@ -41,7 +41,7 @@ from the directory structure and user used by older versions.
    * Are installed and accessed using the `root` user on Ubuntu.  
 
 * RavenDB Docker images from `6.0` up:  
-   * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb)) 
+   * Use a Debian archive file ([.deb package](../../start/installation/gnu-linux/deb.mdx)) 
      and create a similar directory structure under Windows and Ubuntu.  
    * Are installed and accessed using a dedicated `ravendb` user 
      instead of `root`, to improve security.  
@@ -71,7 +71,7 @@ E.g., `docker build --build-arg "RAVEN_USER_ID=999" --build-arg "RAVEN_GROUP_ID=
 ## Migrate files and data  
 
 The setup process will create the directory structure detailed 
-[here](../../start/installation/gnu-linux/deb#file-system-locations).  
+[here](../../start/installation/gnu-linux/deb.mdx#file-system-locations).  
   
 The script within the image will attempt to link the old version's 
 data directory to the new version's data directory automatically upon start.  

@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * This article explains why vector search results might not always return what you expect, even when relevant documents exist.
-  It applies to both [Dynamic vector search queries](../../ai-integration/vector-search/vector-search-using-dynamic-query) and
-  [Static-index vector search queries](../../ai-integration/vector-search/vector-search-using-static-index).
+  It applies to both [Dynamic vector search queries](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx) and
+  [Static-index vector search queries](../../ai-integration/vector-search/vector-search-using-static-index.mdx).
 
 * Vector search in RavenDB uses the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) algorithm (Hierarchical Navigable Small World)
   to index and search high-dimensional vector embeddings efficiently.
@@ -27,13 +27,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Several **indexing-time parameters** affect how the vector graph is built, and **query-time parameters** affect how the graph is searched.
   These settings influence the trade-off between speed and accuracy.
 
-* If full accuracy is required, RavenDB also provides [Exact vector search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search),  
+* If full accuracy is required, RavenDB also provides [Exact vector search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search),  
   which performs a full scan of all indexed vectors to guarantee the closest matches.
 * In this article:
-  * [The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results#the-approximate-nature-of-hnsw)
-  * [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results#indexing-time-parameters)
-  * [Query-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results#query-time-parameters)
-  * [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search)
+  * [The approximate nature of HNSW](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#the-approximate-nature-of-hnsw)
+  * [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters)
+  * [Query-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters)
+  * [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search)
     
 </Admonition>
 ## The approximate nature of HNSW
@@ -44,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     Top layers are sparse and support fast, broad navigation.  
     The bottom layer is dense and includes all indexed vectors for fine-grained matching.  
   * Each node (vector) is connected only to a limited number of neighbors, selected as the most relevant during indexing (graph build time).
-    This limitation is controlled by the [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results#indexing-time-parameters) described below.
+    This limitation is controlled by the [Indexing-time parameters](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#indexing-time-parameters) described below.
   * This structure speeds up search but increases the chance that a relevant document is not reachable -  
     especially if it's poorly connected.
 
@@ -65,12 +65,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * The algorithm doesn't exhaustively explore all possible paths, so it can miss the true global nearest neighbors -  
     especially if they are not well-connected in the graph.
     This design enables HNSW to find relevant results very quickly by focusing only on the most promising paths, making it highly efficient even for large datasets.
-  * The search is influenced by the [Query-time params](../../ai-integration/vector-search/what-affects-vector-search-results#query-time-parameters) described below.  
+  * The search is influenced by the [Query-time params](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#query-time-parameters) described below.  
     Slight variations in graph structure or search parameters can lead to different results.
   * While HNSW offers fast search performance at scale and quickly finds points that are likely to be among the nearest neighbors,
     it does not guarantee exact results - only approximate matches are returned.  
     This behavior is expected in all ANN algorithms, not just HNSW.  
-    If full accuracy is critical, consider using [Exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) instead.
+    If full accuracy is critical, consider using [Exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) instead.
 
 
 
@@ -92,9 +92,9 @@ They help keep memory usage and indexing time under control, but may also limit 
     A **smaller** value reduces memory usage and speeds up indexing,  
     but can result in a sparser graph with weaker connectivity and reduced search accuracy.
   * With **static-indexes** -  
-    This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index#indexing-raw-text).  
+    This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
-    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofedges) configuration key.  
+    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofedges) configuration key.  
 
 * **Number of candidates at indexing time**:
    
@@ -107,11 +107,11 @@ They help keep memory usage and indexing time under control, but may also limit 
     A **smaller** value speeds up indexing and reduces resource usage,  
     but can result in a sparser and less accurate graph structure. 
   * With **static-indexes** -  
-    This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index#indexing-raw-text).  
+    This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
-    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing) configuration key.
+    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing) configuration key.
 For all parameters that can be defined at indexing time (including the ones above),  
-see [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index#parameters-defined-at-index-definition).
+see [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition).
 
 
 
@@ -128,8 +128,8 @@ These parameters directly affect how many results are found, how similar they ar
   * A **larger** value increases the breadth of the search, allowing the algorithm to explore a wider set of possible neighbors 
     and typically improving accuracy and the chances of retrieving all relevant results - but this comes at the cost of slower query performance.  
     A **smaller** value speeds up queries and reduces resource usage, but increases the chance of missing relevant results due to the more limited exploration.
-  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-raw-text).  
-    If not explicitly set, the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying) configuration key.  
+  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-raw-text).  
+    If not explicitly set, the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying) configuration key.  
 
 * **Minimum Similarity**:  
   
@@ -137,8 +137,8 @@ These parameters directly affect how many results are found, how similar they ar
   * Vectors with a similarity score below this threshold are excluded from the results -  
     even if they would otherwise be among the top candidates.  
     Use this to filter out marginal matches, especially when minimum semantic relevance is important.
-  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-raw-text).
-    If not explicitly set in the query, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity) configuration key.  
+  * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-raw-text).
+    If not explicitly set in the query, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity) configuration key.  
     The default value of this configuration key is `0.0`, which means no similarity filtering is applied - all candidates found during the search are eligible to be returned,
     regardless of how dissimilar they are from the query vector.
 
@@ -150,10 +150,10 @@ These parameters directly affect how many results are found, how similar they ar
       it is typically accurate and strongly recommended in most scenarios due to its performance.
     * **Exact search**:  
       Performs a full comparison against all indexed vectors to guarantee the closest matches.  
-      Learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results#using-exact-search) below.
+      Learn more in [Using exact search](../../ai-integration/vector-search/what-affects-vector-search-results.mdx#using-exact-search) below.
 For all parameters that can be defined at query time, see:  
-Dynamic queries - [The dynamic query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query#the-dynamic-query-parameters).  
-Static index queries - [Parameters used at query time](../../ai-integration/vector-search/vector-search-using-static-index#parameters-used-at-query-time).   
+Dynamic queries - [The dynamic query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  
+Static index queries - [Parameters used at query time](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-used-at-query-time).   
 
 
 
@@ -171,7 +171,7 @@ Static index queries - [Parameters used at query time](../../ai-integration/vect
   Use exact search only when maximum precision is critical and the performance trade-off is acceptable.
 
 * Exact search can be used with both static index queries and dynamic queries.  
-  For example, see [Dynamic vector search - exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query#dynamic-vector-search---exact-search).
+  For example, see [Dynamic vector search - exact search](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#dynamic-vector-search---exact-search).
 
 
 

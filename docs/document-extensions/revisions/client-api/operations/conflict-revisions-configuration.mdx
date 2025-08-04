@@ -26,19 +26,19 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 
 * Use `ConfigureRevisionsForConflictsOperation` to disable the feature or modify the configuration. 
 
-* If you define [default configuration](../../../../studio/database/settings/document-revisions#define-default-configuration),  
+* If you define [default configuration](../../../../studio/database/settings/document-revisions.mdx#define-default-configuration),  
   then these settings will **override** the conflict revisions configuration.  
 
-* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions#define-collection-specific-configuration),  
+* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration),  
   then these settings will also **override** the conflict revisions configuration for that collection.  
    * E.g., if the conflict revisions configuration defines that revisions created for conflicting documents will not be purged, 
      but a collection-specific configuration defines an age limit for revisions,  
      revisions for conflicting documents of this collection that exceed this age will be purged.  
 
 * In this page:  
-  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#configure-revisions-for-conflicts---example)
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#syntax)
-  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#storage-consideration)
+  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#configure-revisions-for-conflicts---example)
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#syntax)
+  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#storage-consideration)
 </Admonition>
 ## Configure revisions for conflicts - Example
 
@@ -99,7 +99,7 @@ await documentStore.Maintenance.Server.SendAsync(configureConflictRevisionsOp);
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public ConfigureRevisionsForConflictsOperation(string database, RevisionsCollectionConfiguration configuration)
 `}
@@ -111,7 +111,7 @@ await documentStore.Maintenance.Server.SendAsync(configureConflictRevisionsOp);
 | **database** | `string` | The name of the database whose conflict revisions you want to manage |
 | **configuration** | `RevisionsCollectionConfiguration` | The conflict revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class RevisionsCollectionConfiguration
 \{
@@ -125,7 +125,7 @@ await documentStore.Maintenance.Server.SendAsync(configureConflictRevisionsOp);
 </CodeBlock>
 </TabItem>
 
-* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisions-collection-configuration-object).
+* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisions-collection-configuration-object).
 
 
 
@@ -139,8 +139,8 @@ However, it can also lead to a significant increase in the database size if many
 * Consider limiting the number of conflict revisions kept per document using:  
   `MinimumRevisionsToKeep` and/or `MinimumRevisionAgeToKeep`.  
 
-* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview#revisions-configuration-execution).  
-  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions#enforce-configuration).  
+* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview.mdx#revisions-configuration-execution).  
+  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
 
 </Admonition>
 
@@ -155,23 +155,23 @@ However, it can also lead to a significant increase in the database size if many
 
 * Use `ConfigureRevisionsForConflictsOperation` to disable the feature or modify the configuration. 
 
-* If you define [default configuration](../../../../studio/database/settings/document-revisions#define-default-configuration),  
+* If you define [default configuration](../../../../studio/database/settings/document-revisions.mdx#define-default-configuration),  
   then these settings will **override** the conflict revisions configuration.  
 
-* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions#define-collection-specific-configuration),  
+* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration),  
   then these settings will also **override** the conflict revisions configuration for that collection.  
    * E.g., if the conflict revisions configuration defines that revisions created for conflicting documents will not be purged, 
      but a collection-specific configuration defines an age limit for revisions,  
      revisions for conflicting documents of this collection that exceed this age will be purged.  
 
 * In this page:  
-  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#configure-revisions-for-conflicts---example)
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#syntax)
-  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#storage-consideration)
+  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#configure-revisions-for-conflicts---example)
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#syntax)
+  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#storage-consideration)
 </Admonition>
 ## Configure revisions for conflicts - Example
 
-<TabItem value="something-something" label="conflict_revisions_configuration">
+<TabItem value="conflict_revisions_configuration" label="conflict_revisions_configuration">
 <CodeBlock language="php">
 {`// Define the settings that will apply for conflict revisions (for all collections)
 $conflictRevConfig = new RevisionsCollectionConfiguration();
@@ -199,7 +199,7 @@ $documentStore->maintenance()->server()->send($configureConflictRevisionsOp);
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`new ConfigureRevisionsForConflictsOperation(?string $database, ?RevisionsCollectionConfiguration $configuration)
 `}
@@ -211,7 +211,7 @@ $documentStore->maintenance()->server()->send($configureConflictRevisionsOp);
 | **database** | `string` | The name of the database whose conflict revisions you want to manage |
 | **configuration** | `RevisionsCollectionConfiguration` | The conflict revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class RevisionsCollectionConfiguration
 \{
@@ -227,7 +227,7 @@ $documentStore->maintenance()->server()->send($configureConflictRevisionsOp);
 </CodeBlock>
 </TabItem>
 
-* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisions-collection-configuration-object).
+* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisions-collection-configuration-object).
 
 
 
@@ -241,8 +241,8 @@ However, it can also lead to a significant increase in the database size if many
 * Consider limiting the number of conflict revisions kept per document using:  
   `MinimumRevisionsToKeep` and/or `MinimumRevisionAgeToKeep`.  
 
-* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview#revisions-configuration-execution).  
-  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions#enforce-configuration).  
+* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview.mdx#revisions-configuration-execution).  
+  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
 
 </Admonition>
 
@@ -257,24 +257,24 @@ However, it can also lead to a significant increase in the database size if many
 
 * Use `ConfigureRevisionsForConflictsOperation` to disable the feature or modify the configuration. 
 
-* If you define [default configuration](../../../../studio/database/settings/document-revisions#define-default-configuration),  
+* If you define [default configuration](../../../../studio/database/settings/document-revisions.mdx#define-default-configuration),  
   then these settings will **override** the conflict revisions configuration.  
 
-* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions#define-collection-specific-configuration),  
+* If you define any [collection-specific configuration](../../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration),  
   then these settings will also **override** the conflict revisions configuration for that collection.  
    * E.g., if the conflict revisions configuration defines that revisions created for conflicting documents will not be purged, 
      but a collection-specific configuration defines an age limit for revisions,  
      revisions for conflicting documents of this collection that exceed this age will be purged.  
 
 * In this page:  
-  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#configure-revisions-for-conflicts---example)
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#syntax)
-  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration#storage-consideration)
+  * [Configure revisions for conflicts - Example](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#configure-revisions-for-conflicts---example)
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#syntax)
+  * [Storage consideration](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx#storage-consideration)
 </Admonition>
 ## Configure revisions for conflicts - Example
 
-<TabItem value="something-something" label="conflict_revisions_configuration">
-<CodeBlock language="nodejs">
+<TabItem value="conflict_revisions_configuration" label="conflict_revisions_configuration">
+<CodeBlock language="js">
 {`// Define the settings that will apply for conflict revisions (for all collections)
 const conflictRevConfig  = new RevisionsCollectionConfiguration();
 conflictRevConfig.minimumRevisionAgeToKeep = TimeUtil.millisToTimeSpan(3600 * 1000 * 24 * 45) // 45 days
@@ -301,8 +301,8 @@ await documentStore.maintenance.server.send(configureConflictRevisionsOp);
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const configureRevisionsOp = new ConfigureRevisionsForConflictsOperation(database, configuration);
 `}
 </CodeBlock>
@@ -313,8 +313,8 @@ await documentStore.maintenance.server.send(configureConflictRevisionsOp);
 | **database** | `string` | The name of the database whose conflict revisions you want to manage |
 | **configuration** | `RevisionsCollectionConfiguration` | The conflict revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class RevisionsCollectionConfiguration
 \{
     minimumRevisionsToKeep;
@@ -327,7 +327,7 @@ await documentStore.maintenance.server.send(configureConflictRevisionsOp);
 </CodeBlock>
 </TabItem>
 
-* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisions-collection-configuration-object).
+* See properties explanation and default values [here](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisions-collection-configuration-object).
 
 
 
@@ -341,8 +341,8 @@ However, it can also lead to a significant increase in the database size if many
 * Consider limiting the number of conflict revisions kept per document using:  
   `minimumRevisionsToKeep` and/or `minimumRevisionAgeToKeep`.  
 
-* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview#revisions-configuration-execution).  
-  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions#enforce-configuration).  
+* Revisions are purged upon [modification of their parent documents](../../../../document-extensions/revisions/overview.mdx#revisions-configuration-execution).  
+  If you want to purge a large number of revisions at once, you can **cautiously** [enforce configuration](../../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
 
 </Admonition>
 

@@ -25,15 +25,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   delivering just the data needed instead of the original full document content. 
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
 
 * In this article:
-  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
-  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
-      * [Select](../../../client-api/session/querying/how-to-project-query-results#select)  
-      * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)  
-      * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)
-  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
+  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+      * [Select](../../../client-api/session/querying/how-to-project-query-results.mdx#select)  
+      * [ProjectInto](../../../client-api/session/querying/how-to-project-query-results.mdx#projectinto)  
+      * [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)
+  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -45,7 +45,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
 * Objects and arrays, including content from nested structures, can be projected.  
   An alias name can be given to the projected fields, and any calculations can be applied within the projection.
@@ -53,7 +53,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -82,18 +82,18 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
 * Only a single projection request can be made per Query (and DocumentQuery).  
-  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
+  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query).
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations)
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration#databases.querytimeoutinsec)
-      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
+      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.querytimeoutinsec)
+      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.queryoperationtimeoutinsec)
 
 
 
@@ -655,10 +655,10 @@ select Name, Phone, Fax
 
 ## SelectFields
 
-The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
+The `SelectFields` method can only be used by a [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
 It has two overloads:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// 1) Select fields to project by the projection class type
 IDocumentQuery<TProjection> SelectFields<TProjection>();
@@ -814,7 +814,7 @@ select Name, Phone
     * DocumentQuery:  
       Multiple `SelectFields` calls will result in an exception.
 
-<TabItem value="something" label="projections_13">
+<TabItem value="projections_13" label="projections_13">
 <CodeBlock language="csharp">
 {`// For example:
 try
@@ -846,8 +846,8 @@ catch (Exception e)
 Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
 results. The projections are defined with the usage of:
 
-- [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)
-- [OfType](../../../client-api/session/querying/how-to-project-query-results#oftype---simple-projection)
+- [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)
+- [OfType](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype---simple-projection)
 
 ## SelectFields
 
@@ -1130,7 +1130,7 @@ select Name, Phone
 
 ### Example
 
-<TabItem value="something-something" label="projections_10">
+<TabItem value="projections_10" label="projections_10">
 <CodeBlock language="java">
 {`// query index 'Products_BySupplierName'
 // return documents from collection 'Products' that have a supplier 'Norske Meierier'
@@ -1163,18 +1163,18 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
   delivering just the data needed instead of the original full document content. 
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
 
 * In this page:
 
-  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
+  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
 
-  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
-      * [select_fields_query_data](../../../client-api/session/querying/how-to-project-query-results#select_fields_query_data)  
-      * [raw_query with `select`](../../../client-api/session/querying/how-to-project-query-results#raw_query-with-select)  
-      * [select_fields](../../../client-api/session/querying/how-to-project-query-results#select_fields)  
+  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+      * [select_fields_query_data](../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields_query_data)  
+      * [raw_query with `select`](../../../client-api/session/querying/how-to-project-query-results.mdx#raw_query-with-select)  
+      * [select_fields](../../../client-api/session/querying/how-to-project-query-results.mdx#select_fields)  
 
-  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
+  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -1187,7 +1187,7 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
 * Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
 
@@ -1198,7 +1198,7 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -1229,19 +1229,19 @@ If the projected fields are stored inside the index itself (`FieldStorage.YES` i
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
 * Only a single projection request can be made per query.  
-  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query).
+  Learn more in [single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query).
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations) 
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
 * inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration#databases.querytimeoutinsec)
-      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
+      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.querytimeoutinsec)
+      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.queryoperationtimeoutinsec)
 
 
 
@@ -1545,7 +1545,7 @@ select Name, Phone
   `select_fields_query_data` multiple times or by calling `select_fields_query_data` 
   and then `select_fields`, will result in an exception.  
 
-<TabItem value="something-something" label="projections_13">
+<TabItem value="projections_13" label="projections_13">
 <CodeBlock language="python">
 {`# For example:
 query_data = QueryData(["name"], ["funny_name"])
@@ -1577,17 +1577,17 @@ except Exception as e:
   delivering just the data needed instead of the original full document content. 
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
 
 * In this page:
 
-  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
+  * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
 
-  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results#projection-methods)  
-      * [`select`, `selectFields`](../../../client-api/session/querying/how-to-project-query-results#select,-selectfields)  
-      * [`ofType`](../../../client-api/session/querying/how-to-project-query-results#oftype)  
+  * [Projection Methods](../../../client-api/session/querying/how-to-project-query-results.mdx#projection-methods)  
+      * [`select`, `selectFields`](../../../client-api/session/querying/how-to-project-query-results.mdx#select,-selectfields)  
+      * [`ofType`](../../../client-api/session/querying/how-to-project-query-results.mdx#oftype)  
 
-  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query)
+  * [Single projection per query](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query)
 
 </Admonition>
 ## Projections overview
@@ -1600,7 +1600,7 @@ except Exception as e:
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
 * Objects and arrays can be projected, fields can be renamed, and any calculations can be made within the projection.
 
@@ -1611,7 +1611,7 @@ except Exception as e:
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -1641,19 +1641,19 @@ except Exception as e:
 * Within the projection you can only filter what data will be returned from the matching documents,  
   but you cannot filter which documents will be returned. That has already been determined earlier in the query pipeline.
 
-* Only a [single projection request](../../../client-api/session/querying/how-to-project-query-results#single-projection-per-query) can be made per query.  
+* Only a [single projection request](../../../client-api/session/querying/how-to-project-query-results.mdx#single-projection-per-query) can be made per query.  
 
 ### The cost of projections:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example---projection-with-calculations) 
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example---projection-with-calculations) 
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration#databases.querytimeoutinsec)
-      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
+      * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.querytimeoutinsec)
+      * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.queryoperationtimeoutinsec)
 
 
 
@@ -1938,13 +1938,13 @@ Attempting multiple projection executions in the same query will result in an ex
   delivering just the data needed instead of the original full document content.
 
 * This article provides examples of projecting query results when making a **dynamic-query**.  
-  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections).
+  For projecting results when querying a **static-index** see [project index query results](../../../indexes/querying/projections.mdx).
 
 * In this article:
-    * [Projections overview](../../../client-api/session/querying/how-to-project-query-results#projections-overview)
-    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results#selectfields)  
-    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results#projecting-nested-object-types)  
-    * [Syntax](../../../client-api/session/querying/how-to-project-query-results#syntax)
+    * [Projections overview](../../../client-api/session/querying/how-to-project-query-results.mdx#projections-overview)
+    * [SelectFields](../../../client-api/session/querying/how-to-project-query-results.mdx#selectfields)  
+    * [Projecting nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types)  
+    * [Syntax](../../../client-api/session/querying/how-to-project-query-results.mdx#syntax)
 
 </Admonition>
 ## Projections overview
@@ -1956,16 +1956,16 @@ Attempting multiple projection executions in the same query will result in an ex
 * Instead of retrieving the full document from the server and then picking relevant data from it on the client,  
   you can request a subset of the data, specifying the document fields you want to get from the server.
 
-* The query can load [related documents](../../../indexes/indexing-related-documents#what-are-related-documents) and have their data merged into the projection results.
+* The query can load [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) and have their data merged into the projection results.
 
-* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../client-api/session/querying/how-to-project-query-results#projecting-nested-object-types).
+* Content from inner objects and arrays can be projected in addition to [projecting the nested object types](../../../client-api/session/querying/how-to-project-query-results.mdx#projecting-nested-object-types).
 
 * An alias name can be given to the projected fields, and any calculations can be applied within the projection.
 **When to use projections**:
 
 * Projections allow you to tailor the query results specifically to your needs.  
   Getting specific details to display can be useful when presenting data to users or populating user interfaces.  
-  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+  Projection queries are also useful with [subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
   since all transformation work is done on the server side without having to send a lot of data over the wire.
 
 * Returning partial document data from the server reduces network traffic,  
@@ -1995,14 +1995,14 @@ Attempting multiple projection executions in the same query will result in an ex
 **The cost of projections**:
 
 * Queries in RavenDB do not allow any computation to occur during the query phase.  
-  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results#example-v---projection-with-calculations)
+  However, you can perform any [calculations](../../../client-api/session/querying/how-to-project-query-results.mdx#example-v---projection-with-calculations)
   inside the projection.
 
 * But while calculations within a projection are allowed, having a very complex logic can impact query performance.  
   So RavenDB limits the total time it will spend processing a query and its projections.  
   Exceeding this time limit will fail the query. This is configurable, see the following configuration keys:  
-  * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration#databases.querytimeoutinsec)
-  * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration#databases.queryoperationtimeoutinsec)
+  * [Databases.QueryTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.querytimeoutinsec)
+  * [Databases.QueryOperationTimeoutInSec](../../../server/configuration/database-configuration.mdx#databases.queryoperationtimeoutinsec)
 
 
 
@@ -2019,7 +2019,7 @@ Attempting multiple projection executions in the same query will result in an ex
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Make a dynamic query on the Companies collection
 const projectedResults = await session.query({ collection: "companies" })
      // Call 'selectFields'
@@ -2048,7 +2048,7 @@ select Name, Address.City, Address.Country
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define a QueryData object that will be used in the selectFields method
 const queryData = new QueryData(
     // Specify the document-fields you want to project from the document
@@ -2083,7 +2083,7 @@ select Name as CompanyName, Address.City as City, Address.Country as Country
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the projection with QueryData if you wish to use alias names
 const queryData = new QueryData(
     // Project the 'ShipTo' object and all product names from the Lines array in the document
@@ -2121,7 +2121,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the projected data expression within a custom function.
 // Any expression can be provided for the projected content.
 const queryData = QueryData.customFunction("e", \`{
@@ -2152,7 +2152,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
      // Can provide an RQL query via the 'rawQuery' method
     .rawQuery(\`from "Orders" as x
@@ -2190,7 +2190,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`// Declare a function
                declare function output(e) {
@@ -2224,7 +2224,7 @@ from "employees" as e select output(e)
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from "Orders" as o
                load o.Company as c         // load the related Company document
@@ -2256,7 +2256,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from "employees" as e
                select {
@@ -2288,7 +2288,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from "employees" as e
                select {
@@ -2321,7 +2321,7 @@ RavenDB includes the related document only if the included path is one of the fi
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.query({ collection: "products" })
      // NOTE:
      // While the following 'include' line compiles,
@@ -2360,8 +2360,8 @@ include Supplier, Category
 In the Node.js client, when projecting query results using the `selectFields` method (not via the `rawQuery` syntax),  
 the metadata field `@nested-object-types` from the document will be automatically added to the list of fields to project in the generated RQL that is sent to the server.
 
-<TabItem value="something-something" label="projections_10">
-<CodeBlock language="nodejs">
+<TabItem value="projections_10" label="projections_10">
+<CodeBlock language="js">
 {`// For example - Create a document with nested objects: 
 // ====================================================
 
@@ -2405,7 +2405,7 @@ const projectedResults = await session.query(\{ collection: "users" \})
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// The following RQL is generated by the Node.js client:
 // =====================================================
@@ -2416,8 +2416,8 @@ select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="projections_10_results">
-<CodeBlock language="nodejs">
+<TabItem value="projections_10_results" label="projections_10_results">
+<CodeBlock language="js">
 {`// Query results will include the following projected fields:
 // ==========================================================
 
@@ -2434,8 +2434,8 @@ select name, @metadata.@nested-object-types as **PROJECTED_NESTED_OBJECT_TYPES**
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`selectFields(property);
 selectFields(properties);
 
@@ -2455,7 +2455,7 @@ selectFields(queryData, projectionClass, projectionBehavior);
 | **properties**         | `string[]`  | List of field names to project                                                                                                                          |
 | **queryData**          | `QueryData` | Object with projection query definitions                                                                                                                |
 | **projectionClass**    | `object`    | The class type of the projected fields                                                                                                                  |
-| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../indexes/querying/projections). |
+| **projectionBehavior** | `string`    | Projection behavior is useful when querying a static-index.<br/>Learn more in [projection behavior with indexes](../../../indexes/querying/projections.mdx). |
 
 
 

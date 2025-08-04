@@ -23,13 +23,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Just include `Akka.Persistence.RavenDb.Query` in your application.
  
 * In this page:
-  * [Interface types](../../integrations/akka.net-persistence/queries#interface-types)
-  * [Supported interfaces](../../integrations/akka.net-persistence/queries#supported-interfaces)
-     * [IPersistenceIdsQuery & ICurrentPersistenceIdsQuery](../../integrations/akka.net-persistence/queries#ipersistenceidsquery--icurrentpersistenceidsquery)
-     * [IEventsByPersistenceIdQuery & ICurrentEventsByPersistenceIdQuery](../../integrations/akka.net-persistence/queries#ieventsbypersistenceidquery--icurrenteventsbypersistenceidquery)
-     * [IEventsByTagQuery & ICurrentEventsByTagQuery](../../integrations/akka.net-persistence/queries#ieventsbytagquery--icurrenteventsbytagquery)
-     * [IAllEventsQuery & ICurrentAllEventsQuery](../../integrations/akka.net-persistence/queries#ialleventsquery--icurrentalleventsquery)
-  * [Inner implementation details](../../integrations/akka.net-persistence/queries#inner-implementation-details)
+  * [Interface types](../../integrations/akka.net-persistence/queries.mdx#interface-types)
+  * [Supported interfaces](../../integrations/akka.net-persistence/queries.mdx#supported-interfaces)
+     * [IPersistenceIdsQuery & ICurrentPersistenceIdsQuery](../../integrations/akka.net-persistence/queries.mdx#ipersistenceidsquery--icurrentpersistenceidsquery)
+     * [IEventsByPersistenceIdQuery & ICurrentEventsByPersistenceIdQuery](../../integrations/akka.net-persistence/queries.mdx#ieventsbypersistenceidquery--icurrenteventsbypersistenceidquery)
+     * [IEventsByTagQuery & ICurrentEventsByTagQuery](../../integrations/akka.net-persistence/queries.mdx#ieventsbytagquery--icurrenteventsbytagquery)
+     * [IAllEventsQuery & ICurrentAllEventsQuery](../../integrations/akka.net-persistence/queries.mdx#ialleventsquery--icurrentalleventsquery)
+  * [Inner implementation details](../../integrations/akka.net-persistence/queries.mdx#inner-implementation-details)
 
 </Admonition>
 ## Interface types
@@ -64,7 +64,7 @@ Instead, it continues to push new PersistenceIds as they are added.
 The stream is completed immediately when it reaches the end of the result set.  
 PersistenceIds that are created after the query is completed are Not included in the stream.
 
-<TabItem value="something-something" label="query_1">
+<TabItem value="query_1" label="query_1">
 <CodeBlock language="csharp">
 {`// Obtain the RavenDB read journal
 // ===============================
@@ -92,13 +92,13 @@ allPersistenceIds.RunForeach(persistenceId =>
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public Source<string, NotUsed> PersistenceIds()
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_1_current">
+<TabItem value="syntax_1_current" label="syntax_1_current">
 <CodeBlock language="csharp">
 {`public Source<string, NotUsed> CurrentPersistenceIds()
 `}
@@ -122,7 +122,7 @@ Instead, it continues to push new events as they are persisted.
 The stream is completed immediately when it reaches the end of the result set.  
 Events that are stored after the query is completed are Not included in the event stream.
 
-<TabItem value="something-something" label="query_2">
+<TabItem value="query_2" label="query_2">
 <CodeBlock language="csharp">
 {`RavenDbReadJournal readJournal = PersistenceQuery
     .Get(system)
@@ -144,7 +144,7 @@ eventsSource.RunForeach(envelope =>
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> EventsByPersistenceId(string persistenceId,
     long fromSequenceNr,
@@ -152,7 +152,7 @@ eventsSource.RunForeach(envelope =>
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2_current">
+<TabItem value="syntax_2_current" label="syntax_2_current">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> CurrentEventsByPersistenceId(string persistenceId,
         long fromSequenceNr,
@@ -179,9 +179,9 @@ eventsSource.RunForeach(envelope =>
   Results will include events with the specified tag, regardless of the PersistenceId they are associated with.
 
 * You can specify the change-vector of an event document as the **offset** to determine where in the event stream you want to start querying.
-  * In RavenDB, a [change-vector](../../server/clustering/replication/change-vector) is a unique identifier that represents the version of a document (an event in this case)  
+  * In RavenDB, a [change-vector](../../server/clustering/replication/change-vector.mdx) is a unique identifier that represents the version of a document (an event in this case)  
     across different nodes in a distributed database.  
-  * The change-vector of a document can be obtained from the Properties pane in the [Document View](../../studio/database/documents/document-view#the-document-view) in the Studio.  
+  * The change-vector of a document can be obtained from the Properties pane in the [Document View](../../studio/database/documents/document-view.mdx#the-document-view) in the Studio.  
 
 * The returned event stream is ordered by the change-vector value of the event documents.
 
@@ -193,7 +193,7 @@ Instead, it continues to push new events as they are persisted.
 The stream is completed immediately when it reaches the end of the result set.  
 Events that are stored after the query is completed are Not included in the event stream.
 
-<TabItem value="something-something" label="query_3">
+<TabItem value="query_3" label="query_3">
 <CodeBlock language="csharp">
 {`RavenDbReadJournal _readJournal = PersistenceQuery.Get(system)
     .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
@@ -218,13 +218,13 @@ eventsSource.RunForeach(envelope =>
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> EventsByTag(string tag, Offset offset)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_3_current">
+<TabItem value="syntax_3_current" label="syntax_3_current">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> CurrentEventsByTag(string tag, Offset offset)
 `}
@@ -260,7 +260,7 @@ Instead, it continues to push new events as they are persisted.
 The stream is completed immediately when it reaches the end of the result set.  
 Events that are stored after the query is completed are Not included in the event stream.
 
-<TabItem value="something-something" label="query_4">
+<TabItem value="query_4" label="query_4">
 <CodeBlock language="csharp">
 {`RavenDbReadJournal readJournal = PersistenceQuery.Get(system)
     .ReadJournalFor<RavenDbReadJournal>(RavenDbReadJournal.Identifier);
@@ -280,13 +280,13 @@ eventsSource.RunForeach(envelope =>
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> AllEvents(Offset offset)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_4_current">
+<TabItem value="syntax_4_current" label="syntax_4_current">
 <CodeBlock language="csharp">
 {`public Source<EventEnvelope, NotUsed> CurrentAllEvents(Offset offset)
 `}
@@ -323,7 +323,7 @@ the RavenDB plugin creates the following collections to keep track of actors and
     Each document includes the latest sequence number of the most recent event persisted by the actor.
 #### Streaming queries
 
-The RavenDb plugin implements the above queries as [streaming queries](../../client-api/session/querying/how-to-stream-query-results).  
+The RavenDb plugin implements the above queries as [streaming queries](../../client-api/session/querying/how-to-stream-query-results.mdx).  
 You can monitor each query sent from your client to the RavenDB server in the _Traffic Watch_ view in the Studio.  
   
 ![Navigate to traffic watch](./assets/navigate-to-traffic-watch.png)

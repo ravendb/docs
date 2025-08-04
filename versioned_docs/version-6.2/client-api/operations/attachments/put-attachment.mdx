@@ -24,7 +24,7 @@ This operation is used to put an attachment to a document.
 
 ## Syntax
 
-<TabItem value="something-something" label="put_attachment_syntax">
+<TabItem value="put_attachment_syntax" label="put_attachment_syntax">
 <CodeBlock language="csharp">
 {`public PutAttachmentOperation(string documentId, 
         string name, 
@@ -35,7 +35,7 @@ This operation is used to put an attachment to a document.
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="put_attachment_return_value">
+<TabItem value="put_attachment_return_value" label="put_attachment_return_value">
 <CodeBlock language="csharp">
 {`public class AttachmentDetails : AttachmentName
 \{
@@ -73,7 +73,7 @@ public class AttachmentName
 
 ## Example
 
-<TabItem value="something" label="put_1">
+<TabItem value="put_1" label="put_1">
 <CodeBlock language="csharp">
 {`AttachmentDetails attachmentDetails =
     store.Operations.Send(
@@ -94,7 +94,7 @@ This operation is used to put an attachment to a document.
 
 ## Syntax
 
-<TabItem value="something-something" label="put_attachment_syntax">
+<TabItem value="put_attachment_syntax" label="put_attachment_syntax">
 <CodeBlock language="java">
 {`PutAttachmentOperation(String documentId, String name, InputStream stream)
 
@@ -105,7 +105,7 @@ PutAttachmentOperation(String documentId, String name, InputStream stream, Strin
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="put_attachment_return_value">
+<TabItem value="put_attachment_return_value" label="put_attachment_return_value">
 <CodeBlock language="java">
 {`public class AttachmentDetails extends AttachmentName \{
     private String changeVector;
@@ -189,7 +189,7 @@ public class AttachmentName \{
 
 ## Example
 
-<TabItem value="something-something" label="put_1">
+<TabItem value="put_1" label="put_1">
 <CodeBlock language="java">
 {`AttachmentDetails attachmentDetails = store
     .operations().send(new PutAttachmentOperation("orders/1-A",
@@ -210,14 +210,14 @@ public class AttachmentName \{
 
 * In this page:
   
-  * [Put attachment example](../../../client-api/operations/attachments/put-attachment#put-attachment-example)
-  * [Syntax](../../../client-api/operations/attachments/put-attachment#syntax)
+  * [Put attachment example](../../../client-api/operations/attachments/put-attachment.mdx#put-attachment-example)
+  * [Syntax](../../../client-api/operations/attachments/put-attachment.mdx#syntax)
   
 </Admonition>
 ## Put attachment example
 
-<TabItem value="something-something" label="put_attachment">
-<CodeBlock language="nodejs">
+<TabItem value="put_attachment" label="put_attachment">
+<CodeBlock language="js">
 {`// Prepare content to attach
 const text = "Some content...";
 const byteArray = Buffer.from(text);
@@ -236,8 +236,8 @@ const attachmentDetails = await documentStore.operations.send(putAttachmentOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream);
 const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, contentType);
@@ -258,8 +258,8 @@ const putAttachmentOp = new PutAttachmentOperation(documentId, name, stream, con
 |----------------------------------------------------------|---------------------------------------------|
 | `object`                                                 | An object with the new attachment's details |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The AttachmentDetails object:
 // =============================
 \{

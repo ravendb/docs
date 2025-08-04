@@ -24,8 +24,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Use `GetIndexNamesOperation` to retrieve multiple **index names** from the database.
 
 * In this page:
-    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names#get-index-names-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names#syntax)
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
 
 </Admonition>
 ## Get index names example
@@ -63,7 +63,7 @@ string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
 
 ## Syntax
 
-<TabItem value="something" label="get_index_names_syntax">
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
 <CodeBlock language="csharp">
 {`public GetIndexNamesOperation(int start, int pageSize)
 `}
@@ -90,7 +90,7 @@ string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
 
 ### Syntax
 
-<TabItem value="something-something" label="get_3_0">
+<TabItem value="get_3_0" label="get_3_0">
 <CodeBlock language="java">
 {`public GetIndexNamesOperation(int start, int pageSize)
 `}
@@ -108,7 +108,7 @@ string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
 
 ### Example
 
-<TabItem value="something-something" label="get_3_1">
+<TabItem value="get_3_1" label="get_3_1">
 <CodeBlock language="java">
 {`String[] indexNames
     = store.maintenance()
@@ -127,13 +127,13 @@ string[] indexNames = await store.Maintenance.SendAsync(getIndexNamesOp);
 * Use `GetIndexNamesOperation` to retrieve multiple **index names** from the database.
 
 * In this page:
-    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names#get-index-names-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names#syntax)
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
 
 </Admonition>
 ## Get index names example
 
-<TabItem value="something-something" label="get_index_names">
+<TabItem value="get_index_names" label="get_index_names">
 <CodeBlock language="python">
 {`# Define the get index names operation
 # Pass number of indexes to skip & number of indexes to retrieve
@@ -151,7 +151,7 @@ index_names = store.maintenance.send(get_index_names_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="get_index_names_syntax">
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
 <CodeBlock language="python">
 {`class GetIndexNamesOperation(MaintenanceOperation):
     def __init__(self, start: int, page_size: int): ...
@@ -179,12 +179,12 @@ index_names = store.maintenance.send(get_index_names_op)
 * Use `GetIndexNamesOperation` to retrieve multiple **index names** from the database.
 
 * In this page:
-    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names#get-index-names-example)
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
 
 </Admonition>
 ## Get index names example
 
-<TabItem value="something-something" label="get_index_names">
+<TabItem value="get_index_names" label="get_index_names">
 <CodeBlock language="php">
 {`// Define the get index names operation
 // Pass number of indexes to skip & number of indexes to retrieve
@@ -210,14 +210,14 @@ $indexNames = $store->maintenance()->send($getIndexNamesOp);
 * Use `GetIndexNamesOperation` to retrieve multiple **index names** from the database.
 
 * In this page:
-    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names#get-index-names-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names#syntax)
+    * [Get index names example](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#get-index-names-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-index-names.mdx#syntax)
 
 </Admonition>
 ## Get index names example
 
-<TabItem value="something-something" label="get_index_names">
-<CodeBlock language="nodejs">
+<TabItem value="get_index_names" label="get_index_names">
+<CodeBlock language="js">
 {`// Define the get index names operation
 // Pass number of indexes to skip & number of indexes to retrieve
 const getIndexNamesOp = new GetIndexNamesOperation(0, 10);
@@ -234,8 +234,8 @@ const indexNames = await store.maintenance.send(getIndexNamesOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="get_index_names_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="get_index_names_syntax" label="get_index_names_syntax">
+<CodeBlock language="js">
 {`const getIndexNamesOp = new GetIndexNamesOperation(start, pageSize);
 `}
 </CodeBlock>

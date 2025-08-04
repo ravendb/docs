@@ -48,7 +48,7 @@ Addressing this problem requires the understanding that not all viewers of data 
 
 On the "products list" page that the sales person is viewing, you might do something like:
 
-<TabItem value="something" label="userissues_1">
+<TabItem value="userissues_1" label="userissues_1">
 <CodeBlock language="csharp">
 {`var results = session.Query<Product>()
     .Customize(x => x.WaitForNonStaleResults(timeToWaitForQueryToBecomeNoneStaleInSec))
@@ -65,7 +65,7 @@ If you wanted to get super precise, you could use a slightly more optimized stra
 
 - When saving the "add product" page before going back to the "list products" page, call `WaitForIndexesAfterSaveChanges` to ensure that the changes made in the session are already indexed.
 
-<TabItem value="something" label="userissues_2">
+<TabItem value="userissues_2" label="userissues_2">
 <CodeBlock language="csharp">
 {`session.Advanced.WaitForIndexesAfterSaveChanges(timeToWaitForIndexToUpdateInSec);
 `}

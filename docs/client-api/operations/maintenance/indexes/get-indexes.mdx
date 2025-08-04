@@ -23,7 +23,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definitions returned are taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
@@ -31,8 +31,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
 
 * In this page:
-    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#syntax)
 
 </Admonition>
 ## Get Indexes example
@@ -82,7 +82,7 @@ var deploymentMode = indexes[0].DeploymentMode;
 
 ## Syntax
 
-<TabItem value="something" label="get_indexes_syntax">
+<TabItem value="get_indexes_syntax" label="get_indexes_syntax">
 <CodeBlock language="csharp">
 {`public GetIndexesOperation(int start, int pageSize)
 `}
@@ -96,7 +96,7 @@ var deploymentMode = indexes[0].DeploymentMode;
 
 | Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
 | - | - |
-| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) classes,<br/> ordered alphabetically by index name. |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) classes,<br/> ordered alphabetically by index name. |
 
 
 
@@ -109,7 +109,7 @@ var deploymentMode = indexes[0].DeploymentMode;
 
 ### Syntax
 
-<TabItem value="something-something" label="get_2_0">
+<TabItem value="get_2_0" label="get_2_0">
 <CodeBlock language="java">
 {`public GetIndexesOperation(int start, int pageSize)
 `}
@@ -127,7 +127,7 @@ var deploymentMode = indexes[0].DeploymentMode;
 
 ### Example
 
-<TabItem value="something-something" label="get_2_1">
+<TabItem value="get_2_1" label="get_2_1">
 <CodeBlock language="java">
 {`IndexDefinition[] indexes
     = store.maintenance()
@@ -144,7 +144,7 @@ var deploymentMode = indexes[0].DeploymentMode;
 
 * Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definitions returned are taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
@@ -152,13 +152,13 @@ var deploymentMode = indexes[0].DeploymentMode;
 * To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
 
 * In this page:
-    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#syntax)
 
 </Admonition>
 ## Get Indexes example
 
-<TabItem value="something-something" label="get_indexes">
+<TabItem value="get_indexes" label="get_indexes">
 <CodeBlock language="python">
 {`# Define the get indexes operation
 # Pass number of indexes to skip & number of indexes to retrieve
@@ -182,7 +182,7 @@ deployment_mode = indexes[0].deployment_mode
 
 ## Syntax
 
-<TabItem value="something-something" label="get_indexes_syntax">
+<TabItem value="get_indexes_syntax" label="get_indexes_syntax">
 <CodeBlock language="python">
 {`class GetIndexesOperation(MaintenanceOperation[List[IndexDefinition]]):
     def __init__(self, start: int, page_size: int): ...
@@ -197,7 +197,7 @@ deployment_mode = indexes[0].deployment_mode
 
 | Return value of `store.Maintenance.Send(getIndexesOp)` | Description |
 | - | - |
-| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) classes, <br/> ordered alphabetically by index name. |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) classes, <br/> ordered alphabetically by index name. |
 
 
 
@@ -209,7 +209,7 @@ deployment_mode = indexes[0].deployment_mode
 
 * Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definitions returned are taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
@@ -217,13 +217,13 @@ deployment_mode = indexes[0].deployment_mode
 * To get a specific index state on a local node use `GetIndexStatisticsOperation`.  
 
 * In this page:
-    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#syntax)
 
 </Admonition>
 ## Get Indexes example
 
-<TabItem value="something-something" label="get_indexes">
+<TabItem value="get_indexes" label="get_indexes">
 <CodeBlock language="php">
 {`// Define the get indexes operation
 // Pass number of indexes to skip & number of indexes to retrieve
@@ -246,7 +246,7 @@ $deploymentMode = $indexes[0]->getDeploymentMode();
 
 #### Syntax
 
-<TabItem value="something-something" label="get_indexes_syntax">
+<TabItem value="get_indexes_syntax" label="get_indexes_syntax">
 <CodeBlock language="php">
 {`GetIndexesOperation(int $start, int $pageSize)
 `}
@@ -268,7 +268,7 @@ $deploymentMode = $indexes[0]->getDeploymentMode();
 
 * Use `GetIndexesOperation` to retrieve multiple **index definitions** from the database.
 
-* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+* The operation will execute on the node defined by the [client configuration](../../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   However, the index definitions returned are taken from the database record,  
   which is common to all the database-group nodes.  
   i.e., an index state change done only on a local node is not reflected.
@@ -276,14 +276,14 @@ $deploymentMode = $indexes[0]->getDeploymentMode();
 * To get a specific index state on a local node use `GetIndexStatisticsOperation`.
 
 * In this page:
-    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes#get-indexes-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes#syntax)
+    * [Get Indexes example](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#get-indexes-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/get-indexes.mdx#syntax)
 
 </Admonition>
 ## Get Indexes example
 
-<TabItem value="something-something" label="get_indexes">
-<CodeBlock language="nodejs">
+<TabItem value="get_indexes" label="get_indexes">
+<CodeBlock language="js">
 {`// Define the get indexes operation
 // Pass number of indexes to skip & number of indexes to retrieve
 const getIndexesOp = new GetIndexesOperation(0, 10);
@@ -306,8 +306,8 @@ const deploymentMode = indexes[0].deploymentMode;
 
 ## Syntax
 
-<TabItem value="something-something" label="get_indexes_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="get_indexes_syntax" label="get_indexes_syntax">
+<CodeBlock language="js">
 {`const getIndexesOp = new GetIndexesOperation(start, pageSize);
 `}
 </CodeBlock>
@@ -320,7 +320,7 @@ const deploymentMode = indexes[0].deploymentMode;
 
 | Return value of `store.maintenance.send(getIndexesOp)` | Description |
 | - | - |
-| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition), <br/>ordered alphabetically by index name. |
+| `IndexDefinition[]` | A list of [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition), <br/>ordered alphabetically by index name. |
 
 
 

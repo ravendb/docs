@@ -22,19 +22,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * In this guide, you will learn how to deploy a .NET C# Lambda Handler Function using the 
   [RavenDB AWS Lambda C# template][template] that is connected to your RavenDB database.  
 
-* Watch our tutorial video [below](../../../start/guides/aws-lambda/overview#tutorial-video) 
+* Watch our tutorial video [below](../../../start/guides/aws-lambda/overview.mdx#tutorial-video) 
   or [on YouTube](https://www.youtube.com/watch?v=T2r9sqrTrYE).  
 
 * In this page:  
-   * [Before We Get Started](../../../start/guides/aws-lambda/overview#before-we-get-started)  
-   * [Create a Local Lambda Function](../../../start/guides/aws-lambda/overview#create-a-local-lambda-function)  
-   * [Configuring Local Connection to RavenDB](../../../start/guides/aws-lambda/overview#configuring-local-connection-to-ravendb)  
-   * [Deploying to AWS](../../../start/guides/aws-lambda/overview#deploying-to-aws)  
-   * [Configuring Production Connection to RavenDB](../../../start/guides/aws-lambda/overview#configuring-production-connection-to-ravendb)  
-   * [Verify the Connection Works](../../../start/guides/aws-lambda/overview#verify-the-connection-works)  
-   * [Using RavenDB in the Lambda Function](../../../start/guides/aws-lambda/overview#using-ravendb-in-the-lambda-function)  
-   * [Next Steps](../../../start/guides/aws-lambda/overview#next-steps)  
-   * [Tutorial Video](../../../start/guides/aws-lambda/overview#tutorial-video)  
+   * [Before We Get Started](../../../start/guides/aws-lambda/overview.mdx#before-we-get-started)  
+   * [Create a Local Lambda Function](../../../start/guides/aws-lambda/overview.mdx#create-a-local-lambda-function)  
+   * [Configuring Local Connection to RavenDB](../../../start/guides/aws-lambda/overview.mdx#configuring-local-connection-to-ravendb)  
+   * [Deploying to AWS](../../../start/guides/aws-lambda/overview.mdx#deploying-to-aws)  
+   * [Configuring Production Connection to RavenDB](../../../start/guides/aws-lambda/overview.mdx#configuring-production-connection-to-ravendb)  
+   * [Verify the Connection Works](../../../start/guides/aws-lambda/overview.mdx#verify-the-connection-works)  
+   * [Using RavenDB in the Lambda Function](../../../start/guides/aws-lambda/overview.mdx#using-ravendb-in-the-lambda-function)  
+   * [Next Steps](../../../start/guides/aws-lambda/overview.mdx#next-steps)  
+   * [Tutorial Video](../../../start/guides/aws-lambda/overview.mdx#tutorial-video)  
 
 </Admonition>
 
@@ -69,7 +69,7 @@ The template repository lists each clone method you can copy & paste directly.
 
 **Using `npx` and the [degit][tool-degit] tool if you have Node.js installed:**  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npx degit ravendb/templates/aws-lambda/csharp-http my-project
 cd my-project
@@ -80,7 +80,7 @@ git init
 
 **Using Bash or PowerShell:**
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`git clone https://github.com/ravendb/templates my-project
 cd my-project
@@ -96,7 +96,7 @@ git init
 
 After cloning the repository locally, restore .NET dependencies with `dotnet`:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet restore
 `}
@@ -111,7 +111,7 @@ your existing RavenDB database.
 
 You can start the Lambda function locally using:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet run
 `}
@@ -130,7 +130,7 @@ You will need the .NET Global Tools for Lambda installed to perform the deployme
 
 Install the `Amazon.Lambda.Tools` package:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet tool install -g Amazon.Lambda.Tools\`
 `}
@@ -139,7 +139,7 @@ Install the `Amazon.Lambda.Tools` package:
 
 Or make sure it's updated if you already have it:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet tool update -g Amazon.Lambda.Tools
 `}
@@ -153,7 +153,7 @@ One is your AWS credentials, stored in  `~/.aws/credentials` and the other is th
 
 **Using the defaults file:** You can use the template's `aws-lambda-tools-defaults.json` to set your Functions region:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   ...
@@ -179,7 +179,7 @@ value and `RavenSettings.DatabaseName` value.
 
 An example `appsettings.json` connecting to the RavenDB live test cluster might look like:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "Logging": \{
@@ -208,7 +208,7 @@ Learn more about [configuring client authentication for RavenDB][docs-client-cer
 To configure the local Lambda function to load a certificate from outside the project 
 directory, specify the `RavenSettings.CertFilePath` and, optionally, the `RavenSettings.CertPassword` settings:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "Logging": \{
@@ -243,7 +243,7 @@ If you prefer to use the password-protected PFX file, you can store the `CertPas
 [.NET User Secrets Tool][dotnet-user-secrets].  
 However, keep in mind that your team will need this secret configured locally to use the PFX file.  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet user-secrets init
 dotnet user-secrets set "RavenSettings:CertPassword" "<CERT_PASSWORD>"
@@ -277,7 +277,7 @@ on new commits.
 
 Start by deploying your function manually using the .NET CLI:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet lambda deploy-function <FUNCTION_NAME>
 `}
@@ -393,7 +393,7 @@ copy `*.crt` files to your `bin` and `publish` directories.
 
 Specify the path to the file relative to your `.csproj`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "RavenSettings": \{
@@ -415,7 +415,7 @@ file from the RavenDB client certificate package.
 
 **Example value:**
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`RavenSettings__CertPrivateKey=----- BEGIN RSA PRIVATE KEY ----- MIIJKA...
 `}
@@ -462,7 +462,7 @@ The template sets up a singleton `DocumentStore` and dependency injection for th
 Pass the `IAsyncDocumentSession` in the handler function using `[FromServices]` which is 
 available from `Amazon.Lambda.Annotations` package:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`using System.Threading.Tasks;
 using Amazon.Lambda.Annotations;
@@ -496,7 +496,7 @@ public class Functions
 You can also inject an `IDocumentStore` to get a reference to the current store instance.  
 For singleton references, inject using a public class constructor:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`using System.Threading.Tasks;
 using Amazon.Lambda.Annotations;
@@ -531,7 +531,7 @@ public class Functions
 
 ### Example: Loading a user
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`using System.Threading.Tasks;
 using Amazon.Lambda.Annotations;

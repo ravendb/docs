@@ -25,10 +25,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   All changes are then persisted when `SaveChanges` is called.
 
 * To ignore entity changes when calling `SaveChanges`, **disable entity tracking** by any of the following:
-    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 </Admonition>
 
 </LanguageContent>
@@ -44,7 +44,7 @@ The entity will still take part in the session, but be ignored when `save_change
 
 ## Syntax
 
-<TabItem value="something-something" label="ignore_changes_1">
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
 <CodeBlock language="java">
 {`void ignoreChangesFor(Object entity);
 `}
@@ -58,7 +58,7 @@ The entity will still take part in the session, but be ignored when `save_change
 
 ## Example
 
-<TabItem value="something-something" label="ignore_changes_2">
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
 <CodeBlock language="java">
 {`Product product = session.load(Product.class, "products/1-A");
 session.advanced().ignoreChangesFor(product);
@@ -80,11 +80,11 @@ Using `load` again to retrieve this entity will not initiate a server call.
 
 The entity will still take part in the session, but be ignored when `save_changes` is called.  
 
-See more here: [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking)
+See more here: [Disable Entity Tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx)
 
 ## Syntax
 
-<TabItem value="something-something" label="ignore_changes_1">
+<TabItem value="ignore_changes_1" label="ignore_changes_1">
 <CodeBlock language="python">
 {`def ignore_changes_for(self, entity: object) -> None: ...
 `}
@@ -97,7 +97,7 @@ See more here: [Disable Entity Tracking](../../../client-api/session/configurati
 
 ## Example
 
-<TabItem value="something-something" label="ignore_changes_2">
+<TabItem value="ignore_changes_2" label="ignore_changes_2">
 <CodeBlock language="python">
 {`product = session.load("products/1-A", Product)
 session.ignore_changes_for(product)
@@ -117,10 +117,10 @@ session.save_changes()
   All changes are then persisted when `saveChanges` is called.
 
 * To ignore entity changes when calling `saveChanges`, **disable entity tracking** by any of the following:
-    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 </Admonition>
 
 </LanguageContent>
@@ -132,10 +132,10 @@ session.save_changes()
   All changes are then persisted when `saveChanges` is called.
 
 * To ignore entity changes when calling `saveChanges`, **disable entity tracking** by any of the following:
-    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-a-specific-entity-in-session)
-    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+    * [Disable tracking for a specific entity in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-a-specific-entity-in-session)
+    * [Disable tracking for all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking for query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 </Admonition>
 
 </LanguageContent>

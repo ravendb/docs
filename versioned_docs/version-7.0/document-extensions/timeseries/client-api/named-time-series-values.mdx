@@ -28,16 +28,16 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * Referring to these values by their names in time series methods (such as `Append`, `Get`, etc.)  
   makes your code more readable and easier to manage.
 
-* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series#time-series-view),  
+* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series.mdx#time-series-view),  
   you need to register the time series types on the server. 
 
 * In this page:  
-  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values#named-values)  
-     * [Define time series type](../../../document-extensions/timeseries/client-api/named-time-series-values#define-time-series-type)  
-     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values#examples)  
-  * [Register time series type](../../../document-extensions/timeseries/client-api/named-time-series-values#register-time-series-type)  
-     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values#usage)
-     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values#syntax)
+  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#named-values)  
+     * [Define time series type](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#define-time-series-type)  
+     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#examples)  
+  * [Register time series type](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#register-time-series-type)  
+     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#usage)
+     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#syntax)
 
 </Admonition>
 ## Named values
@@ -56,7 +56,7 @@ with consecutive `TimeSeriesValue` attributes: `TimeSeriesValue(0)`, `TimeSeries
 
 E.g.:
 
-<TabItem value="something" label="Custom-Data-Type-2">
+<TabItem value="Custom-Data-Type-2" label="Custom-Data-Type-2">
 <CodeBlock language="csharp">
 {`public class RoutePoint
 \{
@@ -71,7 +71,7 @@ E.g.:
 
 The class can then be used by time series methods like _Append_:  
 
-<TabItem value="something" label="timeseries_region_Append-Named-Values-1">
+<TabItem value="timeseries_region_Append-Named-Values-1" label="timeseries_region_Append-Named-Values-1">
 <CodeBlock language="csharp">
 {`// Append coordinates
 session.TimeSeriesFor<RoutePoint>("users/john")
@@ -87,7 +87,7 @@ session.TimeSeriesFor<RoutePoint>("users/john")
 <Admonition type="info" title="Info">
 A quick way of retrieving a time series entry's value, timestamp, and tag is to use `Deconstruct()`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public void Deconstruct(out DateTime timestamp, out T value);
 public void Deconstruct(out DateTime timestamp, out T value, out string tag);
@@ -98,7 +98,7 @@ public void Deconstruct(out DateTime timestamp, out T value, out string tag);
 #### Examples
 
 * In this example, we define a StockPrice type and use it when appending StockPrice entries.
-<TabItem value="something" label="Custom-Data-Type-1">
+<TabItem value="Custom-Data-Type-1" label="Custom-Data-Type-1">
 <CodeBlock language="csharp">
 {`public class StockPrice
 \{
@@ -111,7 +111,7 @@ public void Deconstruct(out DateTime timestamp, out T value, out string tag);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="timeseries_region_Append-Named-Values-2">
+<TabItem value="timeseries_region_Append-Named-Values-2" label="timeseries_region_Append-Named-Values-2">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -155,7 +155,7 @@ public void Deconstruct(out DateTime timestamp, out T value, out string tag);
 </TabItem>
 
 * In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
-<TabItem value="something" label="timeseries_region_Get-Named-Values">
+<TabItem value="timeseries_region_Get-Named-Values" label="timeseries_region_Get-Named-Values">
 <CodeBlock language="csharp">
 {`goingUp = false;
 
@@ -226,13 +226,13 @@ select timeseries(
 
 ## Register time series type
 
-Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record).  
+Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record.mdx).  
 This allows the Studio to present time series values by name when you view and manage them.
 #### Usage
 
 To register a time series type, call `store.TimeSeries.Register`, e.g.:
 
-<TabItem value="something" label="timeseries_region_Named-Values-Register">
+<TabItem value="timeseries_region_Named-Values-Register" label="timeseries_region_Named-Values-Register">
 <CodeBlock language="csharp">
 {`// Register the StockPrice class type on the server
 store.TimeSeries.Register<Company, StockPrice>();
@@ -246,24 +246,24 @@ The time series entries will be listed in the Studio under their corresponding n
 !["Time series entries"](./assets/time-series-entries.png)
 
 <br/>
-The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings) in the Studio:
+The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings.mdx) in the Studio:
 
 !["Time series settings view"](./assets/time-series-settings-view.png)
 #### Syntax
 
-<TabItem value="something" label="Register-Definition-1">
+<TabItem value="Register-Definition-1" label="Register-Definition-1">
 <CodeBlock language="csharp">
 {`public void Register<TCollection, TTimeSeriesEntry>(string name = null)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="Register-Definition-2">
+<TabItem value="Register-Definition-2" label="Register-Definition-2">
 <CodeBlock language="csharp">
 {`public void Register<TCollection>(string name, string[] valueNames)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="Register-Definition-3">
+<TabItem value="Register-Definition-3" label="Register-Definition-3">
 <CodeBlock language="csharp">
 {`public void Register(string collection, string name, string[] valueNames)
 `}
@@ -295,16 +295,16 @@ The named values can be managed from the [Time Series Settings View](../../../st
 * Referring to these values by their names in time series methods (such as `append`, `get`, etc.)  
   makes your code more readable and easier to manage.
 
-* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series#time-series-view),  
+* In order for the Studio to present the time series values by their names, as can be seen [here](../../../studio/database/document-extensions/time-series.mdx#time-series-view),  
   you need to register the named values on the server. 
 
 * In this page:  
-  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values#named-values)  
-     * [Define time series class with named values](../../../document-extensions/timeseries/client-api/named-time-series-values#define-time-series-class-with-named-values)  
-     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values#examples)  
-  * [Register time series named values](../../../document-extensions/timeseries/client-api/named-time-series-values#register-time-series-named-values)  
-     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values#usage)
-     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values#syntax)
+  * [Named values](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#named-values)  
+     * [Define time series class with named values](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#define-time-series-class-with-named-values)  
+     * [Examples](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#examples)  
+  * [Register time series named values](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#register-time-series-named-values)  
+     * [Usage](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#usage)
+     * [Syntax](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx#syntax)
 
 </Admonition>
 ## Named values
@@ -321,8 +321,8 @@ The named values can be managed from the [Time Series Settings View](../../../st
 To define a class with named values, add the static property `TIME_SERIES_VALUES` to the class.  
 E.g.:
 
-<TabItem value="something-something" label="routePoint_class">
-<CodeBlock language="nodejs">
+<TabItem value="routePoint_class" label="routePoint_class">
+<CodeBlock language="js">
 {`class RoutePoint \{
     
     // Add the following static param:
@@ -347,8 +347,8 @@ E.g.:
 
 The class can then be used by time series methods like _append_:  
 
-<TabItem value="something-something" label="named_values_1">
-<CodeBlock language="nodejs">
+<TabItem value="named_values_1" label="named_values_1">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 const oneHour = 60 * 60 * 1000;
 let nextHour = new Date(baseTime.getTime() + oneHour);
@@ -369,8 +369,8 @@ await session.saveChanges();
 #### Examples
 
 * In this example, we define a StockPrice class and use it when appending StockPrice entries.
-<TabItem value="something-something" label="stockPrice_class">
-<CodeBlock language="nodejs">
+<TabItem value="stockPrice_class" label="stockPrice_class">
+<CodeBlock language="js">
 {`class StockPrice \{
 
     // Define the names for the entry values
@@ -395,8 +395,8 @@ await session.saveChanges();
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="named_values_2">
-<CodeBlock language="nodejs">
+<TabItem value="named_values_2" label="named_values_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 await session.store(new User("John"), "users/john");
 
@@ -449,8 +449,8 @@ await session.saveChanges();
 </TabItem>
 
 * In this example, we get StockPrice values by name and check whether a stock's closing-time prices are ascending over time.
-<TabItem value="something-something" label="named_values_3">
-<CodeBlock language="nodejs">
+<TabItem value="named_values_3" label="named_values_3">
+<CodeBlock language="js">
 {`let goingUp = false;
 
 const allEntries = await session
@@ -481,7 +481,7 @@ if ((closePriceDay2 > closePriceDay1) && (closePriceDay3 > closePriceDay2)) \{
 * In this query, we use the custom StockPrice type so we can address trade Volume by name.
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const oneDay = 24 * 60 * 60 * 1000;
 const startTime = new Date();
 const endTime = new Date(startTime.getTime() + 3 * oneDay);
@@ -534,14 +534,14 @@ select timeseries(
 
 ## Register time series named values
 
-Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record).  
+Registering a custom time series type on the server stores this information in the [database record](../../../studio/database/settings/database-record.mdx).  
 This allows the Studio to present time series values by name when you view and manage them.
 #### Usage
 
 To register a time series type, call `documentStore.timeSeries.register`, e.g.:
 
-<TabItem value="something-something" label="named_values_5">
-<CodeBlock language="nodejs">
+<TabItem value="named_values_5" label="named_values_5">
+<CodeBlock language="js">
 {`// Register the named values for the 'StockPrices' series on the server
 await documentStore.timeSeries.register("Users",
     "StockPrices", ["open", "close", "high", "low", "volume"]);
@@ -555,13 +555,13 @@ The time series entries will be listed in the Studio under their corresponding n
 !["Time series entries"](./assets/time-series-entries-js.png)
 
 <br/>
-The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings) in the Studio:
+The named values can be managed from the [Time Series Settings View](../../../studio/database/settings/time-series-settings.mdx) in the Studio:
 
 !["Time series settings view"](./assets/time-series-settings-view-js.png)
 #### Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 // ====================
 

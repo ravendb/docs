@@ -23,7 +23,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * To modify existing documents:
 
-    * **Retrieve** documents from the database using [Load](../../client-api/session/loading-entities#load) or by a [Query](../../client-api/session/querying/how-to-query#session.query).  
+    * **Retrieve** documents from the database using [Load](../../client-api/session/loading-entities.mdx#load) or by a [Query](../../client-api/session/querying/how-to-query.mdx#session.query).  
       The entities loaded from the documents are added to the internal entities map that the Session manages.
   
     * **Edit** the properties you wish to change.  
@@ -35,8 +35,8 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 
 * In this page:
-    * [Load a document & update](../../client-api/session/updating-entities#load-a-document-&-update)
-    * [Query for documents & update](../../client-api/session/updating-entities#query-for-documents-&-update)
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document-&-update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents-&-update)
     
 </Admonition>
 ## Load a document & update
@@ -146,7 +146,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * To modify existing documents:
 
-    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities#load) or by a [query](../../client-api/session/querying/how-to-query#session.query).  
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities.mdx#load) or by a [query](../../client-api/session/querying/how-to-query.mdx#session.query).  
       The entities loaded from the documents are added to the internal entities map that the Session manages.
   
     * **Edit** the properties you wish to change.  
@@ -158,15 +158,15 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 
 * In this page:
-    * [Load a document & update](../../client-api/session/updating-entities#load-a-document-&-update)
-    * [Query for documents & update](../../client-api/session/updating-entities#query-for-documents-&-update)
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document-&-update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents-&-update)
     
 </Admonition>
 ## Load a document & update
 
 * In this example we `load` a company document and update its **PostalCode** property.  
 
-<TabItem value="something-something" label="load-company-and-update">
+<TabItem value="load-company-and-update" label="load-company-and-update">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     # Load a company document
@@ -194,7 +194,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * In this example we `query` for company documents whose **PostalCode** property is _12345_,  
   and modify this property for the matching documents.  
 
-<TabItem value="something-something" label="query-companies-and-update">
+<TabItem value="query-companies-and-update" label="query-companies-and-update">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     # Query: find companies with the specified postal_code
@@ -223,8 +223,8 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * To modify existing documents:
 
-    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities#load) 
-      or by a [query](../../client-api/session/querying/how-to-query#session.query).  
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities.mdx#load) 
+      or by a [query](../../client-api/session/querying/how-to-query.mdx#session.query).  
       The entities loaded from the documents are added to the internal entities map that the session manages.  
   
     * **Edit** the properties you wish to change.  
@@ -236,15 +236,15 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 
 * In this page:
-    * [Load a document & update](../../client-api/session/updating-entities#load-a-document-&-update)
-    * [Query for documents & update](../../client-api/session/updating-entities#query-for-documents-&-update)
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document-&-update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents-&-update)
     
 </Admonition>
 ## Load a document & update
 
 * In this example we `load` a company document and update its **PostalCode** property.  
 
-<TabItem value="something-something" label="load-company-and-update">
+<TabItem value="load-company-and-update" label="load-company-and-update">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -274,7 +274,7 @@ try \{
 * In this example we `query` for company documents whose **PostalCode** property is _12345_,  
   and modify this property for the matching documents.  
 
-<TabItem value="something-something" label="query-companies-and-update">
+<TabItem value="query-companies-and-update" label="query-companies-and-update">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -311,7 +311,7 @@ try \{
 
 * To modify existing documents:
 
-    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities#load) or by a [query](../../client-api/session/querying/how-to-query#session.query).  
+    * **Retrieve** documents from the database using [load](../../client-api/session/loading-entities.mdx#load) or by a [query](../../client-api/session/querying/how-to-query.mdx#session.query).  
       The entities loaded from the documents are added to the internal entities map that the Session manages.
 
     * **Edit** the properties you wish to change.  
@@ -323,16 +323,16 @@ try \{
 
 
 * In this page:
-    * [Load a document & update](../../client-api/session/updating-entities#load-a-document-&-update)
-    * [Query for documents & update](../../client-api/session/updating-entities#query-for-documents-&-update)
+    * [Load a document & update](../../client-api/session/updating-entities.mdx#load-a-document-&-update)
+    * [Query for documents & update](../../client-api/session/updating-entities.mdx#query-for-documents-&-update)
 
 </Admonition>
 ## Load a document & update
 
 * In this example we `load` a company document and update its **postalCode** property.
 
-<TabItem value="something-something" label="sample_document">
-<CodeBlock language="nodejs">
+<TabItem value="sample_document" label="sample_document">
+<CodeBlock language="js">
 {`// Sample company document structure
 class Address \{
     constructor(code) \{
@@ -350,8 +350,8 @@ class Company \{
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="load-company-and-update">
-<CodeBlock language="nodejs">
+<TabItem value="load-company-and-update" label="load-company-and-update">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Load a company document
@@ -374,8 +374,8 @@ await session.saveChanges();
 * In this example we `query` for company documents whose **postalCode** property is _12345_,  
   and modify this property for the matching documents.
 
-<TabItem value="something-something" label="query-company-and-update">
-<CodeBlock language="nodejs">
+<TabItem value="query-company-and-update" label="query-company-and-update">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Query: find companies with the specified postalCode

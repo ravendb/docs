@@ -29,7 +29,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something" label="get_change_vector_1">
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
 <CodeBlock language="csharp">
 {`string GetChangeVectorFor<T>(T instance);
 `}
@@ -46,7 +46,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Example
 
-<TabItem value="something" label="get_change_vector_2">
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
 <CodeBlock language="csharp">
 {`Employee employee = session.Load<Employee>("employees/1-A");
 string changeVector = session.Advanced.GetChangeVectorFor(employee);
@@ -68,7 +68,7 @@ string changeVector = session.Advanced.GetChangeVectorFor(employee);
 
 ## Syntax
 
-<TabItem value="something-something" label="get_change_vector_1">
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
 <CodeBlock language="java">
 {`<T> String getChangeVectorFor(T instance)
 `}
@@ -85,7 +85,7 @@ string changeVector = session.Advanced.GetChangeVectorFor(employee);
 
 ## Example
 
-<TabItem value="something-something" label="get_change_vector_2">
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1-A");
 String changeVector = session.advanced().getChangeVectorFor(employee);
@@ -107,7 +107,7 @@ String changeVector = session.advanced().getChangeVectorFor(employee);
 
 ## Syntax
 
-<TabItem value="something-something" label="get_change_vector_1">
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
 <CodeBlock language="python">
 {`def get_change_vector_for(self, entity: object) -> str: ...
 `}
@@ -124,7 +124,7 @@ String changeVector = session.advanced().getChangeVectorFor(employee);
 
 ## Example
 
-<TabItem value="something-something" label="get_change_vector_2">
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
 <CodeBlock language="python">
 {`employee = session.load("employees/1-A")
 change_vector = session.advanced.get_change_vector_for(employee)
@@ -148,7 +148,7 @@ change_vector = session.advanced.get_change_vector_for(employee)
 
 ## Syntax
 
-<TabItem value="something-something" label="get_change_vector_1">
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
 <CodeBlock language="php">
 {`public function getChangeVectorFor(?object $instance): ?string;
 `}
@@ -165,7 +165,7 @@ change_vector = session.advanced.get_change_vector_for(employee)
 
 ## Example
 
-<TabItem value="something-something" label="get_change_vector_2">
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1-A");
 $changeVector = $session->advanced()->getChangeVectorFor($employee);
@@ -187,8 +187,8 @@ $changeVector = $session->advanced()->getChangeVectorFor($employee);
 
 ## Syntax
 
-<TabItem value="something-something" label="get_change_vector_1">
-<CodeBlock language="nodejs">
+<TabItem value="get_change_vector_1" label="get_change_vector_1">
+<CodeBlock language="js">
 {`session.advanced.getChangeVectorFor(entity);
 `}
 </CodeBlock>
@@ -204,8 +204,8 @@ $changeVector = $session->advanced()->getChangeVectorFor($employee);
 
 ## Example
 
-<TabItem value="something-something" label="get_change_vector_2">
-<CodeBlock language="nodejs">
+<TabItem value="get_change_vector_2" label="get_change_vector_2">
+<CodeBlock language="js">
 {`const employee = await session.load("employees/1-A");
 const changeVector = session.advanced.getChangeVectorFor(employee);
 `}

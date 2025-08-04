@@ -25,14 +25,14 @@ RavenDB cloud products use several layers of security.
   You need this certificate in order to access your RavenDB instances.  
   </Admonition>
 
-* You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab#manage-product-the-security-tab) your server can be contacted by.  
+* You can choose [which IP addresses](../cloud/portal/cloud-portal-products-tab.mdx#manage-product-the-security-tab) your server can be contacted by.  
 
-* Your [mandatory backup](../cloud/cloud-backup-and-restore#the-mandatory-backup-routine) routines produce encrypted backup files.  
+* Your [mandatory backup](../cloud/cloud-backup-and-restore.mdx#the-mandatory-backup-routine) routines produce encrypted backup files.  
 
 * In this page:  
     * [Using The Initial Client Certificate](cloud-security#using-the-initial-client-certificate)  
     * [Using Additional Certificates](cloud-security#using-additional-certificates)  
-    * [Enable MFA](../cloud/cloud-security#enable-mfa)
+    * [Enable MFA](../cloud/cloud-security.mdx#enable-mfa)
 
 </Admonition>
 ## Using The Initial Client Certificate
@@ -41,7 +41,7 @@ A client certificate is automatically generated during the creation of your Rave
 You will need to import this certificate to your browser in order to access your cloud instances.  
 #### Download Certificate  
 
-Go to the [Products tab](../cloud/portal/cloud-portal-products-tab) in the cloud [portal](../cloud/portal/cloud-portal) 
+Go to the [Products tab](../cloud/portal/cloud-portal-products-tab.mdx) in the cloud [portal](../cloud/portal/cloud-portal.mdx) 
 and click the **Download Certificate** button.  
 
 !["Download Certificate"](./assets/security-001-download-certificate.png)  
@@ -86,29 +86,29 @@ In other cases (e.g. if you're using Firefox) you will have to import the certif
   
 Once the certificate is imported, click your cloud instance's URL.  
 Your browser will prompt you to select a certificate. When you select the client certificate, your product's 
-[management studio](../studio/overview) will launch.  
+[management studio](../7.1/studio/overview) will launch.  
 
 
 
 ## Using Additional Certificates
 
-Your initial [operator-level](../server/security/authorization/security-clearance-and-permissions#operator) 
+Your initial [operator-level](../7.1/server/security/authorization/security-clearance-and-permissions#operator) 
 certificate allows you to perform operations like creating and deleting databases, managing access to the cluster, and inspecting the cluster's state.  
-Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview#ravendb-on-the-cloud-overview).  
+Operations like adding and removing cluster nodes are left for your [products administrators](../cloud/cloud-overview.mdx#ravendb-on-the-cloud-overview).  
 
 <Admonition type="info" title="Info">
 We recommend that you generate and use **different certificates** for your client applications, for maximum security.  
 </Admonition>
 
 <Admonition type="info" title="Info">
-If your instance runs on a [burstable CPU](../cloud/cloud-overview#burstable-vs.-reserved-clusters), especially if it is a low-end one, 
-RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](../cloud/cloud-overview#budget-credits-and-throttling) in the 
+If your instance runs on a [burstable CPU](../cloud/cloud-overview.mdx#burstable-vs.-reserved-clusters), especially if it is a low-end one, 
+RavenDB may take a while to generate certificates and spend a lot of your [CPU credits](../cloud/cloud-overview.mdx#budget-credits-and-throttling) in the 
 process.  
 We therefore recommend that you generate your certificates off-cloud and import them to your cloud instance.  
 </Admonition>
 
-**To generate additional [operator](../server/security/authorization/security-clearance-and-permissions#operator) 
-  or [user](../server/security/authorization/security-clearance-and-permissions#user) certificates**:  
+**To generate additional [operator](../7.1/server/security/authorization/security-clearance-and-permissions#operator) 
+  or [user](../7.1/server/security/authorization/security-clearance-and-permissions#user) certificates**:  
  
 * Go to the server management studio, and click the `Manage Certificates` button.  
   !["Manage Certificates"](./assets/migration-002-manage-certificates.png)  

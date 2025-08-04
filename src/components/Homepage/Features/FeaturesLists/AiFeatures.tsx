@@ -9,17 +9,17 @@ export default function AiFeaturesGrid() {
   const AiFeaturesList = [
     {
       title: "Vector search",
-      url: `${activeVersion.label}/ai-integration/vector-search/ravendb-as-vector-database`,
+      url: `/${activeVersion.label}/ai-integration/vector-search/ravendb-as-vector-database`,
       description: "Short description",
     },
     {
       title: "GenAI",
-      url: `${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai-overview`,
+      url: `/${activeVersion.label}/ai-integration/gen-ai-integration/gen-ai-overview`,
       description: "Short description",
     },
     {
       title: "Embeddings generation",
-      url: `${activeVersion.label}/ai-integration/generating-embeddings/overview`,
+      url: `/${activeVersion.label}/ai-integration/generating-embeddings/overview`,
       description: "Short description",
     },
   ];

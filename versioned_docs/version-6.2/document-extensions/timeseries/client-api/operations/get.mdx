@@ -22,19 +22,19 @@ export const supportedLanguages = ["csharp", "nodejs"];
 <Admonition type="note" title="Note">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
-  You can also retrieve entries from a single time series using the Session's [TimesSeriesFor.Get](../../../../document-extensions/timeseries/client-api/session/get/get-entries) method.
+  You can also retrieve entries from a single time series using the Session's [TimesSeriesFor.Get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
 
 * Use `GetMultipleTimeSeriesOperation` to retrieve entries from **multiple** time series.
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations).
+* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get#get-entries---from-single-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get#example)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get#syntax)  
-      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get#get-entries---from-multiple-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get#example-1)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get#syntax-1)  
+      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-single-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
+      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-multiple-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example-1)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
 
 </Admonition>
 ## Get entries - from single time series
@@ -42,7 +42,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 In this example, we retrieve all entries from a single time series.  
 
-<TabItem value="something" label="timeseries_region_Get-Single-Time-Series">
+<TabItem value="timeseries_region_Get-Single-Time-Series" label="timeseries_region_Get-Single-Time-Series">
 <CodeBlock language="csharp">
 {`// Define the get operation
 var getTimeSeriesOp = new GetTimeSeriesOperation(
@@ -61,7 +61,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 </TabItem>
 ### Syntax
 
-<TabItem value="something" label="GetTimeSeriesOperation-Definition">
+<TabItem value="GetTimeSeriesOperation-Definition" label="GetTimeSeriesOperation-Definition">
 <CodeBlock language="csharp">
 {`public GetTimeSeriesOperation(
     string docId, 
@@ -83,11 +83,11 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 | **to**                | `DateTime?` | Get time series entries ending at this timestamp (inclusive).<br/> Default: `DateTime.MaxValue`                                                                        |
 | **start**             | `int`       | The position of the first result to retrieve (for paging)<br/>Default: 0                                                                                                                                              |
 | **pageSize**          | `int`       | Number of results per page to retrieve (for paging)<br/>Default: `int.MaxValue`                                                                                                                                                  |
-| **returnFullResults** | `bool`      | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get) |
+| **returnFullResults** | `bool`      | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
 
 **Return Value**: 
 
-<TabItem value="something" label="TimeSeriesRangeResult-class">
+<TabItem value="TimeSeriesRangeResult-class" label="TimeSeriesRangeResult-class">
 <CodeBlock language="csharp">
 {`public class TimeSeriesRangeResult
 \{
@@ -111,7 +111,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 
 <Admonition type="info" title="Info">
 
-* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax).
+* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, the returned object will be `null`.
 * No exceptions are generated.
 
@@ -124,7 +124,7 @@ var firstEntryReturned = timeSeriesEntries.Entries[0];
 
 In this example, we retrieve entries from the specified ranges of two time series.
 
-<TabItem value="something" label="timeseries_region_Get-Multiple-Time-Series">
+<TabItem value="timeseries_region_Get-Multiple-Time-Series" label="timeseries_region_Get-Multiple-Time-Series">
 <CodeBlock language="csharp">
 {`// Define the get operation
 var getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation("employees/1-A",
@@ -150,7 +150,7 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 </TabItem>
 ### Syntax
 
-<TabItem value="something" label="GetMultipleTimeSeriesOperation-Definition">
+<TabItem value="GetMultipleTimeSeriesOperation-Definition" label="GetMultipleTimeSeriesOperation-Definition">
 <CodeBlock language="csharp">
 {`public GetMultipleTimeSeriesOperation(
         string docId,
@@ -168,9 +168,9 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 | **ranges**            | `IEnumerable<TimeSeriesRange>` | Provide a `TimeSeriesRange` object for each time series from which you want to retrieve data                                                                          |
 | **start**             | `int`                          | The position of the first result to retrieve (for paging)<br/>Default: 0                                                                                               |
 | **pageSize**          | `int`                          | Number of results per page to retrieve (for paging)<br/>Default: `int.MaxValue`                                                                                        |
-| **returnFullResults** | `bool`                         | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get) |
+| **returnFullResults** | `bool`                         | This param is only relevant when [getting incremental time series data](../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx) |
  
-<TabItem value="something" label="TimeSeriesRange-class">
+<TabItem value="TimeSeriesRange-class" label="TimeSeriesRange-class">
 <CodeBlock language="csharp">
 {`public class TimeSeriesRange
 \{
@@ -184,7 +184,7 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 
 **Return Value**:
 
-<TabItem value="something" label="TimeSeriesDetails-class">
+<TabItem value="TimeSeriesDetails-class" label="TimeSeriesDetails-class">
 <CodeBlock language="csharp">
 {`public class TimeSeriesDetails
 \{
@@ -198,7 +198,7 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="TimeSeriesRangeResult-class">
+<TabItem value="TimeSeriesRangeResult-class" label="TimeSeriesRangeResult-class">
 <CodeBlock language="csharp">
 {`public class TimeSeriesRangeResult
 \{
@@ -236,19 +236,19 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 <Admonition type="note" title="Note">
 
 * Use `GetTimeSeriesOperation` to retrieve entries from a **single** time series.  
-  You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../../../document-extensions/timeseries/client-api/session/get/get-entries) method.
+  You can also retrieve entries from a single time series using the Session's [timesSeriesFor.get](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx) method.
 
 * Use `GetMultipleTimeSeriesOperation` to retrieve entries from **multiple** time series.
 
-* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations).
+* For a general _Operations_ overview, see [What are Operations](../../../../client-api/operations/what-are-operations.mdx).
 
 * In this page:  
-      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get#get-entries---from-single-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get#example)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get#syntax)  
-      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get#get-entries---from-multiple-time-series)  
-         * [Example](../../../../document-extensions/timeseries/client-api/operations/get#example-1)  
-         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get#syntax-1)  
+      * [Get entries - from single time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-single-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax)  
+      * [Get entries - from multiple time series](../../../../document-extensions/timeseries/client-api/operations/get.mdx#get-entries---from-multiple-time-series)  
+         * [Example](../../../../document-extensions/timeseries/client-api/operations/get.mdx#example-1)  
+         * [Syntax](../../../../document-extensions/timeseries/client-api/operations/get.mdx#syntax-1)  
 
 </Admonition>
 ## Get entries - from single time series
@@ -256,8 +256,8 @@ var timeSeriesEntry = timesSeriesEntries.Values["ExerciseHeartRates"][0].Entries
 
 In this example, we retrieve all entries from a single time series.  
 
-<TabItem value="something-something" label="get_1">
-<CodeBlock language="nodejs">
+<TabItem value="get_1" label="get_1">
+<CodeBlock language="js">
 {`// Define the get operation
 var getTimeSeriesOp = new GetTimeSeriesOperation(
     "employees/1-A",  // The document ID    
@@ -273,8 +273,8 @@ const firstEntryReturned = timeSeriesEntries.entries[0];
 </TabItem>
 ### Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 // ====================
 const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries);
@@ -296,8 +296,8 @@ const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, 
 
 **Return Value**: 
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class TimeSeriesRangeResult \{
     // Timestamp of first entry returned
     from; // Date;
@@ -319,7 +319,7 @@ const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, 
 
 <Admonition type="info" title="Info">
 
-* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries#syntax).
+* Details of class `TimeSeriesEntry ` are listed in [this syntax section](../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#syntax).
 * If the requested time series does Not exist, a null object will be returned.
 * No exceptions are generated.
 
@@ -332,8 +332,8 @@ const getTimeSeriesOp = new GetTimeSeriesOperation(docId, timeseries, from, to, 
 
 In this example, we retrieve entries from the specified ranges of two time series.
 
-<TabItem value="something-something" label="get_2">
-<CodeBlock language="nodejs">
+<TabItem value="get_2" label="get_2">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 const startTime1 = new Date(baseTime.getTime() + 60_000 * 5);
@@ -368,8 +368,8 @@ const timeSeriesEntry = timesSeriesEntries.values.get("ExerciseHeartRates")[0].e
 </TabItem>
 ### Syntax
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`// Available overloads:
 // ====================
 const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges);
@@ -385,8 +385,8 @@ const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges
 | **start**             | `number`            | The position of the first result to retrieve (for paging)<br/>Default: 0                                                         |
 | **pageSize**          | `number`            | Number of results per page to retrieve (for paging)<br/>Default: Default: `2,147,483,647` (equivalent to  `int.MaxValue` in C#). |
  
-<TabItem value="something-something" label="syntax_4">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
 {`// The TimeSeriesRange object:
 // ===========================
 \{
@@ -405,8 +405,8 @@ const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges
 
 **Return Value**:
 
-<TabItem value="something-something" label="syntax_5">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
 {`class TimeSeriesDetails \{
     // The document ID
     id; // string
@@ -418,8 +418,8 @@ const getMultipleTimeSeriesOp = new GetMultipleTimeSeriesOperation(docId, ranges
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class TimeSeriesRangeResult \{
     // Timestamp of first entry returned
     from; // Date;

@@ -423,7 +423,7 @@ select Lines[].Product as Products, Lines[].Quantity as Quantities, count()
 <Admonition type="note" title="Note" id="note" href="#note">
 In order to use the above extension methods you need to add the following **using** statement:
 
-<TabItem value="something" label="group_by_using">
+<TabItem value="group_by_using" label="group_by_using">
 <CodeBlock language="csharp">
 {`using Raven.Client.Documents;
 `}
@@ -778,7 +778,7 @@ select Lines[].Product as Products, Lines[].Quantity as Quantities, count()
 <Admonition type="note" title="Note" id="note" href="#note">
 In order to use the above methods you need to add the following **static import** statement:
 
-<TabItem value="something-something" label="group_by_using">
+<TabItem value="group_by_using" label="group_by_using">
 <CodeBlock language="java">
 {`import static net.ravendb.client.documents.queries.GroupBy.array;
 import static net.ravendb.client.documents.queries.GroupBy.field;
@@ -804,15 +804,15 @@ import static net.ravendb.client.documents.queries.GroupBy.field;
   creating auto map-reduce indexes.  
 
 * In This Page:  
-   * [Group By a Single Field](../../../client-api/session/querying/how-to-perform-group-by-query#group-by-a-single-field)  
-   * [Group By Multiple Fields](../../../client-api/session/querying/how-to-perform-group-by-query#group-by-multiple-fields)  
-   * [Select Composite GroupBy Key](../../../client-api/session/querying/how-to-perform-group-by-query#select-composite-groupby-key)  
-   * [Group By Array](../../../client-api/session/querying/how-to-perform-group-by-query#group-by-array)  
-      * [By Array Values](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)  
-      * [By Array Content](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)  
-   * [Sorting](../../../client-api/session/querying/how-to-perform-group-by-query#sorting)  
-      * [By Count](../../../client-api/session/querying/how-to-perform-group-by-query#by-count)  
-      * [By Sum](../../../client-api/session/querying/how-to-perform-group-by-query#by-sum)  
+   * [Group By a Single Field](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-a-single-field)  
+   * [Group By Multiple Fields](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-multiple-fields)  
+   * [Select Composite GroupBy Key](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#select-composite-groupby-key)  
+   * [Group By Array](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#group-by-array)  
+      * [By Array Values](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-values)  
+      * [By Array Content](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)  
+   * [Sorting](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#sorting)  
+      * [By Count](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-count)  
+      * [By Sum](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-sum)  
 
 </Admonition>
 ## Group By a Single Field
@@ -1396,7 +1396,7 @@ The supported aggregation operations are:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const orders = await session.query({ collection: "Orders" })
     .groupBy("ShipTo.Country")
     .selectKey("ShipTo.Country", "Country")
@@ -1422,7 +1422,7 @@ select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.query({ collection: "Orders" })
     .groupBy("Employee", "Company")
     .selectKey("Employee", "EmployeeIdentifier")
@@ -1449,7 +1449,7 @@ select Employee as EmployeeIdentifier, Company, count() as Count
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const orders = await session.query({ collection: "Orders" })
     .groupBy("Employee", "Company")
     .selectKey("key()", "EmployeeCompanyPair")
@@ -1480,7 +1480,7 @@ and calculate the count per ordered products. Underneath a fanout, an auto map-r
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session.query({ collection: "Orders" })
     .groupBy(GroupBy.array("Lines[].Product"))
     .selectKey("key()", "Products")
@@ -1504,7 +1504,7 @@ Inside a single group by statement you can mix collection values and value of an
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.advanced.documentQuery({ collection: "Orders" })
     .groupBy("Lines[].Product", "ShipTo.Country")
     .selectKey("Lines[].Product", "Product")
@@ -1529,7 +1529,7 @@ Grouping by multiple values from **the same** collection is supported as well:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.query({ collection: "Orders" })
     .groupBy(GroupBy.array("Lines[].Product"), GroupBy.array("Lines[].Quantity"))
     .selectKey("Lines[].Product", "Product")
@@ -1557,7 +1557,7 @@ The client API exposes the `GroupByArrayContent` extension method for that purpo
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.query({ collection: "Orders" })
     .groupBy(GroupBy.array("Lines[].Product"))
     .selectKey("key()", "Products")
@@ -1581,7 +1581,7 @@ Grouping by array content and a value of another property is supported by `Docum
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.query({ collection: "Orders" })
     .groupBy(GroupBy.array("Lines[].Product"), GroupBy.field("ShipTo.Country"))
     .selectKey("Lines[].Product", "Products")
@@ -1606,7 +1606,7 @@ Grouping by multiple values from **the same** collection is also supported by `D
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session.query({ collection: "Orders" })
     .groupBy(GroupBy.array("Lines[].Product"), GroupBy.array("Lines[].Quantity"))
     .selectKey("Lines[].Product", "Products")

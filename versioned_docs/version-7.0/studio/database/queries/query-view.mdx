@@ -15,21 +15,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Studio: Query View
 <Admonition type="note" title="Note">
 
-* Use the **Query View** to run [RQL](../../../client-api/session/querying/what-is-rql) queries and view their results.  
+* Use the **Query View** to run [RQL](../../../client-api/session/querying/what-is-rql.mdx) queries and view their results.  
 * Queries can be executed either on a **Collection** or on an existing **Static-Index**.  
 * RavenDB always uses an index to fetch the query results.  
   When a query is executed over a Collection (without any filtering condition),  
   RavenDB uses an internal index that is kept in its internal storage.  
 * A query on a collection with some filtering condition will create an **Auto-Index** (Dynamic Query).  
-  See [Index Types](../../../studio/database/indexes/indexes-overview#index-types) for details.  
+  See [Index Types](../../../studio/database/indexes/indexes-overview.mdx#index-types) for details.  
 * Query results can be saved/exported to a CSV file.  
 
 * In this page:  
-  * [Query View](../../../studio/database/queries/query-view#query-view)  
-  * [Query Results](../../../studio/database/queries/query-view#query-results)  
-      * [Select Visible Columns](../../../studio/database/queries/query-view#select-visible-columns)  
-      * [Result Columns](../../../studio/database/queries/query-view#result-columns)  
-  * [Additional Query Options](../../../studio/database/queries/query-view#additional-query-options)  
+  * [Query View](../../../studio/database/queries/query-view.mdx#query-view)  
+  * [Query Results](../../../studio/database/queries/query-view.mdx#query-results)  
+      * [Select Visible Columns](../../../studio/database/queries/query-view.mdx#select-visible-columns)  
+      * [Result Columns](../../../studio/database/queries/query-view.mdx#result-columns)  
+  * [Additional Query Options](../../../studio/database/queries/query-view.mdx#additional-query-options)  
 
 </Admonition>
 ## Query View
@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 2. **Database**  
    Click to select the database you want to query.  
 3. **Syntax Samples**  
-   Click to display [RQL](../../../client-api/session/querying/what-is-rql) syntax samples.  
+   Click to display [RQL](../../../client-api/session/querying/what-is-rql.mdx) syntax samples.  
 4. **Query Box**  
    Enter your RQL query in the query box.  
 5. **Save Query**  
@@ -63,7 +63,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
           Toggle to disable Auto-Index creation for this query.
           If no index exists to satisfy this query, an exception will be thrown.
           * Toggling this ON will not affect Auto-Index creation in future Studio queries.
-            To disable all future Auto-Index creation from Studio queries, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration#disabling-auto-index-creation-on-studio-queries-or-patches)
+            To disable all future Auto-Index creation from Studio queries, change the default setting in [Studio Configuration](../../../studio/database/settings/studio-configuration.mdx#disabling-auto-index-creation-on-studio-queries-or-patches)
      * c. **Show stored index fields only**  
           Toggle to show the query results or only the stored index fields.  
           (Relevant only when querying an index)  
@@ -73,7 +73,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 8. **Run Query**  
    Click to run the query.  
 9. **Query Results**  
-   The results area displays selected columns of results retrieved by your query (see [below](../../../studio/database/queries/query-view#query-results)).  
+   The results area displays selected columns of results retrieved by your query (see [below](../../../studio/database/queries/query-view.mdx#query-results)).  
 
 
 ## Query Results
@@ -86,7 +86,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    The time it took to retrieve the results.  
    <Admonition type="note" title="Note">
    Add `include timings()` to your RQL to display additional timing details in the results.  
-   Learn more in [Include Query Timings](../../../client-api/session/querying/debugging/query-timings).  
+   Learn more in [Include Query Timings](../../../client-api/session/querying/debugging/query-timings.mdx).  
    </Admonition>
 3. **Delete Documents**  
    Click to delete all documents that match the query.  
@@ -97,7 +97,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * Query duration  
     * The index used by this query.  
       Either the index that was explicitly used by the query, or the internal RavenDB index that is 
-      used [for collection queries](../../../client-api/faq/what-is-a-collection#collection-usages).  
+      used [for collection queries](../../../client-api/faq/what-is-a-collection.mdx#collection-usages).  
     * An ETag representing the current state of the index used by the query.  
       (The ETag value changes with every change made to the documents)  
 5. **Export Results as CSV File**  
@@ -113,7 +113,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Click to expand or collapse the results view.  
 ### Select Visible Columns
 
-To modify the displayed result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view#query-results) view.  
+To modify the displayed result columns, open the Display drop-down dialog from the [Query Results](../../../studio/database/queries/query-view.mdx#query-results) view.  
 Custom result columns can be added, edited and removed.  
 
 ![Display Dialog](./assets/query-view-display-dialog.png)
@@ -157,7 +157,7 @@ Changes made in the Display dialog will take effect only when the **Apply** butt
 1. **Preview**  
    Click for a preview of the retrieved item.  
 2. **Document ID**  
-   Click the ID to open this document in the [Document View](../../../studio/database/documents/document-view),  
+   Click the ID to open this document in the [Document View](../../../studio/database/documents/document-view.mdx),  
    -or-  
    Hover over the ID to display it in text format and optionally copy it to the clipboard.  
     ![Hover ID](./assets/query-view-ID-column.png)  
@@ -174,15 +174,15 @@ Changes made in the Display dialog will take effect only when the **Apply** butt
 
 Some RavenDB features enhance the queries options.  
 
-* [Time Series Query](../../../document-extensions/timeseries/overview) results provide insight 
+* [Time Series Query](../../../document-extensions/timeseries/overview.mdx) results provide insight 
   into your time-series data, including a graph view over time.  
-  Learn more about it [here](../../../studio/database/document-extensions/time-series#querying-time-series).  
-* [Spatial Query](../../../studio/database/queries/spatial-queries-map-view) results include 
-  a Spatial Map Tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view) 
+  Learn more about it [here](../../../studio/database/document-extensions/time-series.mdx#querying-time-series).  
+* [Spatial Query](../../../studio/database/queries/spatial-queries-map-view.mdx) results include 
+  a Spatial Map Tab that [displays geographical locations](../../../studio/database/queries/spatial-queries-map-view.mdx#spatial-map-view) 
   on the world map.  
-* [Graph Query](../../../indexes/querying/graph/graph-queries-overview) also present query results 
-  [graphically](../../../indexes/querying/graph/graph-queries-overview#creating-graph-queries) in an additional tab.  
-* [Counter Query](../../../document-extensions/counters/counters-and-other-features#counters-and-queries) can be used to get counters data.  
+* [Graph Query](../../../indexes/querying/graph/graph-queries-overview.mdx) also present query results 
+  [graphically](../../../indexes/querying/graph/graph-queries-overview.mdx#creating-graph-queries) in an additional tab.  
+* [Counter Query](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) can be used to get counters data.  
 
 
 

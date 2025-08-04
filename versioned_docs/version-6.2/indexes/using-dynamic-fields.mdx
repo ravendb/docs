@@ -35,14 +35,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields#indexed-fields-&-terms-view)
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields-&-terms-view)
 
 </Admonition>
 
@@ -58,7 +58,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_1">
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
 <CodeBlock language="csharp">
 {`public class Product
 \{
@@ -71,7 +71,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -176,7 +176,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_4">
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
 <CodeBlock language="csharp">
 {`public class Product
 \{
@@ -193,7 +193,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
     \{
@@ -271,12 +271,12 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 
 * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.  
 * Documents can then be queried based on those indexed values.  
-* For a more practical usage see the [Example](../indexes/using-dynamic-fields#example---index-a-list-of-properties) below.  
+* For a more practical usage see the [Example](../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.  
 
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_7">
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
 <CodeBlock language="csharp">
 {`public class Product
 \{
@@ -290,7 +290,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -382,7 +382,7 @@ from index 'Products/ByProductType' where Electronics = 23
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_10">
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
 <CodeBlock language="csharp">
 {`public class Product
 \{
@@ -403,7 +403,7 @@ public class Attribute
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -512,7 +512,7 @@ from index 'Attributes/ByName' where Width = 10
 
 #### Syntax for LINQ-index:
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`object CreateField(string name, object value);
 
@@ -525,8 +525,8 @@ object CreateField(string name, object value, CreateFieldOptions options);
 
 #### Syntax for JavaScript-index:
 
-<TabItem value="something-something" label="syntax_JS">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_JS" label="syntax_JS">
+<CodeBlock language="js">
 {`createField(fieldName, fieldValue, options); // returns object
 `}
 </CodeBlock>
@@ -537,11 +537,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **fieldValue**   | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index)
+| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
 
 `false` - will set `FieldStorage.No` (default value)
 `true` - will set `FieldStorate.Yes`                       |
-| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers)
+| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
 
 `null` - `FieldIndexing.Default` (default value)
 `false` - `FieldIndexing.Exact`
@@ -550,9 +550,9 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
 <Admonition type="info" title="Info">
 
@@ -597,14 +597,14 @@ Below are sample index fields & their terms generated from the last example.
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields#indexed-fields-&-terms-view)
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields-&-terms-view)
 
 </Admonition>
 
@@ -620,7 +620,7 @@ Below are sample index fields & their terms generated from the last example.
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_1">
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
 <CodeBlock language="java">
 {`public class Product \{
     private String id;
@@ -634,7 +634,7 @@ Below are sample index fields & their terms generated from the last example.
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -717,7 +717,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_4">
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
 <CodeBlock language="java">
 {`public class Product \{
     private String id;
@@ -735,7 +735,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -809,12 +809,12 @@ from index 'Products/ByAnyField/JS' where lastName = "Doe"
 
 * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.
 * Documents can then be queried based on those indexed values.
-* For a more practical usage see the [Example](../indexes/using-dynamic-fields#example---index-a-list-of-properties) below.
+* For a more practical usage see the [Example](../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.
 
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_7">
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
 <CodeBlock language="java">
 {`public class Product \{
     private String id;
@@ -829,7 +829,7 @@ from index 'Products/ByAnyField/JS' where lastName = "Doe"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -895,7 +895,7 @@ from index 'Products/ByProductType' where Electronics = 23
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_10">
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
 <CodeBlock language="java">
 {`public class Product \{
     private String id;
@@ -918,7 +918,7 @@ public class Attribute \{
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -998,7 +998,7 @@ from index 'Attributes/ByName' where Width = 10
 
 #### Syntax for LINQ-index:
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`object CreateField(string name, object value);
 
@@ -1011,8 +1011,8 @@ object CreateField(string name, object value, CreateFieldOptions options);
 
 #### Syntax for JavaScript-index:
 
-<TabItem value="something-something" label="syntax_JS">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_JS" label="syntax_JS">
+<CodeBlock language="js">
 {`createField(fieldName, fieldValue, options); // returns object
 `}
 </CodeBlock>
@@ -1023,11 +1023,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **fieldValue**   | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index)
+| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
 
 `false` - will set `FieldStorage.No` (default value)
 `true` - will set `FieldStorate.Yes`                       |
-| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers)
+| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
 
 `null` - `FieldIndexing.Default` (default value)
 `false` - `FieldIndexing.Exact`
@@ -1036,9 +1036,9 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
 <Admonition type="info" title="Info">
 
@@ -1083,14 +1083,14 @@ Below are sample index fields & their terms generated from the last example.
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields#indexed-fields-&-terms-view)
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields-&-terms-view)
 
 </Admonition>
 
@@ -1106,7 +1106,7 @@ Below are sample index fields & their terms generated from the last example.
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_1">
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
 <CodeBlock language="python">
 {`class Product:
     def __init__(self, Id: str = None, attributes: Dict[str, object] = None):
@@ -1118,7 +1118,7 @@ Below are sample index fields & their terms generated from the last example.
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -1211,7 +1211,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_4">
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
 <CodeBlock language="python">
 {`class Product:
     def __init__(self, Id: str = None, first_name: str = None, last_name: str = None, title: str = None):
@@ -1227,7 +1227,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
     \{
@@ -1305,7 +1305,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_7">
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
 <CodeBlock language="python">
 {`class Product:
     def __init__(self, Id: str = None, product_type: str = None, price_per_unit: float = None):
@@ -1318,7 +1318,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -1402,7 +1402,7 @@ from index 'Products/ByProductType' where Electronics = 23
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_10">
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
 <CodeBlock language="python">
 {`class Attribute:
     def __init__(self, prop_name: str = None, prop_value: str = None):
@@ -1421,7 +1421,7 @@ class Product:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -1516,7 +1516,7 @@ from index 'Attributes/ByName' where Width = 10
 
 #### Syntax for Index:
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`object CreateField(string name, object value);
 
@@ -1529,8 +1529,8 @@ object CreateField(string name, object value, CreateFieldOptions options);
 
 #### Syntax for JavaScript-index:
 
-<TabItem value="something-something" label="syntax_JS">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_JS" label="syntax_JS">
+<CodeBlock language="js">
 {`createField(fieldName, fieldValue, options); // returns object
 `}
 </CodeBlock>
@@ -1541,11 +1541,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **name**     | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **value**    | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**   | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index)
+| **stored**   | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
 
 `False` - will set `FieldStorage.NO` (default value)
 `True` - will set `FieldStorate.YES`                       |
-| **analyzed** | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers)
+| **analyzed** | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
 
 `None` - `FieldIndexing.Default` (default value)
 `False` - `FieldIndexing.Exact`
@@ -1554,9 +1554,9 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
 <Admonition type="info" title="Info">
 
@@ -1601,14 +1601,14 @@ Below are sample index fields & their terms generated from the last example.
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields#indexed-fields-&-terms-view)
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields-&-terms-view)
 
 </Admonition>
 
@@ -1624,7 +1624,7 @@ Below are sample index fields & their terms generated from the last example.
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_1">
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
 <CodeBlock language="php">
 {`use Ds\\Map as DSMap;
 
@@ -1639,7 +1639,7 @@ class Product
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -1739,7 +1739,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_4">
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
 <CodeBlock language="php">
 {`class Product
 \{
@@ -1757,7 +1757,7 @@ Consider whether this is really necessary, as indexing every single field can en
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
     \{
@@ -1840,7 +1840,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_7">
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
 <CodeBlock language="php">
 {`class Product
 \{
@@ -1856,7 +1856,7 @@ from index 'Products/ByAnyField/JS' where LastName = "Doe"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -1949,7 +1949,7 @@ from index 'Products/ByProductType' where Electronics = 23
 </Admonition>
 
 * **The document**:  
-<TabItem value="something-something" label="dynamic_fields_10">
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
 <CodeBlock language="php">
 {`class Product
 \{
@@ -1982,7 +1982,7 @@ class AttributeList extends TypedList
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -2091,7 +2091,7 @@ from index 'Attributes/ByName' where Width = 10
 
 ## CreateField syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`object CreateField(string name, object value);
 
@@ -2107,11 +2107,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **name**     | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **value**    | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**   | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index)
+| **stored**   | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
 
 `False` - will set `FieldStorage.NO` (default value)
 `True` - will set `FieldStorate.YES`                       |
-| **analyzed** | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers)
+| **analyzed** | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
 
 `None` - `FieldIndexing.Default` (default value)
 `False` - `FieldIndexing.Exact`
@@ -2120,7 +2120,7 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage** | `FieldStorage` | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
+| **Storage** | `FieldStorage` | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
 | **Indexing** | `FieldIndexing` | |
 | **TermVector** | `FieldTermVector` | |
 
@@ -2167,14 +2167,14 @@ Below are sample index fields & their terms generated from the last example.
 
 * In this page:
 
-    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields#indexing-documents-fields-keys)
-        * [Example - index any field under object](../indexes/using-dynamic-fields#example---index-any-field-under-object)
-        * [Example - index any field](../indexes/using-dynamic-fields#example---index-any-field)
-    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields#indexing-documents-fields-values)
-        * [Example - basic](../indexes/using-dynamic-fields#example---basic)
-        * [Example - list](../indexes/using-dynamic-fields#example---list)
-    * [CreateField syntax](../indexes/using-dynamic-fields#createfield-syntax)
-    * [Indexed fields & terms view](../indexes/using-dynamic-fields#indexed-fields-&-terms-view)
+    * [Indexing documents fields KEYS](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-keys)
+        * [Example - index any field under object](../indexes/using-dynamic-fields.mdx#example---index-any-field-under-object)
+        * [Example - index any field](../indexes/using-dynamic-fields.mdx#example---index-any-field)
+    * [Indexing documents fields VALUES](../indexes/using-dynamic-fields.mdx#indexing-documents-fields-values)
+        * [Example - basic](../indexes/using-dynamic-fields.mdx#example---basic)
+        * [Example - list](../indexes/using-dynamic-fields.mdx#example---list)
+    * [CreateField syntax](../indexes/using-dynamic-fields.mdx#createfield-syntax)
+    * [Indexed fields & terms view](../indexes/using-dynamic-fields.mdx#indexed-fields-&-terms-view)
 
 </Admonition>
 
@@ -2187,8 +2187,8 @@ The following allows you to:
 * Index any field that is under the some object from the document.
 * After index is deployed, any new field added to the this object will be indexed as well.
 **The document**:
-<TabItem value="something-something" label="dynamic_fields_1">
-<CodeBlock language="nodejs">
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
+<CodeBlock language="js">
 {`class Product \{
     constructor(id, attributes) \{
         this.id = id;
@@ -2202,7 +2202,7 @@ The following allows you to:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -2226,7 +2226,7 @@ The following allows you to:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByAttributeKey_JS extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2263,7 +2263,7 @@ The following allows you to:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const matchingDocuments = session.query({indexName: 'Products_ByAttributeKey'})
      // 'size' is a dynamic-index-field that was indexed from the attributes object
     .whereEquals('size', 42)
@@ -2295,8 +2295,8 @@ Consider if that is a true necessity, as indexing every single field can end up 
 
 </Admonition>
 **The document**:
-<TabItem value="something-something" label="dynamic_fields_4">
-<CodeBlock language="nodejs">
+<TabItem value="dynamic_fields_4" label="dynamic_fields_4">
+<CodeBlock language="js">
 {`class Product \{
     constructor(id, firstName, lastName, title) \{
         this.id = id;
@@ -2313,7 +2313,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -2337,7 +2337,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByAnyField_JS extends AbstractJavaScriptIndexCreationTask {
     constructor () {
         super();
@@ -2367,7 +2367,7 @@ Consider if that is a true necessity, as indexing every single field can end up 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const matchingDocuments = session.query({ indexName: 'Products_ByAnyField_JS' })
      // 'lastName' is a dynamic-index-field that was indexed from the document
     .whereEquals('lastName', 'Doe')
@@ -2396,10 +2396,10 @@ This example shows:
 
 * Only the **basic concept** of creating a dynamic-index-field from the **value** of a document field.
 * Documents can then be queried based on those indexed values.
-* For a more practical usage see the [Example](../indexes/using-dynamic-fields#example---index-a-list-of-properties) below.
+* For a more practical usage see the [Example](../indexes/using-dynamic-fields.mdx#example---index-a-list-of-properties) below.
 **The document**:
-<TabItem value="something-something" label="dynamic_fields_7">
-<CodeBlock language="nodejs">
+<TabItem value="dynamic_fields_7" label="dynamic_fields_7">
+<CodeBlock language="js">
 {`class Product \{
     constructor(id, productType, pricePerUnit) \{
         this.id = id;
@@ -2413,7 +2413,7 @@ This example shows:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -2433,7 +2433,7 @@ This example shows:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ-index" label="LINQ-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByProductType extends AbstractCsharpIndexCreationTask {
     constructor () {
         super();
@@ -2449,7 +2449,7 @@ This example shows:
 </CodeBlock>
 </TabItem>
 <TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByProductType_JS extends AbstractJavaScriptIndexCreationTask {
     constructor () {
         super();
@@ -2482,7 +2482,7 @@ This example shows:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const matchingDocuments = session.query({ indexName: 'Products_ByProductType' })
      // 'Electronics' is the dynamic-index-field that was indexed from document field 'productType'
     .whereEquals('Electronics', 23)
@@ -2508,8 +2508,8 @@ The following allows you to:
 * Index **values** from items in a list
 * After index is deployed, any item added this list in the document will be dynamically indexed as well.
 **The document**:
-<TabItem value="something-something" label="dynamic_fields_10">
-<CodeBlock language="nodejs">
+<TabItem value="dynamic_fields_10" label="dynamic_fields_10">
+<CodeBlock language="js">
 {`class Product \{
     constructor(id, name, attributes) \{
         this.id = id;
@@ -2531,7 +2531,7 @@ class Attribute \{
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`// Sample document content
 \{
@@ -2566,7 +2566,7 @@ class Attribute \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="LINQ-index" label="LINQ-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Attributes_ByName extends AbstractCsharpIndexCreationTask
 {
     constructor () {
@@ -2586,7 +2586,7 @@ class Attribute \{
 </CodeBlock>
 </TabItem>
 <TabItem value="JavaScript-index" label="JavaScript-index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Attributes_ByName_JS extends AbstractJavaScriptIndexCreationTask {
     constructor () {
         super();
@@ -2620,7 +2620,7 @@ class Attribute \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const matchingDocuments = session.query({ indexName: 'Attributes/ByName' })
      // 'Width' is a dynamic-index-field that was indexed from the attributes list
     .whereEquals('Width', 10)
@@ -2644,7 +2644,7 @@ from index 'Attributes/ByName' where Width = 10
 
 #### Syntax for LINQ-index:
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`object CreateField(string name, object value);
 
@@ -2657,8 +2657,8 @@ object CreateField(string name, object value, CreateFieldOptions options);
 
 #### Syntax for JavaScript-index:
 
-<TabItem value="something-something" label="syntax_JS">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_JS" label="syntax_JS">
+<CodeBlock language="js">
 {`createField(fieldName, fieldValue, options); // returns object
 `}
 </CodeBlock>
@@ -2669,11 +2669,11 @@ object CreateField(string name, object value, CreateFieldOptions options);
 | **fieldName**    | `string`             | Name of the dynamic-index-field                                                                                                                                                    |
 | **fieldValue**   | `object`             | Value of the dynamic-index-field
 The field Terms are derived from this value.                                                                                                  |
-| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index)
+| **stored**       | `bool`               | Sets [FieldStorage](../indexes/storing-data-in-index.mdx)
 
 `false` - will set `FieldStorage.No` (default value)
 `true` - will set `FieldStorate.Yes`                       |
-| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers)
+| **analyzed**     | `bool`               | Sets [FieldIndexing](../indexes/using-analyzers.mdx)
 
 `null` - `FieldIndexing.Default` (default value)
 `false` - `FieldIndexing.Exact`
@@ -2682,9 +2682,9 @@ The field Terms are derived from this value.                                    
 
 | CreateFieldOptions |                    |                                                                            |
 |--------------------|--------------------|----------------------------------------------------------------------------|
-| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index) in the index. |
-| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers) in the index.    |
-| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors) in the index.    |
+| **Storage**        | `FieldStorage?`    | Learn about [storing data](../indexes/storing-data-in-index.mdx) in the index. |
+| **Indexing**       | `FieldIndexing?`   | Learn about [using analyzers](../indexes/using-analyzers.mdx) in the index.    |
+| **TermVector**     | `FieldTermVector?` | Learn about [term vectors](../indexes/using-term-vectors.mdx) in the index.    |
 
 <Admonition type="info" title="Info">
 

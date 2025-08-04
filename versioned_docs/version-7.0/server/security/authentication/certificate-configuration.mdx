@@ -16,36 +16,36 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 This article explains how to set up authentication **manually** by storing your certificate locally, externally or with logic you create that is foreign to RavenDB. 
 
-Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you set up 
+Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard.mdx) which lets you set up 
 authentication in a much easier and faster way with automatic certificate renewals.  
 
  * The Setup Wizard can process **certificates that you provide**  
- * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates)**.  
+ * Or the Wizard can give you a free, highly secure **certificate via [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates.mdx)**.  
  * We've developed default **automatic renewals** of certificates when setting up with the Setup Wizard **together** with Let's Encrypt.  
 
  If you choose manual setup and/or to provide your own certificate, **you are responsible for its periodic renewal**.  
  
 * In this page:
-   * [Prerequisites](../../../server/security/authentication/certificate-configuration#prerequisites)  
-   * [Standard Manual Setup With Certificate Stored Locally](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally)  
-      * [Certificate Requirements](../../../server/security/authentication/certificate-configuration#certificate-requirements)  
-      * [Certificate Location](../../../server/security/authentication/certificate-configuration#certificate-location)  
-   * [With Logic Foreign to RavenDB or External Certificate Storage](../../../server/security/authentication/certificate-configuration#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
-   * [Step-by-step Guide to Installing Certificate](../../../server/security/authentication/certificate-configuration#step-by-step-guide-to-installing-certificate)  
+   * [Prerequisites](../../../server/security/authentication/certificate-configuration.mdx#prerequisites)  
+   * [Standard Manual Setup With Certificate Stored Locally](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally)  
+      * [Certificate Requirements](../../../server/security/authentication/certificate-configuration.mdx#certificate-requirements)  
+      * [Certificate Location](../../../server/security/authentication/certificate-configuration.mdx#certificate-location)  
+   * [With Logic Foreign to RavenDB or External Certificate Storage](../../../server/security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage)  
+   * [Step-by-step Guide to Installing Certificate](../../../server/security/authentication/certificate-configuration.mdx#step-by-step-guide-to-installing-certificate)  
 
 </Admonition>
 
 ## Prerequisites
 
-To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options#json). 
- Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq#automatic-cluster-certificate-renewal-following-migration-to-4.2).  
+To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options.mdx#json). 
+ Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-4.2).  
 #### Setting up Client Certificates
 When the server is manually set up with a server certificate for the first time, there are no client certificates registered in the server yet. 
-The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage).  
-Find detailed instructions of the process [below](../../../server/security/authentication/certificate-configuration#step-by-step-guide-to-installing-certificate).  
+The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage.mdx).  
+Find detailed instructions of the process [below](../../../server/security/authentication/certificate-configuration.mdx#step-by-step-guide-to-installing-certificate).  
 
 You can set up various client certificates with different security clearance levels and database permissions. 
-See [Certificate Management](../../../server/security/authentication/certificate-management) for more about permissions.  
+See [Certificate Management](../../../server/security/authentication/certificate-management.mdx) for more about permissions.  
 
 
 
@@ -74,16 +74,16 @@ and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) f
 
 <Admonition type="note" title="Note">
 
-* Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates) 
+* Certificates created during setup using [Let's Encrypt](../../../server/security/authentication/lets-encrypt-certificates.mdx) 
   are already provided with the above fields and OIDs.  
 * User-created certificates must be provided with these properties for RavenDB to accept and be able to use them. 
 
 </Admonition>
 #### Certificate Location
 
-A [settings.json](../../configuration/configuration-options#settings.json) file must reside in each node's `Server` folder 
+A [settings.json](../../configuration/configuration-options.mdx#settings.json) file must reside in each node's `Server` folder 
 and define the server and certificate settings. The server will retrieve this file and use its settings on startup.  
-Read more about RavenDB configuration options [here](../../configuration/configuration-options).  
+Read more about RavenDB configuration options [here](../../configuration/configuration-options.mdx).  
 
 * **ServerUrl**  
  When setting up securely, you must also set the `ServerUrl` configuration option to an **HTTPS** address.  
@@ -91,7 +91,7 @@ Read more about RavenDB configuration options [here](../../configuration/configu
  For a list of IPs and ports already in use on your machine, run `netstat -a` in the command line.  
 
 * **Setup.Mode**  
- Set to "None" if you want a manual setup. If you want to use the [Setup Wizard](../../../start/installation/setup-wizard), set to "Initial" 
+ Set to "None" if you want a manual setup. If you want to use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), set to "Initial" 
  or simply run the `run.ps1` file in your server package via PowerShell.  
 
 * **DataDir**  
@@ -101,9 +101,9 @@ Read more about RavenDB configuration options [here](../../configuration/configu
  The standard way to enable authentication is to set `Security.Certificate.Path` in the settings.json file with the path to your `.pfx` server certificate.  
  You may also supply a certificate password using `Security.Certificate.Password`, but this is optional.  
 
-For example, this is a typical [settings.json](../../configuration/configuration-options#json) for a manual setup:
+For example, this is a typical [settings.json](../../configuration/configuration-options.mdx#json) for a manual setup:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "https://rvn-srv-1:8080",
@@ -135,10 +135,10 @@ RavenDB expects to get the raw binary representation (byte array) of the .pfx ce
 
 Let's look at an example -
 
-To use `Security.Certificate.Load.Exec` with a PowerShell script, the [settings.json](../../configuration/configuration-options#json) 
+To use `Security.Certificate.Load.Exec` with a PowerShell script, the [settings.json](../../configuration/configuration-options.mdx#json) 
 must be stored in each node's `Server` folder and will look something like this:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "https://rvn-srv-1:8080",
@@ -153,7 +153,7 @@ must be stored in each node's `Server` folder and will look something like this:
 
 A sample powershell script called `give_me_cert.ps1` that matches the `settings.json` configuration:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`try
 \{
@@ -190,7 +190,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Extract the .zip into the folders on each machine where the server nodes will permanently live.  
    - Store server certificate in your desired location with secure permissions.  
 
-2. In each node `Server` folder, create the `settings.json` file which you will configure like the [examples](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) above.  
+2. In each node `Server` folder, create the `settings.json` file which you will configure like the [examples](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
    * You can do this by going into the node `Server` folder &gt; right-click &gt; **New** &gt; **Text Document** &gt; name it `settings.json` instead of 
     ...txt &gt; click **Yes** &gt; open it and begin configuring.
    * Place the `settings.json` inside each node's `Server` folder because when you run the server, RavenDB is programmed to find the settings there.  
@@ -199,12 +199,12 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Set the `ServerUrl`.  Make sure to use `https` and that it matches the domain established in your certificate.  
    - Set `Setup.Mode` to `None` to deactivate the RavenDB Setup Wizard.  
    - Set `DataDir` to the desired database storage folder on each machine.  
-   - Set the `Security.Certificate.Path` to the **.pfx** that you placed in each server folder if certificate is stored with [RavenDB logic on local machines](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
-     or `Security.Certificate.Load.Exec` if using [external location or logic](../../../server/security/authentication/certificate-configuration#with-logic-foreign-to-ravendb-or-external-certificate-storage).  
+   - Set the `Security.Certificate.Path` to the **.pfx** that you placed in each server folder if certificate is stored with [RavenDB logic on local machines](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
+     or `Security.Certificate.Load.Exec` if using [external location or logic](../../../server/security/authentication/certificate-configuration.mdx#with-logic-foreign-to-ravendb-or-external-certificate-storage).  
    - Make sure that the certificate .path or .load script lead to the correct certificate location. `.Path` should look something like this:  
          `"Security.Certificate.Path": "C:/Windows/MyDomainName/A/Server/ravendb.domain.com.pfx"`  
-         See [.json example for a .Path situation](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) above.  
-   - Setting a **password** on the certificate is optional. See [settings.json example](../../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) above.  
+         See [.json example for a .Path situation](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
+   - Setting a **password** on the certificate is optional. See [settings.json example](../../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) above.  
    Run
 
 4. Right-click and run the `run.ps1` (or `run.sh` in Linux) in the extracted server package.  In Windows, it runs in PowerShell as a default.
@@ -216,9 +216,9 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
       - It's best to **first do the next two steps before selecting a client certificate** in your browser. 
 
 5. The PowerShell CLI window will be running the server terminal. The last line should read `ravendb>`. 
-  In the CLI, run the [generateClientCert](../../../server/administration/cli#generateclientcert) command to generate a client certificate.  
+  In the CLI, run the [generateClientCert](../../../server/administration/cli.mdx#generateclientcert) command to generate a client certificate.  
    - The following is a generic RavenDB CLI command.  
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> generateClientCert <your-client-certificate-name> <path-to-output-folder> <number of months> [optional password]
 `}
@@ -226,7 +226,7 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
 </TabItem>  
    - In the following example the certificate will be named RavenDBClient, will be stored at C:\Users\administrator\Documents, will be valid for 60 months, and will have no password. 
      If a password is required add it to the end of the command.  
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`ravendb> generateClientCert RavenDBClient C:\\Users\\administrator\\Documents 60
 `}
@@ -238,22 +238,22 @@ In all secure configurations, the `ServerUrl` must contain the same domain name 
    - Install the client certificate into the OS by double-clicking the `admin.client.certificate...pfx` file and complete the OS Certificate Import Wizard.  
      * **To install the client certificate without a password**, you can use the default settings by pressing **Next** all the way through. 
        In most cases, this is sufficient.  
-     * **To set a password on the client certificate**, do so in the Import Wizard.  You'll need to use that password every time you [work with the certificate](../../../server/security/authentication/certificate-management).  
+     * **To set a password on the client certificate**, do so in the Import Wizard.  You'll need to use that password every time you [work with the certificate](../../../server/security/authentication/certificate-management.mdx).  
 
        ![Set client certificate password](./assets/set-client-certificate-password.png)
 
 7. Quit and restart the server with the `run.ps1` script. Select the certificate in the popup and click "OK". 
-   The [RavenDB Studio](../../../studio/overview) should now open.  
+   The [RavenDB Studio](../../../studio/overview.mdx) should now open.  
     - In the PowerShell window type quit to close down the server for the next important step of setting it up as an OS service.  
 
 8. To set up as an OS service, run PowerShell as an administrator and navigate to the root `Server` folder where the `settings.json` is located.  
    Copy and paste the following command `.\rvn.exe windows-service register --service-name RavenDB`.
-   <Admonition type="note" title="Note"> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service) every time the machine starts, 
+   <Admonition type="note" title="Note"> It will set up the cluster as an OS service, which [will launch the server automatically](../../../start/installation/running-as-service.mdx) every time the machine starts, 
     but will fail to start if the Local Service account doesn't have access to all the required resources.  </Admonition>
    - Open the "Services" manager for Windows. Make sure that the "RavenDB" service is there and that the Startup Type is "Automatic".  
 
 9. Now the service should run whenever the machine starts and the Studio should be accessible by the user with the client certificate.  
-   - See [Certificate Management](../../../server/security/authentication/certificate-management) for an easy way to generate various client certificates with customizable permissions.  
+   - See [Certificate Management](../../../server/security/authentication/certificate-management.mdx) for an easy way to generate various client certificates with customizable permissions.  
 
 
 

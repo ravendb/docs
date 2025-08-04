@@ -9,17 +9,17 @@ export default function ClustersFeaturesGrid() {
   const ClustersFeaturesList = [
     {
       title: "Sharding",
-      url: `${activeVersion.label}/sharding/overview`,
+      url: `/${activeVersion.label}/sharding/overview`,
       description: "Short description",
     },
     {
       title: "Highly available tasks",
-      url: `${activeVersion.label}/server/clustering/distribution/highly-available-tasks`,
+      url: `/${activeVersion.label}/server/clustering/distribution/highly-available-tasks`,
       description: "Short description",
     },
     {
       title: "Cluster-wide transactions",
-      url: `${activeVersion.label}/server/clustering/cluster-transactions`,
+      url: `/${activeVersion.label}/server/clustering/cluster-transactions`,
       description: "Short description",
     },
   ];

@@ -21,7 +21,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships#includes) in results when:  
+* Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships.mdx#includes) in results when:  
   * **Making a query** (`Session.Query` / `Session.Advanced.RawQuery`)
   * **Loading a document** (`Session.Load`) from the server  
 
@@ -30,16 +30,16 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
   * **Change vector**
 
 * In this page:
-  * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
-      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including#why-include-revisions)
-      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including#including-by-creation-time)
-      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including#including-by-change-vector)
-  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)
-      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../document-extensions/revisions/client-api/session/including#syntax)
-  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector)
+  * [Overview:](../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
+      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including.mdx#why-include-revisions)
+      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time)
+      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
+  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
+      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
+      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
+      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
+  * [Syntax](../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
 
 </Admonition>
 ## Overview
@@ -50,7 +50,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
 * Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
-  [Getting](../../../../document-extensions/revisions/client-api/session/loading) a revision that was included with the document will retrieve it directly from the session.  
+  [Getting](../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 #### Including by Creation Time:
 
@@ -63,7 +63,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 * **If no exact match is found**, then the first revision that precedes the specified time will be returned.
 #### Including by Change Vector:
 
-* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector) is updated.  
+* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
@@ -71,7 +71,7 @@ export const supportedLanguages = ["csharp", "php", "nodejs"];
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
+    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
   
   * Specify the **path** to this property when including the revisions, see examples below.  
   
@@ -169,7 +169,7 @@ var revisions = await asyncSession
 </Tabs>
 
 <a id="sample-document"/>
-<TabItem value="something" label="sample_document">
+<TabItem value="sample_document" label="sample_document">
 <CodeBlock language="csharp">
 {`// Sample Contract document
 private class Contract
@@ -282,7 +282,7 @@ var revisions = await asyncSession
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document). 
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
 
 
 
@@ -393,13 +393,13 @@ var revisions = await asyncSession
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// Include a single revision by Time
 TBuilder IncludeRevisions(DateTime before);
@@ -479,7 +479,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
 </TabItem>
 </Tabs>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
@@ -489,7 +489,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
 
 <Admonition type="note" title="Note">
 
-* Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships#includes) in results when:  
+* Document revisions can be [included](../../../../client-api/how-to/handle-document-relationships.mdx#includes) in results when:  
   * **Making a query** (`session.query`/`session.advanced.rawQuery`)
   * **Loading a document** (`session.load`) from the server  
 
@@ -498,16 +498,16 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
   * **Change vector**
 
 * In this page:
-  * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
-      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including#why-include-revisions)
-      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including#including-by-creation-time)
-      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including#including-by-change-vector)
-  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)
-      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../document-extensions/revisions/client-api/session/including#syntax)
-  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector)
+  * [Overview:](../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
+      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including.mdx#why-include-revisions)
+      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-creation-time)
+      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#including-by-change-vector)
+  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
+      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
+      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
+      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
+  * [Syntax](../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
 
 </Admonition>
 ## Overview
@@ -518,7 +518,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
 * Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
-  [Getting](../../../../document-extensions/revisions/client-api/session/loading) a revision that was included with the document will retrieve it directly from the session.  
+  [Getting](../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 #### Including by Creation Time:
 
@@ -531,7 +531,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
 * **If no exact match is found**, then the first revision that precedes the specified time will be returned.
 #### Including by Change Vector:
 
-* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector) is updated.  
+* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
@@ -539,7 +539,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
+    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.  
   
   * Specify the **path** to this property when including the revisions, see examples below.  
   
@@ -555,7 +555,7 @@ TBuilder IncludeRevisions(Expression<Func<T, IEnumerable<string>>> path);
 
 #### Include a revision by Time:
 
-<TabItem value="something-something" label="include_1">
+<TabItem value="include_1" label="include_1">
 <CodeBlock language="php">
 {`// The revision creation time
 // For example - looking for a revision from last month
@@ -578,7 +578,7 @@ $revision = $session
 </TabItem>
 #### Include revisions by Change Vector:
 
-<TabItem value="something-something" label="include_2">
+<TabItem value="include_2" label="include_2">
 <CodeBlock language="php">
 {`// Load a document:
 $contract = $session->load(Contract::class, "contracts/1-A", function($builder) \{
@@ -599,7 +599,7 @@ $revisions = $session->advanced()->revisions()->get(Contract::class, "RevisionCh
 </TabItem>
 
 <a id="sample-document"/>
-<TabItem value="something-something" label="sample_document">
+<TabItem value="sample_document" label="sample_document">
 <CodeBlock language="php">
 {`// Sample Contract document
 class Contract
@@ -659,7 +659,7 @@ class Contract
 
 #### Include revisions by Time:
 
-<TabItem value="something-something" label="include_3">
+<TabItem value="include_3" label="include_3">
 <CodeBlock language="php">
 {`// The revision creation time
 // For example - looking for revisions from last month
@@ -683,7 +683,7 @@ $revision = $session
 </TabItem>
 #### Include revisions by Change Vector:
 
-<TabItem value="something-something" label="include_4">
+<TabItem value="include_4" label="include_4">
 <CodeBlock language="php">
 {`// Query for documents:
 $orderDocuments = $session->query(Contract::class)
@@ -707,7 +707,7 @@ $revisions = $session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document). 
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
 
 
 
@@ -721,7 +721,7 @@ $revisions = $session
 * Aliases (e.g. `from Users as U`) are Not supported by raw queries that include revisions.
 #### Include revisions by Time:
 
-<TabItem value="something-something" label="include_5">
+<TabItem value="include_5" label="include_5">
 <CodeBlock language="php">
 {`// The revision creation time
 // For example - looking for revisions from last month
@@ -746,7 +746,7 @@ $revision = $session
 </TabItem>
 #### Include revisions by Change Vector:
 
-<TabItem value="something-something" label="include_6">
+<TabItem value="include_6" label="include_6">
 <CodeBlock language="php">
 {`// Query for documents with Raw Query:
 $orderDocuments = $session->advanced()
@@ -769,13 +769,13 @@ $revisions = $session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`// Include a single revision by Time
 public function includeRevisionsBefore(DateTime $before): IncludeBuilderInterface;
@@ -800,7 +800,7 @@ public function includeRevisions(string $changeVectorPaths): IncludeBuilderInter
 
 * The below example shows how to get and patch a revision change vector to a document property.  
 
-<TabItem value="something-something" label="include_7">
+<TabItem value="include_7" label="include_7">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -825,7 +825,7 @@ try \{
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
@@ -844,16 +844,16 @@ try \{
     * **Change vector**
 
 * In this page:
-  * [Overview:](../../../../document-extensions/revisions/client-api/session/including#overview)
-      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including#why-include)
-      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including#include-by-time)
-      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including#include-by-change-vector)
-  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)  
-      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-loading-document)
-      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-query)
-      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-raw-query)
-  * [Syntax](../../../../document-extensions/revisions/client-api/session/including#syntax)
-  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector)
+  * [Overview:](../../../../document-extensions/revisions/client-api/session/including.mdx#overview)
+      * [Why include revisions](../../../../document-extensions/revisions/client-api/session/including.mdx#why-include)
+      * [Including by creation time](../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-time)
+      * [Including by change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#include-by-change-vector)
+  * [Include revisions:](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)  
+      * [When Loading document](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-loading-document)
+      * [When making a Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-query)
+      * [When making a Raw Query](../../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query)
+  * [Syntax](../../../../document-extensions/revisions/client-api/session/including.mdx#syntax)
+  * [Patching the revision change vector](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector)
 
 </Admonition>
 ## Overview
@@ -865,7 +865,7 @@ try \{
   The document's past revisions can be included with the document to make the document's history available for instant inspection.  
 
 * Once loaded to the session, there are no additional trips to the server when accessing the revisions.  
-  [Getting](../../../../document-extensions/revisions/client-api/session/loading) a revision that was included with the document will retrieve it directly from the session.  
+  [Getting](../../../../document-extensions/revisions/client-api/session/loading.mdx) a revision that was included with the document will retrieve it directly from the session.  
   This also holds true when attempting to include revisions but none are found.
 
 </Admonition>
@@ -886,7 +886,7 @@ try \{
 <Admonition type="note" title="Note">
 
 <a id="include-by-change-vector"/> **Including by Change Vector**:
-* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector) is updated.  
+* Each time a document is modified, its [Change Vector](../../../../server/clustering/replication/change-vector.mdx) is updated.  
 
 * When a revision is created,  
   the revision's change vector is the change vector of the document at the time of the revision's creation.  
@@ -894,7 +894,7 @@ try \{
 * To include single or multiple document revisions by their change vectors:   
 
   * When modifying the document, store its updated change vector in a property in the document.  
-    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including#patching-the-revision-change-vector) the document from the Client API or from the Studio.
+    Can be done by [patching](../../../../document-extensions/revisions/client-api/session/including.mdx#patching-the-revision-change-vector) the document from the Client API or from the Studio.
 
   * Specify the **path** to this property when including the revisions, see examples below.  
   
@@ -912,8 +912,8 @@ try \{
 
 **Include a revision by Time**
 
-<TabItem value="something-something" label="include_1">
-<CodeBlock language="nodejs">
+<TabItem value="include_1" label="include_1">
+<CodeBlock language="js">
 {`// The revision creation time
 // For example - looking for a revision from last month
 const creationTime = new Date();
@@ -935,8 +935,8 @@ const revision = await session
 </TabItem>
 **Include revisions by Change Vector**
 
-<TabItem value="something-something" label="include_2">
-<CodeBlock language="nodejs">
+<TabItem value="include_2" label="include_2">
+<CodeBlock language="js">
 {`// Load a document:
 const contract = await session.load("contracts/1-A", \{
     includes: builder => builder
@@ -957,8 +957,8 @@ const revisions = await session
 </TabItem>
 
 <a id="sample-document"/>
-<TabItem value="something-something" label="sample_document">
-<CodeBlock language="nodejs">
+<TabItem value="sample_document" label="sample_document">
+<CodeBlock language="js">
 {`// Sample Contract document
 class Contract \{
     id: string;
@@ -976,8 +976,8 @@ class Contract \{
 
 **Include revisions by Time**
 
-<TabItem value="something-something" label="include_3">
-<CodeBlock language="nodejs">
+<TabItem value="include_3" label="include_3">
+<CodeBlock language="js">
 {`// The revision creation time
 // For example - looking for a revision from last month
 const creationTime = new Date();
@@ -1003,8 +1003,8 @@ const revision = await session
 </TabItem>
 **Include revisions by Change Vector**
 
-<TabItem value="something-something" label="include_4">
-<CodeBlock language="nodejs">
+<TabItem value="include_4" label="include_4">
+<CodeBlock language="js">
 {`// Define the query:
 const query = session.query(\{collection: "Contracts"\})
     // Pass the path to the document property that contains the revision change vector(s)
@@ -1029,7 +1029,7 @@ const revisions = await session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document). 
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document). 
 
 
 
@@ -1043,8 +1043,8 @@ const revisions = await session
 * Aliases (e.g. `from Users as U`) are Not supported by raw queries that include revisions.
 **Include revisions by Time**
 
-<TabItem value="something-something" label="include_5">
-<CodeBlock language="nodejs">
+<TabItem value="include_5" label="include_5">
+<CodeBlock language="js">
 {`// The revision creation time
 // For example - looking for a revision from last month
 const creationTime = new Date();
@@ -1071,8 +1071,8 @@ const revision = await session
 </TabItem>
 **Include revisions by Change Vector**
 
-<TabItem value="something-something" label="include_6">
-<CodeBlock language="nodejs">
+<TabItem value="include_6" label="include_6">
+<CodeBlock language="js">
 {`// Define the Raw Query:
 const rawQuery = session.advanced
     // Use 'include revisions' in the RQL
@@ -1096,14 +1096,14 @@ const revisions = await session
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`object includeRevisions(before);
 object includeRevisions(path);
 `}
@@ -1128,8 +1128,8 @@ object includeRevisions(path);
 
 * The below example shows how to get and patch a revision change vector to a document property.
 
-<TabItem value="something-something" label="include_7">
-<CodeBlock language="nodejs">
+<TabItem value="include_7" label="include_7">
+<CodeBlock language="js">
 {`// Get the revisions' metadata for document 'contracts/1-A'
 const contractRevisionsMetadata = await session
     .advanced.revisions.getMetadataFor("contracts/1-A");
@@ -1147,7 +1147,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 
-* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including#sample-document).
+* See the _Contract_ class definition [above](../../../../document-extensions/revisions/client-api/session/including.mdx#sample-document).
 
 
 

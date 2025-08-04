@@ -21,12 +21,12 @@ export const supportedLanguages = ["csharp"];
 #Operations: Server: Toggle Dynamic Database Distribution
 <Admonition type="note" title="Note">
 
-* In [dynamic database distribution](../../../server/clustering/distribution/distributed-database#dynamic-database-distribution) mode, 
+* In [dynamic database distribution](../../../server/clustering/distribution/distributed-database.mdx#dynamic-database-distribution) mode, 
 if a database node is down, another cluster node is added to the database group to compensate.  
 
 * Use this operation to toggle dynamic distribution for a particular database group.  
 
-* This can also be done [in the studio](../../../studio/database/settings/manage-database-group#database-group-topology---actions) under 
+* This can also be done [in the studio](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions) under 
 database group settings.  
 
 </Admonition>
@@ -34,7 +34,7 @@ database group settings.
 
 
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public SetDatabaseDynamicDistributionOperation(string databaseName, bool allowDynamicDistribution)
 `}
@@ -47,7 +47,7 @@ database group settings.
 | **allowDynamicDistribution** | bool | Set to `true` to activate dynamic distribution mode. |
 ### Example
 
-<TabItem value="something" label="operation">
+<TabItem value="operation" label="operation">
 <CodeBlock language="csharp">
 {`SetDatabaseDynamicDistributionOperation operation =
     new SetDatabaseDynamicDistributionOperation("NorthWind", true);

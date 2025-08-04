@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Spatial Queries Map View
 <Admonition type="note" title="Note">
 
-* [Spatial queries](../../../client-api/session/querying/how-to-make-a-spatial-query) retrieve documents using geographical criteria,  
+* [Spatial queries](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx) retrieve documents using geographical criteria,  
   provided that the documents contain spatial data.
 
 * The spatial query defines geographic regions (circles or polygons)  
@@ -25,18 +25,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
   a **Spatial Map** view will be displayed, showing the search results on a global map. 
 
     <Admonition type="info" title="Info">
-    The spatial map view is added only for a [dynamic](../../../client-api/session/querying/how-to-query#dynamicquery) spatial query.  
+    The spatial map view is added only for a [dynamic](../../../client-api/session/querying/how-to-query.mdx#dynamicquery) spatial query.  
     It is not added when querying a spatial index.  
     </Admonition>
 
 * In this page:  
-  * [Spatial data in documents](../../../studio/database/queries/spatial-queries-map-view#spatial-data-in-documents)  
-  * [Running a dynamic spatial query](../../../studio/database/queries/spatial-queries-map-view#running-a-dynamic-spatial-query)  
-  * [Spatial map view](../../../studio/database/queries/spatial-queries-map-view#spatial-map-view)  
-  * [Examples](../../../studio/database/queries/spatial-queries-map-view#examples)  
-     * [Circular region example](../../../studio/database/queries/spatial-queries-map-view#circular-region-example)  
-     * [Polygonal region example](../../../studio/database/queries/spatial-queries-map-view#polygonal-region-example)  
-     * [Mixed shapes intersection example](../../../studio/database/queries/spatial-queries-map-view#mixed-shapes-intersection-example)  
+  * [Spatial data in documents](../../../studio/database/queries/spatial-queries-map-view.mdx#spatial-data-in-documents)  
+  * [Running a dynamic spatial query](../../../studio/database/queries/spatial-queries-map-view.mdx#running-a-dynamic-spatial-query)  
+  * [Spatial map view](../../../studio/database/queries/spatial-queries-map-view.mdx#spatial-map-view)  
+  * [Examples](../../../studio/database/queries/spatial-queries-map-view.mdx#examples)  
+     * [Circular region example](../../../studio/database/queries/spatial-queries-map-view.mdx#circular-region-example)  
+     * [Polygonal region example](../../../studio/database/queries/spatial-queries-map-view.mdx#polygonal-region-example)  
+     * [Mixed shapes intersection example](../../../studio/database/queries/spatial-queries-map-view.mdx#mixed-shapes-intersection-example)  
 </Admonition>
 ## Spatial data in documents
 
@@ -66,9 +66,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ![Figure 3. Running a Query](./assets/spatial-map-view-query-3.png)
 
 * **1**. **Query box**  
-  Type your query in this area. The query is written in [RQL](../../../client-api/session/querying/what-is-rql).
+  Type your query in this area. The query is written in [RQL](../../../client-api/session/querying/what-is-rql.mdx).
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Specify the collection queried
 from Employees
@@ -160,7 +160,7 @@ where spatial.within(
 ### Circular region example
 The following query locates companies within **two separate circular regions**.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Companies 
 where 
@@ -227,7 +227,7 @@ The following query searches for companies within the boundaries of a **polygona
 * You can use [tools like this one](https://www.keene.edu/campus/maps/tool/) 
   to draw a polygon on the world map and copy the coordinates to your query.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from companies 
 where 
@@ -256,7 +256,7 @@ spatial.within(
 This query searches for companies at the intersection of a **circular region** and a **polygonal region**.  
 Though additional companies are located in each region, only companies located in both regions are retrieved.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from Companies 
 where 

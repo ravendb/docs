@@ -26,8 +26,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * The index will be deleted from all the database-group nodes.
 
 * In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
 
 </Admonition>
 ## Delete index example
@@ -59,7 +59,7 @@ await store.Maintenance.SendAsync(deleteIndexOp);
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public DeleteIndexOperation(string indexName)
 `}
@@ -81,7 +81,7 @@ await store.Maintenance.SendAsync(deleteIndexOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_1">
+<TabItem value="delete_1" label="delete_1">
 <CodeBlock language="java">
 {`public DeleteIndexOperation(String indexName)
 `}
@@ -94,7 +94,7 @@ await store.Maintenance.SendAsync(deleteIndexOp);
 
 ## Example
 
-<TabItem value="something-something" label="delete_2">
+<TabItem value="delete_2" label="delete_2">
 <CodeBlock language="java">
 {`store.maintenance().send(new DeleteIndexOperation("Orders/Totals"));
 `}
@@ -112,13 +112,13 @@ await store.Maintenance.SendAsync(deleteIndexOp);
 * The index will be deleted from all the database-group nodes.
 
 * In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
 
 </Admonition>
 ## Delete index example
 
-<TabItem value="something-something" label="delete_index">
+<TabItem value="delete_index" label="delete_index">
 <CodeBlock language="python">
 {`# Define the delete index operation, specify the index name
 delete_index_op = DeleteIndexOperation("Orders/Totals")
@@ -133,7 +133,7 @@ store.maintenance.send(delete_index_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class DeleteIndexOperation(VoidMaintenanceOperation):
     def __init__(self, index_name: str): ...
@@ -158,13 +158,13 @@ store.maintenance.send(delete_index_op)
 * The index will be deleted from all the database-group nodes.
 
 * In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
 
 </Admonition>
 ## Delete index example
 
-<TabItem value="something-something" label="delete_index">
+<TabItem value="delete_index" label="delete_index">
 <CodeBlock language="php">
 {`// Define the delete index operation, specify the index name
 $deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
@@ -179,7 +179,7 @@ $store->maintenance()->send($deleteIndexOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`DeleteIndexOperation(?string $indexName)
 `}
@@ -203,14 +203,14 @@ $store->maintenance()->send($deleteIndexOp);
 * The index will be deleted from all the database-group nodes.
 
 * In this page:
-    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index#delete-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index#syntax)
+    * [Delete index example](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#delete-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/delete-index.mdx#syntax)
 
 </Admonition>
 ## Delete index example
 
-<TabItem value="something-something" label="delete_index">
-<CodeBlock language="nodejs">
+<TabItem value="delete_index" label="delete_index">
+<CodeBlock language="js">
 {`// Define the delete index operation, specify the index name
 const deleteIndexOp = new DeleteIndexOperation("Orders/Totals");
 
@@ -224,8 +224,8 @@ await store.maintenance.send(deleteIndexOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const deleteIndexOp = new DeleteIndexOperation(indexName);
 `}
 </CodeBlock>

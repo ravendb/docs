@@ -30,15 +30,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 * In this page:
-    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
-    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
-    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
-    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
 
 </Admonition>
 ## Lock modes
@@ -66,7 +66,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 Consider the following scenario:
 
-* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
   However, if the index lock mode is _'Unlock'_, the next time your application will start,  
@@ -174,7 +174,7 @@ await store.Maintenance.SendAsync(setLockModeOp);
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Available overloads:
 public SetIndexesLockOperation(string indexName, IndexLockMode mode);
@@ -189,7 +189,7 @@ public SetIndexesLockOperation(Parameters parameters);
 | **mode** | `IndexLockMode` | Lock mode to set |
 | **parameters** | `SetIndexesLockOperation.Parameters` | List of indexes + Lock mode to set.<br/>An exception is thrown if any of the specified indexes do not exist. |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public enum IndexLockMode
 \{
@@ -201,7 +201,7 @@ public SetIndexesLockOperation(Parameters parameters);
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public class Parameters
 \{
@@ -223,7 +223,7 @@ public SetIndexesLockOperation(Parameters parameters);
 
 ## Syntax
 
-<TabItem value="something-something" label="set_lock_mode_1">
+<TabItem value="set_lock_mode_1" label="set_lock_mode_1">
 <CodeBlock language="java">
 {`public SetIndexesLockOperation(String indexName, IndexLockMode mode)
 public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
@@ -231,7 +231,7 @@ public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="set_lock_mode_2">
+<TabItem value="set_lock_mode_2" label="set_lock_mode_2">
 <CodeBlock language="java">
 {`public enum IndexLockMode \{
     UNLOCK,
@@ -242,7 +242,7 @@ public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="set_lock_mode_3">
+<TabItem value="set_lock_mode_3" label="set_lock_mode_3">
 <CodeBlock language="java">
 {`public static class Parameters \{
     private String[] indexNames;
@@ -276,7 +276,7 @@ public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
 
 ## Example I
 
-<TabItem value="something-something" label="set_lock_mode_4">
+<TabItem value="set_lock_mode_4" label="set_lock_mode_4">
 <CodeBlock language="java">
 {`store.maintenance().send(new SetIndexesLockOperation("Orders/Totals", IndexLockMode.LOCKED_IGNORE));
 `}
@@ -285,7 +285,7 @@ public SetIndexesLockOperation(SetIndexesLockOperation.Parameters parameters)
 
 ## Example II
 
-<TabItem value="something-something" label="set_lock_mode_5">
+<TabItem value="set_lock_mode_5" label="set_lock_mode_5">
 <CodeBlock language="java">
 {`SetIndexesLockOperation.Parameters parameters = new SetIndexesLockOperation.Parameters();
 parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
@@ -311,15 +311,15 @@ store.maintenance().send(new SetIndexesLockOperation(parameters));
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 * In this page:
-    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
-    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
-    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
-    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
 
 </Admonition>
 ## Lock modes
@@ -347,7 +347,7 @@ store.maintenance().send(new SetIndexesLockOperation(parameters));
 
 Consider the following scenario:
 
-* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
   However, if the index lock mode is `UNLOCK`, the next time your application will start,  
@@ -371,7 +371,7 @@ Consider the following scenario:
 
 ## Set lock mode - single index
 
-<TabItem value="something-something" label="set_lock_single">
+<TabItem value="set_lock_single" label="set_lock_single">
 <CodeBlock language="python">
 {`# Define the set lock mode operation
 # Pass index name & lock mode
@@ -391,7 +391,7 @@ store.maintenance.send(set_lock_mode_op)
 
 ## Set lock mode - multiple indexes
 
-<TabItem value="something-something" label="set_lock_multiple">
+<TabItem value="set_lock_multiple" label="set_lock_multiple">
 <CodeBlock language="python">
 {`# Define the set lock mode operation, pass the parameters
 set_lock_mode_op = SetIndexesLockOperation(IndexLockMode.LOCKED_ERROR, "Orders/Totals", "Orders/ByCompany")
@@ -410,7 +410,7 @@ store.maintenance.send(set_lock_mode_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class SetIndexesLockOperation(VoidMaintenanceOperation):
     def __init__(self, mode: IndexLockMode, *index_names: str): ...
@@ -423,7 +423,7 @@ store.maintenance.send(set_lock_mode_op)
 | **mode** | `IndexLockMode` | Lock mode to set |
 | **\*index_names** | `str` | Index names to set lock mode for |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class IndexLockMode(Enum):
     UNLOCK = "Unlock"
@@ -454,15 +454,15 @@ store.maintenance.send(set_lock_mode_op)
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 * In this page:
-    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
-    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
-    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
-    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
 
 </Admonition>
 ## Lock modes
@@ -490,7 +490,7 @@ store.maintenance.send(set_lock_mode_op)
 
 Consider the following scenario:
 
-* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
   However, if the index lock mode is `unlock`, the next time your application will start,  
@@ -514,7 +514,7 @@ Consider the following scenario:
 
 ## Set lock mode - single index
 
-<TabItem value="something-something" label="set_lock_single">
+<TabItem value="set_lock_single" label="set_lock_single">
 <CodeBlock language="php">
 {`// Define the set lock mode operation
 // Pass index name & lock mode
@@ -534,7 +534,7 @@ $store->maintenance()->send($setLockModeOp);
 
 ## Set lock mode - multiple indexes
 
-<TabItem value="something-something" label="set_lock_multiple">
+<TabItem value="set_lock_multiple" label="set_lock_multiple">
 <CodeBlock language="php">
 {`// Define the index list and the new lock mode:
 $parameters = new IndexLockParameters();
@@ -558,7 +558,7 @@ $store->maintenance()->send($setLockModeOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`// Available overloads:
 SetIndexesLockOperation(?string $indexName, ?IndexLockMode $mode);
@@ -573,7 +573,7 @@ SetIndexesLockOperation(?Parameters $parameters);
 | **$indexName** | `?string` | Index names to set lock mode for |
 | **$parameters** | `?Parameters` | Index lock parameters |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class IndexLockMode
 \{
@@ -607,16 +607,16 @@ SetIndexesLockOperation(?Parameters $parameters);
 * **Nodes scope**:  
   The lock mode will be updated on all nodes in the database group.
 
-* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view.  
+* Setting the lock mode can also be done in the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view.  
   Locking an index is not a security measure, the index can be unlocked at any time.  
 
 
 * In this page:
-    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock#lock-modes)
-    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock#sample-usage-flow)
-    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---single-index)
-    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock#set-lock-mode---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock#syntax)
+    * [Lock modes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#lock-modes)
+    * [Sample usage flow](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#sample-usage-flow)
+    * [Set lock mode - single index](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---single-index)
+    * [Set lock mode - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#set-lock-mode---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-lock.mdx#syntax)
 
 </Admonition>
 ## Lock modes
@@ -644,7 +644,7 @@ SetIndexesLockOperation(?Parameters $parameters);
 
 Consider the following scenario:
 
-* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes) upon application startup.
+* Your client application defines and [deploys a static-index](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx) upon application startup.
   
 * After the application has started, you make a change to your index definition and re-indexing occurs.   
   However, if the index lock mode is _'Unlock'_, the next time your application will start,  
@@ -668,8 +668,8 @@ Consider the following scenario:
 
 ## Set lock mode - single index
 
-<TabItem value="something-something" label="set_lock_single">
-<CodeBlock language="nodejs">
+<TabItem value="set_lock_single" label="set_lock_single">
+<CodeBlock language="js">
 {`// Define the set lock mode operation
 // Pass index name & lock mode
 const setLockModeOp = new SetIndexesLockOperation("Orders/Totals", "LockedIgnore");
@@ -688,8 +688,8 @@ await store.maintenance.send(setLockModeOp);
 
 ## Set lock mode - multiple indexes
 
-<TabItem value="something-something" label="set_lock_multiple">
-<CodeBlock language="nodejs">
+<TabItem value="set_lock_multiple" label="set_lock_multiple">
+<CodeBlock language="js">
 {`// Define the index list and the new lock mode:
 const parameters = \{
     indexNames: ["Orders/Totals", "Orders/ByCompany"],
@@ -713,8 +713,8 @@ await store.maintenance.send(setLockModeOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 const setLockModeOp = new SetIndexesLockOperation(indexName, mode);
 const setLockModeOp = new SetIndexesLockOperation(parameters);
@@ -728,8 +728,8 @@ const setLockModeOp = new SetIndexesLockOperation(parameters);
 | **mode** | `"Unlock"` /<br/> `"LockedIgnore"` /<br/> `"LockedError"` | Lock mode to set |
 | **parameters** | parameters object | List of indexes + lock mode to set.<br/>An exception is thrown if any of the specified indexes do not exist. |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// parameters object
 \{
     indexNames, // string[], list of index names

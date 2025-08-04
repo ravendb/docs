@@ -28,12 +28,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   We assume you are familiar with Node.js development techniques and the basics of Cloudflare Workers.  
 
 * In this page:  
-    * [Before We Get Started](../../../start/guides/cloudflare-workers/existing-project#before-we-get-started)
-    * [Installing the RavenDB Client SDK](../../../start/guides/cloudflare-workers/existing-project#installing-the-ravendb-client-sdk)
-    * [Initializing the Document Store](../../../start/guides/cloudflare-workers/existing-project#initializing-the-document-store)
-    * [Updating Database Connection Settings](../../../start/guides/cloudflare-workers/existing-project#updating-database-connection-settings)
-    * [Configuring Support for Certificates](../../../start/guides/cloudflare-workers/existing-project#configuring-support-for-certificates)
-    * [Configuring Cloudflare](../../../start/guides/cloudflare-workers/existing-project#configuring-cloudflare)
+    * [Before We Get Started](../../../start/guides/cloudflare-workers/existing-project.mdx#before-we-get-started)
+    * [Installing the RavenDB Client SDK](../../../start/guides/cloudflare-workers/existing-project.mdx#installing-the-ravendb-client-sdk)
+    * [Initializing the Document Store](../../../start/guides/cloudflare-workers/existing-project.mdx#initializing-the-document-store)
+    * [Updating Database Connection Settings](../../../start/guides/cloudflare-workers/existing-project.mdx#updating-database-connection-settings)
+    * [Configuring Support for Certificates](../../../start/guides/cloudflare-workers/existing-project.mdx#configuring-support-for-certificates)
+    * [Configuring Cloudflare](../../../start/guides/cloudflare-workers/existing-project.mdx#configuring-cloudflare)
 
 </Admonition>
 
@@ -53,7 +53,7 @@ Get started by installing the [ravendb][npm-ravendb-client] npm package in your 
 
 Using npm:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npm install ravendb
 `}
@@ -74,7 +74,7 @@ You can then export a function to initialize a document session to use in your C
 
 Example `db.ts` TypeScript module:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ DocumentStore \} from "ravendb";
 
@@ -116,7 +116,7 @@ or in Cloudflare to customize the document store initialization.
 
 Update your `wrangler.toml` file to enable Node.js compatibility by setting `node_compat` to `true`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`name = "ravendb-worker"
 main = "./src/index.ts"
@@ -133,7 +133,7 @@ you will experience runtime exceptions.
 
 You will also want to set environment variables to pass database information such as the URLs and database name:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`# Define top-level environment variables
 # under the \`[vars]\` block using
@@ -166,7 +166,7 @@ Variables defined here will be exposed on the `env` variable passed to the root 
 
 For example, a barebones `index.ts` ES module could look like:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ DocumentStore \} from "ravendb";
 
@@ -264,7 +264,7 @@ but you will need to keep it updated. Read more about [Installing and updating W
 
 In the project directory, run:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npx wrangler mtls-certificate upload --cert path/to/db.crt --key path/to/db.key --name ravendb_cert
 `}
@@ -273,7 +273,7 @@ In the project directory, run:
 
 This will display output like:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`Uploading mTLS Certificate ravendb_cert...
 Success! Uploaded mTLS Certificate ravendb_cert
@@ -292,7 +292,7 @@ You will need to add a mTLS "binding" so that the certificate is made available 
 
 Edit your `wrangler.toml` file to update the following:  
 
-<TabItem value="something" label="git">
+<TabItem value="git" label="git">
 <CodeBlock language="git">
 {`mtls_certificates = [
   \{ binding = "DB_CERT", certificate_id = "<CERTIFICATE_ID>" \} 
@@ -315,7 +315,7 @@ the `DocumentConventions.customFetch` option.
 
 An updated example `index.ts` ES module:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ DocumentStore \} from "ravendb";
 
@@ -379,7 +379,7 @@ The `env.DB_CERT` binding will not be available in local mode (`--local`), this 
 If you are using TypeScript, `env.DB_CERT` will not be typed by default. You can create a `globals.d.ts` file 
 in your project and add the following type declarations:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`declare global \{
   namespace NodeJS \{

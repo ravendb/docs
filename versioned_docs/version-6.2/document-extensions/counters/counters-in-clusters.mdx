@@ -21,15 +21,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * In which rare cases do Counter modifications "race" against each other.  
 
 * In this page:  
-  * [Counter-Value Modification](../../document-extensions/counters/counters-in-clusters#counter-value-modification)  
-     * [Value modification Flow](../../document-extensions/counters/counters-in-clusters#value-modification-flow)  
-     * [Value Replication Flow](../../document-extensions/counters/counters-in-clusters#value-replication-flow)  
-     * [Server Reply to Client Request](../../document-extensions/counters/counters-in-clusters#server-reply-to-client-request)  
-  * [Counter Name modification](../../document-extensions/counters/counters-in-clusters#counter-name-modification)  
-  * [Concurrent Modification](../../document-extensions/counters/counters-in-clusters#concurrent-modification)  
-  * [Concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment)  
-     * [In a single-server system](../../document-extensions/counters/counters-in-clusters#in-a-single-server-system)  
-     * [In a multi-node cluster](../../document-extensions/counters/counters-in-clusters#in-a-multi-node-cluster)  
+  * [Counter-Value Modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-value-modification)  
+     * [Value modification Flow](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-flow)  
+     * [Value Replication Flow](../../document-extensions/counters/counters-in-clusters.mdx#value-replication-flow)  
+     * [Server Reply to Client Request](../../document-extensions/counters/counters-in-clusters.mdx#server-reply-to-client-request)  
+  * [Counter Name modification](../../document-extensions/counters/counters-in-clusters.mdx#counter-name-modification)  
+  * [Concurrent Modification](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-modification)  
+  * [Concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment)  
+     * [In a single-server system](../../document-extensions/counters/counters-in-clusters.mdx#in-a-single-server-system)  
+     * [In a multi-node cluster](../../document-extensions/counters/counters-in-clusters.mdx#in-a-multi-node-cluster)  
 </Admonition>
 ## Counter-Value Modification
 
@@ -59,7 +59,7 @@ When a client modifies a Counter's value, only the portion of the Counter's valu
   &gt; | ProductLikes | **B** | **33** |
   &gt; | ProductLikes | C | 10 |
 #### Value Replication Flow
-After modifying the Counter's value locally, a node [replicates](../../document-extensions/counters/counters-in-clusters#value-modification-and-replication) the new value to all other nodes.  
+After modifying the Counter's value locally, a node [replicates](../../document-extensions/counters/counters-in-clusters.mdx#value-modification-and-replication) the new value to all other nodes.  
 This way each node is always kept updated with the values set for each Counter **by all nodes**.  
 
   &gt; In the following example:  
@@ -94,7 +94,7 @@ When a client requests a Counter's value, it gets a single accumulated sum.
 
 **Replication due to a Counter Name modification**:
 
-* As described in the [Overview](../../document-extensions/counters/overview#overview) section, creating or deleting a Counter triggers a document change.  
+* As described in the [Overview](../../document-extensions/counters/overview.mdx#overview) section, creating or deleting a Counter triggers a document change.  
 * As a result, the whole document, including the new Counter value, is replicated to all nodes in the database group.  
   Existing Counters aren't replicated, since they already exist on the other nodes and their values haven't changed.  
 
@@ -105,23 +105,23 @@ When a client requests a Counter's value, it gets a single accumulated sum.
 
 **The same Counter can be concurrently modified by multiple clients**.  
 
-As described in the [Counters in a multi-node cluster](../../document-extensions/counters/counters-in-clusters#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
+As described in the [Counters in a multi-node cluster](../../document-extensions/counters/counters-in-clusters.mdx#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
 As a result:  
 
 * Clients can modify the same Counter concurrently.  
 * Nodes do not need to coordinate Counter modification with each other.  
 * Concurrent value modification cannot cause conflicts.
-   * Find more about Counters and conflicts in the [Overview](../../document-extensions/counters/overview#overview) section.  
+   * Find more about Counters and conflicts in the [Overview](../../document-extensions/counters/overview.mdx#overview) section.  
 
 
 
 ## Concurrent `Delete` and `Increment`
 
-A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview#overview), as long as it doesn't [Delete](../../document-extensions/counters/delete) the Counter.  
+A sequence of Counter actions is [cumulative](../../document-extensions/counters/overview.mdx#overview), as long as it doesn't [Delete](../../document-extensions/counters/delete.mdx) the Counter.  
 When Delete **is** executed, the order of execution **does** matter.  
 
-* When [Increment](../../document-extensions/counters/create-or-modify) and 
-  [Delete](../../document-extensions/counters/delete) are called concurrently, 
+* When [Increment](../../document-extensions/counters/create-or-modify.mdx) and 
+  [Delete](../../document-extensions/counters/delete.mdx) are called concurrently, 
   their order of execution is unknown and the outcome becomes uncertain.  
   We can identify this behavior in two different scenarios:  
    * In a single-server system  

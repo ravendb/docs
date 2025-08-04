@@ -27,7 +27,7 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 #### Get Single Counter
 
-<TabItem value="something-something" label="get_single_counter">
+<TabItem value="get_single_counter" label="get_single_counter">
 <CodeBlock language="csharp">
 {`public GetCountersOperation(string docId, string counter, bool returnFullResults = false)
 `}
@@ -52,7 +52,7 @@ In order to get the counter values per database node, set the `returnFullResults
 </Admonition>
 #### Get Multiple Counters 
 
-<TabItem value="something-something" label="get_multiple_counters">
+<TabItem value="get_multiple_counters" label="get_multiple_counters">
 <CodeBlock language="csharp">
 {`public GetCountersOperation(string docId, string[] counters, bool returnFullResults = false)
 `}
@@ -66,7 +66,7 @@ In order to get the counter values per database node, set the `returnFullResults
 | **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
 #### Get All Counters of a Document 
 
-<TabItem value="something-something" label="get_all_counters">
+<TabItem value="get_all_counters" label="get_all_counters">
 <CodeBlock language="csharp">
 {`public GetCountersOperation(string docId, bool returnFullResults = false)
 `}
@@ -84,7 +84,7 @@ In order to get the counter values per database node, set the `returnFullResults
 
 The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
 
-<TabItem value="something-something" label="counters_detail">
+<TabItem value="counters_detail" label="counters_detail">
 <CodeBlock language="csharp">
 {`public class CountersDetail
 \{
@@ -94,7 +94,7 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="counter_detail">
+<TabItem value="counter_detail" label="counter_detail">
 <CodeBlock language="csharp">
 {`public class CounterDetail
 \{
@@ -118,7 +118,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #1 : Get single counter
 
-<TabItem value="something-something" label="get_counters1">
+<TabItem value="get_counters1" label="get_counters1">
 <CodeBlock language="csharp">
 {`var operationResult = store.Operations
     .Send(new GetCountersOperation("users/1", "likes"));
@@ -128,7 +128,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -147,7 +147,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #2 : Get multiple counters 
 
-<TabItem value="something-something" label="get_counters2">
+<TabItem value="get_counters2" label="get_counters2">
 <CodeBlock language="csharp">
 {`var operationResult = store.Operations
     .Send(new GetCountersOperation("users/1", new []\{"likes", "dislikes" \}));
@@ -157,7 +157,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -182,7 +182,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #3 : Get all counters 
 
-<TabItem value="something-something" label="get_counters3">
+<TabItem value="get_counters3" label="get_counters3">
 <CodeBlock language="csharp">
 {`var operationResult = store.Operations
     .Send(new GetCountersOperation("users/1"));
@@ -192,7 +192,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -223,7 +223,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #4 : Include full values in the result
 
-<TabItem value="something-something" label="get_counters4">
+<TabItem value="get_counters4" label="get_counters4">
 <CodeBlock language="csharp">
 {`var operationResult = store.Operations
     .Send(new GetCountersOperation("users/1", "likes", true));
@@ -235,7 +235,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -271,7 +271,7 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 #### Get Single Counter
 
-<TabItem value="something-something" label="get_single_counter">
+<TabItem value="get_single_counter" label="get_single_counter">
 <CodeBlock language="java">
 {`public GetCountersOperation(String docId, String counter)
 public GetCountersOperation(String docId, String counter, boolean returnFullResults)
@@ -297,7 +297,7 @@ In order to get the counter values per database node, set the `returnFullResults
 </Admonition>
 #### Get Multiple Counters 
 
-<TabItem value="something-something" label="get_multiple_counters">
+<TabItem value="get_multiple_counters" label="get_multiple_counters">
 <CodeBlock language="java">
 {`public GetCountersOperation(String docId, String[] counters)
 public GetCountersOperation(String docId, String[] counters, boolean returnFullResults)
@@ -312,7 +312,7 @@ public GetCountersOperation(String docId, String[] counters, boolean returnFullR
 | **returnFullResults** | boolean | A flag which indicates if the operation should include a dictionary of counter values per database node in the result  |
 #### Get All Counters of a Document 
 
-<TabItem value="something-something" label="get_all_counters">
+<TabItem value="get_all_counters" label="get_all_counters">
 <CodeBlock language="java">
 {`public GetCountersOperation(String docId)
 public GetCountersOperation(String docId, boolean returnFullResults)
@@ -331,7 +331,7 @@ public GetCountersOperation(String docId, boolean returnFullResults)
 
 The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
 
-<TabItem value="something-something" label="counters_detail">
+<TabItem value="counters_detail" label="counters_detail">
 <CodeBlock language="java">
 {`public class CountersDetail \{
 
@@ -343,7 +343,7 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="counter_detail">
+<TabItem value="counter_detail" label="counter_detail">
 <CodeBlock language="java">
 {`public class CounterDetail \{
     private String documentId; // ID of the document that holds the counter
@@ -369,7 +369,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #1 : Get single counter
 
-<TabItem value="something-something" label="get_counters1">
+<TabItem value="get_counters1" label="get_counters1">
 <CodeBlock language="java">
 {`CountersDetail operationResult = store.operations()
     .send(new GetCountersOperation("users/1", "likes"));
@@ -379,7 +379,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -398,7 +398,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #2 : Get multiple counters 
 
-<TabItem value="something-something" label="get_counters2">
+<TabItem value="get_counters2" label="get_counters2">
 <CodeBlock language="java">
 {`CountersDetail operationResult = store.operations()
     .send(new GetCountersOperation("users/1", new String[]\{ "likes", "dislikes" \}));
@@ -408,7 +408,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -433,7 +433,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #3 : Get all counters 
 
-<TabItem value="something-something" label="get_counters3">
+<TabItem value="get_counters3" label="get_counters3">
 <CodeBlock language="java">
 {`CountersDetail operationResult = store.operations()
     .send(new GetCountersOperation("users/1"));
@@ -443,7 +443,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -474,7 +474,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #4 : Include full values in the result
 
-<TabItem value="something-something" label="get_counters4">
+<TabItem value="get_counters4" label="get_counters4">
 <CodeBlock language="java">
 {`CountersDetail operationResult = store.operations()
     .send(new GetCountersOperation("users/1", "likes", true));
@@ -486,7 +486,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -524,7 +524,7 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 Use `GetCountersOperation` to get counters.  
 Find usage examples below for getting a single counter, multiple counters, or all document counters. 
-<TabItem value="something-something" label="get_counter_constructor">
+<TabItem value="get_counter_constructor" label="get_counter_constructor">
 <CodeBlock language="php">
 {`class GetCountersOperation \{
     public function __construct(?string $docId, string|StringArray|array|null $counters = 
@@ -541,7 +541,7 @@ Find usage examples below for getting a single counter, multiple counters, or al
 | **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 #### Get Single Counter
 
-<TabItem value="something-something" label="get_single_counter">
+<TabItem value="get_single_counter" label="get_single_counter">
 <CodeBlock language="php">
 {`$docId = "users/1";
 $counter = "likes";
@@ -570,7 +570,7 @@ In order to get the counter values per database node, set the `returnFullResults
 </Admonition>
 #### Get Multiple Counters 
 
-<TabItem value="something-something" label="get_multiple_counters">
+<TabItem value="get_multiple_counters" label="get_multiple_counters">
 <CodeBlock language="php">
 {`$docId = "users/1";
 $counters = [ "likes", "score"];
@@ -588,7 +588,7 @@ $operation = new GetCountersOperation($docId, $counters, $returnFullResults);
 | **returnFullResults** | bool | A flag which indicates if the operation should include a dictionary of counter values per database node in the result |
 #### Get All Counters of a Document 
 
-<TabItem value="something-something" label="get_all_counters">
+<TabItem value="get_all_counters" label="get_all_counters">
 <CodeBlock language="php">
 {`$docId = "users/1";
 $returnFullResults = false;
@@ -609,7 +609,7 @@ $operation = new GetCountersOperation($docId, null, $returnFullResults);
 
 The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
 
-<TabItem value="something-something" label="counters_detail">
+<TabItem value="counters_detail" label="counters_detail">
 <CodeBlock language="php">
 {`class CountersDetail
 \{
@@ -619,7 +619,7 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="counter_detail">
+<TabItem value="counter_detail" label="counter_detail">
 <CodeBlock language="php">
 {`class CounterDetail
 \{
@@ -655,7 +655,7 @@ Assume we have a `users/1` document that holds 3 counters:
 
 ### Example #1 : Get single counter
 
-<TabItem value="something-something" label="get_counters1">
+<TabItem value="get_counters1" label="get_counters1">
 <CodeBlock language="php">
 {`/** @var CountersDetail  $operationResult */
 $operationResult = $store
@@ -667,7 +667,7 @@ $operationResult = $store
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -686,7 +686,7 @@ $operationResult = $store
 
 ### Example #2 : Get multiple counters 
 
-<TabItem value="something-something" label="get_counters2">
+<TabItem value="get_counters2" label="get_counters2">
 <CodeBlock language="php">
 {`/** @var CountersDetail $operationResult */
 $operationResult = $store
@@ -698,7 +698,7 @@ $operationResult = $store
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -723,7 +723,7 @@ $operationResult = $store
 
 ### Example #3 : Get all counters 
 
-<TabItem value="something-something" label="get_counters3">
+<TabItem value="get_counters3" label="get_counters3">
 <CodeBlock language="php">
 {`/** @var CountersDetail $operationResult */
 $operationResult = $store->operations()
@@ -734,7 +734,7 @@ $operationResult = $store->operations()
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -765,7 +765,7 @@ $operationResult = $store->operations()
 
 ### Example #4 : Include full values in the result
 
-<TabItem value="something-something" label="get_counters4">
+<TabItem value="get_counters4" label="get_counters4">
 <CodeBlock language="php">
 {`/** @var CountersDetail $operationResult */
 $operationResult = $store
@@ -779,7 +779,7 @@ $operationResult = $store
 
 Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"Counters": 
@@ -813,8 +813,8 @@ It can be used to get the value of a single counter, multiple counters' values, 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Get single counter
 const getCountersOp = new GetCountersOperation(docId, counter);
 const getCountersOp = new GetCountersOperation(docId, counter, returnFullResults = false);
@@ -822,8 +822,8 @@ const getCountersOp = new GetCountersOperation(docId, counter, returnFullResults
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Get multiple counters
 const getCountersOp = new GetCountersOperation(docId, counters);
 const getCountersOp = new GetCountersOperation(docId, counters, returnFullResults = false);
@@ -831,8 +831,8 @@ const getCountersOp = new GetCountersOperation(docId, counters, returnFullResult
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`// Get all counters of a document
 const getCountersOp = new GetCountersOperation(docId);
 `}
@@ -863,8 +863,8 @@ To get the counter values per database node, set the `returnFullResults` flag to
 
 The operation returns a `CountersDetail` object, which holds a list of `CounterDetail` objects
 
-<TabItem value="something-something" label="syntax_4">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
 {`// The CounterDetails object:
 // ==========================
 \{
@@ -875,8 +875,8 @@ The operation returns a `CountersDetail` object, which holds a list of `CounterD
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_5">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_5" label="syntax_5">
+<CodeBlock language="js">
 {`// The CounterDetail object:
 // =========================
 \{
@@ -910,8 +910,8 @@ Assume we have a `users/1` document that holds 3 counters:
 `Likes`, `Dislikes` and `Downloads` -  with values 10, 20 and 30 (respectively)
 ### Example #1 : Get single counter
 
-<TabItem value="something-something" label="example_1">
-<CodeBlock language="nodejs">
+<TabItem value="example_1" label="example_1">
+<CodeBlock language="js">
 {`// Define the get counters operation
 const getCountersOp = new GetCountersOperation("users/1", "Likes");
 
@@ -924,7 +924,7 @@ const counters = result.counters;
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"counters": 
@@ -943,8 +943,8 @@ const counters = result.counters;
 
 ### Example #2 : Get multiple counters 
 
-<TabItem value="something-something" label="example_2">
-<CodeBlock language="nodejs">
+<TabItem value="example_2" label="example_2">
+<CodeBlock language="js">
 {`const getCountersOp = new GetCountersOperation("users/1", ["Likes", "Dislikes"]);
 
 const result = await documentStore.operations.send(getCountersOp);
@@ -955,7 +955,7 @@ const counters = result.counters;
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"counters": 
@@ -980,8 +980,8 @@ const counters = result.counters;
 
 ### Example #3 : Get all counters 
 
-<TabItem value="something-something" label="example_3">
-<CodeBlock language="nodejs">
+<TabItem value="example_3" label="example_3">
+<CodeBlock language="js">
 {`const getCountersOp = new GetCountersOperation("users/1");
 
 const result = await documentStore.operations.send(getCountersOp);
@@ -992,7 +992,7 @@ const counters = result.counters;
 
 #### Result:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"counters": 
@@ -1023,8 +1023,8 @@ const counters = result.counters;
 
 ### Example #4 : Include full values in the result
 
-<TabItem value="something-something" label="example_4">
-<CodeBlock language="nodejs">
+<TabItem value="example_4" label="example_4">
+<CodeBlock language="js">
 {`const getCountersOp = new GetCountersOperation("users/1", "Likes", true);
 
 const result = await documentStore.operations.send(getCountersOp);
@@ -1037,7 +1037,7 @@ const counters = result.counters;
 
 Assuming a 3-node cluster, the distribution of the counter's value to nodes A, B, and C could be as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	"counters": 

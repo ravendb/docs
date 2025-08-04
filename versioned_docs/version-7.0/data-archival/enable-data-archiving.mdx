@@ -29,11 +29,11 @@ export const supportedLanguages = ["csharp"];
 
 * Once enabled, the archiving task runs periodically at the configured frequency,  
   scanning the database for documents that have been scheduled for archival.  
-  Learn how to schedule documents for archival in [Schedule document archiving](../data-archival/schedule-document-archiving).
+  Learn how to schedule documents for archival in [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).
 
 * In this article:
-  * [Enable archiving - from the Client API](../data-archival/enable-data-archiving#enable-archiving---from-the-client-api)
-  * [Enable archiving - from the Studio](../data-archival/enable-data-archiving#enable-archiving---from-the-studio)  
+  * [Enable archiving - from the Client API](../data-archival/enable-data-archiving.mdx#enable-archiving---from-the-client-api)
+  * [Enable archiving - from the Studio](../data-archival/enable-data-archiving.mdx#enable-archiving---from-the-studio)  
 
 </Admonition>
 ## Enable archiving - from the Client API
@@ -93,14 +93,14 @@ await store.Maintenance.SendAsync(configureArchivalOp);
 </Tabs>
 **Syntax**:
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public ConfigureDataArchivalOperation(DataArchivalConfiguration configuration)
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class DataArchivalConfiguration
 \{

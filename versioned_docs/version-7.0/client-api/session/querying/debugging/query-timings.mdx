@@ -32,10 +32,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   See examples below.
 
 * In this page:
-    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
-    * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
-    * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
-    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings.mdx#timings-in-a-sharded-database)
 
 </Admonition>
 ## Include timings in a query
@@ -153,7 +153,7 @@ include timings()
 
 ## View timings
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.
+* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view.mdx) in the Studio.
 
 * Running an RQL query with `include timings()` will show an additional __Timings Tab__  
   with a graphical representation of the time spent in each query part.
@@ -164,7 +164,7 @@ include timings()
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization Timings(out QueryTimings timings);
 `}
@@ -186,7 +186,7 @@ include timings()
 
 * In a sharded database, timings for each part are provided __per shard__.
 
-* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
+* Learn more in [timings in a sharded database](../../../../sharding/querying.mdx#timing-queries).
 
 
 
@@ -206,10 +206,10 @@ include timings()
   See examples below.
 
 * In this page:
-    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
-    * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
-    * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
-    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings.mdx#timings-in-a-sharded-database)
 
 </Admonition>
 ## Include timings in a query
@@ -241,7 +241,7 @@ include timings()
 
 ## View timings
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.
+* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view.mdx) in the Studio.
 
 * Running an RQL query with `include timings()` will show an additional __Timings Tab__  
   with a graphical representation of the time spent in each query part.
@@ -252,7 +252,7 @@ include timings()
 
 ## Syntax
 
-<TabItem value="something-something" label="timing_1">
+<TabItem value="timing_1" label="timing_1">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization timings(Reference<QueryTimings> timings);
 `}
@@ -272,7 +272,7 @@ The `QueryTimings` object will be filled with the timings when the query returns
 
 * In a sharded database, timings for each part are provided __per shard__.
 
-* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
+* Learn more in [timings in a sharded database](../../../../sharding/querying.mdx#timing-queries).
 
 
 
@@ -292,10 +292,10 @@ The `QueryTimings` object will be filled with the timings when the query returns
   See examples below.
 
 * In this page:
-    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
-    * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
-    * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
-    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings.mdx#timings-in-a-sharded-database)
 
 </Admonition>
 ## Include timings in a query
@@ -345,7 +345,7 @@ include timings()
 
 ## View timings
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.
+* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view.mdx) in the Studio.
 
 * Running an RQL query with `include timings()` will show an additional **Timings Tab**  
   with a graphical representation of the time spent in each query part.
@@ -356,7 +356,7 @@ include timings()
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
 `}
@@ -367,7 +367,7 @@ include timings()
 |-------------|----------------|---------------|
 | **timings_callback** | `Callable[[QueryTimings], None]` | A callback function (action) that takes `QueryTimings` as an argument. It will be called by the client with the resulting `QueryTimings`. You can interact with the resulting `QueryTimings` inside your callback. |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class QueryTimings:
     def __init__(self, duration_in_ms: int = None, timings: Dict[str, QueryTimings] = None):
@@ -388,7 +388,7 @@ include timings()
 
 * In a sharded database, timings for each part are provided **per shard**.
 
-* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
+* Learn more in [timings in a sharded database](../../../../sharding/querying.mdx#timing-queries).
 
 
 
@@ -408,10 +408,10 @@ include timings()
   See examples below.
 
 * In this page:
-    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
-    * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
-    * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
-    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings.mdx#timings-in-a-sharded-database)
 
 </Admonition>
 ## Include timings in a query
@@ -446,7 +446,7 @@ include timings()
 
 ## View timings
 
-* The detailed timings can be viewed from Studio's [Query view](../../../../studio/database/queries/query-view).
+* The detailed timings can be viewed from Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
 
 * Running an RQL query with `include timings()` will show an additional **Timings Tab**  
   with a graphical representation of the time spent in each query part.
@@ -457,7 +457,7 @@ include timings()
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`function timings(QueryTimings &$timings): DocumentQueryInterface;
 `}
@@ -474,7 +474,7 @@ include timings()
 
 * In a sharded database, timings for each part are provided **per shard**.
 
-* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
+* Learn more in [timings in a sharded database](../../../../sharding/querying.mdx#timing-queries).
 
 
 
@@ -494,17 +494,17 @@ include timings()
   See examples below.
 
 * In this page:
-    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings#include-timings-in-a-query)
-    * [View timings](../../../../client-api/session/querying/debugging/query-timings#view-timings)
-    * [Syntax](../../../../client-api/session/querying/debugging/query-timings#syntax)
-    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings#timings-in-a-sharded-database)
+    * [Include timings in a query](../../../../client-api/session/querying/debugging/query-timings.mdx#include-timings-in-a-query)
+    * [View timings](../../../../client-api/session/querying/debugging/query-timings.mdx#view-timings)
+    * [Syntax](../../../../client-api/session/querying/debugging/query-timings.mdx#syntax)
+    * [Timings in a sharded database](../../../../client-api/session/querying/debugging/query-timings.mdx#timings-in-a-sharded-database)
 
 </Admonition>
 ## Include timings in a query
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an object that will receive the timings results
 let timingsResults;
 
@@ -545,7 +545,7 @@ include timings()
 
 ## View timings
 
-* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view) in the Studio.
+* The detailed timings can be viewed from the [Query view](../../../../studio/database/queries/query-view.mdx) in the Studio.
 
 * Running an RQL query with `include timings()` will show an additional __Timings Tab__  
   with a graphical representation of the time spent in each query part.
@@ -556,8 +556,8 @@ include timings()
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`query.timings(timingsCallback)
 `}
 </CodeBlock>
@@ -578,7 +578,7 @@ include timings()
 
 * In a sharded database, timings for each part are provided __per shard__.
 
-* Learn more in [timings in a sharded database](../../../../sharding/querying#timing-queries).
+* Learn more in [timings in a sharded database](../../../../sharding/querying.mdx#timing-queries).
 
 
 

@@ -26,18 +26,18 @@ export const supportedLanguages = ["csharp", "java"];
   2. Stream time series query results.
 
 * In this page:
-  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries#syntax)
-  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries#examples)
+  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
+  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
 
 </Admonition>
 ## Syntax
 
 ### Stream a time series directly:  
 
-Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries)), 
+Get a time series (e.g. [using `TimeSeriesFor.Get`](../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx)), 
 and call `Stream()`/`StreamAsync()`.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`IEnumerator<T> Stream(DateTime? from = null, DateTime? to = null, TimeSpan? offset = null);
 
@@ -55,9 +55,9 @@ Task<IAsyncEnumerator<T>> StreamAsync(DateTime? from = null, DateTime? to = null
 ### Stream results of time series queries:  
 
 This syntax is the same as the syntax for streaming query results in general, 
-found [here](../../../client-api/session/querying/how-to-stream-query-results).  
+found [here](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
-<TabItem value="something" label="stream_methods">
+<TabItem value="stream_methods" label="stream_methods">
 <CodeBlock language="csharp">
 {`IEnumerator<TimeSeriesStreamResult<T>> Stream(
     IQueryable<T> query);
@@ -85,12 +85,12 @@ IEnumerator<TimeSeriesStreamResult<T>> Stream(
 
 | Parameters | Type | Description |
 | - | - | - |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
-| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query. |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) | Query to stream results for. |
+| **streamQueryStats** | `out` [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query. |
 
 | Return Value | Description |
 | - | - |
-| IEnumerator&lt;[StreamResult](../../../glossary/stream-result)&gt; | Enumerator with entities. |
+| IEnumerator&lt;[StreamResult](../../../glossary/stream-result.mdx)&gt; | Enumerator with entities. |
 
 
 
@@ -203,8 +203,8 @@ await using (var docStream = await session.Advanced.StreamAsync(query))
   2. Stream time series query results.
 
 * In this page:
-  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries#syntax)
-  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries#examples)
+  * [Syntax](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#syntax)
+  * [Examples](../../../document-extensions/timeseries/querying/stream-timeseries.mdx#examples)
 
 </Admonition>
 ## Syntax
@@ -213,7 +213,7 @@ await using (var docStream = await session.Advanced.StreamAsync(query))
 
 Get a time series (using `timeSeriesFor().get()`, and call `stream()`).  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`<T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
 `}
@@ -228,9 +228,9 @@ Get a time series (using `timeSeriesFor().get()`, and call `stream()`).
 ### Stream results of time series queries:  
 
 This syntax is the same as the syntax for streaming query results in general, 
-found [here](../../../client-api/session/querying/how-to-stream-query-results).  
+found [here](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
-<TabItem value="something-something" label="stream_methods">
+<TabItem value="stream_methods" label="stream_methods">
 <CodeBlock language="java">
 {`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
 
@@ -243,7 +243,7 @@ found [here](../../../client-api/session/querying/how-to-stream-query-results).
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
+| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) | Query to stream results for. |
 | `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
 
 | Return Value | |
@@ -259,7 +259,7 @@ found [here](../../../client-api/session/querying/how-to-stream-query-results).
 
 Using `timeSeriesFor`:
 
-<TabItem value="something-something" label="direct">
+<TabItem value="direct" label="direct">
 <CodeBlock language="java">
 {`ISessionDocumentTimeSeries timeseries = session.timeSeriesFor("HeartRate", "user/1-A");
 `}
@@ -272,7 +272,7 @@ Using `timeSeriesFor`:
 
 Using a `rawQuery`:
 
-<TabItem value="something-something" label="query">
+<TabItem value="query" label="query">
 <CodeBlock language="java">
 {`IRawDocumentQuery<Employee> query = session.advanced()
     .rawQuery(Employee.class,

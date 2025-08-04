@@ -22,33 +22,33 @@ import LanguageContent from "@site/src/components/LanguageContent";
   can retrieve and restore them.  
    <Admonition type="warning" title="Warning">
    Shards must be restored in their 
-   [original order](../../sharding/backup-and-restore/restore#restore).  
+   [original order](../../sharding/backup-and-restore/restore.mdx#restore).  
    The backup of shard 1, for example, must be restored as shard 1.
    </Admonition>
 * Backup files can be restored from local shard node storage or from 
-  a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote).  
+  a [remote location](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote).  
 * A backed-up sharded database can be restored in part or in full, 
   to a sharded or a non-sharded database.  
-* Only [logical](../../server/ongoing-tasks/backup-overview#logical-backup) 
+* Only [logical](../../server/ongoing-tasks/backup-overview.mdx#logical-backup) 
   backups are supported. 
-  [Snapshot](../../server/ongoing-tasks/backup-overview#snapshot) 
+  [Snapshot](../../server/ongoing-tasks/backup-overview.mdx#snapshot) 
   backups cannot be created or restored for sharded databases.  
 * `.ravendbdump` files (exported from RavenDB databases) and 
   backup files can also be 
-  [imported](../../sharding/import-and-export#import) 
+  [imported](../../sharding/import-and-export.mdx#import) 
   into a database (sharded or non-sharded).  
 * A backup created for a non-sharded database **cannot** be restored 
   as a sharded database.  
 
 * In this page:  
-  * [Restore](../../sharding/backup-and-restore/restore#restore)  
-     * [Set Paths to Backup Files Locations](../../sharding/backup-and-restore/restore#set-paths-to-backup-files-locations)  
-     * [Define a Restore Configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration)  
-         * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore#section)
-     * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore#run--with-the-restore-configuration)  
-     * [Examples](../../sharding/backup-and-restore/restore#examples)  
-  * [Restoring to a Selected Restore Point](../../sharding/backup-and-restore/restore#restoring-to-a-selected-restore-point)  
-  * [Restore Options Summary](../../sharding/backup-and-restore/restore#restore-options-summary)  
+  * [Restore](../../sharding/backup-and-restore/restore.mdx#restore)  
+     * [Set Paths to Backup Files Locations](../../sharding/backup-and-restore/restore.mdx#set-paths-to-backup-files-locations)  
+     * [Define a Restore Configuration](../../sharding/backup-and-restore/restore.mdx#define-a-restore-configuration)  
+         * [`RestoreBackupConfigurationBase`](../../sharding/backup-and-restore/restore.mdx#section)
+     * [Run `RestoreBackupOperation` with the Restore Configuration](../../sharding/backup-and-restore/restore.mdx#run--with-the-restore-configuration)  
+     * [Examples](../../sharding/backup-and-restore/restore.mdx#examples)  
+  * [Restoring to a Selected Restore Point](../../sharding/backup-and-restore/restore.mdx#restoring-to-a-selected-restore-point)  
+  * [Restore Options Summary](../../sharding/backup-and-restore/restore.mdx#restore-options-summary)  
 
 </Admonition>
 ## Restore
@@ -66,7 +66,7 @@ The shards' backup folder locations, and additional data regarding the backups,
 are provided in a dictionary of `SingleShardRestoreSetting` objects.  
 
 `SingleShardRestoreSetting`  
-<TabItem value="something" label="restore_SingleShardRestoreSetting">
+<TabItem value="restore_SingleShardRestoreSetting" label="restore_SingleShardRestoreSetting">
 <CodeBlock language="csharp">
 {`public class SingleShardRestoreSetting
 \{
@@ -113,11 +113,11 @@ are provided in a dictionary of `SingleShardRestoreSetting` objects.
 
 ## Define a Restore Configuration
 To restore the database, we pass the 
-[Restore Operation](../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution) 
+[Restore Operation](../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database:-configuration-and-execution) 
 a **configuration object**.  
 
 * The configuration object inherits properties from the `RestoreBackupConfigurationBase` class 
-  ([discussed below](../../sharding/backup-and-restore/restore#section)) 
+  ([discussed below](../../sharding/backup-and-restore/restore.mdx#section)) 
   and defines additional sharding-specific settings.  
 
 * We choose what configuration object to pass the restore operation, by 
@@ -127,14 +127,14 @@ a **configuration object**.
   
     | Configuration Object | Backup Location | Additional Properties |
     | -------------------- | --------------- | --------------------- |
-    | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../sharding/backup-and-restore/restore#examples)) |
-    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../sharding/backup-and-restore/restore#examples)) |
-    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../sharding/backup-and-restore/restore#examples)) |
-    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../sharding/backup-and-restore/restore#examples)) |
+    | `RestoreBackupConfiguration` | Local shard storage | None (see [example](../../sharding/backup-and-restore/restore.mdx#examples)) |
+    | `RestoreFromS3Configuration` | AWS S3 Bucket | `S3Settings` (see S3 [example](../../sharding/backup-and-restore/restore.mdx#examples)) |
+    | `RestoreFromAzureConfiguration` | MS Azure Blob | `AzureSettings` (see Azure [example](../../sharding/backup-and-restore/restore.mdx#examples)) |
+    | `RestoreFromGoogleCloudConfiguration` | Google Cloud Bucket | `GoogleCloudSettings` (see Google Cloud [example](../../sharding/backup-and-restore/restore.mdx#examples)) |
 ### `RestoreBackupConfigurationBase`
 `RestoreBackupConfigurationBase` is a parent class to all the configuration types 
 mentioned above, allowing you to set backups **encryption settings** among other options.  
-<TabItem value="something" label="restore_RestoreBackupConfigurationBase">
+<TabItem value="restore_RestoreBackupConfigurationBase" label="restore_RestoreBackupConfigurationBase">
 <CodeBlock language="csharp">
 {`public abstract class RestoreBackupConfigurationBase
 \{
@@ -164,7 +164,7 @@ mentioned above, allowing you to set backups **encryption settings** among other
     | Parameter | Value | Functionality |
     | ------------- | ------------- | ----- |
     | **DatabaseName** | `string` | Name for the new database. |
-    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br/> Ignored when restoring a sharded database. <br/> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
+    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | `string` | [Last incremental backup file](../../server/ongoing-tasks/backup-overview.mdx#restoration-procedure) to restore. <br/> Ignored when restoring a sharded database. <br/> `SingleShardRestoreSetting.LastFileNameToRestore` used instead, per shard. |
     | **DataDirectory** <br/> (Optional -<br/> omit for default) | `string` | The new database data directory. <br/> <br/> **Default folder: <br/> Under the "Databases" folder <br/> In a folder carrying the restored database name.** |
     | **EncryptionKey** <br/> (Optional -<br/> omit for default) | `string` | A key for an encrypted database. <br/> <br/> **Default behavior: <br/> Try restoring as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | `boolean` | `true` - disable ongoing tasks when Restore is complete. <br/> `false` - enable ongoing tasks when Restore is complete. <br/> <br/> **Default: `false` <br/> Ongoing tasks will run when Restore is complete.**|
@@ -180,7 +180,7 @@ mentioned above, allowing you to set backups **encryption settings** among other
 `}
 ```
  |
-    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode--key) |
+    | **BackupEncryptionSettings** | `BackupEncryptionSettings` | [Backup Encryption Settings](../../client-api/operations/maintenance/backup/encrypted-backup.mdx#choosing-encryption-mode--key) |
          
     <Admonition type="note" title="Note">
     Verify that RavenDB has full access to the backup locations and database files.  
@@ -190,7 +190,7 @@ mentioned above, allowing you to set backups **encryption settings** among other
 ## Run `RestoreBackupOperation` with the Restore Configuration
 Pass the configuration object you defined to the `RestoreBackupOperation` store operation 
 to restore the database.  
-<TabItem value="something" label="restore_RestoreBackupOperation">
+<TabItem value="restore_RestoreBackupOperation" label="restore_RestoreBackupOperation">
 <CodeBlock language="csharp">
 {`public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration)
 `}
@@ -198,7 +198,7 @@ to restore the database.
 </TabItem>
 
 * Instead of `RestoreBackupConfigurationBase`, use the configuration object 
-  you [prepared](../../sharding/backup-and-restore/restore#define-a-restore-configuration):  
+  you [prepared](../../sharding/backup-and-restore/restore.mdx#define-a-restore-configuration):  
    * `RestoreBackupConfiguration` for locally-stored backups  
    * `RestoreFromS3Configuration` to restore from S3  
    * `RestoreFromAzureConfiguration` to restore from Azure  
@@ -447,12 +447,12 @@ backups that were added to it over time.
 
 ### Restoring a Non-sharded database to a selected restore point 
 
-* Read [here](../../sharding/backup-and-restore/restore) about restoring a non-sharded database.  
+* Read [here](../../sharding/backup-and-restore/restore.mdx) about restoring a non-sharded database.  
 * In short, restoring a non-sharded database to a selected restore point 
   is done by filling:  
-   * [RestoreBackupConfiguration.BackupLocation](../../client-api/operations/maintenance/backup/restore#section-1) 
+   * [RestoreBackupConfiguration.BackupLocation](../../client-api/operations/maintenance/backup/restore.mdx#section-1) 
      with the backup location.  
-   * [RestoreBackupConfiguration.LastFileNameToRestore](../../client-api/operations/maintenance/backup/restore#section-2) 
+   * [RestoreBackupConfiguration.LastFileNameToRestore](../../client-api/operations/maintenance/backup/restore.mdx#section-2) 
      with the name of the last incremental backup to restore.  
 
 ### Restoring a Sharded database to a selected restore point 
@@ -625,7 +625,7 @@ var operation = await docStore.Maintenance.Server.SendAsync(restoreBackupOperati
 | Option | Supported on a Sharded Database | Comment |
 | -------------------- | --------------- | --------------------- |
 | Restore from **local shard storage** | **Yes** |  |
-| Restore from a [remote location](../../sharding/backup-and-restore/backup#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
+| Restore from a [remote location](../../sharding/backup-and-restore/backup.mdx#backup-storage-local-and-remote) | **Yes** | Define a [restore configuration](../../sharding/backup-and-restore/restore.mdx#define-a-restore-configuration) with S3, Azure, or Google Cloud settings. |
 | Restore a **sharded database** backup <br/> to a **sharded database** | **Yes** |  |
 | Restore a **sharded database** backup <br/> to a **non-sharded database** | **Yes** |  |
 | Restore a **non-sharded database** backup <br/> to a **sharded database** | **No** | A backup created for a non-sharded database CANNOT be restored to a sharded database. |

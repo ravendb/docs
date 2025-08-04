@@ -23,19 +23,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * **RabbitMQ**
   * **Azure Queue Storage**
 
-* This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#queue-etl-tasks) within a RavenDB database.
+* This functionality is achieved by defining [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#queue-etl-tasks) within a RavenDB database.
 
 * RavenDB can also function as a _Consumer_.  
-  To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../../../server/ongoing-tasks/queue-sink/overview).
+  To learn about RavenDB's role as a _Consumer_ please refer to the [Queue Sink section](../../../../server/ongoing-tasks/queue-sink/overview.mdx).
 
 * In this page:
-    * [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview#queue-etl-tasks)
-    * [Data delivery](../../../../server/ongoing-tasks/etl/queue-etl/overview#data-delivery)
-        * [What is transferred](../../../../server/ongoing-tasks/etl/queue-etl/overview#what-is-transferred)
-        * [How are messages produced and consumed](../../../../server/ongoing-tasks/etl/queue-etl/overview#how-are-messages-produced-and-consumed)
-        * [Idempotence and message duplication](../../../../server/ongoing-tasks/etl/queue-etl/overview#idempotence-and-message-duplication)
-    * [CloudEvents](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents)
-    * [Task statistics](../../../../server/ongoing-tasks/etl/queue-etl/overview#task-statistics)
+    * [Queue ETL tasks](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#queue-etl-tasks)
+    * [Data delivery](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#data-delivery)
+        * [What is transferred](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#what-is-transferred)
+        * [How are messages produced and consumed](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#how-are-messages-produced-and-consumed)
+        * [Idempotence and message duplication](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#idempotence-and-message-duplication)
+    * [CloudEvents](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents)
+    * [Task statistics](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#task-statistics)
 
 </Admonition>
 ## Queue ETL tasks
@@ -43,14 +43,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 RavenDB produces messages to broker queues via the following Queue ETL tasks:
 
 * **Kafka ETL Task**  
-  You can define a Kafka ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  
+  You can define a Kafka ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx) 
+  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx).  
 * **RabbitMQ ETL Task**  
-  You can define a RabbitMQ ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq).  
+  You can define a RabbitMQ ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx) 
+  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx).  
 * **Azure Queue Storage ETL Task**  
-  You can define an Azure Queue Storage ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl) 
-  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue).  
+  You can define an Azure Queue Storage ETL Task from [Studio](../../../../studio/database/tasks/ongoing-tasks/azure-queue-storage-etl.mdx) 
+  or using the [Client API](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx).  
 The above ETL tasks:  
 
 * **Extract** selected data from RavenDB documents from specified collections.  
@@ -69,7 +69,7 @@ The above ETL tasks:
   Document extensions like attachments, counters, or time series, will not be transferred.
 * **CloudEvents messages**  
   JSON objects produced by the task's transformation script are wrapped
-  and delivered as [CloudEvents Messages](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents).
+  and delivered as [CloudEvents Messages](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents).
 
 #### How are messages produced and consumed:
 
@@ -78,7 +78,7 @@ The above ETL tasks:
   Find the specific syntax for defining a connection string per task in each task's documentation.
 * Each message will be added to the tail of its assigned queue according to the transformation script.  
   As earlier messages are processed, it will advance to the head of the queue, becoming available for consumers.
-* RavenDB publishes messages to the designated brokers using [transactions and batches](../../../../server/ongoing-tasks/etl/basics#batch-processing),  
+* RavenDB publishes messages to the designated brokers using [transactions and batches](../../../../server/ongoing-tasks/etl/basics.mdx#batch-processing),  
   creating a batch of messages and opening a transaction to the destination queue for the batch.
 
 #### Idempotence and message duplication:
@@ -109,7 +109,7 @@ The above ETL tasks:
     | **source**      | `string` | [Event context](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md#source-1)               | `<ravendb-node-url>/<database-name>/<etl-task-name>` |
 
 * The optional 'partitionkey' attribute can also be added.  
-  Currently, it is only implemented by [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  
+  Currently, it is only implemented by [Kafka ETL](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx).  
 
     | Optional Attribute   | Type       | Description                                                                                                                                  | Default Value    |
     |----------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------|
@@ -119,7 +119,7 @@ The above ETL tasks:
 
 ## Task statistics
 
-Use the Studio [Ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview) view 
+Use the Studio [Ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx) view 
 to see various statistics related to data extraction, transformation, and loading to the target broker.  
 
 ![Queue Brokers Stats](./assets/overview_stats.png)

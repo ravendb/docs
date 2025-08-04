@@ -22,7 +22,7 @@ For detailed instructions on how to spin up your production, you can read our gu
 
 To quickly try out RavenDB, you can run the following command:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker run -it --rm -p 8080:8080 ravendb/ravendb
 `}
@@ -73,7 +73,7 @@ RavenDB's behavior can be configured through environment variables. These variab
 
 Example:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker run -p 8080:8080 \\
   -e RAVEN_Setup_Mode=None \\
@@ -84,7 +84,7 @@ Example:
 </CodeBlock>
 </TabItem>
 
-For more options, visit this page: [Server Configuration](../../server/configuration/server-configuration)
+For more options, visit this page: [Server Configuration](../../server/configuration.mdx)
 
 #### **Storing data**
 
@@ -96,7 +96,7 @@ RavenDB uses the following volumes for persistence and configuration:
 
 To mount these volumes, use:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker run -v /path/to/config:/etc/ravendb \\
   -v /path/to/data:/var/lib/ravendb/data \\
@@ -115,7 +115,7 @@ To read more on RavenDB networking containerized environment, go to [Containers 
 **Q: I use Docker Compose or automated installation. How do I disable the setup wizard?**
 A: Set the `Setup.Mode` configuration option to `None` like so:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`RAVEN_ARGS='--Setup.Mode=None'
 `}
@@ -125,7 +125,7 @@ A: Set the `Setup.Mode` configuration option to `None` like so:
 **Q: How can I try RavenDB on my local development machine in unsecured mode?**
 A: Set the environment variables:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`RAVEN_ARGS='--Setup.Mode=None'
 RAVEN_Security_UnsecuredAccessAllowed='PrivateNetwork'
@@ -136,7 +136,7 @@ RAVEN_Security_UnsecuredAccessAllowed='PrivateNetwork'
 **Q: How can I pass command-line arguments through environment variables?**
 A: By modifying the `RAVEN_ARGS`, which will pass the arguments to the RavenDB server:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`RAVEN_ARGS='--log-to-console'
 `}
@@ -146,7 +146,7 @@ A: By modifying the `RAVEN_ARGS`, which will pass the arguments to the RavenDB s
 **Q: Can I view RavenDB logs using the `docker logs` command?**
 A: Yes, but you need to enable console logging by setting the following environment variable:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`RAVEN_ARGS='--log-to-console'
 `}
@@ -160,7 +160,7 @@ Note that enabling logging to the console may impact performance.
 **Q: How do I use a custom configuration file?**
 A: Mount the configuration file as a Docker volume and use the `--config-path` argument:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker run -v /path/to/settings.json:/etc/ravendb/settings.json \\
 -e RAVEN_ARGS='--config-path /etc/ravendb/settings.json' \\
@@ -174,7 +174,7 @@ Alternatively, pass the custom `settings.json` content via the `RAVENDB_SETTINGS
 **Q: How can I manage a server running in a container using CLI?**
 A: Besides using the RavenDB Studio, you can connect to the RavenDB administration console using the `rvn` utility:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker exec -it CONTAINER_ID /var/lib/ravendb/Server/rvn admin-channel
 `}

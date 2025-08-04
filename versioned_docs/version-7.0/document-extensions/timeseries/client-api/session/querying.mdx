@@ -27,27 +27,27 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * Time series queries can be made using:  
   * The high-level `Query` method utilizing LINQ,  
   * The lower-level API `DocumentQuery`,  
-  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql),
-    which can be provided to a `RawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view).
+  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql.mdx),
+    which can be provided to a `RawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
 
 * In this page:  
-    * [Query](../../../../document-extensions/timeseries/client-api/session/querying#query)
-        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying#query-usage)
-        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying#query-examples)  
-        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying#query-syntax)
-    * [DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying#documentquery)
-        * [DocumentQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-usage)
-        * [DocumentQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-examples)
-        * [DocumentQuery Syntax](../../../../document-extensions/timeseries/client-api/session/querying#documentquery-syntax)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#rawquery)
-        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-usage)
-        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-examples)
-        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-syntax)
+    * [Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
+        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
+        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
+        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
+    * [DocumentQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery)
+        * [DocumentQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-usage)
+        * [DocumentQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-examples)
+        * [DocumentQuery Syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#documentquery-syntax)
+    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
+        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
+        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
+        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
     
 </Admonition>
 
 <Admonition type="info" title="Info">
-Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -63,7 +63,7 @@ Learn more about time series queries in the [section dedicated to this subject](
   * `TimeSeriesRawResult` for non-aggregated data, or -  
   * `TimeSeriesAggregationResult` for aggregated data  
 * Note:  
-  The RavenDB client translates the LINQ query to [RQL](../../../../client-api/session/querying/what-is-rql) before transmitting it to the server for execution.
+  The RavenDB client translates the LINQ query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### Query examples
 
 * This LINQ query filters users by their age and retrieves their HeartRates time series.  
@@ -128,7 +128,7 @@ select timeseries(from q.HeartRates between "2020-05-17T00:00:00.0000000" and "2
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
 <CodeBlock language="csharp">
@@ -179,7 +179,7 @@ select timeseries(from q.HeartRates between "2020-05-17T00:00:00.0000000" and "2
 * In this example, we group heart-rate data of people above the age of 72 into 1-day groups,  
   and retrieve each group's average heart rate and number of measurements.  
   The aggregated results are retrieved as `List<TimeSeriesAggregationResult>`.
-<TabItem value="something" label="ts_region_LINQ-6-Aggregation">
+<TabItem value="ts_region_LINQ-6-Aggregation" label="ts_region_LINQ-6-Aggregation">
 <CodeBlock language="csharp">
 {`var query = session.Query<User>()
     .Where(u => u.Age > 72)
@@ -199,20 +199,20 @@ List<TimeSeriesAggregationResult> result = query.ToList();
 </TabItem>
 ### Query syntax
 
-* The `session.Query` syntax is available [here](../../../../client-api/session/querying/how-to-query#syntax).
+* The `session.Query` syntax is available [here](../../../../client-api/session/querying/how-to-query.mdx#syntax).
 
 * To define a time series query use `RavenQuery.TimeSeries` within the query `Select` clause.
 
 * `RavenQuery.TimeSeries` overloads:
 
-<TabItem value="something" label="RavenQuery-TimeSeries-Definition-Without-Range">
+<TabItem value="RavenQuery-TimeSeries-Definition-Without-Range" label="RavenQuery-TimeSeries-Definition-Without-Range">
 <CodeBlock language="csharp">
 {`public static ITimeSeriesQueryable TimeSeries(object documentInstance,
     string name)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="RavenQuery-TimeSeries-Definition-With-Range">
+<TabItem value="RavenQuery-TimeSeries-Definition-With-Range" label="RavenQuery-TimeSeries-Definition-With-Range">
 <CodeBlock language="csharp">
 {`public static ITimeSeriesQueryable TimeSeries(object documentInstance,
     string name, DateTime from, DateTime to)
@@ -229,7 +229,7 @@ List<TimeSeriesAggregationResult> result = query.ToList();
 
 * `RavenQuery.TimeSeries` can be extended with the following time series methods:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`Offset(TimeSpan offset);
 Scale(double value);
@@ -259,12 +259,12 @@ Where(Expression<Func<TimeSeriesEntry, bool>> predicate);
     * `TimeSeriesRawResult` for non-aggregated data, or -
     * `TimeSeriesAggregationResult` for aggregated data
 * Note:  
-  The RavenDB client translates query to [RQL](../../../../client-api/session/querying/what-is-rql) before transmitting it to the server for execution.
+  The RavenDB client translates query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### DocumentQuery examples
 
 * A _DocumentQuery_ using only the `From()` method.  
   The query returns all entries from the 'HeartRates' time series.
-<TabItem value="something" label="TS_DocQuery_1">
+<TabItem value="TS_DocQuery_1" label="TS_DocQuery_1">
 <CodeBlock language="csharp">
 {`// Define the query:
 var query = session.Advanced.DocumentQuery<User>()
@@ -284,7 +284,7 @@ List<TimeSeriesRawResult> results = query.ToList();
 
 * A _DocumentQuery_ using `Between()`.  
   The query returns only entries from the specified time range.
-<TabItem value="something" label="TS_DocQuery_2">
+<TabItem value="TS_DocQuery_2" label="TS_DocQuery_2">
 <CodeBlock language="csharp">
 {`var query = session.Advanced.DocumentQuery<User>()
     .SelectTimeSeries(builder => builder
@@ -299,7 +299,7 @@ List<TimeSeriesRawResult> results = query.ToList();
 
 * A _DocumentQuery_ using `FromFirst()`.  
   The query returns the first three days of the 'HeartRates' time series.  
-<TabItem value="something" label="TS_DocQuery_3">
+<TabItem value="TS_DocQuery_3" label="TS_DocQuery_3">
 <CodeBlock language="csharp">
 {`var query = session.Advanced.DocumentQuery<User>()
     .SelectTimeSeries(builder => builder
@@ -314,7 +314,7 @@ List<TimeSeriesRawResult> results = query.ToList();
 
 * A _DocumentQuery_ using `FromLast()`.  
   The query returns the last three days of the 'HeartRates' time series.  
-<TabItem value="something" label="TS_DocQuery_4">
+<TabItem value="TS_DocQuery_4" label="TS_DocQuery_4">
 <CodeBlock language="csharp">
 {`var query = session.Advanced.DocumentQuery<User>()
     .SelectTimeSeries(builder => builder
@@ -355,11 +355,11 @@ List<TimeSeriesRawResult> results = query.ToList();
 </Tabs>
 ### DocumentQuery syntax
 
-The session [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query),
+The session [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx),
 which is accessible from `session.Advanced`, can be extended with several useful time series methods.
 To access these methods, begin with method `SelectTimeSeries()`:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`IDocumentQuery SelectTimeSeries(Func<ITimeSeriesQueryBuilder, TTimeSeries> timeSeriesQuery);
 `}
@@ -368,7 +368,7 @@ To access these methods, begin with method `SelectTimeSeries()`:
 
 `SelectTimeSeries()` takes an `ITimeSeriesQueryBuilder`. The builder has the following methods:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`From(string name);
 Between(DateTime start, DateTime end);
@@ -392,7 +392,7 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 
 `FromLast()` and `FromFirst()` take an `ITimePeriodBuilder`, which is used to represent a range of time from milliseconds to years:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public interface ITimePeriodBuilder
 \{
@@ -412,7 +412,7 @@ Where(Expression<Func<TimeSeriesEntry, TTag, bool>> predicate);
 #### Return Value:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections),
+  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  
@@ -503,7 +503,7 @@ var results = query.ToList();
   From each group, two values are selected and projected to the client:  
   the **min** and **max** hourly HeartRates values.  
   The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
-<TabItem value="something" label="ts_region_Raw-Query-Aggregated">
+<TabItem value="ts_region_Raw-Query-Aggregated" label="ts_region_Raw-Query-Aggregated">
 <CodeBlock language="csharp">
 {`var baseline = new DateTime(2020, 5, 17, 00, 00, 00); // May 17 2020, 00:00:00
 
@@ -527,7 +527,7 @@ List<TimeSeriesAggregationResult> results = query.ToList();
 </TabItem>
 ### RawQuery syntax
 
-<TabItem value="something" label="RawQuery-definition">
+<TabItem value="RawQuery-definition" label="RawQuery-definition">
 <CodeBlock language="csharp">
 {`IRawDocumentQuery<T> RawQuery<T>(string query);
 `}
@@ -541,7 +541,7 @@ List<TimeSeriesAggregationResult> results = query.ToList();
 **Return Value**:
 
 * **`List<TimeSeriesAggregationResult>`**  for aggregated data.  
-  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections),
+  When the query [aggregates time series entries](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx),
   the results are returned in an aggregated array.
 
 * **`List<TimeSeriesRawResult>`** for non-aggregated data.  
@@ -560,23 +560,23 @@ List<TimeSeriesAggregationResult> results = query.ToList();
   
 * Time series queries can be made using:  
   * The `query` method 
-  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql),
-    which can be provided to a `rawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view).
+  * Or directly through [RQL](../../../../client-api/session/querying/what-is-rql.mdx),
+    which can be provided to a `rawQuery` or executed from the Studio's [Query view](../../../../studio/database/queries/query-view.mdx).
 
 * In this page:  
-    * [Query](../../../../document-extensions/timeseries/client-api/session/querying#query)
-        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying#query-usage)
-        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying#query-examples)  
-        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying#query-syntax)
-    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying#rawquery)
-        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-usage)
-        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-examples)
-        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying#rawquery-syntax)
+    * [Query](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query)
+        * [Query usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-usage)
+        * [Query examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-examples)  
+        * [Query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax)
+    * [RawQuery](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery)
+        * [RawQuery usage](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-usage)
+        * [RawQuery examples](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-examples)
+        * [RawQuery syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#rawquery-syntax)
     
 </Admonition>
 
 <Admonition type="info" title="Info">
-Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax).  
+Learn more about time series queries in the [section dedicated to this subject](../../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
 </Admonition>
 ## Query
 
@@ -591,13 +591,13 @@ Learn more about time series queries in the [section dedicated to this subject](
   * `TimeSeriesRawResult` for non-aggregated data, or -  
   * `TimeSeriesAggregationResult` for aggregated data  
 * Note:  
-  The RavenDB client translates the query to [RQL](../../../../client-api/session/querying/what-is-rql) before transmitting it to the server for execution.
+  The RavenDB client translates the query to [RQL](../../../../client-api/session/querying/what-is-rql.mdx) before transmitting it to the server for execution.
 ### Query examples
 
 * This query filters users by their age and retrieves their HeartRates time series.
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the time series query part (expressed in RQL):
 const tsQueryText = \`
     from HeartRates
@@ -641,7 +641,7 @@ select timeseries(
 * In this example, we select a 5-minute range from the HeartRates time series.  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const startTime = new Date();
 const endTime = new Date(startTime.getTime() + 5 * 60_000);
 
@@ -678,11 +678,11 @@ select timeseries(
 </Tabs>
 
 * In this example, we retrieve a company's stock trade data.  
-  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values).  
-  This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append#append-entries-with-multiple-values).  
+  Note the usage of named values, so we may address trade Volume [by name](../../../../document-extensions/timeseries/client-api/named-time-series-values.mdx).  
+  This example is based on the sample entries that were entered in [this example](../../../../document-extensions/timeseries/client-api/session/append.mdx#append-entries-with-multiple-values).  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const oneDay = 24 * 60 * 60 * 1000;
 const startTime = new Date();
 const endTime = new Date(startTime.getTime() + 3 * oneDay);
@@ -712,7 +712,7 @@ const volumeDay3 = tsEntries[2].values[4];
 </CodeBlock>
 </TabItem>
 <TabItem value="Named" label="Named">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const oneDay = 24 * 60 * 60 * 1000;
 const startTime = new Date();
 const endTime = new Date(startTime.getTime() + 3 * oneDay);
@@ -762,7 +762,7 @@ select timeseries(
   For each group, we retrieve the number of measurements, the minimum, maximum, and average heart rate.
 <Tabs groupId='languageSyntax'>
 <TabItem value="Native" label="Native">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const oneDay = 24 * 60 * 60 * 1000;
 const startTime = new Date();
 const endTime = new Date(startTime.getTime() + 10 * oneDay);
@@ -807,12 +807,12 @@ select timeseries(
 </Tabs>
 ### Query syntax
 
-The `session.query` syntax is available [here](../../../../client-api/session/querying/how-to-query#syntax).
+The `session.query` syntax is available [here](../../../../client-api/session/querying/how-to-query.mdx#syntax).
 
 Extend the `session.query` method with `selectTimeSeries()`.
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`selectTimeSeries(timeSeriesQuery, projectionClass);
 `}
 </CodeBlock>
@@ -825,8 +825,8 @@ Extend the `session.query` method with `selectTimeSeries()`.
 
 The time series query builder has one method:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`raw(queryText);
 `}
 </CodeBlock>
@@ -839,10 +839,10 @@ The time series query builder has one method:
 | Return value                    | Description                                                                                                               |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | `TimeSeriesRawResult[]`         | The returned value for non-aggregated data                                                                                |
-| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../document-extensions/timeseries/querying/aggregation-and-projections) |
+| `TimeSeriesAggregationResult[]` | The returned value for [aggregated data](../../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) |
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class TimeSeriesRawResult \{
     results; // TimeSeriesEntry[]
     asTypedResult>(clazz);
@@ -874,7 +874,7 @@ class TimeSeriesAggregationResult extends TimeSeriesQueryResult \{
 * In this example, we retrieve all HearRates time series for all users under 30.
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`from users where age < 30
      select timeseries(
         from HeartRates
@@ -902,7 +902,7 @@ select timeseries(
   We define an **offset**, to adjust retrieved results to the client's local time-zone.
 <Tabs groupId='languageSyntax'>
 <TabItem value="Declare-Syntax" label="Declare-Syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     declare timeseries getHeartRates(user) 
     {
@@ -926,7 +926,7 @@ const result = await query.all();
 </CodeBlock>
 </TabItem>
 <TabItem value="Select-Syntax" label="Select-Syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     from Users as u where Age < 30
     select timeseries (
@@ -983,7 +983,7 @@ select timeseries (
   The aggregated results are in the form of a `TimeSeriesAggregationResult` list.
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const rql = \`
     from users as u
     select timeseries(
@@ -1021,8 +1021,8 @@ select timeseries(
 </Tabs>
 ### RawQuery syntax
 
-<TabItem value="something-something" label="syntax_4">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
 {`session.rawQuery(query);
 `}
 </CodeBlock>
@@ -1032,7 +1032,7 @@ select timeseries(
 |------------|----------|----------------------|
 |  **query** | `string` | The RQL query string |
 
-The return value is the same as listed under the [query syntax](../../../../document-extensions/timeseries/client-api/session/querying#query-syntax).
+The return value is the same as listed under the [query syntax](../../../../document-extensions/timeseries/client-api/session/querying.mdx#query-syntax).
 
 
 

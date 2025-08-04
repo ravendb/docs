@@ -21,20 +21,20 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store.mdx).
 
 * **To operate on a different database**, use the `ForDatabase` method.  
   If the requested database doesn't exist on the server, an exception will be thrown.
 
 * In this page:
-    * [Common operation: `Operations.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.fordatabase)
-    * [Maintenance operation: `Maintenance.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.fordatabase)
+    * [Common operation: `Operations.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-operations.fordatabase)
+    * [Maintenance operation: `Maintenance.ForDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenance.fordatabase)
 </Admonition>
 ## Common operation: `Operations.ForDatabase`
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
 
-<TabItem value="something" label="for_database_1">
+<TabItem value="for_database_1" label="for_database_1">
 <CodeBlock language="csharp">
 {`// Define default database on the store
 var documentStore = new DocumentStore
@@ -61,7 +61,7 @@ using (documentStore)
 </TabItem>
 **Syntax**:
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`OperationExecutor ForDatabase(string databaseName);
 `}
@@ -80,9 +80,9 @@ using (documentStore)
 
 ## Maintenance operation: `Maintenance.ForDatabase`
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
 
-<TabItem value="something" label="for_database_2">
+<TabItem value="for_database_2" label="for_database_2">
 <CodeBlock language="csharp">
 {`// Define default database on the store
 var documentStore = new DocumentStore
@@ -109,7 +109,7 @@ using (documentStore = new DocumentStore())
 </TabItem>
 **Syntax**:
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`MaintenanceOperationExecutor ForDatabase(string databaseName);
 `}
@@ -135,7 +135,7 @@ By default, the operations available directly in store are working on a default 
 
 ## Operations.forDatabase
 
-<TabItem value="something-something" label="for_database_1">
+<TabItem value="for_database_1" label="for_database_1">
 <CodeBlock language="java">
 {`OperationExecutor forDatabase(String databaseName);
 `}
@@ -152,7 +152,7 @@ By default, the operations available directly in store are working on a default 
 
 ### Example
 
-<TabItem value="something-something" label="for_database_3">
+<TabItem value="for_database_3" label="for_database_3">
 <CodeBlock language="java">
 {`OperationExecutor operations = documentStore.operations().forDatabase("otherDatabase");
 `}
@@ -167,7 +167,7 @@ As with `operations`, by default the `maintenance` operations available directly
 
 ## Maintenance.forDatabase
 
-<TabItem value="something-something" label="for_database_2">
+<TabItem value="for_database_2" label="for_database_2">
 <CodeBlock language="java">
 {`MaintenanceOperationExecutor forDatabase(String databaseName);
 `}
@@ -184,7 +184,7 @@ As with `operations`, by default the `maintenance` operations available directly
 
 ### Example
 
-<TabItem value="something-something" label="for_database_4">
+<TabItem value="for_database_4" label="for_database_4">
 <CodeBlock language="java">
 {`MaintenanceOperationExecutor maintenanceOperations = documentStore.maintenance().forDatabase("otherDatabase");
 `}
@@ -199,20 +199,20 @@ As with `operations`, by default the `maintenance` operations available directly
 
 <Admonition type="note" title="Note">
 
-* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store.mdx).
 
 * **To operate on a different database**, use the `for_database` method.  
   If the requested database doesn't exist on the server, an exception will be thrown.
 
 * In this page:
-    * [Common operation: `operations.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.for_database)
-    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.for_database)
+    * [Common operation: `operations.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-operations.for_database)
+    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenance.for_database)
 </Admonition>
 ## Common operation: `operations.for_database`
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
 
-<TabItem value="something-something" label="for_database_1">
+<TabItem value="for_database_1" label="for_database_1">
 <CodeBlock language="python">
 {`# Define default database on the store
 document_store = DocumentStore(urls=["yourServerURL"], database="DefaultDB")
@@ -232,7 +232,7 @@ with document_store:
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`def for_database(self, database_name: str) -> OperationExecutor: ...
 `}
@@ -251,9 +251,9 @@ with document_store:
 
 ## Maintenance operation: `maintenance.for_database`
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
 
-<TabItem value="something-something" label="for_database_2">
+<TabItem value="for_database_2" label="for_database_2">
 <CodeBlock language="python">
 {`# Define default database on the store
 document_store = DocumentStore(urls=["yourServerURL"], database="DefaultDB")
@@ -271,7 +271,7 @@ with DocumentStore() as document_store:
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`def for_database(self, database_name: str) -> MaintenanceOperationExecutor: ...
 `}
@@ -294,20 +294,20 @@ with DocumentStore() as document_store:
 
 <Admonition type="note" title="Note">
 
-* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store).
+* By default, all operations work on the default database defined in the [Document Store](../../../client-api/creating-document-store.mdx).
 
 * **To operate on a different database**, use the `for_database` method.  
   If the requested database doesn't exist on the server, an exception will be thrown.
 
 * In this page:
-    * [Common operation: `forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-fordatabase)
-    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.for_database)
+    * [Common operation: `forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-fordatabase)
+    * [Maintenance operation: `maintenance.for_database`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenance.for_database)
 </Admonition>
 ## Common operation: `forDatabase`
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
 
-<TabItem value="something-something" label="for_database_1">
+<TabItem value="for_database_1" label="for_database_1">
 <CodeBlock language="php">
 {`// Define default database on the store
 $documentStore = new DocumentStore(
@@ -334,7 +334,7 @@ try \{
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`public function forDatabase(?string $databaseName): OperationExecutor;
 `}
@@ -353,9 +353,9 @@ try \{
 
 ## Maintenance operation: `maintenance.for_database`
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
 
-<TabItem value="something-something" label="for_database_2">
+<TabItem value="for_database_2" label="for_database_2">
 <CodeBlock language="php">
 {`// Define default database on the store
 $documentStore = new DocumentStore(
@@ -382,7 +382,7 @@ try \{
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`public function forDatabase(?string $databaseName): MaintenanceOperationExecutor;
 `}
@@ -405,21 +405,21 @@ try \{
 
 <Admonition type="note" title="Note">
 
-* By default, all operations work on the default database defined in the [document store](../../../client-api/creating-document-store).
+* By default, all operations work on the default database defined in the [document store](../../../client-api/creating-document-store.mdx).
 
 * **To operate on a different database**, use the `forDatabase` method.  
   If the requested database doesn't exist on the server, an exception will be thrown.
 
 * In this page:
-    * [Common operation: `operations.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#common-operation:-operations.fordatabase)
-    * [Maintenance operation: `maintenance.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database#maintenance-operation:-maintenance.fordatabase)
+    * [Common operation: `operations.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#common-operation:-operations.fordatabase)
+    * [Maintenance operation: `maintenance.forDatabase`](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx#maintenance-operation:-maintenance.fordatabase)
 </Admonition>
 ## Common operation: `operations.forDatabase`
 
-* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations#common-operations).
+* For reference, all common operations are listed [here](../../../client-api/operations/what-are-operations.mdx#common-operations).
 
-<TabItem value="something-something" label="for_database_1">
-<CodeBlock language="nodejs">
+<TabItem value="for_database_1" label="for_database_1">
+<CodeBlock language="js">
 {`// Define default database on the store
 const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
 documentStore.initialize();
@@ -439,8 +439,8 @@ const revisionsInDefaultDB =
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`store.operations.forDatabase(databaseName);
 `}
 </CodeBlock>
@@ -458,10 +458,10 @@ const revisionsInDefaultDB =
 
 ## Maintenance operation: `maintenance.forDatabase`
 
-* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations#maintenance-operations).
+* For reference, all maintenance operations are listed [here](../../../client-api/operations/what-are-operations.mdx#maintenance-operations).
 
-<TabItem value="something-something" label="for_database_2">
-<CodeBlock language="nodejs">
+<TabItem value="for_database_2" label="for_database_2">
+<CodeBlock language="js">
 {`// Define default database on the store
 const documentStore = new DocumentStore("yourServerURL", "DefaultDB");
 documentStore.initialize();
@@ -481,8 +481,8 @@ const statsForDefaultDB =
 </TabItem>
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`store.maintenance.forDatabase(databaseName);
 `}
 </CodeBlock>

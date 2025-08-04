@@ -15,26 +15,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # RavenDB ETL Task
 <Admonition type="note" title="Note">
 
-* A **RavenDB ETL Task** is an [ETL process](../../../../server/ongoing-tasks/etl/basics#basics) 
+* A **RavenDB ETL Task** is an [ETL process](../../../../server/ongoing-tasks/etl/basics.mdx#basics) 
   that transfers data from the current database to another RavenDB database instance, 
-  outside of the [Database Group](../../../../studio/database/settings/manage-database-group)  
+  outside of the [Database Group](../../../../studio/database/settings/manage-database-group.mdx)  
 
 * The sent data can be filtered and modified by transformation scripts  
 
-* Learn more about the benefits of using ETL in [Why use ETL](../../../../server/ongoing-tasks/etl/basics#why-use-etl)  
+* Learn more about the benefits of using ETL in [Why use ETL](../../../../server/ongoing-tasks/etl/basics.mdx#why-use-etl)  
 
-* ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--replication-task)  
+* ETL is different from data replication. See [RavenDB ETL Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task--vs--replication-task)  
 
-* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters) 
+* In RavenDB ETL, [a certificate must be passed](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#passing-certificate-between-secure-clusters) 
   from the source server to the destination so that the destination server trusts the source.  
 
 * In this page:  
-  * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---definition)  
-  * [RavenDB ETL Task - Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---transform-scripts)  
-  * [Passing Certificate Between Secure Clusters](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#passing-certificate-between-secure-clusters)  
-  * [RavenDB ETL Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---details-in-tasks-list-view)  
-  * [RavenDB ETL Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task---offline-behaviour)  
-  * [RavenDB ETL Task -vs- External Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task#ravendb-etl-task--vs--external-replication-task)  
+  * [RavenDB ETL Task - Definition](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task---definition)  
+  * [RavenDB ETL Task - Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task---transform-scripts)  
+  * [Passing Certificate Between Secure Clusters](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#passing-certificate-between-secure-clusters)  
+  * [RavenDB ETL Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task---details-in-tasks-list-view)  
+  * [RavenDB ETL Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task---offline-behaviour)  
+  * [RavenDB ETL Task -vs- External Replication Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx#ravendb-etl-task--vs--external-replication-task)  
 </Admonition>
 ## RavenDB ETL Task - Definition
 
@@ -45,8 +45,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * If no name is given then the RavenDB server will create one for you based on the defined connection string  
 
 2. **Preferred Node** (Optional)  
-  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this RavenDB ETL Task  
-  * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
+  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be the responsible node for this RavenDB ETL Task  
+  * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties))  
 
 3. **Connection String**  
    * Select an existing connection string from the list or create a new one  
@@ -66,7 +66,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    In the above example, each source document from the "Products" collection will be sent to the "ProductsInfo" collection in the destination database *db3* 
    (which is external to the cluster).  
    Each new document will have 2 fields: "ProductName" and "SupplierName".  
-   For detailed script options see [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
+   For detailed script options see [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven.mdx#transformation-script-options).  
 
 4. By default, updates to the ETL script will _not_ be applied to documents that were already sent.  
    When checking this option RavenDB will start the ETL process for this script from _scratch_ ("beginning of time"),  
@@ -81,12 +81,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   This step must be done if connecting *to another cluster* so that the destination cluster trusts the source.  
 
   * **Via RavenDB Studio:**  
-  Navigate from the "Manage Server" tab (left side) &gt; "Certificates" to open the [Certificate Management view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view).  
-     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates).  
+  Navigate from the "Manage Server" tab (left side) &gt; "Certificates" to open the [Certificate Management view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view).  
+     - Learn how to [pass certificates here](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates).  
   * **Via API:**  
-  See the code sample to learn how to [define a client certificate in the DocumentStore](../../../../client-api/creating-document-store).  
-     - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
-* Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+  See the code sample to learn how to [define a client certificate in the DocumentStore](../../../../client-api/creating-document-store.mdx).  
+     - To generate and configure a client certificate from the source server, see [CreateClientCertificateOperation](../../../../client-api/operations/server-wide/certificates/create-client-certificate.mdx)
+* Learn the rationale needed to configure client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
 
 
 
@@ -135,10 +135,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 1. **Data ownership**:  
 
     * When a RavenDB node performs an **ETL** to another node it is _not_ replicating the data, it is _writing_ it.  
-      In other words, we always _overwrite_ whatever exists on the destination database, and there is no [conflict handling](../../../../studio/database/settings/conflict-resolution).  
+      In other words, we always _overwrite_ whatever exists on the destination database, and there is no [conflict handling](../../../../studio/database/settings/conflict-resolution.mdx).  
 
     * The source database for the ETL process is the owner of the data.  
-      This means that [as long as the destination collection is the same as the source](../../../../server/ongoing-tasks/etl/raven#deletions),  
+      This means that [as long as the destination collection is the same as the source](../../../../server/ongoing-tasks/etl/raven.mdx#deletions),  
       any modifications made to the data sent by ETL on the destination database are lost when overwriting occurs.  
       **If you modify a document loaded by ETL, your modifications will be lost** when the ETL process deletes and loads the updated document into the destination database.
 
@@ -146,7 +146,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       you should create a companion document in the destination database instead of modifying the data sent directly.  
       The rule is:  With ETL destination documents, you can look but don't touch.  
 
-    * **On the other hand**, data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.
+    * **On the other hand**, data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) does _not_ overwrite existing documents.
       Conflicts are created and handled according to the destination database policy defined.  
       This means that with an External Replication Task you _can_ change the replicated data on the destination database and conflicts will be solved.  
 
@@ -158,7 +158,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * In contrast, with the **External Replication Task**, _all_ documents in the database, along with their related data,  
       are replicated to the destination database _without_ any content modification.
       
-    * Refer to section [what is being replicated](../../../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task) 
+    * Refer to section [what is being replicated](../../../../server/ongoing-tasks/external-replication.mdx#general-information-about-external-replication-task) 
       for exact details on what is and isn’t replicated in the External Replication Task.
 
 

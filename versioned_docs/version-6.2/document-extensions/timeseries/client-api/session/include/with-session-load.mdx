@@ -28,8 +28,8 @@ export const supportedLanguages = ["csharp", "nodejs"];
   and can be provided instantly when requested without any additional server calls.
 
 * In this page:
-   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#include-time-series-when-loading-a-document)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#syntax)
+   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#include-time-series-when-loading-a-document)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#syntax)
 
 </Admonition>
 ## Include time series when loading a document
@@ -37,7 +37,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 In this example, we load a document using `session.Load`,  
 and include a selected range of entries from time series "HeartRates".
 
-<TabItem value="something" label="timeseries_region_Load-Document-And-Include-TimeSeries">
+<TabItem value="timeseries_region_Load-Document-And-Include-TimeSeries" label="timeseries_region_Load-Document-And-Include-TimeSeries">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -65,7 +65,7 @@ and include a selected range of entries from time series "HeartRates".
 
 **`session.Load`**
 
-<TabItem value="something" label="Load-definition">
+<TabItem value="Load-definition" label="Load-definition">
 <CodeBlock language="csharp">
 {`T Load<T>(string id, Action<IIncludeBuilder<T>> includes);
 `}
@@ -79,7 +79,7 @@ and include a selected range of entries from time series "HeartRates".
 
 **`Include`** builder methods:
 
-<TabItem value="something" label="IncludeTimeSeries-definition">
+<TabItem value="IncludeTimeSeries-definition" label="IncludeTimeSeries-definition">
 <CodeBlock language="csharp">
 {`TBuilder IncludeTimeSeries(string name, DateTime? from = null, DateTime? to = null);
 `}
@@ -107,8 +107,8 @@ and include a selected range of entries from time series "HeartRates".
   and can be provided instantly when requested without any additional server calls.
 
 * In this page:
-   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#include-time-series-when-loading-a-document)
-   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load#syntax)
+   * [Include time series when loading a document](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#include-time-series-when-loading-a-document)
+   * [Syntax](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx#syntax)
 
 </Admonition>
 ## Include time series when loading a document
@@ -116,8 +116,8 @@ and include a selected range of entries from time series "HeartRates".
 In this example, we load a document using `session.load`,  
 and include a selected range of entries from time series "HeartRates".
 
-<TabItem value="something-something" label="include_1">
-<CodeBlock language="nodejs">
+<TabItem value="include_1" label="include_1">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 const baseTime = new Date();
@@ -152,8 +152,8 @@ assert.equal(numberOfRequests1, numberOfRequests2);
 
 **`session.load`**
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`load(id, options?);
 `}
 </CodeBlock>
@@ -166,8 +166,8 @@ assert.equal(numberOfRequests1, numberOfRequests2);
 
 **`includes`** builder methods:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`includeTimeSeries(name);
 includeTimeSeries(name, from, to);
 `}

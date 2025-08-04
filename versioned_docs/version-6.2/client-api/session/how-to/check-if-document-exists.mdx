@@ -24,12 +24,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * To check whether the database contains a certain document,  
   use the method `Exists()` from the `Advanced` session operations.  
 
-* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities) the document entity to the session,  
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities.mdx) the document entity to the session,  
   and the session will not track it. 
 
 * In this page:
-    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
-    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
 </Admonition>
 ## Check if document exists
 
@@ -95,16 +95,16 @@ if (exists)
 
 * To check whether the database contains a certain document, use the method `exists()` from the `advanced` session operations.  
 
-* This does not [load](../../../client-api/session/loading-entities) the document from the server or cause the session to track it.  
+* This does not [load](../../../client-api/session/loading-entities.mdx) the document from the server or cause the session to track it.  
 
 * In this page:  
-  * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)  
-  * [Example](../../../client-api/session/how-to/check-if-document-exists#example)  
+  * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)  
+  * [Example](../../../client-api/session/how-to/check-if-document-exists.mdx#example)  
 
 </Admonition>
 ## Syntax
 
-<TabItem value="something-something" label="exists_1">
+<TabItem value="exists_1" label="exists_1">
 <CodeBlock language="java">
 {`boolean exists(String id);
 `}
@@ -123,7 +123,7 @@ if (exists)
 
 ## Example
 
-<TabItem value="something-something" label="exists_2">
+<TabItem value="exists_2" label="exists_2">
 <CodeBlock language="java">
 {`boolean exists = session.advanced().exists("employees/1-A");
 
@@ -145,12 +145,12 @@ if (exists) \{
 * To check whether the database contains a certain document,  
   use the `session.advanced` operations `exists` method.  
 
-* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
   the document entity to the session, and the session will not track it.
 
 * In this page:
-    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
-    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
 </Admonition>
 ## Check if document exists
 
@@ -198,16 +198,16 @@ if exists:
 * To check whether the database contains a certain document,  
   use the `session.advanced` operations `exists` method.  
 
-* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
   the document entity to the session, and the session will not track it.
 
 * In this page:
-    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
-    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
 </Admonition>
 ## Check if document exists
 
-<TabItem value="something-something" label="exists_2">
+<TabItem value="exists_2" label="exists_2">
 <CodeBlock language="php">
 {`$exists = $session->advanced()->exists("employees/1-A");
 
@@ -223,7 +223,7 @@ if ($exists)
 
 ## Syntax
 
-<TabItem value="something-something" label="exists_1">
+<TabItem value="exists_1" label="exists_1">
 <CodeBlock language="php">
 {`public function exists(?string $id): bool;
 `}
@@ -249,17 +249,17 @@ if ($exists)
 * To check whether the database contains a certain document,  
   use the method `exists()` from the `advanced` session operations.
 
-* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities) the document entity to the session,  
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities.mdx) the document entity to the session,  
   and the session will not track it.
 
 * In this page:
-    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists#check-if-document-exists)
-    * [Syntax](../../../client-api/session/how-to/check-if-document-exists#syntax)
+    * [Check if document exists](../../../client-api/session/how-to/check-if-document-exists.mdx#check-if-document-exists)
+    * [Syntax](../../../client-api/session/how-to/check-if-document-exists.mdx#syntax)
 </Admonition>
 ## Check if document exists
 
-<TabItem value="something-something" label="exists">
-<CodeBlock language="nodejs">
+<TabItem value="exists" label="exists">
+<CodeBlock language="js">
 {`const exists = await session.advanced.exists("employees/1-A");
 if (exists) \{
     // document 'employees/1-A exists
@@ -272,8 +272,8 @@ if (exists) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`session.advanced.exists(id);
 `}
 </CodeBlock>

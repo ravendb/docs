@@ -29,7 +29,7 @@ If such errors happen, they need to be reported as soon as possible to [RavenDB 
 
 * Such exceptions are caused by the corruption of a Voron _data file_, which could occur due to a few reasons:  
   * Hardware failure of hard-drive or memory  
-  * In compliance‏ with RavenDB [hardware and OS requirements](../users-issues/recovering-from-voron-errors#ravendb-hardware-and-os-requirements)  
+  * In compliance‏ with RavenDB [hardware and OS requirements](../users-issues/recovering-from-voron-errors.mdx#ravendb-hardware-and-os-requirements)  
   * Critical bug in `Voron`
 
 
@@ -47,9 +47,9 @@ If such errors happen, they need to be reported as soon as possible to [RavenDB 
 ## Resolution
 
 For the best results, simply restore a new database from a backup.  
-For more information, read this article about [backup configuration](../server/configuration/backup-configuration).  
+For more information, read this article about [backup configuration](../server/configuration/backup-configuration.mdx).  
 
-If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../server/troubleshooting/voron-recovery-tool).  
+If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../server/troubleshooting/voron-recovery-tool.mdx).  
 This tool can be used to recover intact data from the corrupted file and import it to a newly created database.  
   
 If the corruption has affected an index, it should simply be reset in order to restore normal functionality.  

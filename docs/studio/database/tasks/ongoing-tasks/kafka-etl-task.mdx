@@ -27,14 +27,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Document extensions like attachments, counters, or time series, are not transferred.  
  
 * This page explains how to create a Kafka ETL task using the Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/kafka) how to define a Kafka ETL task using code.  
+  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx) how to define a Kafka ETL task using code.  
 
 * In this page:  
-  * [Open Kafka ETL Task View](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#open-kafka-etl-task-view)  
-  * [Define Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#define-kafka-etl-task)  
-  * [Use RavenDB Certificate](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#use-ravendb-certificate)  
-  * [Options Per Topic](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#options-per-topic)  
-  * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#edit-transformation-script)  
+  * [Open Kafka ETL Task View](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#open-kafka-etl-task-view)  
+  * [Define Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task)  
+  * [Use RavenDB Certificate](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#use-ravendb-certificate)  
+  * [Options Per Topic](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#options-per-topic)  
+  * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#edit-transformation-script)  
 
 </Admonition>
 ## Open Kafka ETL Task View
@@ -67,8 +67,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Disabled - No documents are transformed and sent.  
 
 3. **Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Create new Kafka connection String**  
     * Select an existing connection string from the list or create a new one.  
@@ -102,7 +102,7 @@ If enabled, RavenDB will export to the target machine/s the cluster-wide
 certificate defined during setup, and secure its connection with them.  
 
 * If you do that, you will no longer need to define your security options manually 
-  (using [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task#define-kafka-etl-task)).  
+  (using [Add new connection option](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx#define-kafka-etl-task)).  
 * **Note**, however, that to complete the process you still need to register RavenDB's 
   exported certificate in [Kafka's truststore](https://kafka.apache.org/documentation/streams/developer-guide/security.html) 
   on the target machine/s.  

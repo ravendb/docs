@@ -22,16 +22,16 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <Admonition type="note" title="Note">
 
 * RavenDB Queries can be executed using `query` or `document_query`, or by passing 
-  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
   via `raw_query`.  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
 
 * The main differences between `Query` and `DocumentQuery` are outlined in this article.
 
 * In this page:
-  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
-  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query#immutability)
-  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Immutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#immutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
 
 </Admonition>
 ## API support
@@ -45,7 +45,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * When using _Query_, the query is translated into a _DocumentQuery_ object,  
   which then builds into an RQL that is sent to the server.
 
-* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
+* The available _Query_ methods and extensions are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
 **DocumentQuery**:
 
 * `DocumentQuery` does Not support LINQ.
@@ -54,14 +54,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * When using _DocumentQuery_, the query is translated into an RQL that is sent to the server.
 
-* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).
+* The available _DocumentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).
 <Admonition type="note" title="Note">
 
 **Note**:
 
 `Query` and `DocumentQuery` can be converted to one another.  
 This enables you to take advantage of all available API methods & extensions.  
-See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query#convert-between-documentquery-and-query).
+See [Convert between DocumentQuery and Query](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#convert-between-documentquery-and-query).
 
 </Admonition>
 
@@ -73,7 +73,7 @@ See [Convert between DocumentQuery and Query](../../../../client-api/session/que
   You might get different results if you try to *reuse* a query.
 * The usage of the `Query` method in the following example:
 
-<TabItem value="something" label="immutable_query">
+<TabItem value="immutable_query" label="immutable_query">
 <CodeBlock language="csharp">
 {`IRavenQueryable<User> query = session
     .Query<User>()
@@ -97,7 +97,7 @@ IRavenQueryable<User> eyeQuery = query
     `eyeQuery: from Users where startsWith(Name, 'A') and EyeColor = 'blue'`
 * A similar usage with `DocumentQuery`:
 
-<TabItem value="something" label="mutable_query">
+<TabItem value="mutable_query" label="mutable_query">
 <CodeBlock language="csharp">
 {`IDocumentQuery<User> documentQuery = session
     .Advanced
@@ -137,7 +137,7 @@ IDocumentQuery<User> eyeDocumentQuery = documentQuery
 
 * This behavior can be modified by calling `UsingDefaultOperator`:
         
-<TabItem value="something" label="default_operator">
+<TabItem value="default_operator" label="default_operator">
 <CodeBlock language="csharp">
 {`session
     .Advanced
@@ -161,7 +161,7 @@ Below you can find examples of equivalent calls.
 
 `query` method in `DocumentSession` is shorthand for calling `session.advanced().documentQuery`.
 
-<TabItem value="something-something" label="query_1a">
+<TabItem value="query_1a" label="query_1a">
 <CodeBlock language="java">
 {`session.query(Order.class)
 `}
@@ -170,7 +170,7 @@ Below you can find examples of equivalent calls.
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_1b">
+<TabItem value="query_1b" label="query_1b">
 <CodeBlock language="java">
 {`session.advanced().documentQuery(Order.class)
 `}
@@ -179,7 +179,7 @@ is equivalent to:
 
 ---
 
-<TabItem value="something-something" label="query_2a">
+<TabItem value="query_2a" label="query_2a">
 <CodeBlock language="java">
 {`session.query(Order.class, Orders_ByShipToAndLines.class)
 `}
@@ -188,7 +188,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_2b">
+<TabItem value="query_2b" label="query_2b">
 <CodeBlock language="java">
 {`session.advanced().documentQuery(Order.class, Orders_ByShipToAndLines.class)
 `}
@@ -197,7 +197,7 @@ is equivalent to:
 
 ---
 
-<TabItem value="something-something" label="query_3a">
+<TabItem value="query_3a" label="query_3a">
 <CodeBlock language="java">
 {`session.query(Order.class, Query.index("Orders/ByShipToAndLines"))
 `}
@@ -206,7 +206,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_3b">
+<TabItem value="query_3b" label="query_3b">
 <CodeBlock language="java">
 {`session.advanced().documentQuery(Order.class, "Orders/ByShipToAndLines", null, false);
 `}
@@ -215,7 +215,7 @@ is equivalent to:
 
 ---
 
-<TabItem value="something-something" label="query_4a">
+<TabItem value="query_4a" label="query_4a">
 <CodeBlock language="java">
 {`session.query(Order.class, Query.collection("orders"))
 `}
@@ -224,7 +224,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_4b">
+<TabItem value="query_4b" label="query_4b">
 <CodeBlock language="java">
 {`session.advanced().documentQuery(Order.class, null, "orders", false);
 `}
@@ -239,9 +239,9 @@ is equivalent to:
 <Admonition type="note" title="Note">
 
 * RavenDB Queries can be executed using `query` or `document_query`, or by passing 
-  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
   via `raw_query`.  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
 
 * In the Python client API, `query` methods and their equivalent `document_query` methods 
   provide the same functionality. (This is different from the C# client implementation, 
@@ -251,16 +251,16 @@ is equivalent to:
   `document_query` examples as well.  
 
 * In this page:
-  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
-  * [Mutability](../../../../client-api/session/querying/document-query/query-vs-document-query#mutability)
-  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query#default-query-operator)
+  * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+  * [Mutability](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#mutability)
+  * [Default query operator](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#default-query-operator)
 
 </Admonition>
 ## API support
 
 * `query` and `document_query` queries are translated to RQL and sent to the server.  
-* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).  
-* Available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods).  
+* Available _document_query_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).  
 
 
 
@@ -271,7 +271,7 @@ is equivalent to:
 
 * The usage of the `Query` method in the following example:
 
-<TabItem value="something-something" label="immutable_query">
+<TabItem value="immutable_query" label="immutable_query">
 <CodeBlock language="python">
 {`query = session.query(object_type=User).where_starts_with("name", "A")
 
@@ -291,7 +291,7 @@ eye_query = query.where_equals("eye_color", "blue")
     `eyeQuery: from Users where startsWith(name, 'A') and eye_color = 'blue'`
 * A similar usage with `document_query`:
 
-<TabItem value="something-something" label="mutable_query">
+<TabItem value="mutable_query" label="mutable_query">
 <CodeBlock language="python">
 {`document_query = session.advanced.document_query(object_type=User).where_starts_with("name", "A")
 
@@ -325,7 +325,7 @@ eye_document_query = document_query.where_equals("eye_color", "blue")
 
 * The operator can be replaced by calling `using_default_operator`:
         
-<TabItem value="something-something" label="default_operator">
+<TabItem value="default_operator" label="default_operator">
 <CodeBlock language="python">
 {`session.advanced.document_query(object_type=User).using_default_operator(QueryOperator.OR)
 `}
@@ -341,9 +341,9 @@ eye_document_query = document_query.where_equals("eye_color", "blue")
 <Admonition type="note" title="Note">
 
 * RavenDB Queries can be executed using `query` or `document_query`, or by passing 
-  [RQL](../../../../client-api/session/querying/what-is-rql) directly to the server 
+  [RQL](../../../../client-api/session/querying/what-is-rql.mdx) directly to the server 
   via `raw_query`.  
-  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query).
+  Learn more in [Query Overview](../../../../client-api/session/querying/how-to-query.mdx).
 
 * In the PHP client API, `query` methods and their equivalent `documentQuery` methods 
   provide the same functionality. (This is different from the C# client implementation, 
@@ -353,15 +353,15 @@ eye_document_query = document_query.where_equals("eye_color", "blue")
   `documentQuery` examples as well.  
 
 * In this page:
-   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query#api-support)
-   * [`query `and `documentQuery` equivalents](../../../../client-api/session/querying/document-query/query-vs-document-query#queryand-documentquery-equivalents)
+   * [API support](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#api-support)
+   * [`query `and `documentQuery` equivalents](../../../../client-api/session/querying/document-query/query-vs-document-query.mdx#queryand-documentquery-equivalents)
 
 </Admonition>
 ## API support
 
 * `query` and `documentQquery` queries are translated to RQL and sent to the server.  
-* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query#custom-methods).  
-* Available _documentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query#custom-methods-and-extensions).  
+* Available _query_ methods are listed [here](../../../../client-api/session/querying/how-to-query.mdx#custom-methods).  
+* Available _documentQuery_ methods and extensions are listed [here](../../../../client-api/session/querying/document-query/what-is-document-query.mdx#custom-methods-and-extensions).  
 
 
 
@@ -369,7 +369,7 @@ eye_document_query = document_query.where_equals("eye_color", "blue")
 
 #### 1. 
 
-<TabItem value="something-something" label="query_1a">
+<TabItem value="query_1a" label="query_1a">
 <CodeBlock language="php">
 {`$session->query(Order::class)
 `}
@@ -378,7 +378,7 @@ eye_document_query = document_query.where_equals("eye_color", "blue")
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_1b">
+<TabItem value="query_1b" label="query_1b">
 <CodeBlock language="php">
 {`$session->advanced()->documentQuery(Order::class)
 `}
@@ -386,7 +386,7 @@ is equivalent to:
 </TabItem>
 #### 2. 
 
-<TabItem value="something-something" label="query_2a">
+<TabItem value="query_2a" label="query_2a">
 <CodeBlock language="php">
 {`$session->query(Order::class, Orders_ByShipToAndLines::class)
 `}
@@ -395,7 +395,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_2b">
+<TabItem value="query_2b" label="query_2b">
 <CodeBlock language="php">
 {`$session->advanced()->documentQuery(Order::class, Orders_ByShipToAndLines::class)
 `}
@@ -403,7 +403,7 @@ is equivalent to:
 </TabItem>
 #### 3. 
 
-<TabItem value="something-something" label="query_3a">
+<TabItem value="query_3a" label="query_3a">
 <CodeBlock language="php">
 {`$session->query(Order::class, Query::index("Orders/ByShipToAndLines"))
 `}
@@ -412,7 +412,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_3b">
+<TabItem value="query_3b" label="query_3b">
 <CodeBlock language="php">
 {`$session->advanced()->documentQuery(Order::class, "Orders/ByShipToAndLines", null, false);
 `}
@@ -420,7 +420,7 @@ is equivalent to:
 </TabItem>
 #### 4. 
 
-<TabItem value="something-something" label="query_4a">
+<TabItem value="query_4a" label="query_4a">
 <CodeBlock language="php">
 {`$session->query(Order::class, Query::collection("orders"))
 `}
@@ -429,7 +429,7 @@ is equivalent to:
 
 is equivalent to:
 
-<TabItem value="something-something" label="query_4b">
+<TabItem value="query_4b" label="query_4b">
 <CodeBlock language="php">
 {`$session->advanced()->documentQuery(Order::class, null, "orders", false);
 `}
@@ -445,15 +445,15 @@ is equivalent to:
 <Admonition type="note" title="Note">
 
 * The Node.js client provides a **unified API** for querying documents via the `session.query()` method.  
-  All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query#query-api).
+  All available methods for the session's _query_ method are listed [here](../../../../client-api/session/querying/how-to-query.mdx#query-api).
 
 * The `query` method is essentially a shorthand for invoking the `documentQuery` method.  
   Examples of those equivalent calls are listed below. 
 
 
 </Admonition>
-<TabItem value="something-something" label="query_1">
-<CodeBlock language="nodejs">
+<TabItem value="query_1" label="query_1">
+<CodeBlock language="js">
 {`// This collection query:
 session.query(Order);
 
@@ -462,8 +462,8 @@ session.advanced.documentQuery(Order);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="query_2">
-<CodeBlock language="nodejs">
+<TabItem value="query_2" label="query_2">
+<CodeBlock language="js">
 {`// This collection query:
 session.query(\{ collection: "orders" \});
 
@@ -476,8 +476,8 @@ session.advanced.documentQuery(\{
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="query_3">
-<CodeBlock language="nodejs">
+<TabItem value="query_3" label="query_3">
+<CodeBlock language="js">
 {`// This index query:
 session.query(\{ indexName: "Orders/ByShipToAndLines" \});
 
@@ -486,8 +486,8 @@ session.advanced.documentQuery(\{ indexName: "Orders/ByShipToAndLines" \});
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="query_4">
-<CodeBlock language="nodejs">
+<TabItem value="query_4" label="query_4">
+<CodeBlock language="js">
 {`// This index query:
 session.query(\{ indexName: "Orders/ByShipToAndLines" \});
 

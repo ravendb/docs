@@ -24,11 +24,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * **Embeddings Cache Collection**
 
 * This article describes these custom-designed collections.  
-  It is recommended to first refer to this [Overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
+  It is recommended to first refer to this [Overview](../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---overview)
   to understand the embeddings generation process flow.
 * In this article:
-    * [The embeddings collections](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collections)
-    * [The embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection)
+    * [The embeddings collections](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collections)
+    * [The embeddings cache collection](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection)
     
 </Admonition>
 ## The embeddings collections
@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The document structure in the embeddings collection is:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "identifier-of-task-1": \{
@@ -75,7 +75,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </CodeBlock>
 </TabItem>
 * For example:  
-  In this [task definition](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-studio),
+  In this [task definition](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-studio),
   an embeddings generation task is defined on the `Categories` collection.  
   This creates the `@embeddings/Categories` collection, where a document will look as follows:
 
@@ -124,7 +124,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Each document in the `@embeddings-cache` collection references a **single attachment** that contains a single embedding vector.
   **The document ID includes**:  
-  * The [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview#creating-an-ai-connection-string),
+  * The [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#creating-an-ai-connection-string),
     which specifies the provider and model that generated the embedding.
   * A Base64 hash generated from a text chunk value - either from a source document property or from a search term.
   * If the embedding was quantized by the task, the document ID also includes the quantization type.
@@ -165,7 +165,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### Expiration policy
 * **The expiration date**:  
   Each document in this cache collection is created with an expiration date, which is set according to the expiration period defined in the embeddings generation task.
-  Once the expiration date is reached, the document is automatically deleted (provided that [document expiration](../../studio/database/settings/document-expiration) is enabled).
+  Once the expiration date is reached, the document is automatically deleted (provided that [document expiration](../../studio/database/settings/document-expiration.mdx) is enabled).
 
 * **Extending the expiration period**:  
   * When a source document (from which embeddings were generated) is modified - even if the change is not to a property used for embeddings -
@@ -196,7 +196,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      The document ID follows this format:  
      `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>`
         
-        If the embedding was [quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query#what-is-quantization) by the task
+        If the embedding was [quantized](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#what-is-quantization) by the task
         using a type other than _Single_ (e.g., _Int8_ or _Binary_),  
         the ID format includes the quantization type:  
         `embeddings-cache/<connection-string-identifier>/<hash-of-text-chunk-from-property-or-search-term>/<quantization-type>`

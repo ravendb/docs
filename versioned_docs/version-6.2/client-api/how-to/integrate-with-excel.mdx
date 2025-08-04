@@ -18,11 +18,11 @@ A very common use case for many applications is to expose data to users as an Ex
 
 The integration of Excel with the data store is achieved by a designated query streaming endpoint that outputs a stream in a format acceptable by `Excel`, Comma Separated Values (CSV).
 
-In order to take advantage of this feature, you need to specify a valid query according to [RQL syntax](../../client-api/session/querying/what-is-rql).
+In order to take advantage of this feature, you need to specify a valid query according to [RQL syntax](../../client-api/session/querying/what-is-rql.mdx).
 
 The generic HTTP request will have the following address:
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&format=csv
 `}
@@ -31,7 +31,7 @@ The generic HTTP request will have the following address:
 
 In order to include only specific properties in the CSV output you can use the `field` parameter:
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]&format=csv
 `}
@@ -40,17 +40,17 @@ In order to include only specific properties in the CSV output you can use the `
 
 <Admonition type="info" title="Dealing with long URLs" id="dealing-with-long-urls" href="#dealing-with-long-urls">
 
-In some cases it might be cumbersome to use the URL to send the query or the query might be too long. Please see our [dedicated section](../../client-api/how-to/integrate-with-excel#dealing-with-long-query-urls-in-excel) that deals with that problem.
+In some cases it might be cumbersome to use the URL to send the query or the query might be too long. Please see our [dedicated section](../../client-api/how-to/integrate-with-excel.mdx#dealing-with-long-query-urls-in-excel) that deals with that problem.
 
 </Admonition>
 
 ## Example
 
-First let's create a database, Northwind, and import the [sample data](../../studio/database/tasks/create-sample-data) into it.
+First let's create a database, Northwind, and import the [sample data](../../studio/database/tasks/create-sample-data.mdx) into it.
 
 Now let's query the product collection include the category document and project some of its properties using the below RQL:
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Products as p
 load p.Category as c
@@ -65,7 +65,7 @@ select
 
 In order to execute the above query we will need to use the following URL:   
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D&format=csv
 `}
@@ -74,7 +74,7 @@ In order to execute the above query we will need to use the following URL:
 
 Going to the above address in a web browser will download an export.csv file containing following results:
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`Name,Category
 Chang,Beverages
@@ -145,7 +145,7 @@ If you try and query for a bit more complex query, you might realize that excel 
 
 ### Long Query Example
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Products as p
 load p.Category as c
@@ -162,7 +162,7 @@ select
 
 After escaping the above query we will end up with the following request URL
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D&format=csv
 `}
@@ -181,7 +181,7 @@ For that you will need to include a document in your database with a `Query` pro
 The name of the document has no significance, but it is recommanded to use a key that reflects the purpose of this document.
 Let's add the `Query` property and set its value to the above query:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Query": "from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D",
@@ -195,7 +195,7 @@ Let's add the `Query` property and set its value to the above query:
 
 Now that we have the document ready for use, all we need to do is modify our URL so it will use the document redirection feature.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`http://localhost:8080/databases/Northwind/streams/queries?fromDocument=Excel%2FProductWithCatagory&format=csv
 `}

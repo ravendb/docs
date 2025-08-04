@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * In this article:
-    * [What is a vector database](../../ai-integration/vector-search/ravendb-as-vector-database#what-is-a-vector-database)
-    * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database)
+    * [What is a vector database](../../ai-integration/vector-search/ravendb-as-vector-database.mdx#what-is-a-vector-database)
+    * [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database.mdx#why-choose-ravendb-as-your-vector-database)
     
 </Admonition>
 ## What is a vector database
@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Words, phrases, entire documents, images, audio, and other types of data can all be vectorized.
 
 * The raw data is converted into embeddings using [transformers](https://huggingface.co/docs/transformers).  
-  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
+  To optimize storage and computation, transformers can encode embeddings with lower-precision data types, such as 8-bit integers, through a technique called [quantization](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
 
 **Indexing embeddings and searching**:  
 
@@ -80,16 +80,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * An index can consist of multiple index-fields, each having a distinct type, such as a standard field, a spatial field, a full-text search field, or a **vector field**.
   This flexibility allows you to work with complex documents containing various data types and retrieve meaningful insights by querying the index across all these fields.  
-  An example is available in [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index#indexing-multiple-field-types).
+  An example is available in [Indexing multiple field types](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-multiple-field-types).
 
-* Document [attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search) can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
+* Document [attachments](../../ai-integration/vector-search/indexing-attachments-for-vector-search.mdx) can also be indexed as vector fields, and Map-Reduce indexes can incorporate vector fields in their reduce phase, 
   further extending the versatility of your data processing and search capabilities.
 
 ##### Built-in embedding support:
 
 * **Textual input**:  
   Embeddings can be automatically generated from textual content within your documents by defining  
-  [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview).
+  [Embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx).
   These tasks connect to external embedding providers such as **Azure OpenAI, OpenAI, Hugging Face, Google AI, Ollama, or Mistral AI**.
   If no task is specified, embeddings will be generated using the built-in [bge-micro-v2](https://huggingface.co/TaylorAI/bge-micro-v2) model.
   
@@ -98,7 +98,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Numerical arrays input**:  
   Documents in RavenDB can also contain numerical arrays with **pre-made embeddings** created elsewhere.  
-  Use RavenDB's dedicated data type, [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search#ravenvector), to store these embeddings in your document entities.  
+  Use RavenDB's dedicated data type, [RavenVector](../../ai-integration/vector-search/data-types-for-vector-search.mdx#ravenvector), to store these embeddings in your document entities.  
   This type is highly optimized to reduce storage space and enhance the speed of reading arrays from disk.
 
 * **HNSW algorithm usage**:  
@@ -107,11 +107,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Optimize storage via quantization**:  
   RavenDB allows you to select the quantization format for the generated embeddings when creating the index.  
-  Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query#quantization-options).
+  Learn more in [Quantization options](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#quantization-options).
 
 * **Perform vector search**:  
-  Leverage RavenDB's [Auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query)
-  and [Static indexes](../../ai-integration/vector-search/vector-search-using-static-index) to perform a vector search,  
+  Leverage RavenDB's [Auto-indexes](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+  and [Static indexes](../../ai-integration/vector-search/vector-search-using-static-index.mdx) to perform a vector search,  
   retrieving documents based on contextual similarity rather than exact word matches.
 
 

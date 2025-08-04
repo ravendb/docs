@@ -21,12 +21,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 
 We can clear all session operations and stop tracking of all entities using the 
-[Clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes 
+[Clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes 
 there's a need to do cleanup only for one entity. This is what `Evict` is for.
 
 ## Syntax
 
-<TabItem value="something" label="evict_1">
+<TabItem value="evict_1" label="evict_1">
 <CodeBlock language="csharp">
 {`void Evict<T>(T entity);
 `}
@@ -39,7 +39,7 @@ there's a need to do cleanup only for one entity. This is what `Evict` is for.
 
 ## Example I
 
-<TabItem value="something" label="evict_2">
+<TabItem value="evict_2" label="evict_2">
 <CodeBlock language="csharp">
 {`Employee employee1 = new Employee
 \{
@@ -65,7 +65,7 @@ session.SaveChanges(); // only 'Joe Shmoe' will be saved
 
 ## Example II
 
-<TabItem value="something" label="evict_3">
+<TabItem value="evict_3" label="evict_3">
 <CodeBlock language="csharp">
 {`Employee employee = session.Load<Employee>("employees/1-A"); // loading from server
 employee = session.Load<Employee>("employees/1-A"); // no server call
@@ -81,12 +81,12 @@ employee = session.Load<Employee>("employees/1-A"); // loading from server
 
 
 We can clear all session operations and stop tracking of all entities using the 
-[clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes 
+[clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes 
 there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Syntax
 
-<TabItem value="something-something" label="evict_1">
+<TabItem value="evict_1" label="evict_1">
 <CodeBlock language="java">
 {`<T> void evict(T entity);
 `}
@@ -99,7 +99,7 @@ there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Example I
 
-<TabItem value="something-something" label="evict_2">
+<TabItem value="evict_2" label="evict_2">
 <CodeBlock language="java">
 {`Employee employee1 = new Employee();
 employee1.setFirstName("John");
@@ -121,7 +121,7 @@ session.saveChanges(); // only 'Joe Shmoe' will be saved
 
 ## Example II
 
-<TabItem value="something-something" label="evict_3">
+<TabItem value="evict_3" label="evict_3">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1-A");//loading from serer
 employee = session.load(Employee.class, "employees/1-A"); // no server call
@@ -137,12 +137,12 @@ employee = session.load(Employee.class, "employees/1-A"); // loading form server
 
 
 We can clear all session operations and stop tracking of all entities using the 
-[clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes 
+[clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes 
 there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Syntax
 
-<TabItem value="something-something" label="evict_1">
+<TabItem value="evict_1" label="evict_1">
 <CodeBlock language="python">
 {`def evict(self, entity: object) -> None: ...
 `}
@@ -155,7 +155,7 @@ there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Example I
 
-<TabItem value="something-something" label="evict_2">
+<TabItem value="evict_2" label="evict_2">
 <CodeBlock language="python">
 {`employee_1 = Employee(first_name="John", last_name="Doe")
 employee_2 = Employee(first_name="Joe", last_name="Shmoe")
@@ -172,7 +172,7 @@ session.save_changes()  # only 'Joe Shmoe' will be saved
 
 ## Example II
 
-<TabItem value="something-something" label="evict_3">
+<TabItem value="evict_3" label="evict_3">
 <CodeBlock language="python">
 {`employee = session.load("employees/1-A")  # loading from server
 employee = session.load("employees/1-A")  # no server call
@@ -188,12 +188,12 @@ employee = session.load("employees/1-A")  # loading form server
 
 
 We can clear all session operations and stop tracking of all entities using the 
-[clear](../../../client-api/session/how-to/clear-a-session) method, but sometimes 
+[clear](../../../client-api/session/how-to/clear-a-session.mdx) method, but sometimes 
 there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Syntax
 
-<TabItem value="something-something" label="evict_1">
+<TabItem value="evict_1" label="evict_1">
 <CodeBlock language="php">
 {`public function evict(object $entity): void;
 `}
@@ -206,7 +206,7 @@ there's a need to do cleanup only for one entity. This is what `evict` is for.
 
 ## Example I
 
-<TabItem value="something-something" label="evict_2">
+<TabItem value="evict_2" label="evict_2">
 <CodeBlock language="php">
 {`$employee1 = new Employee();
 $employee1->setFirstName("John");
@@ -228,7 +228,7 @@ $session->saveChanges(); // only 'Joe Shmoe' will be saved
 
 ## Example II
 
-<TabItem value="something-something" label="evict_3">
+<TabItem value="evict_3" label="evict_3">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1-A");//loading from serer
 $employee = $session->load(Employee::class, "employees/1-A"); // no server call
@@ -244,13 +244,13 @@ $employee = $session->load(Employee::class, "employees/1-A"); // loading form se
 
 
 We can clear all session operations and stop tracking of all entities using the 
-[session.advanced.clear()](../../../client-api/session/how-to/clear-a-session) method, 
+[session.advanced.clear()](../../../client-api/session/how-to/clear-a-session.mdx) method, 
 there's a need to do cleanup only for one entity. This is what `evict()` is for.
 
 ## Syntax
 
-<TabItem value="something-something" label="evict_1">
-<CodeBlock language="nodejs">
+<TabItem value="evict_1" label="evict_1">
+<CodeBlock language="js">
 {`session.advanced.evict(entity);
 `}
 </CodeBlock>
@@ -262,8 +262,8 @@ there's a need to do cleanup only for one entity. This is what `evict()` is for.
 
 ## Example I
 
-<TabItem value="something-something" label="evict_2">
-<CodeBlock language="nodejs">
+<TabItem value="evict_2" label="evict_2">
+<CodeBlock language="js">
 {`const employee1 = new Employee();
 employee1.firstName = "John";
 employee1.lastName = "Doe";
@@ -284,8 +284,8 @@ await session.saveChanges();        // only 'Joe Shmoe' will be saved
 
 ## Example II
 
-<TabItem value="something-something" label="evict_3">
-<CodeBlock language="nodejs">
+<TabItem value="evict_3" label="evict_3">
+<CodeBlock language="js">
 {`let employee = await session.load("employees/1-A"); // loading from serer
 employee = await session.load("employees/1-A");     // no server call
 session.advanced.evict(employee);

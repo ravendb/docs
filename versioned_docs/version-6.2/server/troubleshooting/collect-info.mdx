@@ -23,12 +23,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:
 
-  * [Provide incident description](../../server/troubleshooting/collect-info#provide-incident-description)
-  * [Create debug package](../../server/troubleshooting/collect-info#create-debug-package)
-  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues)
-  * [Download logs](../../server/troubleshooting/collect-info#download-logs)
-  * [Reproduce scenario](../../server/troubleshooting/collect-info#reproduce-scenario)
-  * [Create failing test](../../server/troubleshooting/collect-info#create-failing-test)
+  * [Provide incident description](../../server/troubleshooting/collect-info.mdx#provide-incident-description)
+  * [Create debug package](../../server/troubleshooting/collect-info.mdx#create-debug-package)
+  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues)
+  * [Download logs](../../server/troubleshooting/collect-info.mdx#download-logs)
+  * [Reproduce scenario](../../server/troubleshooting/collect-info.mdx#reproduce-scenario)
+  * [Create failing test](../../server/troubleshooting/collect-info.mdx#create-failing-test)
 
 </Admonition>
 
@@ -115,7 +115,7 @@ then enable the following logs (if not enabled yet) before downloading existing 
    * Click 'Configure' to enable the logging of Microsoft logs to the server logs.
    * Use the following suggested log configuration: 
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
    "Microsoft.AspNetCore":"Debug"
@@ -130,10 +130,10 @@ then enable the following logs (if not enabled yet) before downloading existing 
 * Be aware that all logs settings will reset to their default values after a server restart.  
 
 * To maintain a specific setting after a server restart, set the following configuration keys  
-  in your [default configuration](../../server/configuration/configuration-options):
-  * Server logs - set [Logs.Mode](../../server/configuration/logs-configuration#logs.mode)
-  * Microsoft logs - set [Logs.Microsoft.Disable](../../server/configuration/logs-configuration#logs.microsoft.disable)
-  * Traffic Watch log - set [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration#trafficwatch.mode)
+  in your [default configuration](../../server/configuration/configuration-options.mdx):
+  * Server logs - set [Logs.Mode](../../server/configuration/logs-configuration.mdx#logs.mode)
+  * Microsoft logs - set [Logs.Microsoft.Disable](../../server/configuration/logs-configuration.mdx#logs.microsoft.disable)
+  * Traffic Watch log - set [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration.mdx#trafficwatch.mode)
 
 </Admonition>
 
@@ -166,11 +166,11 @@ __If the Studio is unavailable__, or if the logs downloaded via the Studio appea
 then copy the log files directly from the disk to another location to ensure that you keep them,  
 avoiding potential loss due to the retention configuration.
 
-* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration.
+* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logs.path) configuration.
 
 * Logs deletion time is controlled by the following configurations:
-  * [Retention time in hours](../../server/configuration/logs-configuration#logs.retentiontimeinhrs)
-  * [Retention time in megabytes](../../server/configuration/logs-configuration#logs.retentionsizeinmb)
+  * [Retention time in hours](../../server/configuration/logs-configuration.mdx#logs.retentiontimeinhrs)
+  * [Retention time in megabytes](../../server/configuration/logs-configuration.mdx#logs.retentionsizeinmb)
 
 </Admonition> 
 
@@ -193,7 +193,7 @@ __Before sending the log files__, perform the following checks:
 
 * If the incident is over and you can reproduce it, then first verify logging level is set to 'Information'.  
 
-* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues).
+* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
 
 
 
@@ -201,7 +201,7 @@ __Before sending the log files__, perform the following checks:
 
 * If possible, it is advised to create a unit test that showcases the failure in your client code.
 
-* Refer to [Writing your unit test](../../start/test-driver) to learn how to use __RavenDB's TestDriver__.
+* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use __RavenDB's TestDriver__.
 
 
 

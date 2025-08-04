@@ -23,9 +23,9 @@ Because some CSV files are formatted differently, the RavenDB Studio enables you
 
 In this page: 
 
-* [What is CSV](../../../../studio/database/tasks/import-data/import-from-csv#what-is-csv)  
-* [How should I format my documents as CSV](../../../../studio/database/tasks/import-data/import-from-csv#how-should-i-format-my-documents-as-csv)  
-* [How to Import a CSV via RavenDB Studio](../../../../studio/database/tasks/import-data/import-from-csv#how-to-import-a-csv-via-ravendb-studio)  
+* [What is CSV](../../../../studio/database/tasks/import-data/import-from-csv.mdx#what-is-csv)  
+* [How should I format my documents as CSV](../../../../studio/database/tasks/import-data/import-from-csv.mdx#how-should-i-format-my-documents-as-csv)  
+* [How to Import a CSV via RavenDB Studio](../../../../studio/database/tasks/import-data/import-from-csv.mdx#how-to-import-a-csv-via-ravendb-studio)  
 
 
 
@@ -49,7 +49,7 @@ There are three types of properties in JSON:
 - Array: an array of values that can either be primitives, nested objects, or arrays  
 
 Let's look at a sample JSON document:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "Import from CSV",
@@ -72,7 +72,7 @@ Let's look at a sample JSON document:
 
 The `Name` property is a primitive and should appear unescaped in the CSV like so: 
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`Name
 Import from CSV
@@ -85,7 +85,7 @@ The decomposition rule goes as follows:
 [`the name of the parent property`].[`name of the inner object property`]  
 like so:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`NestedObject.Name
 Inner Object
@@ -97,7 +97,7 @@ The import process will combine properties with the same prefix back into one JS
 
 The `ArrayObject` property is an array and as such contains multiple values. These should be escaped as a string like so:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`ArrayObject
 "[1,2,3,4]"
@@ -107,7 +107,7 @@ The `ArrayObject` property is an array and as such contains multiple values. The
 
 The last thing we need in order for an import to work is to add the `collection` property. If we don't, the name of the collection will derive from the CSV file name.
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`@metadata.@collection
 Samples
@@ -117,7 +117,7 @@ Samples
 
 If we want to import the document with a specific `id` we need to include an `@id` property too. 
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`@id
 Samples/1-A
@@ -127,7 +127,7 @@ Samples/1-A
 
 The complete CSV line should look like this:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`@id,Name,NestedObject.Name,ArrayObject,@metadata.@collection
 Samples/1-A,Import from CSV,Inner Object,"[1,2,3,4]",Samples
@@ -163,9 +163,9 @@ Now that we've got a valid CSV file we can import it to RavenDB.
 5. **Import from File**  
    Select the file to import.  
 6. **Import to Collection**  
-   Name the [collection](../../../../client-api/faq/what-is-a-collection) where the file will be imported. 
+   Name the [collection](../../../../client-api/faq/what-is-a-collection.mdx) where the file will be imported. 
    If you don't choose a name, RavenDB will use the CSV file name. 
-   When running an [RQL](../../../../client-api/session/querying/what-is-rql) query, the code `from` often refers to 
+   When running an [RQL](../../../../client-api/session/querying/what-is-rql.mdx) query, the code `from` often refers to 
    the collection that contains the desired document.  
 7. **CSV options**  
   Define CSV formatting configurations.  Make sure they match the source .csv file.  
@@ -190,6 +190,6 @@ Now that we've got a valid CSV file we can import it to RavenDB.
 8. Select **Import Collection**  
   
 After importing the CSV file, the resulting .json document should look like the document 
-[above](../../../../studio/database/tasks/import-data/import-from-csv#how-should-i-format-my-documents-as-csv).  
+[above](../../../../studio/database/tasks/import-data/import-from-csv.mdx#how-should-i-format-my-documents-as-csv).  
 
 

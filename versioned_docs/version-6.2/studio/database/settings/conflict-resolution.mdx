@@ -17,11 +17,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Define the server behaviour upon a conflict between documents.  
 
-* Conflicts that are created can be manually resolved in [Documents Conflicts View](../../../studio/database/documents/conflicts-view).  
+* Conflicts that are created can be manually resolved in [Documents Conflicts View](../../../studio/database/documents/conflicts-view.mdx).  
 
 * In this page:  
-  * [The Conflicts Resolution View](../../../studio/database/settings/conflict-resolution#the-conflicts-resolution-view)  
-  * [Script Examples](../../../studio/database/settings/conflict-resolution#script-examples)  
+  * [The Conflicts Resolution View](../../../studio/database/settings/conflict-resolution.mdx#the-conflicts-resolution-view)  
+  * [Script Examples](../../../studio/database/settings/conflict-resolution.mdx#script-examples)  
 </Admonition>
 ## The Conflicts Resolution View
 
@@ -57,7 +57,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 *  1. Resolve according to field content - return the highest value of the field  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// First conflicting document
 \{
@@ -68,7 +68,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Second conflicting document
 \{
@@ -79,7 +79,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// The resolving script:
 var maxRecord = 0;
@@ -98,7 +98,7 @@ return docs[0];
 
 * 2. Resolve by deleting the document  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`if (hasTombstone) \{
     return resolveToTombstone;
@@ -112,7 +112,7 @@ return docs[0];
 
 * 3. The metadata can also be accessed - return the document that has the largest number of attachments  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var result = docs[0];
 

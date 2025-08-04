@@ -14,7 +14,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Configuration: Core
 
-[settings.json](../../server/configuration/configuration-options#settings.json) variables change your server's behavior in various ways.  
+[settings.json](../../server/configuration/configuration-options.mdx#settings.json) variables change your server's behavior in various ways.  
 
 <Admonition type="note" title="Note">
 RavenDB reads `settings.json` only during startup.  
@@ -41,7 +41,7 @@ Setting to a non loopback address using the ***HTTP*** protocol will expose the 
 
 * The server will listen to incoming requests in all the network devices available on the machine on the specific port
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://0.0.0.0:8080
 `}
@@ -50,7 +50,7 @@ Setting to a non loopback address using the ***HTTP*** protocol will expose the 
 
 * The server will listen to loopback device only:
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://localhost:8080
 `}
@@ -59,7 +59,7 @@ Setting to a non loopback address using the ***HTTP*** protocol will expose the 
 
 * Server using IPV6 loopback only address
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://[0:0:0:0:0:0:0:1]:8080
 `}
@@ -91,7 +91,7 @@ Same security consideration as in ***ServerUrl*** option should be applied (see 
 
 * The server will listen to TCP connections in all the network devices available on the machine
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`tcp://0.0.0.0:38888
 `}
@@ -114,7 +114,7 @@ Set the URL to be accessible by clients and other nodes, regardless of which IP 
 
 * Use LAN proxy server address 10.0.0.1
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`http://10.0.0.1:80
 `}
@@ -123,7 +123,7 @@ Set the URL to be accessible by clients and other nodes, regardless of which IP 
 
 * Use a specific https domain
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`https://example.com:8080
 `}
@@ -148,7 +148,7 @@ Set the public TCP address of the server. Used for inter-node communication and 
 
 ### Examples
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`tcp://example.com:38888
 `}
@@ -169,7 +169,7 @@ resolutions etc.) can **accelerate internal cluster communications**.
 
 <Admonition type="info" title="Info">
 Internal cluster communications can be particularly useful when the 
-cluster is [sharded](../../sharding/overview), because of the amount 
+cluster is [sharded](../../sharding/overview.mdx), because of the amount 
 of internal communication needed: for a shard to satisfy its client 
 requests, it often has to communicate with all other shards. Performing 
 these communications internally can provide a better user experience, 
@@ -182,7 +182,7 @@ and save much time and money over time.
 
 ### Examples
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`// must include http or https
 http://192.168.10.9
@@ -190,7 +190,7 @@ http://192.168.10.9
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`// can include port number
 https://example.com:8080
@@ -234,7 +234,7 @@ Relative paths will be based from the application base directory (where the Rave
 
 ### Examples
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`/home/user/databases
 `}
@@ -283,7 +283,7 @@ The URLs which the server should contact when requesting certificates from using
 
 ## Features.Availability
 
-This [settings.json](../../server/configuration/configuration-options#settings.json) variable determines whether to run RavenDB with its standard 
+This [settings.json](../../server/configuration/configuration-options.mdx#settings.json) variable determines whether to run RavenDB with its standard 
 features set, or add to a set of experimental features.  
 Some features, like ones recently released, are considered **experimental**. They are disabled by default, you can enable 
 them by setting `Features.Availability` to `Experimental`.  

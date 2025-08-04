@@ -24,12 +24,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use the low-level `DeleteDocumentCommand` to remove a document from the database.
 
-* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities).  
+* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities.mdx).  
 
 * In this page:
 
-    * [Examples](../../../client-api/commands/documents/delete#examples)
-    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+    * [Examples](../../../client-api/commands/documents/delete.mdx#examples)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -149,7 +149,7 @@ catch (Exception e)
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public DeleteDocumentCommand(string id, string changeVector)
 `}
@@ -159,7 +159,7 @@ catch (Exception e)
 | Parameter        | Type     | Description                                                                                                                                                                                                                                             |
 |------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
-| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
 
 
 
@@ -172,7 +172,7 @@ catch (Exception e)
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_interface">
+<TabItem value="delete_interface" label="delete_interface">
 <CodeBlock language="java">
 {`public DeleteDocumentCommand(String id, String changeVector)
 `}
@@ -186,7 +186,7 @@ catch (Exception e)
 
 ## Example
 
-<TabItem value="something-something" label="delete_sample">
+<TabItem value="delete_sample" label="delete_sample">
 <CodeBlock language="java">
 {`DeleteDocumentCommand command = new DeleteDocumentCommand("employees/1-A", null);
 session.advanced().getRequestExecutor().execute(command);
@@ -205,13 +205,13 @@ session.advanced().getRequestExecutor().execute(command);
 
 * In this page:
 
-    * [Example](../../../client-api/commands/documents/delete#example)
-    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+    * [Example](../../../client-api/commands/documents/delete.mdx#example)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
 
 </Admonition>
 ## Example
 
-<TabItem value="something-something" label="delete_sample">
+<TabItem value="delete_sample" label="delete_sample">
 <CodeBlock language="python">
 {`command = DeleteDocumentCommand("employees/1-A", None)
 session.advanced.request_executor.execute_command(command)
@@ -224,7 +224,7 @@ session.advanced.request_executor.execute_command(command)
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_interface">
+<TabItem value="delete_interface" label="delete_interface">
 <CodeBlock language="python">
 {`class DeleteDocumentCommand(VoidRavenCommand):
     def __init__(self, key: str, change_vector: Optional[str] = None): ...
@@ -250,13 +250,13 @@ session.advanced.request_executor.execute_command(command)
 
 * In this page:
 
-    * [Example](../../../client-api/commands/documents/delete#example)
-    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+    * [Example](../../../client-api/commands/documents/delete.mdx#example)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
 
 </Admonition>
 ## Example
 
-<TabItem value="something-something" label="delete_sample">
+<TabItem value="delete_sample" label="delete_sample">
 <CodeBlock language="php">
 {`$command = new DeleteDocumentCommand("employees/1-A", null);
 $session->advanced()->getRequestExecutor()->execute($command);
@@ -269,7 +269,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_interface">
+<TabItem value="delete_interface" label="delete_interface">
 <CodeBlock language="php">
 {`DeleteDocumentCommand(?string $idOrCopy, ?string $changeVector = null);
 `}
@@ -292,12 +292,12 @@ $session->advanced()->getRequestExecutor()->execute($command);
 
 * Use the low-level `DeleteDocumentCommand` to remove a document from the database.
 
-* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities).
+* To delete a document using a higher-level method, see [deleting entities](../../../client-api/session/deleting-entities.mdx).
 
 * In this page:
 
-    * [Examples](../../../client-api/commands/documents/delete#examples)
-    * [Syntax](../../../client-api/commands/documents/delete#syntax)
+    * [Examples](../../../client-api/commands/documents/delete.mdx#examples)
+    * [Syntax](../../../client-api/commands/documents/delete.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -305,8 +305,8 @@ $session->advanced()->getRequestExecutor()->execute($command);
 <Admonition type="note" title="Note">
 
 **Delete document command - using the Store's request executor**:
-<TabItem value="something-something" label="delete_document_1">
-<CodeBlock language="nodejs">
+<TabItem value="delete_document_1" label="delete_document_1">
+<CodeBlock language="js">
 {`// Define the Delete Command
 // Pass the document ID & whether to make a concurrency check
 const command = new DeleteDocumentCommand("employees/1-A", null);
@@ -321,8 +321,8 @@ await documentStore.getRequestExecutor().execute(command);
 <Admonition type="note" title="Note">
 
 **Delete document command - using the Session's request executor**:
-<TabItem value="something-something" label="delete_document_2">
-<CodeBlock language="nodejs">
+<TabItem value="delete_document_2" label="delete_document_2">
+<CodeBlock language="js">
 {`const command = new DeleteDocumentCommand("employees/1-A", null);
 
 // Send the command to the server using the Session's Request Executor
@@ -335,8 +335,8 @@ await session.advanced.requestExecutor.execute(command);
 <Admonition type="note" title="Note">
 
 **Delete document command - with concurrency check**:
-<TabItem value="something-something" label="delete_document_3">
-<CodeBlock language="nodejs">
+<TabItem value="delete_document_3" label="delete_document_3">
+<CodeBlock language="js">
 {`// Load a document
 const employeeDocument = await session.load('employees/2-A');
 const cv = session.advanced.getChangeVectorFor(employeeDocument);
@@ -366,8 +366,8 @@ catch (err) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`DeleteDocumentCommand(id, changeVector);
 `}
 </CodeBlock>
@@ -376,7 +376,7 @@ catch (err) \{
 | Parameter        | Type     | Description                                                                                                                                                                                                                                             |
 |------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string` | The ID of the document to delete.                                                                                                                                                                                                                       |
-| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
+| **changeVector** | `string` | The change-vector of the document you wish to delete,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the deletion. |
 
 
 

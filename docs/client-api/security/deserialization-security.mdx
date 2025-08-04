@@ -29,13 +29,13 @@ export const supportedLanguages = ["csharp"];
   that deserialization is forbidden or allowed for.  
 
 * In this page:  
-  * [Securing Deserialization](../../client-api/security/deserialization-security#securing-deserialization)  
-  * [Invoking a Gadget](../../client-api/security/deserialization-security#invoking-a-gadget)  
-  * [DefaultRavenSerializationBinder](../../client-api/security/deserialization-security#defaultravenserializationbinder)  
-     * [RegisterForbiddenNamespace](../../client-api/security/deserialization-security#section)  
-     * [RegisterForbiddenType](../../client-api/security/deserialization-security#section-1)  
-     * [RegisterSafeType](../../client-api/security/deserialization-security#section-2)  
-  * [Example](../../client-api/security/deserialization-security#example)  
+  * [Securing Deserialization](../../client-api/security/deserialization-security.mdx#securing-deserialization)  
+  * [Invoking a Gadget](../../client-api/security/deserialization-security.mdx#invoking-a-gadget)  
+  * [DefaultRavenSerializationBinder](../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder)  
+     * [RegisterForbiddenNamespace](../../client-api/security/deserialization-security.mdx#section)  
+     * [RegisterForbiddenType](../../client-api/security/deserialization-security.mdx#section-1)  
+     * [RegisterSafeType](../../client-api/security/deserialization-security.mdx#section-2)  
+  * [Example](../../client-api/security/deserialization-security.mdx#example)  
 
 </Admonition>
 ## Securing Deserialization
@@ -60,7 +60,7 @@ export const supportedLanguages = ["csharp"];
     `System.Data.DataViewManager, System.Xml.XmlDocument/XmlDataDocument`  
     `System.Management.Automation.PSObject`  
 
-* Users can easily [modify](../../client-api/security/deserialization-security#defaultravenserializationbinder) 
+* Users can easily [modify](../../client-api/security/deserialization-security.mdx#defaultravenserializationbinder) 
   the list of namespaces and object types for which deserialization is forbidden 
   or allowed.  
 
@@ -74,7 +74,7 @@ export const supportedLanguages = ["csharp"];
   default deserializer list.  
 
     E.g., the following segment will be executed,  
-<TabItem value="something" label="DeserializationSecurity_load-object">
+<TabItem value="DeserializationSecurity_load-object" label="DeserializationSecurity_load-object">
 <CodeBlock language="csharp">
 {`// The object will be allowed to be deserialized
 // regardless of the default binder list.  
@@ -93,7 +93,7 @@ session.Load<object>("Gadget");
     during deserialization.  
     Including this type in the default deserialization list will 
     prevent the gadget's deserialization and execution.  
-<TabItem value="something" label="DeserializationSecurity_define-type">
+<TabItem value="DeserializationSecurity_define-type" label="DeserializationSecurity_define-type">
 <CodeBlock language="csharp">
 {`string userdata = @"\{
     '$type':'System.Windows.Data.ObjectDataProvider, PresentationFramework, Version=4.0.0.0, 
@@ -123,7 +123,7 @@ allow the deserialization of trusted object types.
 Define a `DefaultRavenSerializationBinder` instance, use the dedicated 
 methods to forbid or allow the deserialization of entities, and register 
 the defined instance as a serialization convention as shown 
-[below](../../client-api/security/deserialization-security#example).  
+[below](../../client-api/security/deserialization-security.mdx#example).  
 
 <Admonition type="note" title="Note">
 Be sure to update the default deserializer list **before** the initialization 
@@ -132,7 +132,7 @@ of the document that you want the list to apply to.
 ### `RegisterForbiddenNamespace`  
 Use `RegisterForbiddenNamespace` to prevent the deserialization of objects loaded from a given namespace.
 
-<TabItem value="something" label="RegisterForbiddenNamespace_definition">
+<TabItem value="RegisterForbiddenNamespace_definition" label="RegisterForbiddenNamespace_definition">
 <CodeBlock language="csharp">
 {`public void RegisterForbiddenNamespace(string @namespace)
 `}
@@ -153,7 +153,7 @@ Use `RegisterForbiddenNamespace` to prevent the deserialization of objects loade
 ### `RegisterForbiddenType`  
 Use `RegisterForbiddenType` to prevent the deserialization of a given object type.
 
-<TabItem value="something" label="RegisterForbiddenType_definition">
+<TabItem value="RegisterForbiddenType_definition" label="RegisterForbiddenType_definition">
 <CodeBlock language="csharp">
 {`public void RegisterForbiddenType(Type type)
 `}
@@ -175,7 +175,7 @@ Use `RegisterForbiddenType` to prevent the deserialization of a given object typ
 ### `RegisterSafeType`  
 Use `RegisterSafeType` to **allow** the deserialization of a given object type.
 
-<TabItem value="something" label="RegisterSafeType_definition">
+<TabItem value="RegisterSafeType_definition" label="RegisterSafeType_definition">
 <CodeBlock language="csharp">
 {`public void RegisterSafeType(Type type)
 `}
@@ -188,7 +188,7 @@ Use `RegisterSafeType` to **allow** the deserialization of a given object type.
 
 ## Example
 
-<TabItem value="something" label="DefaultRavenSerializationBinder">
+<TabItem value="DefaultRavenSerializationBinder" label="DefaultRavenSerializationBinder">
 <CodeBlock language="csharp">
 {`// Create a default serialization binder
 var binder = new DefaultRavenSerializationBinder();

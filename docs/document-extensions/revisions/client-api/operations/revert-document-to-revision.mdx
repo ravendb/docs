@@ -24,16 +24,16 @@ export const supportedLanguages = ["csharp"];
 * This article describes how to revert specific documents to specific revisions using the `RevertRevisionsByIdOperation` operation.
 
 * To revert documents from all collections (or from selected collections) to a specified point in time,  
-  see [Revert documents to revisions](../../../../document-extensions/revisions/revert-revisions). 
+  see [Revert documents to revisions](../../../../document-extensions/revisions/revert-revisions.mdx). 
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Overview](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision#overview)
-  * [Revert single document](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision#revert-single-document)
-  * [Revert multiple documents](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision#revert-multiple-documents)
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision#syntax)  
+  * [Overview](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#overview)
+  * [Revert single document](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-single-document)
+  * [Revert multiple documents](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-multiple-documents)
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#syntax)  
 
 </Admonition>
 ## Overview
@@ -55,7 +55,7 @@ export const supportedLanguages = ["csharp"];
   * **Counters**:  
     If the target revision owns counters, they are restored to functionality with their values at the time the revision was created.  
   * **Time series**:  
-    Time series data is Not reverted. Learn more [here](../../../../document-extensions/revisions/revisions-and-other-features#reverted-data-1).
+    Time series data is Not reverted. Learn more [here](../../../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).
 
 * When executing this operation on a document that had revisions and was deleted, placing it in the Revisions Bin,
   the document will be **recreated** with the content of the specified target revision and will be removed from the Revisions Bin.
@@ -63,7 +63,7 @@ export const supportedLanguages = ["csharp"];
 
 The change-vector of a revision can be obtained via:  
 
-  * The Client API - follow the code in the examples [below](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision#revert-single-document)  
+  * The Client API - follow the code in the examples [below](../../../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx#revert-single-document)  
   * Or from the document view in the Studio  
 
 ![Get revision CV](./assets/get-cv-for-revision.png)
@@ -206,7 +206,7 @@ Note: The documents do not need to belong to the same collection.
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`Available overloads:
 ====================

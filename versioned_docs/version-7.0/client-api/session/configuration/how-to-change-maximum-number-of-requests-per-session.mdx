@@ -34,7 +34,7 @@ Nevertheless, if needed, this number can be changed for a single session or for 
 To change the maximum number of requests in a single session, modify the `MaxNumberOfRequestsPerSession` 
 property value using the `Advanced` session operations.
 
-<TabItem value="something" label="max_requests_1">
+<TabItem value="max_requests_1" label="max_requests_1">
 <CodeBlock language="csharp">
 {`session.Advanced.MaxNumberOfRequestsPerSession = 50;
 `}
@@ -46,7 +46,7 @@ property value using the `Advanced` session operations.
 To change the maximum number of requests for **all** sessions (on a particular store), 
 the `MaxNumberOfRequestsPerSession` property from DocumentStore `Conventions` must be changed.
 
-<TabItem value="something" label="max_requests_2">
+<TabItem value="max_requests_2" label="max_requests_2">
 <CodeBlock language="csharp">
 {`store.Conventions.MaxNumberOfRequestsPerSession = 100;
 `}
@@ -55,7 +55,7 @@ the `MaxNumberOfRequestsPerSession` property from DocumentStore `Conventions` mu
 
 <Admonition type="info" title="Injecting MaxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
 The maximum number of requests for all sessions can also be configured via injected client 
-configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
+configuration from the Server. Read more about this [here](../../../studio/server/client-configuration.mdx).
 </Admonition>
 
 
@@ -77,7 +77,7 @@ Nevertheless, if needed, this number can be changed for a single session or for 
 To change the maximum number of requests in a single session, modify the `maxNumberOfRequestsPerSession` 
 field value using the `advanced` session operations.
 
-<TabItem value="something-something" label="max_requests_1">
+<TabItem value="max_requests_1" label="max_requests_1">
 <CodeBlock language="java">
 {`session.advanced().setMaxNumberOfRequestsPerSession(50);
 `}
@@ -89,7 +89,7 @@ field value using the `advanced` session operations.
 To change the maximum number of requests for **all** sessions (on a particular store), 
 the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
 
-<TabItem value="something-something" label="max_requests_2">
+<TabItem value="max_requests_2" label="max_requests_2">
 <CodeBlock language="java">
 {`store.getConventions().setMaxNumberOfRequestsPerSession(100);
 `}
@@ -98,7 +98,7 @@ the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must 
 
 <Admonition type="info" title="Injecting maxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
 The maximum number of requests for all sessions can also be configured via injected client 
-configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
+configuration from the Server. Read more about this [here](../../../studio/server/client-configuration.mdx).
 </Admonition>
 
 
@@ -120,7 +120,7 @@ Nevertheless, if needed, this number can be changed for a single session or for 
 To change the maximum number of requests for a **single** session, modify the value 
 of the `session` `_max_number_of_requests_per_session` property.
 
-<TabItem value="something-something" label="max_requests_1">
+<TabItem value="max_requests_1" label="max_requests_1">
 <CodeBlock language="python">
 {`session._max_number_of_requests_per_session = 50
 `}
@@ -132,7 +132,7 @@ of the `session` `_max_number_of_requests_per_session` property.
 To change the maximum number of requests for **all** sessions (on a particular store), 
 change the value of the DocumentStore `conventions` `max_number_of_requests_per_session ` property.
 
-<TabItem value="something-something" label="max_requests_2">
+<TabItem value="max_requests_2" label="max_requests_2">
 <CodeBlock language="python">
 {`store.conventions.max_number_of_requests_per_session = 100
 `}
@@ -141,7 +141,7 @@ change the value of the DocumentStore `conventions` `max_number_of_requests_per_
 
 <Admonition type="info" title="Injecting `max_number_of_requests_per_session ` from the Server" id="injecting-max_number_of_requests_per_session-from-the-server" href="#injecting-max_number_of_requests_per_session-from-the-server">
 The maximum number of requests for all sessions can also be configured by via injected client 
-configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
+configuration from the Server. Read more about this [here](../../../studio/server/client-configuration.mdx).
 </Admonition>
 
 
@@ -165,7 +165,7 @@ set the value of the session `maxNumberOfRequestsPerSession` property.
 
 You can do this using the **advanced session** `setMaxNumberOfRequestsPerSession` method.
 
-<TabItem value="something-something" label="max_requests_1">
+<TabItem value="max_requests_1" label="max_requests_1">
 <CodeBlock language="php">
 {`$session->advanced()->setMaxNumberOfRequestsPerSession(50);
 `}
@@ -179,7 +179,7 @@ set the value of the DocumentStore conventions `maxNumberOfRequestsPerSession` p
 
 You can do this using the **store** `setMaxNumberOfRequestsPerSession` method.
 
-<TabItem value="something-something" label="max_requests_2">
+<TabItem value="max_requests_2" label="max_requests_2">
 <CodeBlock language="php">
 {`$store->getConventions()->setMaxNumberOfRequestsPerSession(100);
 `}
@@ -188,7 +188,7 @@ You can do this using the **store** `setMaxNumberOfRequestsPerSession` method.
 
 <Admonition type="info" title="Info">
 The maximum number of requests for all sessions can also be configured by via injected client 
-configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
+configuration from the Server. Read more about this [here](../../../studio/server/client-configuration.mdx).
 </Admonition>
 
 
@@ -210,8 +210,8 @@ Nevertheless, if needed, this number can be changed for a single session or for 
 To change the maximum number of requests in a single session, modify the `maxNumberOfRequestsPerSession` 
 field value using the `Advanced` session operations.
 
-<TabItem value="something-something" label="max_requests_1">
-<CodeBlock language="nodejs">
+<TabItem value="max_requests_1" label="max_requests_1">
+<CodeBlock language="js">
 {`session.advanced.maxNumberOfRequestsPerSession = 50;
 `}
 </CodeBlock>
@@ -222,8 +222,8 @@ field value using the `Advanced` session operations.
 To change the maximum number of requests for **all** sessions (on a particular store), 
 the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must be changed.
 
-<TabItem value="something-something" label="max_requests_2">
-<CodeBlock language="nodejs">
+<TabItem value="max_requests_2" label="max_requests_2">
+<CodeBlock language="js">
 {`store.conventions.maxNumberOfRequestsPerSession = 100;
 `}
 </CodeBlock>
@@ -231,7 +231,7 @@ the `maxNumberOfRequestsPerSession` field from DocumentStore `conventions` must 
 
 <Admonition type="info" title="Injecting maxNumberOfRequestsPerSession from the Server" id="injecting-maxnumberofrequestspersession-from-the-server" href="#injecting-maxnumberofrequestspersession-from-the-server">
 The maximum number of requests for all sessions can also be configured via injected client 
-configuration from the Server. Read more about this [here](../../../studio/server/client-configuration).
+configuration from the Server. Read more about this [here](../../../studio/server/client-configuration.mdx).
 </Admonition>
 
 

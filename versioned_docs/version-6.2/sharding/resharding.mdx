@@ -15,10 +15,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Sharding: Resharding
 <Admonition type="note" title="Note">
 
-* **Resharding** is the relocation of data stored on one [shard](../sharding/overview#shards) 
+* **Resharding** is the relocation of data stored on one [shard](../sharding/overview.mdx#shards) 
   to another shard, to maintain an overall balanced database in which all 
   shards handle about the same volume of data.  
-* The resharding process moves all the data related to a certain [bucket](../sharding/overview#buckets) 
+* The resharding process moves all the data related to a certain [bucket](../sharding/overview.mdx#buckets) 
   (including documents, document extensions, tombstones, etc.), to a different 
   shard, and then associates the bucket with the new shard.  
 * An even distribution of data and workload between all shards maintains 
@@ -30,14 +30,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
   at a time, to avoid resource overuse.  
 
 * In this page:  
-  * [Resharding](../sharding/resharding#resharding)  
-  * [The Resharding Process](../sharding/resharding#the-resharding-process)  
-      * [Following Resharding Progress](../sharding/resharding#following-resharding-progress)  
-      * [Racing](../sharding/resharding#racing)  
-  * [Change Vector on a Sharded Database](../sharding/resharding#change-vector-on-a-sharded-database)  
-  * [Resharding and Other Features](../sharding/resharding#resharding-and-other-features)  
-  * [Executing Resharding](../sharding/resharding#executing-resharding)  
-      * [Bucket Ownership](../sharding/resharding#bucket-ownership)  
+  * [Resharding](../sharding/resharding.mdx#resharding)  
+  * [The Resharding Process](../sharding/resharding.mdx#the-resharding-process)  
+      * [Following Resharding Progress](../sharding/resharding.mdx#following-resharding-progress)  
+      * [Racing](../sharding/resharding.mdx#racing)  
+  * [Change Vector on a Sharded Database](../sharding/resharding.mdx#change-vector-on-a-sharded-database)  
+  * [Resharding and Other Features](../sharding/resharding.mdx#resharding-and-other-features)  
+  * [Executing Resharding](../sharding/resharding.mdx#executing-resharding)  
+      * [Bucket Ownership](../sharding/resharding.mdx#bucket-ownership)  
 
 </Admonition>
 ## Resharding
@@ -73,7 +73,7 @@ using a database like the one shown below:
 1. The client requests to reshard buckets from shard `#0` to shard `#2`.  
 2. Shard `#0` connects shard `#2` and transfers to it all the content of the first bucket.  
 3. Shard `#0` remains the owner of the bucket until all data has been propagated to 
-   all shard `#2` [replicas](../sharding/overview#shard-replication).  
+   all shard `#2` [replicas](../sharding/overview.mdx#shard-replication).  
 4. The ownership is transferred, the bucket is remapped to shard `#2`.  
 5. Shard `#0` starts purging all the entities whose ownership is now held by shard `#2`.  
    If there are still buckets to shift, shard `#0` can start transferring content from the next bucket.  
@@ -83,16 +83,16 @@ using a database like the one shown below:
 You can follow the progress of the resharding progress using -  
 
 * **Studio Popup Messages**  
-  When [Studio is used for resharding](../sharding/resharding#executing-resharding) 
+  When [Studio is used for resharding](../sharding/resharding.mdx#executing-resharding) 
   the user interface produces popup messages to keep users 
   informed of its progress.  
 
-* **The [Database Record](../studio/database/settings/database-record)**  
+* **The [Database Record](../studio/database/settings/database-record.mdx)**  
   All sharding-related info is stored in the database record `Sharding` 
   property, where this info can be accessed by all shards.  
   During resharding, migrating buckets details like status, source shard, 
   and destination shard, are updated in related `Sharding` sub-properties.   
-   * Via [Studio](../studio/database/settings/database-record#the-database-record)  
+   * Via [Studio](../studio/database/settings/database-record.mdx#the-database-record)  
      Open Studio's Database Record view and the Sharding property.   
      The details of currently-migrating buckets are recorded in 
      the `BucketMigration` property.  
@@ -122,7 +122,7 @@ for the related bucket.
 
 ## Change Vector on a Sharded Database
 
-On a non-sharded database, a document's [change vector](../server/clustering/replication/change-vector) 
+On a non-sharded database, a document's [change vector](../server/clustering/replication/change-vector.mdx) 
 indicates both the document's **version** (so we can tell which version of it 
 to replicate, for example) and its **order** on the database (so we can tell, 
 for example, whether to replicate or skip it).  
@@ -151,7 +151,7 @@ The change vector is altered this way only for documents that have been resharde
 
 ### Resharding and External Replication
 
-During [external replication](../sharding/external-replication):  
+During [external replication](../sharding/external-replication.mdx):  
 
 * The **order** (left-hand) part of the document's change vector 
   is checked on the **source** side, to determine whether the document 
@@ -161,13 +161,13 @@ During [external replication](../sharding/external-replication):
   version of the document already resides on it.  
 ### Resharding and ETL
 
-[ETL tasks](../sharding/etl) cannot determine whether a document that 
+[ETL tasks](../sharding/etl.mdx) cannot determine whether a document that 
 was resharded does or doesn't exist on their target.  
 Therefore ETL tasks consider **all** resharded documents (that match the 
 transform script) new/modified and transfer them all to the destination.  
 ### Resharding and Data Subscriptions
 
-Our promise to [data subscription](../sharding/subscriptions) workers is that we 
+Our promise to [data subscription](../sharding/subscriptions.mdx) workers is that we 
 send all data **at least once**.  
 As in a non-sharded database, we do our best not to send documents twice, but it 
 is the responsibility of the worker to check whether a document is duplicated or not.  
@@ -178,9 +178,9 @@ related to them, including revisions, time series, attachments, and
 so on, resharding a large document's bucket may take a considerable 
 amount of time.  
 During this time, checking which shard the bucket belongs to 
-[may show](../sharding/resharding#bucket-ownership) 
+[may show](../sharding/resharding.mdx#bucket-ownership) 
 both the bucket's source and destination shards.  
-However, if documents stored in this bucket are [queried](../sharding/querying) 
+However, if documents stored in this bucket are [queried](../sharding/querying.mdx) 
 during this time, RavenDB will add them to the retrieved dataset 
 **only once** and prevent results duplication due to resharding.  
 

@@ -18,17 +18,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Change vectors are the RavenDB implementation of the [Vector clock](https://en.wikipedia.org/wiki/Vector_clock) concept.
   They give us partial order over modifications of documents in a RavenDB cluster.
 
-* Change vectors are updated every time a document is [modified](../../../server/clustering/replication/change-vector#concurrency-control--change-vectors) 
+* Change vectors are updated every time a document is [modified](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors) 
   in any way.
 
 * In this page:
-   * [What are Change Vectors Constructed From?](../../../server/clustering/replication/change-vector#what-are-change-vectors-constructed-from)
-   * [How are Change Vectors used to Determine Order?](../../../server/clustering/replication/change-vector#how-are-change-vectors-used-to-determine-order)
-   * [Concurrency Control & Change Vectors](../../../server/clustering/replication/change-vector#concurrency-control--change-vectors)
-   * [Change Vector Comparisons](../../../server/clustering/replication/change-vector#change-vector-comparisons)
-   * [Concurrency Control at the Cluster](../../../server/clustering/replication/change-vector#concurrency-control-at-the-cluster)
-   * [Database Global Change Vector](../../../server/clustering/replication/change-vector#database-global-change-vector)
-   * [After Restoring a Database from Backup](../../../server/clustering/replication/change-vector#after-restoring-a-database-from-backup)
+   * [What are Change Vectors Constructed From?](../../../server/clustering/replication/change-vector.mdx#what-are-change-vectors-constructed-from)
+   * [How are Change Vectors used to Determine Order?](../../../server/clustering/replication/change-vector.mdx#how-are-change-vectors-used-to-determine-order)
+   * [Concurrency Control & Change Vectors](../../../server/clustering/replication/change-vector.mdx#concurrency-control--change-vectors)
+   * [Change Vector Comparisons](../../../server/clustering/replication/change-vector.mdx#change-vector-comparisons)
+   * [Concurrency Control at the Cluster](../../../server/clustering/replication/change-vector.mdx#concurrency-control-at-the-cluster)
+   * [Database Global Change Vector](../../../server/clustering/replication/change-vector.mdx#database-global-change-vector)
+   * [After Restoring a Database from Backup](../../../server/clustering/replication/change-vector.mdx#after-restoring-a-database-from-backup)
 
 </Admonition>
 ## What are Change Vectors Constructed From?
@@ -45,7 +45,7 @@ This change vector is constructed from two entries,
 Each entry has the following structure `Node tag`:`ETag`-`Database ID`, so `A:1-0tIXNUeUckSe73dUR6rjrA` means that
 the document was modified on node `A` its local `ETag` is `1` and the database ID is `0tIXNUeUckSe73dUR6rjrA`. Entries accumulate 
 as the number of database instances in the database group grows. If an instance is no longer being used, its entry can be removed 
-from the change vector to save space using the [UpdateUnusedDatabasesOperation](../../../client-api/operations/maintenance/clean-change-vector).  
+from the change vector to save space using the [UpdateUnusedDatabasesOperation](../../../client-api/operations/maintenance/clean-change-vector.mdx).  
 
 An `ETag` is a value that is scoped to a database instance on a particular node and is guaranteed to always increase. It is used internally for many purposes and is the natural
 sort order for many operations (indexing, replication, ETL, etc).
@@ -181,9 +181,9 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 ## After Restoring a Database from Backup
 
-* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview#backup-contents).
-* [Logical backups](../../../client-api/operations/maintenance/backup/backup#logical-backup) do not save change vector data.  
-  Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector#what-are-change-vectors-constructed-from)
+* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup.mdx#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
+* [Logical backups](../../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) do not save change vector data.  
+  Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector.mdx#what-are-change-vectors-constructed-from)
   to its original value.
 
 

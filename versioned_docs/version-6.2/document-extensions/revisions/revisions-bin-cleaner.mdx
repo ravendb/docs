@@ -15,21 +15,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Revisions Bin Cleaner
 <Admonition type="note" title="Note">
 
-* The [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin) stores revisions of deleted documents, ensuring they remain accessible.
+* The [Revisions Bin](../../studio/database/document-extensions/revisions.mdx#revisions-bin) stores revisions of deleted documents, ensuring they remain accessible.
 
 * While you can manually delete these revisions directly from the Revisions Bin,  
   you can also set up a cleaner task to remove them automatically. Learn more below.
 
 * In this page:
-    * [The revisions bin cleaner](../../document-extensions/revisions/revisions-bin-cleaner#the-revisions-bin-cleaner)
-    * [Setting the revisions bin cleaner - from the Studio](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-studio)
-    * [Setting the revisions bin cleaner - from the Client API](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api)
-    * [Syntax](../../document-extensions/revisions/revisions-bin-cleaner#syntax)
+    * [The revisions bin cleaner](../../document-extensions/revisions/revisions-bin-cleaner.mdx#the-revisions-bin-cleaner)
+    * [Setting the revisions bin cleaner - from the Studio](../../document-extensions/revisions/revisions-bin-cleaner.mdx#setting-the-revisions-bin-cleaner---from-the-studio)
+    * [Setting the revisions bin cleaner - from the Client API](../../document-extensions/revisions/revisions-bin-cleaner.mdx#setting-the-revisions-bin-cleaner---from-the-client-api)
+    * [Syntax](../../document-extensions/revisions/revisions-bin-cleaner.mdx#syntax)
 
 </Admonition>
 ## The revisions bin cleaner
     
-Each entry in the [Revisions Bin](../../studio/database/document-extensions/revisions#revisions-bin) represents a "Delete Revision",
+Each entry in the [Revisions Bin](../../studio/database/document-extensions/revisions.mdx#revisions-bin) represents a "Delete Revision",
 which is a revision that marks a document as deleted and provides access to the revisions that were created for the document before it was deleted.
 
 <Admonition type="warning" title="Warning">
@@ -41,12 +41,12 @@ ALL the revisions associated with the deleted document are **permanently deleted
     * **Entries age to keep** - The cleaner deletes revision entries older than this value.
 
 * The cleaner task can be managed from:  
-  * The [Revisions bin cleaner view](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-studio) in the Studio
-  * The [Client API](../../document-extensions/revisions/revisions-bin-cleaner#setting-the-revisions-bin-cleaner---from-the-client-api).
+  * The [Revisions bin cleaner view](../../document-extensions/revisions/revisions-bin-cleaner.mdx#setting-the-revisions-bin-cleaner---from-the-studio) in the Studio
+  * The [Client API](../../document-extensions/revisions/revisions-bin-cleaner.mdx#setting-the-revisions-bin-cleaner---from-the-client-api).
 
 * When working with a secure server:
-   * Configuring the Revisions Bin Cleaner is logged in the [audit log](../../server/security/audit-log/audit-log).
-   * Deleting revisions is only available to a client certificate with a security clearance of [Database Admin](../../server/security/authorization/security-clearance-and-permissions#section) or higher.
+   * Configuring the Revisions Bin Cleaner is logged in the [audit log](../../server/security/audit-log/audit-log.mdx).
+   * Deleting revisions is only available to a client certificate with a security clearance of [Database Admin](../../server/security/authorization/security-clearance-and-permissions.mdx#section) or higher.
 
 
 
@@ -72,8 +72,8 @@ ALL the revisions associated with the deleted document are **permanently deleted
 
 * Use `ConfigureRevisionsBinCleanerOperation` to configure the Revisions Bin Cleaner from the Client API.
 
-* By default, the operation will be applied to the [default database](../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* By default, the operation will be applied to the [default database](../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 * In this example, we enable the cleaner and configure its execution frequency and retention policy.
 
@@ -121,13 +121,13 @@ await store.Maintenance.SendAsync(configRevisionsBinCleanerOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public ConfigureRevisionsBinCleanerOperation(RevisionsBinConfiguration configuration);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class RevisionsBinConfiguration
 \{

@@ -21,16 +21,16 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing#syntax)  
-  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
-  * [CounterNamesFor](../../document-extensions/counters/indexing#section-1)  
-  * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
+  * [Syntax](../../document-extensions/counters/indexing.mdx#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1)  
+  * [Querying the Index](../../document-extensions/counters/indexing.mdx#querying-the-index)  
 
 </Admonition>
 ## Syntax
@@ -38,7 +38,7 @@ that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCou
 In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
 Next, choose one of these two methods which take the index expression:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected void AddMapForAll(Expression<Func<IEnumerable<CounterEntry>, IEnumerable>> map)
 
@@ -96,9 +96,9 @@ Examples of indexes using each method:
 
 Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
 you to write your map and reduce functions in JavaScript.  
-Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
 \{
@@ -116,7 +116,7 @@ Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).
 
 Example:  
 
-<TabItem value="something-something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="csharp">
 {`private class MyMultiMapCounterIndex : AbstractJavaScriptCountersIndexCreationTask
 \{
@@ -142,7 +142,7 @@ Example:
 While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`IEnumerable<string> CounterNamesFor(object doc);
 `}
@@ -151,7 +151,7 @@ method is available which returns the names of all counters for a specified docu
 
 Example of index using `CounterNamesFor`:  
 
-<TabItem value="something-something" label="index_0">
+<TabItem value="index_0" label="index_0">
 <CodeBlock language="csharp">
 {`public class Companies_ByCounterNames : AbstractIndexCreationTask<Company>
 \{
@@ -222,16 +222,16 @@ List<Company> companies = session
 
 <Admonition type="note" title="Note">
 
-* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing#syntax)  
-  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
-  * [CounterNamesFor](../../document-extensions/counters/indexing#section-1)  
-  * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
+  * [Syntax](../../document-extensions/counters/indexing.mdx#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1)  
+  * [Querying the Index](../../document-extensions/counters/indexing.mdx#querying-the-index)  
 
 </Admonition>
 ## Syntax
@@ -239,7 +239,7 @@ that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCou
 In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
 Next, use these method which take the index expression:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`protected void addMap(String map)
 `}
@@ -273,9 +273,9 @@ Examples of indexes using each method:
 
 Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
 you to write your map and reduce functions in JavaScript.  
-Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class AbstractJavaScriptCountersIndexCreationTask extends AbstractIndexCreationTaskBase<CountersIndexDefinition> 
 \{
@@ -328,7 +328,7 @@ Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).
 
 Example:  
 
-<TabItem value="something-something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="java">
 {`public static class MyMultiMapCounterIndex extends AbstractJavaScriptCountersIndexCreationTask \{
     public MyMultiMapCounterIndex() \{
@@ -349,7 +349,7 @@ Example:
 While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `counterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="java">
 {`List<String> counterNamesFor(Object doc);
 `}
@@ -358,7 +358,7 @@ method is available which returns the names of all counters for a specified docu
 
 Example of index using `counterNamesFor`:  
 
-<TabItem value="something-something" label="index_0">
+<TabItem value="index_0" label="index_0">
 <CodeBlock language="java">
 {`public static class Companies_ByCounterNames extends AbstractIndexCreationTask \{
     public Companies_ByCounterNames() \{
@@ -378,7 +378,7 @@ Example of index using `counterNamesFor`:
 
 ## Querying the Index  
 
-<TabItem value="something-something" label="query1">
+<TabItem value="query1" label="query1">
 <CodeBlock language="java">
 {`// return all companies that have 'Likes' counter
 List<Company> companies = session
@@ -398,22 +398,22 @@ List<Company> companies = session
 
 <Admonition type="note" title="Note">
 
-* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing#syntax)  
-  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
-  * [CounterNamesFor](../../document-extensions/counters/indexing#section)  
+  * [Syntax](../../document-extensions/counters/indexing.mdx#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section)  
 
 </Admonition>
 ## Syntax
 
 To index counter values, create an index that inherits from `AbstractCountersIndexCreationTask` 
 and use `map` as follows.  
-<TabItem value="something-something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="python">
 {`class MyCounterIndex(AbstractCountersIndexCreationTask):
     def __init__(self):
@@ -429,9 +429,9 @@ and use `map` as follows.
 
 Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
 you to write your map and reduce functions in JavaScript.  
-Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
 \{
@@ -449,7 +449,7 @@ Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).
 
 Example:  
 
-<TabItem value="something-something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="python">
 {`class MyMultiMapCounterIndex(AbstractJavaScriptCountersIndexCreationTask):
     def __init__(self):
@@ -471,7 +471,7 @@ Example:
 While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`IEnumerable<string> CounterNamesFor(object doc);
 `}
@@ -480,7 +480,7 @@ method is available which returns the names of all counters for a specified docu
 
 Example of index using `CounterNamesFor`:  
 
-<TabItem value="something-something" label="index_0">
+<TabItem value="index_0" label="index_0">
 <CodeBlock language="python">
 {`class Companies_ByCounterNames(AbstractIndexCreationTask):
     class Result:
@@ -506,22 +506,22 @@ Example of index using `CounterNamesFor`:
 
 <Admonition type="note" title="Note">
 
-* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask` or `AbstractJavaScriptCountersIndexCreationTask`.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Syntax](../../document-extensions/counters/indexing#syntax)  
-  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing#section)  
-  * [CounterNamesFor](../../document-extensions/counters/indexing#section)  
+  * [Syntax](../../document-extensions/counters/indexing.mdx#syntax)  
+  * [AbstractJavaScriptCountersIndexCreationTask](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section)  
 
 </Admonition>
 ## Syntax
 
 To index counter values, create an index that inherits from `AbstractCountersIndexCreationTask` 
 and set a map as follows.  
-<TabItem value="something-something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="php">
 {`class MyCounterIndex extends AbstractCountersIndexCreationTask
 \{
@@ -546,9 +546,9 @@ and set a map as follows.
 
 Creating an index inheriting from `AbstractJavaScriptCountersIndexCreationTask` allows 
 you to write your map and reduce functions in JavaScript.  
-Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AbstractJavaScriptCountersIndexCreationTask : AbstractCountersIndexCreationTask
 \{
@@ -566,7 +566,7 @@ Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).
 
 Example:  
 
-<TabItem value="something-something" label="index_3">
+<TabItem value="index_3" label="index_3">
 <CodeBlock language="php">
 {`class MyMultiMapCounterIndex extends AbstractJavaScriptCountersIndexCreationTask
 \{
@@ -593,7 +593,7 @@ Example:
 While indexes inheriting from `AbstractIndexCreationTask` cannot index counter _values_, the `CounterNamesFor` 
 method is available which returns the names of all counters for a specified document:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`List<String> counterNamesFor(Object doc);
 `}
@@ -602,7 +602,7 @@ method is available which returns the names of all counters for a specified docu
 
 Example of index using `CounterNamesFor`:  
 
-<TabItem value="something-something" label="index_0">
+<TabItem value="index_0" label="index_0">
 <CodeBlock language="php">
 {`class Companies_ByCounterNames_Result
 \{
@@ -643,16 +643,16 @@ class Companies_ByCounterNames extends AbstractIndexCreationTask
 
 <Admonition type="note" title="Note">
 
-* To index counters, create a [static index](../../indexes/creating-and-deploying#static-indexes) 
+* To index counters, create a [static index](../../indexes/creating-and-deploying.mdx#static-indexes) 
 that inherits from `AbstractCountersIndexCreationTask ` or `AbstractRawJavaScriptCountersIndexCreationTask `.  
 
 * Auto-indexes for counters are not available at this time.  
 
 * In this page:  
-  * [Usage](../../document-extensions/counters/indexing#usage)  
-  * [AbstractCsharpCountersIndexCreationTask ](../../document-extensions/counters/indexing#section)  
-  * [CounterNamesFor](../../document-extensions/counters/indexing#section-1)  
-  * [Querying the Index](../../document-extensions/counters/indexing#querying-the-index)  
+  * [Usage](../../document-extensions/counters/indexing.mdx#usage)  
+  * [AbstractCsharpCountersIndexCreationTask ](../../document-extensions/counters/indexing.mdx#section)  
+  * [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1)  
+  * [Querying the Index](../../document-extensions/counters/indexing.mdx#querying-the-index)  
 
 </Admonition>
 ## Usage
@@ -660,7 +660,7 @@ that inherits from `AbstractCountersIndexCreationTask ` or `AbstractRawJavaScrip
 In order to index counter values, create an index that inherits from `AbstractCountersIndexCreationTask`. 
 Next, choose one of these two methods which take the index expression:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`this.map("map");
 `}
@@ -674,7 +674,7 @@ Examples of indexes using each method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="map" label="map">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`export class MyCounterIndex  extends AbstractCountersIndexCreationTask {
     constructor() {
         super();
@@ -695,10 +695,10 @@ Examples of indexes using each method:
 
 Creating an index inheriting from `AbstractCsharpCountersIndexCreationTask ` allows 
 you to write your map and reduce functions in JavaScript.  
-Learn more about JavaScript indexes [here](../../indexes/javascript-indexes).  
+Learn more about JavaScript indexes [here](../../indexes/javascript-indexes.mdx).  
 
-<TabItem value="something-something" label="index_3">
-<CodeBlock language="nodejs">
+<TabItem value="index_3" label="index_3">
+<CodeBlock language="js">
 {`class MyCounterIndex extends AbstractRawJavaScriptCountersIndexCreationTask \{
     public constructor() \{
         super();
@@ -724,8 +724,8 @@ method is available which returns the names of all counters for a specified docu
 
 Example of index using `CounterNamesFor`:  
 
-<TabItem value="something-something" label="index_0">
-<CodeBlock language="nodejs">
+<TabItem value="index_0" label="index_0">
+<CodeBlock language="js">
 {`class Companies_ByCounterNames extends AbstractCountersIndexCreationTask\{
     constructor() \{
         super();
@@ -747,7 +747,7 @@ Example of index using `CounterNamesFor`:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const companies = session
     .query({index: "Companies_ByCounterNames"})
     .containsAny("counterNames", ["Likes"])

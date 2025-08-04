@@ -23,17 +23,17 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 * `store.BulkInsert` is RavenDB's high-performance data insertion operation.  
 
-* The `bulkInsert.TimeSeriesFor` interface provides similar functionality to the [session.TimeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append),  
+* The `bulkInsert.TimeSeriesFor` interface provides similar functionality to the [session.TimeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append.mdx),  
   but without the overhead associated with the _Session_, resulting in significantly improved performance.
 
 * In this page:  
-  * [Usage](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#usage)  
-  * [Examples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#examples)
-      * [Append single entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-single-entry)
-      * [Append multiple entries](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-entries)
-      * [Append multiple values per entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-values-per-entry)
-      * [Append multiple time series](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-time-series) 
-  * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#syntax)
+  * [Usage](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage)  
+  * [Examples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#examples)
+      * [Append single entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-single-entry)
+      * [Append multiple entries](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-entries)
+      * [Append multiple values per entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-values-per-entry)
+      * [Append multiple time series](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) 
+  * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#syntax)
 
 </Admonition>
 
@@ -57,7 +57,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * To append multiple entries, call `Append` as many times as needed.
 * Ensure there is at least a 1-millisecond interval between each timestamp.
 * The client converts all timestamps to **UTC** before sending the batch to the server.
-* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-time-series) below.
+* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) below.
 
 
 
@@ -66,7 +66,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 #### Append single entry:
 
 In this example, we append a single entry with a single value to time series "HeartRates". 
-<TabItem value="something" label="timeseries_region_Use-BulkInsert-To-Append-single-entry">
+<TabItem value="timeseries_region_Use-BulkInsert-To-Append-single-entry" label="timeseries_region_Use-BulkInsert-To-Append-single-entry">
 <CodeBlock language="csharp">
 {`var baseTime = DateTime.Today;
 
@@ -93,7 +93,7 @@ using (BulkInsertOperation bulkInsert = store.BulkInsert())
 #### Append multiple entries:
 
 In this example, we append 100 entries with a single value to time series "HeartRates". 
-<TabItem value="something" label="timeseries_region_Use-BulkInsert-To-Append-100-Entries">
+<TabItem value="timeseries_region_Use-BulkInsert-To-Append-100-Entries" label="timeseries_region_Use-BulkInsert-To-Append-100-Entries">
 <CodeBlock language="csharp">
 {`using (BulkInsertOperation bulkInsert = store.BulkInsert())
 \{
@@ -115,7 +115,7 @@ In this example, we append 100 entries with a single value to time series "Heart
 #### Append multiple values per entry:
 
 In this example, we append multiple values per entry in time series "HeartRates".
-<TabItem value="something" label="BulkInsert-overload-2-Two-HeartRate-Sets">
+<TabItem value="BulkInsert-overload-2-Two-HeartRate-Sets" label="BulkInsert-overload-2-Two-HeartRate-Sets">
 <CodeBlock language="csharp">
 {`using (BulkInsertOperation bulkInsert = store.BulkInsert())
 \{
@@ -135,7 +135,7 @@ In this example, we append multiple values per entry in time series "HeartRates"
 #### Append multiple time series:
 
 In this example, we append multiple time series in different documents in the same batch.
-<TabItem value="something" label="timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries">
+<TabItem value="timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries" label="timeseries_region_Use-BulkInsert-To-Append-multiple-timeseries">
 <CodeBlock language="csharp">
 {`using (BulkInsertOperation bulkInsert = store.BulkInsert())
 \{
@@ -173,7 +173,7 @@ In this example, we append multiple time series in different documents in the sa
 
 **`BulkInsert.TimeSeriesFor`**
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`public TimeSeriesBulkInsert TimeSeriesFor(string id, string name)
 `}
@@ -187,14 +187,14 @@ In this example, we append multiple time series in different documents in the sa
 
 **`TimeSeriesFor.Append`** overloads:
 
-<TabItem value="something" label="Append-Operation-Definition-1">
+<TabItem value="Append-Operation-Definition-1" label="Append-Operation-Definition-1">
 <CodeBlock language="csharp">
 {`// Append a single value
 public void Append(DateTime timestamp, double value, string tag = null)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="Append-Operation-Definition-2">
+<TabItem value="Append-Operation-Definition-2" label="Append-Operation-Definition-2">
 <CodeBlock language="csharp">
 {`// Append multiple values
 public void Append(DateTime timestamp, ICollection<double> values, string tag = null)
@@ -219,17 +219,17 @@ public void Append(DateTime timestamp, ICollection<double> values, string tag = 
 
 * `bulkInsert` is RavenDB's high-performance data insertion operation.  
 
-* The `bulkInsert.timeSeriesFor` interface provides similar functionality to the [session.timeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append),  
+* The `bulkInsert.timeSeriesFor` interface provides similar functionality to the [session.timeSeriesFor](../../../../document-extensions/timeseries/client-api/session/append.mdx),  
   but without the overhead associated with the _Session_, resulting in significantly improved performance.
 
 * In this page:  
-  * [Usage](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#usage)  
-  * [Examples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#examples)
-      * [Append single entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-single-entry)
-      * [Append multiple entries](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-entries)
-      * [Append multiple values per entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-values-per-entry)
-      * [Append multiple time series](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-time-series) 
-  * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#syntax)
+  * [Usage](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#usage)  
+  * [Examples](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#examples)
+      * [Append single entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-single-entry)
+      * [Append multiple entries](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-entries)
+      * [Append multiple values per entry](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-values-per-entry)
+      * [Append multiple time series](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) 
+  * [Syntax](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#syntax)
 
 </Admonition>
 
@@ -253,7 +253,7 @@ public void Append(DateTime timestamp, ICollection<double> values, string tag = 
 * To append multiple entries, call `append` as many times as needed.
 * Ensure there is at least a 1-millisecond interval between each timestamp.
 * The client converts all timestamps to **UTC** before sending the batch to the server.
-* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk#append-multiple-time-series) below.
+* Multiple time series can be appended in the same `BulkInsertOperation`. See this [example](../../../../document-extensions/timeseries/client-api/bulk-insert/append-in-bulk.mdx#append-multiple-time-series) below.
 
 
 
@@ -262,8 +262,8 @@ public void Append(DateTime timestamp, ICollection<double> values, string tag = 
 #### Append single entry:
 
 In this example, we append a single entry with a single value to time series "HeartRates". 
-<TabItem value="something-something" label="append_1">
-<CodeBlock language="nodejs">
+<TabItem value="append_1" label="append_1">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 // Create a BulkInsertOperation instance
@@ -293,8 +293,8 @@ await bulkInsert.finish();
 #### Append multiple entries:
 
 In this example, we append 100 entries with a single value to time series "HeartRates". 
-<TabItem value="something-something" label="append_2">
-<CodeBlock language="nodejs">
+<TabItem value="append_2" label="append_2">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 const bulkInsert = documentStore.bulkInsert();
@@ -319,8 +319,8 @@ await bulkInsert.finish();
 #### Append multiple values per entry:
 
 In this example, we append multiple values per entry in time series "HeartRates".
-<TabItem value="something-something" label="append_3">
-<CodeBlock language="nodejs">
+<TabItem value="append_3" label="append_3">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 const bulkInsert = documentStore.bulkInsert();
@@ -346,8 +346,8 @@ await bulkInsert.finish();
 #### Append multiple time series:
 
 In this example, we append multiple time series in different documents in the same batch.
-<TabItem value="something-something" label="append_4">
-<CodeBlock language="nodejs">
+<TabItem value="append_4" label="append_4">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 const bulkInsert = documentStore.bulkInsert();
@@ -385,8 +385,8 @@ await bulkInsert.finish();
 
 **`bulkInsert.timeSeriesFor`**
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`timeSeriesFor(id, name);
 `}
 </CodeBlock>
@@ -399,8 +399,8 @@ await bulkInsert.finish();
 
 **`timeSeriesFor.Append`** overloads:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`append(timestamp, value);
 append(timestamp, value, tag);
 append(timestamp, values);

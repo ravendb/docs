@@ -25,15 +25,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * This article covers the following methods:
 
-  - [Load](../../client-api/session/loading-entities#load)
-  - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
-  - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
-  - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
-  - [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
-  - [Stream](../../client-api/session/loading-entities#stream)
-  - [IsLoaded](../../client-api/session/loading-entities#isloaded)
+  - [Load](../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [Stream](../../client-api/session/loading-entities.mdx#stream)
+  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 </Admonition>
 ## Load
@@ -90,18 +90,18 @@ From RavenDB version 4.x onwards, only string identifiers are supported. If you 
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `Include + Load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="Note">
 Also see:  
 
-* [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
-* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)  
-* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including)  
+* [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including.mdx)  
 </Admonition>
 
-<TabItem value="something" label="loading_entities_2_0">
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
 <CodeBlock language="csharp">
 {`ILoaderWithInclude<object> Include(string path);
 
@@ -360,7 +360,7 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `ConditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
@@ -475,8 +475,8 @@ using (var session = store.OpenAsyncSession())
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships#includes). 
-Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
 <Admonition type="info" title="Info">
 Entities loaded using `Stream` will be transient (not attached to session).
@@ -532,7 +532,7 @@ Task<IAsyncEnumerator<StreamResult<T>>> StreamAsync<T>(string startsWith, string
 
 | Return Type | Description |
 | ------------- | ----- |
-| `IEnumerator<`[StreamResult](../../glossary/stream-result)`>` | Enumerator with entities. |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
 | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
@@ -616,7 +616,7 @@ this session and failed because the document has been previously deleted,
 of the session just because of the attempt to load it.  
 </Admonition>
 
-<TabItem value="something" label="loading_entities_6_0">
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
 <CodeBlock language="csharp">
 {`bool IsLoaded(string id);
 `}
@@ -664,20 +664,20 @@ There are several methods with many overloads that allow users to download docum
 from the database and convert them to entities. This article will cover the following 
 methods:  
 
-- [Load](../../client-api/session/loading-entities#load)
-- [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
-- [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
-- [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
-- [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
-- [Stream](../../client-api/session/loading-entities#stream)
-- [IsLoaded](../../client-api/session/loading-entities#isloaded)
+- [Load](../../client-api/session/loading-entities.mdx#load)
+- [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+- [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+- [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+- [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+- [Stream](../../client-api/session/loading-entities.mdx#stream)
+- [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
 
 </Admonition>
 ## Load
 
 The most basic way to load a single entity is to use one of the `load` methods.
 
-<TabItem value="something-something" label="loading_entities_1_0">
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
 <CodeBlock language="java">
 {`<T> T load(Class<T> clazz, String id);
 `}
@@ -694,7 +694,7 @@ The most basic way to load a single entity is to use one of the `load` methods.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_1_1">
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1");
 `}
@@ -711,11 +711,11 @@ From RavenDB version 4.x onwards, only string identifiers are supported. If you 
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
-See also [including counters](../../document-extensions/counters/counters-and-other-features#including-counters) 
-and [including time series](../../document-extensions/timeseries/client-api/session/include/overview).
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
+See also [including counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters) 
+and [including time series](../../document-extensions/timeseries/client-api/session/include/overview.mdx).
 
-<TabItem value="something-something" label="loading_entities_2_0">
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
 <CodeBlock language="java">
 {`ILoaderWithInclude include(String path);
 
@@ -741,7 +741,7 @@ and [including time series](../../document-extensions/timeseries/client-api/sess
 
 We can use this code to also load an employee which made the order.
 
-<TabItem value="something-something" label="loading_entities_2_1">
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
 <CodeBlock language="java">
 {`// loading 'products/1'
 // including document found in 'supplier' property
@@ -760,7 +760,7 @@ Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this
 
 To load multiple entities at once, use one of the following `load` overloads.
 
-<TabItem value="something-something" label="loading_entities_3_0">
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
 <CodeBlock language="java">
 {`<TResult> Map<String, TResult> load(Class<TResult> clazz, String... ids);
 
@@ -777,7 +777,7 @@ To load multiple entities at once, use one of the following `load` overloads.
 | ------------- | ----- |
 | Map&lt;String, T&gt; | Instance of Map which maps document identifiers to `T` or `null` if a document with given ID doesn't exist. |
 
-<TabItem value="something-something" label="loading_entities_3_1">
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
 <CodeBlock language="java">
 {`Map<String, Employee> employees
     = session.load(Employee.class,
@@ -792,7 +792,7 @@ To load multiple entities at once, use one of the following `load` overloads.
 
 To load multiple entities that contain a common prefix, use the `loadStartingWith` method from the `advanced` session operations.
 
-<TabItem value="something-something" label="loading_entities_4_0">
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
 <CodeBlock language="java">
 {`<T> T[] loadStartingWith(Class<T> clazz, String idPrefix);
 
@@ -824,7 +824,7 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 ### Example I
 
-<TabItem value="something-something" label="loading_entities_4_1">
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
 <CodeBlock language="java">
 {`// return up to 128 entities with Id that starts with 'employees'
 Employee[] result = session
@@ -836,7 +836,7 @@ Employee[] result = session
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_4_2">
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
 <CodeBlock language="java">
 {`// return up to 128 entities with Id that starts with 'employees/'
 // and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
@@ -851,7 +851,7 @@ Employee[] result = session
 
 ## ConditionalLoad
 
-The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
@@ -863,7 +863,7 @@ can be saved if it has not been modified.
 
 The method is accessible from the `session.advanced()` operations.  
 
-<TabItem value="something-something" label="loading_entities_7_0">
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
 <CodeBlock language="java">
 {`<T> ConditionalLoadResult<T> conditionalLoad(Class<T> clazz, String id, String changeVector);
 `}
@@ -884,7 +884,7 @@ If the specified document, the method returns only `default` without a change ve
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_7_1">
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
 
@@ -929,7 +929,7 @@ try (IDocumentSession session = store.openSession()) \{
 
 Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
 
-<TabItem value="something-something" label="loading_entities_5_0">
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
 <CodeBlock language="java">
 {`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
 
@@ -971,7 +971,7 @@ Entities can be streamed from the server using one of the following `stream` met
 
 Stream documents for a ID prefix:
 
-<TabItem value="something-something" label="loading_entities_5_1">
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
 <CodeBlock language="java">
 {`try (CloseableIterator<StreamResult<Employee>> iterator =
          session.advanced().stream(Employee.class, "employees/")) \{
@@ -987,7 +987,7 @@ Stream documents for a ID prefix:
 
 Fetch documents for a ID prefix directly into a stream:
 
-<TabItem value="something-something" label="loading_entities_5_2">
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
 <CodeBlock language="java">
 {`ByteArrayOutputStream baos = new ByteArrayOutputStream();
 session
@@ -1021,7 +1021,7 @@ this session and failed because the document has been previously deleted,
 of the session just because of the attempt to load it.  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_6_0">
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
 <CodeBlock language="java">
 {`boolean isLoaded(String id);
 `}
@@ -1038,7 +1038,7 @@ of the session just because of the attempt to load it.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_6_1">
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
 <CodeBlock language="java">
 {`boolean isLoaded = session.advanced().isLoaded("employees/1");//false
 Employee employee = session.load(Employee.class, "employees/1");
@@ -1060,15 +1060,15 @@ isLoaded = session.advanced().isLoaded("employees/1"); // true
 
 * This article covers the following methods:
 
-  - [load](../../client-api/session/loading-entities#load)
-  - [load with includes](../../client-api/session/loading-entities#load-with-includes)
-  - [load_starting_with](../../client-api/session/loading-entities#load_starting_with)
-  - [load_starting_with_into_stream](../../client-api/session/loading-entities#load_starting_with_into_stream)
-  - [conditional_load](../../client-api/session/loading-entities#conditional_load)
-  - [stream](../../client-api/session/loading-entities#stream)
-  - [is_loaded](../../client-api/session/loading-entities#is_loaded)
+  - [load](../../client-api/session/loading-entities.mdx#load)
+  - [load with includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [load_starting_with](../../client-api/session/loading-entities.mdx#load_starting_with)
+  - [load_starting_with_into_stream](../../client-api/session/loading-entities.mdx#load_starting_with_into_stream)
+  - [conditional_load](../../client-api/session/loading-entities.mdx#conditional_load)
+  - [stream](../../client-api/session/loading-entities.mdx#stream)
+  - [is_loaded](../../client-api/session/loading-entities.mdx#is_loaded)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 <Admonition type="warning" title="Warning">
 From RavenDB version 4.x onward, only string identifiers are supported.  
@@ -1080,7 +1080,7 @@ If you are upgrading from 3.x, this is a major change, because in 3.x non-string
 
 Use the `load` method to load **an entity** or **multiple entities**.  
 
-<TabItem value="something-something" label="loading_entities_1_0">
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
 <CodeBlock language="python">
 {`def load(
     self,
@@ -1096,7 +1096,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 | ------------- | ------------- | ----- |
 | **key_or_keys** | `str` or `List[str]` | Identifier or a list of identifiers of entities to load |
 | **object_type**<br/>(optional) | `[Type[_T]` | Entity type to load (optional) |
-| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../client-api/how-to/handle-document-relationships#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
+| **includes**<br/>(optional) | `Callable[[IncludeBuilder], None]` | A **consumer function** that takes an [include builder](../../client-api/how-to/handle-document-relationships.mdx#includes) argument.<br/>The user should use the builder inside this function to _include_ all the data needed within a load. |
 
 | Return Type | Description |
 | ------------- | ----- |
@@ -1107,7 +1107,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 ### Examples
 
 * Load an entiry
-<TabItem value="something-something" label="loading_entities_1_1">
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
 <CodeBlock language="python">
 {`employee = session.load("employees/1", Employee)
 `}
@@ -1115,7 +1115,7 @@ Use the `load` method to load **an entity** or **multiple entities**.
 </TabItem>
 
 * Load multiple entities:
-<TabItem value="something-something" label="loading_entities_3_1">
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
 <CodeBlock language="python">
 {`employees = session.load(["employees/1", "employees/2", "employees/3"], Employee)
 `}
@@ -1128,18 +1128,18 @@ Use the `load` method to load **an entity** or **multiple entities**.
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="Note">
 Also see:  
 
-* [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
-* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)  
-* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including)  
+* [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including.mdx)  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_2_0">
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
 <CodeBlock language="python">
 {`def include(self, path: str) -> LoaderWithInclude: ...
 `}
@@ -1158,7 +1158,7 @@ Also see:
 
 We can use this code to also load an employee which made the order.
 
-<TabItem value="something-something" label="loading_entities_2_1">
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
 <CodeBlock language="python">
 {`# loading 'products/1'
 # including document found in 'supplier' property
@@ -1172,7 +1172,7 @@ supplier = session.load(product.supplier)  # this will not make server call
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_2_2">
+<TabItem value="loading_entities_2_2" label="loading_entities_2_2">
 <CodeBlock language="python">
 {`# loading 'products/1'
 # including document found in 'Supplier' property
@@ -1189,7 +1189,7 @@ supplier = session.load(product.supplier, Supplier)
 ## load_starting_with
 
 To load multiple entities with a common prefix, use the `advanced` session operation `load_starting_with`.  
-<TabItem value="something-something" label="load_starting_with">
+<TabItem value="load_starting_with" label="load_starting_with">
 <CodeBlock language="python">
 {`def load_starting_with(
     self,
@@ -1221,7 +1221,7 @@ To load multiple entities with a common prefix, use the `advanced` session opera
 
 ### Example I
 
-<TabItem value="something-something" label="loading_entities_4_1">
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
 <CodeBlock language="python">
 {`# return up to 128 entities with Id that starts with 'employees'
 result = session.advanced.load_starting_with("employees/", Employee, None, 0, 128)
@@ -1231,7 +1231,7 @@ result = session.advanced.load_starting_with("employees/", Employee, None, 0, 12
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_4_2">
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
 <CodeBlock language="python">
 {`# return up to 128 entities with Id that starts with 'employees'
 # and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
@@ -1245,7 +1245,7 @@ result = session.advanced.load_starting_with("employees/", Employee, "1*|2*", 0,
 ## load_starting_with_into_stream
 
 To output multiple entities with a common prefix into a stream, use the `advanced` session operation `load_starting_with_into_stream`.  
-<TabItem value="something-something" label="load_starting_with_into_stream">
+<TabItem value="load_starting_with_into_stream" label="load_starting_with_into_stream">
 <CodeBlock language="python">
 {`def load_starting_with_into_stream(
     self,
@@ -1276,7 +1276,7 @@ To output multiple entities with a common prefix into a stream, use the `advance
 ### Example
 
 To stream entities from the `employees` collection, use:  
-<TabItem value="something-something" label="loading_entities_5_2">
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
 <CodeBlock language="python">
 {`results_bytes = session.advanced.load_starting_with_into_stream("employees/")
 `}
@@ -1291,7 +1291,7 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `conditional_load` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `conditional_load` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
@@ -1299,7 +1299,7 @@ If the change vectors _do not_ match, the document is loaded.
 
 The method is accessible from the `session.advanced` operations.  
 
-<TabItem value="something-something" label="loading_entities_7_0">
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
 <CodeBlock language="python">
 {`def conditional_load(
     self, key: str, change_vector: str, object_type: Optional[Type[_T]] = None
@@ -1322,7 +1322,7 @@ If the specified document, the method returns only `default` without a change ve
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_7_1">
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
 <CodeBlock language="python">
 {`change_vector: Optional[str] = None
 user = User(name="Bob")
@@ -1359,14 +1359,14 @@ with store.open_session() as session:
 
 Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
 
-Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships#includes). 
-Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results).  
+Streaming query results does not support the [`include` feature](../../client-api/how-to/handle-document-relationships.mdx#includes). 
+Learn more in [How to Stream Query Results](../../client-api/session/querying/how-to-stream-query-results.mdx).  
 
 <Admonition type="info" title="Info">
 Entities loaded using `stream` will be transient (not attached to session).
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_5_0">
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
 <CodeBlock language="python">
 {`# waiting for merge, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
 `}
@@ -1384,7 +1384,7 @@ Entities loaded using `stream` will be transient (not attached to session).
 
 | Return Type | Description |
 | ------------- | ----- |
-| `IEnumerator<`[StreamResult](../../glossary/stream-result)`>` | Enumerator with entities. |
+| `IEnumerator<`[StreamResult](../../glossary/stream-result.mdx)`>` | Enumerator with entities. |
 | `streamQueryStats` (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
@@ -1392,7 +1392,7 @@ Entities loaded using `stream` will be transient (not attached to session).
 
 Stream documents for a ID prefix:
 
-<TabItem value="something-something" label="loading_entities_5_1">
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
 <CodeBlock language="python">
 {`# unsupported, will be supported from 5.4 client release (https://pypi.org/project/ravendb/)
 `}
@@ -1403,7 +1403,7 @@ Stream documents for a ID prefix:
 
 Fetch documents for a ID prefix directly into a stream:
 
-<TabItem value="something-something" label="loading_entities_5_2">
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
 <CodeBlock language="python">
 {`results_bytes = session.advanced.load_starting_with_into_stream("employees/")
 `}
@@ -1429,7 +1429,7 @@ this session and failed because the document has been previously deleted,
 of the session just because of the attempt to load it.  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_6_0">
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
 <CodeBlock language="python">
 {`def is_loaded(self, key: str) -> bool: ...
 `}
@@ -1446,7 +1446,7 @@ of the session just because of the attempt to load it.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_6_1">
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
 <CodeBlock language="python">
 {`is_loaded = session.advanced.is_loaded("employees/1")  # False
 employee = session.load("employees/1")
@@ -1467,21 +1467,21 @@ is_loaded = session.advanced.is_loaded("employees/1")  # True
 
 * This article covers the following methods:
 
-  - [`load`](../../client-api/session/loading-entities#load)
-  - [`load` with `include`](../../client-api/session/loading-entities#load-with-include)
-  - [`load` - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
-  - [`loadStartingWith`](../../client-api/session/loading-entities#loadstartingwith)
-  - [`conditionalLoad`](../../client-api/session/loading-entities#conditionalload)
-  - [`isLoaded`](../../client-api/session/loading-entities#isloaded)
+  - [`load`](../../client-api/session/loading-entities.mdx#load)
+  - [`load` with `include`](../../client-api/session/loading-entities.mdx#load-with-include)
+  - [`load` - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [`loadStartingWith`](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [`conditionalLoad`](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [`isLoaded`](../../client-api/session/loading-entities.mdx#isloaded)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 </Admonition>
 ## `load`
 
 The most basic way to load a single entity is to use the `load` method.
 
-<TabItem value="something-something" label="loading_entities_1_0">
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
 <CodeBlock language="php">
 {`public function load(?string $className, ?string $id): ?object;
 `}
@@ -1499,7 +1499,7 @@ The most basic way to load a single entity is to use the `load` method.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_1_1">
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
 <CodeBlock language="php">
 {`/** @var Employee $employee */
 $employee = $session->load(Employee::class, "employees/1");
@@ -1519,18 +1519,18 @@ identifiers were supported.
 
 When there is a 'relationship' between documents, those documents can be loaded in a 
 single request call using the `include + load` methods. Learn more in 
-[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships).  
+[How To Handle Document Relationships](../../client-api/how-to/handle-document-relationships.mdx).  
 
 <Admonition type="note" title="Note">
 Also see:  
 
-* [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview)  
-* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange)  
-* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including)  
+* [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+* [Including Time Series](../../document-extensions/timeseries/client-api/session/include/overview.mdx)  
+* [Including Compare Exchange Values](../../client-api/operations/compare-exchange/include-compare-exchange.mdx)  
+* [Including Document Revisions](../../document-extensions/revisions/client-api/session/including.mdx)  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_2_0">
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
 <CodeBlock language="php">
 {`function include(?string $path): LoaderWithIncludeInterface;
 
@@ -1559,7 +1559,7 @@ public function load(string $className, string $id): ?object;
 
 We can use this code to also load an employee which made the order.
 
-<TabItem value="something-something" label="loading_entities_2_1">
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
 <CodeBlock language="php">
 {`// loading 'products/1'
 // including document found in 'supplier' property
@@ -1576,7 +1576,7 @@ $supplier = $session->load(Supplier::class, $product->getSupplier()); // this wi
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_2_2">
+<TabItem value="loading_entities_2_2" label="loading_entities_2_2">
 <CodeBlock language="php">
 {`// loading 'products/1'
 // including document found in 'supplier' property
@@ -1596,7 +1596,7 @@ $supplier = $session->load(Supplier::class, $product->getSupplier()); // this wi
 
 To load multiple entities at once, use one of the following `load` overloads.
 
-<TabItem value="something-something" label="loading_entities_3_0">
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
 <CodeBlock language="php">
 {`public function load(string $className, array $ids): ObjectArray;
 public function load(string $className, StringArray $ids): ObjectArray;
@@ -1613,7 +1613,7 @@ public function load(string $className, StringArray $ids): ObjectArray;
 | ------------- | ----- |
 | `ObjectArray` | An array of loaded entities |
 
-<TabItem value="something-something" label="loading_entities_3_1">
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
 <CodeBlock language="php">
 {`$employees = $session->load(Employee::class, "employees/1", "employees/2", "employees/3");
 `}
@@ -1626,7 +1626,7 @@ public function load(string $className, StringArray $ids): ObjectArray;
 
 To load multiple entities that contain a common prefix, use the `loadStartingWith` method from the `advanced` session operations.
 
-<TabItem value="something-something" label="loading_entities_4_0">
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
 <CodeBlock language="php">
 {`public function loadStartingWith(
     string $className,
@@ -1657,7 +1657,7 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 ### Example I
 
-<TabItem value="something-something" label="loading_entities_4_1">
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
 <CodeBlock language="php">
 {`// return up to 128 entities with Id that starts with 'employees'
 $result = $session
@@ -1669,7 +1669,7 @@ $result = $session
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_4_2">
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
 <CodeBlock language="php">
 {`// return up to 128 entities with Id that starts with 'employees/'
 // and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
@@ -1688,7 +1688,7 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
@@ -1696,7 +1696,7 @@ If the change vectors _do not_ match, the document is loaded.
 
 The method is accessible from the session `advanced` operations.  
 
-<TabItem value="something-something" label="loading_entities_7_0">
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
 <CodeBlock language="php">
 {`function conditionalLoad(?string $className, ?string $id, ?string $changeVector): ConditionalLoadResult;
 `}
@@ -1715,7 +1715,7 @@ The method is accessible from the session `advanced` operations.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_7_1">
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -1777,7 +1777,7 @@ this session and failed because the document has been previously deleted,
 of the session just because of the attempt to load it.  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_6_0">
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
 <CodeBlock language="php">
 {`function isLoaded(string $id): bool;
 `}
@@ -1794,7 +1794,7 @@ of the session just because of the attempt to load it.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_6_1">
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
 <CodeBlock language="php">
 {`$isLoaded = $session->advanced()->isLoaded("employees/1"); //false
 $employee = $session->load(Employee::class, "employees/1");
@@ -1815,23 +1815,23 @@ $isLoaded = $session->advanced()->isLoaded("employees/1"); // true
 
 * This article covers the following methods:
 
-  - [Load](../../client-api/session/loading-entities#load)
-  - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
-  - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
-  - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
-  - [ConditionalLoad](../../client-api/session/loading-entities#conditionalload)
-  - [IsLoaded](../../client-api/session/loading-entities#isloaded)
-  - [Stream](../../client-api/session/loading-entities#stream)
+  - [Load](../../client-api/session/loading-entities.mdx#load)
+  - [Load with Includes](../../client-api/session/loading-entities.mdx#load-with-includes)
+  - [Load - multiple entities](../../client-api/session/loading-entities.mdx#load---multiple-entities)
+  - [LoadStartingWith](../../client-api/session/loading-entities.mdx#loadstartingwith)
+  - [ConditionalLoad](../../client-api/session/loading-entities.mdx#conditionalload)
+  - [IsLoaded](../../client-api/session/loading-entities.mdx#isloaded)
+  - [Stream](../../client-api/session/loading-entities.mdx#stream)
 
-* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily).
+* For loading entities lazily see [perform requests lazily](../../client-api/session/how-to/perform-operations-lazily.mdx).
 
 </Admonition>
 ## Load
 
 The most basic way to load a single entity is to use session's `load()` method.
 
-<TabItem value="something-something" label="loading_entities_1_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_1_0" label="loading_entities_1_0">
+<CodeBlock language="js">
 {`await session.load(id, [documentType]);
 `}
 </CodeBlock>
@@ -1848,8 +1848,8 @@ The most basic way to load a single entity is to use session's `load()` method.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_1_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_1_1" label="loading_entities_1_1">
+<CodeBlock language="js">
 {`const employee = await session.load("employees/1");
 `}
 </CodeBlock>
@@ -1865,8 +1865,8 @@ In 4.x RavenDB, only string identifiers are supported. If you are upgrading from
 
 When there is a *relationship* between documents, those documents can be loaded in a single request call using the `include()` and `load()` methods.
 
-<TabItem value="something-something" label="loading_entities_2_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_2_0" label="loading_entities_2_0">
+<CodeBlock language="js">
 {`session.include(path);
 `}
 </CodeBlock>
@@ -1884,8 +1884,8 @@ When there is a *relationship* between documents, those documents can be loaded 
 
 We can use this code to also load an employee which made the order.
 
-<TabItem value="something-something" label="loading_entities_2_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_2_1" label="loading_entities_2_1">
+<CodeBlock language="js">
 {`// loading 'products/1'
 // including document found in 'supplier' property
 const product = await session
@@ -1903,8 +1903,8 @@ const supplier = await session.load(product.supplier); // this will *not* make a
 
 To load multiple entities at once, use one of the following ways to call `load()`.
 
-<TabItem value="something-something" label="loading_entities_3_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_3_0" label="loading_entities_3_0">
+<CodeBlock language="js">
 {`await session.load(idsArray, [documentType]);
 await session.load(idsArray, [options]);
 `}
@@ -1923,8 +1923,8 @@ await session.load(idsArray, [options]);
 | ------------- | ----- |
 | `Promise<{ [id]: object }>` | A `Promise` resolving to an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist |
 
-<TabItem value="something-something" label="loading_entities_3_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_3_1" label="loading_entities_3_1">
+<CodeBlock language="js">
 {`const employees = await session.load(
     ["employees/1", "employees/2", "employees/3"]);
 // \{
@@ -1942,8 +1942,8 @@ await session.load(idsArray, [options]);
 
 To load multiple entities that contain a common prefix, use the `loadStartingWith()` method from the `advanced` session operations.
 
-<TabItem value="something-something" label="loading_entities_4_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_4_0" label="loading_entities_4_0">
+<CodeBlock language="js">
 {`await session.advanced.loadStartingWith(idPrefix, [options]);
 
 await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
@@ -1968,8 +1968,8 @@ await session.advanced.loadStartingWithIntoStream(idPrefix, output, [options]);
 
 ### Example I
 
-<TabItem value="something-something" label="loading_entities_4_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_4_1" label="loading_entities_4_1">
+<CodeBlock language="js">
 {`// return up to 128 entities with Id that starts with 'employees'
 const result = await session
     .advanced
@@ -1983,8 +1983,8 @@ const result = await session
 
 ### Example II
 
-<TabItem value="something-something" label="loading_entities_4_2">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_4_2" label="loading_entities_4_2">
+<CodeBlock language="js">
 {`// return up to 128 entities with Id that starts with 'employees/'
 // and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
 const result = await session
@@ -2006,15 +2006,15 @@ This method can be used to check whether a document has been modified
 since the last time its change vector was recorded, so that the cost of loading it 
 can be saved if it has not been modified.  
 
-The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector). 
+The `conditionalLoad` method takes a document's [change vector](../../server/clustering/replication/change-vector.mdx). 
 If the entity is tracked by the session, this method returns the entity. If the entity 
 is not tracked, it checks if the provided change vector matches the document's 
 current change vector on the server side. If they match, the entity is not loaded. 
 If the change vectors _do not_ match, the document is loaded.  
 
 The method is accessible from the `session.Advanced` operations.  
-<TabItem value="something-something" label="loading_entities_7_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_7_0" label="loading_entities_7_0">
+<CodeBlock language="js">
 {`await session.advanced.conditionalLoad(id, changeVector, clazz);
 `}
 </CodeBlock>
@@ -2033,8 +2033,8 @@ If the specified document, the method returns only `default` without a change ve
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_7_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_7_1" label="loading_entities_7_1">
+<CodeBlock language="js">
 {`const session = store.openSession();
 const user = new User("Bob");
 await session.store(user, "users/1");
@@ -2070,8 +2070,8 @@ const changeVector = session.advanced.getChangeVectorFor(user);
 
 Entities can be streamed from the server using the `stream()` method from the `advanced` session operations.
 
-<TabItem value="something-something" label="loading_entities_5_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_5_0" label="loading_entities_5_0">
+<CodeBlock language="js">
 {`// stream query results
 await session.stream(query, [statsCallback]);
 
@@ -2104,8 +2104,8 @@ await session.stream(idPrefix, [options]);
 
 Stream documents for a ID prefix:
 
-<TabItem value="something-something" label="loading_entities_5_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_5_1" label="loading_entities_5_1">
+<CodeBlock language="js">
 {`// stream() returns a Node.js Readable
 const stream = await session.advanced.stream("employees/");
 
@@ -2128,8 +2128,8 @@ stream.on("end", () => \{
 
 Fetch documents for a ID prefix directly into a writable stream:
 
-<TabItem value="something-something" label="loading_entities_5_2">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_5_2" label="loading_entities_5_2">
+<CodeBlock language="js">
 {`const employeesFile = fs.createWriteStream("employees.json");
 await session.advanced.loadStartingWithIntoStream("employees/", employeesFile);
 `}
@@ -2158,8 +2158,8 @@ this session and failed because the document has been previously deleted,
 of the session just because of the attempt to load it.  
 </Admonition>
 
-<TabItem value="something-something" label="loading_entities_6_0">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_6_0" label="loading_entities_6_0">
+<CodeBlock language="js">
 {`session.advanced.isLoaded(id);
 `}
 </CodeBlock>
@@ -2175,8 +2175,8 @@ of the session just because of the attempt to load it.
 
 ### Example
 
-<TabItem value="something-something" label="loading_entities_6_1">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_6_1" label="loading_entities_6_1">
+<CodeBlock language="js">
 {`session.advanced.isLoaded("employees/1"); // false
 const employee = await session.load("employees/1");
 session.advanced.isLoaded("employees/1"); // true
@@ -2193,8 +2193,8 @@ Type information about the entity and its contents is by default stored in the d
 <Admonition type="info" title="Entity type registration " id="entity-type-registration" href="#entity-type-registration">
 In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
 
-<TabItem value="something-something" label="loading_entities_8">
-<CodeBlock language="nodejs">
+<TabItem value="loading_entities_8" label="loading_entities_8">
+<CodeBlock language="js">
 {`class Pet \{
     constructor(name) \{
         this.name = name;

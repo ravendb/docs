@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Incremental Time Series: Overview
 <Admonition type="note" title="Note">
 
-* **Incremental Time Series** are [time series](../../../document-extensions/timeseries/overview) 
+* **Incremental Time Series** are [time series](../../../document-extensions/timeseries/overview.mdx) 
   whose values are designated to function as counters.  
   
 * Similar to Counters, an incremental-time-series value can be increased/decreased by some 
@@ -26,13 +26,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The value's total contents is simply the accumulation of that value's contents stored per-cluster node 
   for the same timestamp.  
 
-* Incremental Time series can be created and managed using dedicated [API methods](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview) 
-  and via [Studio](../../../studio/database/document-extensions/time-series#incremental-time-series).  
+* Incremental Time series can be created and managed using dedicated [API methods](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview.mdx) 
+  and via [Studio](../../../studio/database/document-extensions/time-series.mdx#incremental-time-series).  
 
 * In this page:  
-  * [What are Incremental Time Series and Why Use Them](../../../document-extensions/timeseries/incremental-time-series/overview#what-are-incremental-time-series-and-why-use-them)  
-  * [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series--vs--non-incremental-time-series)  
-  * [Incremental Time Series Structure](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series-structure)  
+  * [What are Incremental Time Series and Why Use Them](../../../document-extensions/timeseries/incremental-time-series/overview.mdx#what-are-incremental-time-series-and-why-use-them)  
+  * [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview.mdx#incremental-time-series--vs--non-incremental-time-series)  
+  * [Incremental Time Series Structure](../../../document-extensions/timeseries/incremental-time-series/overview.mdx#incremental-time-series-structure)  
 
   
 
@@ -42,8 +42,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * **A Time Series That Counts**  
   Many scenarios require us to continuously update a counter, and yet keep track of 
   the changes made to its value over time.  
-  [Counters](../../../document-extensions/counters/overview) let us count, but not keep track of changes.  
-  [Time series](../../../document-extensions/timeseries/overview) let us record changes over time, 
+  [Counters](../../../document-extensions/counters/overview.mdx) let us count, but not keep track of changes.  
+  [Time series](../../../document-extensions/timeseries/overview.mdx) let us record changes over time, 
   but are not designated for counting.  
   Incremental time series allow us to easily achieve both goals, by permitting clients 
   to **use entry values as counters, while storing their modifications over time in an evolving time series**.  
@@ -123,20 +123,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * Incremental:  
      Rollup policies can be created as above.  
      However, the resulting rollup time series is non incremental.  
-     It can be handled via [TimeSeriesFor](../../../document-extensions/timeseries/client-api/session/append#timeseriesfor.append), not 
-     [IncrementalTimeSeriesFor](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview#methods), 
-     and its values can no longer be [Incremented](../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment).  
+     It can be handled via [TimeSeriesFor](../../../document-extensions/timeseries/client-api/session/append.mdx#timeseriesfor.append), not 
+     [IncrementalTimeSeriesFor](../../../document-extensions/timeseries/incremental-time-series/client-api/session/overview.mdx#methods), 
+     and its values can no longer be [Incremented](../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx).  
 
 
 
 ## Incremental Time Series Structure
 
 * The basic structure and behavior of incremental time series are similar 
-  to those of [non-incremental time series](../../../document-extensions/timeseries/overview#time-series-data).  
+  to those of [non-incremental time series](../../../document-extensions/timeseries/overview.mdx#time-series-data).  
 * An incremental time series is attached to a document just like a non-incremental 
   time series is.  
   In Studio, incremental time series are even accessed through the 
-  familiar [Time Series View](../../../studio/database/document-extensions/time-series#creating-a-new-incremental-time-series-by-creating-its-first-entry).  
+  familiar [Time Series View](../../../studio/database/document-extensions/time-series.mdx#creating-a-new-incremental-time-series-by-creating-its-first-entry).  
 * An incremental time series is divided into segments and entries the same way 
   a non-incremental time series is.  
 * The main structural difference is incremental time series' capacity to store multiple 

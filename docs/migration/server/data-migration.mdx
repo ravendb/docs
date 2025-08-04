@@ -16,11 +16,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * In this page:
-    * [Migration to RavenDB `7.x`](../../migration/server/data-migration#migration-to-ravendb-7.x)
-    * [Migration from RavenDB 5.x to 6.x](../../migration/server/data-migration#migration-from-ravendb-5.x-to-6.x)
-    * [Migration from RavenDB 4.x to RavenDB 5.x and 6.x](../../migration/server/data-migration#migration-from-ravendb-4.x-to-ravendb-5.x-and-6.x)
-    * [Migration from RavenDB 3.x](../../migration/server/data-migration#migration-from-ravendb-3.x)
-    * [Migrating data into a sharded database](../../migration/server/data-migration#migrating-data-into-a-sharded-database)
+    * [Migration to RavenDB `7.x`](../../migration/server/data-migration.mdx#migration-to-ravendb-7.x)
+    * [Migration from RavenDB 5.x to 6.x](../../migration/server/data-migration.mdx#migration-from-ravendb-5.x-to-6.x)
+    * [Migration from RavenDB 4.x to RavenDB 5.x and 6.x](../../migration/server/data-migration.mdx#migration-from-ravendb-4.x-to-ravendb-5.x-and-6.x)
+    * [Migration from RavenDB 3.x](../../migration/server/data-migration.mdx#migration-from-ravendb-3.x)
+    * [Migrating data into a sharded database](../../migration/server/data-migration.mdx#migrating-data-into-a-sharded-database)
 
 </Admonition>
 ## Migration to RavenDB `7.x`
@@ -28,7 +28,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Migration and NLog:" id="migration-and-nlog" href="#migration-and-nlog">
 
 Starting with version `7.0`, RavenDB incorporates the 
-[NLog logging frmework](../../server/troubleshooting/logging) and writes all log 
+[NLog logging frmework](../../server/troubleshooting/logging.mdx) and writes all log 
 data through it.  
 
 Logging settings applied in earlier RavenDB versions are respected by RavenDB `7.x`, 
@@ -36,7 +36,7 @@ and logging should continue by these settings without interference after the mig
 
 If you want to use NLog-specific features, though, you will have to address a different set 
 of settings that NLog requires.  
-You can [learn more here about migration and the new logging system](../../server/troubleshooting/logging#customize-after-migration).  
+You can [learn more here about migration and the new logging system](../../server/troubleshooting/logging.mdx#customize-after-migration).  
 
 </Admonition> 
 <Admonition type="note" title="Migration and HTTP Compression:" id="migration-and-http-compression" href="#migration-and-http-compression">
@@ -66,7 +66,7 @@ Earlier versions used `Gzip`.
 * RavenDB `6.x` supports in-place data migration from RavenDB `5.x`.
 * RavenDB `5.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `5.x` license to a RavenDB `6.x` license,  
-  please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license#upgrade-a-license-key-for-ravendb-6.x).
+  please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6.x).
 
 <Admonition type="warning" title="Warning">
 Please note that once upgraded, RavenDB `6.x` cannot be downgraded to version `5.x`,  
@@ -86,7 +86,7 @@ and the migrated data will no longer be accessible via RavenDB `5.x`.
   </Admonition>
 * RavenDB `4.x` product licenses **do not apply** to RavenDB `6.x`.  
   To upgrade a valid `4.x` license to a RavenDB `6.x` license,  
-  please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license#upgrade-a-license-key-for-ravendb-6.x).
+  please use the **License upgrade tool** [as explained here](../../start/licensing/replace-license.mdx#upgrade-a-license-key-for-ravendb-6.x).
 
 <Admonition type="warning" title="Warning">
 Please note that once upgraded, RavenDB `6.x` cannot be downgraded to version `4.x`,  
@@ -106,7 +106,7 @@ and data migrated to `5.x` or `6.x` will no longer be accessible via RavenDB `4.
 
 ## Migrating data into a sharded database
 
-If you want to migrate your data to a [sharded](../../sharding/overview) database (supported by RavenDB `6.0` and above),  
-please read the related article [here](../../sharding/migration).
+If you want to migrate your data to a [sharded](../../sharding/overview.mdx) database (supported by RavenDB `6.0` and above),  
+please read the related article [here](../../sharding/migration.mdx).
 
 

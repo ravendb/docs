@@ -19,7 +19,7 @@ In this walkthrough, we will setup RavenDB on an AWS EC2 t2.micro virtual machin
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
 
-It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
+It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard.mdx) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
 ## Create the VM
@@ -73,7 +73,7 @@ Follow the instructions and connect to the new machine using ssh.
 
 ![8](./assets/8.png)
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`ssh -i "RavenDBUbuntuVMKeyPair.pem" ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com
 `}
@@ -91,7 +91,7 @@ We highly recommend **updating** your **Linux OS** prior to launching the RavenD
 </Admonition>
 
 Download RavenDB's latest stable using the following command:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`wget -O ravendb.tar.bz2 https://hibernatingrhinos.com/downloads/RavenDB%20for%20Linux%20x64/latest
 `}
@@ -100,7 +100,7 @@ Download RavenDB's latest stable using the following command:
 
 If you wish to use another RavenDB version, download it to your local machine and transfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`scp -i "RavenDBUbuntuVMKeyPair.pem" /local/download/location/RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2 ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com:/home/ubuntu
 `}
@@ -109,7 +109,7 @@ If you wish to use another RavenDB version, download it to your local machine an
 
 Extract the archive.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`tar xvjf RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2
 `}
@@ -118,7 +118,7 @@ Extract the archive.
 
 Allow RavenDB to use port 443 (non-root process):
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`sudo setcap CAP_NET_BIND_SERVICE=+eip ./RavenDB/Server/Raven.Server
 `}
@@ -130,12 +130,12 @@ Locate the VM's private and public IP addresses in the AWS EC2 Management Consol
 ![9](./assets/9.png)
 
 You have a few choices on how to run the RavenDB server. 
-We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
+We will use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
 
-Let's edit the [settings.json](../../../server/configuration/configuration-options#settings.json) file so that we can perform the setup remotely using the browser.
+Let's edit the [settings.json](../../../server/configuration/configuration-options.mdx#settings.json) file so that we can perform the setup remotely using the browser.
 Notice that when we run the server for the first time, `settings.json` is created from `settings.default.json`. So if `settings.json` doesn't exist, edit `settings.default.json` instead.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`vi RavenDB/Server/settings.default.json
 `}
@@ -181,7 +181,7 @@ Open a terminal and create the file /etc/systemd/system/ravendb.service, using s
 
 Then run the following commands:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`sudo systemctl daemon-reload
 sudo systemctl enable ravendb.service
@@ -197,7 +197,7 @@ RavenDB is running and you can access it from your (local) browser using the VM'
 ![12](./assets/12.png)
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
-You will need to claim your domain, read more [here](../../../start/installation/setup-wizard#secure-setup-with-a-let).
+You will need to claim your domain, read more [here](../../../start/installation/setup-wizard.mdx#secure-setup-with-a-let).
 
 When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
 
@@ -207,7 +207,7 @@ Choose the **private IP address** here.
 
 Check the External IP box and enter the **public IP address**. Then start the installation.
 
-If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq).
+If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq.mdx).
 
 ![14](./assets/14.png)
 
@@ -230,13 +230,13 @@ Chrome will let you select the certificate.
 ![16](./assets/16.png)
 ![17](./assets/17.png)
 
-Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview) for better understanding of certificates and security issues.
+Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview.mdx) for better understanding of certificates and security issues.
 
 ![18](./assets/18.png)
 
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
-Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options#settings.json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
+Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options.mdx#settings.json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard.mdx) to construct a cluster during setup.
 

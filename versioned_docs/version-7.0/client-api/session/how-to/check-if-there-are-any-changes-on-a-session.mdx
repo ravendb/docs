@@ -21,19 +21,19 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `SaveChanges()` is called.
 
 * This article describes how to check for changes made to **all** tracked entities within the session.  
-  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
 
-* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx).
  
 * In this page:
-  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
-  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
-  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
 
 </Admonition>
 ## Check for session changes 
@@ -41,7 +41,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * The session's advanced property `HasChanges` indicates whether any entities were added, modified, or deleted within the session.
 
 * Note: The _HasChanges_ property is cleared after calling `SaveChanges()`.
-<TabItem value="something" label="changes_1">
+<TabItem value="changes_1" label="changes_1">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -77,7 +77,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   Calling it immediately after _SaveChanges_ will return no results, as the changes are cleared.
 ##### Example I
 
-<TabItem value="something" label="changes_2">
+<TabItem value="changes_2" label="changes_2">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -105,7 +105,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ##### Example II
 
-<TabItem value="something" label="changes_3">
+<TabItem value="changes_3" label="changes_3">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -150,14 +150,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// HasChanges
 bool HasChanges \{ get; \}
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// WhatChanged
 IDictionary<string, DocumentsChanges[]> WhatChanged();
@@ -169,7 +169,7 @@ IDictionary<string, DocumentsChanges[]> WhatChanged();
 |-------------------------------------------|-------------------------------------------------------|
 | `IDictionary<string, DocumentsChanges[]>` | Dictionary containing list of changes per document ID |
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public class DocumentsChanges
 \{
@@ -203,14 +203,14 @@ public enum ChangeType
 <LanguageContent language="java">
 
 
-Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. 
+Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed.mdx) method, but there is also a possibility to check if there are any changes on a session or even what has changed. 
 Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
 
 ## HasChanges
 
 Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
 
-<TabItem value="something-something" label="what_changed_1">
+<TabItem value="what_changed_1" label="what_changed_1">
 <CodeBlock language="java">
 {`boolean hasChanges()
 `}
@@ -219,7 +219,7 @@ Property indicates if the session contains any changes. If there are any new, ch
 
 ### Example
 
-<TabItem value="something-something" label="what_changed_2">
+<TabItem value="what_changed_2" label="what_changed_2">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Assert.assertFalse(session.advanced().hasChanges());
@@ -242,7 +242,7 @@ Property indicates if the session contains any changes. If there are any new, ch
 
 Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
 
-<TabItem value="something-something" label="what_changed_3">
+<TabItem value="what_changed_3" label="what_changed_3">
 <CodeBlock language="java">
 {`Map<String, List<DocumentsChanges>> whatChanged()
 `}
@@ -255,7 +255,7 @@ Method returns all changes for each entity stored within the session. Including 
 
 ### Example I
 
-<TabItem value="something-something" label="what_changed_4">
+<TabItem value="what_changed_4" label="what_changed_4">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Employee employee = new Employee();
@@ -275,7 +275,7 @@ Method returns all changes for each entity stored within the session. Including 
 
 ### Example II
 
-<TabItem value="something-something" label="what_changed_5">
+<TabItem value="what_changed_5" label="what_changed_5">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Employee employee = session.load(Employee.class, "employees/1-A");// 'Joe Doe'
@@ -301,17 +301,17 @@ Method returns all changes for each entity stored within the session. Including 
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `save_changes` is called.
 
 * This article describes how to check for changes made to **all** tracked entities within the session.  
-  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
  
 * In this page:
-  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
-  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
-  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
 
 </Admonition>
 ## Check for session changes 
@@ -319,7 +319,7 @@ Method returns all changes for each entity stored within the session. Including 
 * The advanced session `has_changes` property indicates whether any entities were added, modified, or deleted within the session.
 
 * Note: The `has_changes` property is cleared (reset to `False`) after calling `save_changes`.
-<TabItem value="something-something" label="changes_1">
+<TabItem value="changes_1" label="changes_1">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     # No changes made yet - 'has_changes' will be False
@@ -353,7 +353,7 @@ Method returns all changes for each entity stored within the session. Including 
   Calling it immediately after _save_changes_ will return no results, as the changes are cleared.
 ##### Example I
 
-<TabItem value="something-something" label="changes_2">
+<TabItem value="changes_2" label="changes_2">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     # Store (add) new entities, they will be tracked by the session
@@ -379,7 +379,7 @@ Method returns all changes for each entity stored within the session. Including 
 
 ##### Example II
 
-<TabItem value="something-something" label="changes_3">
+<TabItem value="changes_3" label="changes_3">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     # Load the entities, they will be tracked by the session
@@ -426,14 +426,14 @@ Method returns all changes for each entity stored within the session. Including 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`# has_changes
 def has_changes(self) -> bool: ...
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`# what_changed
 def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
@@ -445,7 +445,7 @@ def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
 |-------------------------------------|-------------------------------------------------------|
 | `Dict[str, List[DocumentsChanges]]` | Dictionary containing list of changes per document ID |
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="python">
 {`class DocumentsChanges:
 
@@ -479,17 +479,17 @@ def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made in all the entities it has either loaded, stored, or queried for,  
   and persists to the server only what is needed when `saveChanges` is called.
 
 * This article describes how to check for changes made in all tracked entities within the **session**.  
-  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+  To check for changes on a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
  
 * In this page:
-  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
-  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
-  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+  * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+  * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+  * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
 
 </Admonition>
 ## Check for session changes 
@@ -497,7 +497,7 @@ def what_changed(self) -> Dict[str, List[DocumentsChanges]]: ...
 * The advanced session `hasChanges` property indicates whether any entities were added, modified, or deleted within the session.
 
 * Note: The `hasChanges` property is cleared (reset to `false`) after calling `saveChanges`.
-<TabItem value="something-something" label="changes_1">
+<TabItem value="changes_1" label="changes_1">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -537,7 +537,7 @@ try \{
    * The type of change  
 ##### Example I
 
-<TabItem value="something-something" label="changes_2">
+<TabItem value="changes_2" label="changes_2">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -576,7 +576,7 @@ try \{
 
 ##### Example II
 
-<TabItem value="something-something" label="changes_3">
+<TabItem value="changes_3" label="changes_3">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -624,13 +624,13 @@ try \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`public function hasChanges(): bool;
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`public function whatChanged(): array; // array<string, DocumentsChangesArray>
 `}
@@ -643,7 +643,7 @@ try \{
 | `whatChanged(): array;` | Returns an array of changes per document ID |
 | `DocumentsChanges` | A list of changes made in an entity (see `ChangeType` class below for available change types) |
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="php">
 {`class DocumentsChanges
 \{
@@ -682,19 +682,19 @@ class ChangeType
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `saveChanges()` is called.
 
 * This article describes how to check for changes made to **all** tracked entities within the session.  
-  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed).
+  To check for changes to a specific **entity**, see [Check for entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx).
 
-* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities).
+* To get the list of all entities tracked by the session, see [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx).
 
 * In this page:
-    * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#check-for-session-changes)
-    * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes)
-    * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#syntax)
+    * [Check for session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#check-for-session-changes)
+    * [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes)
+    * [Syntax](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#syntax)
 
 </Admonition>
 ## Check for session changes
@@ -702,8 +702,8 @@ class ChangeType
 * The session's advanced property `hasChanges` indicates whether any entities were added, modified, or deleted within the session.
 
 * Note: The _hasChanges_ property is cleared after calling `saveChanges()`.
-<TabItem value="something-something" label="changes_1">
-<CodeBlock language="nodejs">
+<TabItem value="changes_1" label="changes_1">
+<CodeBlock language="js">
 {`const session = store.openSession();
 
 // No changes made yet - 'hasChanges' will be FALSE
@@ -741,8 +741,8 @@ assert.ok(!session.advanced.hasChanges());
   Calling it immediately after _saveChanges_ will return no results, as the changes are cleared.
 ##### Example I
 
-<TabItem value="something-something" label="changes_2">
-<CodeBlock language="nodejs">
+<TabItem value="changes_2" label="changes_2">
+<CodeBlock language="js">
 {`const session = store.openSession();
 
 // Store (add) new entities, they will be tracked by the session
@@ -776,8 +776,8 @@ await session.saveChanges();
 
 ##### Example II
 
-<TabItem value="something-something" label="changes_3">
-<CodeBlock language="nodejs">
+<TabItem value="changes_3" label="changes_3">
+<CodeBlock language="js">
 {`const session = store.openSession();
 
 // Load the entities, they will be tracked by the session
@@ -820,15 +820,15 @@ await session.saveChanges();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// HasChanges
 session.advanced.hasChanges();
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// WhatChanged
 session.advanced.whatChanged();
 `}

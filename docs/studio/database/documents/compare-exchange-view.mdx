@@ -15,22 +15,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Documents: Compare Exchange View
 <Admonition type="note" title="Note">
 
-* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview) are cluster-wide key/value pair items where the key 
+* [Compare-Exchange](../../../client-api/operations/compare-exchange/overview.mdx) are cluster-wide key/value pair items where the key 
   is a unique identifier in the database.
 
 * CmpXchg items coordinate work between sessions that are 
   trying to modify a shared resource (such as a document) at the same time.
 
 * Compare exchange items are created and managed by either of the following:
-  * RavenDB [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards)  
+  * RavenDB [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx)  
     To guarantee ACIDity across the cluster, 
     as of RavenDB 5.2, we automatically create and maintain Atomic Guard CmpXchg items in cluster-wide sessions.  
-  * [API Operations](../../../client-api/operations/compare-exchange/overview)
-  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction/overview)
-  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+  * [API Operations](../../../client-api/operations/compare-exchange/overview.mdx)
+  * [Session - Cluster Transaction](../../../client-api/session/cluster-transaction/overview.mdx)
+  * Using the [RavenDB Studio](../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view)
 
 * In this page:
-  * [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view#the-compare-exchange-view)
+  * [The Compare Exchange View](../../../studio/database/documents/compare-exchange-view.mdx#the-compare-exchange-view)
 
 </Admonition>
 ## The Compare Exchange View
@@ -50,7 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
        A unique identifier that is reserved across the cluster.  
        Enter any string of your choice.  
         <Admonition type="info" title="Atomic Guards" id="atomic-guards" href="#atomic-guards">
-        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards).  
+        If keys start with "rvn-atomic", they are [Atomic Guards](../../../client-api/session/cluster-transaction/atomic-guards.mdx).  
         They are created and maintained automatically to guarantee ACID cluster-wide transactions.  
         **Do not remove or edit these** as this will disable ACID guarantees.  
         

@@ -24,8 +24,8 @@ Learn in this page how to load a part of an attachment, an entire attachment,
 or multiple attachments.  
 
 * In this page:  
-   * [Load attachments](../../document-extensions/attachments/loading#load-attachments)  
-   * [Load a part of an attachment](../../document-extensions/attachments/loading#load-a-part-of-an-attachment)  
+   * [Load attachments](../../document-extensions/attachments/loading.mdx#load-attachments)  
+   * [Load a part of an attachment](../../document-extensions/attachments/loading.mdx#load-a-part-of-an-attachment)  
 
 </Admonition>
 ## Load attachments
@@ -209,7 +209,7 @@ while (attachmentsEnumerator.MoveNext())
 Use `GetRange` to load a part of an attachment by document ID and the attachment name.  
 
 ## Syntax
-<TabItem value="something-something" label="GetRngSyntax">
+<TabItem value="GetRngSyntax" label="GetRngSyntax">
 <CodeBlock language="csharp">
 {`// Returns a range of the attachment by the document id and attachment name.
 AttachmentResult GetRange(string documentId, string name, long? from, long? to);
@@ -258,7 +258,7 @@ There are a few methods that allow you to download attachments from a database:
 
 ## Syntax
 
-<TabItem value="something-something" label="GetSyntax">
+<TabItem value="GetSyntax" label="GetSyntax">
 <CodeBlock language="java">
 {`AttachmentName[] getNames(Object entity);
 
@@ -275,7 +275,7 @@ CloseableAttachmentResult getRevision(String documentId, String name, String cha
 
 ## Example
 
-<TabItem value="something-something" label="GetAttachment">
+<TabItem value="GetAttachment" label="GetAttachment">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     Album album = session.load(Album.class, "albums/1");
@@ -326,7 +326,7 @@ Use `session.advanced.attachments.exists` to determine if an attachment exists o
 
 ## Syntax
 
-<TabItem value="something-something" label="GetSyntax">
+<TabItem value="GetSyntax" label="GetSyntax">
 <CodeBlock language="python">
 {`def get(self, entity_or_document_id: str = None, name: str = None) -> CloseableAttachmentResult: ...
 
@@ -354,7 +354,7 @@ def exists(self, document_id: str, name: str) -> bool: ...
 
 ## Example I
 
-<TabItem value="something-something" label="GetAttachment">
+<TabItem value="GetAttachment" label="GetAttachment">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     album = session.load("albums/1", Album)
@@ -397,7 +397,7 @@ Use `session.advanced.attachments.exists` to determine if an attachment exists o
 
 ## Syntax
 
-<TabItem value="something-something" label="GetSyntax">
+<TabItem value="GetSyntax" label="GetSyntax">
 <CodeBlock language="php">
 {`function get(object|string $idOrEntity, ?string $name): CloseableAttachmentResult;
 function getNames(?object $entity): AttachmentNameArray;
@@ -409,7 +409,7 @@ function getRevision(?string $documentId, ?string $name, ?string $changeVector):
 
 ## Example I
 
-<TabItem value="something-something" label="GetAttachment">
+<TabItem value="GetAttachment" label="GetAttachment">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -460,8 +460,8 @@ There are a few methods that allow you to download attachments from a database:
 
 ## Syntax
 
-<TabItem value="something-something" label="GetSyntax">
-<CodeBlock language="nodejs">
+<TabItem value="GetSyntax" label="GetSyntax">
+<CodeBlock language="js">
 {`session.advanced.attachments.getNames(entity);
 
 session.advanced.attachments.exists(documentId, name);
@@ -487,8 +487,8 @@ session.advanced.attachments.getRevision(documentId, name, changeVector);
 
 ## Example
 
-<TabItem value="something-something" label="GetAttachment">
-<CodeBlock language="nodejs">
+<TabItem value="GetAttachment" label="GetAttachment">
+<CodeBlock language="js">
 {`const album = await session.load("albums/1");
 
 const file1 = await session.advanced.attachments.get(album, "001.jpg");

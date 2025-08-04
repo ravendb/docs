@@ -22,17 +22,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Document extensions like attachments, counters, or time series, will not be transferred.  
 * This page explains how to create an Elasticsearch ETL task using the Studio.  
   Learn more about Elasticsearch ETL tasks and how to create one using 
-  the client API in [Ongoing Tasks: Elasticsearch ETL](../../../../server/ongoing-tasks/etl/elasticsearch)  
+  the client API in [Ongoing Tasks: Elasticsearch ETL](../../../../server/ongoing-tasks/etl/elasticsearch.mdx)  
 
 * In this page:  
-  * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#navigate-to-the-elasticsearch-etl-task-view)  
-  * [Define the Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#define-the-elasticsearch-etl-task)  
-  * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes)  
-  * [Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#transformation-script)  
-     * [Add Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#add-transformation-script)  
-     * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#edit-transformation-script)  
-     * [Test Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-transformation-script)  
-     * [Test Results](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#test-results)  
+  * [Navigate to the Elasticsearch ETL Task View](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#navigate-to-the-elasticsearch-etl-task-view)  
+  * [Define the Elasticsearch ETL Task](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#define-the-elasticsearch-etl-task)  
+  * [Elasticsearch Indexes](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes)  
+  * [Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#transformation-script)  
+     * [Add Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#add-transformation-script)  
+     * [Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#edit-transformation-script)  
+     * [Test Transformation Script](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#test-transformation-script)  
+     * [Test Results](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#test-results)  
 </Admonition>
 ## Navigate to the Elasticsearch ETL Task View
 
@@ -59,8 +59,8 @@ To begin creating your Elasticsearch ETL task:
    Disabled - No documents are transformed and sent.  
 
 3. **Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Connection String**  
     * Select an existing connection string from the list or create a new one.  
@@ -91,7 +91,7 @@ Indexes the ETL task will access.
 
 * Enter the Elasticsearch index name.  
   The index name must match the index name provided in the 
-  [loadTo\\\&lt;indexName\\\&gt;](../../../../server/ongoing-tasks/etl/basics#transform) command 
+  [loadTo\\\&lt;indexName\\\&gt;](../../../../server/ongoing-tasks/etl/basics.mdx#transform) command 
   in the transformation script.  
   E.g., using the command `loadToOrders` in the transformation script requires you 
   to define here an index by the name of `orders`.  
@@ -180,7 +180,7 @@ Elasticsearch destination per RavenDB document from the selected collections.
    * Make sure that one of the properties of the document object 
      is given the value `id(this)`.  
      <Admonition type="note" title="Note">
-     The ETL task will use this property [to identify](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#document-id-property-name) 
+     The ETL task will use this property [to identify](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#document-id-property-name) 
      documents that reside on the Elasticsearch destination by their source 
      RavenDB document ID.  
      </Admonition>
@@ -202,10 +202,10 @@ Elasticsearch destination per RavenDB document from the selected collections.
       specified collections** the first time the task runs.  
     * When this option is **disabled**:  
       The script will be executed **only over new and modified documents**.  
-    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes) 
       is **enabled**:  
       RavenDB documents will be appended to Elasticsearch **without deleting documents from Elasticsearch first**.  
-    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+    * If [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes) 
       is **disabled**:  
       Documents will be **deleted from Elasticsearch first**, and then appended to it from RavenDB.  
 
@@ -245,7 +245,7 @@ The test results view displays a **preview** of the tested document, and the **c
    3. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html) Segment  
       The delete POST command with a list of IDs by which Elasticsearch would 
       locate and remove existing documents.  
-      Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) 
+      Deleting existing document versions is **optional**, enable [Insert Only](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes) 
       to prevent the task from sending `_delete_by_query` commands.  
    4. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html) Segment  
       The bulk POST command with a list of document objects, each with data extracted from RavenDB and an ID that Elasticsearch stores it by.  

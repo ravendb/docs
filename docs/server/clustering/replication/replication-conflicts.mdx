@@ -26,13 +26,13 @@ or accept the potential for conflicts.
 For document writes, RavenDB chooses to accept conflicts as a trade-off of always being able to accept writes on any node.
 
 ## Conflict Detection
-Each document in a RavenDB cluster has a [Change Vector](../../../server/clustering/replication/change-vector) which is used for conflict detection.
+Each document in a RavenDB cluster has a [Change Vector](../../../server/clustering/replication/change-vector.mdx) which is used for conflict detection.
 
-When the server receives an incoming replication batch, it compares the [Change Vector](../../../server/clustering/replication/change-vector) 
-of the incoming document with the [Change Vector](../../../server/clustering/replication/change-vector) of the local document. 
+When the server receives an incoming replication batch, it compares the [Change Vector](../../../server/clustering/replication/change-vector.mdx) 
+of the incoming document with the [Change Vector](../../../server/clustering/replication/change-vector.mdx) of the local document. 
   
 Let's assume _remote_cv_ to be the change vector of a remote document, and _local_cv_ to be a change vector of a local document.  
-The [Comparison](../../../server/clustering/replication/change-vector#change-vector-comparisons) of the [Change Vectors](../../../server/clustering/replication/change-vector) may yield three possible results:  
+The [Comparison](../../../server/clustering/replication/change-vector.mdx#change-vector-comparisons) of the [Change Vectors](../../../server/clustering/replication/change-vector.mdx) may yield three possible results:  
   
 * _remote_cv_ &lt;= _local_cv_ -&gt; Nothing to do, the local document is more up-to-date.
 * _remote_cv_ &gt; _local_cv_ -&gt;  Remote document is more recent than local, replace local document with remote
@@ -40,13 +40,13 @@ The [Comparison](../../../server/clustering/replication/change-vector#change-vec
 
 When there is a conflict between two or more document versions, RavenDB will try multiple steps to resolve it. If any of the steps succeeds, the conflict resolution will end and resolved document will be written to the storage.
   
-1. If `ResolveToLatest` flag is set (by default it is `true`), resolve the conflict to the document variant where the [Latest Modified](../../../client-api/session/how-to/get-entity-last-modified) property is the latest.
+1. If `ResolveToLatest` flag is set (by default it is `true`), resolve the conflict to the document variant where the [Latest Modified](../../../client-api/session/how-to/get-entity-last-modified.mdx) property is the latest.
 2. Check whether the document contents are identical, if so, then there is no conflict and the change vector of the two documents is merged.
 <Admonition type="note" title="Note">
-The identity check applies to [Tombstone](../../../glossary/tombstone) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
+The identity check applies to [Tombstone](../../../glossary/tombstone.mdx) as well, and it will always resolve to the local one, since the tombstones are always considered equal.
 </Admonition>
-3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts#conflict-resolution-script).  
-4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts#manually-resolving-conflicts). 
+3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script).  
+4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts.mdx#manually-resolving-conflicts). 
 
 ## Conflict Resolution Script 
 A resolution script is defined per collection and have the following input arguments:
@@ -69,14 +69,14 @@ If the script will encounter an exception, the execution will aborted and the co
 </Admonition>
 
 ### Configuring Conflict Resolution Using the Client  
-Setting up conflict resolution strategy in the client is done via sending cluster-level operation - [ModifyConflictSolverOperation](../../../client-api/operations/server-wide/modify-conflict-solver), which is a [Raft command](../../../glossary/raft-command).
+Setting up conflict resolution strategy in the client is done via sending cluster-level operation - [ModifyConflictSolverOperation](../../../client-api/operations/server-wide/modify-conflict-solver.mdx), which is a [Raft command](../../../glossary/raft-command.mdx).
   
 ### Configuring Conflict Resolution Using the Management Studio
 Conflict resolution scripts can be set up also via the Management Studio as well.   
 Using resolution scripts, we can implement custom logic to be executed when a conflict occurs.  
 For example, given multiple conflicting Northwind's _Order_ document variants, the following script will merge the ordered items so there will be no missing items and the amount of items ordered will be maximal.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`var final = docs[0];
 

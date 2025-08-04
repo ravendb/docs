@@ -22,20 +22,20 @@ export const supportedLanguages = ["csharp", "python", "nodejs"];
 <Admonition type="note" title="Note">
 
 * This page contains examples of **creating a subscription**.  
-  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).  
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).  
 
-* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).  
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx).  
 
 * In this page:  
-   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)  
-   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)  
-   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)  
-   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)  
-   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)  
-   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)  
-   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples#create-subscription---subscribe-to-revisions)  
-   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples#create-subscription---via-update)
-   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)
+   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
+   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
+   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
+   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
+   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
+   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)  
+   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---subscribe-to-revisions)  
+   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---via-update)
+   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)
 
 </Admonition>
 ## Create subscription - for all documents in a collection
@@ -160,7 +160,7 @@ However, this time we only project the document ID and the Total Revenue propert
 ## Create subscription - project data from a related document 
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `Load` method.
+we also project data from a [related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) that is loaded using the `Load` method.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Generic-syntax" label="Generic-syntax">
@@ -226,7 +226,7 @@ Here we create a subscription on the _Orders_ collection, which will send all th
 In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client. 
 This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
 
-See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Builder-syntax" label="Builder-syntax">
@@ -278,8 +278,8 @@ See how to consume this type of subscription [here](../../../client-api/data-sub
 **Include using builder**:
 
 Include statements can be added to the subscription with `ISubscriptionIncludeBuilder`.  
-This builder is assigned to the  `Includes` property in [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;).  
-It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
+This builder is assigned to the  `Includes` property in [SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;).  
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). 
 These methods can be chained.
 
 To include related documents, use method `IncludeDocuments`.  
@@ -303,7 +303,7 @@ The include statements can be written in two ways:
 
 <Admonition type="info" title="Info">
 
-If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields), 
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
 the include will search for the specified paths in the projected fields rather than in the original document.
 
 </Admonition>
@@ -343,7 +343,7 @@ However, adding a new counter to the document or removing an existing one will t
 
 `ISubscriptionIncludeBuilder` has three methods for including counters:  
 
-<TabItem value="something-something" label="include_builder_counter_methods">
+<TabItem value="include_builder_counter_methods" label="include_builder_counter_methods">
 <CodeBlock language="csharp">
 {`// Include a single counter
 ISubscriptionIncludeBuilder<T> IncludeCounter(string name);
@@ -365,7 +365,7 @@ ISubscriptionIncludeBuilder<T> IncludeAllCounters();
 **All include methods can be chained**:  
 For example, the following subscription includes multiple counters and documents:
 
-<TabItem value="something-something" label="create_subscription_include_chained_builder">
+<TabItem value="create_subscription_include_chained_builder" label="create_subscription_include_chained_builder">
 <CodeBlock language="csharp">
 {`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>()
 \{
@@ -406,7 +406,7 @@ Here we create a simple revisions subscription on the _Orders_ collection that w
 </TabItem>
 </Tabs>
 
-Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).
 
 
 
@@ -416,7 +416,7 @@ When attempting to update a subscription that does Not exist,
 you can request a new subscription to be created by setting `CreateNew` to `true`.  
 In such a case, a new subscription will be created with the provided query.
 
-<TabItem value="something-something" label="create_by_update">
+<TabItem value="create_by_update" label="create_by_update">
 <CodeBlock language="csharp">
 {`subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 \{
@@ -439,7 +439,7 @@ In such a case, a new subscription will be created with the provided query.
 The subscription definition can be updated after it has been created.  
 In this example we update the filtering **query** of an existing subscription named "my subscription".  
 
-<TabItem value="something-something" label="update_subscription_example_0">
+<TabItem value="update_subscription_example_0" label="update_subscription_example_0">
 <CodeBlock language="csharp">
 {`subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 \{
@@ -456,7 +456,7 @@ In this example we update the filtering **query** of an existing subscription na
 In addition to the subscription name, each subscription is assigned a subscription ID when it is created by the server.
 This ID can be used instead of the name when updating the subscription.  
 
-<TabItem value="something-something" label="update_subscription_example_1">
+<TabItem value="update_subscription_example_1" label="update_subscription_example_1">
 <CodeBlock language="csharp">
 {`// Get the subscription's ID
 SubscriptionState mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
@@ -474,7 +474,7 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 
 Using the subscription ID allows you to modify the subscription name:
 
-<TabItem value="something-something" label="update_subscription_example_2">
+<TabItem value="update_subscription_example_2" label="update_subscription_example_2">
 <CodeBlock language="csharp">
 {`// Get the subscription's ID
 mySubscription = store.Subscriptions.GetSubscriptionState("my subscription");
@@ -499,18 +499,18 @@ subscriptionName = store.Subscriptions.Update(new SubscriptionUpdateOptions()
 <Admonition type="note" title="Note">
 
 * This page contains examples of **creating a subscription**.  
-  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).
 
-* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx).
 
 * In this page:
-    * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)
-    * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)
-    * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)
-    * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)
-    * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)
-    * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)
-    * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)  
+    * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)
+    * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)
+    * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)
+    * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)
+    * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)
+    * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)
+    * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)  
 
 </Admonition>
 ## Create subscription - for all documents in a collection
@@ -542,7 +542,7 @@ The server will send ALL documents from the _Orders_ collection to a client that
 Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
 Only documents that match this condition will be sent from the server to a client connected to this subscription.
 
-<TabItem value="something-something" label="create_filter_only_RQL">
+<TabItem value="create_filter_only_RQL" label="create_filter_only_RQL">
 <CodeBlock language="python">
 {`name = store.subscriptions.create_for_options(
     SubscriptionCreationOptions(
@@ -570,7 +570,7 @@ Only documents that match this condition will be sent from the server to a clien
 Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
 However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
 
-<TabItem value="something-something" label="create_filter_and_projection_RQL">
+<TabItem value="create_filter_and_projection_RQL" label="create_filter_and_projection_RQL">
 <CodeBlock language="python">
 {`name = store.subscriptions.create_for_options(
     SubscriptionCreationOptions(
@@ -605,9 +605,9 @@ However, this time we only project the document ID and the Total Revenue propert
 ## Create subscription - project data from a related document
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
+we also project data from a [related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) that is loaded using the `load` method.
 
-<TabItem value="something-something" label="create_filter_and_load_document_RQL">
+<TabItem value="create_filter_and_load_document_RQL" label="create_filter_and_load_document_RQL">
 <CodeBlock language="python">
 {`name = store.subscriptions.create_for_options(
     SubscriptionCreationOptions(
@@ -649,7 +649,7 @@ Here we create a subscription on the _Orders_ collection, which will send all th
 In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client.
 This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
 
-See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Builder-syntax" label="Builder-syntax">
@@ -700,8 +700,8 @@ See how to consume this type of subscription [here](../../../client-api/data-sub
 **Include using builder**:
 
 Include statements can be added to the subscription with `SubscriptionIncludeBuilder`.  
-This builder is assigned to the  `includes` property in [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;).  
-It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters).
+This builder is assigned to the  `includes` property in [SubscriptionCreationOptions](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;).  
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters).
 These methods can be chained.  
 
 To include related documents, use method `include_documents`.  
@@ -725,7 +725,7 @@ The include statements can be written in two ways:
 
 <Admonition type="info" title="Info">
 
-If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields),
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields),
 the include will search for the specified paths in the projected fields rather than in the original document.
 
 </Admonition>
@@ -736,7 +736,7 @@ the include will search for the specified paths in the projected fields rather t
 
 `SubscriptionIncludeBuilder` has three methods for including counters:  
 
-<TabItem value="something-something" label="include_builder_counter_methods">
+<TabItem value="include_builder_counter_methods" label="include_builder_counter_methods">
 <CodeBlock language="python">
 {`def include_counter(self, name: str) -> SubscriptionIncludeBuilder: ...
 
@@ -759,7 +759,7 @@ def include_all_counters(self) -> SubscriptionIncludeBuilder: ...
 The following subscription, which includes multiple counters in the batch sent to the client,  
 demonstrates how the methods can be chained.
 
-<TabItem value="something-something" label="create_subscription_include_counters_builder">
+<TabItem value="create_subscription_include_counters_builder" label="create_subscription_include_counters_builder">
 <CodeBlock language="python">
 {`store.subscriptions.create_for_class(
     Order,
@@ -780,7 +780,7 @@ demonstrates how the methods can be chained.
 The subscription definition can be updated after it has been created.  
 In this example we update the filtering query of an existing subscription named "my subscription".
 
-<TabItem value="something-something" label="update_subscription_example_0">
+<TabItem value="update_subscription_example_0" label="update_subscription_example_0">
 <CodeBlock language="python">
 {`store.subscriptions.update(SubscriptionUpdateOptions(
     name="My subscription", query="from Products where PricePerUnit > 50"))
@@ -797,7 +797,7 @@ This ID can be used to identify the subscription, instead of the name, when upda
 This allows users to change an existing subscription's **name** by specifying the subscription's ID  
 and submitting a new string in the `name` field of `SubscriptionUpdateOptions`.
 
-<TabItem value="something-something" label="update_subscription_example_1">
+<TabItem value="update_subscription_example_1" label="update_subscription_example_1">
 <CodeBlock language="python">
 {`my_subscription = store.subscriptions.get_subscription_state("my subscription")
 
@@ -819,20 +819,20 @@ store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="
 <Admonition type="note" title="Note">
 
 * This page contains examples of **creating a subscription**.  
-  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples).
+  To learn how to consume and process documents sent by the subscription, see these [examples](../../../client-api/data-subscriptions/consumption/examples.mdx).
 
-* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview).
+* For a detailed syntax of the available subscription methods and objects, see this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx).
 
 * In this page:  
-   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription---for-all-documents-in-a-collection)  
-   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-documents)  
-   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields)  
-   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples#create-subscription---project-data-from-a-related-document)  
-   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-documents)  
-   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters)  
-   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples#create-subscription---subscribe-to-revisions)  
-   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples#create-subscription---via-update)
-   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription)
+   * [Create subscription - for all documents in a collection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---for-all-documents-in-a-collection)  
+   * [Create subscription - filter documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-documents)  
+   * [Create subscription - filter and project fields](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields)  
+   * [Create subscription - project data from a related document](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---project-data-from-a-related-document)  
+   * [Create subscription - include documents](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-documents)  
+   * [Create subscription - include counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters)  
+   * [Create subscription - subscribe to revisions](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---subscribe-to-revisions)  
+   * [Create subscription - via update](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---via-update)
+   * [Update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription)
 
 </Admonition>
 ## Create subscription - for all documents in a collection
@@ -840,8 +840,8 @@ store.subscriptions.update(SubscriptionUpdateOptions(key=subscription_id, name="
 Here we create a plain subscription on the _Orders_ collection without any constraints or transformations.  
 The server will send ALL documents from the _Orders_ collection to a client that connects to this subscription.
 
-<TabItem value="something-something" label="create_1">
-<CodeBlock language="nodejs">
+<TabItem value="create_1" label="create_1">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.create(\{
     // Optionally, provide a custom name for the subscription
     name: "OrdersProcessingSubscription",
@@ -852,8 +852,8 @@ The server will send ALL documents from the _Orders_ collection to a client that
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="create_1_1">
-<CodeBlock language="nodejs">
+<TabItem value="create_1_1" label="create_1_1">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.create(\{
     name: "OrdersProcessingSubscription",
     
@@ -863,8 +863,8 @@ The server will send ALL documents from the _Orders_ collection to a client that
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="create_1_2">
-<CodeBlock language="nodejs">
+<TabItem value="create_1_2" label="create_1_2">
+<CodeBlock language="js">
 {`// Or, you can use the folllowing overload,
 // pass the document class type to the 'create' method
 const subscriptionName = await documentStore.subscriptions.create(Order);
@@ -879,8 +879,8 @@ const subscriptionName = await documentStore.subscriptions.create(Order);
 Here we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100. 
 Only documents that match this condition will be sent from the server to a client connected to this subscription.
 
-<TabItem value="something-something" label="create_2">
-<CodeBlock language="nodejs">
+<TabItem value="create_2" label="create_2">
+<CodeBlock language="js">
 {`// Define the filtering criteria
 const query = \`
     declare function getOrderLinesSum(doc) \{
@@ -910,8 +910,8 @@ const subscriptionName = await documentStore.subscriptions.create(\{ query \});
 Here, again, we create a subscription for documents from the _Orders_ collection where the total order revenue is greater than 100.
 However, this time we only project the document ID and the Total Revenue properties in each object sent to the client.
 
-<TabItem value="something-something" label="create_3">
-<CodeBlock language="nodejs">
+<TabItem value="create_3" label="create_3">
+<CodeBlock language="js">
 {`const query = \`
     declare function getOrderLinesSum(doc) \{
         var sum = 0; 
@@ -942,10 +942,10 @@ const subscriptionName = await documentStore.subscriptions.create(\{ query \});
 ## Create subscription - project data from a related document 
 
 In this subscription, in addition to projecting the document fields,  
-we also project data from a [related document](../../../indexes/indexing-related-documents#what-are-related-documents) that is loaded using the `load` method.
+we also project data from a [related document](../../../indexes/indexing-related-documents.mdx#what-are-related-documents) that is loaded using the `load` method.
 
-<TabItem value="something-something" label="create_4">
-<CodeBlock language="nodejs">
+<TabItem value="create_4" label="create_4">
+<CodeBlock language="js">
 {`const query = \`
     declare function getOrderLinesSum(doc) \{
         var sum = 0;
@@ -983,11 +983,11 @@ Here we create a subscription on the _Orders_ collection, which will send all th
 In addition, the related _Product_ documents associated with each Order are **included** in the batch sent to the client. 
 This way, when the subscription worker that processes the batch in the client accesses a _Product_ document, no additional call to the server will be made.
 
-See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents).
+See how to consume this type of subscription [here](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Builder-syntax" label="Builder-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const options = {
     // The documents whose IDs are specified in the 'Product' property
     // will be included in the batch
@@ -1000,14 +1000,14 @@ const subscriptionName = await documentStore.subscriptions.create(options);
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL-path-syntax" label="RQL-path-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const query = \`from Orders include Lines[].Product\`;
 const subscriptionName = await documentStore.subscriptions.create({ query });
 `}
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL-javascript-syntax" label="RQL-javascript-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const query = \`
     declare function includeProducts(doc) {
         let includedFields = 0;
@@ -1035,10 +1035,10 @@ const subscriptionName = await documentStore.subscriptions.create({ query });
 
 Include statements can be added to the subscription with a _builder_ object.  
 This builder is assigned to the  `includes` property in the _options_ object.  
-It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples#create-subscription---include-counters). 
+It supports methods for including documents as well as [counters](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---include-counters). 
 These methods can be chained.
 
-See this [API overview](../../../client-api/data-subscriptions/creation/api-overview#include-methods) for all available include methods.
+See this [API overview](../../../client-api/data-subscriptions/creation/api-overview.mdx#include-methods) for all available include methods.
 
 To include related documents, use method `includeDocuments`.  
 (See the _Builder-syntax_ tab in the example above).
@@ -1061,7 +1061,7 @@ The include statements can be written in two ways:
 
 <Admonition type="info" title="Info">
 
-If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples#create-subscription---filter-and-project-fields), 
+If you include documents when making a [projection](../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription---filter-and-project-fields), 
 the include will search for the specified paths in the projected fields rather than in the original document.
 
 </Admonition>
@@ -1078,7 +1078,7 @@ However, adding a new counter to the document or removing an existing one will t
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Builder-syntax" label="Builder-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const options = {
     includes: builder => builder
          // Values for the specified counters will be included in the batch
@@ -1091,7 +1091,7 @@ const subscriptionName = await documentStore.subscriptions.create(options);
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL-syntax" label="RQL-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const options = {
     query: "from Orders include counters('Pros'), counters('Cons')" 
 };
@@ -1105,8 +1105,8 @@ const subscriptionName = await documentStore.subscriptions.create(options);
 **All include methods can be chained**:  
 For example, the following subscription includes multiple counters and documents:
 
-<TabItem value="something-something" label="create_8">
-<CodeBlock language="nodejs">
+<TabItem value="create_8" label="create_8">
+<CodeBlock language="js">
 {`const options = \{
     includes: builder => builder
         .includeCounter("Likes")
@@ -1128,7 +1128,7 @@ Here we create a simple revisions subscription on the _Orders_ collection that w
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="documentType-syntax" label="documentType-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.createForRevisions({
     documentType: Order
 });
@@ -1136,7 +1136,7 @@ Here we create a simple revisions subscription on the _Orders_ collection that w
 </CodeBlock>
 </TabItem>
 <TabItem value="RQL-syntax" label="RQL-syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.createForRevisions({
     query: "from Orders (Revisions = true)"
 });
@@ -1145,7 +1145,7 @@ Here we create a simple revisions subscription on the _Orders_ collection that w
 </TabItem>
 </Tabs>
 
-Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+Learn more about subscribing to document revisions in [subscriptions: revisions support](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx).
 
 
 
@@ -1155,8 +1155,8 @@ When attempting to update a subscription that does Not exist,
 you can request a new subscription to be created by setting `createNew` to `true`.  
 In such a case, a new subscription will be created with the provided query.
 
-<TabItem value="something-something" label="update_0">
-<CodeBlock language="nodejs">
+<TabItem value="update_0" label="update_0">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.update(\{
     name: "my subscription",
     query: "from Products where PricePerUnit > 20",
@@ -1177,8 +1177,8 @@ In such a case, a new subscription will be created with the provided query.
 The subscription definition can be updated after it has been created.  
 In this example we update the filtering **query** of an existing subscription named "my subscription".
 
-<TabItem value="something-something" label="update_1">
-<CodeBlock language="nodejs">
+<TabItem value="update_1" label="update_1">
+<CodeBlock language="js">
 {`const subscriptionName = await documentStore.subscriptions.update(\{
     // Specify the subscription you wish to modify
     name: "my subscription",
@@ -1193,8 +1193,8 @@ In this example we update the filtering **query** of an existing subscription na
 In addition to the subscription name, each subscription is assigned a subscription ID when it is created by the server.
 This ID can be used instead of the name when updating the subscription.
 
-<TabItem value="something-something" label="update_2">
-<CodeBlock language="nodejs">
+<TabItem value="update_2" label="update_2">
+<CodeBlock language="js">
 {`// Get the subscription's ID
 const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
 const subscriptionId = mySubscription.subscriptionId;
@@ -1210,8 +1210,8 @@ const subscriptionName = await documentStore.subscriptions.update(\{
 
 Using the subscription ID allows you to modify the subscription name:
 
-<TabItem value="something-something" label="update_3">
-<CodeBlock language="nodejs">
+<TabItem value="update_3" label="update_3">
+<CodeBlock language="js">
 {`// Get the subscription's ID
 const mySubscription = await documentStore.subscriptions.getSubscriptionState("my subscription");
 const subscriptionId = mySubscription.subscriptionId;

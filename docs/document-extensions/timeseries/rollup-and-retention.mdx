@@ -31,11 +31,11 @@ Many time series applications produce massive amounts of data at a steady rate.
   Controlling the duration for which time series data is kept before deletion.
  
 * In this page:  
-  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention#time-series-policies)  
-  * [Examples](../../document-extensions/timeseries/rollup-and-retention#examples)  
-      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention#create-time-series-policies)  
-      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention#retrieve-rollup-data)
-  * [Syntax](../../document-extensions/timeseries/rollup-and-retention#syntax)
+  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Examples](../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
+      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
+      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
+  * [Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
 
 </Admonition>
 ## Time series policies
@@ -66,7 +66,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections) 
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -102,7 +102,7 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 #### Create time series policies:
 
-<TabItem value="something" label="rollup_and_retention_0">
+<TabItem value="rollup_and_retention_0" label="rollup_and_retention_0">
 <CodeBlock language="csharp">
 {`var oneWeek = TimeValue.FromDays(7);
 var fiveYears = TimeValue.FromYears(5);
@@ -143,9 +143,9 @@ store.Maintenance.Send(new ConfigureTimeSeriesOperation(timeSeriesConfig));
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `TimeSeriesFor.Get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
+* Learn more about using `TimeSeriesFor.Get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
 
-<TabItem value="something" label="rollup_and_retention_1">
+<TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
 <CodeBlock language="csharp">
 {`// Get all data from the RAW time series:
 // ======================================
@@ -194,7 +194,7 @@ Assert.Equal(rollupData[0].IsRollup, true);
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class RawTimeSeriesPolicy : TimeSeriesPolicy
 \{
@@ -218,7 +218,7 @@ public class TimeSeriesPolicy
 | **RetentionTime**    | Time series entries older than this time span (see `TimeValue` below) are automatically deleted.                                                                                                               |
 | **AggregationTime**  | The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series.                             |
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public struct TimeValue
 \{
@@ -243,7 +243,7 @@ because a calendar month is not a standard unit of time (as it can range from 28
 </Admonition>
 ### The time series configuration object
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class TimeSeriesConfiguration
 \{
@@ -268,19 +268,19 @@ public class TimeSeriesCollectionConfiguration
 | **RawPolicy**   | The `RawTimeSeriesPolicy`, the retention policy for the raw time series.                                                  |
 ### The time series configuration operation
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public ConfigureTimeSeriesOperation(TimeSeriesConfiguration configuration);
 `}
 </CodeBlock>
 </TabItem>
 
-Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
+Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations.mdx).  
 ### Casting time series entries
 
 Time series entries are of one of the following classes:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class TimeSeriesEntry \{   \}
 public class TimeSeriesEntry<T> : TimeSeriesEntry \{   \}
@@ -292,7 +292,7 @@ public class TimeSeriesRollupEntry<TValues> : TimeSeriesEntry \{   \}
 If you have an existing rollup entry of type `TimeSeriesEntry`,  
 you can cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public static TimeSeriesRollupEntry<T> AsRollupEntry<T>(this TimeSeriesEntry<T> entry);
 `}
@@ -302,7 +302,7 @@ you can cast it to a `TimeSeriesRollupEntry` using `AsRollupEntry()`.
 You can cast a `TimeSeriesRollupEntry` to a `TimeSeriesEntry` directly.  
 Its values will consist of all the `First` values of the rollup entry.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`var rollupEntry = new TimeSeriesRollupEntry<int>(new DateTime(2020,1,1));
 TimeSeriesEntry<int> TSEntry = (TimeSeriesEntry<int>)rollupEntry;
@@ -310,7 +310,7 @@ TimeSeriesEntry<int> TSEntry = (TimeSeriesEntry<int>)rollupEntry;
 </CodeBlock>
 </TabItem>
 
-Read more about time series with generic types [here](../../document-extensions/timeseries/client-api/named-time-series-values).
+Read more about time series with generic types [here](../../document-extensions/timeseries/client-api/named-time-series-values.mdx).
 
 
 
@@ -330,11 +330,11 @@ Many time series applications produce massive amounts of data at a steady rate.
   Controlling the duration for which time series data is kept before deletion.
  
 * In this page:  
-  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention#time-series-policies)  
-  * [Examples](../../document-extensions/timeseries/rollup-and-retention#examples)  
-      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention#create-time-series-policies)  
-      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention#retrieve-rollup-data)
-  * [Syntax](../../document-extensions/timeseries/rollup-and-retention#syntax)
+  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Examples](../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
+      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
+      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
+  * [Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
 
 </Admonition>
 ## Time series policies
@@ -365,7 +365,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections) 
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -401,7 +401,7 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 #### Create time series policies:
 
-<TabItem value="something-something" label="rollup_and_retention_0">
+<TabItem value="rollup_and_retention_0" label="rollup_and_retention_0">
 <CodeBlock language="python">
 {`# Policy for the original ("raw") time-series,
 # to keep the data for one week
@@ -433,9 +433,9 @@ store.maintenance.send(ConfigureTimeSeriesOperation(database_ts_config))
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `time_series_for.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
+* Learn more about using `time_series_for.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
 
-<TabItem value="something-something" label="rollup_and_retention_1">
+<TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
 <CodeBlock language="python">
 {`# Create local instance of the time-series "rawSales"
 # in the document "sales/1"
@@ -470,7 +470,7 @@ rollup_data = daily_rollup_TS.get(datetime.min, datetime.max)
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class RawTimeSeriesPolicy(TimeSeriesPolicy):    
     def __init__(self, retention_time: TimeValue = TimeValue.MAX_VALUE()):
@@ -495,7 +495,7 @@ class TimeSeriesPolicy:
 | **retention_time** | `TimeValue` | Time series entries older than this time value (see `TimeValue` below) are automatically deleted. |
 | **aggregation_time** (Optional) | `TimeValue` |The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series. |
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeValue:
     def __init__(self, value: int, unit: TimeValueUnit):
@@ -533,7 +533,7 @@ Each of the above `TimeValue` methods returns a `TimeValue` object representing 
 These methods are used to define the aggregation and retention spans om time series policies.  
 ### The time series configuration object
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeSeriesConfiguration:
     def __init__(self):
@@ -563,19 +563,19 @@ class TimeSeriesCollectionConfiguration:
 | **raw_policy** (Optional) | `RawTimeSeriesPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series. |
 ### The time series configuration operation
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class ConfigureTimeSeriesOperation(MaintenanceOperation[ConfigureTimeSeriesOperationResult])
 `}
 </CodeBlock>
 </TabItem>
 
-Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
+Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations.mdx).  
 ### Time series entries
 
 Time series entries are of one of the following classes:  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeSeriesEntry:
   def __init__(
@@ -638,11 +638,11 @@ Many time series applications produce massive amounts of data at a steady rate.
   Controlling the duration for which time series data is kept before deletion.
  
 * In this page:  
-  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention#time-series-policies)  
-  * [Examples](../../document-extensions/timeseries/rollup-and-retention#examples)  
-      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention#create-time-series-policies)  
-      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention#retrieve-rollup-data)
-  * [Syntax](../../document-extensions/timeseries/rollup-and-retention#syntax)
+  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Examples](../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
+      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
+      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
+  * [Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
 
 </Admonition>
 ## Time series policies
@@ -673,7 +673,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections#examples) 
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx#examples) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -709,7 +709,7 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 #### Create time series policies:
 
-<TabItem value="something-something" label="rollup_and_retention_0">
+<TabItem value="rollup_and_retention_0" label="rollup_and_retention_0">
 <CodeBlock language="php">
 {`$oneWeek = TimeValue::ofDays(7);
 $fiveYears = TimeValue::ofYears(5);
@@ -752,9 +752,9 @@ $store->maintenance()->send(new ConfigureTimeSeriesOperation($timeSeriesConfig))
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
+* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
 
-<TabItem value="something-something" label="rollup_and_retention_1">
+<TabItem value="rollup_and_retention_1" label="rollup_and_retention_1">
 <CodeBlock language="php">
 {`// Get all data from the RAW time series:
 // ======================================
@@ -803,7 +803,7 @@ $this->assertTrue($rollupData[0]->isRollup());
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class RawTimeSeriesPolicy(TimeSeriesPolicy):    
     def __init__(self, retention_time: TimeValue = TimeValue.MAX_VALUE()):
@@ -828,7 +828,7 @@ class TimeSeriesPolicy:
 | **retention_time** | `TimeValue` | Time series entries older than this time value (see `TimeValue` below) are automatically deleted. |
 | **aggregation_time** (Optional) | `TimeValue` |The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series. |
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeValue:
     def __init__(self, value: int, unit: TimeValueUnit):
@@ -866,7 +866,7 @@ Each of the above `TimeValue` methods returns a `TimeValue` object representing 
 These methods are used to define the aggregation and retention spans om time series policies.  
 ### The time series configuration object
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeSeriesConfiguration:
     def __init__(self):
@@ -896,19 +896,19 @@ class TimeSeriesCollectionConfiguration:
 | **raw_policy** (Optional) | `RawTimeSeriesPolicy` | The `RawTimeSeriesPolicy`, the retention policy for the raw time series. |
 ### The time series configuration operation
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class ConfigureTimeSeriesOperation(MaintenanceOperation[ConfigureTimeSeriesOperationResult])
 `}
 </CodeBlock>
 </TabItem>
 
-Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
+Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations.mdx).  
 ### Time series entries
 
 Time series entries are of one of the following classes:  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`class TimeSeriesEntry:
   def __init__(
@@ -971,11 +971,11 @@ Many time series applications produce massive amounts of data at a steady rate.
   Controlling the duration for which time series data is kept before deletion.
  
 * In this page:  
-  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention#time-series-policies)  
-  * [Examples](../../document-extensions/timeseries/rollup-and-retention#examples)  
-      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention#create-time-series-policies)  
-      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention#retrieve-rollup-data)
-  * [Syntax](../../document-extensions/timeseries/rollup-and-retention#syntax)
+  * [Time series policies](../../document-extensions/timeseries/rollup-and-retention.mdx#time-series-policies)  
+  * [Examples](../../document-extensions/timeseries/rollup-and-retention.mdx#examples)  
+      * [Create time series policy](../../document-extensions/timeseries/rollup-and-retention.mdx#create-time-series-policies)  
+      * [Retrieve rollup data](../../document-extensions/timeseries/rollup-and-retention.mdx#retrieve-rollup-data)
+  * [Syntax](../../document-extensions/timeseries/rollup-and-retention.mdx#syntax)
 
 </Admonition>
 ## Time series policies
@@ -1006,7 +1006,7 @@ Rollup time series are created automatically according to rollup policies that c
   * Subsequently, the resulting rollup time series is further aggregated using the policy with the next shortest aggregation frame,  
     and so on.
 
-[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections) 
+[Querying with group-by](../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 will transparently traverse over the rollups to retrieve the relevant results.  
 
 Let's look at an example of rollup data:  
@@ -1042,8 +1042,8 @@ Because time series entries are limited to 32 values, rollups are limited to the
 
 #### Create time series policies:
 
-<TabItem value="something-something" label="rollup_1">
-<CodeBlock language="nodejs">
+<TabItem value="rollup_1" label="rollup_1">
+<CodeBlock language="js">
 {`// Define a policy on the RAW time series data:
 // ============================================
 const rawPolicy = new RawTimeSeriesPolicy(TimeValue.ofYears(5)); // Retain data for five years
@@ -1080,10 +1080,10 @@ await documentStore.maintenance.send(new ConfigureTimeSeriesOperation(timeSeries
 
 * Retrieving entries from a rollup time series is similar to getting the raw time series data.
 
-* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries).
+* Learn more about using `timeSeriesFor.get` in [Get time series entries](../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).
 
-<TabItem value="something-something" label="rollup_2">
-<CodeBlock language="nodejs">
+<TabItem value="rollup_2" label="rollup_2">
+<CodeBlock language="js">
 {`// Get all data from the RAW time series:
 // ======================================
 
@@ -1130,8 +1130,8 @@ assert.equal(rollupData[0].isRollup, true);
   * Used to define the aggregation time frame and retention time for the rollup time series.
   * Multiple policies can be defined per collection.
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`class RawTimeSeriesPolicy extends TimeSeriesPolicy \{
     retentionTime;  // TimeValue
 \}
@@ -1152,8 +1152,8 @@ class TimeSeriesPolicy \{
 | **retentionTime**    | Time series entries older than this `TimeValue` are automatically deleted.                                                                                                               |
 | **aggregationTime** | The time series data being rolled up is divided into parts of this length of time, rounded to nearest time units. Each part is aggregated into an entry of the rollup time series.                             |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class TimeValue \{
     static ofSeconds(seconds);
     static ofMinutes(minutes);
@@ -1173,8 +1173,8 @@ because a calendar month is not a standard unit of time (as it can range from 28
 </Admonition>
 ### The time series configuration object
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class TimeSeriesConfiguration \{
     collections; // Map<string, TimeSeriesCollectionConfiguration>
 \}
@@ -1196,8 +1196,8 @@ class TimeSeriesCollectionConfiguration \{
 | **rawPolicy**   | The `RawTimeSeriesPolicy`, the retention policy for the raw time series.                                                |
 ### The time series configuration operation
 
-<TabItem value="something-something" label="syntax_4">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_4" label="syntax_4">
+<CodeBlock language="js">
 {`ConfigureTimeSeriesOperation(configuration);
 `}
 </CodeBlock>
@@ -1207,7 +1207,7 @@ class TimeSeriesCollectionConfiguration \{
 |-------------------|--------------------------------------------------------------|
 | **configuration** | The `TimeSeriesConfiguration` object to deploy to the server |
 
-Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations).  
+Learn more about operations in: [What are operations](../../client-api/operations/what-are-operations.mdx).  
 
 
 

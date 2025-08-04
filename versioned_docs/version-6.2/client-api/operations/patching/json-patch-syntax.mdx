@@ -23,7 +23,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   the ID of a target (RavenDB) document and a patch operation to be applied 
   to this document.  
 
-* Since the operation is executed in a single request to a database, the JSON Patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support).
+* Since the operation is executed in a single request to a database, the JSON Patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support.mdx).
 
 * JSON Patch operations include -  
    * **Add** a document property  
@@ -34,16 +34,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * **Test** whether the patching succeeded  
   
 * In this page:  
-   * [JSON Patches](../../../client-api/operations/patching/json-patch-syntax#json-patches)
-   * [Running JSON Patches](../../../client-api/operations/patching/json-patch-syntax#running-json-patches)  
-   * [Patch Operations](../../../client-api/operations/patching/json-patch-syntax#patch-operations)  
-      * [Add Document Property](../../../client-api/operations/patching/json-patch-syntax#add-operation)  
-      * [Remove Document Property](../../../client-api/operations/patching/json-patch-syntax#remove-document-property)  
-      * [Replace Document Property Contents](../../../client-api/operations/patching/json-patch-syntax#replace-document-property-contents)  
-      * [Copy Document Property Contents to Another Property](../../../client-api/operations/patching/json-patch-syntax#copy-document-property-contents-to-another-property)  
-      * [Move Document Property Contents to Another Property](../../../client-api/operations/patching/json-patch-syntax#move-document-property-contents-to-another-property)  
-      * [Test Patching Operation](../../../client-api/operations/patching/json-patch-syntax#test-patching-operation)  
-   * [Additional JSON Patching Options](../../../client-api/operations/patching/json-patch-syntax#additional-json-patching-options)  
+   * [JSON Patches](../../../client-api/operations/patching/json-patch-syntax.mdx#json-patches)
+   * [Running JSON Patches](../../../client-api/operations/patching/json-patch-syntax.mdx#running-json-patches)  
+   * [Patch Operations](../../../client-api/operations/patching/json-patch-syntax.mdx#patch-operations)  
+      * [Add Document Property](../../../client-api/operations/patching/json-patch-syntax.mdx#add-operation)  
+      * [Remove Document Property](../../../client-api/operations/patching/json-patch-syntax.mdx#remove-document-property)  
+      * [Replace Document Property Contents](../../../client-api/operations/patching/json-patch-syntax.mdx#replace-document-property-contents)  
+      * [Copy Document Property Contents to Another Property](../../../client-api/operations/patching/json-patch-syntax.mdx#copy-document-property-contents-to-another-property)  
+      * [Move Document Property Contents to Another Property](../../../client-api/operations/patching/json-patch-syntax.mdx#move-document-property-contents-to-another-property)  
+      * [Test Patching Operation](../../../client-api/operations/patching/json-patch-syntax.mdx#test-patching-operation)  
+   * [Additional JSON Patching Options](../../../client-api/operations/patching/json-patch-syntax.mdx#additional-json-patching-options)  
 
 </Admonition>
 ## JSON Patches 
@@ -101,7 +101,7 @@ Use the `Add` operation to add a document property or an array element.
     | value | `object` | Property value |
 
 * **Code Sample - Add a document property**  
-<TabItem value="something" label="json_patch_Add_operation">
+<TabItem value="json_patch_Add_operation" label="json_patch_Add_operation">
 <CodeBlock language="csharp">
 {`var patchesDocument = new JsonPatchDocument();
 patchesDocument.Add("/PropertyName", "Contents");
@@ -120,7 +120,7 @@ Use the `Remove` operation to remove a document property or an array element.
     | path | `string` | Path to the property we want to remove |
 
 * **Code Sample - Remove a document property**  
-<TabItem value="something" label="json_patch_Remove_operation">
+<TabItem value="json_patch_Remove_operation" label="json_patch_Remove_operation">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 patchesDocument.Remove("/PropertyName");
@@ -140,7 +140,7 @@ Use the `Replace` operation to replace the contents of a document property or an
     | value | `object` | New contents |
 
 * **Code Sample - Replace a document property**  
-<TabItem value="something" label="json_patch_Replace_operation">
+<TabItem value="json_patch_Replace_operation" label="json_patch_Replace_operation">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 // Replace document property contents with a new value (100)
@@ -161,7 +161,7 @@ Use the `Copy` operation to copy the contents of one document property array ele
     | path| `string` | Path to the property we want to copy to |
 
 * **Code Sample - Copy document property contents**  
-<TabItem value="something" label="json_patch_Copy_operation">
+<TabItem value="json_patch_Copy_operation" label="json_patch_Copy_operation">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 // Copy document property contents to another document property
@@ -182,7 +182,7 @@ Use the `Move` operation to move the contents of one document property or array 
     | path| `string` | Path to the property we want to move the contents to |
 
 * **Code Sample - Move document property contents**  
-<TabItem value="something" label="json_patch_Move_operation">
+<TabItem value="json_patch_Move_operation" label="json_patch_Move_operation">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 // Move document property contents to another document property
@@ -207,7 +207,7 @@ and a `RavenException` exception will be thrown.
 
 * **Code Sample - Test Patching**  
 
-<TabItem value="something" label="json_patch_Test_operation">
+<TabItem value="json_patch_Test_operation" label="json_patch_Test_operation">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 patchesDocument.Test("/PropertyName", "Value"); // Compare property contents with the value 
@@ -232,7 +232,7 @@ The samples given above remain simple, showing how to manipulate document proper
 Note that JSON Patches have additional options, like the manipulation of array or list elements:  
 
 * **Add an array element**  
-<TabItem value="something" label="json_patch_Add_array_element">
+<TabItem value="json_patch_Add_array_element" label="json_patch_Add_array_element">
 <CodeBlock language="csharp">
 {`patchesDocument = new JsonPatchDocument();
 // Use the path parameter to add an array element

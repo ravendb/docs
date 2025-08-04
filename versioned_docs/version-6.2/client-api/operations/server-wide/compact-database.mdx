@@ -33,23 +33,23 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the 
-  [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   The operation can be executed on a specific node by using the 
-  [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  [ForNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](../../../client-api/operations/server-wide/compact-database#examples):  
-      * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
-      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
-      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
-      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database#compact-on-other-nodes)  
-  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
-  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
-  * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)  
+  * [Examples](../../../client-api/operations/server-wide/compact-database.mdx#examples):  
+      * [Compact documents](../../../client-api/operations/server-wide/compact-database.mdx#examples)  
+      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
+      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
+      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database.mdx#compact-on-other-nodes)  
+  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
+  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
+  * [Syntax](../../../client-api/operations/server-wide/compact-database.mdx#syntax)  
 
 </Admonition>
 ## Examples
@@ -240,8 +240,8 @@ await operation.WaitForCompletionAsync();
 </Tabs>
 #### Compact on other nodes:
 
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) nodes from its database-group topology.  
   `ForNode` is used to execute the operation on a specific node.   
 
 <Tabs groupId='languageSyntax'>
@@ -315,20 +315,20 @@ foreach (string nodeTag in allMemberNodes)
 
 ## Compaction triggers compression
 
-* When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
+* When document [compression](../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
   * **New** documents that are created and saved.  
   * **Existing** documents that are modified and saved.  
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation to **compress existing documents without having to modify and save** them.  
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database.mdx) operation to **compress existing documents without having to modify and save** them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
+* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression.mdx#compression--vs--compaction).
 
 
 
 ## Compact from Studio
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  
@@ -338,7 +338,7 @@ foreach (string nodeTag in allMemberNodes)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public CompactDatabaseOperation(CompactSettings compactSettings)
 `}
@@ -378,19 +378,19 @@ foreach (string nodeTag in allMemberNodes)
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the 
-  [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](../../../client-api/operations/server-wide/compact-database#examples):  
-      * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
-      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
-      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
-  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
-  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
+  * [Examples](../../../client-api/operations/server-wide/compact-database.mdx#examples):  
+      * [Compact documents](../../../client-api/operations/server-wide/compact-database.mdx#examples)  
+      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
+      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
+  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
+  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
 
 </Admonition>
 ## Examples
@@ -399,7 +399,7 @@ foreach (string nodeTag in allMemberNodes)
 
 The following example will compact only **documents** for the specified database.  
 
-<TabItem value="something-something" label="compact_0">
+<TabItem value="compact_0" label="compact_0">
 <CodeBlock language="python">
 {`# Define the compact settings
 settings = CompactSettings(
@@ -425,7 +425,7 @@ operation.wait_for_completion()
 
 The following example will compact only specific indexes.
 
-<TabItem value="something-something" label="compact_1">
+<TabItem value="compact_1" label="compact_1">
 <CodeBlock language="python">
 {`# Define the compact settings
 settings = CompactSettings(
@@ -453,7 +453,7 @@ operation.wait_for_completion()
 
 The following example will compact all indexes and documents.  
 
-<TabItem value="something-something" label="compact_2">
+<TabItem value="compact_2" label="compact_2">
 <CodeBlock language="python">
 {`#  Get all indexes names in the database using the 'GetIndexNamesOperation' operation
 #  Use 'ForDatabase' if the target database is different from the default database defined on the store
@@ -482,21 +482,21 @@ operation.wait_for_completion()
 
 ## Compaction triggers compression
 
-* When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
+* When document [compression](../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
   * **New** documents that are created and saved.  
   * **Existing** documents that are modified and saved.  
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation 
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database.mdx) operation 
   to **compress existing documents without having to modify and save** them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
+* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression.mdx#compression--vs--compaction).
 
 
 
 ## Compact from Studio
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  
@@ -525,21 +525,21 @@ operation.wait_for_completion()
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the 
-  [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](../../../client-api/operations/server-wide/compact-database#examples):  
-      * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
-      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
-      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
-      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database#compact-on-other-nodes)  
-  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
-  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
-  * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)  
+  * [Examples](../../../client-api/operations/server-wide/compact-database.mdx#examples):  
+      * [Compact documents](../../../client-api/operations/server-wide/compact-database.mdx#examples)  
+      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
+      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
+      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database.mdx#compact-on-other-nodes)  
+  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
+  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
+  * [Syntax](../../../client-api/operations/server-wide/compact-database.mdx#syntax)  
 
 </Admonition>
 ## Examples
@@ -548,7 +548,7 @@ operation.wait_for_completion()
 
 The following example will compact only **documents** for the specified database.  
 
-<TabItem value="something-something" label="compact_0">
+<TabItem value="compact_0" label="compact_0">
 <CodeBlock language="php">
 {`// Define the compact settings
 $settings = new CompactSettings();
@@ -575,7 +575,7 @@ $operation->waitForCompletion();
 
 The following example will compact only specific indexes.
 
-<TabItem value="something-something" label="compact_1">
+<TabItem value="compact_1" label="compact_1">
 <CodeBlock language="php">
 {`// Define the compact settings
 $settings = new CompactSettings();
@@ -610,7 +610,7 @@ $operation->waitForCompletion();
 
 The following example will compact all indexes and documents.  
 
-<TabItem value="something-something" label="compact_2">
+<TabItem value="compact_2" label="compact_2">
 <CodeBlock language="php">
 {`// Get all indexes names in the database using the 'GetIndexNamesOperation' operation
 // Use 'ForDatabase' if the target database is different than the default database defined on the store
@@ -640,11 +640,11 @@ $operation->waitForCompletion();
 </TabItem>
 #### Compact on other nodes:
 
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) nodes from its database-group topology.  
   `forNode` is used to execute the operation on a specific node.   
 
-<TabItem value="something-something" label="compact_3">
+<TabItem value="compact_3" label="compact_3">
 <CodeBlock language="php">
 {`// Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
 /** @var DatabaseRecordWithEtag $databaseRecord */
@@ -679,21 +679,21 @@ foreach ($allMemberNodes as $nodeTag) \{
 
 ## Compaction triggers compression
 
-* When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
+* When document [compression](../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
   * **New** documents that are created and saved.  
   * **Existing** documents that are modified and saved.  
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation 
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database.mdx) operation 
   to **compress existing documents without having to modify and save** them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
+* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression.mdx#compression--vs--compaction).
 
 
 
 ## Compact from Studio
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  
@@ -703,7 +703,7 @@ foreach ($allMemberNodes as $nodeTag) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public CompactDatabaseOperation(CompactSettings compactSettings)
 `}
@@ -742,23 +742,23 @@ foreach ($allMemberNodes as $nodeTag) \{
 
 * **Target node**:  
   By default, the operation will be executed on the server node that is defined by the 
-  [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
+  [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
   The operation can be executed on a specific node by using the 
-  [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node) method.  
+  [forNode](../../../client-api/operations/how-to/switch-operations-to-a-different-node.mdx) method.  
 
 * **Target database**:  
   The database to compact is specified in `CompactSettings` (see examples below).  
   An exception is thrown if the specified database doesn't exist on the server node.  
 
 * In this page:  
-  * [Examples](../../../client-api/operations/server-wide/compact-database#examples):  
-      * [Compact documents](../../../client-api/operations/server-wide/compact-database#examples)  
-      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database#compact-specific-indexes)  
-      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database#compact-all-indexes)  
-      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database#compact-on-other-nodes)  
-  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression)  
-  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database#compact-from-studio)  
-  * [Syntax](../../../client-api/operations/server-wide/compact-database#syntax)  
+  * [Examples](../../../client-api/operations/server-wide/compact-database.mdx#examples):  
+      * [Compact documents](../../../client-api/operations/server-wide/compact-database.mdx#examples)  
+      * [Compact specific indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-specific-indexes)  
+      * [Compact all indexes](../../../client-api/operations/server-wide/compact-database.mdx#compact-all-indexes)  
+      * [Compact on other nodes](../../../client-api/operations/server-wide/compact-database.mdx#compact-on-other-nodes)  
+  * [Compaction triggers compression](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression)  
+  * [Compact from Studio](../../../client-api/operations/server-wide/compact-database.mdx#compact-from-studio)  
+  * [Syntax](../../../client-api/operations/server-wide/compact-database.mdx#syntax)  
 
 </Admonition>
 ## Examples
@@ -769,8 +769,8 @@ foreach ($allMemberNodes as $nodeTag) \{
 
 * The following example will compact only **documents** for the specified database.  
 
-<TabItem value="something-something" label="compact_0">
-<CodeBlock language="nodejs">
+<TabItem value="compact_0" label="compact_0">
+<CodeBlock language="js">
 {`// Define the compact settings
 const compactSettings = \{
     // Database to compact
@@ -801,8 +801,8 @@ await asyncOperation.waitForCompletion();
 
 * The following example will compact only specific indexes.
 
-<TabItem value="something-something" label="compact_1">
-<CodeBlock language="nodejs">
+<TabItem value="compact_1" label="compact_1">
+<CodeBlock language="js">
 {`// Define the compact settings
 const compactSettings = \{
     // Database to compact
@@ -834,8 +834,8 @@ await asyncOperation.waitForCompletion();
 
 * The following example will compact all indexes and documents.  
 
-<TabItem value="something-something" label="compact_2">
-<CodeBlock language="nodejs">
+<TabItem value="compact_2" label="compact_2">
+<CodeBlock language="js">
 {`// Get all indexes names in the database using the 'GetIndexNamesOperation' operation
 // Use 'forDatabase' if the target database is different than the default database defined on the store
 const allIndexNames = await documentStore.maintenance.forDatabase("Northwind")
@@ -867,12 +867,12 @@ await asyncOperation.waitForCompletion();
 
 #### Compact on other nodes
 
-* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview#client-logic-for-choosing-a-node).  
-* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types) nodes from its database-group topology.  
+* By default, an operation executes on the server node that is defined by the [client configuration](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node).  
+* The following example will compact the database on all [member](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types) nodes from its database-group topology.  
   `forNode` is used to execute the operation on a specific node.   
 
-<TabItem value="something-something" label="compact_3">
-<CodeBlock language="nodejs">
+<TabItem value="compact_3" label="compact_3">
+<CodeBlock language="js">
 {`// Get all member nodes in the database-group using the 'GetDatabaseRecordOperation' operation
 const databaseRecord =
     await documentStore.maintenance.server.send(new GetDatabaseRecordOperation("Northwind"));
@@ -909,20 +909,20 @@ for (let i = 0; i < allMemberNodes.length; i++) \{
 
 ## Compaction triggers compression
 
-* When document [compression](../../../server/storage/documents-compression) is turned on, compression is applied to the documents when:
+* When document [compression](../../../server/storage/documents-compression.mdx) is turned on, compression is applied to the documents when:
     * **New** documents that are created and saved.
     * **Existing** documents that are modified and saved.
 
-* You can use the [compaction](../../../client-api/operations/server-wide/compact-database) operation to **compress existing documents without having to modify and save** them.  
+* You can use the [compaction](../../../client-api/operations/server-wide/compact-database.mdx) operation to **compress existing documents without having to modify and save** them.  
   Executing compaction triggers compression on ALL existing documents for the collections that are configured for compression.
 
-* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression#compression--vs--compaction).
+* Learn more about Compression -vs- Compaction [here](../../../server/storage/documents-compression.mdx#compression--vs--compaction).
 
 
 
 ## Compact from Studio
 
-* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
+* Compaction can be triggered from the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
   The operation will compact the database only on the node being viewed (node info is in the Studio footer).
  
 * To compact the database on another node,  
@@ -932,8 +932,8 @@ for (let i = 0; i < allMemberNodes.length; i++) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const compactOperation = new CompactDatabaseOperation(compactSettings);
 `}
 </CodeBlock>

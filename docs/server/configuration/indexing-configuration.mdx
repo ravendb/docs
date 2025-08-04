@@ -16,9 +16,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * The below **indexing configuration keys** can be modified via any of the following methods:
-    * As explained in the [Config overview](../../server/configuration/configuration-options) article
-    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying#customizing-configuration)
-    * Set a custom configuration per index from the [Studio](../../studio/database/indexes/create-map-index#configuration)
+    * As explained in the [Config overview](../../server/configuration/configuration-options.mdx) article
+    * Set a custom configuration per index from the [Client API](../../indexes/creating-and-deploying.mdx#customizing-configuration)
+    * Set a custom configuration per index from the [Studio](../../studio/database/indexes/create-map-index.mdx#configuration)
 
 </Admonition>
 
@@ -26,88 +26,88 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:  
   * Server-wide scope:  
-    [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration#indexing.cleanupintervalinmin)  
-    [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.maxnumberofthreadsforlocalembeddingsgeneration)  
-    [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.globalscratchspacelimitinmb)  
-    [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration#indexing.maxnumberofconcurrentlyrunningindexes)  
-    [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenexceedingscratchspacelimitinsec)  
-    [Indexing.NuGetAllowPreReleasePackages](../../server/configuration/indexing-configuration#indexing.nugetallowprereleasepackages)  
-    [Indexing.NuGetPackageSourceUrl](../../server/configuration/indexing-configuration#indexing.nugetpackagesourceurl)  
-    [Indexing.NuGetPackagesPath](../../server/configuration/indexing-configuration#indexing.nugetpackagespath)  
-    [Indexing.QueryClauseCache.ExpirationScanFrequencyInSec](../../server/configuration/indexing-configuration#indexing.queryclausecache.expirationscanfrequencyinsec)  
-    [Indexing.QueryClauseCache.RepeatedQueriesCount](../../server/configuration/indexing-configuration#indexing.queryclausecache.repeatedqueriescount)  
-    [Indexing.QueryClauseCache.SizeInMb](../../server/configuration/indexing-configuration#indexing.queryclausecache.sizeinmb)  
+    [Indexing.CleanupIntervalInMin](../../server/configuration/indexing-configuration.mdx#indexing.cleanupintervalinmin)  
+    [Indexing.Corax.VectorSearch.MaxNumberOfThreadsForLocalEmbeddingsGeneration](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.maxnumberofthreadsforlocalembeddingsgeneration)  
+    [Indexing.GlobalScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.globalscratchspacelimitinmb)  
+    [Indexing.MaxNumberOfConcurrentlyRunningIndexes](../../server/configuration/indexing-configuration.mdx#indexing.maxnumberofconcurrentlyrunningindexes)  
+    [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimitInSec](../../server/configuration/indexing-configuration.mdx#indexing.maxtimetowaitafterflushandsyncwhenexceedingscratchspacelimitinsec)  
+    [Indexing.NuGetAllowPreReleasePackages](../../server/configuration/indexing-configuration.mdx#indexing.nugetallowprereleasepackages)  
+    [Indexing.NuGetPackageSourceUrl](../../server/configuration/indexing-configuration.mdx#indexing.nugetpackagesourceurl)  
+    [Indexing.NuGetPackagesPath](../../server/configuration/indexing-configuration.mdx#indexing.nugetpackagespath)  
+    [Indexing.QueryClauseCache.ExpirationScanFrequencyInSec](../../server/configuration/indexing-configuration.mdx#indexing.queryclausecache.expirationscanfrequencyinsec)  
+    [Indexing.QueryClauseCache.RepeatedQueriesCount](../../server/configuration/indexing-configuration.mdx#indexing.queryclausecache.repeatedqueriescount)  
+    [Indexing.QueryClauseCache.SizeInMb](../../server/configuration/indexing-configuration.mdx#indexing.queryclausecache.sizeinmb)  
   * Server-wide, or database scope:  
-    [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration#indexing.auto.archiveddataprocessingbehavior)  
-    [Indexing.Auto.DeploymentMode](../../server/configuration/indexing-configuration#indexing.auto.deploymentmode)  
-    [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration#indexing.auto.searchenginetype)  
-    [Indexing.Disable](../../server/configuration/indexing-configuration#indexing.disable)  
-    [Indexing.DisableQueryOptimizerGeneratedIndexes](../../server/configuration/indexing-configuration#indexing.disablequeryoptimizergeneratedindexes)  
-    [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.errorindexstartupbehavior)  
-    [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration#indexing.history.numberofrevisions)  
-    [Indexing.IndexStartupBehavior](../../server/configuration/indexing-configuration#indexing.indexstartupbehavior)  
-    [Indexing.ResetMode](../../server/configuration/indexing-configuration#indexing.resetmode)  
-    [Indexing.RunInMemory](../../server/configuration/indexing-configuration#indexing.runinmemory)  
-    [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration#indexing.skipdatabaseidvalidationonindexopening)  
-    [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration#indexing.static.archiveddataprocessingbehavior)  
-    [Indexing.Static.DeploymentMode](../../server/configuration/indexing-configuration#indexing.static.deploymentmode)  
-    [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes)  
-    [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath)  
-    [Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec](../../server/configuration/indexing-configuration#indexing.timebeforedeletionofsupersededautoindexinsec)  
-    [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs)  
-    [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../../server/configuration/indexing-configuration#indexing.timetowaitbeforemarkingautoindexasidleinmin)  
+    [Indexing.Auto.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.auto.archiveddataprocessingbehavior)  
+    [Indexing.Auto.DeploymentMode](../../server/configuration/indexing-configuration.mdx#indexing.auto.deploymentmode)  
+    [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.auto.searchenginetype)  
+    [Indexing.Disable](../../server/configuration/indexing-configuration.mdx#indexing.disable)  
+    [Indexing.DisableQueryOptimizerGeneratedIndexes](../../server/configuration/indexing-configuration.mdx#indexing.disablequeryoptimizergeneratedindexes)  
+    [Indexing.ErrorIndexStartupBehavior](../../server/configuration/indexing-configuration.mdx#indexing.errorindexstartupbehavior)  
+    [Indexing.History.NumberOfRevisions](../../server/configuration/indexing-configuration.mdx#indexing.history.numberofrevisions)  
+    [Indexing.IndexStartupBehavior](../../server/configuration/indexing-configuration.mdx#indexing.indexstartupbehavior)  
+    [Indexing.ResetMode](../../server/configuration/indexing-configuration.mdx#indexing.resetmode)  
+    [Indexing.RunInMemory](../../server/configuration/indexing-configuration.mdx#indexing.runinmemory)  
+    [Indexing.SkipDatabaseIdValidationOnIndexOpening](../../server/configuration/indexing-configuration.mdx#indexing.skipdatabaseidvalidationonindexopening)  
+    [Indexing.Static.ArchivedDataProcessingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior)  
+    [Indexing.Static.DeploymentMode](../../server/configuration/indexing-configuration.mdx#indexing.static.deploymentmode)  
+    [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../server/configuration/indexing-configuration.mdx#indexing.static.requireadmintodeployjavascriptindexes)  
+    [Indexing.TempPath](../../server/configuration/indexing-configuration.mdx#indexing.temppath)  
+    [Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec](../../server/configuration/indexing-configuration.mdx#indexing.timebeforedeletionofsupersededautoindexinsec)  
+    [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs)  
+    [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforemarkingautoindexasidleinmin)  
   * Server-wide, or database, or per index:  
-    [Indexing.AllowStringCompilation](../../server/configuration/indexing-configuration#indexing.allowstringcompilation)  
-    [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration#indexing.analyzers.default)  
-    [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration#indexing.analyzers.exact.default)  
-    [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration#indexing.analyzers.search.default)  
-    [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration#indexing.corax.documentslimitforcompressiondictionarycreation)  
-    [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration#indexing.corax.includedocumentscore)  
-    [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration#indexing.corax.includespatialdistance)  
-    [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration#indexing.corax.maxallocationsatdictionarytraininginmb)  
-    [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration#indexing.corax.maxmemoizationsizeinmb)  
-    [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior)  
-    [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.corax.unmanagedallocationsbatchsizelimitinmb)  
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultminimumsimilarity)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying)  
-    [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.defaultnumberofedges)  
-    [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.maximumconcurrentbatchesforhnswacceleration)  
-    [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration#indexing.corax.vectorsearch.orderbyscoreautomatically)  
-    [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.encrypted.transactionsizelimitinmb)  
-    [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration#indexing.indexemptyentries)  
-    [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration#indexing.indexmissingfieldsasnull)  
-    [Indexing.Lucene.Analyzers.NGram.MaxGram](../../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram)  
-    [Indexing.Lucene.Analyzers.NGram.MinGram](../../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.mingram)  
-    [Indexing.Lucene.IndexInputType](../../server/configuration/indexing-configuration#indexing.lucene.indexinputtype)  
-    [Indexing.Lucene.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.lucene.largesegmentsizetomergeinmb)  
-    [Indexing.Lucene.MaximumSizePerSegmentInMb](../../server/configuration/indexing-configuration#indexing.lucene.maximumsizepersegmentinmb)  
-    [Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec](../../server/configuration/indexing-configuration#indexing.lucene.maxtimeformergestokeeprunninginsec)  
-    [Indexing.Lucene.MergeFactor](../../server/configuration/indexing-configuration#indexing.lucene.mergefactor)  
-    [Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.lucene.numberoflargesegmentstomergeinsinglebatch)  
-    [Indexing.Lucene.ReaderTermsIndexDivisor](../../server/configuration/indexing-configuration#indexing.lucene.readertermsindexdivisor)  
-    [Indexing.Lucene.UseCompoundFileInMerging](../../server/configuration/indexing-configuration#indexing.lucene.usecompoundfileinmerging)  
-    [Indexing.ManagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.managedallocationsbatchsizelimitinmb)  
-    [Indexing.MapBatchSize](../../server/configuration/indexing-configuration#indexing.mapbatchsize)  
-    [Indexing.MapTimeoutAfterEtagReachedInMin](../../server/configuration/indexing-configuration#indexing.maptimeoutafteretagreachedinmin)  
-    [Indexing.MapTimeoutInSec](../../server/configuration/indexing-configuration#indexing.maptimeoutinsec)  
-    [Indexing.MaxStepsForScript](../../server/configuration/indexing-configuration#indexing.maxstepsforscript)  
-    [Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec](../../server/configuration/indexing-configuration#indexing.maxtimefordocumenttransactiontoremainopeninsec)  
-    [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec](../../server/configuration/indexing-configuration#indexing.maxtimetowaitafterflushandsyncwhenreplacingsidebysideindexinsec)  
-    [Indexing.Metrics.Enabled](../../server/configuration/indexing-configuration#indexing.metrics.enabled)   
-    [Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory](../../server/configuration/indexing-configuration#indexing.minnumberofmapattemptsafterwhichbatchwillbecanceledifrunninglowonmemory)   
-    [Indexing.MinimumTotalSizeOfJournalsToRunFlushAndSyncWhenReplacingSideBySideIndexInMb](../../server/configuration/indexing-configuration#indexing.minimumtotalsizeofjournalstorunflushandsyncwhenreplacingsidebysideindexinmb)
-    [Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory](../../server/configuration/indexing-configuration#indexing.numberofconcurrentstoppedbatchesifrunninglowonmemory)   
-    [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.numberoflargesegmentstomergeinsinglebatch)  
-    [Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved](../../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
-    [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration#indexing.orderbyticksautomaticallywhendatesareinvolved)  
-    [Indexing.QueryClauseCache.Disabled](../../server/configuration/indexing-configuration#indexing.queryclausecache.disabled)  
-    [Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec](../../server/configuration/indexing-configuration#indexing.queryclausecache.repeatedqueriestimeframeinsec)  
-    [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration#indexing.scratchspacelimitinmb)  
-    [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration#indexing.static.searchenginetype)  
-    [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration#indexing.throttling.timeintervalinms)  
-    [Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin](../../server/configuration/indexing-configuration#indexing.timesincelastqueryafterwhichdeepcleanupcanbeexecutedinmin)  
-    [Indexing.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration#indexing.transactionsizelimitinmb)  
+    [Indexing.AllowStringCompilation](../../server/configuration/indexing-configuration.mdx#indexing.allowstringcompilation)  
+    [Indexing.Analyzers.Default](../../server/configuration/indexing-configuration.mdx#indexing.analyzers.default)  
+    [Indexing.Analyzers.Exact.Default](../../server/configuration/indexing-configuration.mdx#indexing.analyzers.exact.default)  
+    [Indexing.Analyzers.Search.Default](../../server/configuration/indexing-configuration.mdx#indexing.analyzers.search.default)  
+    [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration.mdx#indexing.corax.documentslimitforcompressiondictionarycreation)  
+    [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration.mdx#indexing.corax.includedocumentscore)  
+    [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration.mdx#indexing.corax.includespatialdistance)  
+    [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration.mdx#indexing.corax.maxallocationsatdictionarytraininginmb)  
+    [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexing.corax.maxmemoizationsizeinmb)  
+    [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.corax.static.complexfieldindexingbehavior)  
+    [Indexing.Corax.UnmanagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.corax.unmanagedallocationsbatchsizelimitinmb)  
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying)  
+    [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofedges)  
+    [Indexing.Corax.VectorSearch.MaximumConcurrentBatchesForHnswAcceleration](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.maximumconcurrentbatchesforhnswacceleration)  
+    [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.orderbyscoreautomatically)  
+    [Indexing.Encrypted.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.encrypted.transactionsizelimitinmb)  
+    [Indexing.IndexEmptyEntries](../../server/configuration/indexing-configuration.mdx#indexing.indexemptyentries)  
+    [Indexing.IndexMissingFieldsAsNull](../../server/configuration/indexing-configuration.mdx#indexing.indexmissingfieldsasnull)  
+    [Indexing.Lucene.Analyzers.NGram.MaxGram](../../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram)  
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.mingram)  
+    [Indexing.Lucene.IndexInputType](../../server/configuration/indexing-configuration.mdx#indexing.lucene.indexinputtype)  
+    [Indexing.Lucene.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration.mdx#indexing.lucene.largesegmentsizetomergeinmb)  
+    [Indexing.Lucene.MaximumSizePerSegmentInMb](../../server/configuration/indexing-configuration.mdx#indexing.lucene.maximumsizepersegmentinmb)  
+    [Indexing.Lucene.MaxTimeForMergesToKeepRunningInSec](../../server/configuration/indexing-configuration.mdx#indexing.lucene.maxtimeformergestokeeprunninginsec)  
+    [Indexing.Lucene.MergeFactor](../../server/configuration/indexing-configuration.mdx#indexing.lucene.mergefactor)  
+    [Indexing.Lucene.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration.mdx#indexing.lucene.numberoflargesegmentstomergeinsinglebatch)  
+    [Indexing.Lucene.ReaderTermsIndexDivisor](../../server/configuration/indexing-configuration.mdx#indexing.lucene.readertermsindexdivisor)  
+    [Indexing.Lucene.UseCompoundFileInMerging](../../server/configuration/indexing-configuration.mdx#indexing.lucene.usecompoundfileinmerging)  
+    [Indexing.ManagedAllocationsBatchSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.managedallocationsbatchsizelimitinmb)  
+    [Indexing.MapBatchSize](../../server/configuration/indexing-configuration.mdx#indexing.mapbatchsize)  
+    [Indexing.MapTimeoutAfterEtagReachedInMin](../../server/configuration/indexing-configuration.mdx#indexing.maptimeoutafteretagreachedinmin)  
+    [Indexing.MapTimeoutInSec](../../server/configuration/indexing-configuration.mdx#indexing.maptimeoutinsec)  
+    [Indexing.MaxStepsForScript](../../server/configuration/indexing-configuration.mdx#indexing.maxstepsforscript)  
+    [Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec](../../server/configuration/indexing-configuration.mdx#indexing.maxtimefordocumenttransactiontoremainopeninsec)  
+    [Indexing.MaxTimeToWaitAfterFlushAndSyncWhenReplacingSideBySideIndexInSec](../../server/configuration/indexing-configuration.mdx#indexing.maxtimetowaitafterflushandsyncwhenreplacingsidebysideindexinsec)  
+    [Indexing.Metrics.Enabled](../../server/configuration/indexing-configuration.mdx#indexing.metrics.enabled)   
+    [Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory](../../server/configuration/indexing-configuration.mdx#indexing.minnumberofmapattemptsafterwhichbatchwillbecanceledifrunninglowonmemory)   
+    [Indexing.MinimumTotalSizeOfJournalsToRunFlushAndSyncWhenReplacingSideBySideIndexInMb](../../server/configuration/indexing-configuration.mdx#indexing.minimumtotalsizeofjournalstorunflushandsyncwhenreplacingsidebysideindexinmb)
+    [Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory](../../server/configuration/indexing-configuration.mdx#indexing.numberofconcurrentstoppedbatchesifrunninglowonmemory)   
+    [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration.mdx#indexing.numberoflargesegmentstomergeinsinglebatch)  
+    [Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved](../../server/configuration/indexing-configuration.mdx#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
+    [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration.mdx#indexing.orderbyticksautomaticallywhendatesareinvolved)  
+    [Indexing.QueryClauseCache.Disabled](../../server/configuration/indexing-configuration.mdx#indexing.queryclausecache.disabled)  
+    [Indexing.QueryClauseCache.RepeatedQueriesTimeFrameInSec](../../server/configuration/indexing-configuration.mdx#indexing.queryclausecache.repeatedqueriestimeframeinsec)  
+    [Indexing.ScratchSpaceLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.scratchspacelimitinmb)  
+    [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.static.searchenginetype)  
+    [Indexing.Throttling.TimeIntervalInMs](../../server/configuration/indexing-configuration.mdx#indexing.throttling.timeintervalinms)  
+    [Indexing.TimeSinceLastQueryAfterWhichDeepCleanupCanBeExecutedInMin](../../server/configuration/indexing-configuration.mdx#indexing.timesincelastqueryafterwhichdeepcleanupcanbeexecutedinmin)  
+    [Indexing.TransactionSizeLimitInMb](../../server/configuration/indexing-configuration.mdx#indexing.transactionsizelimitinmb)  
 
 </Admonition>
 ## Indexing.CleanupIntervalInMin
@@ -357,7 +357,7 @@ The default mode of the index reset operation.
     * This is mostly useful for testing or faster, non-persistent indexing.
 
 * If _Indexing.RunInMemory_ is not set explicitly,  
-  then this configuration key will take the value of the core configuration key [RunInMemory](../../server/configuration/core-configuration#runinmemory).
+  then this configuration key will take the value of the core configuration key [RunInMemory](../../server/configuration/core-configuration.mdx#runinmemory).
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide, or per database
@@ -406,7 +406,7 @@ Set the default deployment mode for static indexes.
 
 ## Indexing.Static.RequireAdminToDeployJavaScriptIndexes
 
-Require database `Admin` [clearance](../../server/security/authorization/security-clearance-and-permissions) to deploy [JavaScript indexes](../../indexes/javascript-indexes).
+Require database `Admin` [clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) to deploy [JavaScript indexes](../../indexes/javascript-indexes.mdx).
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -419,7 +419,7 @@ Require database `Admin` [clearance](../../server/security/authorization/securit
 * Use this setting to specify a different path for the indexes' temporary files.
 
 * By default, temporary files are created under the `Temp` directory inside the index data directory.  
-  Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
+  Learn more about RavenDB directory structure [here](../../server/storage/directory-structure.mdx).
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide, or per database
@@ -458,7 +458,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 ## Indexing.AllowStringCompilation
 
-* When defining a [JavaScript index](../../indexes/javascript-indexes),  
+* When defining a [JavaScript index](../../indexes/javascript-indexes.mdx),  
   this option determines whether the JavaScript engine is allowed to compile code from strings at runtime,
   using constructs such as `eval(...)` or `new Function(arg1, arg2, ..., functionBody)`.
 
@@ -471,7 +471,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 ## Indexing.Analyzers.Default
 
-[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for fields.
+[Default analyzer](../../indexes/using-analyzers.mdx#ravendb) that will be used for fields.
 
 - **Type**: `string`
 - **Default**: `LowerCaseKeywordAnalyzer`
@@ -481,7 +481,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 ## Indexing.Analyzers.Exact.Default
 
-[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for exact fields.
+[Default analyzer](../../indexes/using-analyzers.mdx#ravendb) that will be used for exact fields.
 
 - **Type**: `string`
 - **Default**: `KeywordAnalyzer`
@@ -491,7 +491,7 @@ Set the number of minutes to wait before marking an auto index as idle.
 
 ## Indexing.Analyzers.Search.Default
 
-[Default analyzer](../../indexes/using-analyzers#ravendb) that will be used for search fields.
+[Default analyzer](../../indexes/using-analyzers.mdx#ravendb) that will be used for search fields.
 
 - **Type**: `string`
 - **Default**: `RavenStandardAnalyzer`
@@ -556,7 +556,7 @@ The maximum amount of memory in megabytes that Corax can use for memoization dur
 
 ## Indexing.Corax.Static.ComplexFieldIndexingBehavior
 
-* Set Corax's [default behavior](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+* Set Corax's [default behavior](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
   when a static index is requested to index a complex JSON object.  
 
   * `CoraxComplexFieldIndexingBehavior.Throw` -  
@@ -724,7 +724,7 @@ EXPERT ONLY:
 * This configuration applies only to the Lucene indexing engine.
 
 * The definition of a large segment in MB.  
-  We won't merge more than [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration#indexing.numberoflargesegmentstomergeinsinglebatch) in a single batch.
+  We won't merge more than [Indexing.NumberOfLargeSegmentsToMergeInSingleBatch](../../server/configuration/indexing-configuration.mdx#indexing.numberoflargesegmentstomergeinsinglebatch) in a single batch.
 
 * The default value, which is determined based on your platform details, is set by the constructor of class `IndexingConfiguration`.
 - **Type**: `int`
@@ -787,7 +787,7 @@ EXPERT ONLY:
 
 * This configuration applies only to the Lucene indexing engine.
 
-* Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
+* Number of large segments defined by [Indexing.LargeSegmentSizeToMergeInMb](../../server/configuration/indexing-configuration.mdx#indexing.largesegmentsizetomergeinmb) to merge in a single batch.
 - **Type**: `int`
 - **Default**: `2`
 - **Scope**: Server-wide, or per database, or per index
@@ -940,7 +940,7 @@ Number of concurrent stopped batches if running low on memory.
 ## Indexing.OrderByScoreAutomaticallyWhenBoostingIsInvolved
 
 Set whether query results will be automatically ordered by score when a boost factor is involved in the query.  
-(A boost factor may be [assigned inside an index definition](../../indexes/boosting) or can be [applied at query time](../../client-api/session/querying/text-search/boost-search-results)).
+(A boost factor may be [assigned inside an index definition](../../indexes/boosting.mdx) or can be [applied at query time](../../client-api/session/querying/text-search/boost-search-results.mdx)).
 
 - **Type**: `bool`
 - **Default**: `true`
@@ -969,7 +969,7 @@ EXPERT ONLY:
 * Disable the query clause cache for a server, database, or a single index.
 
 * The default value is set by the constructor of class `IndexingConfiguration`.  
-  It will be `true` if your core configuration key [Features.Availability](../../server/configuration/core-configuration#features.availability) is Not set to 'Experimental'.
+  It will be `true` if your core configuration key [Features.Availability](../../server/configuration/core-configuration.mdx#features.availability) is Not set to 'Experimental'.
 - **Type**: `bool`
 - **Default**: `DefaultValueSetInConstructor`
 - **Scope**: Server-wide, or per database, or per index

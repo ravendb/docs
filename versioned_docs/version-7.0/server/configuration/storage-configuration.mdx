@@ -14,11 +14,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Configuration: Storage Options
 
-The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine).
+The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine.mdx).
 
 ## Storage.TempPath
 
-* Use this configuration option to customize the path for the temporary files of the following [directories](../../server/storage/directory-structure):
+* Use this configuration option to customize the path for the temporary files of the following [directories](../../server/storage/directory-structure.mdx):
   * `System`
   * `Configuration` 
   * `Databases/{database_name}`
@@ -31,9 +31,9 @@ The following configuration options allow you configure [the storage engine](../
   * The Databases temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.  
   * The Configuration temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.  
 
-* To specify a different path for the indexes temporary files go to [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath).  
+* To specify a different path for the indexes temporary files go to [Indexing.TempPath](../../server/configuration/indexing-configuration.mdx#indexing.temppath).  
 
-* Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).  
+* Learn more about RavenDB directory structure [here](../../server/storage/directory-structure.mdx).  
 - **Type**: `string`
 - **Default**: `null`
 - **Scope**: Server-wide or per database
@@ -125,7 +125,7 @@ How many gigabytes of memory should be prefetched before restarting the prefetch
 
 A command or executable to run when creating/opening a directory (storage environment). Experts only.  
 RavenDB will execute:  
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`command [user-arg-1] ... [user-arg-n] <environment-type> <database-name> <data-dir-path> <temp-dir-path> <journal-dir-path>  
 `}

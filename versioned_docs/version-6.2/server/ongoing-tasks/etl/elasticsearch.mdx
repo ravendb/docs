@@ -15,48 +15,48 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Ongoing Tasks: Elasticsearch ETL
 <Admonition type="note" title="Note">
 
-* An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics) task creates an ETL process 
+* An **Elasticsearch** [ETL](../../../server/ongoing-tasks/etl/basics.mdx) task creates an ETL process 
   from selected collections in a RavenDB database to Elasticsearch destinations.
 
-* You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task) 
-  or your [client](../../../client-api/operations/maintenance/etl/add-etl#example---add-elasticsearch-etl-task).  
+* You can define an Elasticsearch ETL task using [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
+  or your [client](../../../client-api/operations/maintenance/etl/add-etl.mdx#example---add-elasticsearch-etl-task).  
 
 * In this page:  
-  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-etl)  
-  * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch#transformation-script)  
-     * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch#alternative-syntax)  
-  * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch#data-delivery)  
-     * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch#what-is-transferred)  
-     * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers)  
-     * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch#transactions)  
-     * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch#insert-only-mode)  
-  * [Elasticsearch Index Definition](../../../server/ongoing-tasks/etl/elasticsearch#elasticsearch-index-definition)  
-  * [Client API](../../../server/ongoing-tasks/etl/elasticsearch#client-api)  
-     * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)  
-     * [Add an Elasticsearch Connection String](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string)  
-  * [Supported Elasticsearch Versions](../../../server/ongoing-tasks/etl/elasticsearch#supported-elasticsearch-versions)  
+  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch.mdx#elasticsearch-etl)  
+  * [Transformation Script](../../../server/ongoing-tasks/etl/elasticsearch.mdx#transformation-script)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/elasticsearch.mdx#alternative-syntax)  
+  * [Data Delivery](../../../server/ongoing-tasks/etl/elasticsearch.mdx#data-delivery)  
+     * [What is Transferred](../../../server/ongoing-tasks/etl/elasticsearch.mdx#what-is-transferred)  
+     * [Document Identifiers](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers)  
+     * [Transactions](../../../server/ongoing-tasks/etl/elasticsearch.mdx#transactions)  
+     * [Insert Only Mode](../../../server/ongoing-tasks/etl/elasticsearch.mdx#insert-only-mode)  
+  * [Elasticsearch Index Definition](../../../server/ongoing-tasks/etl/elasticsearch.mdx#elasticsearch-index-definition)  
+  * [Client API](../../../server/ongoing-tasks/etl/elasticsearch.mdx#client-api)  
+     * [Add an Elasticsearch ETL Task](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task)  
+     * [Add an Elasticsearch Connection String](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string)  
+  * [Supported Elasticsearch Versions](../../../server/ongoing-tasks/etl/elasticsearch.mdx#supported-elasticsearch-versions)  
 
 </Admonition>
 ## Elasticsearch ETL
 
 * The following steps are required when creating an Elasticsearch ETL task:  
-   * Define a [connection string](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string) which includes:  
+   * Define a [connection string](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string) which includes:  
       * URLs to Elasticsearch nodes.  
       * Authentication method required by the Elasticsearch nodes.  
    * **Define the Elasticsearch Indexes**  
       * Indexes are used by Elasticsearch to store and locate documents.  
       * The ETL task will send new documents to the specified Elasticsearch indexes.  
       * If not otherwise specified, existing Elasticsearch documents will be removed before adding new documents.  
-      * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) 
+      * A [document identifier](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers) 
         field property is defined per document, and used by the delete command to locate the matching documents.  
    * **Define Transformation Scripts**.  
      The transformation script determines which RavenDB documents will be transferred, 
      to which Elasticsearch Indexes, and in what form.  
 
 * For a thorough step-by-step explanation:  
-   * Learn [here](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task) 
+   * Learn [here](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task) 
      to define an Elasticsearch ETL task using **code**.  
-   * Learn [here](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task) 
+   * Learn [here](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) 
      to define an Elasticsearch ETL task using **Studio**.  
 
 
@@ -64,15 +64,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Transformation Script
 
 * The structure and syntax of an Elasticsearch ETL transformation script are similar to 
-  those of all other ETL types ([RavenDB ETL](../../../server/ongoing-tasks/etl/raven), 
-  [SQL ETL](../../../server/ongoing-tasks/etl/sql), and 
-  [OLAP ETL](../../../server/ongoing-tasks/etl/olap)) scripts.  
+  those of all other ETL types ([RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx), 
+  [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx), and 
+  [OLAP ETL](../../../server/ongoing-tasks/etl/olap.mdx)) scripts.  
   The script defines which documents will be _Extracted_ from the database, 
   _Transforms_ the retrieved data, and _Loads_ it to the Elasticsearch destination.
-  Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics#transform).  
+  Learn about ETL transformation scripts [here](../../../server/ongoing-tasks/etl/basics.mdx#transform).  
 
 * The script **Loads** data to the Elasticsearch destination using the 
-  [loadTo\\&lt;Target\\&gt;(obj)](../../../server/ongoing-tasks/etl/basics#transform) command.  
+  [loadTo\\&lt;Target\\&gt;(obj)](../../../server/ongoing-tasks/etl/basics.mdx#transform) command.  
    * `Target` is the name of the Elasticsearch index to which the data is transferred.  
        * **In the task settings**:  
          Define Elasticsearch Index names using only lower-case characters (as required by Elasticsearch).  
@@ -84,7 +84,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * `obj` is an object defined by the script, that will be loaded to Elasticsearch.  
      It determines the shape and contents of the document that will be created on the Elasticsearch Index.  
      E.g., the following script defines the `orderData` object and loads it to the `orders` index:  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var orderData = \{ DocId: id(this),
              OrderLinesCount: this.Lines.length,
@@ -136,7 +136,7 @@ Document extensions like attachments, counters, or time series, will not be tran
      The property's Name can be any name of your choice.  
      The property's Value must be: `id(this)`  
    * E.g., the **DocId** property below is used to hold the RavenDB document ID in the transferred document.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var orderData = \{
                DocId: id(this), // document ID property
@@ -149,8 +149,8 @@ adToOrders(orderData);
 </CodeBlock>
 </TabItem>
 * In addition to specifying this document property in the script, it must be defined for the ETL task:  
-   * Either set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task)),  
-   * or Set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes) field via Studio.  
+   * Either set `DocumentIdProperty` through code (see [code sample](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task)),  
+   * or Set the [Document ID Property Name](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes) field via Studio.  
 ### Transactions
 
 The task delivers the data to the Elasticsearch destination in one or two calls per index.  
@@ -158,7 +158,7 @@ The task delivers the data to the Elasticsearch destination in one or two calls 
 1. [_delete_by_query](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html):  
    An optional command, to delete existing versions of RavenDB documents from Elasticsearch 
    before appending new ones.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`POST orders/_delete_by_query?refresh=true
 query":\{"terms":\{"DocID":["orders/1-a"]\}\}\}
@@ -167,7 +167,7 @@ query":\{"terms":\{"DocID":["orders/1-a"]\}\}\}
 </TabItem>
 2. [_bulk ](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html):  
    Append RavenDB documents to the Elasticsearch destination.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`POST orders/_bulk?refresh=wait_for
 index":\{"_id":null\}\}
@@ -177,8 +177,8 @@ OrderLinesCount":3,"TotalCost":0,"DocID":"orders/1-a"\}
 </TabItem>
 ### Insert Only Mode
 
-You can enable the task's **Insert Only** mode using [code](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-etl-task) 
-or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#elasticsearch-indexes), 
+You can enable the task's **Insert Only** mode using [code](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-etl-task) 
+or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#elasticsearch-indexes), 
 to **omit** _delete_by_query commands and so refrain from deleting documents before the transfer.  
 <Admonition type="note" title="Note">
  Enabling **Insert Only** can boost the task's performance when there is no need to delete documents before loading them.  
@@ -202,7 +202,7 @@ to **omit** _delete_by_query commands and so refrain from deleting documents bef
   full-text-search on it.  
   This way the RavenDB document identifiers won't be analyzed and the task will be able to `_delete_by_query` using exact match on those IDs.  
   I.e.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`PUT /newIndexName
 
@@ -231,18 +231,18 @@ as **"keyword"** in your index definition.
 ### Add an Elasticsearch ETL Task  
 
 * To define an Elasticsearch ETL task through the client, use the 
-  [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl) API method 
+  [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl.mdx) API method 
   as shown below.  
   Pass it an `ElasticSearchEtlConfiguration`instance with -  
    * The name of a defined **Connection String**.  
      You can define a connection string 
-     [using code](../../../server/ongoing-tasks/etl/elasticsearch#add-an-elasticsearch-connection-string) 
-     or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task#define-the-elasticsearch-etl-task).  
+     [using code](../../../server/ongoing-tasks/etl/elasticsearch.mdx#add-an-elasticsearch-connection-string) 
+     or via [Studio](../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx#define-the-elasticsearch-etl-task).  
    * A list of **Elasticsearch Indexes**.  
    * A list of **Transformation Scripts**.  
 
 **Code Sample**:  
-<TabItem value="something" label="add_elasticsearch_etl">
+<TabItem value="add_elasticsearch_etl" label="add_elasticsearch_etl">
 <CodeBlock language="csharp">
 {`// Create an Elasticsearch ETL task
 AddEtlOperation<ElasticSearchConnectionString> operation = new AddEtlOperation<ElasticSearchConnectionString>(
@@ -310,7 +310,7 @@ store.Maintenance.Send(operation);
     | Property | Type | Description |
     |:-------------|:-------------|:-------------|
     | **IndexName** | `string` | Elasticsearch Index name. <br/> Name indexes **using lower-case characters only**, e.g. `orders`. |
-    | **DocumentIdProperty** | `string` | The [document ID property](../../../server/ongoing-tasks/etl/elasticsearch#document-identifiers) defined on the transferred document object inside the transformation script. |
+    | **DocumentIdProperty** | `string` | The [document ID property](../../../server/ongoing-tasks/etl/elasticsearch.mdx#document-identifiers) defined on the transferred document object inside the transformation script. |
     | **InsertOnlyMode** | `bool` | `true` - Do not delete existing documents before appending new ones. <br/>  `false` - Delete existing document versions before appending documents.|
 
 </Admonition>
@@ -322,7 +322,7 @@ store.Maintenance.Send(operation);
    * Add a connection string as shown below.  
 
 **Code Sample**:  
-<TabItem value="something" label="create-connection-string">
+<TabItem value="create-connection-string" label="create-connection-string">
 <CodeBlock language="csharp">
 {`// Create a Connection String to Elasticsearch
 var elasticSearchConnectionString = new ElasticSearchConnectionString

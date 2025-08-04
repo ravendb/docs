@@ -25,15 +25,15 @@ export const supportedLanguages = ["csharp", "java"];
 
 * The RavenDB JavaScript engine supports ECMAScript 5.1 syntax.  
   In addition, RavenDB provides a set of predefined JavaScript functions that can be used in JavaScript indexes and in other features such as subscriptions, ETL scripts, set-based patching, and more.  
-  See the full list in [Predefined JavaScript functions](../server/kb/javascript-engine#predefined-javascript-functions).
+  See the full list in [Predefined JavaScript functions](../server/kb/javascript-engine.mdx#predefined-javascript-functions).
 * In this article:
-  * [Creating and deploying a JavaScript index](../indexes/javascript-indexes#creating-and-deploying-a-javascript-index)
-  * [Map index](../indexes/javascript-indexes#map-index)
-     * [Map index - basic](../indexes/javascript-indexes#example-i---map-index---basic)
-     * [Map index - with additional sources](../indexes/javascript-indexes#example-ii---map-index---with-additional-sources)
-     * [Map index - with inline string compilation](../indexes/javascript-indexes#example-iii---map-index---with-inline-string-compilation)
-  * [Multi-Map index](../indexes/javascript-indexes#multi-map-index)
-  * [Map-Reduce index](../indexes/javascript-indexes#map-reduce-index)
+  * [Creating and deploying a JavaScript index](../indexes/javascript-indexes.mdx#creating-and-deploying-a-javascript-index)
+  * [Map index](../indexes/javascript-indexes.mdx#map-index)
+     * [Map index - basic](../indexes/javascript-indexes.mdx#example-i---map-index---basic)
+     * [Map index - with additional sources](../indexes/javascript-indexes.mdx#example-ii---map-index---with-additional-sources)
+     * [Map index - with inline string compilation](../indexes/javascript-indexes.mdx#example-iii---map-index---with-inline-string-compilation)
+  * [Multi-Map index](../indexes/javascript-indexes.mdx#multi-map-index)
+  * [Map-Reduce index](../indexes/javascript-indexes.mdx#map-reduce-index)
 
 </Admonition>
 
@@ -42,10 +42,10 @@ export const supportedLanguages = ["csharp", "java"];
 **Creating a JavaScript index**:
 
 * To create a JavaScript index, define a class that inherits from `AbstractJavaScriptIndexCreationTask`.  
-* This base class itself inherits from [AbstractIndexCreationTask](../indexes/creating-and-deploying#define-a-static-index-using-a-custom-class),
+* This base class itself inherits from [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class),
   which is the base class for all C# indexes.
 
-<TabItem value="something" label="js_index">
+<TabItem value="js_index" label="js_index">
 <CodeBlock language="csharp">
 {`public class Documents_ByName_JS : AbstractJavaScriptIndexCreationTask
 \{
@@ -67,22 +67,22 @@ export const supportedLanguages = ["csharp", "java"];
 </TabItem>
 **Deploying a JavaScript index**:  
 
-* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../indexes/creating-and-deploying#deploy-a-static-index).
+* Deploy a JavaScript index using the standard creation flow as described in [Deploy a static-index](../indexes/creating-and-deploying.mdx#deploy-a-static-index).
 
-* Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../server/security/authorization/security-clearance-and-permissions#section-1) certificate,  
-  while **C# static indexes** require a [User/Admin](../server/security/authorization/security-clearance-and-permissions#section) certificate or higher.
+* Note that **JavaScript indexes** can be deployed using a [User/Read-Write](../server/security/authorization/security-clearance-and-permissions.mdx#section-1) certificate,  
+  while **C# static indexes** require a [User/Admin](../server/security/authorization/security-clearance-and-permissions.mdx#section) certificate or higher.
 
 * To restrict the creation of JavaScript indexes to database admins (and above),  
-  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) configuration to `true`.
+  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration.mdx#indexing.static.requireadmintodeployjavascriptindexes) configuration to `true`.
 
-* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexes/indexing-basics).
+* All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexes/indexing-basics.mdx).
 
 
 
 ## Map index
 
 * A map index contains a single `map` function.  
-  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../indexes/javascript-indexes#multi-map-index) below.
+  To define an index that uses multiple map functions, see the section on [Multi-Map indexes](../indexes/javascript-indexes.mdx#multi-map-index) below.
 
 * The `map` function is written as a string and specifies what content from the documents will be indexed.
 
@@ -91,7 +91,7 @@ export const supportedLanguages = ["csharp", "java"];
 #### Example I - Map index - basic
 The following index indexes the `FirstName` and `LastName` of employees from the _Employees_ collection.
 
-<TabItem value="something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="csharp">
 {`public class Employees_ByFirstAndLastName_JS : AbstractJavaScriptIndexCreationTask
 \{
@@ -231,7 +231,7 @@ public class BlogPostComment
 
 #### Example III - Map index - with inline string compilation
 * To define a JavaScript index using inline string compilation,  
-  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration#indexing.allowstringcompilation) configuration key to _true_.
+  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration.mdx#indexing.allowstringcompilation) configuration key to _true_.
   
 * The following indexes use inline string compilation to evaluate whether each product’s `UnitsInStock` is low.
 
@@ -308,7 +308,7 @@ public class BlogPostComment
 
 </Admonition>
 
-Learn more about [Map indexes here](../indexes/map-indexes).
+Learn more about [Map indexes here](../indexes/map-indexes.mdx).
 
 
 
@@ -320,7 +320,7 @@ Learn more about [Map indexes here](../indexes/map-indexes).
 
 <Admonition type="note" title="Note">
 
-<TabItem value="something" label="index_5">
+<TabItem value="index_5" label="index_5">
 <CodeBlock language="csharp">
 {`public class Animals_ByName_JS : AbstractJavaScriptIndexCreationTask
 \{
@@ -370,7 +370,7 @@ where Name == "Milo"
 
 </Admonition>
 
-Learn more about [Multi-Map indexes here](../indexes/multi-map-indexes).
+Learn more about [Multi-Map indexes here](../indexes/multi-map-indexes.mdx).
 
 
 
@@ -387,7 +387,7 @@ Learn more about [Multi-Map indexes here](../indexes/multi-map-indexes).
 #### Example I
 The following index counts the number of products per category by grouping on the category name.
 
-<TabItem value="something" label="index_6">
+<TabItem value="index_6" label="index_6">
 <CodeBlock language="csharp">
 {`public class Products_ByCategory_JS : AbstractJavaScriptIndexCreationTask
 \{
@@ -458,7 +458,7 @@ order by Count as long desc
 #### Example II
 The following index calculates how many items were sold and the total sales amount for each product and month.
 
-<TabItem value="something" label="index_7">
+<TabItem value="index_7" label="index_7">
 <CodeBlock language="csharp">
 {`public class ProductSales_ByMonth_JS : AbstractJavaScriptIndexCreationTask
 \{
@@ -522,7 +522,7 @@ The following index calculates how many items were sold and the total sales amou
 
 </Admonition>
 
-Learn more about [Map-Reduce indexes here](../indexes/map-reduce-indexes).
+Learn more about [Map-Reduce indexes here](../indexes/map-reduce-indexes.mdx).
 
 
 
@@ -540,9 +540,9 @@ All other capabilities and features are the same as C# indexes.
 If we want to create JavaScript index we need to create an instance of our class that inherits 
 from AbstractJavaScriptIndexCreationTask.   
 AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask 
-(Read more about AbstractIndexCreationTask [here](../indexes/creating-and-deploying#Using-AbstractIndexCreationTask).)
+(Read more about AbstractIndexCreationTask [here](../indexes/creating-and-deploying.mdx#Using-AbstractIndexCreationTask).)
 
-<TabItem value="something-something" label="javaScriptindexes_1">
+<TabItem value="javaScriptindexes_1" label="javaScriptindexes_1">
 <CodeBlock language="java">
 {`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
     // ...
@@ -556,7 +556,7 @@ AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
 They indicate which documents can be searched by which fields.
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`map(<collection-name>, function (document)\{
      return \{
@@ -570,7 +570,7 @@ They indicate which documents can be searched by which fields.
 
 ### Example I - Simple map index
 
-<TabItem value="something-something" label="javaScriptindexes_6">
+<TabItem value="javaScriptindexes_6" label="javaScriptindexes_6">
 <CodeBlock language="java">
 {`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask \{
     public Employees_ByFirstAndLastName() \{
@@ -588,7 +588,7 @@ They indicate which documents can be searched by which fields.
 
 ### Example II - Map index with additional sources
 
-<TabItem value="something-something" label="indexes_2">
+<TabItem value="indexes_2" label="indexes_2">
 <CodeBlock language="java">
 {`public static class BlogPosts_ByCommentAuthor extends AbstractJavaScriptIndexCreationTask \{
     public BlogPosts_ByCommentAuthor() \{
@@ -613,7 +613,7 @@ They indicate which documents can be searched by which fields.
 </CodeBlock>
 </TabItem>
 
-Read more about map indexes [here](../indexes/map-indexes).
+Read more about map indexes [here](../indexes/map-indexes.mdx).
 
 ## Multi map index
 
@@ -621,7 +621,7 @@ Multi-Map indexes allow you to index data from multiple collections
 
 ### Example
 
-<TabItem value="something-something" label="multi_map_5">
+<TabItem value="multi_map_5" label="multi_map_5">
 <CodeBlock language="java">
 {`public static class Animals_ByName extends AbstractJavaScriptIndexCreationTask \{
     public Animals_ByName() \{
@@ -635,14 +635,14 @@ Multi-Map indexes allow you to index data from multiple collections
 </CodeBlock>
 </TabItem>
 
-Read more about multi map indexes [here](../indexes/map-reduce-indexes).
+Read more about multi map indexes [here](../indexes/map-reduce-indexes.mdx).
 
 ## Map-Reduce index
 Map-Reduce indexes allow you to perform complex aggregations of data.
 The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`groupBy(x => \{map properties\})
      .aggregate(y => \{
@@ -657,7 +657,7 @@ Upon completion of the first phase, reduction is applied to the map results and 
 
 ### Example I
 
-<TabItem value="something-something" label="map_reduce_0_0">
+<TabItem value="map_reduce_0_0" label="map_reduce_0_0">
 <CodeBlock language="java">
 {`public static class Products_ByCategory extends AbstractJavaScriptIndexCreationTask \{
     public Products_ByCategory() \{
@@ -683,7 +683,7 @@ Upon completion of the first phase, reduction is applied to the map results and 
 
 ### Example II
 
-<TabItem value="something-something" label="map_reduce_3_0">
+<TabItem value="map_reduce_3_0" label="map_reduce_3_0">
 <CodeBlock language="java">
 {`public static class Product_Sales_ByMonth extends AbstractJavaScriptIndexCreationTask \{
     public Product_Sales_ByMonth() \{
@@ -717,7 +717,7 @@ Upon completion of the first phase, reduction is applied to the map results and 
 </CodeBlock>
 </TabItem>
 
-Read more about map reduce indexes [here](../indexes/multi-map-indexes).
+Read more about map reduce indexes [here](../indexes/multi-map-indexes.mdx).
 
 <Admonition type="info" title="Information" id="information" href="#information">
 Supported JavaScript version : ECMAScript 5.1

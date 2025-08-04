@@ -20,18 +20,18 @@ compare-exchange values, client certificate definitions (without the private key
 
 In particular, the Server Store holds the encryption keys of all the encrypted databases on this server. The encryption
 keys are stored encrypted and the admin has the choice of how that encryption would be handled. 
-See [Secret Key Management](../../../server/security/encryption/secret-key-management) for more details on this topic.
+See [Secret Key Management](../../../server/security/encryption/secret-key-management.mdx) for more details on this topic.
 
 ## Enabling Server Store Encryption
 
-This is an offline operation which should be performed only once using the [rvn tool](../../../server/administration/cli). 
+This is an offline operation which should be performed only once using the [rvn tool](../../../server/administration/cli.mdx). 
 It is recommended to do this at the very start, as part of the initial cluster setup, right after the server was launched for the first time.
 Server Store encryption is also possible at later times, even after creating databases and storing documents.
 
 To encrypt the Server Store, make sure the server is not running. Then navigate to the RavenDB application folder where you can find the `rvn` tool. 
 Run the following command and supply the path of the `System` folder:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`./rvn offline-operation encrypt <path-to-system-dir>
 `}
@@ -40,12 +40,12 @@ Run the following command and supply the path of the `System` folder:
 
 This operation encrypts the data and saves the encryption key to the same directory.
 **The key file (secret.key.encrypted) is protected using RavenDB's secret protection policy**. Read about 
-[Secret Key Management](../../../server/security/encryption/secret-key-management) to learn about secret protection in RavenDB.
+[Secret Key Management](../../../server/security/encryption/secret-key-management.mdx) to learn about secret protection in RavenDB.
 Once encrypted, The server will only work for the current OS user or the current Master Key (whichever method was chosen to protect secrets). 
 Snapshots of an encrypted Server Store can only be restored by the same OS user or the same Master Key which was used during snapshot backup.
 
 From this point on, the Server Store is encrypted and adheres to the same principles of database encryption described 
-[here](../../../server/security/encryption/encryption-at-rest#how-does-it-work). You still need to explicitly setup each database as encrypted
+[here](../../../server/security/encryption/encryption-at-rest.mdx#how-does-it-work). You still need to explicitly setup each database as encrypted
 and each database will use a different encryption key. In order to restore snapshot backups you'll have to store the encryption key for each
 database in a safe location.
 
@@ -54,7 +54,7 @@ database in a safe location.
 To decrypt the Server Store, make sure the server is not running. Then navigate to the RavenDB application folder where you can find the `rvn` tool. 
 Run the following command and supply the path of the `System` folder:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`./rvn offline-operation decrypt <path-to-system-dir>
 `}
@@ -72,7 +72,7 @@ If any of them changed, move to the next section.
 
 Navigate to the RavenDB application folder where you can find the `rvn` tool. Run the following command and supply the path of the `System` folder:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`./rvn offline-operation get-key <path-to-system-dir>
 `}
@@ -94,7 +94,7 @@ Moving the server to a new machine or switching the OS user requires the admin t
 
 Navigate to the RavenDB application folder where you can find the `rvn` tool. Run the following command and supply the path of the `System` folder:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`./rvn offline-operation get-key <path-to-system-dir>
 `}
@@ -107,7 +107,7 @@ The output is the plaintext key which is not protected and not tied to any user 
 On the new machine, copy the `System` folder to the new location. 
 run the following command and supply the path of the `System` folder and the key you just got (using get-key):
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`./rvn offline-operation put-key <path-to-system-dir> <base64-plaintext-key>
 `}

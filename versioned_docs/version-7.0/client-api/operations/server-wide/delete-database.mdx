@@ -24,7 +24,7 @@ This operation is used to delete databases from a server, with a possibility to 
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_database_syntax">
+<TabItem value="delete_database_syntax" label="delete_database_syntax">
 <CodeBlock language="csharp">
 {`public DeleteDatabasesOperation(
     string databaseName,
@@ -117,7 +117,7 @@ This operation is used to delete databases from a server, with a possibility to 
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_database_syntax">
+<TabItem value="delete_database_syntax" label="delete_database_syntax">
 <CodeBlock language="java">
 {`public DeleteDatabasesOperation(String databaseName, boolean hardDelete)
 
@@ -130,7 +130,7 @@ public DeleteDatabasesOperation(Parameters parameters)
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="delete_parameters">
+<TabItem value="delete_parameters" label="delete_parameters">
 <CodeBlock language="java">
 {`public static class Parameters \{
     private String[] databaseNames;
@@ -183,7 +183,7 @@ public DeleteDatabasesOperation(Parameters parameters)
 
 ## Example I
 
-<TabItem value="something-something" label="DeleteDatabases">
+<TabItem value="DeleteDatabases" label="DeleteDatabases">
 <CodeBlock language="java">
 {`DeleteDatabasesOperation.Parameters parameters = new DeleteDatabasesOperation.Parameters();
 parameters.setDatabaseNames(new String[]\{ "MyNewDatabase", "OtherDatabaseToDelete" \});
@@ -201,7 +201,7 @@ store.maintenance()
 
 In order to delete just one database from a server, you can also use this constructor
 
-<TabItem value="something-something" label="DeleteDatabase">
+<TabItem value="DeleteDatabase" label="DeleteDatabase">
 <CodeBlock language="java">
 {`store.maintenance().server().send(
     new DeleteDatabasesOperation("MyNewDatabase", true, null, null));

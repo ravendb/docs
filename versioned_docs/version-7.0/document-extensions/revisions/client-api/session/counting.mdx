@@ -24,8 +24,8 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * You can get the number of revisions a document has by using the advance session method `GetCountFor`.
 
 * In this page:  
-   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting#get-revisions-count)
-   * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
 
 </Admonition>
 ## Get revisions count
@@ -51,7 +51,7 @@ var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync("com
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`long GetCountFor(string id);
 `}
@@ -77,13 +77,13 @@ var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync("com
 * You can get the number of revisions a document has by using the session `advanced` method `get_count_for`.
 
 * In this page:  
-   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting#get-revisions-count)
-   * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
 
 </Admonition>
 ## Get revisions count
 
-<TabItem value="something-something" label="getCount">
+<TabItem value="getCount" label="getCount">
 <CodeBlock language="python">
 {`# Get the number of revisions for document 'companies/1-A'
 revisions_count = session.advanced.revisions.get_count_for("companies/1-A")
@@ -95,7 +95,7 @@ revisions_count = session.advanced.revisions.get_count_for("companies/1-A")
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def get_count_for(self, id_: str) -> int: ...
 `}
@@ -121,13 +121,13 @@ revisions_count = session.advanced.revisions.get_count_for("companies/1-A")
 * You can get the number of revisions a document has by using the session `advanced` method `getCountFor`.
 
 * In this page:  
-   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting#get-revisions-count)
-   * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
 
 </Admonition>
 ## Get revisions count
 
-<TabItem value="something-something" label="getCount">
+<TabItem value="getCount" label="getCount">
 <CodeBlock language="php">
 {`// Get the number of revisions for document 'companies/1-A"
 $revisionsCount = $session->advanced()->revisions()->getCountFor("companies/1-A");
@@ -139,7 +139,7 @@ $revisionsCount = $session->advanced()->revisions()->getCountFor("companies/1-A"
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`function getCountFor(?string $id): int;
 `}
@@ -165,14 +165,14 @@ $revisionsCount = $session->advanced()->revisions()->getCountFor("companies/1-A"
 * You can get the number of revisions a document has by using the advance session method `getCountFor`.
 
 * In this page:  
-   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting#get-revisions-count)
-   * [syntax](../../../../document-extensions/revisions/client-api/session/counting#syntax)
+   * [Get revisions count](../../../../document-extensions/revisions/client-api/session/counting.mdx#get-revisions-count)
+   * [syntax](../../../../document-extensions/revisions/client-api/session/counting.mdx#syntax)
 
 </Admonition>
 ## Get revisions count
 
-<TabItem value="something-something" label="getCount">
-<CodeBlock language="nodejs">
+<TabItem value="getCount" label="getCount">
+<CodeBlock language="js">
 {`// Get the number of revisions for document 'companies/1-A"
 const revisionsCount = await session.advanced.revisions.getCountFor("companies/1-A");
 `}
@@ -183,8 +183,8 @@ const revisionsCount = await session.advanced.revisions.getCountFor("companies/1
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`await session.advanced.revisions.getCountFor(id);
 `}
 </CodeBlock>

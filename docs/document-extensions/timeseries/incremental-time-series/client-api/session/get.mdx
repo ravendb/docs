@@ -17,23 +17,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * To get a range of incremental time series entries, use one of the `IncrementalTimeSeriesFor.Get` methods.  
 * This method retrieves only the **accumulated values** of incremental time series entries.  
-  To retrieve the values stored by each node, use [GetTimeSeriesOperation](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get).  
+  To retrieve the values stored by each node, use [GetTimeSeriesOperation](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx).  
 
 <Admonition type="info" title="Info">
 
-* [Include](../../../../../document-extensions/timeseries/client-api/session/include/overview) 
-  time series data while [loading](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load) 
-  or [querying](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query) 
+* [Include](../../../../../document-extensions/timeseries/client-api/session/include/overview.mdx) 
+  time series data while [loading](../../../../../document-extensions/timeseries/client-api/session/include/with-session-load.mdx) 
+  or [querying](../../../../../document-extensions/timeseries/client-api/session/include/with-session-query.mdx) 
   documents, to keep the data locally in the client's session and refrain from unnecessary additional trips to the server.  
 * When caching is enabled, time series data is kept in the session cache as well.  
 
 </Admonition>
 
 * In this page:  
-   * [`IncrementalTimeSeriesFor.Get`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get#incrementaltimeseriesfor.get)  
-      * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get#syntax)  
-      * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get#usage-flow)  
-      * [Code Samples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries#code-samples)  
+   * [`IncrementalTimeSeriesFor.Get`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get.mdx#incrementaltimeseriesfor.get)  
+      * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get.mdx#syntax)  
+      * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/get.mdx#usage-flow)  
+      * [Code Samples](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx#code-samples)  
 
 </Admonition>
 ## `IncrementalTimeSeriesFor.Get`
@@ -41,7 +41,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 `IncrementalTimeSeriesFor.Get` retrieves a range of entries from a single time series.  
      
 * To retrieve multiple series' data, use the 
-  [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation) 
+  [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation) 
   document-store operation.  
 * Retrieved data can be sliced to **pages** to get time series entries 
   gradually, one custom-size page at a time.  
@@ -51,7 +51,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Syntax
 
 * `IncrementalTimeSeriesFor.Get` method:  
-<TabItem value="something" label="incremental_declaration_session-get-time-series">
+<TabItem value="incremental_declaration_session-get-time-series" label="incremental_declaration_session-get-time-series">
 <CodeBlock language="csharp">
 {`// Return time series values for the provided range
 TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null, int start = 0, int pageSize = int.MaxValue);
@@ -79,9 +79,9 @@ TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null, int start = 0,
 * Create an instance of `IncrementalTimeSeriesFor` and pass it:  
     * An explicit document ID,  
       -or-  
-      An [entity tracked by the session](../../../../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) 
-      or from [session.Load](../../../../../client-api/session/loading-entities#load).  
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).  
     * The time series name.  
       The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
 * Call `IncrementalTimeSeriesFor.Get`.  
@@ -91,7 +91,7 @@ TimeSeriesEntry[] Get(DateTime? from = null, DateTime? to = null, int start = 0,
 ## Code Samples
 
 * In this sample we retrieve all the entries of a time series.  
-<TabItem value="something" label="incremental_get-time-series">
+<TabItem value="incremental_get-time-series" label="incremental_get-time-series">
 <CodeBlock language="csharp">
 {`// Get all time series entries
 TimeSeriesEntry[] val = session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads")
@@ -100,7 +100,7 @@ TimeSeriesEntry[] val = session.IncrementalTimeSeriesFor("companies/webstore", "
 </CodeBlock>
 </TabItem>
 
-* Find additional samples [here](../../../../../document-extensions/timeseries/client-api/session/get/get-entries).  
+* Find additional samples [here](../../../../../document-extensions/timeseries/client-api/session/get/get-entries.mdx).  
 
 
 

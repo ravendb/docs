@@ -20,17 +20,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Each certificate is associated with a security clearance and access permissions per database.
 
 * It is the administrator's responsibility to generate client certificates and assign permissions. 
-  Read more in the [Certificate Management](../authentication/certificate-management) page.
+  Read more in the [Certificate Management](../authentication/certificate-management.mdx) page.
 
 * A client certificate's security clearance can be one of the following: Cluster Admin, Operator, User.
 
 * In this page:
-   * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)
-   * [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)
-   * [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
-      * [Admin](../../../server/security/authorization/security-clearance-and-permissions#section)  
-      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1) 
-      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)
+   * [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin)
+   * [Operator](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator)
+   * [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
+      * [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#section)  
+      * [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-1) 
+      * [Read Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)
 
 ## Cluster Admin
 
@@ -110,9 +110,9 @@ The following operations are permitted at the `Admin` access level but not for `
 
 A `User` certificate with a `Read/Write` access level can perform all operations **except** for those listed above in the 'Admin' and 'Operator'sections.  
 
-  * [JavaScript static indexes](../../../indexes/javascript-indexes) are permitted by default with Read/Write User certificates.  
+  * [JavaScript static indexes](../../../indexes/javascript-indexes.mdx) are permitted by default with Read/Write User certificates.  
     To configure a server or database so that only Admin certificates will be able to deploy JavaScript static indexes,  
-    set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration#indexing.static.requireadmintodeployjavascriptindexes) 
+    set [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../../../server/configuration/indexing-configuration.mdx#indexing.static.requireadmintodeployjavascriptindexes) 
     to `true`.
 ### `Read Only`
 
@@ -122,7 +122,7 @@ The `ReadOnly` access level **allows** clients to:
 - Be subscription workers to consume data subscriptions.  
 - Query the databases that are configured in the client certificate.  
   <Admonition type="note" title="Note">
-  [An Auto-index](../../../indexes/creating-and-deploying#auto-indexes) 
+  [An Auto-index](../../../indexes/creating-and-deploying.mdx#auto-indexes) 
   is built if there is no existing index that satisfies a query.  
   </Admonition>
 
@@ -132,14 +132,14 @@ The following operations are **forbidden**:
 
 - Creating documents or modifying existing documents  
 - Changing any configurations or settings  
-- Creating or modifying [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info)  
-- Defining [static indexes](../../../indexes/creating-and-deploying#static-indexes) (the database will create 
-[auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) if there is no existing index that satisfies a query.)
+- Creating or modifying [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
+- Defining [static indexes](../../../indexes/creating-and-deploying.mdx#static-indexes) (the database will create 
+[auto-indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes) if there is no existing index that satisfies a query.)
 
 
 </Admonition>
 
-Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level).
+Learn more about the `Read Only` access level [here](../../../studio/server/certificates/read-only-access-level.mdx).
 
 
 

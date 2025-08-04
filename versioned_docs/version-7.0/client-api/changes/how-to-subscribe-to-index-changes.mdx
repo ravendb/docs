@@ -22,8 +22,8 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 Following methods allow you to subscribe to index changes:
 
-- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
-- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
 
 ## ForIndex
 
@@ -31,7 +31,7 @@ Index changes for one index can be observed using `ForIndex` method.
 
 ### Syntax
 
-<TabItem value="something" label="index_changes_1">
+<TabItem value="index_changes_1" label="index_changes_1">
 <CodeBlock language="csharp">
 {`IChangesObservable<IndexChange> ForIndex(string indexName);
 `}
@@ -44,11 +44,11 @@ Index changes for one index can be observed using `ForIndex` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
 
 ### Example
 
-<TabItem value="something" label="index_changes_2">
+<TabItem value="index_changes_2" label="index_changes_2">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -110,11 +110,11 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
 
 ### Syntax
 
-<TabItem value="something" label="index_changes_3">
+<TabItem value="index_changes_3" label="index_changes_3">
 <CodeBlock language="csharp">
 {`IChangesObservable<IndexChange> ForAllIndexes();
 `}
@@ -123,7 +123,7 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 
 ### Example
 
-<TabItem value="something" label="index_changes_4">
+<TabItem value="index_changes_4" label="index_changes_4">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -141,7 +141,7 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchangetypes) | Change type |
 | **Name** | string | Index name |
 | **Etag** | long? | Index Etag |
 
@@ -180,8 +180,8 @@ To get more method overloads, especially ones supporting **delegates**, please a
 
 Following methods allow you to subscribe to index changes:
 
-- [forIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
-- [forAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+- [forIndex](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
 
 ## forIndex
 
@@ -189,7 +189,7 @@ Index changes for one index can be observed using `forIndex` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="index_changes_1">
+<TabItem value="index_changes_1" label="index_changes_1">
 <CodeBlock language="java">
 {`IChangesObservable<IndexChange> forIndex(String indexName);
 `}
@@ -202,11 +202,11 @@ Index changes for one index can be observed using `forIndex` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
 
 ### Example
 
-<TabItem value="something-something" label="index_changes_2">
+<TabItem value="index_changes_2" label="index_changes_2">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -268,11 +268,11 @@ Index changes for all indexex can be observed using `forAllIndexes` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
 
 ### Syntax
 
-<TabItem value="something-something" label="index_changes_3">
+<TabItem value="index_changes_3" label="index_changes_3">
 <CodeBlock language="java">
 {`IChangesObservable<IndexChange> forAllIndexes();
 `}
@@ -281,7 +281,7 @@ Index changes for all indexex can be observed using `forAllIndexes` method.
 
 ### Example
 
-<TabItem value="something-something" label="index_changes_4">
+<TabItem value="index_changes_4" label="index_changes_4">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -301,7 +301,7 @@ Index changes for all indexex can be observed using `forAllIndexes` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **Type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchangetypes) | Change type |
 | **Name** | String | Index name |
 | **Etag** | Long | Index Etag |
 
@@ -334,8 +334,8 @@ Index changes for all indexex can be observed using `forAllIndexes` method.
 
 Following methods allow you to subscribe to index changes:
 
-- [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
-- [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+- [forIndex()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forindex)
+- [forAllIndexes()](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#forallindexes)
 
 ## forIndex
 
@@ -343,8 +343,8 @@ Index changes for one index can be observed using `forIndex()` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="index_changes_1">
-<CodeBlock language="nodejs">
+<TabItem value="index_changes_1" label="index_changes_1">
+<CodeBlock language="js">
 {`store.changes().forIndex(indexName);
 `}
 </CodeBlock>
@@ -356,12 +356,12 @@ Index changes for one index can be observed using `forIndex()` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for index with given name. |
 
 ### Example
 
-<TabItem value="something-something" label="index_changes_2">
-<CodeBlock language="nodejs">
+<TabItem value="index_changes_2" label="index_changes_2">
+<CodeBlock language="js">
 {`store.changes().forIndex("Orders/All")
     .on("data", change => \{
         switch (change.type) \{
@@ -420,12 +420,12 @@ Index changes for all indexex can be observed using `forAllIndexes()` method.
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
+| IChangesObservable&lt;[IndexChange](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchange)&gt; | Observable that allows to add subscriptions to notifications for all indexes. |
 
 ### Syntax
 
-<TabItem value="something-something" label="index_changes_3">
-<CodeBlock language="nodejs">
+<TabItem value="index_changes_3" label="index_changes_3">
+<CodeBlock language="js">
 {`store.changes().forAllIndexes();
 `}
 </CodeBlock>
@@ -433,8 +433,8 @@ Index changes for all indexex can be observed using `forAllIndexes()` method.
 
 ### Example
 
-<TabItem value="something-something" label="index_changes_4">
-<CodeBlock language="nodejs">
+<TabItem value="index_changes_4" label="index_changes_4">
+<CodeBlock language="js">
 {`store.changes().forAllIndexes()
     .on("data", change => \{
         console.log(change.type + " on index " + change.name);
@@ -451,7 +451,7 @@ Index changes for all indexex can be observed using `forAllIndexes()` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes#indexchangetypes) | Change type |
+| **type** | [IndexChangeTypes](../../client-api/changes/how-to-subscribe-to-index-changes.mdx#indexchangetypes) | Change type |
 | **name** | string | Index name |
 | **etag** | number | Index Etag |
 

@@ -20,15 +20,15 @@ Welcome to RavenDB!
 This article will get you started and guide you through all the aspects of RavenDB needed for basic understanding and a simple setup.  
 
 * In this page:
-   * The [Server](../start/getting-started#server) portion will focus on installation, setup & configuration of the RavenDB server  
-      * [Prerequisites](../start/getting-started#prerequisites)  
-      * [Installation & Setup](../start/getting-started#installation--setup)  
-      * [Configuration](../start/getting-started#configuration)  
-      * [Studio](../start/getting-started#studio)  
-      * [Security Concerns](../start/getting-started#security-concerns)  
-   * The [Client](../start/getting-started#client) portion will describe the general logic and principles behind our client libraries 
-      * [DocumentStore](../start/getting-started#documentstore)  
-      * [Session](../start/getting-started#session)  
+   * The [Server](../start/getting-started.mdx#server) portion will focus on installation, setup & configuration of the RavenDB server  
+      * [Prerequisites](../start/getting-started.mdx#prerequisites)  
+      * [Installation & Setup](../start/getting-started.mdx#installation--setup)  
+      * [Configuration](../start/getting-started.mdx#configuration)  
+      * [Studio](../start/getting-started.mdx#studio)  
+      * [Security Concerns](../start/getting-started.mdx#security-concerns)  
+   * The [Client](../start/getting-started.mdx#client) portion will describe the general logic and principles behind our client libraries 
+      * [DocumentStore](../start/getting-started.mdx#documentstore)  
+      * [Session](../start/getting-started.mdx#session)  
 
 </Admonition>
 
@@ -90,7 +90,7 @@ We recommend setting up your cluster nodes on separate machines so that if one g
 <Admonition type="warning" title="Important:" id="important" href="#important"> 
 If you move this folder after installation, the server will not run.  
 You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set 
-when you install. If you must move your folder at a later time, you can [reconfigure the certificate file path](../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+when you install. If you must move your folder at a later time, you can [reconfigure the certificate file path](../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 in the `settings.json` file.
 </Admonition>
 
@@ -103,12 +103,12 @@ If you choose to use only one machine (although this will increase the chances o
 3. Extract the [downloaded](https://ravendb.net/downloads) `RavenDB...zip` server package into each node folder.  
 4. If you want to install the cluster **as a service** (it will improve availability because it will automatically run in the background every time your 
 machine restarts), this simple step will be done after initial secure installation via the Setup Wizard or manually. Read [Running as a Service](installation/running-as-service).  
-5. Start the [Setup Wizard](../start/installation/setup-wizard) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual).  
+5. Start the [Setup Wizard](../start/installation/setup-wizard.mdx) by running `run.ps1` (or `run.sh` in Linux) in PowerShell or [disable the 'Setup Wizard' and configuring the server manually](../start/installation/manual.mdx).  
 ![Running the Setup Wizard](./assets/run-ps1-with-PowerShell.png)
 
 <Admonition type="note" title="Running in a Docker container" id="running-in-a-docker-container" href="#running-in-a-docker-container">
 
-If you are interested in hosting the server in a Docker container, please read our [dedicated knowledge base](../start/containers/dockerfile/dockerfile-overview).
+If you are interested in hosting the server in a Docker container, please read our [dedicated knowledge base](../start/containers/dockerfile/dockerfile-overview.mdx).
 
 </Admonition>
 
@@ -116,15 +116,15 @@ If you are interested in hosting the server in a Docker container, please read o
 
 If you are interested in hosting the server on a VM, please refer to
 
-- [AWS Windows VM](../start/installation/setup-examples/aws-windows-vm)
-- [AWS Linux VM](../start/installation/setup-examples/aws-linux-vm)
+- [AWS Windows VM](../start/installation/setup-examples/aws-windows-vm.mdx)
+- [AWS Linux VM](../start/installation/setup-examples/aws-linux-vm.mdx)
 
 </Admonition>
 
 <Admonition type="note" title="Running in RavenDB Cloud" id="running-in-ravendb-cloud" href="#running-in-ravendb-cloud">
 
 If you want to test RavenDB without manual setup try [RavenDB Cloud](https://cloud.ravendb.net).
-We offer one free instance per customer. For more information, please read our [dedicated article](../cloud/cloud-overview).
+We offer one free instance per customer. For more information, please read our [dedicated article](../cloud/cloud-overview.mdx).
 
 </Admonition>
 
@@ -146,19 +146,19 @@ appearing:
 </Admonition>
 ### Configuration
 
-The RavenDB server uses a [settings.json](../server/configuration/configuration-options#settings.json) file in each node `Server` folder to store the server-wide configuration options.  
+The RavenDB server uses a [settings.json](../server/configuration/configuration-options.mdx#settings.json) file in each node `Server` folder to store the server-wide configuration options.  
 When starting a server, RavenDB will look for the `settings.json` file in the node `Server` folder, so it must be located there.  
-The [Setup Wizard](../start/installation/setup-wizard) places it correctly automatically.  
+The [Setup Wizard](../start/installation/setup-wizard.mdx) places it correctly automatically.  
 
 After making changes to this file, a server restart is required for them to be applied.  
 
-You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options).
+You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options.mdx).
 
 <Admonition type="info" title="Default configuration" id="default-configuration" href="#default-configuration">
 
 The configuration file included in each RavenDB server distribution package is as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "http://127.0.0.1:0",
@@ -190,9 +190,9 @@ For a list of IPs and ports already in use, run `netstat -a` in the command line
 
 RavenDB requires write permissions to the following locations:
 
-- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options#settings.json) by the [Setup Wizard](../start/installation/setup-wizard))
-- The data folder ([`DataDir`](../server/configuration/core-configuration#datadir) setting)
-- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration#logs.path) setting)
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settings.json) by the [Setup Wizard](../start/installation/setup-wizard.mdx))
+- The data folder ([`DataDir`](../server/configuration/core-configuration.mdx#datadir) setting)
+- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration.mdx#logs.path) setting)
 
 If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
 
@@ -214,7 +214,7 @@ Whenever you run the server folder script `run.ps1` the Studio opens automatical
 ### Security Concerns
 
 **We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start** to prevent potential future vulnerability.  
-[The process](../start/getting-started#installation--setup) in RavenDB only takes a few minutes and is free.  
+[The process](../start/getting-started.mdx#installation--setup) in RavenDB only takes a few minutes and is free.  
 
 To let a developer start coding an application quickly, RavenDB will run with the following default security mode:
 
@@ -229,7 +229,7 @@ access control to prevent unauthorized access to your data or to explicitly allo
 
 **We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start** to prevent potential future vulnerability.  The process takes a few minutes and is free.    
 
-Read more about security and how to [enable authentication here](../server/security/overview).
+Read more about security and how to [enable authentication here](../server/security/overview.mdx).
 
 
 
@@ -252,7 +252,7 @@ In order to start, you need to create an instance of the `DocumentStore` - the m
 
 <Admonition type="info" title="Examples" id="examples" href="#examples">
 
-Before proceeding to the examples, we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data).
+Before proceeding to the examples, we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data.mdx).
 
 </Admonition>
 
@@ -297,7 +297,7 @@ Before proceeding to the examples, we would like to point out that most of the a
 </CodeBlock>
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`import { DocumentStore } from "ravendb";
 
 const store = new DocumentStore(
@@ -329,10 +329,10 @@ For proper operation, we **recommend** having only one `DocumentStore` instance 
 
 The following articles can extend your knowledge about the `DocumentStore` and its configuration:
 
-- [What is a Document Store?](../client-api/what-is-a-document-store)
-- [How to Create a Document Store?](../client-api/creating-document-store)
-- [How to Setup a Default Database?](../client-api/setting-up-default-database)
-- [How to configure the Document Store using Conventions?](../client-api/configuration/conventions)
+- [What is a Document Store?](../client-api/what-is-a-document-store.mdx)
+- [How to Create a Document Store?](../client-api/creating-document-store.mdx)
+- [How to Setup a Default Database?](../client-api/setting-up-default-database.mdx)
+- [How to configure the Document Store using Conventions?](../client-api/configuration/conventions.mdx)
 
 ---
 
@@ -342,7 +342,7 @@ The `Session` is used to manipulate the data. It implements the `Unit of Work` p
 
 ### Example I - Storing
 
-RavenDB is a Document Database. All stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection) (`@collection` property) assignment.
+RavenDB is a Document Database. All stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection.mdx) (`@collection` property) assignment.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="C#" label="C#">
@@ -397,7 +397,7 @@ RavenDB is a Document Database. All stored objects are called `documents`. Each 
 </CodeBlock>
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const session = store.openSession();                // Open a session for a default 'Database'
 
 const category = new Category("Database Category");
@@ -422,9 +422,9 @@ await session.saveChanges();                        // Send to the Server
 
 ### Example II - Loading
 
-The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option [to retrieve additional documents in the same request](../client-api/session/loading-entities#load-with-includes) (using `.Include`), minimizing the number of expensive calls.
+The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option [to retrieve additional documents in the same request](../client-api/session/loading-entities.mdx#load-with-includes) (using `.Include`), minimizing the number of expensive calls.
 
-Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. All of those changes are **sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an [ACID database here](../client-api/faq/transaction-support)).
+Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. All of those changes are **sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an [ACID database here](../client-api/faq/transaction-support.mdx)).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="C#" label="C#">
@@ -470,7 +470,7 @@ Besides that, the session implements the `Unit of Work` pattern, meaning that al
 </CodeBlock>
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const session = store.openSession();                // Open a session for a default 'Database'
 
 const product = await session
@@ -493,13 +493,13 @@ await session.saveChanges();                        // Synchronize with the Serv
 
 ### Example III - Querying
 
-To satisfy queries, [indexes](../indexes/what-are-indexes) are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes).
+To satisfy queries, [indexes](../indexes/what-are-indexes.mdx) are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes.mdx).
 
-When no index is specified in the query (like in the query below), RavenDB will use its [intelligent auto-indexes](../indexes/creating-and-deploying#auto-indexes) feature that will either use an already existing index or create a new one if no match is found.
+When no index is specified in the query (like in the query below), RavenDB will use its [intelligent auto-indexes](../indexes/creating-and-deploying.mdx#auto-indexes) feature that will either use an already existing index or create a new one if no match is found.
 
-The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
+The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying.mdx#static-indexes).
 
-Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../client-api/session/querying/what-is-rql).  
+Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../client-api/session/querying/what-is-rql.mdx).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="C#" label="C#">
@@ -530,7 +530,7 @@ Behind the scenes, queries are translated to the Raven Query Language (RQL) synt
 </CodeBlock>
 </TabItem>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const session = store.openSession();                // Open a session for a default 'Database'
 
 const productNames = await session

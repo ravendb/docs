@@ -15,7 +15,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # OLAP ETL Task
 <Admonition type="note" title="Note">
 
-* The **OLAP ETL task** is an [ETL](../../../../server/ongoing-tasks/etl/basics) process that converts RavenDB data to the 
+* The **OLAP ETL task** is an [ETL](../../../../server/ongoing-tasks/etl/basics.mdx) process that converts RavenDB data to the 
 [_Apache Parquet_](https://parquet.apache.org/docs/) file format, and sends 
 it to one or more of these destinations:  
   * [Amazon S3](https://aws.amazon.com/s3/)
@@ -27,17 +27,17 @@ it to one or more of these destinations:
 
 * This page explains how to create an OLAP ETL task using the studio. To 
 learn more about OLAP ETL tasks, and how to create one using the client API, 
-see [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap).
+see [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap.mdx).
 
 * In this page:  
-  * [Navigate to the OLAP ETL View](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#navigate-to-the-olap-etl-view)
-  * [Define an OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#define-an-olap-etl-task)
-      * [Custom Partition Value](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#custom-partition-value)
-      * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#run-frequency)
-      * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-connection-string)
-      * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#olap-etl-destinations)
-      * [Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts)
-      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column)
+  * [Navigate to the OLAP ETL View](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#navigate-to-the-olap-etl-view)
+  * [Define an OLAP ETL Task](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#define-an-olap-etl-task)
+      * [Custom Partition Value](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#custom-partition-value)
+      * [Run Frequency](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#run-frequency)
+      * [OLAP Connection String](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#olap-connection-string)
+      * [OLAP ETL Destinations](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#olap-etl-destinations)
+      * [Transform Scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#transform-scripts)
+      * [Override ID column](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#override-id-column)
 
 </Admonition>
 ## Create an OLAP ETL Task
@@ -67,13 +67,13 @@ To begin creating your OLAP ETL task:
 
 * A custom partition can be defined to differentiate parquet file locations when 
 using the same connection string in multiple OLAP ETL tasks.  
-* The custom partition **name** is defined inside the [transformation scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#transform-scripts).  
+* The custom partition **name** is defined inside the [transformation scripts](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#transform-scripts).  
 * The custom partition **value** is defined in the input box above.  
 * The custom partition value is referenced in the transform script as 
 `$customPartitionValue`.  
 * A parquet file path with custom partition will have the following format:  
   `{RemoteFolderName}/{CollectionName}/{customPartitionName=$customPartitionValue}`  
-* Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap#the-custom-partition-value).  
+* Learn more in [Ongoing Tasks: OLAP ETL](../../../../server/ongoing-tasks/etl/olap.mdx#the-custom-partition-value).  
 
 
 ### Run Frequency
@@ -135,7 +135,7 @@ Create and edit transform Javascripts on the right side of the OLAP ETL Studio v
    The script name is generated once the 'Add' button is clicked. The name of a script 
    is always in the format: "Script #[order of script creation]".  
 2. **The transform script**  
-   Learn more about [transformation scripts](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
+   Learn more about [transformation scripts](../../../../server/ongoing-tasks/etl/raven.mdx#transformation-script-options).  
 3. **Select a collection**  
    (or enter a new collection name) on which this script will operate.  
 4. **Collections Selected**  
@@ -155,7 +155,7 @@ aren't specified in the script:
 * `_id`  
   Contains the source document ID. The default name used for this column is `_id`.  
   You can override this name in the task definition - see more 
-  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task#override-id-column).  
+  [below](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx#override-id-column).  
 * `_lastModifiedTime`  
   The value of the `last-modified` field in a document's metadata. Represented in unix time.  
 

@@ -39,7 +39,7 @@ const config: Config = {
           versions: {
             current: {
               label: "7.1",
-              path: "/7.1"
+              path: "7.1"
             }
           }
           // Remove this to remove the "edit this page" links.
@@ -53,14 +53,7 @@ const config: Config = {
         sitemap: {
           lastmod: null,
           changefreq: "weekly",
-          priority: 0.5,
-          ignorePatterns: ["/tags/**"],
-          filename: "sitemap.xml",
-          createSitemapItems: async (params) => {
-            const { defaultCreateSitemapItems, ...rest } = params;
-            const items = await defaultCreateSitemapItems(rest);
-            return items.filter((item) => !item.url.includes("/page/"));
-          },
+          priority: null
         },
       } satisfies Preset.Options,
     ],
@@ -214,7 +207,6 @@ const config: Config = {
 
       indexName: "TestDocsCrawler",
 
-      // Optional: see doc section below
       contextualSearch: true,
 
       // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
@@ -226,13 +218,9 @@ const config: Config = {
         to: "/",
       },
 
-      // Optional: Algolia search parameters
-      searchParameters: {},
-
       // Optional: path for search page that enabled by default (`false` to disable it)
       searchPagePath: "search",
 
-      // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
       insights: false,
     },
   } satisfies Preset.ThemeConfig,

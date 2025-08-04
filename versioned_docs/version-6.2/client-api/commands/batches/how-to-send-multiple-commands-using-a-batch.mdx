@@ -30,9 +30,9 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
 
 * In this page:
-    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#examples)
-    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#available-batch-commands)
-    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#syntax)
+    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
+    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
+    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -148,8 +148,8 @@ using (store.GetRequestExecutor()
 * `SingleNodeBatchCommand` can also be executed using the session's request executor.
 
 * Note that the transaction created for the HTTP request when executing `SingleNodeBatchCommand`
-  is separate from the transaction initiated by the session's [SaveChanges](../../../client-api/session/saving-changes) method, even if both are called within the same code block.  
-  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support).
+  is separate from the transaction initiated by the session's [SaveChanges](../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
+  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -278,7 +278,7 @@ using (store.GetRequestExecutor()
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public SingleNodeBatchCommand(
        DocumentConventions conventions, 
@@ -287,7 +287,7 @@ using (store.GetRequestExecutor()
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class BatchOptions
 \{
@@ -324,7 +324,7 @@ public class ShardedBatchOptions
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`// Executing \`SingleNodeBatchCommand\` returns the following object:
 // ================================================================
@@ -356,7 +356,7 @@ To send **multiple commands** in a **single request**, reducing the number of re
 
 ## Syntax
 
-<TabItem value="something-something" label="batch_1">
+<TabItem value="batch_1" label="batch_1">
 <CodeBlock language="java">
 {`public BatchCommand(DocumentConventions conventions, List<ICommandData> commands, BatchOptions options)
 `}
@@ -374,7 +374,7 @@ To send **multiple commands** in a **single request**, reducing the number of re
 
 ### Batch Options
 
-<TabItem value="something-something" label="batch_2">
+<TabItem value="batch_2" label="batch_2">
 <CodeBlock language="java">
 {`public class BatchOptions \{
     private boolean waitForReplicas;
@@ -397,7 +397,7 @@ To send **multiple commands** in a **single request**, reducing the number of re
 
 ## Example
 
-<TabItem value="something-something" label="batch_3">
+<TabItem value="batch_3" label="batch_3">
 <CodeBlock language="java">
 {`try (IDocumentSession session = documentStore.openSession()) \{
 
@@ -436,9 +436,9 @@ All the commands in the batch will succeed or fail as a **transaction**. Other u
 * The commands are replicated to other nodes in the cluster only AFTER the transaction is successfully completed on that node.
 
 * In this page:
-    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#examples)
-    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#available-batch-commands)
-    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch#syntax)
+    * [Examples](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#examples)
+    * [Available batch commands](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#available-batch-commands)
+    * [Syntax](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -446,8 +446,8 @@ All the commands in the batch will succeed or fail as a **transaction**. Other u
 <Admonition type="note" title="Note">
 
 #### Send multiple commands - using the Store's request executor:
-<TabItem value="something-something" label="batch_1">
-<CodeBlock language="nodejs">
+<TabItem value="batch_1" label="batch_1">
+<CodeBlock language="js">
 {`// This patch request will be used in the following 'PatchCommandData' command
 let patchRequest = new PatchRequest();
 patchRequest.script = "this.HomePhone = 'New phone number'";
@@ -489,11 +489,11 @@ assert.equal(commandResults[0]["@id"], "employees/999");
 * `SingleNodeBatchCommand` can also be executed using the session's request executor.
 
 * Note that the transaction created for the HTTP request when executing `SingleNodeBatchCommand`
-  is separate from the transaction initiated by the session's [saveChanges](../../../client-api/session/saving-changes) method, even if both are called within the same code block.  
-  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support).
+  is separate from the transaction initiated by the session's [saveChanges](../../../client-api/session/saving-changes.mdx) method, even if both are called within the same code block.  
+  Learn more about transactions in RavenDB in [Transaction support](../../../client-api/faq/transaction-support.mdx).
 
-<TabItem value="something-something" label="batch_2">
-<CodeBlock language="nodejs">
+<TabItem value="batch_2" label="batch_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // This patch request will be used in the following 'PatchCommandData' command
@@ -558,15 +558,15 @@ assert.equal(commandResults[0]["@id"], "employees/999");
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`SingleNodeBatchCommand(conventions, commands);
 SingleNodeBatchCommand(conventions, commands, batchOptions);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The batchOptions object:
 \{
     replicationOptions; // ReplicationBatchOptions
@@ -596,8 +596,8 @@ SingleNodeBatchCommand(conventions, commands, batchOptions);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`// Executing \`SingleNodeBatchCommand\` returns the following object:
 // ================================================================
 

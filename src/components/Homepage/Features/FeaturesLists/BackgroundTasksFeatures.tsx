@@ -9,17 +9,17 @@ export default function BackgroundTasksFeaturesGrid() {
   const BackgroundTasksFeaturesList = [
     {
       title: "Expiration",
-      url: `${activeVersion.label}/server/extensions/expiration`,
+      url: `/${activeVersion.label}/server/extensions/expiration`,
       description: "Short description",
     },
     {
       title: "Refresh",
-      url: `${activeVersion.label}/server/extensions/refresh`,
+      url: `/${activeVersion.label}/server/extensions/refresh`,
       description: "Short description",
     },
     {
       title: "Archival",
-      url: `${activeVersion.label}/server/extensions/archival`,
+      url: `/${activeVersion.label}/server/extensions/archival`,
       description: "Short description",
     },
   ];

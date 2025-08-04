@@ -26,12 +26,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 *  If the Counter exists, `Increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `Increment` will create it and set its initial value.  
 
-* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`Increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+  - [`Increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `Increment` usage
@@ -41,8 +41,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Open a session.  
 * Create an instance of `CountersFor`.  
     * Either pass `CountersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
 * Call `CountersFor.Increment`.
 * Call `session.SaveChanges` for the changes to take effect.  
 
@@ -55,7 +55,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Example
 
-<TabItem value="something" label="counters_region_Increment">
+<TabItem value="counters_region_Increment" label="counters_region_Increment">
 <CodeBlock language="csharp">
 {`// 1. Open a session
 using (var session = docStore.OpenSession())
@@ -80,7 +80,7 @@ using (var session = docStore.OpenSession())
 
 ## Syntax
 
-<TabItem value="something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="csharp">
 {`void Increment(string counterName, long incrementValue = 1);
 `}
@@ -105,12 +105,12 @@ using (var session = docStore.OpenSession())
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`increment` uage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+  - [`increment` uage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `increment` usage
@@ -133,7 +133,7 @@ using (var session = docStore.OpenSession())
 
 ## Example
 
-<TabItem value="something-something" label="counters_region_Increment">
+<TabItem value="counters_region_Increment" label="counters_region_Increment">
 <CodeBlock language="java">
 {`// 1. Open a session
 try (IDocumentSession session = docStore.openSession()) \{
@@ -157,7 +157,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="java">
 {`void increment(String counterName);
 
@@ -184,12 +184,12 @@ void increment(String id, String name, long delta);
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `counters_for ` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `counters_for ` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+  - [`increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `increment` usage
@@ -199,8 +199,8 @@ void increment(String id, String name, long delta);
 * Open a session.  
 * Create an instance of `counters_for `.  
     * Either pass `counters_for ` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
 * Call `counters_for .increment`.
 * Call `session.save_changes` for the changes to take effect.  
 
@@ -213,7 +213,7 @@ void increment(String id, String name, long delta);
 
 ## Example
 
-<TabItem value="something-something" label="counters_region_Increment">
+<TabItem value="counters_region_Increment" label="counters_region_Increment">
 <CodeBlock language="python">
 {`# Open a session
 with store.open_session() as session:
@@ -242,7 +242,7 @@ with store.open_session() as session:
 
 ## Syntax
 
-<TabItem value="something-something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="python">
 {`def increment(self, counter: str, delta: int = 1) -> None: ...
 `}
@@ -267,12 +267,12 @@ with store.open_session() as session:
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+  - [`increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `increment` usage
@@ -282,8 +282,8 @@ with store.open_session() as session:
 * Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
 * Call `countersFor.increment`.
 * Call `session.saveChanges` for the changes to take effect.  
 
@@ -296,7 +296,7 @@ with store.open_session() as session:
 
 ## Example
 
-<TabItem value="something-something" label="counters_region_Increment">
+<TabItem value="counters_region_Increment" label="counters_region_Increment">
 <CodeBlock language="php">
 {`// Open a session
 $session = $docStore->openSession();
@@ -329,7 +329,7 @@ try \{
 
 ## Syntax
 
-<TabItem value="something-something" label="CountersFor-definition">
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
 <CodeBlock language="php">
 {`public function countersFor(string|object $idOrEntity): SessionDocumentCountersInterface;
 `}
@@ -339,7 +339,7 @@ try \{
 | Parameter        | Type  | Description     |
 |------------------|-------|-----------------|
 | **idOrEntity** | `string` or `object`| The object to create or modify counters for |
-<TabItem value="something-something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="php">
 {`public function increment(?string $counter, int $delta = 1): void;
 `}
@@ -364,12 +364,12 @@ try \{
 *  If the Counter exists, `increment` will add the specified number to the Counter's current value.  
    If the Counter doesn't exist, `increment` will create it and set its initial value.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-  - [`increment` usage](../../document-extensions/counters/create-or-modify#increment-usage)
-  - [Example](../../document-extensions/counters/create-or-modify#example)
-  - [Syntax](../../document-extensions/counters/create-or-modify#syntax)
+  - [`increment` usage](../../document-extensions/counters/create-or-modify.mdx#increment-usage)
+  - [Example](../../document-extensions/counters/create-or-modify.mdx#example)
+  - [Syntax](../../document-extensions/counters/create-or-modify.mdx#syntax)
 
 </Admonition>
 ## `Increment` usage
@@ -379,8 +379,8 @@ try \{
 * Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
 * Call `countersFor.increment`.
 * Call `session.saveChanges` for the changes to take effect.  
 
@@ -393,8 +393,8 @@ try \{
 
 ## Example
 
-<TabItem value="something-something" label="create_or_modify">
-<CodeBlock language="nodejs">
+<TabItem value="create_or_modify" label="create_or_modify">
+<CodeBlock language="js">
 {`// Open a session
 const session = documentStore.openSession();        
        
@@ -423,8 +423,8 @@ await session.saveChanges();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`increment(counter);
 increment(counter, delta);
 `}

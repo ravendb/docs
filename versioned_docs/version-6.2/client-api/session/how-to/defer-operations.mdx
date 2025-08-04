@@ -28,13 +28,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   Thus, all deferred commands are __executed as part of the session's SaveChanges transaction__.
 
 * In this page:   
-    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
-    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
-    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
 </Admonition>
 ## Defer commands example
 
-<TabItem value="something" label="defer_1">
+<TabItem value="defer_1" label="defer_1">
 <CodeBlock language="csharp">
 {`// Defer is available in the session's Advanced methods 
 session.Advanced.Defer(
@@ -77,16 +77,16 @@ session.SaveChanges();
 
 The following commands implement the `ICommandData` interface and can be deferred:  
 
-  - [PutCommandData](../../../glossary/put-command-data)
-  - [DeleteCommandData](../../../glossary/delete-command-data)
+  - [PutCommandData](../../../glossary/put-command-data.mdx)
+  - [DeleteCommandData](../../../glossary/delete-command-data.mdx)
   - DeletePrefixedCommandData
-  - [PatchCommandData](../../../glossary/patch-command-data)
+  - [PatchCommandData](../../../glossary/patch-command-data.mdx)
   - BatchPatchCommandData
   - PutAttachmentCommandData
   - DeleteAttachmentCommandData
-  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
-  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
-  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data.mdx)
+  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data.mdx)
+  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data.mdx)
   - PutCompareExchangeCommandData
   - DeleteCompareExchangeCommandData
   - CopyTimeSeriesCommandData
@@ -96,7 +96,7 @@ The following commands implement the `ICommandData` interface and can be deferre
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`void Defer(ICommandData command, params ICommandData[] commands);
 void Defer(ICommandData[] commands);
@@ -121,19 +121,19 @@ All of the operations will update teh session state appropriately after `saveCha
 
 Types of commands that can be deferred:
 
-- [PutCommandData](../../../glossary/put-command-data)
-- [DeleteCommandData](../../../glossary/delete-command-data)
+- [PutCommandData](../../../glossary/put-command-data.mdx)
+- [DeleteCommandData](../../../glossary/delete-command-data.mdx)
 - DeletePrefixedCommandData
-- [PatchCommandData](../../../glossary/patch-command-data)
+- [PatchCommandData](../../../glossary/patch-command-data.mdx)
 - PutAttachmentCommandData
 - DeleteAttachmentCommandData
-- [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
-- [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
-- [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+- [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data.mdx)
+- [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data.mdx)
+- [CountersBatchCommandData](../../../glossary/counters-batch-command-data.mdx)
 
 ## Syntax
 
-<TabItem value="something-something" label="defer_1">
+<TabItem value="defer_1" label="defer_1">
 <CodeBlock language="java">
 {`void defer(ICommandData command, ICommandData... commands);
 
@@ -149,7 +149,7 @@ void defer(ICommandData[] commands);
 
 ## Example
 
-<TabItem value="something-something" label="defer_2">
+<TabItem value="defer_2" label="defer_2">
 <CodeBlock language="java">
 {`Map<String, Object> value1 = new HashMap<>();
 value1.put("Name", "My Product");
@@ -192,13 +192,13 @@ session.advanced().defer(putCommand1, putCommand2, command3);
   Thus, all deferred commands are **executed as part of the session's `save_changes` transaction**.
 
 * In this page:   
-    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
-    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
-    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
 </Admonition>
 ## Defer commands example
 
-<TabItem value="something-something" label="defer_1">
+<TabItem value="defer_1" label="defer_1">
 <CodeBlock language="python">
 {`# Defer is available in the session's advanced methods
 session.advanced.defer(
@@ -229,16 +229,16 @@ session.save_changes()
 
 The following commands implement the `ICommandData` interface and can be deferred:  
 
-  - [PutCommandData](../../../glossary/put-command-data)
-  - [DeleteCommandData](../../../glossary/delete-command-data)
+  - [PutCommandData](../../../glossary/put-command-data.mdx)
+  - [DeleteCommandData](../../../glossary/delete-command-data.mdx)
   - DeletePrefixedCommandData
-  - [PatchCommandData](../../../glossary/patch-command-data)
+  - [PatchCommandData](../../../glossary/patch-command-data.mdx)
   - BatchPatchCommandData
   - PutAttachmentCommandData
   - DeleteAttachmentCommandData
-  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
-  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
-  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data.mdx)
+  - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data.mdx)
+  - [CountersBatchCommandData](../../../glossary/counters-batch-command-data.mdx)
   - PutCompareExchangeCommandData
   - DeleteCompareExchangeCommandData
   - CopyTimeSeriesCommandData
@@ -248,7 +248,7 @@ The following commands implement the `ICommandData` interface and can be deferre
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def defer(self, *commands: CommandData) -> None: ...
 `}
@@ -275,13 +275,13 @@ The following commands implement the `ICommandData` interface and can be deferre
   Thus, all deferred commands are **executed as part of the session's `saveChanges` transaction**.
 
 * In this page:   
-    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)  
-    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
-    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)  
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
 </Admonition>
 ## Defer commands example
 
-<TabItem value="something-something" label="defer_1">
+<TabItem value="defer_1" label="defer_1">
 <CodeBlock language="php">
 {`// Defer is available in the session's \`advanced\` methods
 $session->advanced()->defer(
@@ -328,16 +328,16 @@ $session->saveChanges();
 
 The following commands implement the `CommandDataInterface` interface and can be deferred:  
 
-  - [putCommandData](../../../glossary/put-command-data)
-  - [deleteCommandData](../../../glossary/delete-command-data)
+  - [putCommandData](../../../glossary/put-command-data.mdx)
+  - [deleteCommandData](../../../glossary/delete-command-data.mdx)
   - deletePrefixedCommandData
-  - [patchCommandData](../../../glossary/patch-command-data)
+  - [patchCommandData](../../../glossary/patch-command-data.mdx)
   - batchPatchCommandData
   - putAttachmentCommandData
   - deleteAttachmentCommandData
-  - [copyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
-  - [moveAttachmentCommandData](../../../glossary/move-attachment-command-data)
-  - [countersBatchCommandData](../../../glossary/counters-batch-command-data)
+  - [copyAttachmentCommandData](../../../glossary/copy-attachment-command-data.mdx)
+  - [moveAttachmentCommandData](../../../glossary/move-attachment-command-data.mdx)
+  - [countersBatchCommandData](../../../glossary/counters-batch-command-data.mdx)
   - putCompareExchangeCommandData
   - deleteCompareExchangeCommandData
   - copyTimeSeriesCommandData
@@ -347,7 +347,7 @@ The following commands implement the `CommandDataInterface` interface and can be
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -390,14 +390,14 @@ public function defer(...$commands): void;
   Thus, all deferred commands are __executed as part of the session's saveChanges transaction__.
 
 * In this page:
-    * [Defer commands example](../../../client-api/session/how-to/defer-operations#defer-commands-example)
-    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations#commands-that-can-be-deferred)
-    * [Syntax](../../../client-api/session/how-to/defer-operations#syntax)  
+    * [Defer commands example](../../../client-api/session/how-to/defer-operations.mdx#defer-commands-example)
+    * [Commands that can be deferred](../../../client-api/session/how-to/defer-operations.mdx#commands-that-can-be-deferred)
+    * [Syntax](../../../client-api/session/how-to/defer-operations.mdx#syntax)  
 </Admonition>
 ## Defer commands example
 
-<TabItem value="something-something" label="defer_1">
-<CodeBlock language="nodejs">
+<TabItem value="defer_1" label="defer_1">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Define a patchRequest object for the PatchCommandData used in the 'defer' below
@@ -458,8 +458,8 @@ The following commands implement the `ICommandData` interface and can be deferre
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`session.advanced.defer(...commands);
 `}
 </CodeBlock>

@@ -24,17 +24,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   with snapshots allowing for quicker recovery by avoiding the need to replay all past events.
 
 * The stored events can be queried via Akka's query interface.  
-  Learn more about that in [Queries](../../integrations/akka.net-persistence/queries).
+  Learn more about that in [Queries](../../integrations/akka.net-persistence/queries.mdx).
 
 * To learn how to configure the events journal and the snapshot-store via the _Akka.Persistence.RavenDB_ plugin, 
-  see [Integrating with Akka.NET persistence](../../integrations/akka.net-persistence/integrating-with-akka-persistence).
+  see [Integrating with Akka.NET persistence](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx).
 
 * In this page:
-   * [Storing events](../../integrations/akka.net-persistence/events-and-snapshots#storing-events)
-   * [Storing snapshots](../../integrations/akka.net-persistence/events-and-snapshots#storing-snapshots)
-   * [Storing guidelines](../../integrations/akka.net-persistence/events-and-snapshots#storing-guidelines)
-   * [Global consistency](../../integrations/akka.net-persistence/events-and-snapshots#global-consistency)
-   * [Sample application](../../integrations/akka.net-persistence/events-and-snapshots#sample-application)
+   * [Storing events](../../integrations/akka.net-persistence/events-and-snapshots.mdx#storing-events)
+   * [Storing snapshots](../../integrations/akka.net-persistence/events-and-snapshots.mdx#storing-snapshots)
+   * [Storing guidelines](../../integrations/akka.net-persistence/events-and-snapshots.mdx#storing-guidelines)
+   * [Global consistency](../../integrations/akka.net-persistence/events-and-snapshots.mdx#global-consistency)
+   * [Sample application](../../integrations/akka.net-persistence/events-and-snapshots.mdx#sample-application)
 
 </Admonition>
 ## Storing events
@@ -126,16 +126,16 @@ Each snapshot document includes the following fields, among others:
 
   * RavenDB is a distributed database, allowing writes, reads, and queries to target different nodes across the cluster.  
 
-  * To prioritize consistency over availability, the RavenDB plugin uses a [cluster-wide transaction](../../server/clustering/cluster-transactions) for storing events and snapshot documents. 
+  * To prioritize consistency over availability, the RavenDB plugin uses a [cluster-wide transaction](../../server/clustering/cluster-transactions.mdx) for storing events and snapshot documents. 
     This ensures that persisted data is consistently applied across all database instances in the cluster, preventing conflicts and guaranteeing that restoring to the latest state reflects the correct event sequence, as required by Akka.
 
   * Note that cluster consensus is required for a cluster-wide transaction to execute. 
-    This means that a majority of nodes in the [database group](../../studio/database/settings/manage-database-group) must be up and connected in order to persist new events & snapshots.
+    This means that a majority of nodes in the [database group](../../studio/database/settings/manage-database-group.mdx) must be up and connected in order to persist new events & snapshots.
 
 **Atomic-guards usage**:  
 
   * As with every document created using a cluster-wide transaction in RavenDB, 
-    the server creates an [Atomic-Guard](../../client-api/session/cluster-transaction/atomic-guards) for each event or snapshot document that is stored to prevent concurrent modifications.
+    the server creates an [Atomic-Guard](../../client-api/session/cluster-transaction/atomic-guards.mdx) for each event or snapshot document that is stored to prevent concurrent modifications.
 
   * The atomic-guard is particularly beneficial in scenarios where an actor recovers its events and snapshots from a node that failed, 
     came back up, but has not yet received the complete replication information from the other nodes in the database group. 

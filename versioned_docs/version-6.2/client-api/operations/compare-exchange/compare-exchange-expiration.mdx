@@ -21,13 +21,13 @@ export const supportedLanguages = ["csharp"];
 
 <Admonition type="note" title="Note">
 
-* Compare exchange value expiration works very similar to [document expiration](../../../server/extensions/expiration).  
+* Compare exchange value expiration works very similar to [document expiration](../../../server/extensions/expiration.mdx).  
 
-* Use the `@expires` field in a [compare exchange value's metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata) to schedule its expiration.  
+* Use the `@expires` field in a [compare exchange value's metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata.mdx) to schedule its expiration.  
 
 * In this page:
-  * [Syntax](../../../client-api/operations/compare-exchange/compare-exchange-expiration#syntax)
-  * [Examples](../../../client-api/operations/compare-exchange/compare-exchange-expiration#examples)
+  * [Syntax](../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx#syntax)
+  * [Examples](../../../client-api/operations/compare-exchange/compare-exchange-expiration.mdx#examples)
 
 </Admonition>
 ## Syntax
@@ -36,7 +36,7 @@ export const supportedLanguages = ["csharp"];
 specified date and time has passed, the compare exchange value is set for 
 deletion by the expiration feature. The _exact_ time this happens depends 
 on the expiration frequency and other 
-[expiration configurations](../../../server/extensions/expiration#configuring-the-expiration-feature).  
+[expiration configurations](../../../server/extensions/expiration.mdx#configuring-the-expiration-feature).  
 
 To set a compare exchange value to expire, simply put a `DateTime` value 
 (in UTC format) in the `@expires` field, then to send it to the server.  
@@ -47,7 +47,7 @@ To set a compare exchange value to expire, simply put a `DateTime` value
 
 Creating a new key with `CreateCompareExchangeValue()`:
 
-<TabItem value="something-something" label="expiration_0">
+<TabItem value="expiration_0" label="expiration_0">
 <CodeBlock language="csharp">
 {`using (IAsyncDocumentSession session = store.OpenAsyncSession())
 \{
@@ -69,7 +69,7 @@ Creating a new key with `CreateCompareExchangeValue()`:
 
 Updating an existing key with `PutCompareExchangeValueOperation<T>`:
 
-<TabItem value="something-something" label="expiration_1">
+<TabItem value="expiration_1" label="expiration_1">
 <CodeBlock language="csharp">
 {`// Retrieve an existing key
 CompareExchangeValue<string> cmpxchgValue = store.Operations.Send(

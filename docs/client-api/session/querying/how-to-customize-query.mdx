@@ -21,27 +21,27 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query).   
+* Use `Customize()` to set the following customization options on a specific [Query](../../../client-api/session/querying/how-to-query.mdx).   
   Can be set for both **dynamic** and **index** queries.
 
-* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API.
+* Each such customization can also be implemented via the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API.
 
 * A query can also be customized on the Store or Session level by subscribing to `OnBeforeQuery`.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Customization methods available:
 
-  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
-  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
-  - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
-  - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
-  - [Projection](../../../client-api/session/querying/how-to-customize-query#projection)
-  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-  - [Timings](../../../client-api/session/querying/how-to-customize-query#timings)
-  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+  - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+  - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+  - [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+  - [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [Timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
-* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
 
 </Admonition>
@@ -129,7 +129,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 **Syntax**
 
-<TabItem value="something" label="customize_1_5">
+<TabItem value="customize_1_5" label="customize_1_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization BeforeQueryExecuted(Action<IndexQuery> action);
 `}
@@ -138,7 +138,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+| **action** | `Action<IndexQuery>` | An _Action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
 
 </Admonition>
 
@@ -225,7 +225,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 **Syntax**
 
-<TabItem value="something" label="customize_2_5">
+<TabItem value="customize_2_5" label="customize_2_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization AfterQueryExecuted(Action<QueryResult> action);
 `}
@@ -234,7 +234,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+| **action** | `Action<QueryResult>` | An _Action_ method that receives the raw query result.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
 
 </Admonition>
 
@@ -244,7 +244,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `AfterStreamExecuted` to retrieve a raw (blittable) result of the streaming query.
 
-* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -327,7 +327,7 @@ var streamResults = session.Advanced.Stream(query);
 
 **Syntax**
 
-<TabItem value="something" label="customize_3_5">
+<TabItem value="customize_3_5" label="customize_3_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization AfterStreamExecuted(Action<BlittableJsonReaderObject> action);
 `}
@@ -336,7 +336,7 @@ var streamResults = session.Advanced.Stream(query);
 
 | Parameters | Type | Description                                                                                                                                                                                  |
 |------------| ---- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object) param. |
+| **action** | `Action<BlittableJsonReaderObject>` | An _Action_ method that recieves a single stream query result.<br/>The stream result is passed in the [BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object.mdx) param. |
 
 </Admonition>
 
@@ -348,7 +348,7 @@ var streamResults = session.Advanced.Stream(query);
 
 * You can use the `NoCaching` customization to disable query caching.
 
-* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -406,7 +406,7 @@ var streamResults = session.Advanced.Stream(query);
 
 **Syntax**
 
-<TabItem value="something" label="customize_4_5">
+<TabItem value="customize_4_5" label="customize_4_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization NoCaching();
 `}
@@ -419,11 +419,11 @@ var streamResults = session.Advanced.Stream(query);
 
 ## NoTracking
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `NoTracking` customization to disable entity tracking.  
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="Note">
 
@@ -481,7 +481,7 @@ var streamResults = session.Advanced.Stream(query);
 
 **Syntax**
 
-<TabItem value="something" label="customize_5_5">
+<TabItem value="customize_5_5" label="customize_5_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization NoTracking();
 `}
@@ -494,8 +494,8 @@ var streamResults = session.Advanced.Stream(query);
 
 ## Projection
 
-* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
   <Admonition type="note" title="Note">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
@@ -508,8 +508,8 @@ var streamResults = session.Advanced.Stream(query);
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
   
-  * [Project index query results](../../../indexes/querying/projections)
-  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+  * [Project index query results](../../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="Note">
 
@@ -605,7 +605,7 @@ In the above example:
 
 **Syntax**
 
-<TabItem value="something" label="customize_6_5">
+<TabItem value="customize_6_5" label="customize_6_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization Projection(ProjectionBehavior projectionBehavior);
 
@@ -645,7 +645,7 @@ public enum ProjectionBehavior \{
 
 * Use `RandomOrdering` to order the query results randomly.  
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
 
 <Admonition type="note" title="Note">
 
@@ -699,7 +699,7 @@ public enum ProjectionBehavior \{
 
 **Syntax**
 
-<TabItem value="something" label="customize_7_5">
+<TabItem value="customize_7_5" label="customize_7_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization RandomOrdering();
 IDocumentQueryCustomization RandomOrdering(string seed);
@@ -721,7 +721,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 * The timing statistics will be included in the query results.
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -783,7 +783,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 **Syntax**
 
-<TabItem value="something" label="customize_9_5">
+<TabItem value="customize_9_5" label="customize_9_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization Timings(out QueryTimings timings);
 `}
@@ -801,17 +801,17 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 ## WaitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * Use `WaitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling _WaitForNonStaleResults_ with a streaming query will throw an exception.  
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -869,7 +869,7 @@ IDocumentQueryCustomization RandomOrdering(string seed);
 
 **Syntax**
 
-<TabItem value="something" label="customize_8_5">
+<TabItem value="customize_8_5" label="customize_8_5">
 <CodeBlock language="csharp">
 {`IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan? waitTimeout);
 `}
@@ -906,21 +906,21 @@ All of the above customization methods return the following:
 
 The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
-- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
-- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
-- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
-- [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
-- [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
-- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
-- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#beforequeryexecuted)
+- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterqueryexecuted)
+- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query.mdx#afterstreamexecuted)
+- [NoCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+- [NoTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+- [ProjectionBehavior](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
+- [RandomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+- [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
 </Admonition>
 ## BeforeQueryExecuted
 
 Allows you to modify the index query just before it's executed.
 
-<TabItem value="something-something" label="customize_1_0">
+<TabItem value="customize_1_0" label="customize_1_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization addBeforeQueryExecutedListener(Consumer<IndexQuery> action);
 IDocumentQueryCustomization removeBeforeQueryExecutedListener(Consumer<IndexQuery> action);
@@ -938,7 +938,7 @@ IDocumentQueryCustomization removeBeforeQueryExecutedListener(Consumer<IndexQuer
 
 ### Example
 
-<TabItem value="something-something" label="customize_1_1">
+<TabItem value="customize_1_1" label="customize_1_1">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener(
     (sender, event) -> event.getQueryCustomization().addBeforeQueryExecutedListener(
@@ -956,7 +956,7 @@ session.query(Employee.class).toList();
 
 Allows you to retrieve a raw query result after it's executed.
 
-<TabItem value="something-something" label="customize_1_0_0">
+<TabItem value="customize_1_0_0" label="customize_1_0_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization addAfterQueryExecutedListener(Consumer<QueryResult> action);
 IDocumentQueryCustomization removeAfterQueryExecutedListener(Consumer<QueryResult> action);
@@ -974,7 +974,7 @@ IDocumentQueryCustomization removeAfterQueryExecutedListener(Consumer<QueryResul
 
 ### Example
 
-<TabItem value="something-something" label="customize_1_1_0">
+<TabItem value="customize_1_1_0" label="customize_1_1_0">
 <CodeBlock language="java">
 {`AtomicReference<Duration> queryDuration = new AtomicReference<>();
 
@@ -993,7 +993,7 @@ session.query(Employee.class)
 
 Allows you to retrieve a raw result of the streaming query.
 
-<TabItem value="something-something" label="customize_1_0_1">
+<TabItem value="customize_1_0_1" label="customize_1_0_1">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization addAfterStreamExecutedListener(Consumer<ObjectNode> action);
 IDocumentQueryCustomization removeAfterStreamExecutedListener(Consumer<ObjectNode> action);
@@ -1011,7 +1011,7 @@ IDocumentQueryCustomization removeAfterStreamExecutedListener(Consumer<ObjectNod
 
 ### Example
 
-<TabItem value="something-something" label="customize_1_1_1">
+<TabItem value="customize_1_1_1" label="customize_1_1_1">
 <CodeBlock language="java">
 {`Reference<Long> totalStreamedResultsSize = new Reference<Long>(0L);
 
@@ -1030,7 +1030,7 @@ session.query(Employee.class)
 
 By default, queries are cached. To disable query caching use the `noCaching` customization.
 
-<TabItem value="something-something" label="customize_2_0">
+<TabItem value="customize_2_0" label="customize_2_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization noCaching();
 `}
@@ -1043,7 +1043,7 @@ By default, queries are cached. To disable query caching use the `noCaching` cus
 
 ### Example
 
-<TabItem value="something-something" label="customize_2_1">
+<TabItem value="customize_2_1" label="customize_2_1">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener(
     ((sender, event) -> event.getQueryCustomization().noCaching()));
@@ -1061,7 +1061,7 @@ List<Employee> results = session.query(Employee.class)
 
 To disable entity tracking by `session` use `noTracking`. Usage of this option will prevent holding the query results in memory.
 
-<TabItem value="something-something" label="customize_3_0">
+<TabItem value="customize_3_0" label="customize_3_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization noTracking();
 `}
@@ -1074,7 +1074,7 @@ To disable entity tracking by `session` use `noTracking`. Usage of this option w
 
 ### Example
 
-<TabItem value="something-something" label="customize_3_1">
+<TabItem value="customize_3_1" label="customize_3_1">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener(
     ((sender, event) -> event.getQueryCustomization().noTracking()));
@@ -1097,7 +1097,7 @@ themselves.
 This behavior can be configured using the `projection` option, which takes a 
 `ProjectionBehavior`:  
 
-<TabItem value="something-something" label="projectionbehavior">
+<TabItem value="projectionbehavior" label="projectionbehavior">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization projection(ProjectionBehavior projectionBehavior);
 
@@ -1125,7 +1125,7 @@ document does not contain the requested data, an exception is thrown.
 
 ### Example
 
-<TabItem value="something-something" label="projectionbehavior_query">
+<TabItem value="projectionbehavior_query" label="projectionbehavior_query">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener((sender, event)
     -> event.getQueryCustomization().projection(ProjectionBehavior.DEFAULT));
@@ -1143,7 +1143,7 @@ List<Employee> results = session.query(Employee.class)
 
 To order results randomly, use the `randomOrdering` method.
 
-<TabItem value="something-something" label="customize_4_0">
+<TabItem value="customize_4_0" label="customize_4_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization randomOrdering();
 
@@ -1162,7 +1162,7 @@ IDocumentQueryCustomization randomOrdering(String seed);
 
 ### Example
 
-<TabItem value="something-something" label="customize_4_1">
+<TabItem value="customize_4_1" label="customize_4_1">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener(
     (sender, event) -> event.getQueryCustomization().randomOrdering());
@@ -1182,7 +1182,7 @@ List<Employee> results = session.query(Employee.class)
 Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `waitForNonStaleResults` method. If the query won't be able to return 
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
-Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
 Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
 
 <Admonition type="note" title="Cutoff Point" id="cutoff-point" href="#cutoff-point">
@@ -1194,7 +1194,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 </Admonition>
 
 
-<TabItem value="something-something" label="customize_8_0">
+<TabItem value="customize_8_0" label="customize_8_0">
 <CodeBlock language="java">
 {`IDocumentQueryCustomization waitForNonStaleResults();
 
@@ -1213,7 +1213,7 @@ IDocumentQueryCustomization waitForNonStaleResults(Duration waitTimeout);
 
 ### Example
 
-<TabItem value="something-something" label="customize_8_1">
+<TabItem value="customize_8_1" label="customize_8_1">
 <CodeBlock language="java">
 {`session.advanced().addBeforeQueryListener(
     (sender, event) -> event.getQueryCustomization().waitForNonStaleResults());
@@ -1233,26 +1233,26 @@ List<Employee> results = session.query(Employee.class)
 
 <Admonition type="note" title="Note">
 
-* Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query).  
+* Use the below customization methods over a specific [query](../../../client-api/session/querying/how-to-query.mdx).  
 
 * The customization methods can be set for both **dynamic** and **index** queries.  
 
 * A query can be customized on the Store or Session level by calling various methods from the rich API.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events). 
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Customization methods available:
 
-  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query#before_query_executed)
-  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query#after_query_executed)
-  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query#after_stream_executed)
-  - [no_caching](../../../client-api/session/querying/how-to-customize-query#no_caching)
-  - [no_tracking](../../../client-api/session/querying/how-to-customize-query#no_tracking)
-  - [projection](../../../client-api/session/querying/how-to-customize-query#projection)
-  - [random_ordering](../../../client-api/session/querying/how-to-customize-query#random_ordering)
-  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
-  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query#wait_for_non_stale_results)
+  - [before_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#before_query_executed)
+  - [after_query_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_query_executed)
+  - [after_stream_executed](../../../client-api/session/querying/how-to-customize-query.mdx#after_stream_executed)
+  - [no_caching](../../../client-api/session/querying/how-to-customize-query.mdx#no_caching)
+  - [no_tracking](../../../client-api/session/querying/how-to-customize-query.mdx#no_tracking)
+  - [projection](../../../client-api/session/querying/how-to-customize-query.mdx#projection)
+  - [random_ordering](../../../client-api/session/querying/how-to-customize-query.mdx#random_ordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [wait_for_non_stale_results](../../../client-api/session/querying/how-to-customize-query.mdx#wait_for_non_stale_results)
 
-* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
 
 </Admonition>
@@ -1307,7 +1307,7 @@ results = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_1_5">
+<TabItem value="customize_1_5" label="customize_1_5">
 <CodeBlock language="python">
 {`def add_before_query_executed_listener(self, action: Callable[[IndexQuery], None]) -> DocumentQuery[_T]: ...
 `}
@@ -1316,7 +1316,7 @@ results = list(
 
 | Parameters | Type | Description                                                                                                                     |
 |------------| ---- |---------------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query) param. |
+| **action** | `Callable[[IndexQuery], None]` | An _action_ method that operates on the query.<br/>The query is passed in the [IndexQuery](../../../glossary/index-query.mdx) param. |
 
 </Admonition>
 
@@ -1371,7 +1371,7 @@ result = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_2_5">
+<TabItem value="customize_2_5" label="customize_2_5">
 <CodeBlock language="python">
 {`def add_after_query_executed_listener(self, action: Callable[[QueryResult], None]) -> DocumentQuery[_T]: ...
 `}
@@ -1380,7 +1380,7 @@ result = list(
 
 | Parameters | Type | Description                                                                                                                 |
 |------------| ---- |-----------------------------------------------------------------------------------------------------------------------------|
-| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result) param. |
+| **action** | `Callable[[QueryResult], None]` | An _action_ method that receives the raw query results.<br/>The query result is passed in the [QueryResult](../../../glossary/query-result.mdx) param. |
 
 </Admonition>
 
@@ -1390,13 +1390,13 @@ result = list(
 
 * Use `after_stream_executed` to retrieve a raw (blittable) result of the streaming query.
 
-* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results).
+* Learn more in [how to stream query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).
 
 <Admonition type="note" title="Note">
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_3_5">
+<TabItem value="customize_3_5" label="customize_3_5">
 <CodeBlock language="python">
 {`def add_after_stream_executed_listener(self, action: Callable[[dict], None]) -> DocumentQuery[_T]: ...
 `}
@@ -1417,7 +1417,7 @@ result = list(
 
 * You can use the `no_caching` customization method to disable query caching.
 
-* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -1452,7 +1452,7 @@ result = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_4_5">
+<TabItem value="customize_4_5" label="customize_4_5">
 <CodeBlock language="python">
 {`def no_caching(self) -> DocumentQuery[_T]: ...
 `}
@@ -1465,11 +1465,11 @@ result = list(
 
 ## `no_tracking`
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `no_tracking` customization to disable entity tracking.  
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="Note">
 
@@ -1504,7 +1504,7 @@ result = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_5_5">
+<TabItem value="customize_5_5" label="customize_5_5">
 <CodeBlock language="python">
 {`def no_tracking(self) -> DocumentQuery[_T]: ...
 `}
@@ -1517,8 +1517,8 @@ result = list(
 
 ## `projection`
 
-* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
   <Admonition type="note" title="Note">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
@@ -1530,8 +1530,8 @@ result = list(
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
-    * [Project index query results](../../../indexes/querying/projections)
-    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+    * [Project index query results](../../../indexes/querying/projections.mdx)
+    * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="Note">
 
@@ -1598,7 +1598,7 @@ In the above example:
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_6_5">
+<TabItem value="customize_6_5" label="customize_6_5">
 <CodeBlock language="python">
 {`def projection(self, projection_behavior: ProjectionBehavior) -> DocumentQuery[_T]: ...
 
@@ -1638,7 +1638,7 @@ class ProjectionBehavior(Enum):
 
 * Use `random_ordering` to order the query results randomly.  
 
-* Learn [here](../../../client-api/session/querying/sort-query-results) about additional ordering options.  
+* Learn [here](../../../client-api/session/querying/sort-query-results.mdx) about additional ordering options.  
 
 <Admonition type="note" title="Note">
 
@@ -1673,7 +1673,7 @@ class ProjectionBehavior(Enum):
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_7_5">
+<TabItem value="customize_7_5" label="customize_7_5">
 <CodeBlock language="python">
 {`def random_ordering(self, seed: str = None) -> DocumentQuery[_T]: ...
 `}
@@ -1697,7 +1697,7 @@ class ProjectionBehavior(Enum):
 
 * Then pass your function as an argument to the `query.timings` method and use the retrieved `QueryTimings` object.  
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -1740,7 +1740,7 @@ results = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_9_5">
+<TabItem value="customize_9_5" label="customize_9_5">
 <CodeBlock language="python">
 {`def timings(self, timings_callback: Callable[[QueryTimings], None]) -> DocumentQuery[_T]: ...
 `}
@@ -1758,17 +1758,17 @@ results = list(
 ## `wait_for_non_stale_results`
 
 * All RavenDB queries provide results using an index, even when an index is not specified.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * If `wait_for_non_stale_results` is used, the query will wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is unable to return non-stale results within the specified  
   (or default) timeout.
  
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling `wait_for_non_stale_results` with a streaming query will throw an exception.  
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="Note">
 
@@ -1803,7 +1803,7 @@ results = list(
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_8_5">
+<TabItem value="customize_8_5" label="customize_8_5">
 <CodeBlock language="python">
 {`def wait_for_non_stale_results(self, wait_timeout: timedelta = None) -> DocumentQuery[_T]: ...
 `}
@@ -1834,21 +1834,21 @@ All of the above customization methods return the following:
 
 <Admonition type="note" title="Note">
 
-* Use the below methods to set customization options on a specific [query](../../../client-api/session/querying/how-to-query).  
+* Use the below methods to set customization options on a specific [query](../../../client-api/session/querying/how-to-query.mdx).  
   Customizations can be set for both **dynamic** and **index** queries.
 
 * A query can also be customized on the store or session level by 
-  [subscribing to `OnBeforeQuery`](../../../client-api/session/how-to/subscribe-to-events). 
+  [subscribing to `OnBeforeQuery`](../../../client-api/session/how-to/subscribe-to-events.mdx). 
 
 * Available customization methods :
-  - [`addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query#addbeforequeryexecutedlistener-and-removebeforequeryexecutedlistener)
-  - [`addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query#addafterqueryexecutedlistener-and-removeafterqueryexecutedlistener)
-  - [`noCaching`](../../../client-api/session/querying/how-to-customize-query#nocaching)
-  - [`noTracking`](../../../client-api/session/querying/how-to-customize-query#notracking)
-  - [Projection](../../../client-api/session/querying/how-to-customize-query#randomordering)
-  - [`randomOrdering`](../../../client-api/session/querying/how-to-customize-query#randomordering)
-  - [`waitForNonStaleResults`](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
-* [Methods return value](../../../client-api/session/querying/how-to-customize-query#methods-return-value)
+  - [`addBeforeQueryExecutedListener` and `removeBeforeQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query.mdx#addbeforequeryexecutedlistener-and-removebeforequeryexecutedlistener)
+  - [`addAfterQueryExecutedListener` and `removeAfterQueryExecutedListener`](../../../client-api/session/querying/how-to-customize-query.mdx#addafterqueryexecutedlistener-and-removeafterqueryexecutedlistener)
+  - [`noCaching`](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [`noTracking`](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [Projection](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [`randomOrdering`](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [`waitForNonStaleResults`](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
+* [Methods return value](../../../client-api/session/querying/how-to-customize-query.mdx#methods-return-value)
 
 
 </Admonition>
@@ -1858,7 +1858,7 @@ All of the above customization methods return the following:
 
 **Example**
 
-<TabItem value="something-something" label="customize_1_1">
+<TabItem value="customize_1_1" label="customize_1_1">
 <CodeBlock language="php">
 {`$session->advanced()->addBeforeQueryListener(function ($sender, BeforeQueryEventArgs $event) \{
     $event->getQueryCustomization()
@@ -1877,7 +1877,7 @@ $session->query(Employee::class)->toList();
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_1_0">
+<TabItem value="customize_1_0" label="customize_1_0">
 <CodeBlock language="php">
 {`public function addBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
 public function removeBeforeQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
@@ -1899,7 +1899,7 @@ public function removeBeforeQueryExecutedListener(Closure $action): DocumentQuer
 
 **Example**
 
-<TabItem value="something-something" label="customize_1_1_0">
+<TabItem value="customize_1_1_0" label="customize_1_1_0">
 <CodeBlock language="php">
 {`$queryDuration = null;
 
@@ -1916,7 +1916,7 @@ $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_1_0_0">
+<TabItem value="customize_1_0_0" label="customize_1_0_0">
 <CodeBlock language="php">
 {`public function addAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
 public function removeAfterQueryExecutedListener(Closure $action): DocumentQueryCustomizationInterface;
@@ -1938,11 +1938,11 @@ public function removeAfterQueryExecutedListener(Closure $action): DocumentQuery
 
 * You can use the `noCaching` customization to disable query caching.
 
-* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching).
+* Learn more in [disable caching per session](../../../client-api/session/configuration/how-to-disable-caching.mdx).
 
 **Example**
 
-<TabItem value="something-something" label="customize_2_1">
+<TabItem value="customize_2_1" label="customize_2_1">
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -1958,7 +1958,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_2_0">
+<TabItem value="customize_2_0" label="customize_2_0">
 <CodeBlock language="php">
 {`public function noCaching(): DocumentQueryCustomizationInterface
 `}
@@ -1969,15 +1969,15 @@ $results = $session->query(Employee::class)
 
 ## `noTracking`
 
-* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `noTracking` customization to disable entity tracking.  
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 **Example**
 
-<TabItem value="something-something" label="customize_3_1">
+<TabItem value="customize_3_1" label="customize_3_1">
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -1993,7 +1993,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_3_0">
+<TabItem value="customize_3_0" label="customize_3_0">
 <CodeBlock language="php">
 {`public function noTracking(): DocumentQueryCustomizationInterface
 `}
@@ -2004,8 +2004,8 @@ $results = $session->query(Employee::class)
 
 ## Projection
 
-* By default, when [querying an index](../../../indexes/querying/query-index) and projecting query results,  
-  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index).  
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx) and projecting query results,  
+  the server will try to retrieve field values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).  
   <Admonition type="note" title="Note">
   Projecting means the query returns only specific document fields instead of the full document.  
   </Admonition>
@@ -2018,12 +2018,12 @@ $results = $session->query(Employee::class)
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:
   
-  * [Project index query results](../../../indexes/querying/projections)
-  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results)
+  * [Project index query results](../../../indexes/querying/projections.mdx)
+  * [Project dynamic query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 **Example**
 
-<TabItem value="something-something" label="projectionbehavior_query">
+<TabItem value="projectionbehavior_query" label="projectionbehavior_query">
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -2039,7 +2039,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="projectionbehavior">
+<TabItem value="projectionbehavior" label="projectionbehavior">
 <CodeBlock language="php">
 {`public function projection(ProjectionBehavior $projectionBehavior): DocumentQueryCustomizationInterface;
 
@@ -2078,11 +2078,11 @@ class ProjectionBehavior
 
 * Use `randomOrdering` to order the query results randomly.  
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.  
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.  
 
 **Example**
 
-<TabItem value="something-something" label="customize_4_1">
+<TabItem value="customize_4_1" label="customize_4_1">
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -2099,7 +2099,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_4_0">
+<TabItem value="customize_4_0" label="customize_4_0">
 <CodeBlock language="php">
 {`public function randomOrdering(): DocumentQueryCustomizationInterface;
 public function randomOrdering(?string $seed): DocumentQueryCustomizationInterface;
@@ -2116,20 +2116,20 @@ public function randomOrdering(?string $seed): DocumentQueryCustomizationInterfa
 ## `waitForNonStaleResults`
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.  
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
  
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="Note">
 
 **Example**
 
-<TabItem value="something-something" label="customize_8_1">
+<TabItem value="customize_8_1" label="customize_8_1">
 <CodeBlock language="php">
 {`$session->advanced()
     ->addBeforeQueryListener(function($sender, BeforeQueryEventArgs $event) \{
@@ -2149,7 +2149,7 @@ $results = $session->query(Employee::class)
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_8_0">
+<TabItem value="customize_8_0" label="customize_8_0">
 <CodeBlock language="php">
 {`public function waitForNonStaleResults(): DocumentQueryCustomizationInterface;
 public function waitForNonStaleResults(Duration $waitTimeout): DocumentQueryCustomizationInterface;
@@ -2186,19 +2186,19 @@ All of the above customization methods return the following:
 
 * These methods can be used for both a dynamic-query and an index-query.
 
-* A [query](../../../client-api/session/querying/how-to-query) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
-  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events).
+* A [query](../../../client-api/session/querying/how-to-query.mdx) can also be customized on the Store or Session level by subscribing to the `beforeQuery` event.  
+  Learn more in [Subscribing to Events](../../../client-api/session/how-to/subscribe-to-events.mdx).
 
 * Customization methods available:
 
-  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("beforequeryexecuted"))
-  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query#on-("afterqueryexecuted"))
-  - [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
-  - [noTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
-  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query#projectionbehavior)
-  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-  - [timings](../../../client-api/session/querying/how-to-customize-query#timings)
-  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+  - [on ("beforeQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("beforequeryexecuted"))
+  - [on ("afterQueryExecuted")](../../../client-api/session/querying/how-to-customize-query.mdx#on-("afterqueryexecuted"))
+  - [noCaching](../../../client-api/session/querying/how-to-customize-query.mdx#nocaching)
+  - [noTracking](../../../client-api/session/querying/how-to-customize-query.mdx#notracking)
+  - [projectionBehavior](../../../client-api/session/querying/how-to-customize-query.mdx#projectionbehavior)
+  - [randomOrdering](../../../client-api/session/querying/how-to-customize-query.mdx#randomordering)
+  - [timings](../../../client-api/session/querying/how-to-customize-query.mdx#timings)
+  - [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults)
 
 </Admonition>
 ## on (beforeQueryExecuted)
@@ -2211,7 +2211,7 @@ All of the above customization methods return the following:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
      // Query an index
     .query(BlogPost, BlogPosts_ByTag)
@@ -2227,7 +2227,7 @@ All of the above customization methods return the following:
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPosts_ByTag extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2276,8 +2276,8 @@ class TagResult {
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_1_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_1_1" label="customize_1_1">
+<CodeBlock language="js">
 {`on("beforeQueryExecuted", eventHandler);
 `}
 </CodeBlock>
@@ -2299,8 +2299,8 @@ class TagResult {
 
 **Example**
 
-<TabItem value="something-something" label="customize_2_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_2_0" label="customize_2_0">
+<CodeBlock language="js">
 {`let queryDuration = 0;
 
 const results = await session
@@ -2323,8 +2323,8 @@ const results = await session
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_2_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_2_1" label="customize_2_1">
+<CodeBlock language="js">
 {`on("afterQueryExecuted", eventHandler);
 `}
 </CodeBlock>
@@ -2348,8 +2348,8 @@ const results = await session
 
 **Example**
 
-<TabItem value="something-something" label="customize_3_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_3_0" label="customize_3_0">
+<CodeBlock language="js">
 {`const results = await session
     .query(\{ collection: "employees" \})
     .whereEquals("firstName", "Robert")
@@ -2366,8 +2366,8 @@ const results = await session
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_3_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_3_1" label="customize_3_1">
+<CodeBlock language="js">
 {`noCaching();
 `}
 </CodeBlock>
@@ -2379,18 +2379,18 @@ const results = await session
 
 ## noTracking
 
-* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work) tracks all changes made to all entities that it has either loaded, stored, or queried for.
+* By default, the [Session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) tracks all changes made to all entities that it has either loaded, stored, or queried for.
 
 * You can use the `noTracking` customization to disable entity tracking.
 
-* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking) for all other options.
+* See [disable entity tracking](../../../client-api/session/configuration/how-to-disable-tracking.mdx) for all other options.
 
 <Admonition type="note" title="Note">
 
 **Example**
 
-<TabItem value="something-something" label="customize_4_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_4_0" label="customize_4_0">
+<CodeBlock language="js">
 {`const results = await session
     .query(\{ collection: "employees" \})
     .whereEquals("firstName", "Robert")
@@ -2407,8 +2407,8 @@ const results = await session
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_4_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_4_1" label="customize_4_1">
+<CodeBlock language="js">
 {`noTracking();
 `}
 </CodeBlock>
@@ -2420,9 +2420,9 @@ const results = await session
 
 ## projectionBehavior
 
-* By default, when [querying an index](../../../indexes/querying/query-index), and projecting query results  
+* By default, when [querying an index](../../../indexes/querying/query-index.mdx), and projecting query results  
   (projecting means the query returns only specific document fields instead of the full document)  
-  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index).
+  then the server will try to retrieve the fields' values from the fields [stored in the index](../../../indexes/storing-data-in-index.mdx).
 
 * If the index does Not store those fields then the fields' values will be retrieved from the documents store.
 
@@ -2431,8 +2431,8 @@ const results = await session
 * Note:  
   Entities resulting from a projecting query are Not tracked by the session.  
   Learn more about projections in:  
-    * [Projections](../../../indexes/querying/projections)
-    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results)
+    * [Projections](../../../indexes/querying/projections.mdx)
+    * [How to project query results](../../../client-api/session/querying/how-to-project-query-results.mdx)
 
 <Admonition type="note" title="Note">
 
@@ -2440,7 +2440,7 @@ const results = await session
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The projection class: 
 class EmployeeProjectedDetails {
     constructor() {
@@ -2468,7 +2468,7 @@ const query = session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employee_ByFullName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2494,8 +2494,8 @@ const query = session
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_5_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_5_1" label="customize_5_1">
+<CodeBlock language="js">
 {`selectFields(properties, projectionClass, projectionBehavior);
 `}
 </CodeBlock>
@@ -2532,14 +2532,14 @@ const query = session
 
 * Use `RandomOrdering` to order the query results randomly.
 
-* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results) article.
+* More ordering options are available in this [Sorting](../../../client-api/session/querying/sort-query-results.mdx) article.
 
 <Admonition type="note" title="Note">
 
 **Example**
 
-<TabItem value="something-something" label="customize_6_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_6_0" label="customize_6_0">
+<CodeBlock language="js">
 {`const results = await session
     .query(\{ collection: "employees" \})
     // Add a call to 'randomOrdering', can pass a seed
@@ -2555,8 +2555,8 @@ const query = session
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_6_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_6_1" label="customize_6_1">
+<CodeBlock language="js">
 {`randomOrdering();
 randomOrdering(seed);
 `}
@@ -2577,14 +2577,14 @@ randomOrdering(seed);
 
 * The timing statistics will be included in the query results.
 
-* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings).
+* Learn more in [how to include query timings](../../../client-api/session/querying/debugging/query-timings.mdx).
 
 <Admonition type="note" title="Note">
 
 **Example**
 
-<TabItem value="something-something" label="customize_7_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_7_0" label="customize_7_0">
+<CodeBlock language="js">
 {`let timingsResults;
 
 const results = await session.query(\{ collection: "Products" \})
@@ -2603,8 +2603,8 @@ const results = await session.query(\{ collection: "Products" \})
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_7_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_7_1" label="customize_7_1">
+<CodeBlock language="js">
 {`timings(timingsCallback)
 `}
 </CodeBlock>
@@ -2627,24 +2627,24 @@ const results = await session.query(\{ collection: "Products" \})
 ## waitForNonStaleResults
 
 * All queries in RavenDB provide results using an index, even when you don't specify one.  
-  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+  See detailed explanation in [Queries always provide results using an index](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
 * Use `waitForNonStaleResults` to instruct the query to wait for non-stale results from the index.
 
 * A `TimeoutException` will be thrown if the query is not able to return non-stale results within the specified  
   (or default) timeout.
 
-* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results).  
+* Note: This feature is Not available when [streaming the query results](../../../client-api/session/querying/how-to-stream-query-results.mdx).  
   Calling _waitForNonStaleResults_ with a streaming query will throw an exception.
 
-* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes).
+* Learn more about stale results in [stale indexes](../../../indexes/stale-indexes.mdx).
 
 <Admonition type="note" title="Note">
 
 **Example**
 
-<TabItem value="something-something" label="customize_8_0">
-<CodeBlock language="nodejs">
+<TabItem value="customize_8_0" label="customize_8_0">
+<CodeBlock language="js">
 {`const results = await session.query(\{ collection: "Products" \})
     .whereEquals("firstName", "Robert")
      // Call 'waitForNonStaleResults', 
@@ -2661,8 +2661,8 @@ const results = await session.query(\{ collection: "Products" \})
 
 **Syntax**
 
-<TabItem value="something-something" label="customize_8_1">
-<CodeBlock language="nodejs">
+<TabItem value="customize_8_1" label="customize_8_1">
+<CodeBlock language="js">
 {`waitForNonStaleResults();
 waitForNonStaleResults(waitTimeout);
 `}

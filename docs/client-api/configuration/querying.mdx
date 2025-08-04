@@ -25,7 +25,7 @@ export const supportedLanguages = ["csharp"];
 These two conventions specify functions that are used to find the indexed property name for a static index or a dynamic one. This can be useful when you are indexing nested properties 
 of complex types. Their default implementations are:
 
-<TabItem value="something" label="find_prop_name">
+<TabItem value="find_prop_name" label="find_prop_name">
 <CodeBlock language="csharp">
 {`FindPropertyNameForIndex = (indexedType, indexName, path, prop) =>
     (path + prop).Replace(",", "_").Replace(".", "_"),
@@ -40,9 +40,9 @@ The arguments in the order of appearance: an indexed document type, an index nam
 ## FindProjectionPropertyNameForIndex
 
 This convention specifies a function that is used to find the projected property name for a static index.  
-This can be useful when you want to use a static index to project nested properties which are not [`Stored`](../../indexes/storing-data-in-index).
+This can be useful when you want to use a static index to project nested properties which are not [`Stored`](../../indexes/storing-data-in-index.mdx).
 
-<TabItem value="something" label="find_projected_prop_name">
+<TabItem value="find_projected_prop_name" label="find_projected_prop_name">
 <CodeBlock language="csharp">
 {`public Func<Type, string, string, string, string> FindProjectedPropertyNameForIndex
 `}
@@ -56,7 +56,7 @@ When `FindProjectionPropertyNameForIndex` is `null` (or returns `null`), the `Fi
 
 ### Example
 Consider we have the following index, and we want to project `School.Id`:
-<TabItem value="something" label="users_index">
+<TabItem value="users_index" label="users_index">
 <CodeBlock language="csharp">
 {`private class UsersIndex : AbstractIndexCreationTask<User>
 \{
@@ -99,7 +99,7 @@ select School_Id
 fetch `School_Id` from the document - which doesn't have this property.
 
 Setting the `FindProjectedPropertyNameForIndex` convention can solve this issue:
-<TabItem value="something" label="find_projected_prop_usage">
+<TabItem value="find_projected_prop_usage" label="find_projected_prop_usage">
 <CodeBlock language="csharp">
 {`Conventions =
 \{

@@ -19,15 +19,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
   that indicate how to index selected document fields, counters, and time series data.  
 
 * In this page:  
-  * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
-  * [Test Index](../../../studio/database/indexes/create-map-index#test-index)  
-  * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
-  * [Index Field Options](../../../studio/database/indexes/create-map-index#index-field-options)  
-     * [Add Compound Field](../../../studio/database/indexes/create-map-index#add-compound-field)  
-  * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
-  * [Additional Assemblies](../../../studio/database/indexes/create-map-index#additional-assemblies)  
-  * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
-  * [Spatial Field Options](../../../studio/database/indexes/create-map-index#spatial-field-options)  
+  * [Edit Index View](../../../studio/database/indexes/create-map-index.mdx#edit-index-view)  
+  * [Test Index](../../../studio/database/indexes/create-map-index.mdx#test-index)  
+  * [Index Fields & Terms](../../../studio/database/indexes/create-map-index.mdx#index-fields-&-terms)  
+  * [Index Field Options](../../../studio/database/indexes/create-map-index.mdx#index-field-options)  
+     * [Add Compound Field](../../../studio/database/indexes/create-map-index.mdx#add-compound-field)  
+  * [Configuration](../../../studio/database/indexes/create-map-index.mdx#configuration)  
+  * [Additional Assemblies](../../../studio/database/indexes/create-map-index.mdx#additional-assemblies)  
+  * [Additional Sources](../../../studio/database/indexes/create-map-index.mdx#additional-sources)  
+  * [Spatial Field Options](../../../studio/database/indexes/create-map-index.mdx#spatial-field-options)  
 </Admonition>
 ## Edit Index View
 
@@ -36,12 +36,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 1. **Save** - Save index definition.  
    **Cancel** - Return to Index List View without creating or changing the index definition.  
    **Clone** - Clone this index (available for an already saved index).  
-   **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history#index-history-dialog).  
+   **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history.mdx#index-history-dialog).  
 
 2. Options available for an already saved index:  
    **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
    **Query** - Click to go the the Query View and query this index.  
-   **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index#index-fields-&-terms).  
+   **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index.mdx#index-fields-&-terms).  
    **Advanced** - Click to dump the raw index or optimize it.  
    **Delete** - Delete this index.  
 
@@ -54,18 +54,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
 4. **Deployment Mode** - Select the index deployment mode.  
     * _Database default (parallel - all nodes concurrently)_  
       With this option, the deployment mode will be the 
-      [Default Mode](../../../indexes/rolling-index-deployment#system-wide-deployment-mode) defined on the database.  
+      [Default Mode](../../../indexes/rolling-index-deployment.mdx#system-wide-deployment-mode) defined on the database.  
     * _Rolling (one node at a time)_  
       The index will be deployed on the cluster nodes in a linear order, one node at a time.  
     * Parallel (all nodes concurrently)  
       The index will be deployed on all cluster nodes in parallel.  
-    * Read more about deployment modes [here](../../../indexes/rolling-index-deployment).  
+    * Read more about deployment modes [here](../../../indexes/rolling-index-deployment.mdx).  
 
 5. **The Map Function** of the index.  
 
   * In the above example, the index will go over documents from the `Products` collection and 
     index only documents whose `Discontinued` property is _'true'_.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`from p in docs.Products
 where p.Discontinued == true
@@ -94,7 +94,7 @@ select new
     by these **Index Fields** defined and by the created **Terms**. 
     See the query results on this index in Query View.  
 
-  * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes)  
+  * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes.mdx)  
 
 
 ## Test Index
@@ -114,8 +114,8 @@ modifications in the index maps and configuration.
 * Testing an index **does not require** saving it first, so changes can be easily made, 
   tested, and either kept or unmade, in **testing** as well as **production** environments.  
 * Indexes created while running test queries are **dropped** after the test.  
-* [Corax](../../../indexes/search-engine/corax) indexes created while running 
-  testing queries will [not train compression dictionaries](../../../indexes/search-engine/corax#corax-and-the-test-index-interface).  
+* [Corax](../../../indexes/search-engine/corax.mdx) indexes created while running 
+  testing queries will [not train compression dictionaries](../../../indexes/search-engine/corax.mdx#corax-and-the-test-index-interface).  
 
 ![Folded: Test Index Bar](./assets/create-map-index_test-index_bar-collapsed.png)
 
@@ -176,7 +176,7 @@ modifications in the index maps and configuration.
    Hover over a term to Query the index by this term, Preview the term, or Copy the term to the clipboard.  
    <Admonition type="info" title="Info">
    Terms are created from the value of the field that was requested to be indexed 
-   by the specified [Field Options](../../../studio/database/indexes/create-map-index#index-field-options).  
+   by the specified [Field Options](../../../studio/database/indexes/create-map-index.mdx#index-field-options).  
    </Admonition>
 
 
@@ -190,8 +190,8 @@ modifications in the index maps and configuration.
 1. **Add compound field**  
    If the Corax search engine is used, compound fields can be added to optimize specific queries.  
    This option is for **expert users only**.  
-    * Learn about Corax and compound fields [here](../../../indexes/search-engine/corax#compound-fields).  
-    * Learn to add a compound field using Studio [below](../../../studio/database/indexes/create-map-index#add-compound-field).  
+    * Learn about Corax and compound fields [here](../../../indexes/search-engine/corax.mdx#compound-fields).  
+    * Learn to add a compound field using Studio [below](../../../studio/database/indexes/create-map-index.mdx#add-compound-field).  
 
 3. **Add default field options**  
    Use this option to set default field options for all indexed fields.  
@@ -203,7 +203,7 @@ modifications in the index maps and configuration.
    select a field whose options will replace the default options.  
 
 5. **Basic options**  
-    * [Store](../../../indexes/storing-data-in-index)  
+    * [Store](../../../indexes/storing-data-in-index.mdx)  
       Select Inherit, Yes, or No.  
       **Inherit** to apply the default database/server value.  
       During a query, if **Store** is enabled, the value is 
@@ -211,25 +211,25 @@ modifications in the index maps and configuration.
       If the value is not found in the index, it will be fetched from the document.  
       Storing data in the index decreases reaction time, but increases the index size.  
 
-    * [Full-Text-Search](../../../indexes/querying/searching)  
+    * [Full-Text-Search](../../../indexes/querying/searching.mdx)  
       Set this to _'Yes'_ to allow searching for strings inside the text values of this field.  
       The indexed terms are _tokens_ that are split from the original string according to the 
-      specified [Analyzer](../../../indexes/using-analyzers).  
+      specified [Analyzer](../../../indexes/using-analyzers.mdx).  
       The Analyzer is set using the _'Indexing'_ and _'Analyzer'_ dropdown menus (see Advanced Options below).  
       The default analyzer is a simple case-insensitive analyzer.  
 
-    * [Highlighting](../../../indexes/querying/highlighting)  
+    * [Highlighting](../../../indexes/querying/highlighting.mdx)  
      Set to _'Yes'_ to enable highlighting.  
      Requires _'Store'_ to be set to `Yes`.  
      In the advanced options, Indexing needs to be set to 'Search' and Term Vector set 
      to 'WithPositionsAndOffsets'.  
 
-    * [Suggestions](../../../indexes/querying/suggestions)  
+    * [Suggestions](../../../indexes/querying/suggestions.mdx)  
       Setting _'Suggestions'_ will allow you to query what the user probably meant to 
       ask about (i.e. spelling errors).  
 
-    * [Spatial](../../../indexes/querying/spatial)  
-      See [below](../../../studio/database/indexes/create-map-index#spatial-field-options)  
+    * [Spatial](../../../indexes/querying/spatial.mdx)  
+      See [below](../../../studio/database/indexes/create-map-index.mdx#spatial-field-options)  
 
 6. **Advanced Options**  
    Click to display or hide these advanced index field options:  
@@ -237,17 +237,17 @@ modifications in the index maps and configuration.
      ![Advanced Index Field Options](./assets/create-map-index_advanced-options.png)
 
      * `Term Vector`  
-       Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
+       Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis.mdx), 
        which suggests documents that are similar to a selected document, based on shared 
        indexed terms. I.e., suggest similar catalogs.  
        A _'Term Vector'_ for a text paragraph will contain a list of all unique words and 
        how often they appeared.  
        Set _'full-text-search'_ on the field (index entry) and define it to have a _'Term Vector'_.  
-       Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors), 
+       Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors.mdx), 
        and in this [Blog Post](https://ayende.com/blog/180900/queries-in-ravendb-gimme-more-like-this).  
 
      * `Indexing`  
-       This setting determines which [Analyzer](../../../indexes/using-analyzers) (see the next option below) 
+       This setting determines which [Analyzer](../../../indexes/using-analyzers.mdx) (see the next option below) 
        can be used.  
         * **Exact**  
           Analyzer: 'Keyword'  
@@ -260,7 +260,7 @@ modifications in the index maps and configuration.
         * **Search**  
           Use the `Analyzer` dropdown menu to select an analyzer.  
           'StandardAnalyzer' will be used by default.  
-          When a [custom analyzer](../../../studio/database/settings/custom-analyzers) 
+          When a [custom analyzer](../../../studio/database/settings/custom-analyzers.mdx) 
           is created, it is added to the dropdown menu.  
 
      * `Analyzer`  
@@ -278,7 +278,7 @@ and its content is sorted by the first element and then by the second.
 When a query that is based on these two data elements is executed, 
 it will automatically use the pre-sorted compound field and run the 
 query much faster.  
-Read more about this feature [here](../../../indexes/search-engine/corax#compound-fields).  
+Read more about this feature [here](../../../indexes/search-engine/corax.mdx#compound-fields).  
 
 ![Change to Corax](./assets/create-map-index_add-compound-field-1.png)
 
@@ -308,7 +308,7 @@ Read more about this feature [here](../../../indexes/search-engine/corax#compoun
    or set it explicitly to Lucine or Corax.  
 4. **Indexing Configuration Key**  
    Paste or select the configuration key that you want to set.  
-   You can set any [indexing configuration](../../../server/configuration/indexing-configuration) 
+   You can set any [indexing configuration](../../../server/configuration/indexing-configuration.mdx) 
    that has a __"per-index"__ scope.  
 5. **Value**  
    Enter the new value for this configuration key.  
@@ -323,7 +323,7 @@ Read more about this feature [here](../../../indexes/search-engine/corax#compoun
 
 ## Additional Assemblies
 
-Use the [Additional Assemblies](../../../indexes/additional-assemblies) 
+Use the [Additional Assemblies](../../../indexes/additional-assemblies.mdx) 
 feature to enhance Index capabilities with classes and methods taken from libraries.  
 In the below example, `Path.GetFileName` can be used by the index map method because the 
 runtime library `System.IO` is added as an additional assembly.  
@@ -473,14 +473,14 @@ queries can then use.
        • _Quad prefix tree_  
     * **Radius Units**  
       Set the units (miles, kilometers) to be used when querying with RQL `spatial.circle`.  
-      Learn more about querying spatial fields here: [Querying: Spatial](../../../indexes/querying/spatial)  
+      Learn more about querying spatial fields here: [Querying: Spatial](../../../indexes/querying/spatial.mdx)  
     * **Max Tree Level**  
       Control spatial queries precision.  
     * **X and Y Min/Max Values**  
       Setting the min/max values for X and Y is relevant only for the Cartesian system type.  
 
 <Admonition type="info" title="Info">
-Learn more about spatial indexes in [Indexing: Spatial](../../../indexes/indexing-spatial-data).  
+Learn more about spatial indexes in [Indexing: Spatial](../../../indexes/indexing-spatial-data.mdx).  
 </Admonition>
 
 

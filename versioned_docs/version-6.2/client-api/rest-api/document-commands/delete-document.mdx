@@ -19,9 +19,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 `<server URL>/databases/<database name>/docs?id=<document ID>`  
 
 * In this page:    
-    * [Example](../../../client-api/rest-api/document-commands/delete-document#example)  
-    * [Request Format](../../../client-api/rest-api/document-commands/delete-document#request-format)  
-    * [Response Format](../../../client-api/rest-api/document-commands/delete-document#response-format)  
+    * [Example](../../../client-api/rest-api/document-commands/delete-document.mdx#example)  
+    * [Request Format](../../../client-api/rest-api/document-commands/delete-document.mdx#request-format)  
+    * [Response Format](../../../client-api/rest-api/document-commands/delete-document.mdx#response-format)  
 
 </Admonition>  
 ## Example
@@ -29,7 +29,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 This is a cURL request to delete the document "employees/1-A" from a database named "Example" on our 
 [playground server](http://live-test.ravendb.net):  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X DELETE "http://live-test.ravendb.net/databases/Example/docs?id=employees/1-A"
 `}
@@ -38,7 +38,7 @@ This is a cURL request to delete the document "employees/1-A" from a database na
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 204
 status: 204
@@ -56,7 +56,7 @@ Raven-Server-Version: 4.2.3.42
 
 This is the general format of the cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X DELETE "<server URL>/databases/<database name>/docs?id=<document ID>"
 --header "If-Match: <expected change vector>"
@@ -70,7 +70,7 @@ This is the general format of the cURL request:
 
 | Headers | Description | Required |
 | - | - | - |
-| **If-Match** | Expected [change vector](../../../server/clustering/replication/change-vector). If it matches the server-side change vector the document is deleted, if they don't match a concurrency exception is thrown. | No |
+| **If-Match** | Expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it matches the server-side change vector the document is deleted, if they don't match a concurrency exception is thrown. | No |
 
 
 

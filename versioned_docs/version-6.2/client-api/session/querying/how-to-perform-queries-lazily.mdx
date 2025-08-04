@@ -25,16 +25,16 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   at a later time, when its results are actually needed.  
 
 * This article contains examples for lazy queries. Prior to reading it, please refer 
-  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily) 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
   for general knowledge about RavenDB's lazy behavior and other request types that can be 
   executed lazily within a session.
 
 * In this page:
-  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)  
-  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)  
-  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)  
-  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-facets-query)  
-  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
@@ -81,7 +81,7 @@ IEnumerable<Employee> employees = lazyEmployees.Value; // DocumentQuery is execu
 </TabItem>
 </Tabs>
 
-* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query).
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
 
 
 
@@ -178,7 +178,7 @@ List<string> suggestions = suggest["FullName"].Suggestions;
 </TabItem>
 </Tabs>
 
-* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions).
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
 
 
 
@@ -287,13 +287,13 @@ public class Products_ByCategoryAndPrice :
 </TabItem>
 </Tabs>
 
-* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
+* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 
 
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Lazy query overloads:
 Lazy<IEnumerable<T>> Lazily<T>();
@@ -304,7 +304,7 @@ Lazy<Task<IEnumerable<T>>> LazilyAsync<T>(Action<IEnumerable<T>> onEval);
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// Lazy count query overloads:
 Lazy<int> CountLazily<T>();
@@ -315,7 +315,7 @@ Lazy<Task<long>> LongCountLazilyAsync<T>(CancellationToken token = default(Cance
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`// Lazy suggestions query overloads:
 Lazy<Dictionary<string, SuggestionResult>>
@@ -327,7 +327,7 @@ Lazy<Task<Dictionary<string, SuggestionResult>>>
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="csharp">
 {`// Lazy facets query overloads:
 Lazy<Dictionary<string, FacetResult>>
@@ -359,7 +359,7 @@ In some situations, query execution must be delayed. To cover such a scenario, `
 
 ## Lazily
 
-<TabItem value="something-something" label="lazy_1">
+<TabItem value="lazy_1" label="lazy_1">
 <CodeBlock language="java">
 {`Lazy<List<T>> lazily();
 
@@ -378,7 +378,7 @@ Lazy<List<T>> lazily(Consumer<List<T>> onEval);
 
 ### Example
 
-<TabItem value="something-something" label="lazy_2">
+<TabItem value="lazy_2" label="lazy_2">
 <CodeBlock language="java">
 {`Lazy<List<Employee>> employeesLazy = session
     .query(Employee.class)
@@ -394,7 +394,7 @@ List<Employee> employees = employeesLazy.getValue(); // query will be executed h
 
 ## Counts
 
-<TabItem value="something-something" label="lazy_4">
+<TabItem value="lazy_4" label="lazy_4">
 <CodeBlock language="java">
 {`Lazy<Integer> countLazily();
 `}
@@ -407,7 +407,7 @@ List<Employee> employees = employeesLazy.getValue(); // query will be executed h
 
 ### Example
 
-<TabItem value="something-something" label="lazy_5">
+<TabItem value="lazy_5" label="lazy_5">
 <CodeBlock language="java">
 {`Lazy<Integer> countLazy = session
     .query(Employee.class)
@@ -423,7 +423,7 @@ Integer count = countLazy.getValue(); // query will be executed here
 
 ## Suggestions
 
-<TabItem value="something-something" label="lazy_6">
+<TabItem value="lazy_6" label="lazy_6">
 <CodeBlock language="java">
 {`Lazy<Map<String, SuggestionResult>> executeLazy();
 
@@ -438,7 +438,7 @@ Lazy<Map<String, SuggestionResult>> executeLazy(Consumer<Map<String, SuggestionR
 
 ### Example
 
-<TabItem value="something-something" label="lazy_7">
+<TabItem value="lazy_7" label="lazy_7">
 <CodeBlock language="java">
 {`Lazy<Map<String, SuggestionResult>> suggestLazy = session
     .query(Employee.class, Query.index("Employees_ByFullName"))
@@ -455,7 +455,7 @@ List<String> suggestions = suggest.get("FullName").getSuggestions();
 
 ## Facets
 
-<TabItem value="something-something" label="lazy_8">
+<TabItem value="lazy_8" label="lazy_8">
 <CodeBlock language="java">
 {`Lazy<Map<String, FacetResult>> executeLazy();
 
@@ -470,7 +470,7 @@ Lazy<Map<String, FacetResult>> executeLazy(Consumer<Map<String, FacetResult>> on
 
 ### Example
 
-<TabItem value="something-something" label="lazy_9">
+<TabItem value="lazy_9" label="lazy_9">
 <CodeBlock language="java">
 {`Lazy<Map<String, FacetResult>> facetsLazy = session
     .query(Camera.class, Query.index("Camera/Costs"))
@@ -495,26 +495,26 @@ FacetResult results = facets.get("manufacturer");
   at a later time, when its results are actually needed.  
 
 * This article contains examples for lazy queries. Prior to reading it, please refer 
-  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily) 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
   for general knowledge about RavenDB's lazy behavior and other request types that can be 
   executed lazily within a session.
 
 * In this page:
-  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)  
-  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)  
-  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)  
-  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-facets-query)  
-  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
 
-To run a [regular query](../../../client-api/session/querying/how-to-query) 
-(not a [suggestions](../../../client-api/session/querying/how-to-work-with-suggestions) 
-query or a [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search)) 
+To run a [regular query](../../../client-api/session/querying/how-to-query.mdx) 
+(not a [suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
+query or a [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx)) 
 lazily, use `.lazily()` as follows.  
 
-<TabItem value="something-something" label="lazy_1">
+<TabItem value="lazy_1" label="lazy_1">
 <CodeBlock language="python">
 {`# Define a lazy query
 lazy_employees = (
@@ -534,7 +534,7 @@ employees = lazy_employees.value  # Query is executed here
 
 To count query results lazily, use `count_lazily()` as follows.  
 
-<TabItem value="something-something" label="lazy_4">
+<TabItem value="lazy_4" label="lazy_4">
 <CodeBlock language="python">
 {`lazy_count = session.query(object_type=Employee).where_equals("first_name", "Robert").count_lazily()
 
@@ -547,10 +547,10 @@ count = lazy_count.value  # Query is executed here
 
 ## Lazy suggestions query
 
-To run a suggestions search lazily, use [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions) 
+To run a suggestions search lazily, use [suggest_using](../../../client-api/session/querying/how-to-work-with-suggestions.mdx) 
 along with `.execute_lazy()` as shown below.
 
-<TabItem value="something-something" label="lazy_7">
+<TabItem value="lazy_7" label="lazy_7">
 <CodeBlock language="python">
 {`lazy_suggestions = (
     session.query(object_type=Product).suggest_using(lambda builder: builder.by_field("name", "chaig"))
@@ -651,28 +651,28 @@ class Products_ByCategoryAndPrice(AbstractIndexCreationTask):
 </Tabs>
 
 <Admonition type="note" title="Note">
-Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
+Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 </Admonition>
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`# Lazy query
 def lazily(self, on_eval: Callable[[List[_T]], None] = None) -> Lazy[List[_T]]: ...
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`# Lazy count query
 def count_lazily(self) -> Lazy[int]: ...
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="python">
 {`# Lazy suggestions query
 def execute_lazy(
@@ -681,7 +681,7 @@ def execute_lazy(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="python">
 {`# Lazy facet query
 def execute_lazy(
@@ -711,23 +711,23 @@ def execute_lazy(
   at a later time, when its results are actually needed.  
 
 * This article contains examples for lazy queries. Prior to reading it, please refer 
-  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily) 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
   for general knowledge about RavenDB's lazy behavior and other request types that can be 
   executed lazily within a session.
 
-* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query).
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
 
 * In this page:
-  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)  
-  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)  
-  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)  
-  * [Lazy Aggregation](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-aggregation)  
-  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
+  * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)  
+  * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)  
+  * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)  
+  * [Lazy Aggregation](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-aggregation)  
+  * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
 
-<TabItem value="something-something" label="lazy_2">
+<TabItem value="lazy_2" label="lazy_2">
 <CodeBlock language="php">
 {`/** @var Lazy<array<Employee>> $employeesLazy */
 $employeesLazy = $session
@@ -745,7 +745,7 @@ $employees = $employeesLazy->getValue(); // query will be executed here
 
 ## Lazy count query
 
-<TabItem value="something-something" label="lazy_5">
+<TabItem value="lazy_5" label="lazy_5">
 <CodeBlock language="php">
 {`/** @var Lazy<int> $countLazy */
 $countLazy = $session
@@ -763,7 +763,7 @@ $count = $countLazy->getValue(); // query will be executed here
 
 ## Lazy suggestions query
 
-<TabItem value="something-something" label="lazy_7">
+<TabItem value="lazy_7" label="lazy_7">
 <CodeBlock language="php">
 {`/** @var Lazy<array<string, SuggestionResult>> $suggestLazy */
 $suggestLazy = $session
@@ -780,13 +780,13 @@ $suggestions = $suggest["FullName"]->getSuggestions();
 </CodeBlock>
 </TabItem>
 
-* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions).
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
 
 
 
 ## Lazy aggregation
 
-<TabItem value="something-something" label="lazy_9">
+<TabItem value="lazy_9" label="lazy_9">
 <CodeBlock language="php">
 {`/** @var Lazy<array<string, FacetResult>> $facetsLazy */
 $facetsLazy = $session
@@ -807,7 +807,7 @@ $results = $facets["manufacturer"];
 
 ## Syntax
 
-<TabItem value="something-something" label="lazy_1">
+<TabItem value="lazy_1" label="lazy_1">
 <CodeBlock language="php">
 {`/**
  * Usage
@@ -818,13 +818,13 @@ function lazily(?Closure $onEval = null): Lazy;
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="lazy_4">
+<TabItem value="lazy_4" label="lazy_4">
 <CodeBlock language="php">
 {`function countLazily(): Lazy;
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="lazy_6">
+<TabItem value="lazy_6" label="lazy_6">
 <CodeBlock language="php">
 {`/**
  * Usage
@@ -856,22 +856,22 @@ public function executeLazy(?Closure $onEval = null): Lazy;
   at a later time, when its results are actually needed.  
 
 * This article contains examples for lazy queries. Prior to reading it, please refer 
-  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily) 
+  to [perform requests lazily](../../../client-api/session/how-to/perform-operations-lazily.mdx) 
   for general knowledge about RavenDB's lazy behavior and other request types that can be 
   executed lazily within a session.
 
 * In this page:
-    * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-query)
-    * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-count-query)
-    * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-suggestions-query)
-    * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily#lazy-facets-query)
-    * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily#syntax)
+    * [Lazy query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-query)
+    * [Lazy count query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-count-query)
+    * [Lazy suggestions query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-suggestions-query)
+    * [Lazy facets query](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#lazy-facets-query)
+    * [Syntax](../../../client-api/session/querying/how-to-perform-queries-lazily.mdx#syntax)
 
 </Admonition>
 ## Lazy query
 
-<TabItem value="something-something" label="lazy_1">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="js">
 {`// Define a lazy query
 const lazyEmployees = session
     .query(\{ collection: "Employees" \})
@@ -884,14 +884,14 @@ const employees = await lazyEmployees.getValue(); // Query is executed here
 </CodeBlock>
 </TabItem>
 
-* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query).
+* Learn more about queries in this [query overview](../../../client-api/session/querying/how-to-query.mdx).
 
 
 
 ## Lazy count query
 
-<TabItem value="something-something" label="lazy_2">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="js">
 {`// Define a lazy count query
 const lazyCount = session
     .query(\{ collection: "Employees" \})
@@ -908,8 +908,8 @@ const count = await lazyCount.getValue(); // Query is executed here
 
 ## Lazy suggestions query
 
-<TabItem value="something-something" label="lazy_3">
-<CodeBlock language="nodejs">
+<TabItem value="lazy_3" label="lazy_3">
+<CodeBlock language="js">
 {`// Define a lazy suggestion query
 const lazySuggestions = session
     .query(\{ collection: "Products" \})
@@ -923,7 +923,7 @@ const suggestions = suggestResult["Name"].suggestions;
 </CodeBlock>
 </TabItem>
 
-* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions).
+* Learn more about suggestions in [query for suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx).
 
 
 
@@ -931,7 +931,7 @@ const suggestions = suggestResult["Name"].suggestions;
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Lazy_query" label="Lazy_query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The facets definition used in the facets query:
 // ===============================================
 const categoryNameFacet = new Facet();
@@ -966,7 +966,7 @@ const priceResults = facets["Price per Unit"];
 </CodeBlock>
 </TabItem>
 <TabItem value="Index_definition" label="Index_definition">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index definition used in the facets query:
 class Products_ByCategoryAndPrice extends AbstractJavaScriptIndexCreationTask {
     constructor() {
@@ -987,14 +987,14 @@ class Products_ByCategoryAndPrice extends AbstractJavaScriptIndexCreationTask {
 </TabItem>
 </Tabs>
 
-* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
+* Learn more about facets in [perform faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx).
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`lazily();
 lazily(onEval);
 

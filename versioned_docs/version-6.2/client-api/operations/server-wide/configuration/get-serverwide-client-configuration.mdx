@@ -21,13 +21,13 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration) article for general knowledge.
+* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx) article for general knowledge.
 
 * Use `GetServerWideClientConfigurationOperation` to get the current server-wide Client-Configuration set on the server.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
@@ -60,7 +60,7 @@ ClientConfiguration config =
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public GetServerWideClientConfigurationOperation()
 `}
@@ -79,19 +79,19 @@ ClientConfiguration config =
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration) article for general knowledge.
+* It is recommended to first refer to the [put server-wide client-configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx) article for general knowledge.
 
 * Use `GetServerWideClientConfigurationOperation` to get the current server-wide Client-Configuration set on the server.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
 
-<TabItem value="something-something" label="get_config">
-<CodeBlock language="nodejs">
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="js">
 {`// Define the get client-configuration operation
 const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
 
@@ -105,15 +105,15 @@ const config = await documentStore.maintenance.server.send(getServerWideClientCo
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const getServerWideClientConfigOp = new GetServerWideClientConfigurationOperation();
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Executing the operation returns the client-configuration object: 
 \{
     identityPartsSeparator,

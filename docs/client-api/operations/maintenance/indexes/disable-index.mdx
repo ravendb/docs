@@ -23,23 +23,23 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
-  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
   * Via the file system
 
-* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
+* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index.mdx).
 
 * In this page:
 
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
-      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#what-happens-when-the-index-is-disabled) 
+    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#overview)
+      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#which-node-is-the-index-disabled-on) 
+      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#what-happens-when-the-index-is-disabled) 
   
-    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
-        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-from-the-client-api)     
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#syntax)
   
-    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system)
+    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system)
 
 </Admonition>
 ## Overview
@@ -51,13 +51,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     * Cluster wide - on all database-group nodes.  
 
 * When disabling the index from the **client API** on a single node:  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
+* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-via-the-file-system):  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
 #### What happens when the index is disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
@@ -67,8 +67,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   but results may be stale when querying a node on which the index was disabled.  
 
 * Disabling an index is a **persistent operation**:  
-  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state) the database.  
-  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
+  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database.  
+  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
 
 
 
@@ -140,7 +140,7 @@ await store.Maintenance.SendAsync(disableIndexOp);
 </Tabs>
 #### Syntax:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// Available overloads:
 public DisableIndexOperation(string indexName)
@@ -159,12 +159,12 @@ public DisableIndexOperation(string indexName, bool clusterWide)
 ## Disable index manually via the file system
 
 * It may sometimes be useful to disable an index manually, through the file system.  
-  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) gets a chance to disable it.  
+  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disableindexoperation) gets a chance to disable it.  
   Manually disabling the index will ensure that the index is not loaded.  
 
 * To **manually disable** an index:  
 
-  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure.mdx).  
     Indexes are kept under the database directory, each index in a directory whose name is similar to the index's.   
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.  
@@ -178,7 +178,7 @@ public DisableIndexOperation(string indexName, bool clusterWide)
 * To **enable** a manually disabled index:  
 
   * First, remove the `disable.marker` file from the index directory.
-  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index).
+  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index).
 
 
 
@@ -190,13 +190,13 @@ public DisableIndexOperation(string indexName, bool clusterWide)
 The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
 
 <Admonition type="note" title="Note">
-Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing) disable index is a persistent operation, so the index remains disabled even after a server restart.
+Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx) disable index is a persistent operation, so the index remains disabled even after a server restart.
 </Admonition>
 
 
 ## Syntax
 
-<TabItem value="something-something" label="disable_1">
+<TabItem value="disable_1" label="disable_1">
 <CodeBlock language="java">
 {`public DisableIndexOperation(String indexName)
 `}
@@ -209,7 +209,7 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
 
 ## Example
 
-<TabItem value="something-something" label="disable_2">
+<TabItem value="disable_2" label="disable_2">
 <CodeBlock language="java">
 {`store.maintenance().send(new DisableIndexOperation("Orders/Totals"));
 // index is disabled at this point, new data won't be indexed
@@ -226,23 +226,23 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
-  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
   * Via the file system
 
-* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
+* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index.mdx).
 
 * In this page:
 
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
-      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#what-happens-when-the-index-is-disabled) 
+    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#overview)
+      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#which-node-is-the-index-disabled-on) 
+      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#what-happens-when-the-index-is-disabled) 
   
-    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
-        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-from-the-client-api)     
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#syntax)
   
-    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system)
+    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system)
 
 </Admonition>
 ## Overview
@@ -254,13 +254,13 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
     * Cluster wide - on all database-group nodes.  
 
 * When disabling the index from the **client API** on a single node:  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
+* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-via-the-file-system):  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
 #### What happens when the index is disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
@@ -270,8 +270,8 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
   but results may be stale when querying a node on which the index was disabled.  
 
 * Disabling an index is a **persistent operation**:  
-  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state) the database.  
-  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
+  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database.  
+  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
 
 
 
@@ -279,7 +279,7 @@ Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-in
 
 #### Disable index - single node:
 
-<TabItem value="something-something" label="disable_1">
+<TabItem value="disable_1" label="disable_1">
 <CodeBlock language="python">
 {`# Define the disable index operation
 # Use this args set to disable on a single node
@@ -295,7 +295,7 @@ store.maintenance.send(disable_index_op)
 </TabItem>
 #### Disable index - cluster wide:
 
-<TabItem value="something-something" label="disable_2">
+<TabItem value="disable_2" label="disable_2">
 <CodeBlock language="python">
 {`# Define the disable index operation
 # Pass 'True' to disable the index on all nodes in the database-group
@@ -311,7 +311,7 @@ store.maintenance.send(disable_index_op)
 </TabItem>
 #### Syntax:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class DisableIndexOperation(VoidMaintenanceOperation):
     def __init__(self, index_name: str, cluster_wide: bool = False): ...
@@ -329,12 +329,12 @@ store.maintenance.send(disable_index_op)
 ## Disable index manually via the file system
 
 * It may sometimes be useful to disable an index manually, through the file system.  
-  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) gets a chance to disable it.  
+  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disableindexoperation) gets a chance to disable it.  
   Manually disabling the index will ensure that the index is not loaded.  
 
 * To **manually disable** an index:  
 
-  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure.mdx).  
     Indexes are kept under the database directory, each index in a directory whose name is similar to the index's.   
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.  
@@ -348,7 +348,7 @@ store.maintenance.send(disable_index_op)
 * To **enable** a manually disabled index:  
 
   * First, remove the `disable.marker` file from the index directory.
-  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index).
+  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index).
 
 
 
@@ -360,23 +360,23 @@ store.maintenance.send(disable_index_op)
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
-  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
   * Via the file system
 
-* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
+* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index.mdx).
 
 * In this page:
 
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
-      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#what-happens-when-the-index-is-disabled) 
+    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#overview)
+      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#which-node-is-the-index-disabled-on) 
+      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#what-happens-when-the-index-is-disabled) 
   
-    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
-        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-from-the-client-api)     
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#syntax)
   
-    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system)
+    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system)
 
 </Admonition>
 ## Overview
@@ -388,13 +388,13 @@ store.maintenance.send(disable_index_op)
     * Cluster wide - on all database-group nodes.  
 
 * When disabling the index from the **client API** on a single node:  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
+* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-via-the-file-system):  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
 #### What happens when the index is disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
@@ -404,8 +404,8 @@ store.maintenance.send(disable_index_op)
   but results may be stale when querying a node on which the index was disabled.  
 
 * Disabling an index is a **persistent operation**:  
-  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state) the database.  
-  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
+  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database.  
+  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
 
 
 
@@ -413,7 +413,7 @@ store.maintenance.send(disable_index_op)
 
 #### Disable index - single node:
 
-<TabItem value="something-something" label="disable_1">
+<TabItem value="disable_1" label="disable_1">
 <CodeBlock language="php">
 {`// Define the disable index operation
 // Use this overload to disable on a single node
@@ -429,7 +429,7 @@ $store->maintenance()->send($disableIndexOp);
 </TabItem>
 #### Disable index - cluster wide:
 
-<TabItem value="something-something" label="disable_2">
+<TabItem value="disable_2" label="disable_2">
 <CodeBlock language="php">
 {`// Define the disable index operation
 // Pass 'true' to disable the index on all nodes in the database-group
@@ -445,7 +445,7 @@ $store->maintenance()->send($disableIndexOp);
 </TabItem>
 #### Syntax:  
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`DisableIndexOperation(?string $indexName, bool $clusterWide = false)
 `}
@@ -462,12 +462,12 @@ $store->maintenance()->send($disableIndexOp);
 ## Disable index manually via the file system
 
 * It may sometimes be useful to disable an index manually, through the file system.  
-  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) gets a chance to disable it.  
+  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disableindexoperation) gets a chance to disable it.  
   Manually disabling the index will ensure that the index is not loaded.  
 
 * To **manually disable** an index:  
 
-  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure.mdx).  
     Indexes are kept under the database directory, each index in a directory whose name is similar to the index's.   
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.  
@@ -481,7 +481,7 @@ $store->maintenance()->send($disableIndexOp);
 * To **enable** a manually disabled index:  
 
   * First, remove the `disable.marker` file from the index directory.
-  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index).
+  * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index).
 
 
 
@@ -493,23 +493,23 @@ $store->maintenance()->send($disableIndexOp);
 
 * You can **disable a specific index** by either of the following:  
   * From the Client API - using `DisableIndexOperation`  
-  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+  * From Studio - see [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
   * Via the file system
 
-* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index).
+* To learn how to enable a disabled index, see [Enable index operation](../../../../client-api/operations/maintenance/indexes/enable-index.mdx).
 
 * In this page:
 
-    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index#overview)
-      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index#which-node-is-the-index-disabled-on) 
-      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index#what-happens-when-the-index-is-disabled) 
+    * [Overview](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#overview)
+      * [Which node is the index disabled on?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#which-node-is-the-index-disabled-on) 
+      * [What happens when the index is disabled?](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#what-happens-when-the-index-is-disabled) 
   
-    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-from-the-client-api)     
-        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---single-node)
-        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index---cluster-wide)
-        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index#syntax)
+    * [Disable index from the Client API](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-from-the-client-api)     
+        * [Disable index - single node](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---single-node)
+        * [Disable index - cluster wide](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index---cluster-wide)
+        * [Syntax](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#syntax)
   
-    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system)
+    * [Disable index manually via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system)
 
 </Admonition>
 ## Overview
@@ -521,13 +521,13 @@ $store->maintenance()->send($disableIndexOp);
     * Cluster wide - on all database-group nodes.  
 
 * When disabling the index from the **client API** on a single node:  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.  
 
-* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When disabling an index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be disabled on the local node the browser is opened on, even if it is Not the preferred node.  
 
-* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-via-the-file-system):  
-  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, and Not on all the database-group nodes.
+* When disabling the index [manually](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-via-the-file-system):  
+  The index will be disabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, and Not on all the database-group nodes.
 #### What happens when the index is disabled?  
 
 * No indexing will be done by a disabled index on the node where index is disabled.  
@@ -537,8 +537,8 @@ $store->maintenance()->send($disableIndexOp);
   but results may be stale when querying a node on which the index was disabled.  
 
 * Disabling an index is a **persistent operation**:  
-  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state) the database.  
-  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index).  
+  * The index will remain disabled even after restarting the server or after [disabling/enabling](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) the database.  
+  * To only pause the index and resume after a restart see: [pause index operation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx).  
 
 
 
@@ -546,8 +546,8 @@ $store->maintenance()->send($disableIndexOp);
 
 #### Disable index - single node:
 
-<TabItem value="something-something" label="disable_1">
-<CodeBlock language="nodejs">
+<TabItem value="disable_1" label="disable_1">
+<CodeBlock language="js">
 {`// Define the disable index operation
 // Use this overload to disable on a single node
 const disableIndexOp = new DisableIndexOperation("Orders/Totals");
@@ -562,8 +562,8 @@ await documentStore.maintenance.send(disableIndexOp);
 </TabItem>
 #### Disable index - cluster wide:
 
-<TabItem value="something-something" label="disable_2">
-<CodeBlock language="nodejs">
+<TabItem value="disable_2" label="disable_2">
+<CodeBlock language="js">
 {`// Define the disable index operation
 // Pass 'true' to disable the index on all nodes in the database-group
 const disableIndexOp = new DisableIndexOperation("Orders/Totals", true);
@@ -578,8 +578,8 @@ await documentStore.maintenance.send(disableIndexOp);
 </TabItem>
 #### Syntax:  
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const disableIndexOp = new DisableIndexOperation(indexName, clusterWide = false);
 `}
 </CodeBlock>
@@ -595,12 +595,12 @@ await documentStore.maintenance.send(disableIndexOp);
 ## Disable index manually via the file system
 
 * It may sometimes be useful to disable an index manually, through the file system.  
-  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index#disableindexoperation) gets a chance to disable it.  
+  For example, a faulty index may load before [DisableIndexOperation](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disableindexoperation) gets a chance to disable it.  
   Manually disabling the index will ensure that the index is not loaded.
 
 * To **manually disable** an index:
 
-    * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure).  
+    * Place a file named `disable.marker` in the [index directory](../../../../server/storage/directory-structure.mdx).  
       Indexes are kept under the database directory, each index in a directory whose name is similar to the index's.
     * The `disable.marker` file can be empty,  
       and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
@@ -614,7 +614,7 @@ await documentStore.maintenance.send(disableIndexOp);
 * To **enable** a manually disabled index:
 
     * First, remove the `disable.marker` file from the index directory.
-    * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index).
+    * Then, enable the index by any of the options described in: [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index).
 
 
 

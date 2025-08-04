@@ -25,10 +25,10 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
-   * [Sample query with Distinct](../../indexes/querying/distinct#sample-query-with-distinct)
-   * [Paging with Distinct](../../indexes/querying/distinct#paging-with-distinct)
-   * [Count with Distinct](../../indexes/querying/distinct#count-with-distinct)
-      * [Performance cost and alternative approaches](../../indexes/querying/distinct#performance-cost-and-alternative-approaches)
+   * [Sample query with Distinct](../../indexes/querying/distinct.mdx#sample-query-with-distinct)
+   * [Paging with Distinct](../../indexes/querying/distinct.mdx#paging-with-distinct)
+   * [Count with Distinct](../../indexes/querying/distinct.mdx#count-with-distinct)
+      * [Performance cost and alternative approaches](../../indexes/querying/distinct.mdx#performance-cost-and-alternative-approaches)
 
 </Admonition>
 ## Sample query with Distinct
@@ -107,7 +107,7 @@ select distinct ShipTo.Country
 ## Paging with Distinct
 
 A special approach must be used when calling `Distinct()` while paging.  
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results).  
 
 
 
@@ -185,18 +185,18 @@ limit 0, 0
 * Please keep in mind that using `Count()` with `Distinct()` might not be efficient for large sets of data  
   as it requires scanning all index results to find unique values.
 
-* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index 
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes.mdx) index 
   that will aggregate data by the field for which distinct count results are needed.
 
 * Using a Map-Reduce index is more efficient since computations are done during indexing time and not at query time. 
-  The entire dataset is [indexed](../../indexes/creating-and-deploying) once, 
+  The entire dataset is [indexed](../../indexes/creating-and-deploying.mdx) once, 
   whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.  
 
 #### Map-Reduce index example:
 
 Index definition:
 
-<TabItem value="something-something" label="index">
+<TabItem value="index" label="index">
 <CodeBlock language="csharp">
 {`public class Orders_ByShipToCountry : AbstractIndexCreationTask<Order, Orders_ByShipToCountry.IndexEntry>
 \{
@@ -298,10 +298,10 @@ See the article "[Implementing a count(distinct) query in RavenDB](https://raven
   Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
-   * [Sample query with distinct](../../indexes/querying/distinct#sample-query-with-distinct)
-   * [Paging with distinct](../../indexes/querying/distinct#paging-with-distinct)
-   * [Count with distinct](../../indexes/querying/distinct#count-with-distinct)
-      * [Performance cost and an alternative approach](../../indexes/querying/distinct#performance-cost-and-an-alternative-approach)
+   * [Sample query with distinct](../../indexes/querying/distinct.mdx#sample-query-with-distinct)
+   * [Paging with distinct](../../indexes/querying/distinct.mdx#paging-with-distinct)
+   * [Count with distinct](../../indexes/querying/distinct.mdx#count-with-distinct)
+      * [Performance cost and an alternative approach](../../indexes/querying/distinct.mdx#performance-cost-and-an-alternative-approach)
 
 </Admonition>
 ## Sample query with Distinct
@@ -341,7 +341,7 @@ select distinct ShipTo.Country
 ## Paging with distinct
 
 A special approach must be used when calling `distinct()` while paging.  
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results).  
 
 
 
@@ -386,18 +386,18 @@ limit 0, 0
 * Please keep in mind that using `count()` with `distinct()` might not be efficient for large sets of data  
   as it requires scanning all index results to find unique values.
 
-* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index 
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes.mdx) index 
   that will aggregate data by the field for which distinct count results are needed.
 
 * Using a Map-Reduce index is more efficient since computations are done during indexing time and not at query time. 
-  The entire dataset is [indexed](../../indexes/creating-and-deploying) once,
+  The entire dataset is [indexed](../../indexes/creating-and-deploying.mdx) once,
   whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.
 
 #### Map-Reduce index example:
 
 Index definition:
 
-<TabItem value="something-something" label="distinct_3_1">
+<TabItem value="distinct_3_1" label="distinct_3_1">
 <CodeBlock language="java">
 {`public static class Orders_ByShipToCountry extends AbstractIndexCreationTask \{
 
@@ -484,17 +484,17 @@ See a C# example for [Implementing a count(distinct) query in RavenDB](https://r
   Items are compared based on the fields listed in the `select` section of the query. 
 
 * In this page:
-   * [Sample query with distinct](../../indexes/querying/distinct#sample-query-with-distinct)
-   * [Paging with distinct](../../indexes/querying/distinct#paging-with-distinct)
-   * [Count with distinct](../../indexes/querying/distinct#count-with-distinct)
-      * [Performance cost and an alternative approach](../../indexes/querying/distinct#performance-cost-and-an-alternative-approach)
+   * [Sample query with distinct](../../indexes/querying/distinct.mdx#sample-query-with-distinct)
+   * [Paging with distinct](../../indexes/querying/distinct.mdx#paging-with-distinct)
+   * [Count with distinct](../../indexes/querying/distinct.mdx#count-with-distinct)
+      * [Performance cost and an alternative approach](../../indexes/querying/distinct.mdx#performance-cost-and-an-alternative-approach)
 
 </Admonition>
 ## Sample query with distinct
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Get a sorted list without duplicates:
 // =====================================
 
@@ -527,7 +527,7 @@ select distinct ShipTo.Country
 ## Paging with distinct
 
 A special approach must be used when calling `distinct()` while paging.  
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results).  
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results).  
 
 
 
@@ -538,7 +538,7 @@ Similar to _toList()_, _count()_ triggers query execution on the server-side.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Count the number of unique countries:
 // =====================================
 
@@ -572,19 +572,19 @@ limit 0, 0
 * Please keep in mind that using `count()` with `distinct()` might not be efficient for large sets of data  
   as it requires scanning all index results to find unique values.
 
-* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index 
+* Getting the distinct items' count can also be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes.mdx) index 
   that will aggregate data by the field for which distinct count results are needed.
 
 * Using a Map-Reduce index is more efficient since computations are done during indexing time and not at query time. 
-  The entire dataset is [indexed](../../indexes/creating-and-deploying) once,
+  The entire dataset is [indexed](../../indexes/creating-and-deploying.mdx) once,
   whereafter the aggregated value is always kept up to date as indexing will occur only for new/modified data.
 
 #### Map-Reduce index example:#
 
 Index definition:
 
-<TabItem value="something-something" label="index">
-<CodeBlock language="nodejs">
+<TabItem value="index" label="index">
+<CodeBlock language="js">
 {`class Orders_ByShipToCountry extends AbstractJavaScriptIndexCreationTask \{
 
     constructor() \{
@@ -616,7 +616,7 @@ Query the index:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the map - reduce index defined above
 const session = documentStore.openSession();
 const queryResult = await session

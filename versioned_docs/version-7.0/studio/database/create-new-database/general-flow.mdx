@@ -16,20 +16,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * From the Studio, the database creation options are:  
-  * **Regular** database - see [below](../../../studio/database/create-new-database/general-flow#1.-new-database).  
-  * **Encrypted** database - see [Encrypted Database](../../../studio/database/create-new-database/encrypted).  
-  * Create a database from a **Backup** copy - see [From Backup](../../../studio/database/create-new-database/from-backup).  
-  * Create a database from a **Previous** RavenDB version database - see [From Legacy File](../../../studio/database/create-new-database/from-legacy-files).  
-  * Create a [Sharded](../../../sharding/overview) database - 
-    see the [sharding Studio administration](../../../sharding/administration/studio-admin#creating-a-sharded-database) page.  
+  * **Regular** database - see [below](../../../studio/database/create-new-database/general-flow.mdx#1.-new-database).  
+  * **Encrypted** database - see [Encrypted Database](../../../studio/database/create-new-database/encrypted.mdx).  
+  * Create a database from a **Backup** copy - see [From Backup](../../../studio/database/create-new-database/from-backup.mdx).  
+  * Create a database from a **Previous** RavenDB version database - see [From Legacy File](../../../studio/database/create-new-database/from-legacy-files.mdx).  
+  * Create a [Sharded](../../../sharding/overview.mdx) database - 
+    see the [sharding Studio administration](../../../sharding/administration/studio-admin.mdx#creating-a-sharded-database) page.  
 
-* To create a new database using the Client API, see [Create database operation](../../../client-api/operations/server-wide/create-database).
+* To create a new database using the Client API, see [Create database operation](../../../client-api/operations/server-wide/create-database.mdx).
 * In this article:  
-  * [1. New Database](../../../studio/database/create-new-database/general-flow#1.-new-database)  
-  * [2. Database Name](../../../studio/database/create-new-database/general-flow#2.-database-name)  
-  * [3. Configure Replication](../../../studio/database/create-new-database/general-flow#3.-configure-replication)  
-  * [4. Configure Path](../../../studio/database/create-new-database/general-flow#4.-configure-path)  
-  * [5. Create](../../../studio/database/create-new-database/general-flow#5.-create)
+  * [1. New Database](../../../studio/database/create-new-database/general-flow.mdx#1.-new-database)  
+  * [2. Database Name](../../../studio/database/create-new-database/general-flow.mdx#2.-database-name)  
+  * [3. Configure Replication](../../../studio/database/create-new-database/general-flow.mdx#3.-configure-replication)  
+  * [4. Configure Path](../../../studio/database/create-new-database/general-flow.mdx#4.-configure-path)  
+  * [5. Create](../../../studio/database/create-new-database/general-flow.mdx#5.-create)
 
 </Admonition>
 ## 1. New Database
@@ -106,8 +106,8 @@ From the database list view, click the **'New database'** button.
 * By default, the server's data directory is at `Server/RavenData`. This contains a `Databases` directory, 
 which contains the data of the different databases on the server.  
   (e.g. `Server/RavenData/Databases/MyDatabaseFolder`).  
-  Learn more at [Storage: Directory Structure](../../../server/storage/directory-structure).  
-* The location of the server's data directory can be set in the [`DataDir` configuration option](../../../server/configuration/core-configuration#datadir).  
+  Learn more at [Storage: Directory Structure](../../../server/storage/directory-structure.mdx).  
+* The location of the server's data directory can be set in the [`DataDir` configuration option](../../../server/configuration/core-configuration.mdx#datadir).  
 * A path can't start with: `$home`, `~`, or `appdrive:`.  
 
 </Admonition>

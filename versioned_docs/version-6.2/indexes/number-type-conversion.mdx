@@ -23,24 +23,24 @@ export const supportedLanguages = ["csharp"];
 
 * The `TryConvert()` method can be used to safely convert values to numerical types.  
 
-* Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb).  
+* Learn more about how numbers are stored in RavenDB [here](../server/kb/numbers-in-ravendb.mdx).  
 
 * In this page:  
-  * [Syntax](../indexes/number-type-conversion#syntax)  
-  * [Examples](../indexes/number-type-conversion#examples)  
+  * [Syntax](..\indexes\number-type-conversion.mdx#syntax)  
+  * [Examples](..\indexes\number-type-conversion.mdx#examples)  
 
 </Admonition>
 ## Syntax
 
 The following methods are used to convert values into one of the common primitive numerical 
 types - `int`, `long`, `float`, or `double`. They are called from within the 
-[Map](../indexes/map-indexes) or [Reduce](../indexes/map-reduce-indexes) functions of the 
+[Map](../indexes/map-indexes.mdx) or [Reduce](../indexes/map-reduce-indexes.mdx) functions of the 
 index. If the submitted value cannot be converted to the specified type, these methods return 
 `null`.  
 
 In **LINQ syntax**, use `TryConvert<T>()`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected T? TryConvert<T>(object value)
 `}
@@ -58,7 +58,7 @@ In **LINQ syntax**, use `TryConvert<T>()`:
 
 In **JavaScript syntax**, use `tryConvertToNumber()`.
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`tryConvertToNumber(value)
 `}
@@ -74,7 +74,7 @@ In **JavaScript syntax**, use `tryConvertToNumber()`.
 ## Examples
 
 The class `Item` has fields of type `int`, `long`, `float`, `double`, `string`, and an object 
-field of type [Company](../start/about-examples). The following indexes take an `Item` 
+field of type [Company](../start/about-examples.mdx). The following indexes take an `Item` 
 entity and attempt to convert each of its fields into the corresponding type. In case of 
 failure, the field is indexed with value `-1` instead.  
 
@@ -139,14 +139,14 @@ failure, the field is indexed with value `-1` instead.
 </CodeBlock>
 </TabItem>
 </Tabs>
-This next index takes the [`string` field `Employee.Address.PostalCode`](../start/about-examples) 
+This next index takes the [`string` field `Employee.Address.PostalCode`](../start/about-examples.mdx) 
 and attempts to convert it to `long`.  
 
 The query below it finds all employees that do not have a valid `PostalCode` field - whether 
 because the employee does not have a postal code or because the value could not be converted to 
 a valid `long`.  
 
-<TabItem value="something-something" label="tryconvert_postal">
+<TabItem value="tryconvert_postal" label="tryconvert_postal">
 <CodeBlock language="csharp">
 {`public class Employees_ByPostalCode : AbstractIndexCreationTask<Employee>
 \{
@@ -168,7 +168,7 @@ a valid `long`.
 </TabItem>
 Query:  
 
-<TabItem value="something-something" label="query">
+<TabItem value="query" label="query">
 <CodeBlock language="csharp">
 {`List<Employee> employeesWithoutPostalCode = session
     .Query<Employees_ByPostalCode.Result, Employees_ByPostalCode>()

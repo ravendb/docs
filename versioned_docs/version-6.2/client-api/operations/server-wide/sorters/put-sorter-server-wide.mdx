@@ -27,14 +27,14 @@ export const supportedLanguages = ["csharp", "nodejs"];
 * Use `PutServerWideSortersOperation` to deploy a custom sorter to the RavenDB server.  
   Once deployed, you can use it to sort query results for all queries made on __all databases__ in your cluster.  
 
-* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database),  
-  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter).
+* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database.mdx),  
+  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx).
 
-* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters).
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters.mdx).
 
 * In this page:
-    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#put-custom-sorter-server-wide)
-    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#syntax)
+    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#put-custom-sorter-server-wide)
+    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#syntax)
 
 </Admonition>
 ## Put custom sorter server-wide
@@ -95,7 +95,7 @@ await store.Maintenance.Server.SendAsync(putSortersServerWideOp);
 <Admonition type="note" title="Note">
 
 You can now order your query results using the custom sorter.  
-A query example is available [here](../../../../client-api/session/querying/sort-query-results#custom-sorters).
+A query example is available [here](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
 
 </Admonition>
 
@@ -103,7 +103,7 @@ A query example is available [here](../../../../client-api/session/querying/sort
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public PutServerWideSortersOperation(params SorterDefinition[] sortersToAdd)
 `}
@@ -115,7 +115,7 @@ A query example is available [here](../../../../client-api/session/querying/sort
 | __sortersToAdd__  | `SorterDefinition[]` | One or more Sorter Definitions to send to the server |
 
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class SorterDefinition
 \{
@@ -140,14 +140,14 @@ A query example is available [here](../../../../client-api/session/querying/sort
 * Use `PutServerWideSortersOperation` to deploy a custom sorter to the RavenDB server.  
   Once deployed, you can use it to sort query results for all queries made on __all databases__ in your cluster.  
 
-* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database),  
-  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter).
+* To deploy a custom sorter that will apply only to the database scoped to your [Document Store](../../../../client-api/setting-up-default-database.mdx),  
+  see [put custom sorter](../../../../client-api/operations/maintenance/sorters/put-sorter.mdx).
 
-* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters).
+* A custom sorter can also be uploaded server-wide from the [Studio](../../../../studio/database/settings/custom-sorters.mdx).
 
 * In this page:
-    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#put-custom-sorter-server-wide)
-    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide#syntax)
+    * [Put custom sorter server-wide](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#put-custom-sorter-server-wide)
+    * [Syntax](../../../../client-api/operations/server-wide/sorters/put-sorter-server-wide.mdx#syntax)
 
 </Admonition>
 ## Put custom sorter server-wide
@@ -156,8 +156,8 @@ A query example is available [here](../../../../client-api/session/querying/sort
 
 * Then, send the custom sorter to the server using the `PutServerWideSortersOperation`.
 
-<TabItem value="something-something" label="put_sorter">
-<CodeBlock language="nodejs">
+<TabItem value="put_sorter" label="put_sorter">
+<CodeBlock language="js">
 {`// Create the sorter definition object
 const sorterDefinition = \{
     // The sorter name must be the same as the sorter's class name in your code
@@ -178,7 +178,7 @@ await documentStore.maintenance.server.send(putSortersServerWideOp );
 <Admonition type="note" title="Note">
 
 You can now order your query results using the custom sorter.  
-A query example is available [here](../../../../client-api/session/querying/sort-query-results#custom-sorters).
+A query example is available [here](../../../../client-api/session/querying/sort-query-results.mdx#custom-sorters).
 
 </Admonition>
 
@@ -186,8 +186,8 @@ A query example is available [here](../../../../client-api/session/querying/sort
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const putSortersServerWideOp = new PutServerWideSortersOperation(sortersToAdd);
 `}
 </CodeBlock>
@@ -198,8 +198,8 @@ A query example is available [here](../../../../client-api/session/querying/sort
 | __sortersToAdd__  | `...object[]` | One or more Sorter Definitions to send to the server |
 
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The sorter definition object 
 \{
     name: string;

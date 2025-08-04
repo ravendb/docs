@@ -25,7 +25,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * To make a faceted search,  
   a static-index must be defined for the fields you want to query and apply facets on.  
-  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).
+  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search.mdx).
 
 </Admonition>
 
@@ -37,7 +37,7 @@ To execute facet (aggregation) query using the session `query` method, use the `
 
 ## Syntax
 
-<TabItem value="something-something" label="facet_1">
+<TabItem value="facet_1" label="facet_1">
 <CodeBlock language="java">
 {`IAggregationDocumentQuery<T> aggregateBy(Consumer<IFacetBuilder<T>> builder);
 
@@ -166,7 +166,7 @@ IAggregationDocumentQuery<T> aggregateUsing(String facetSetupDocumentId);
 
 ### Builder
 
-<TabItem value="something-something" label="facet_7_1">
+<TabItem value="facet_7_1" label="facet_7_1">
 <CodeBlock language="java">
 {`IFacetOperations<T> byRanges(RangeBuilder range, RangeBuilder... ranges);
 
@@ -193,7 +193,7 @@ IFacetOperations<T> averageOn(String path);
 
 ### Options
 
-<TabItem value="something-something" label="facet_7_2">
+<TabItem value="facet_7_2" label="facet_7_2">
 <CodeBlock language="java">
 {`private FacetTermSortMode termSortMode = FacetTermSortMode.VALUE_ASC;
 private boolean includeRemainingTerms;
@@ -377,7 +377,7 @@ single or multiple facets for the query using a straightforward and fluent API.
 
 ## Syntax
 
-<TabItem value="something-something" label="facet_1">
+<TabItem value="facet_1" label="facet_1">
 <CodeBlock language="python">
 {`def aggregate_by(
     self, builder_or_facet: Union[Callable[[FacetBuilder], None], FacetBase]
@@ -442,7 +442,7 @@ class Facet(FacetBase):
 
 ### Builder
 
-<TabItem value="something-something" label="facet_7_1">
+<TabItem value="facet_7_1" label="facet_7_1">
 <CodeBlock language="python">
 {`def by_ranges(self, range_: RangeBuilder, *ranges: RangeBuilder) -> FacetOperations[_T]: ...
 
@@ -473,7 +473,7 @@ def average_on(self, path: str, display_name: Optional[str] = None) -> FacetOper
 
 ### Options
 
-<TabItem value="something-something" label="facet_7_2">
+<TabItem value="facet_7_2" label="facet_7_2">
 <CodeBlock language="python">
 {`def __init__(self):
     self.page_size: int = constants.int_max
@@ -651,7 +651,7 @@ If you want to aggregate by multiple fields, emit a single field that contains a
 
 * To make a faceted search,  
   a static-index must be defined for the fields you want to query and apply facets on.  
-  Please refer to the **Query by Facets** article under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).  
+  Please refer to the **Query by Facets** article under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search.mdx).  
 
 </Admonition>
 
@@ -664,7 +664,7 @@ If you want to aggregate by multiple fields, emit a single field that contains a
 
 * To make a faceted search,  
   a static-index must be defined for the fields you want to query and apply facets on.  
-  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search).
+  Please refer to article **Query by Facets** under [Indexes &gt; Querying &gt; Faceted search](../../../indexes/querying/faceted-search.mdx).
 
 </Admonition>
 

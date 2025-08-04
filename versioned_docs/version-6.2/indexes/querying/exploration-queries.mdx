@@ -22,9 +22,9 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 <Admonition type="note" title="Note">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [Query](../../client-api/session/querying/how-to-query#session.query), 
-  [DocumentQuery](../../client-api/session/querying/how-to-query#session.advanced.documentquery), 
-  or [Raw RQL](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  to a dataset after its retrieval by [Query](../../client-api/session/querying/how-to-query.mdx#session.query), 
+  [DocumentQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery), 
+  or [Raw RQL](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an 
@@ -34,29 +34,29 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  [with caution](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
   since scanning and filtering all the data retrieved by a query cost substantial 
-  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
     <Admonition type="warning" title="Warning">
 
     We recommend that you -  
 
     * **Limit** the number of records that an exploration query filters.  
-    * Use [where](../../indexes/querying/filtering) in recurring queries, 
-      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+    * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
 
 * In this page:  
-   * [`filter`](../../indexes/querying/exploration-queries#filter)
-   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
-   * [Syntax](../../indexes/querying/exploration-queries#syntax)
-   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
-      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
-      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
-      * [With projections](../../indexes/querying/exploration-queries#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries.mdx#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
 
 </Admonition>
 
@@ -71,9 +71,9 @@ Exploration queries can be applied using -
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
 The provided filtering operations resemble those implemented by 
-[where](../../indexes/querying/filtering) and can be further enhanced 
+[where](../../indexes/querying/filtering.mdx) and can be further enhanced 
 by Javascript functions of your own.  
-Read [here](../../indexes/querying/exploration-queries#with-a-javascript-function:-declare) 
+Read [here](../../indexes/querying/exploration-queries.mdx#with-a-javascript-function:-declare) 
 about creating and using your own Javascript function in your filters.  
 
 
@@ -81,7 +81,7 @@ about creating and using your own Javascript function in your filters.
 ## When should exploration queries be used
 
 `filter` can be applied to a Collection query, like in:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -91,7 +91,7 @@ filter e.Address.Country = 'USA'
 
 it can also be applied to queries handled by an index, e.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a dynamic query via an auto-index  
 from Employees as e 
@@ -101,7 +101,7 @@ filter e.Address.Country = 'USA'
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a query that uses an index explicitly  
 from index 'Orders/ByCompany' 
@@ -134,7 +134,7 @@ in memory and CPU usage while it checks the filter condition for each query resu
 and cost the user a substantial waiting time. Therefore -  
 
 * **Limit** the number of records that an exploration query filters, e.g.:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -142,7 +142,7 @@ filter_limit 500 // limit the number of filtered records
 `}
 </CodeBlock>
 </TabItem>
-* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering 
   in subsequent queries.  
 </Admonition>
@@ -152,7 +152,7 @@ filter_limit 500 // limit the number of filtered records
 ## Syntax
 
 * `Query.Filter`  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`IRavenQueryable<T> Filter<T>(this IRavenQueryable<T> source, 
                            Expression<Func<T, bool>> predicate, 
@@ -168,7 +168,7 @@ filter_limit 500 // limit the number of filtered records
     | **limit** | `int ` | Limits the number of filtered records (Recommended) <br/> Default: all retrieved records |
 
 * `DocumentQuery.Filter`  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`IDocumentQuery<T> Filter(Action<IFilterFactory<T>> builder, 
                        int limit = int.MaxValue);
@@ -186,7 +186,7 @@ filter_limit 500 // limit the number of filtered records
      The `filter` keyword, followed by the filtering condition.  
      The `filter_limit` option, followed by the max number of records to filter.  
    * E.g. -  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 where e.Title = 'Sales Representative'  
@@ -315,12 +315,12 @@ var emp2 = session.Advanced.DocumentQuery<Employee>()
 #### With user-defined JavaScript functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
-[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+[declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
 use it as part of your `filter` condition to freely adapt the filtering 
 to your needs.  
 
 Here is a simple example:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// declare a Javascript function
 declare function titlePrefix(r, prefix) 
@@ -347,7 +347,7 @@ filter_limit 100
 <Admonition type="note" title="Note">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [raw_rql](../../client-api/session/querying/how-to-query#session.advanced.raw_query), 
+  to a dataset after its retrieval by [raw_rql](../../client-api/session/querying/how-to-query.mdx#session.advanced.raw_query), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an 
@@ -357,30 +357,30 @@ filter_limit 100
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  [with caution](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
   since scanning and filtering all the data retrieved by a query cost substantial 
-  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
     <Admonition type="warning" title="Warning">
 
     We recommend that you -  
 
-    * [Limit](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+    * [Limit](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
       the number of records that an exploration query filters.  
-    * Use [where](../../indexes/querying/filtering) in recurring queries, 
-      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+    * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
 
 * In this page:  
-   * [`filter`](../../indexes/querying/exploration-queries#filter)
-   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
-   * [Syntax](../../indexes/querying/exploration-queries#syntax)
-   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
-      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
-      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
-      * [With projections](../../indexes/querying/exploration-queries#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries.mdx#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
 
 </Admonition>
 
@@ -391,9 +391,9 @@ In Python, exploration queries can be applied via RQL using the `filter` keyword
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
 The provided filtering operations resemble those implemented by 
-[where](../../indexes/querying/filtering) and can be further enhanced 
+[where](../../indexes/querying/filtering.mdx) and can be further enhanced 
 by Javascript functions of your own.  
-Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) 
+Read [here](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) 
 about creating and using your own Javascript function in your filters.  
 
 
@@ -401,7 +401,7 @@ about creating and using your own Javascript function in your filters.
 ## When should exploration queries be used
 
 `filter` can be applied to a Collection query, like in:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -411,7 +411,7 @@ filter e.Address.Country = 'USA'
 
 it can also be applied to queries handled by an index, e.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a dynamic query via an auto-index  
 from Employees as e 
@@ -421,7 +421,7 @@ filter e.Address.Country = 'USA'
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a query that uses an index explicitly  
 from index 'Orders/ByCompany' 
@@ -454,7 +454,7 @@ in memory and CPU usage while it checks the filter condition for each query resu
 and cost the user a substantial waiting time. Therefore -  
 
 * **Limit** the number of records that an exploration query filters, e.g.:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -462,7 +462,7 @@ filter_limit 500 // limit the number of filtered records
 `}
 </CodeBlock>
 </TabItem>
-* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering 
   in subsequent queries.  
 </Admonition>
@@ -479,7 +479,7 @@ filter_limit 500 // limit the number of filtered records
      The `filter` keyword, followed by the filtering condition.  
      The `filter_limit` option, followed by the max number of records to filter.  
    * E.g. -  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 where e.Title = 'Sales Representative'  
@@ -495,7 +495,7 @@ filter_limit 500 // limit the number of filter records
 #### With collection queries
 
 Use `filter` with a collection query to scan and filter the entire collection.  
-<TabItem value="something-something" label="exploration-queries_1.3">
+<TabItem value="exploration-queries_1.3" label="exploration-queries_1.3">
 <CodeBlock language="python">
 {`result = session.advanced.raw_query(
     "from Employees as e " "filter e.Address.Country = 'USA' " "filter_limit 500", Employee
@@ -511,7 +511,7 @@ Set a `filter_limit` to restrict the number of filtered records.
 #### With queries that use an index
 
 Use `filter` after a `where` clause to filter the results retrieved by an index query.  
-<TabItem value="something-something" label="exploration-queries_2.3">
+<TabItem value="exploration-queries_2.3" label="exploration-queries_2.3">
 <CodeBlock language="python">
 {`emp = (
     session.advanced.raw_query(
@@ -532,7 +532,7 @@ Use `filter` after a `where` clause to filter the results retrieved by an index 
 #### With projections
 
 The filtered results can be projected using `select`, like those of any other query.  
-<TabItem value="something-something" label="exploration-queries_3.3">
+<TabItem value="exploration-queries_3.3" label="exploration-queries_3.3">
 <CodeBlock language="python">
 {`emp3 = session.advanced.raw_query(
     "from Employees as e "
@@ -546,12 +546,12 @@ The filtered results can be projected using `select`, like those of any other qu
 #### With user-defined JavaScript functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
-[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+[declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
 use it as part of your `filter` condition to freely adapt the filtering 
 to your needs.  
 
 Here is a simple example:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// declare a Javascript function
 declare function titlePrefix(r, prefix) 
@@ -578,7 +578,7 @@ filter_limit 100
 <Admonition type="note" title="Note">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [raw rql](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  to a dataset after its retrieval by [raw rql](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an 
@@ -588,30 +588,30 @@ filter_limit 100
 * You can filter the datasets retrieved by both **Index queries** and **Collection queries**.  
 
 * Exploration queries need to be used 
-  [with caution](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used) 
+  [with caution](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used) 
   since scanning and filtering all the data retrieved by a query cost substantial 
-  [server resources and user waiting time](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+  [server resources and user waiting time](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
   when large datasets are handled.  
     <Admonition type="warning" title="Warning">
 
     We recommend that you -  
 
-    * [Limit](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries) 
+    * [Limit](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries) 
       the number of records that an exploration query filters.  
-    * Use [where](../../indexes/querying/filtering) in recurring queries, 
-      so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+    * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
+      so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
     </Admonition>
 
 * In this page:  
-   * [`filter`](../../indexes/querying/exploration-queries#filter)
-   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
-   * [Syntax](../../indexes/querying/exploration-queries#syntax)
-   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
-      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
-      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
-      * [With projections](../../indexes/querying/exploration-queries#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
+   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
+   * [Usage examples](../../indexes/querying/exploration-queries.mdx#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
 
 </Admonition>
 
@@ -622,9 +622,9 @@ Exploration queries can be applied via RQL using the `filter` keyword.
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
 The provided filtering operations resemble those implemented by 
-[where](../../indexes/querying/filtering) and can be further enhanced 
+[where](../../indexes/querying/filtering.mdx) and can be further enhanced 
 by Javascript functions of your own.  
-Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) 
+Read [here](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) 
 about creating and using your own Javascript function in your filters.  
 
 
@@ -632,7 +632,7 @@ about creating and using your own Javascript function in your filters.
 ## When should exploration queries be used
 
 `filter` can be applied to a Collection query, like in:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -642,7 +642,7 @@ filter e.Address.Country = 'USA'
 
 it can also be applied to queries handled by an index, e.g. -  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a dynamic query via an auto-index  
 from Employees as e 
@@ -652,7 +652,7 @@ filter e.Address.Country = 'USA'
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// in a query that uses an index explicitly  
 from index 'Orders/ByCompany' 
@@ -685,7 +685,7 @@ in memory and CPU usage while it checks the filter condition for each query resu
 and cost the user a substantial waiting time. Therefore -  
 
 * **Limit** the number of records that an exploration query filters, e.g.:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 filter e.Address.Country = 'USA'
@@ -693,7 +693,7 @@ filter_limit 500 // limit the number of filtered records
 `}
 </CodeBlock>
 </TabItem>
-* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering 
   in subsequent queries.  
 </Admonition>
@@ -707,7 +707,7 @@ The `filter` keyword, followed by the filtering condition.
 The `filter_limit` option, followed by the max number of records to filter.  
 
 E.g. -  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Employees as e 
 where e.Title = 'Sales Representative'  
@@ -832,12 +832,12 @@ The filtered results can be projected using `select`, like those of any other qu
 #### With user-defined JavaScript functions (`declare`)
 
 You can define a Javascript function as part of your query using the 
-[declare](../../client-api/session/querying/what-is-rql#declare) keyword, and 
+[declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword, and 
 use it as part of your `filter` condition to freely adapt the filtering 
 to your needs.  
 
 Here is a simple example:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// declare a Javascript function
 declare function titlePrefix(r, prefix) 
@@ -864,8 +864,8 @@ filter_limit 100
 <Admonition type="note" title="Note">
 
 * **Exploration Queries** form an additional layer of filtering that can be applied 
-  to a dataset after its retrieval by [query](../../client-api/session/querying/how-to-query#session.query), 
-  or [rawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery), 
+  to a dataset after its retrieval by [query](../../client-api/session/querying/how-to-query.mdx#session.query), 
+  or [rawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery), 
   while the dataset is still held by the server.  
 
 * The **retrieved dataset** is scanned and filtered **without requiring or creating an index**,  
@@ -881,21 +881,21 @@ filter_limit 100
     We recommend that you -  
 
   * **Limit** the number of records that an exploration query filters.  
-  * Use [where](../../indexes/querying/filtering) in recurring queries, 
-    so the query would [use an index](../../indexes/querying/exploration-queries#limit-the-query-and-prefer--for-recurring-queries).  
+  * Use [where](../../indexes/querying/filtering.mdx) in recurring queries, 
+    so the query would [use an index](../../indexes/querying/exploration-queries.mdx#limit-the-query-and-prefer--for-recurring-queries).  
 
 </Admonition>
 
 * In this page:  
 
-   * [`filter`](../../indexes/querying/exploration-queries#filter)
-   * [When should exploration queries be used](../../indexes/querying/exploration-queries#when-should-exploration-queries-be-used)
-   * [Usage examples](../../indexes/querying/exploration-queries#usage-examples)
-      * [With collection queries](../../indexes/querying/exploration-queries#with-collection-queries)
-      * [With queries that use an index](../../indexes/querying/exploration-queries#with-queries-that-use-an-index)
-      * [With projections](../../indexes/querying/exploration-queries#with-projections)
-      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-)
-   * [Syntax](../../indexes/querying/exploration-queries#syntax)
+   * [`filter`](../../indexes/querying/exploration-queries.mdx#filter)
+   * [When should exploration queries be used](../../indexes/querying/exploration-queries.mdx#when-should-exploration-queries-be-used)
+   * [Usage examples](../../indexes/querying/exploration-queries.mdx#usage-examples)
+      * [With collection queries](../../indexes/querying/exploration-queries.mdx#with-collection-queries)
+      * [With queries that use an index](../../indexes/querying/exploration-queries.mdx#with-queries-that-use-an-index)
+      * [With projections](../../indexes/querying/exploration-queries.mdx#with-projections)
+      * [With user-defined JavaScript functions (`declare`)](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-)
+   * [Syntax](../../indexes/querying/exploration-queries.mdx#syntax)
 
 </Admonition>
 ## `filter`
@@ -907,9 +907,9 @@ Exploration queries can be applied using -
 
 The added filtering is parsed and executed by RavenDB's Javascript engine.  
 
-The provided filtering operations resemble those implemented by [where](../../indexes/querying/filtering) 
+The provided filtering operations resemble those implemented by [where](../../indexes/querying/filtering.mdx) 
 and can be further enhanced by Javascript functions of your own. 
-Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascript-functions-) about creating and using your own Javascript function in your filters.  
+Read [here](../../indexes/querying/exploration-queries.mdx#with-user-defined-javascript-functions-) about creating and using your own Javascript function in your filters.  
 
 
 
@@ -917,7 +917,7 @@ Read [here](../../indexes/querying/exploration-queries#with-user-defined-javascr
 
 `filter` can be applied to a Full-Collection query, for example:
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// A full-collection query:
 // ========================
@@ -933,7 +933,7 @@ filter e.Address.Country == "USA"
 
 It can also be applied to queries handled by an index:  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// A dynamic query:
 // ================
@@ -948,7 +948,7 @@ filter e.Address.Country == "USA"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// A static-index query:
 // =====================
@@ -983,7 +983,7 @@ exploring it using `filter` would tax the server in memory and CPU usage while i
 and cost the user a substantial waiting time. Therefore:  
 
 * **Limit** the number of records that an exploration query filters, e.g.:  
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from Orders
 // Apply filter
@@ -998,7 +998,7 @@ filter_limit 100
 </CodeBlock>
 </TabItem>
 
-* Use [where](../../indexes/querying/filtering) rather than `filter` for recurring filtering.  
+* Use [where](../../indexes/querying/filtering.mdx) rather than `filter` for recurring filtering.  
   `where` will use an index, creating it if necessary, to accelerate the filtering in subsequent queries.
  
 </Admonition>
@@ -1013,7 +1013,7 @@ Use `filter` with a full-collection query to scan and filter the entire collecti
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
      // Make a full-collection query
     .query({ collection: "companies" })
@@ -1033,7 +1033,7 @@ Use `filter` with a full-collection query to scan and filter the entire collecti
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
     .advanced
     .rawQuery("from Companies filter Address.Country == 'USA' filter_limit 50")
@@ -1063,7 +1063,7 @@ Use `filter` after a `whereEquals` clause to filter the results retrieved by the
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
      // Make a dynamic query on a collection
     .query({ collection: "companies" })
@@ -1088,7 +1088,7 @@ Use `filter` after a `whereEquals` clause to filter the results retrieved by the
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
     .advanced
     .rawQuery(\`from Companies 
@@ -1113,7 +1113,7 @@ The filtered results can be projected using `selectFields`, like those of any ot
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
      // Make a collection query
     .query({ collection: "companies" })
@@ -1134,7 +1134,7 @@ The filtered results can be projected using `selectFields`, like those of any ot
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const filteredCompanies = await session
     .advanced
     .rawQuery(\`from Companies 
@@ -1155,11 +1155,11 @@ select Name, Address.City, Address.Country
 </Tabs>
 #### With user-defined JavaScript functions (`declare`):
 
-When using RQL, you can define a JavaScript function using the [declare](../../client-api/session/querying/what-is-rql#declare) keyword.  
+When using RQL, you can define a JavaScript function using the [declare](../../client-api/session/querying/what-is-rql.mdx#declare) keyword.  
 This function can then be used as part of your `filter` condition to further customize the results.  
 For example:  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`// Declare a Javascript function:
 // ==============================
@@ -1185,8 +1185,8 @@ filter_limit 10
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`filter(builder);
 filter(builder, limit);
 `}

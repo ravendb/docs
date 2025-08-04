@@ -18,26 +18,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.  
   Each client certificate can be configured to specify which databases the certificate can access and its authorization clearance level.  
 
-* Read about the logic and rationale behind RavenDB's client certificates in [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach) to ensure that you configure them appropriately.  
+* Read about the logic and rationale behind RavenDB's client certificates in [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach) to ensure that you configure them appropriately.  
 
-* See the API article for integrating a client certificate into an application via the [document store](../../../client-api/creating-document-store).  
+* See the API article for integrating a client certificate into an application via the [document store](../../../client-api/creating-document-store.mdx).  
 
 In this page:  
 
-* [Studio Certificate Management View](../../../server/security/authentication/certificate-management#studio-certificates-management-view)  
-* [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)  
-  * [Authorization Levels in Client Certificates](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates)  
-  * [Partial Access to Database](../../../server/security/authentication/certificate-management#partial-access-to-database)  
-* [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates)  
-  * [List of Registered Certificates](../../../server/security/authentication/certificate-management#list-of-registered-certificates)  
-  * [Generate Client Certificate](../../../server/security/authentication/certificate-management#generate-client-certificate)  
-  * [Edit Certificate](../../../server/security/authentication/certificate-management#edit-certificate)  
-* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)  
-  * [Export Server Certificates](../../../server/security/authentication/certificate-management#export-server-certificates)  
-  * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)  
-  * [Certificate Collections](../../../server/security/authentication/certificate-management#certificate-collections)  
-  * [Private Keys](../../../server/security/authentication/certificate-management#private-keys)  
-  * [Client Certificate Chain of Trust](../../../server/security/authentication/certificate-management#client-certificate-chain-of-trust)  
+* [Studio Certificate Management View](../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view)  
+* [The RavenDB Security Authorization Approach](../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)  
+  * [Authorization Levels in Client Certificates](../../../server/security/authentication/certificate-management.mdx#authorization-levels-in-client-certificates)  
+  * [Partial Access to Database](../../../server/security/authentication/certificate-management.mdx#partial-access-to-database)  
+* [Create and Configure Certificates](../../../server/security/authentication/certificate-management.mdx#create-and-configure-certificates)  
+  * [List of Registered Certificates](../../../server/security/authentication/certificate-management.mdx#list-of-registered-certificates)  
+  * [Generate Client Certificate](../../../server/security/authentication/certificate-management.mdx#generate-client-certificate)  
+  * [Edit Certificate](../../../server/security/authentication/certificate-management.mdx#edit-certificate)  
+* [Enabling Communication Between Servers: Importing and Exporting Certificates](../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)  
+  * [Export Server Certificates](../../../server/security/authentication/certificate-management.mdx#export-server-certificates)  
+  * [Upload an Existing Certificate](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate)  
+  * [Certificate Collections](../../../server/security/authentication/certificate-management.mdx#certificate-collections)  
+  * [Private Keys](../../../server/security/authentication/certificate-management.mdx#private-keys)  
+  * [Client Certificate Chain of Trust](../../../server/security/authentication/certificate-management.mdx#client-certificate-chain-of-trust)  
 
 </Admonition>
 ## Studio Certificates Management View
@@ -49,20 +49,20 @@ In this page:
 3. **Client certificate**  
    ![Client Certificate Button Options](./assets/client-certificate-button-options.png)
    * **Generate client certificate**  
-     [Create and configure](../../../server/security/authentication/certificate-management#generate-client-certificate) a new client certificate  
+     [Create and configure](../../../server/security/authentication/certificate-management.mdx#generate-client-certificate) a new client certificate  
    * **Upload client certificate**  
-     [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) that was exported from another server so that they can communicate.  
+     [Import a client certificate](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate) that was exported from another server so that they can communicate.  
 4. **Server certificates**  
    ![Server Certificates Button Options](./assets/server-certificates-button-options.png)
    * **Export server certificates**  
-     [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) so that you can download and then import them into another server.  
+     [Download server certificates](../../../server/security/authentication/certificate-management.mdx#export-server-certificates) so that you can download and then import them into another server.  
    * **Replace server certificates**  
-     [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation) by uploading another `.pfx` certificate.  
+     [Replace server certificates](../../../server/security/authentication/certificate-renewal-and-rotation.mdx) by uploading another `.pfx` certificate.  
 5. Status of the current server certificate. 
-   * Click [Renew now](../../../server/security/authentication/certificate-renewal-and-rotation) to renew a server certificate's expiration period.  
+   * Click [Renew now](../../../server/security/authentication/certificate-renewal-and-rotation.mdx) to renew a server certificate's expiration period.  
     If you did not set up your server with the RavenDB Installation Wizard and Let's Encrypt then **you are responsible** to renew your certificates periodically.  
-6. Status of current client certificates active in this server. You can remove or [edit client certificates](../../../server/security/authentication/certificate-management#edit-certificate), 
-   including configuring databases permissions and [authorization (security clearance) levels](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) here. 
+6. Status of current client certificates active in this server. You can remove or [edit client certificates](../../../server/security/authentication/certificate-management.mdx#edit-certificate), 
+   including configuring databases permissions and [authorization (security clearance) levels](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) here. 
 
 <Admonition type="note" title="Note">
 
@@ -76,22 +76,22 @@ Client certificates are managed by RavenDB directly and not by any [Public Key I
 
 In general, RavenDB assumes that an application will implement its own logic and business rules, limiting 
 itself to protect the data from unauthorized access. Applications operate on behalf of developers, and as such, they are in a better position than RavenDB to determine what is
-allowed.  This is why access levels of RavenDB databases in each cluster are highly customizable by [cluster admins](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) 
-and [operators](../../../server/security/authorization/security-clearance-and-permissions#operator).  
+allowed.  This is why access levels of RavenDB databases in each cluster are highly customizable by [cluster admins](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) 
+and [operators](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator).  
 
 ### Authorization Levels in Client Certificates
 The security system in RavenDB does not make assumptions about which types of users should access which type of database. The concept of a user
 does not really exist within RavenDB in this manner. Instead, cluster admins or operators create various client certificates and configure each one with a custom set of permissions. 
 
 
-* [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin)  
+* [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin)  
   Full administrative access to clusters and databases within.  
-* [Operator](../../../server/security/authorization/security-clearance-and-permissions#operator)  
+* [Operator](../../../server/security/authorization/security-clearance-and-permissions.mdx#operator)  
   Admin access to databases, but not to modify the cluster.  
-* [User](../../../server/security/authorization/security-clearance-and-permissions#user)  
+* [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
   Lowest levels of privileges. 
   * "User" certificates are configured to specify which databases people can access with each certificate.  
-  * ["User" authorization levels](../../../server/security/authentication/certificate-management#setting-user-access-levels) are also configured per database.  
+  * ["User" authorization levels](../../../server/security/authentication/certificate-management.mdx#setting-user-access-levels) are also configured per database.  
 
 In most cases, users do not access RavenDB directly. Aside from admins and developers during the development process, all access to 
 the data inside RavenDB is expected to be done through your applications. A security mechanism on a per-user basis is not practical in complex systems 
@@ -122,23 +122,23 @@ any and all documents in that database unless protection is explicitly configure
 
 There are two approaches to giving partial access to a database:
 
- * [Using ETL for selective, one-way data transfer](../../../server/security/authentication/certificate-management#using-etl-for-selective-one-way-data-transfer)  
- * [Setting "User" Access Levels](../../../server/security/authentication/certificate-management#setting-user-access-levels)  
+ * [Using ETL for selective, one-way data transfer](../../../server/security/authentication/certificate-management.mdx#using-etl-for-selective-one-way-data-transfer)  
+ * [Setting "User" Access Levels](../../../server/security/authentication/certificate-management.mdx#setting-user-access-levels)  
 
 ####  *Using ETL for selective, one-way data transfer*  
 
-Some developers need to provide partial access to a database that also contains sensitive data. One approach is to set up an [Extract, Transform, Load (ETL) task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task):  
+Some developers need to provide partial access to a database that also contains sensitive data. One approach is to set up an [Extract, Transform, Load (ETL) task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx):  
 
-1. [Create](../../../studio/database/create-new-database/general-flow) a dedicated database that the public will be able to access.  
-2. [Generate a client certificate](../../../server/security/authentication/certificate-management#generate-client-certificate) with "User" security clearance so that
+1. [Create](../../../studio/database/create-new-database/general-flow.mdx) a dedicated database that the public will be able to access.  
+2. [Generate a client certificate](../../../server/security/authentication/certificate-management.mdx#generate-client-certificate) with "User" security clearance so that
    you can configure it to give access only to the dedicated, public-facing database.  
 3. If the dedicated database is on a different cluster than the source database: (This is optional. If both databases are on the same cluster, skip to step 4.)  
-   * [Export (download) server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) from the **destination server**.  
-   * [Upload the .pfx certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) to the **source server** to enable the two to connect.  
+   * [Export (download) server certificates](../../../server/security/authentication/certificate-management.mdx#export-server-certificates) from the **destination server**.  
+   * [Upload the .pfx certificate](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate) to the **source server** to enable the two to connect.  
     * While uploading, configure the certificate to give access to the target source database.  
-4. Then set up an [ETL](../../../server/ongoing-tasks/etl/raven) task from the source database to the exposed, destination database.  
-   * Set up a Javascript [Transform script](../../../server/ongoing-tasks/etl/basics#transform) in the ETL to automatically filter the information passed from the source to destination databases.  
-   * After entering the script code, you can click the blue button to [test the script](../../../server/ongoing-tasks/etl/test-scripts) before saving the ETL.  Once you click the red **Save** button, 
+4. Then set up an [ETL](../../../server/ongoing-tasks/etl/raven.mdx) task from the source database to the exposed, destination database.  
+   * Set up a Javascript [Transform script](../../../server/ongoing-tasks/etl/basics.mdx#transform) in the ETL to automatically filter the information passed from the source to destination databases.  
+   * After entering the script code, you can click the blue button to [test the script](../../../server/ongoing-tasks/etl/test-scripts.mdx) before saving the ETL.  Once you click the red **Save** button, 
      the ETL task begins to work.  It will transform and add the data to the dedicated database.  
 5. Check the dedicated database to make sure that the transform script did what you want it to do. 
    This database should only have the information that you filtered and is ready to expose to the public.
@@ -155,23 +155,23 @@ Together, ETL and dedicated databases can be used for fine-grained filtration, b
 
 ####  *Setting "User" Access Levels*  
 
-You can also control access by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions#user) security clearance. 
+You can also control access by giving a client certificate a [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) security clearance. 
 With this clearance, you can set a different access level to each database. The three "User" access levels are:  
 
-* User [Admin](../../../server/security/authorization/security-clearance-and-permissions#user)  
-* [Read/Write](../../../server/security/authorization/security-clearance-and-permissions#section-1)  
-* [Read-Only](../../../server/security/authorization/security-clearance-and-permissions#section-2)  
-  * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level).  
+* User [Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#user)  
+* [Read/Write](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-1)  
+* [Read-Only](../../../server/security/authorization/security-clearance-and-permissions.mdx#section-2)  
+  * Learn more about the [Read-Only access level here](../../../studio/server/certificates/read-only-access-level.mdx).  
 
 <Admonition type="note" title="Note">
 
-This approach is similar to the HR Manager and Customers certificates in the example given [above](../../../server/security/authentication/certificate-management#authorization-levels-in-client-certificates). 
+This approach is similar to the HR Manager and Customers certificates in the example given [above](../../../server/security/authentication/certificate-management.mdx#authorization-levels-in-client-certificates). 
 It enables developers to control access levels by configuring client certificates.  
 
 </Admonition>
 
-* To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management#create-and-configure-certificates).  
-* To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage#authentication-client-certificate-usage)
+* To learn how to configure each client certificate's database permissions and authorization levels via the RavenDB Studio GUI, see [Create and Configure Certificates](../../../server/security/authentication/certificate-management.mdx#create-and-configure-certificates).  
+* To learn how to configure client certificates via CLI, see [Authentication: Client Certificate Usage](../../../server/security/authentication/client-certificate-usage.mdx#authentication-client-certificate-usage)
 
 
 
@@ -186,7 +186,7 @@ In the image below, the client certificates (HR, localcluster.client.certificate
 This is done to give admins the ability to protect the contents of their databases by customizing permissions.  
 
 For example, if an application user should have read/write but not admin access over a certain database, while project managers should have operator permissions on all databases, 
-you can grant different [access levels](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+you can grant different [access levels](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) 
 by using different client certificates, each with its own set of permissions.  
 
 ![Figure 2. Status of Registered Certificates](./assets/registered.png)
@@ -198,7 +198,7 @@ Each client certificate contains the following:
 2. **Thumbprint**  
    Unique key for each certificate.  
 3. **Security Clearance**  
-   [Authorization level](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+   [Authorization level](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) 
    that determines the types of actions that can be done with this certificate.  
 4. **Expiration date**  
    Client certificates are given 5-year expiration periods by default.  
@@ -220,14 +220,14 @@ When generating a certificate, you must complete the following fields:
 2. **Name**  
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 3. **Security Clearance**  
-   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) 
    to choose the appropriate level.  
 4. **Certificate Passphrase**  
    (Optional) Set a password for this certificate.  
 5. **Expire in**  
    Set validity period.
 6. **Database Permissions**  
-   Configure allowed databases and ["User" access level](../../../server/security/authorization/security-clearance-and-permissions#user) for each database.  
+   Configure allowed databases and ["User" access level](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) for each database.  
    Relevant for "User" authorization level.  "Cluster Admin" and "Operator" have access to all databases.  
 
 
@@ -254,12 +254,12 @@ To edit existing certificates:
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system 
    (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 3. **Security Clearance**  
-   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) 
+   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) 
    to choose the appropriate level.  
 4. **Thumbprint**  
    Click the button to copy the unique code assigned to this certificate.  
 5. **Database Permissions**  
-   Configure allowed databases and ["User" access level](../../../server/security/authorization/security-clearance-and-permissions#user) for each database.  
+   Configure allowed databases and ["User" access level](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) for each database.  
    Relevant for "User" authorization level.  "Cluster Admin" and "Operator" have access to all databases.  
 
 <Admonition type="note" title="Note">
@@ -288,8 +288,8 @@ The following section explains how to give configurable access that enables comm
 To connect two secure databases, the destination cluster needs to trust the source cluster.  
 To achieve that you need to:
 
-a. **Export** ([download](../../../server/security/authentication/certificate-management#export-server-certificates)) the server certificate **from the source server**.  
-b. **Upload** ([import](../../../server/security/authentication/certificate-management#upload-an-existing-certificate)) the downloaded certificate **into the destination server**.  
+a. **Export** ([download](../../../server/security/authentication/certificate-management.mdx#export-server-certificates)) the server certificate **from the source server**.  
+b. **Upload** ([import](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate)) the downloaded certificate **into the destination server**.  
 
 </Admonition>
 
@@ -299,19 +299,19 @@ b. **Upload** ([import](../../../server/security/authentication/certificate-mana
  2. Click **Server certificates** in the source server.  
    ![Server Certificates Button Options](./assets/server-certificates-button-options.png)
    * **Export server certificates**  
-     [Download server certificates](../../../server/security/authentication/certificate-management#export-server-certificates) 
+     [Download server certificates](../../../server/security/authentication/certificate-management.mdx#export-server-certificates) 
      so that you can download and then import them into another server.  
  3. Click **Client certificate** in the destination server.  
    ![Client Certificate Button Options](./assets/client-certificate-button-options.png)
    * **Upload client certificate**  
-     [Import a client certificate](../../../server/security/authentication/certificate-management#upload-an-existing-certificate) 
+     [Import a client certificate](../../../server/security/authentication/certificate-management.mdx#upload-an-existing-certificate) 
      that was exported from another server so that the two can communicate.  
 ### Export Server Certificates
 
 ![Figure 6. Export Server Certificates](./assets/export-server-certificates.png)
 
 This option allows you to export the server certificate as a .pfx file. In the case of a cluster which contains several different server certificates, 
-a .pfx [collection](../../../server/security/authentication/certificate-management#certificate-collections) will be exported.
+a .pfx [collection](../../../server/security/authentication/certificate-management.mdx#certificate-collections) will be exported.
 ### Upload an Existing Certificate
 
 Click the **Client certificate** button, select **Upload client certificate** and you will see the following window.  
@@ -323,14 +323,14 @@ When uploading an existing certificate .pfx file, you must configure the certifi
 1. **Name**  
    Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
 2. **Security Clearance**  
-   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose the appropriate level.  
+   Set authorization level for this certificate. Read about [Security Clearance](../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) to choose the appropriate level.  
 3. **Certificate file**  
    Upload the `.pfx` certificate file from the destination server installation folder.  
 4. **Certificate Passphrase**  
    (Optional) Set a password for this certificate.  
 4. **Database permissions**  
    Select databases and permission levels for this certificate.  
-   If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions#user) authorization levels for this certificate.  
+   If you choose *User* security clearance, you can give access to specific databases on the server and configure [User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) authorization levels for this certificate.  
 
 The uploaded certificate will be added to the list of registered client certificates on this server.  
 
@@ -356,9 +356,9 @@ and will allow access to all these certificates explicitly by their thumbprint.
 * RavenDB provides an intuitive certificates management GUI in the Studio.  
 
 * All of the operations which are described below are also available in Command Line Interface (CLI).  
-  - Be sure to configure the `SecurityClearance` for each client certificate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) which has full access.
-  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage#example-ii---using-powershell-and-wget-in-windows).  
-  - [Linux](../../../server/security/authentication/client-certificate-usage#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
+  - Be sure to configure the `SecurityClearance` for each client certificate because the default is [cluster admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) which has full access.
+  - There are CLI-based means to [generate](../../../server/security/authentication/client-certificate-usage.mdx#example-i---using-the-ravendb-cli) and [configure client certificates in Windows](../../../server/security/authentication/client-certificate-usage.mdx#example-ii---using-powershell-and-wget-in-windows).  
+  - [Linux](../../../server/security/authentication/client-certificate-usage.mdx#example-iii--using-curl-in-linux) developers can use this cURL command sample.  
 ### Private Keys
 
 It's important to note that RavenDB does _not_ keep track of the certificate's private key. Whether you generate a client certificate
@@ -368,7 +368,7 @@ need to recreate a new certificate, assign the same permissions, and distribute 
 <Admonition type="info" title="Implicit Trust" id="implicit-trust" href="#implicit-trust">
 If two different RavenDB clusters are communicating securely, and the source cluster has its certificate renewed, the destination cluster could 
 still trust this new certificate - provided that the new certificate is signed with the same private key as the original, and was issued by the 
-same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash).  
+same certificate authority. This is accomplished using a [public key pinning hash](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash).  
 </Admonition>
 ### Client Certificate Chain of Trust
 

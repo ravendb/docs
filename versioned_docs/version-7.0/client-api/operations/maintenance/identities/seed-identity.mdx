@@ -25,12 +25,12 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
   
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
-* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-value)
-  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-lower-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#force-a-lower-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#syntax)
 
 </Admonition>
 ## Set a higher identity value 
@@ -166,7 +166,7 @@ using (var asyncSession = store.OpenAsyncSession())
 
 ## Syntax 
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public SeedIdentityForOperation(string name, long value, bool forceUpdate = false);
 `}
@@ -191,12 +191,12 @@ using (var asyncSession = store.OpenAsyncSession())
   
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
-* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-value)
-  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-lower-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#force-a-lower-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#syntax)
 
 </Admonition>
 ## Set a higher identity value 
@@ -204,7 +204,7 @@ using (var asyncSession = store.OpenAsyncSession())
 You can replace the latest identity value on the server with a new, **higher** number. 
  
 
-<TabItem value="something-something" label="seed_identity_1">
+<TabItem value="seed_identity_1" label="seed_identity_1">
 <CodeBlock language="python">
 {`# Seed a higher identity value on the server:
 # ===========================================
@@ -238,7 +238,7 @@ with store.open_session() as session:
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
-<TabItem value="something-something" label="seed_identity_2">
+<TabItem value="seed_identity_2" label="seed_identity_2">
 <CodeBlock language="python">
 {`# Force a smaller identity value on the server:
 # =============================================
@@ -269,7 +269,7 @@ with store.open_session() as session:
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class SeedIdentityForOperation(MaintenanceOperation[int]):
     def __init__(self, name: str, value: int, force_update: bool = False): ...
@@ -295,12 +295,12 @@ with store.open_session() as session:
   
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
-* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-value)
-  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-lower-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#force-a-lower-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#syntax)
 
 </Admonition>
 ## Set a higher identity value 
@@ -308,7 +308,7 @@ with store.open_session() as session:
 You can replace the latest identity value on the server with a new, **higher** number. 
  
 
-<TabItem value="something-something" label="seed_identity_1">
+<TabItem value="seed_identity_1" label="seed_identity_1">
 <CodeBlock language="php">
 {`// Seed a higher identity value on the server:
 // ===========================================
@@ -348,7 +348,7 @@ try \{
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
-<TabItem value="something-something" label="seed_identity_2">
+<TabItem value="seed_identity_2" label="seed_identity_2">
 <CodeBlock language="php">
 {`// Force a smaller identity value on the server:
 // =============================================
@@ -385,7 +385,7 @@ try \{
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`SeedIdentityForOperation(string $name, int $value, bool $forceUpdate = false)
 `}
@@ -410,20 +410,20 @@ try \{
   
 * The next document that will be created using an identity for the collection will receive the consecutive integer value.
 
-* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view).
+* Identity values can also be managed from the Studio [identities view](../../../../studio/database/documents/identities-view.mdx).
 
 * In this page:
-  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity#set-a-higher-identity-value)
-  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity#force-a-lower-identity-value)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity#syntax)
+  * [Set a higher identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#set-a-higher-identity-value)
+  * [Force a lower identity value](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#force-a-lower-identity-value)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/seed-identity.mdx#syntax)
 
 </Admonition>
 ## Set a higher identity value 
 
 You can replace the latest identity value on the server with a new, **higher** number. 
 
-<TabItem value="something-something" label="seed_identity_1">
-<CodeBlock language="nodejs">
+<TabItem value="seed_identity_1" label="seed_identity_1">
+<CodeBlock language="js">
 {`// Seed a higher identity value on the server:
 // ===========================================
 
@@ -458,8 +458,8 @@ await session.saveChanges();
 
 * Before proceeding, first ensure that documents with an identity value higher than the new number do not exist.
 
-<TabItem value="something-something" label="seed_identity_2">
-<CodeBlock language="nodejs">
+<TabItem value="seed_identity_2" label="seed_identity_2">
+<CodeBlock language="js">
 {`// Force a smaller identity value on the server:
 // =============================================
 
@@ -491,8 +491,8 @@ await session.saveChanges();
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const seedIdentityOp = new SeedIdentityForOperation(name, value, forceUpdate);
 `}
 </CodeBlock>

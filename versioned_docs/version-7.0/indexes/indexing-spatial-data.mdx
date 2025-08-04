@@ -25,17 +25,17 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   There are two options: **dynamic** spatial query, and spatial **index** query.  
 
   * **Dynamic spatial query**  
-    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)).  
+    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
     An auto-index will be created by the server.  
   
   * **Spatial index query**  
     Documents' spatial data can be indexed in a static index (**described in this article**),  
-    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial)).  
+    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial.mdx)).  
 
 * In this page:
-  * [Create index with spatial field](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data#customize-coordinate-system-and-strategy)
-  * [Spatial indexing strategies](../indexes/indexing-spatial-data#spatial-indexing-strategies)
+  * [Create index with spatial field](../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
 
 </Admonition>
 ## Create index with spatial field
@@ -44,7 +44,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
-* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index#spatial-field-options). 
+* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
 
 #### Exmaple:
 
@@ -134,7 +134,7 @@ public class EventWithWKT
 
 #### Syntax:
 
-<TabItem value="something" label="spatial_syntax_1">
+<TabItem value="spatial_syntax_1" label="spatial_syntax_1">
 <CodeBlock language="csharp">
 {`object CreateSpatialField(double? lat, double? lng); // Latitude/Longitude coordinates
 object CreateSpatialField(string shapeWkt);          // Shape in WKT string format
@@ -164,7 +164,7 @@ object CreateSpatialField(string shapeWkt);          // Shape in WKT string form
   Use the `Spatial` method from `AbstractIndexCreationTask` to modify this setting.
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
-  Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
+  Learn more about each strategy [below](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
 
 * Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
 
@@ -230,7 +230,7 @@ object CreateSpatialField(string shapeWkt);          // Shape in WKT string form
 
 #### Syntax:
 
-<TabItem value="something" label="spatial_syntax_2">
+<TabItem value="spatial_syntax_2" label="spatial_syntax_2">
 <CodeBlock language="csharp">
 {`public class SpatialOptionsFactory
 \{
@@ -387,14 +387,14 @@ Distance is measured by default in **kilometers**.
 To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
 
 <Admonition type="info" title="Info">
-This article describes how to setup a spatial field in static index. If you are interested in an automatic approach, please visit relevant spatial querying article that can be found [here](../indexes/querying/spatial).
+This article describes how to setup a spatial field in static index. If you are interested in an automatic approach, please visit relevant spatial querying article that can be found [here](../indexes/querying/spatial.mdx).
 </Admonition>
 
 ## Creating Indexes
 
 To take an advantage of the spatial search, first we need to create an index with a spatial field. To mark field as the spatial field, we need to use the `CreateSpatialField` method:
 
-<TabItem value="something-something" label="spatial_search_0">
+<TabItem value="spatial_search_0" label="spatial_search_0">
 <CodeBlock language="java">
 {`object CreateSpatialField(double? lat, double? lng);
 
@@ -527,7 +527,7 @@ public static class EventsWithWKT_ByNameAndWKT extends AbstractIndexCreationTask
 
 RavenDB supports both the `Geography` and `Cartesian` systems and multiple strategies for each one of them.
 
-<TabItem value="something-something" label="spatial_search_enhancements_3">
+<TabItem value="spatial_search_enhancements_3" label="spatial_search_enhancements_3">
 <CodeBlock language="java">
 {`public static class SpatialOptionsFactory \{
     public GeographySpatialOptionsFactory geography()
@@ -573,7 +573,7 @@ public SpatialOptions quadPrefixTreeIndex(int maxTreeLevel, SpatialBounds bounds
 
 By default, if no action is taken, the `GeohashPrefixTree` strategy is used with `GeohashLevel` set to **9**. This behavior can be changed by using the `spatial()` method from `AbstractIndexCreationTask`
 
-<TabItem value="something-something" label="spatial_search_3">
+<TabItem value="spatial_search_3" label="spatial_search_3">
 <CodeBlock language="java">
 {`public static class Events_ByNameAndCoordinates_Custom extends AbstractIndexCreationTask \{
     public Events_ByNameAndCoordinates_Custom() \{
@@ -677,7 +677,7 @@ Source: unterbahn.com
 ## Remarks
 
 <Admonition type="info" title="Info">
-You can read more about **spatial search** in a **dedicated querying article** available [here](../indexes/querying/spatial).
+You can read more about **spatial search** in a **dedicated querying article** available [here](../indexes/querying/spatial.mdx).
 </Admonition>
 
 <Admonition type="warning" title="Warning">
@@ -694,17 +694,17 @@ Distance by default is measured in **kilometers**.
   There are two options: **dynamic** spatial query, and spatial **index** query.  
 
   * **Dynamic spatial query**  
-    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)).  
+    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
     An auto-index will be created by the server.  
   
   * **Spatial index query**  
     Documents' spatial data can be indexed in a static index (**described in this article**),  
-    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial)).  
+    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial.mdx)).  
 
 * In this page:
-  * [Create index with spatial field](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data#customize-coordinate-system-and-strategy)
-  * [Spatial indexing strategies](../indexes/indexing-spatial-data#spatial-indexing-strategies)
+  * [Create index with spatial field](../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
 
 </Admonition>
 ## Create index with spatial field
@@ -713,7 +713,7 @@ Distance by default is measured in **kilometers**.
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
-* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index#spatial-field-options). 
+* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
 
 #### Exmaple:
 
@@ -784,7 +784,7 @@ class EventWithWKT:
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_1">
+<TabItem value="spatial_syntax_1" label="spatial_syntax_1">
 <CodeBlock language="python">
 {`class DynamicSpatialField(ABC):
     def __init__(self, round_factor: float = 0): ...
@@ -819,7 +819,7 @@ class WktField(DynamicSpatialField):  # Shape in WKT string format
 * **By default**, the `geohash_prefix_tree_index` strategy is used with `geohash_level` set to **9**.  
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
-  Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
+  Learn more about each strategy [below](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
 
 * Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
 
@@ -867,7 +867,7 @@ class WktField(DynamicSpatialField):  # Shape in WKT string format
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_2">
+<TabItem value="spatial_syntax_2" label="spatial_syntax_2">
 <CodeBlock language="python">
 {`class SpatialOptionsFactory:
     def geography(self) -> GeographySpatialOptionsFactory:
@@ -1024,17 +1024,17 @@ Distance is measured by default in `KILOMETERS`.
   There are two options: **dynamic** spatial query, and spatial **index** query.  
 
   * **Dynamic spatial query**  
-    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)).  
+    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
     An auto-index will be created by the server.  
   
   * **Spatial index query**  
     Documents' spatial data can be indexed in a static index (**described in this article**),  
-    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial)).  
+    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial.mdx)).  
 
 * In this page:
-  * [Create index with spatial field](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data#customize-coordinate-system-and-strategy)
-  * [Spatial indexing strategies](../indexes/indexing-spatial-data#spatial-indexing-strategies)
+  * [Create index with spatial field](../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
 
 </Admonition>
 ## Create index with spatial field
@@ -1043,7 +1043,7 @@ Distance is measured by default in `KILOMETERS`.
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
-* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index#spatial-field-options). 
+* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
 
 #### Exmaple:
 
@@ -1191,7 +1191,7 @@ class EventsWithWKT_ByNameAndWKT extends AbstractIndexCreationTask
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_1">
+<TabItem value="spatial_syntax_1" label="spatial_syntax_1">
 <CodeBlock language="php">
 {`object CreateSpatialField(double? lat, double? lng); // Latitude/Longitude coordinates
 object CreateSpatialField(string shapeWkt);          // Shape in WKT string format
@@ -1220,7 +1220,7 @@ object CreateSpatialField(string shapeWkt);          // Shape in WKT string form
 * **By default**, the `geohashPrefixTreeIndex` strategy is used with `geohashLevel` set to **9**.  
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
-  Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
+  Learn more about each strategy [below](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
 
 * Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
 
@@ -1285,7 +1285,7 @@ object CreateSpatialField(string shapeWkt);          // Shape in WKT string form
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_2">
+<TabItem value="spatial_syntax_2" label="spatial_syntax_2">
 <CodeBlock language="php">
 {`class SpatialOptionsFactory
 \{
@@ -1459,17 +1459,17 @@ Distance is measured by default in `KILOMETERS`.
   There are two options: **dynamic** spatial query, and spatial **index** query.  
 
   * **Dynamic spatial query**  
-    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query)).  
+    A dynamic spatial query can be made on a collection (see [how to make a spatial query](../client-api/session/querying/how-to-make-a-spatial-query.mdx)).  
     An auto-index will be created by the server.  
   
   * **Spatial index query**  
     Documents' spatial data can be indexed in a static index (**described in this article**),  
-    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial)).  
+    and a spatial query can then be executed over this index (see [query a spatial index](../indexes/querying/spatial.mdx)).  
 
 * In this page:
-  * [Create index with spatial field](../indexes/indexing-spatial-data#create-index-with-spatial-field)
-  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data#customize-coordinate-system-and-strategy)
-  * [Spatial indexing strategies](../indexes/indexing-spatial-data#spatial-indexing-strategies)
+  * [Create index with spatial field](../indexes/indexing-spatial-data.mdx#create-index-with-spatial-field)
+  * [Customize coordinate system and strategy](../indexes/indexing-spatial-data.mdx#customize-coordinate-system-and-strategy)
+  * [Spatial indexing strategies](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies)
 
 </Admonition>
 ## Create index with spatial field
@@ -1478,13 +1478,13 @@ Distance is measured by default in `KILOMETERS`.
 
 * You can then retrieve documents based on geographical criteria when making a spatial query on this index-field.
 
-* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index#spatial-field-options). 
+* A spatial index can also be defined from [Studio](../studio/database/indexes/create-map-index.mdx#spatial-field-options). 
 
 #### Exmaple:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Indexing_coordinates" label="Indexing_coordinates">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an index with a spatial field
 class Events_ByNameAndCoordinates extends AbstractJavaScriptIndexCreationTask {
     constructor() {
@@ -1520,7 +1520,7 @@ class Event {
 </CodeBlock>
 </TabItem>
 <TabItem value="Indexing_WKT" label="Indexing_WKT">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an index with a spatial field
 class EventsWithWKT_ByNameAndWKT extends AbstractJavaScriptIndexCreationTask {
     constructor() {
@@ -1555,8 +1555,8 @@ class EventWithWKT {
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="spatial_syntax_1" label="spatial_syntax_1">
+<CodeBlock language="js">
 {`createSpatialField(lat, lng);
 createSpatialField(wkt);
 `}
@@ -1591,14 +1591,14 @@ createSpatialField(wkt);
   Use the `spatial` method to modify this setting.
 
 * The performance cost of spatial indexing is directly related to the tree level chosen.  
-  Learn more about each strategy [below](../indexes/indexing-spatial-data#spatial-indexing-strategies).
+  Learn more about each strategy [below](../indexes/indexing-spatial-data.mdx#spatial-indexing-strategies).
 
 * Note: Modifying the strategy after the index has been created & deployed will trigger the re-indexing.
 
 #### Exmaple:
 
-<TabItem value="something-something" label="spatial_index_3">
-<CodeBlock language="nodejs">
+<TabItem value="spatial_index_3" label="spatial_index_3">
+<CodeBlock language="js">
 {`class Events_ByNameAndCoordinates_Custom extends AbstractJavaScriptIndexCreationTask \{
     constructor() \{
         super();
@@ -1628,8 +1628,8 @@ createSpatialField(wkt);
 
 #### Syntax:
 
-<TabItem value="something-something" label="spatial_syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="spatial_syntax_2" label="spatial_syntax_2">
+<CodeBlock language="js">
 {`class SpatialOptionsFactory \{
     geography(): GeographySpatialOptionsFactory;
     cartesian(): CartesianSpatialOptionsFactory;
@@ -1640,7 +1640,7 @@ createSpatialField(wkt);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="GeographySpatialOptionsFactory" label="GeographySpatialOptionsFactory">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`defaultOptions(circleRadiusUnits);
 boundingBoxIndex(circleRadiusUnits);
 geohashPrefixTreeIndex(maxTreeLevel, circleRadiusUnits);
@@ -1649,7 +1649,7 @@ quadPrefixTreeIndex(maxTreeLevel, circleRadiusUnits);
 </CodeBlock>
 </TabItem>
 <TabItem value="CartesianSpatialOptionsFactory" label="CartesianSpatialOptionsFactory">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`boundingBoxIndex(): SpatialOptions;
 quadPrefixTreeIndex(maxTreeLevel, bounds);
 

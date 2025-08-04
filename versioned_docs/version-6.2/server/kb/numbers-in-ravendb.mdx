@@ -25,12 +25,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 In this page:  
 
-* [About numbers](../../server/kb/numbers-in-ravendb#about-numbers)  
-* [Numbers in documents](../../server/kb/numbers-in-ravendb#numbers-in-documents)  
-* [Numbers in JavaScript](../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)  
-* [Numbers in indexes and queries](../../server/kb/numbers-in-ravendb#numbers-in-indexes-and-queries)  
-* [Numbers in studio](../../server/kb/numbers-in-ravendb#numbers-in-management-studio)  
-* [Numbers in client API](../../server/kb/numbers-in-ravendb#numbers-in-client-api)  
+* [About numbers](../../server/kb/numbers-in-ravendb.mdx#about-numbers)  
+* [Numbers in documents](../../server/kb/numbers-in-ravendb.mdx#numbers-in-documents)  
+* [Numbers in JavaScript](../../server/kb/numbers-in-ravendb.mdx#numbers-in-javascript-engine)  
+* [Numbers in indexes and queries](../../server/kb/numbers-in-ravendb.mdx#numbers-in-indexes-and-queries)  
+* [Numbers in studio](../../server/kb/numbers-in-ravendb.mdx#numbers-in-management-studio)  
+* [Numbers in client API](../../server/kb/numbers-in-ravendb.mdx#numbers-in-client-api)  
 
 
 </Admonition>
@@ -56,7 +56,7 @@ Please note that `long`'s max and min numbers are beyond the accuracy range of `
 
 <Admonition type="info" title="Examples in the page" id="examples-in-the-page" href="#examples-in-the-page">
 Examples in this page are based on the `InterstellarTrip` entity, describing an intergalactic journey of a brave pioneer:  
-<TabItem value="something" label="interstellar_trip">
+<TabItem value="interstellar_trip" label="interstellar_trip">
 <CodeBlock language="csharp">
 {`public class InterstellarTrip
 \{
@@ -94,7 +94,7 @@ precision of any number that is outside of the precision range of `double` will 
 RavenDB provides a way to receive the original value, before the cast to double. The only limitation is that it won't be possible to treat it as a number, but you will be able to receive a string representation of the value.  
 The way to do that is using the `scalarToRawString` extension method, example:  
 
-<TabItem value="something" label="query_with_big_number_projection">
+<TabItem value="query_with_big_number_projection" label="query_with_big_number_projection">
 <CodeBlock language="csharp">
 {`From InterstellarTrips as trip
 Where trip.Name = $name
@@ -118,7 +118,7 @@ In order to overcome that, it is recommended to treat those values as strings. T
 
 <Admonition type="info" title="Static indexes" id="static-indexes" href="#static-indexes">
 The way to treat numbers that exceed the precision level of `long` or `double` in static indexes, the string representation of the value should be indexed, It will use the raw value, rather the truncated one. 
-<TabItem value="something" label="interstellar_static_index">
+<TabItem value="interstellar_static_index" label="interstellar_static_index">
 <CodeBlock language="csharp">
 {`Map = interstellarTrips => from trip in interstellarTrips
                            select new
@@ -133,7 +133,7 @@ The way to treat numbers that exceed the precision level of `long` or `double` i
 <Admonition type="info" title="Query" id="query" href="#query">
 Query work as expected with integers in the 'long' range and fractions in the `double` range and precision.  
 In order to query numbers outside of that range, query the the field using the string representation of the value, whether if using an index or a collection query.
-<TabItem value="something" label="query_with_big_number_projection">
+<TabItem value="query_with_big_number_projection" label="query_with_big_number_projection">
 <CodeBlock language="csharp">
 {`From InterstellarTrips as trip
 Where trip.Name = $name
@@ -161,7 +161,7 @@ Note that editing documents with numeric data outside of the precision range of 
 
 Numbers in RavenDB clients depend on the limitations of the platforms and the serialization/deserialization mechanisms. See articles in the desired languages:
 
-[Number (de)serialization](../../client-api/configuration/serialization#working-with-numbers)
+[Number (de)serialization](../../client-api/configuration/serialization.mdx#working-with-numbers)
 
 
 

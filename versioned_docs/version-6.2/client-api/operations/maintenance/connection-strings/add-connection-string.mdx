@@ -21,24 +21,24 @@ export const supportedLanguages = ["csharp"];
 
 <Admonition type="note" title="Note">
 
-* Use the [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#the%c2%a0putconnectionstringoperation%c2%a0method) method to define a connection string in your database.
+* Use the [PutConnectionStringOperation](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#the%c2%a0putconnectionstringoperation%c2%a0method) method to define a connection string in your database.
 
 * In this page:  
-    * [Add a RavenDB connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-ravendb-connection-string)  
-    * [Add an SQL connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-sql-connection-string)  
-    * [Add an OLAP connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-olap-connection-string)  
-    * [Add an Elasticsearch connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-elasticsearch-connection-string)  
-    * [Add a Kafka connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-kafka-connection-string)  
-    * [Add a RabbitMQ connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-rabbitmq-connection-string)  
-    * [Add an Azure Queue Storage connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-azure-queue-storage-connection-string)
-    * [The PutConnectionStringOperation method](../../../../client-api/operations/maintenance/connection-strings/add-connection-string#the%c2%a0putconnectionstringoperation%c2%a0method)
+    * [Add a RavenDB connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-ravendb-connection-string)  
+    * [Add an SQL connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)  
+    * [Add an OLAP connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string)  
+    * [Add an Elasticsearch connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-elasticsearch-connection-string)  
+    * [Add a Kafka connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-kafka-connection-string)  
+    * [Add a RabbitMQ connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-rabbitmq-connection-string)  
+    * [Add an Azure Queue Storage connection string](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-azure-queue-storage-connection-string)
+    * [The PutConnectionStringOperation method](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#the%c2%a0putconnectionstringoperation%c2%a0method)
 
 </Admonition>
 ## Add a RavenDB connection string
 
-The RavenDB connection string is used by RavenDB's [RavenDB ETL Task](../../../../server/ongoing-tasks/etl/raven).
+The RavenDB connection string is used by RavenDB's [RavenDB ETL Task](../../../../server/ongoing-tasks/etl/raven.mdx).
 Example:
-<TabItem value="something" label="add_raven_connection_string">
+<TabItem value="add_raven_connection_string" label="add_raven_connection_string">
 <CodeBlock language="csharp">
 {`// Define a connection string to a RavenDB database destination
 // ============================================================
@@ -57,7 +57,7 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
 </CodeBlock>
 </TabItem>
 Syntax:
-<TabItem value="something-something" label="raven_connection_string">
+<TabItem value="raven_connection_string" label="raven_connection_string">
 <CodeBlock language="csharp">
 {`public class RavenConnectionString : ConnectionString
 \{
@@ -74,12 +74,12 @@ Syntax:
 
 **Secure servers**  
 
-To [connect to secure RavenDB servers](../../../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates)
+To [connect to secure RavenDB servers](../../../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates)
 you need to:  
 1. Export the server certificate from the source server.  
 2. Install it as a client certificate on the destination server.  
   
-This can be done from the [Certificates view](../../../../server/security/authentication/certificate-management#studio-certificates-management-view) in the Studio.
+This can be done from the [Certificates view](../../../../server/security/authentication/certificate-management.mdx#studio-certificates-management-view) in the Studio.
 
 </Admonition>
 
@@ -87,9 +87,9 @@ This can be done from the [Certificates view](../../../../server/security/authen
 
 ## Add an SQL connection string
 
-The SQL connection string is used by RavenDB's [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql).
+The SQL connection string is used by RavenDB's [SQL ETL Task](../../../../server/ongoing-tasks/etl/sql.mdx).
 Example:
-<TabItem value="something" label="add_sql_connection_string">
+<TabItem value="add_sql_connection_string" label="add_sql_connection_string">
 <CodeBlock language="csharp">
 {`// Define a connection string to a SQL database destination
 // ========================================================
@@ -114,7 +114,7 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
 </CodeBlock>
 </TabItem>
 Syntax:
-<TabItem value="something" label="sql_connection_string">
+<TabItem value="sql_connection_string" label="sql_connection_string">
 <CodeBlock language="csharp">
 {`public class SqlConnectionString : ConnectionString
 \{
@@ -131,10 +131,10 @@ Syntax:
 
 ## Add an OLAP connection string
 
-The OLAP connection string is used by RavenDB's [OLAP ETL Task](../../../../server/ongoing-tasks/etl/olap).
+The OLAP connection string is used by RavenDB's [OLAP ETL Task](../../../../server/ongoing-tasks/etl/olap.mdx).
 **To a local machine** - example:  
 
-<TabItem value="something" label="add_olap_connection_string_1">
+<TabItem value="add_olap_connection_string_1" label="add_olap_connection_string_1">
 <CodeBlock language="csharp">
 {`// Define a connection string to a local OLAP destination
 // ======================================================
@@ -158,9 +158,9 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
   
 * The following example shows a connection string to Amazon AWS.  
 * Adust the parameters as needed if you are using other cloud-based servers (e.g. Google, Azure, Glacier, S3, FTP).  
-* The available parameters are listed in [ETL destination settings](../../../../server/ongoing-tasks/etl/olap#etl-destination-settings).   
+* The available parameters are listed in [ETL destination settings](../../../../server/ongoing-tasks/etl/olap.mdx#etl-destination-settings).   
 
-<TabItem value="something" label="add_olap_connection_string_2">
+<TabItem value="add_olap_connection_string_2" label="add_olap_connection_string_2">
 <CodeBlock language="csharp">
 {`// Define a connection string to an AWS OLAP destination
 // =====================================================
@@ -185,7 +185,7 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
 </CodeBlock>
 </TabItem>
 Syntax:
-<TabItem value="something" label="olap_connection_string">
+<TabItem value="olap_connection_string" label="olap_connection_string">
 <CodeBlock language="csharp">
 {`public class OlapConnectionString : ConnectionString
 \{
@@ -206,9 +206,9 @@ Syntax:
 
 ## Add an Elasticsearch connection string  
 
-The Elasticsearch connection string is used by RavenDB's [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch).
+The Elasticsearch connection string is used by RavenDB's [Elasticsearch ETL Task](../../../../server/ongoing-tasks/etl/elasticsearch.mdx).
 Example:
-<TabItem value="something" label="add_elasticsearch_connection_string">
+<TabItem value="add_elasticsearch_connection_string" label="add_elasticsearch_connection_string">
 <CodeBlock language="csharp">
 {`// Define a connection string to an Elasticsearch destination
 // ==========================================================
@@ -239,7 +239,7 @@ PutConnectionStringResult connectionStringResult = store.Maintenance.Send(PutCon
 </CodeBlock>
 </TabItem>
 Syntax:
-<TabItem value="something" label="elasticsearch_connection_string">
+<TabItem value="elasticsearch_connection_string" label="elasticsearch_connection_string">
 <CodeBlock language="csharp">
 {`public class ElasticsearchConnectionString : ConnectionString
 \{
@@ -259,28 +259,28 @@ Syntax:
 
 ## Add a Kafka connection string 
 
-The Kafkah connection string is used by RavenDB's [Kafka Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/kafka).  
+The Kafkah connection string is used by RavenDB's [Kafka Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx).  
 Learn how to add a Kafka connection string in section [Add a Kafka connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string).
 
 
 
 ## Add a RabbitMQ connection string 
 
-The RabbitMQ connection string is used by RavenDB's [RabbitMQ Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq).  
+The RabbitMQ connection string is used by RavenDB's [RabbitMQ Queue ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx).  
 Learn how to add a RabbitMQ connection string in section [Add a RabbitMQ connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string).
 
 
 
 ## Add an Azure Queue Storage connection string 
 
-The Azure Queue Storage connection string is used by RavenDB's [Azure Queue Storage ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue).  
+The Azure Queue Storage connection string is used by RavenDB's [Azure Queue Storage ETL Task](../../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx).  
 Learn to add an Azure Queue Storage connection string in section [Add an Azure Queue Storage connection string]( ../../../../server/ongoing-tasks/etl/queue-etl/azure-queue#add-an-azure-queue-storage-connection-string).
 
 
 
 ## The&nbsp;`PutConnectionStringOperation`&nbsp;method
 
-<TabItem value="something" label="put_connection_string">
+<TabItem value="put_connection_string" label="put_connection_string">
 <CodeBlock language="csharp">
 {`public PutConnectionStringOperation(T connectionString)
 `}
@@ -295,7 +295,7 @@ Learn to add an Azure Queue Storage connection string in section [Add an Azure Q
 | **connectionString** | `ElasticSearchConnectionString` | Object that defines the Elasticsearch connction string.                                                            |
 | **connectionString** | `QueueConnectionString`         | Object that defines the connection string for the Queue ETLs tasks (Kafka, RabbitMQ, and the Azure Queue Storage). |
 
-<TabItem value="something-something" label="connection_string_class">
+<TabItem value="connection_string_class" label="connection_string_class">
 <CodeBlock language="csharp">
 {`// All the connection string class types inherit from this abstract ConnectionString class:
 // ========================================================================================

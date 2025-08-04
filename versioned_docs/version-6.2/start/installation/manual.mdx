@@ -25,26 +25,26 @@ If you choose manual setup and/or to provide your own certificate, **you are res
 
 In this page: 
 
-* [Downloading Server and Setting Up Node Folders](../../start/installation/manual#downloading-server-and-setting-up-node-folders)
-* [Disabling 'Setup Wizard'](../../start/installation/manual#disabling-setup-wizard)  
-* [Server Url and Port](../../start/installation/manual#server-url-and-port)
-* [Security](../../start/installation/manual#security)
-* [Configuration](../../start/installation/manual#configuration)
+* [Downloading Server and Setting Up Node Folders](../../start/installation/manual.mdx#downloading-server-and-setting-up-node-folders)
+* [Disabling 'Setup Wizard'](../../start/installation/manual.mdx#disabling-setup-wizard)  
+* [Server Url and Port](../../start/installation/manual.mdx#server-url-and-port)
+* [Security](../../start/installation/manual.mdx#security)
+* [Configuration](../../start/installation/manual.mdx#configuration)
 
 ## Downloading Server and Setting Up Node Folders
 Download the [RavenDB server package](https://ravendb.net/download) and extract it into permanent server folders on each machine.  
 
-We recommend using multiple machines to improve [cluster availability via failover](../../client-api/cluster/how-client-integrates-with-replication-and-cluster) in case one goes down.  
+We recommend using multiple machines to improve [cluster availability via failover](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx) in case one goes down.  
 
 * Each folder that contains an extracted server package will become a functional node in your cluster.  
 * If you move the folders after installation, **the server will not work**.  
    You'll receive a 'System.InvalidOperationException: Unable to start the server.' error because it will look for the file path that is set when you install.  
 
-By default, when a server is started using `run.ps1` (or `run.sh` in Linux) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the server configuration process.  
+By default, when a server is started using `run.ps1` (or `run.sh` in Linux) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard.mdx) which will guide you through the server configuration process.  
 
-The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options#settings.json) (found in the downloaded RavenDB Server package inside the **Server** folder) comes configured like this:
+The setup is started because the default configuration file [settings.json](../../server/configuration/configuration-options.mdx#settings.json) (found in the downloaded RavenDB Server package inside the **Server** folder) comes configured like this:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "ServerUrl": "http://127.0.0.1:0",
@@ -89,9 +89,9 @@ access control to prevent unauthorized access.
 
 </Admonition>
 
-Read the [Manual Certificate Configuration](../../server/security/authentication/certificate-configuration) section to learn how to setup security manually.
+Read the [Manual Certificate Configuration](../../server/security/authentication/certificate-configuration.mdx) section to learn how to setup security manually.
 
 ## Configuration
 
-Read the [Configuration Section](../../server/configuration/configuration-options) to learn more about using [settings.json](../../server/configuration/configuration-options#settings.json) and see a list of configuration options.
+Read the [Configuration Section](../../server/configuration/configuration-options.mdx) to learn more about using [settings.json](../../server/configuration/configuration-options.mdx#settings.json) and see a list of configuration options.
 

@@ -24,9 +24,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   If there is no Leader, no Database Group Topology decisions can be made.  
 
 * In this page:  
-  * [The Observer Log](../../../../studio/server/debug/advanced/cluster-observer#the-observer-log)  
-  * [Observer Log Data](../../../../studio/server/debug/advanced/cluster-observer#observer-log-data)  
-  * [States Flow](../../../../studio/server/debug/advanced/cluster-observer#states-flow)  
+  * [The Observer Log](../../../../studio/server/debug/advanced/cluster-observer.mdx#the-observer-log)  
+  * [Observer Log Data](../../../../studio/server/debug/advanced/cluster-observer.mdx#observer-log-data)  
+  * [States Flow](../../../../studio/server/debug/advanced/cluster-observer.mdx#states-flow)  
 </Admonition>
 
 <Admonition type="note" title="Note">
@@ -34,8 +34,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Don't confuse the Database Group Topology with the Cluster Topology  
 
-* For more info about node types and states in the **Cluster** see [Cluster View](../../../../studio/cluster/cluster-view)  
-  For more info about node types and states in the **Database Group** see [Database Group](../../../../studio/database/settings/manage-database-group)  
+* For more info about node types and states in the **Cluster** see [Cluster View](../../../../studio/cluster/cluster-view.mdx)  
+  For more info about node types and states in the **Database Group** see [Database Group](../../../../studio/database/settings/manage-database-group.mdx)  
 </Admonition>
 ## The Observer Log
 
@@ -79,7 +79,7 @@ Click `Refresh` to get latest actions performed by the Observer
 2. Once the node has caught up with the state of the Database Group, fully updated with the database data and finished indexing the last data sent to it, 
    the Observer will promote it to a full `Member`.  
 
-   For a detailed explanation of a Member actions and tasks within a database group see [Database Group](../../../../studio/database/settings/manage-database-group)  
+   For a detailed explanation of a Member actions and tasks within a database group see [Database Group](../../../../studio/database/settings/manage-database-group.mdx)  
 </Admonition>
 
 <Admonition type="note" title="Note">
@@ -87,7 +87,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 1. Set the node to a `Rehab` state.  
 
-2. If 'Allow Dynamic Database Distribution' is set (see [Create Database](../../../../studio/database/create-new-database/general-flow)),  
+2. If 'Allow Dynamic Database Distribution' is set (see [Create Database](../../../../studio/database/create-new-database/general-flow.mdx)),  
    then after a pre-configured time period, the Observer will add another node from the cluster to the Database Group in order to keep the replication factor.  
    The replacement node will be set to `Promotable` and will start catching up data from the other nodes in the group.  
 

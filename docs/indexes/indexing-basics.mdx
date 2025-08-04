@@ -20,7 +20,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <LanguageContent language="csharp">
 
 
-To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql) for querying.
+To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql.mdx) for querying.
 
 ## Stale Indexes
 
@@ -29,12 +29,12 @@ The notion of stale indexes comes from an observation deep in RavenDB's design, 
 RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. Since the previous request has returned so quickly, the next query can be made a millisecond after that. and results will be returned but they will be marked as `Stale`.
 
 <Admonition type="info" title="Info">
-You can read more about stale indexes [here](../indexes/stale-indexes).
+You can read more about stale indexes [here](../indexes/stale-indexes.mdx).
 </Admonition>
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query#session.advanced.rawquery) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) that) and do not bother about anything else.
 
 The fact is that we did not stop at this point. We went much further by exposing LINQ-based querying with strong-type support that hides all Lucene syntax complexity:
 
@@ -66,7 +66,7 @@ where FirstName = 'Robert'
 </TabItem>
 </Tabs>
 
-You can also create queries manually by using  [DocumentQuery](../client-api/session/querying/document-query/what-is-document-query) or [RawQuery](../client-api/session/querying/how-to-query#session.advanced.rawquery), both available as a part of advanced session operations:
+You can also create queries manually by using  [DocumentQuery](../client-api/session/querying/document-query/what-is-document-query.mdx) or [RawQuery](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery), both available as a part of advanced session operations:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DocumentQuery" label="DocumentQuery">
@@ -99,18 +99,18 @@ where FirstName = 'Robert'
 
 ## Types of Indexes
 
-You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
+You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying.mdx)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
 
 `Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed. They indicate which documents can be searched by which fields.
 
 `Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
 
 <Admonition type="info" title="Map Indexes" id="map-indexes" href="#map-indexes">
-You can read more about `Map` indexes [here](../indexes/map-indexes).
+You can read more about `Map` indexes [here](../indexes/map-indexes.mdx).
 </Admonition>
 
 <Admonition type="info" title="Map-Reduce Indexes" id="map-reduce-indexes" href="#map-reduce-indexes">
-More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes).
+More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes.mdx).
 </Admonition>
 
 
@@ -118,7 +118,7 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 <LanguageContent language="java">
 
 
-To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql) for querying.
+To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql.mdx) for querying.
 
 ## Stale Indexes
 
@@ -127,12 +127,12 @@ The notion of stale indexes comes from an observation deep in RavenDB's design, 
 RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. Since the previous request has returned so quickly, the next query can be made a millisecond after that. and results will be returned but they will be marked as `Stale`.
 
 <Admonition type="info" title="Info">
-You can read more about stale indexes [here](../indexes/stale-indexes).
+You can read more about stale indexes [here](../indexes/stale-indexes.mdx).
 </Admonition>
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query#session.advanced.rawquery) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) that) and do not bother about anything else.
 
 The fact is that we did not stop at this point. We went much further, by exposing querying methods that hides all Lucene syntax complexity:
 
@@ -154,7 +154,7 @@ where FirstName = 'Robert'
 </TabItem>
 </Tabs>
 
-You can also create queries by using [RawQuery](../client-api/session/querying/how-to-query#session.advanced.rawquery). It is available as a part of advanced session operations:
+You can also create queries by using [RawQuery](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery). It is available as a part of advanced session operations:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
@@ -176,18 +176,18 @@ where FirstName = 'Robert'
 
 ## Types of Indexes
 
-You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
+You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying.mdx)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
 
 `Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed. They indicate which documents can be searched by which fields.
 
 `Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
 
 <Admonition type="info" title="Map Indexes" id="map-indexes" href="#map-indexes">
-You can read more about `Map` indexes [here](../indexes/map-indexes).
+You can read more about `Map` indexes [here](../indexes/map-indexes.mdx).
 </Admonition>
 
 <Admonition type="info" title="Map-Reduce Indexes" id="map-reduce-indexes" href="#map-reduce-indexes">
-More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes).
+More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes.mdx).
 </Admonition>
 
 
@@ -195,7 +195,7 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 <LanguageContent language="nodejs">
 
 
-To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql) for querying.
+To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../client-api/session/querying/what-is-rql.mdx) for querying.
 
 ## Stale Indexes
 
@@ -204,18 +204,18 @@ The notion of stale indexes comes from an observation deep in RavenDB's design, 
 RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. Since the previous request has returned so quickly, the next query can be made a millisecond after that. and results will be returned but they will be marked as `Stale`.
 
 <Admonition type="info" title="Info">
-You can read more about stale indexes [here](../indexes/stale-indexes).
+You can read more about stale indexes [here](../indexes/stale-indexes.mdx).
 </Admonition>
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query#session.advanced.rawquery) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) that) and do not bother about anything else.
 
 The fact is that we did not stop at this point. We went much further, by exposing querying methods that hides all Lucene syntax complexity:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const employees = await session.query({ indexName: "Employees/ByFirstName" })
     .whereEquals("FirstName", "Robert")
     .all();
@@ -231,11 +231,11 @@ where FirstName = 'Robert'
 </TabItem>
 </Tabs>
 
-You can also create queries by using [RawQuery](../client-api/session/querying/how-to-query#session.advanced.rawquery). It is available as a part of advanced session operations:
+You can also create queries by using [RawQuery](../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery). It is available as a part of advanced session operations:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const employees = await session.advanced
     .rawQuery("from index 'Employees/ByFirstName' where FirstName = 'Robert'")
     .all();
@@ -253,18 +253,18 @@ where FirstName = 'Robert'
 
 ## Types of Indexes
 
-You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
+You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying.mdx)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
 
 `Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed. They indicate which documents can be searched by which fields.
 
 `Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
 
 <Admonition type="info" title="Map Indexes" id="map-indexes" href="#map-indexes">
-You can read more about `Map` indexes [here](../indexes/map-indexes).
+You can read more about `Map` indexes [here](../indexes/map-indexes.mdx).
 </Admonition>
 
 <Admonition type="info" title="Map-Reduce Indexes" id="map-reduce-indexes" href="#map-reduce-indexes">
-More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes).
+More detailed information about `Map-Reduce` indexes can be found [here](../indexes/map-reduce-indexes.mdx).
 </Admonition>
 
 

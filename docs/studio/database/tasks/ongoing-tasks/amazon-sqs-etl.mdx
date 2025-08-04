@@ -24,15 +24,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Document extensions like attachments, counters, time series, and revisions are not sent.  
 
 * This page explains how to create an Amazon SQS ETL task using Studio.  
-  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs) how to define 
+  [Learn here](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx) how to define 
   an Amazon SQS ETL task using the Client API.  .  
  
 * In this page:  
-  * [Ongoing Tasks View](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#ongoing-tasks-view)  
-  * [Define the Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#define-amazon-sqs-etl-task)  
-  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#add-or-edit-transformation-script)  
-  * [Comments](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#comments)  
-      * [ETL message size -vs- Queue message size](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl#etl-message-size--vs--queue-message-size)  
+  * [Ongoing Tasks View](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#ongoing-tasks-view)  
+  * [Define the Amazon SQS ETL task](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#define-amazon-sqs-etl-task)  
+  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#add-or-edit-transformation-script)  
+  * [Comments](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#comments)  
+      * [ETL message size -vs- Queue message size](../../../../studio/database/tasks/ongoing-tasks/amazon-sqs-etl.mdx#etl-message-size--vs--queue-message-size)  
 </Admonition>
 ## Ongoing Tasks View
 
@@ -61,8 +61,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Disabled - No documents are transformed and sent.  
 
 3. **Set Responsible Node** (Optional)  
-    * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-    * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+    * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task.  
+    * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Connection string and Authentication**  
    The connection string contains the necessary information to connect to an SQS destination.  
@@ -75,7 +75,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
       **Passwordless** requires the machine to be pre-authorized and can only be used in self-hosted mode.  
     * `C.` **Advanced**  
       Click to open per-queue advanced options.  
-      Use this option to determine whether to [delete documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs#delete-processed-documents) 
+      Use this option to determine whether to [delete documents](../../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx#delete-processed-documents) 
       from the database after they are processed.  
 
          ![Delete processed documents](./assets/sqs_delete-processed-docs.png)

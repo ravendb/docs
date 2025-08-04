@@ -24,7 +24,7 @@ This operation is used to delete an attachment from a document.
 
 ## Syntax
 
-<TabItem value="something" label="delete_attachment_syntax">
+<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
 <CodeBlock language="csharp">
 {`public DeleteAttachmentOperation(string documentId, string name, string changeVector = null)
 `}
@@ -39,7 +39,7 @@ This operation is used to delete an attachment from a document.
 
 ## Example
 
-<TabItem value="something" label="delete_1">
+<TabItem value="delete_1" label="delete_1">
 <CodeBlock language="csharp">
 {`store.Operations.Send(new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
 `}
@@ -55,7 +55,7 @@ This operation is used to delete an attachment from a document.
 
 ## Syntax
 
-<TabItem value="something-something" label="delete_attachment_syntax">
+<TabItem value="delete_attachment_syntax" label="delete_attachment_syntax">
 <CodeBlock language="java">
 {`DeleteAttachmentOperation(String documentId, String name)
 
@@ -72,7 +72,7 @@ DeleteAttachmentOperation(String documentId, String name, String changeVector)
 
 ## Example
 
-<TabItem value="something-something" label="delete_1">
+<TabItem value="delete_1" label="delete_1">
 <CodeBlock language="java">
 {`store.operations().send(
     new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
@@ -90,14 +90,14 @@ DeleteAttachmentOperation(String documentId, String name, String changeVector)
 
 * In this page:
 
-    * [Delete attachment example](../../../client-api/operations/attachments/delete-attachment#delete-attachment-example)
-    * [Syntax](../../../client-api/operations/attachments/delete-attachment#syntax)
+    * [Delete attachment example](../../../client-api/operations/attachments/delete-attachment.mdx#delete-attachment-example)
+    * [Syntax](../../../client-api/operations/attachments/delete-attachment.mdx#syntax)
 
 </Admonition>
 ## Delete attachment example
 
-<TabItem value="something-something" label="delete_attachment">
-<CodeBlock language="nodejs">
+<TabItem value="delete_attachment" label="delete_attachment">
+<CodeBlock language="js">
 {`// Define the delete attachment operation
 const deleteAttachmentOp = new DeleteAttachmentOperation("employees/1-A", "photo.jpg");
 
@@ -111,8 +111,8 @@ await documentStore.operations.send(deleteAttachmentOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name);
 const deleteAttachmentOp = new DeleteAttachmentOperation(documentId, name, changeVector);

@@ -18,18 +18,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * A backed-up database can be restored to a new database, either 
   by client API methods or through the Studio.  
 
-* On a [sharded](../../../../sharding/overview) database, restore 
+* On a [sharded](../../../../sharding/overview.mdx) database, restore 
   is performed per shard, using the backups created by the shards.  
-  Read about restore on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/restore).  
+  Read about restore on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/restore.mdx).  
 
 * In this page:  
-  * [Restoring a Database: Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database:-configuration-and-execution)  
-  * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore#optional-settings)  
-  * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
-  * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
-     * [Restore to a Single Node & Replicate to Other Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
-     * [Restore to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-simultaneously)  
-  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore#recommended-precautions)  
+  * [Restoring a Database: Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore.mdx#restoring-a-database:-configuration-and-execution)  
+  * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore.mdx#optional-settings)  
+  * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node)  
+  * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes)  
+     * [Restore to a Single Node & Replicate to Other Nodes](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
+     * [Restore to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore.mdx#restore-database-to-multiple-nodes-simultaneously)  
+  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions)  
 
 </Admonition>
 ## Restoring a Database: Configuration and Execution
@@ -37,14 +37,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 To restore a database, set a `RestoreBackupConfiguration` instance and pass 
 it to `RestoreBackupOperation` for execution.  
 ### `RestoreBackupOperation`
-<TabItem value="something" label="restore_restorebackupoperation">
+<TabItem value="restore_restorebackupoperation" label="restore_restorebackupoperation">
 <CodeBlock language="csharp">
 {`public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
 `}
 </CodeBlock>
 </TabItem>  
 ### `RestoreBackupConfiguration`
-<TabItem value="something" label="restore_restorebackupconfiguration">
+<TabItem value="restore_restorebackupconfiguration" label="restore_restorebackupconfiguration">
 <CodeBlock language="csharp">
 {`public class RestoreBackupConfiguration
 \{
@@ -66,7 +66,7 @@ it to `RestoreBackupOperation` for execution.
     | ------------- | ------------- | ----- |
     | **DatabaseName** | string | Name for the new database. |
     | **BackupLocation** | string | Local path of the backup file to be restored. <br/> Path **must be local** for the restoration to continue.|
-    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | string | [Last incremental backup file](../../../../server/ongoing-tasks/backup-overview#restoration-procedure) to restore. <br/> **Default behavior: Restore all backup files in the folder.** |
+    | **LastFileNameToRestore** <br/> (Optional -<br/> omit for default) | string | [Last incremental backup file](../../../../server/ongoing-tasks/backup-overview.mdx#restoration-procedure) to restore. <br/> **Default behavior: Restore all backup files in the folder.** |
     | **DataDirectory** <br/> (Optional -<br/> omit for default) | string | The new database data directory. <br/> **Default folder: Under the "Databases" folder, in a folder that carries the restored database's name.** |
     | **EncryptionKey** <br/> (Optional -<br/> omit for default) | string | A key for an encrypted database. <br/> **Default behavior: Try to restore as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br/> (Optional -<br/> omit for default) | boolean | `true` - disable ongoing tasks when Restore is complete. <br/> `false` - enable ongoing tasks when Restore is complete. <br/> **Default: `false` (Ongoing tasks will run when Restore is complete).**|
@@ -91,7 +91,7 @@ Restore incremental backup files up to (including) the selected file, and stop r
      2018-12-26-15-00.ravendb-incremental-backup  
      2018-12-26-18-00.ravendb-incremental-backup  
    * Feed **LastFileNameToRestore** with the 2018-12-26-12-00 incremental-backup file name:
-<TabItem value="something" label="restore_last_file_name_to_restore">
+<TabItem value="restore_last_file_name_to_restore" label="restore_last_file_name_to_restore">
 <CodeBlock language="csharp">
 {`//Last incremental backup file to restore from
 restoreConfiguration.LastFileNameToRestore = @"2018-12-26-12-00.ravendb-incremental-backup";
@@ -103,7 +103,7 @@ restoreConfiguration.LastFileNameToRestore = @"2018-12-26-12-00.ravendb-incremen
 ### `DataDirectory`
 
 Specify the directory into which the database will be restored.
-<TabItem value="something" label="restore_to_specific__data_directory">
+<TabItem value="restore_to_specific__data_directory" label="restore_to_specific__data_directory">
 <CodeBlock language="csharp">
 {`// Restore to the specified directory path
 var dataPath = @"C:\\Users\\RavenDB\\backups\\2018-12-26-16-17.ravendb-Products-A-backup\\restoredDatabaseLocation";
@@ -114,7 +114,7 @@ restoreConfiguration.DataDirectory = dataPath;
 ### `EncryptionKey`
 
 This is where you need to provide your encryption key if your backup is encrypted.  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`restoreConfiguration.EncryptionKey = "your_encryption_key";  
 `}
@@ -123,8 +123,8 @@ This is where you need to provide your encryption key if your backup is encrypte
 ### `DisableOngoingTasks`
 
 set **DisableOngoingTasks** to **true** to disable the execution of ongoing tasks after restoration.  
-See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore#recommended-precautions).
-<TabItem value="something" label="restore_disable_ongoing_tasks_true">
+See [Recommended Precautions](../../../../client-api/operations/maintenance/backup/restore.mdx#recommended-precautions).
+<TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
 <CodeBlock language="csharp">
 {`// Do or do not run ongoing tasks after restoration.
 // Default setting is FALSE, to allow tasks' execution when the backup is restored.
@@ -147,7 +147,7 @@ restoreConfiguration.DisableOngoingTasks = true;
      * Send the restore-backup operation to the server to start the restoration execution.  
 
 * **Code Sample**:  
-<TabItem value="something" label="restore_to_single_node">
+<TabItem value="restore_to_single_node" label="restore_to_single_node">
 <CodeBlock language="csharp">
 {`var restoreConfiguration = new RestoreBackupConfiguration();
 
@@ -173,21 +173,21 @@ docStore.Maintenance.Server.Send(restoreBackupTask);
 The common approach to restoring a database that should reside on multiple nodes, is to restore the backed-up 
 database to a single server and then expand the database group to additional nodes, allowing normal replication.  
 
-* Verify relevant nodes exist in your cluster. [Add nodes](../../../../server/clustering/cluster-api#add-node-to-the-cluster) as needed.
+* Verify relevant nodes exist in your cluster. [Add nodes](../../../../server/clustering/cluster-api.mdx#add-node-to-the-cluster) as needed.
 * Manage the database-group topology.  
-  Add a node to the database-group using the [Studio](../../../../studio/database/settings/manage-database-group) 
-  or from your [code](../../../../client-api/operations/server-wide/add-database-node), to replicate the database to the other nodes.
+  Add a node to the database-group using the [Studio](../../../../studio/database/settings/manage-database-group.mdx) 
+  or from your [code](../../../../client-api/operations/server-wide/add-database-node.mdx), to replicate the database to the other nodes.
 ### Restore Database to Multiple Nodes Simultaneously  
 
 You can create the cluster in advance, and restore the database to multiple nodes simultaneously.  
 
 <Admonition type="note" title="This procedure is advisable only when restoring a Snapshot." id="this-procedure-is-advisable-only-when-restoring-a-snapshot" href="#this-procedure-is-advisable-only-when-restoring-a-snapshot">
 
-* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup) 
+* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) 
   is restored, each document receives a new change-vector according to the node it resides on.  
   When the database instances synchronize, this change-vector will be updated and be composed of all database nodes tags.  
 
-* When a [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is restored, 
+* When a [snapshot](../../../../client-api/operations/maintenance/backup/backup.mdx#snapshot) is restored, 
   documents are **not** assigned a new change-vector because the databases kept by all nodes are considered identical.  
   Each document retains the original change-vector it had during backup.  
   When the database instances synchronize, documents' change-vectors do **not** change.  
@@ -198,10 +198,10 @@ You can create the cluster in advance, and restore the database to multiple node
 * On other nodes, restore the database using different names.  
 * Wait for the restoration to complete on all nodes.  
 * **Soft-delete** the additional databases (those with altered names) from the cluster.  
-  [Soft-delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) 
+  [Soft-delete](../../../../client-api/operations/server-wide/delete-database.mdx#operations--server--how-to-delete-a-database) 
   the databases by setting `HardDelete` to `false`, to retain the data files on disk.  
 * Rename the database folder on all nodes to the original database name.  
-* [Expand](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) the database group to all relevant nodes.  
+* [Expand](../../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology) the database group to all relevant nodes.  
 
 
 
@@ -213,10 +213,10 @@ and not in any ongoing tasks that may have existed during backup.
 
 * E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
 
-In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore#section-1) flag.  
+In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore.mdx#section-1) flag.  
 
 * Code Sample:  
-<TabItem value="something" label="restore_disable_ongoing_tasks_true">
+<TabItem value="restore_disable_ongoing_tasks_true" label="restore_disable_ongoing_tasks_true">
 <CodeBlock language="csharp">
 {`// Do or do not run ongoing tasks after restoration.
 // Default setting is FALSE, to allow tasks' execution when the backup is restored.

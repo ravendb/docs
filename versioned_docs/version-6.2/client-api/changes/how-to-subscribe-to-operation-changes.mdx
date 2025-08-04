@@ -22,8 +22,8 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 The following methods allow you to subscribe to operation changes:
 
-- [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperationid)
-- [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
+- [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperationid)
+- [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
 
 ## ForOperationId
 
@@ -35,13 +35,13 @@ The purpose of this change is to improve results consistency, as an operation ma
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
 the operation fails over from one node to another.  
 Tracking operations will therefore be possible only if the `Changes` API was 
-[opened](../../client-api/changes/what-is-changes-api#accessing-changes-api) using a method that limits 
+[opened](../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api) using a method that limits 
 tracking to a single node: `store.Changes(dbName, nodeTag)`  
 </Admonition>
 
 ### Syntax
 
-<TabItem value="something" label="operation_changes_1">
+<TabItem value="operation_changes_1" label="operation_changes_1">
 <CodeBlock language="csharp">
 {`IChangesObservable<OperationStatusChange> ForOperationId(long operationId);
 `}
@@ -54,11 +54,11 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
 
 ### Example
 
-<TabItem value="something" label="operation_changes_2">
+<TabItem value="operation_changes_2" label="operation_changes_2">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes(dbName, nodeTag)
@@ -100,17 +100,17 @@ The purpose of this change is to improve results consistency, as an operation ma
 on different nodes and cross-cluster tracking of an operation may become confusing and ineffective if 
 the operation fails over from one node to another.  
 Tracking operations will therefore be possible only if the `Changes` API was 
-[opened](../../client-api/changes/what-is-changes-api#accessing-changes-api) using a method that limits 
+[opened](../../client-api/changes/what-is-changes-api.mdx#accessing-changes-api) using a method that limits 
 tracking to a single node: `store.Changes(dbName, nodeTag)`  
 </Admonition>
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
 
 ### Syntax
 
-<TabItem value="something" label="operation_changes_3">
+<TabItem value="operation_changes_3" label="operation_changes_3">
 <CodeBlock language="csharp">
 {`IChangesObservable<OperationStatusChange> ForAllOperations();
 `}
@@ -119,7 +119,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 ### Example
 
-<TabItem value="something" label="operation_changes_4">
+<TabItem value="operation_changes_4" label="operation_changes_4">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes(dbName, nodeTag)
@@ -137,7 +137,7 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **State** | [OperationState](../../client-api/changes/how-to-subscribe-to-operation-changes#operationstate) | Operation state |
+| **State** | [OperationState](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationstate) | Operation state |
 | **OperationId** | long | Operation ID |
 
 
@@ -148,9 +148,9 @@ tracking to a single node: `store.Changes(dbName, nodeTag)`
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Result** | [IOperationResult](../../client-api/changes/how-to-subscribe-to-operation-changes#operationresult) | Operation result |
+| **Result** | [IOperationResult](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationresult) | Operation result |
 | **Progress** | IOperationProgress| Instance of IOperationProgress (json representation of the progress) |
-| **Status** | [OperationStatus](../../client-api/changes/how-to-subscribe-to-operation-changes#operationstatus) | Operation status |
+| **Status** | [OperationStatus](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationstatus) | Operation status |
 
 
 ## OperationResult
@@ -189,8 +189,8 @@ To get more method overloads, especially ones supporting **delegates**, please a
 
 The following methods allow you to subscribe to operation changes:
 
-- [forOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
-- [forAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
+- [forOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)
+- [forAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
 
 ## forOperation
 
@@ -198,7 +198,7 @@ Operation changes for one operation can be observed using the `forOperationId` m
 
 ### Syntax
 
-<TabItem value="something-something" label="operation_changes_1">
+<TabItem value="operation_changes_1" label="operation_changes_1">
 <CodeBlock language="java">
 {`IChangesObservable<OperationStatusChange> forOperationId(long operationId);
 `}
@@ -211,11 +211,11 @@ Operation changes for one operation can be observed using the `forOperationId` m
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
 
 ### Example
 
-<TabItem value="something-something" label="operation_changes_2">
+<TabItem value="operation_changes_2" label="operation_changes_2">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -237,11 +237,11 @@ Operations changes for all Operations can be observed using the `forAllOperation
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
 
 ### Syntax
 
-<TabItem value="something-something" label="operation_changes_3">
+<TabItem value="operation_changes_3" label="operation_changes_3">
 <CodeBlock language="java">
 {`IChangesObservable<OperationStatusChange> forAllOperations();
 `}
@@ -250,7 +250,7 @@ Operations changes for all Operations can be observed using the `forAllOperation
 
 ### Example
 
-<TabItem value="something-something" label="operation_changes_4">
+<TabItem value="operation_changes_4" label="operation_changes_4">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -283,8 +283,8 @@ Operations changes for all Operations can be observed using the `forAllOperation
 
 The following methods allow you to subscribe to operation changes:
 
-- [forOperationId()](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
-- [forAllOperations()](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
+- [forOperationId()](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foroperation)
+- [forAllOperations()](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#foralloperations)
 
 ## forOperation
 
@@ -292,8 +292,8 @@ Operation changes for one operation can be observed using the `forOperationId()`
 
 ### Syntax
 
-<TabItem value="something-something" label="operation_changes_1">
-<CodeBlock language="nodejs">
+<TabItem value="operation_changes_1" label="operation_changes_1">
+<CodeBlock language="js">
 {`store.changes().forOperationId(operationId);
 `}
 </CodeBlock>
@@ -305,12 +305,12 @@ Operation changes for one operation can be observed using the `forOperationId()`
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
 
 ### Example
 
-<TabItem value="something-something" label="operation_changes_2">
-<CodeBlock language="nodejs">
+<TabItem value="operation_changes_2" label="operation_changes_2">
+<CodeBlock language="js">
 {`store.changes().forOperationId(operationId)
     .on("data", change => \{
         const operationState = change.state;
@@ -329,12 +329,12 @@ Operations changes for all Operations can be observed using the `forAllOperation
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
+| IChangesObservable&lt;[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx#operationchange)&gt; | Observable that allows to add subscriptions to notifications for all operations. |
 
 ### Syntax
 
-<TabItem value="something-something" label="operation_changes_3">
-<CodeBlock language="nodejs">
+<TabItem value="operation_changes_3" label="operation_changes_3">
+<CodeBlock language="js">
 {`store.changes().forAllOperations();
 `}
 </CodeBlock>
@@ -342,8 +342,8 @@ Operations changes for all Operations can be observed using the `forAllOperation
 
 ### Example
 
-<TabItem value="something-something" label="operation_changes_4">
-<CodeBlock language="nodejs">
+<TabItem value="operation_changes_4" label="operation_changes_4">
+<CodeBlock language="js">
 {`store.changes().forAllOperations()
     .on("data", change => \{
         console.log("Operation #" + change.operationId);

@@ -15,21 +15,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Sharding: External Replication
 <Admonition type="note" title="Note">
 
-* [External Replication](../server/ongoing-tasks/external-replication) is an 
+* [External Replication](../server/ongoing-tasks/external-replication.mdx) is an 
   ongoing RavenDB task that you can create and run to maintain a live replica 
   of your database on another RavenDB server.  
-* Defining an external replication task via [Studio](../studio/database/tasks/ongoing-tasks/external-replication-task#definition) 
-  or [API](../server/ongoing-tasks/external-replication#code-sample) under a 
+* Defining an external replication task via [Studio](../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition) 
+  or [API](../server/ongoing-tasks/external-replication.mdx#code-sample) under a 
   sharded database is similar to defining such tasks under a non-sharded database.  
 * Sharded and non-sharded databases can replicate data to each other, providing 
   their version is at least 6.0.  
 
 * In this page:  
-  * [Supported Versions](../sharding/external-replication#supported-versions)  
-  * [External Replication Types](../sharding/external-replication#external-replication-types)
-     * [Non-Sharded Database to Sharded Database](../sharding/external-replication#non-sharded-database-to-sharded-database)  
-     * [Sharded Database to Sharded Database](../sharding/external-replication#sharded-database-to-sharded-database)  
-  * [Performance Considerations](../sharding/external-replication#performance-considerations)  
+  * [Supported Versions](../sharding/external-replication.mdx#supported-versions)  
+  * [External Replication Types](../sharding/external-replication.mdx#external-replication-types)
+     * [Non-Sharded Database to Sharded Database](../sharding/external-replication.mdx#non-sharded-database-to-sharded-database)  
+     * [Sharded Database to Sharded Database](../sharding/external-replication.mdx#sharded-database-to-sharded-database)  
+  * [Performance Considerations](../sharding/external-replication.mdx#performance-considerations)  
 
 </Admonition>
 ## Supported Versions
@@ -51,17 +51,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * **Internal replication** is applied automatically when the replication 
   factor is larger than 1, to make the shard database more available by 
   maintaining multiple accessible copies of it.  
-  Learn more about shards internal replication in the [overview](../sharding/overview#shard-replication) 
-  article and administration [Studio](../sharding/administration/studio-admin) 
-  and [API](../sharding/administration/api-admin) articles.  
+  Learn more about shards internal replication in the [overview](../sharding/overview.mdx#shard-replication) 
+  article and administration [Studio](../sharding/administration/studio-admin.mdx) 
+  and [API](../sharding/administration/api-admin.mdx) articles.  
   
 * **External replication** is applied when a dedicated task is defined for it.  
   Read more about it and follow a step-by-step guide 
-  [here](../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide).  
+  [here](../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide).  
 </Admonition>
 
 All data replicated by or to a sharded database is mediated via 
-[orchestrators](../sharding/overview#client-server-communication). 
+[orchestrators](../sharding/overview.mdx#client-server-communication). 
 The shards themselves are oblivious to their being shards: from 
 a shard's perspective, it is just a regular RavenDB database that 
 can, among its other ordinary RavenDB features, replicate data.  

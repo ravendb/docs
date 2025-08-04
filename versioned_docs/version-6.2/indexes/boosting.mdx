@@ -27,21 +27,21 @@ export const supportedLanguages = ["csharp", "java", "php", "nodejs"];
 * Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
   The boos value is integrated with the basic score, increasing the document rank.  
 
-* The automatic ordering of results by their score is [configurable](../indexes/boosting#automatic-score-based-ordering).  
+* The automatic ordering of results by their score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
     * **At query time**:  
-      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results)).  
+      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results.mdx)).  
 
     * **Via index definition**:  
       By applying a boost factor in the index definition, as described in this article.  
  
 * In this page:
-    * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
-    * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
-    * [Automatic score-based ordering](../indexes/boosting#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../indexes/boosting#automatic-score-based-ordering)
+    * [Assign a boost factor to an index-field](../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](../indexes/boosting.mdx#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](../indexes/boosting.mdx#automatic-score-based-ordering)
 
 </Admonition>
 ## Assign a boost factor to an index-field
@@ -287,10 +287,10 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * By default, whenever boosting is applied, either via dynamic querying or when querying an index 
   that has a boosting factor in its definition, the results will be automatically ordered by the score.  
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
   configuration key.  
 
-* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) 
+* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results.mdx#get-resulting-score) 
   section to learn how to retrieve the calculated score of each result.  
 
 
@@ -300,7 +300,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * **Boosting features available:**  
 
   * When using **Corax** as the underlying indexing engine, a boost factor can only be assigned 
-    to the [index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
+    to the [index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry).  
     Applying a boost factor to an _index-field_ is Not supported.  
   
   * When using **Lucene**, a boost factor can be assigned to both the index-field and the whole index-entry.  
@@ -321,7 +321,7 @@ a basic score is calculated for each document in the results by the underlying e
 
 Providing a **boost value** to some fields allows you to prioritize the resulting documents.  
 The boost value is integrated with the basic score, making the document rank higher.  
-Automatic ordering of the results by the score is [configurable](../indexes/boosting#automatic-score-based-ordering).
+Automatic ordering of the results by the score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).
 
 From the index perspective we can associate to an index entry a boosting factor.  
 The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method. 
@@ -362,7 +362,7 @@ store.maintenance().send(new PutIndexesOperation(indexDefinition));
 
 The next step is to perform a query against that index:
 
-<TabItem value="something-something" label="boosting_3">
+<TabItem value="boosting_3" label="boosting_3">
 <CodeBlock language="java">
 {`// employees with 'firstName' equal to 'Bob'
 // will be higher in results
@@ -388,16 +388,16 @@ Boosting is also available at the query level.
 * By default, whenever boosting is involved, either via a dynamic query or when querying an index that has a boosting factor in its definition,
   the results will be automatically ordered by the score.
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
   configuration key.
 
 </Admonition>
 
 <Admonition type="note" title="Note">
 
-When using [Corax](../indexes/search-engine/corax) as the search engine:  
+When using [Corax](../indexes/search-engine/corax.mdx) as the search engine:  
 
-* [indexing-time boosting](../indexes/search-engine/corax#supported-features) 
+* [indexing-time boosting](../indexes/search-engine/corax.mdx#supported-features) 
   is available for documents, but not for document fields.  
 * Corax ranks search results using the [BM25 algorithm](https://en.wikipedia.org/wiki/Okapi_BM25).  
   Other search engines, e.g. Lucene, may use a different ranking algorithm and return different search results.  
@@ -416,21 +416,21 @@ When using [Corax](../indexes/search-engine/corax) as the search engine:
 * Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
   The boos value is integrated with the basic score, increasing the document rank.  
 
-* The automatic ordering of results by their score is [configurable](../indexes/boosting#automatic-score-based-ordering).  
+* The automatic ordering of results by their score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
     * **At query time**:  
-      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results)).  
+      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results.mdx)).  
 
     * **Via index definition**:  
       By applying a boost factor in the index definition, as described in this article.  
  
 * In this page:
-    * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
-    * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
-    * [Automatic score-based ordering](../indexes/boosting#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../indexes/boosting#automatic-score-based-ordering)
+    * [Assign a boost factor to an index-field](../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](../indexes/boosting.mdx#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](../indexes/boosting.mdx#automatic-score-based-ordering)
 
 </Admonition>
 ## Assign a boost factor to an index-field
@@ -686,10 +686,10 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * By default, whenever boosting is applied, either via dynamic querying or when querying an index 
   that has a boosting factor in its definition, the results will be automatically ordered by the score.  
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexing.orderbyscoreautomaticallywhenboostingisinvolved)  
   configuration key.  
 
-* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) 
+* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results.mdx#get-resulting-score) 
   section to learn how to retrieve the calculated score of each result.  
 
 
@@ -699,7 +699,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * **Boosting features available:**  
 
   * When using **Corax** as the underlying indexing engine, a boost factor can only be assigned 
-    to the [index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
+    to the [index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry).  
     Applying a boost factor to an _index-field_ is Not supported.  
   
   * When using **Lucene**, a boost factor can be assigned to both the index-field and the whole index-entry.  
@@ -722,21 +722,21 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * Providing a **boost value** to selected fields allows prioritization of the resulting documents.  
   The boos value is integrated with the basic score, increasing the document rank.  
 
-* The automatic ordering of results by their score is [configurable](../indexes/boosting#automatic-score-based-ordering).  
+* The automatic ordering of results by their score is [configurable](../indexes/boosting.mdx#automatic-score-based-ordering).  
 
 * Boosting can be achieved in the following ways:
 
     * **At query time**:  
-      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results)).  
+      By applying a boost factor to searched terms at query time (see [Boost search results](../client-api/session/querying/text-search/boost-search-results.mdx)).  
 
     * **Via index definition**:  
       By applying a boost factor in the index definition, as described in this article.  
  
 * In this page:
-    * [Assign a boost factor to an index-field](../indexes/boosting#assign-a-boost-factor-to-an-index-field)
-    * [Assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry)
-    * [Automatic score-based ordering](../indexes/boosting#automatic-score-based-ordering)
-    * [Corax vs Lucene: boosting differences](../indexes/boosting#automatic-score-based-ordering)
+    * [Assign a boost factor to an index-field](../indexes/boosting.mdx#assign-a-boost-factor-to-an-index-field)
+    * [Assign a boost factor to the index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry)
+    * [Automatic score-based ordering](../indexes/boosting.mdx#automatic-score-based-ordering)
+    * [Corax vs Lucene: boosting differences](../indexes/boosting.mdx#automatic-score-based-ordering)
 
 </Admonition>
 ## Assign a boost factor to an index-field
@@ -744,8 +744,8 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 Applying a boost value to an index-field allows prioritization of matching documents based on an index-field.
 ##### The index:
 
-<TabItem value="something-something" label="index_1">
-<CodeBlock language="nodejs">
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
 {`class Orders_ByCountries_BoostByField extends AbstractCsharpIndexCreationTask \{
     constructor() \{
         super();
@@ -771,7 +771,7 @@ Applying a boost value to an index-field allows prioritization of matching docum
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const orders = await session
     .query({ indexName: "Orders/ByCountries/BoostByField" })
     .whereEquals("ShipToCountry", "Poland")
@@ -801,8 +801,8 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 Applying a boost value to the whole index-entry allows prioritization of matching documents by content from the document.
 ##### The index:
 
-<TabItem value="something-something" label="index_2">
-<CodeBlock language="nodejs">
+<TabItem value="index_2" label="index_2">
+<CodeBlock language="js">
 {`class Orders_ByCountries_BoostByIndexEntry extends AbstractCsharpIndexCreationTask \{
     constructor() \{
         super();
@@ -830,7 +830,7 @@ Applying a boost value to the whole index-entry allows prioritization of matchin
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const orders = await session
     .query({ indexName: "Orders/ByCountries/BoostByIndexEntry" })
     .whereEquals("ShipToCountry", "Poland")
@@ -859,10 +859,10 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 * By default, whenever boosting is applied, either via dynamic querying or when querying an index 
   that has a boosting factor in its definition, the results will be automatically ordered by the score.  
 
-* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
+* This behavior can be modified using the [OrderByScoreAutomaticallyWhenBoostingIsInvolved](../server/configuration/indexing-configuration.mdx#indexing.orderbyscoreautomaticallywhenboostingisinvolved)    
   configuration key.
 
-* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results#get-resulting-score) 
+* Refer to the [Get resulting score](../client-api/session/querying/sort-query-results.mdx#get-resulting-score) 
   section to learn how to retrieve the calculated score of each result.  
 
 
@@ -871,7 +871,7 @@ where ShipToCountry == "poland" or CompanyCountry == "portugal"
 
 * **Boosting features available:**
 
-    * When using **Corax** as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../indexes/boosting#assign-a-boost-factor-to-the-index-entry).  
+    * When using **Corax** as the underlying indexing engine, you can only [assign a boost factor to the index-entry](../indexes/boosting.mdx#assign-a-boost-factor-to-the-index-entry).  
       Applying a boost factor to an index-field is Not supported.
 
     * When using **Lucene**, you can assign a boost factor to both the index-field and the whole index-entry.

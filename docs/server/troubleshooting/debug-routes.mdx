@@ -18,8 +18,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This page contains a comprehensive list of endpoints for debugging and testing.  
 
 * In this page:  
-  * [Debug Endpoints](../../server/troubleshooting/debug-routes#debug-endpoints)  
-  * [Production Endpoints](../../server/troubleshooting/debug-routes#production-endpoints)  
+  * [Debug Endpoints](../../server/troubleshooting/debug-routes.mdx#debug-endpoints)  
+  * [Production Endpoints](../../server/troubleshooting/debug-routes.mdx#production-endpoints)  
 
 <Admonition type="info" title="Info">
 For the endpoints that begin with `/databases/*/`, replace `*` with the name of your database.  
@@ -45,7 +45,7 @@ For the endpoints that begin with `/databases/*/`, replace `*` with the name of 
 | /admin/debug/proc/status | GET | | Return /proc/&lt;RavenDB ProcNum&gt;/status | Availabe only on Linux |
 | /admin/debug/threads/runaway | GET | | List all threads and their names, sorted by duration | |
 | /build/version | GET | | Returns product build number, major version, commit hash and full version number | |
-| /databases/*/admin/debug/cluster/txinfo | GET | -(Optional) from - Amount of result to skip&lt;br /&gt; -(Optional)take - Amount of result to take | List the incomplete [cluster transaction commands](../clustering/cluster-transactions#cluster--cluster-wide-transactions) | |
+| /databases/*/admin/debug/cluster/txinfo | GET | -(Optional) from - Amount of result to skip&lt;br /&gt; -(Optional)take - Amount of result to take | List the incomplete [cluster transaction commands](../clustering/cluster-transactions.mdx#cluster--cluster-wide-transactions) | |
 | /databases/*/admin/debug/txinfo | GET | | List | |
 | /databases/*/debug/documents/huge | GET | | List IDs of documents which exceed `PerformanceHints.`&lt;br /&gt;`Documents.`&lt;br /&gt;`HugeDocumentSizeInMb` setting | |
 | /databases/*/debug/identities | GET | | | |

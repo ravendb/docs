@@ -23,12 +23,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this article:
 
-  * [Provide incident description](../../server/troubleshooting/collect-info#provide-incident-description)
-  * [Create debug package](../../server/troubleshooting/collect-info#create-debug-package)
-  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues)
-  * [Download logs](../../server/troubleshooting/collect-info#download-logs)
-  * [Reproduce scenario](../../server/troubleshooting/collect-info#reproduce-scenario)
-  * [Create failing test](../../server/troubleshooting/collect-info#create-failing-test)
+  * [Provide incident description](../../server/troubleshooting/collect-info.mdx#provide-incident-description)
+  * [Create debug package](../../server/troubleshooting/collect-info.mdx#create-debug-package)
+  * [Enable logs for ongoing issues](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues)
+  * [Download logs](../../server/troubleshooting/collect-info.mdx#download-logs)
+  * [Reproduce scenario](../../server/troubleshooting/collect-info.mdx#reproduce-scenario)
+  * [Create failing test](../../server/troubleshooting/collect-info.mdx#create-failing-test)
 
 </Admonition>
 
@@ -123,10 +123,10 @@ To preserve your settings after a restart, you can either:
     (Scroll down in the Traffic watch logs dialog to see this option)  
     ![Save to settings.json](./assets/save-to-settings-json.png)
 
-  * Or set the relevant configuration key, as described in this [configuration overview](../../server/configuration/configuration-options):
-    * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration#logs.minlevel) configuration key.  
-    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration#logs.microsoft.minlevel) configuration key.
-    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration#trafficwatch.mode) configuration key.
+  * Or set the relevant configuration key, as described in this [configuration overview](../../server/configuration/configuration-options.mdx):
+    * For **Server logs**: set the [Logs.MinLevel](../../server/configuration/logs-configuration.mdx#logs.minlevel) configuration key.  
+    * For **Microsoft logs**: set the [Logs.Microsoft.MinLevel](../../server/configuration/logs-configuration.mdx#logs.microsoft.minlevel) configuration key.
+    * For **Traffic watch logs**: set the [TrafficWatch.Mode](../../server/configuration/traffic-watch-configuration.mdx#trafficwatch.mode) configuration key.
 
 </Admonition>
 
@@ -159,11 +159,11 @@ __If the Studio is unavailable__, or if the logs downloaded via the Studio appea
 then copy the log files directly from the disk to another location to ensure that you keep them,  
 avoiding potential loss due to the retention configuration.
 
-* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration#logs.path) configuration.
+* The location of the log files is determined by the [Logs.Path](../../server/configuration/logs-configuration.mdx#logs.path) configuration.
 
 * Logs deletion is controlled by the following configurations:
-  * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration#logs.maxarchivedays)
-  * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration#logs.maxarchivefiles)
+  * [Logs.MaxArchiveDays](../../server/configuration/logs-configuration.mdx#logs.maxarchivedays)
+  * [Logs.MaxArchiveFiles ](../../server/configuration/logs-configuration.mdx#logs.maxarchivefiles)
 
 </Admonition> 
 
@@ -186,7 +186,7 @@ __Before sending the log files__, perform the following checks:
 
 * If the incident is over and you can reproduce it, then first verify logging level is set to 'Information'.  
 
-* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info#enable-logs-for-ongoing-issues).
+* See how to enable the logs in [Enable logs](../../server/troubleshooting/collect-info.mdx#enable-logs-for-ongoing-issues).
 
 
 
@@ -194,7 +194,7 @@ __Before sending the log files__, perform the following checks:
 
 * If possible, it is advised to create a unit test that showcases the failure in your client code.
 
-* Refer to [Writing your unit test](../../start/test-driver) to learn how to use __RavenDB's TestDriver__.
+* Refer to [Writing your unit test](../../start/test-driver.mdx) to learn how to use __RavenDB's TestDriver__.
 
 
 

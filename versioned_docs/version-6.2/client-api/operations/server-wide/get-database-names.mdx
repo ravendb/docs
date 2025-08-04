@@ -24,7 +24,7 @@ To download available database names from a server, use the `GetDatabaseNames` o
 
 ## Syntax
 
-<TabItem value="something" label="get_db_names_interface">
+<TabItem value="get_db_names_interface" label="get_db_names_interface">
 <CodeBlock language="csharp">
 {`public GetDatabaseNamesOperation(int start, int pageSize)
 `}
@@ -42,7 +42,7 @@ To download available database names from a server, use the `GetDatabaseNames` o
 
 ## Example
 
-<TabItem value="something" label="get_db_names_sample">
+<TabItem value="get_db_names_sample" label="get_db_names_sample">
 <CodeBlock language="csharp">
 {`var operation = new GetDatabaseNamesOperation(0, 25);
 string[] databaseNames = store.Maintenance.Server.Send(operation);
@@ -58,7 +58,7 @@ To download available database names from a server, use the `GetDatabaseNames` o
 
 ## Syntax
 
-<TabItem value="something-something" label="get_db_names_interface">
+<TabItem value="get_db_names_interface" label="get_db_names_interface">
 <CodeBlock language="java">
 {`public GetDatabaseNamesOperation(int start, int pageSize)
 `}
@@ -76,7 +76,7 @@ To download available database names from a server, use the `GetDatabaseNames` o
 
 ## Example
 
-<TabItem value="something-something" label="get_db_names_sample">
+<TabItem value="get_db_names_sample" label="get_db_names_sample">
 <CodeBlock language="java">
 {`GetDatabaseNamesOperation operation = new GetDatabaseNamesOperation(0, 25);
 String[] databaseNames = store.maintenance().server().send(operation);

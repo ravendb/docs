@@ -21,18 +21,18 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Compare-Exchange items can be included when [loading entities](../../../client-api/session/loading-entities) 
-  and when making [queries](../../../client-api/session/querying/how-to-query).
+* Compare-Exchange items can be included when [loading entities](../../../client-api/session/loading-entities.mdx) 
+  and when making [queries](../../../client-api/session/querying/how-to-query.mdx).
 
-* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   the included Compare Exchange items which means their value can be accessed  
   in that Session without making an additional call to the server.
 
-* The Compare Exchange include syntax is based on the [include method](../../../client-api/how-to/handle-document-relationships#includes).  
+* The Compare Exchange include syntax is based on the [include method](../../../client-api/how-to/handle-document-relationships.mdx#includes).  
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange#syntax)  
-  * [Examples](../../../client-api/operations/compare-exchange/include-compare-exchange#examples)  
+  * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)  
+  * [Examples](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -42,7 +42,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 Chain the method `IncludeCompareExchangeValue()` to include compare exchange values 
 along with `Session.Load()` or LINQ queries.  
 
-<TabItem value="something-something" label="include_builder">
+<TabItem value="include_builder" label="include_builder">
 <CodeBlock language="csharp">
 {`public interface ICompareExchangeValueIncludeBuilder<T, out TBuilder>
 \{
@@ -64,21 +64,21 @@ along with `Session.Load()` or LINQ queries.
 
 #### RQL
 
-In an RQL query, you can use the [`include` keyword](../../../client-api/session/querying/what-is-rql#include) 
+In an RQL query, you can use the [`include` keyword](../../../client-api/session/querying/what-is-rql.mdx#include) 
 followed by `cmpxchg()` to include a compare exchange value:  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`include cmpxchg(key)
 `}
 </CodeBlock>
 </TabItem>
 
-In [javascript functions](../../../client-api/session/querying/what-is-rql#declare) within queries, 
+In [javascript functions](../../../client-api/session/querying/what-is-rql.mdx#declare) within queries, 
 use `includes.cmpxchg()` (see the RawQuery example 
-[below](../../../client-api/operations/compare-exchange/include-compare-exchange#examples)):  
+[below](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#examples)):  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`includes.cmpxchg(key);
 `}
@@ -204,18 +204,18 @@ foreach (User u in users2){
 
 <Admonition type="note" title="Note">
 
-* Compare-Exchange items can be included when [loading entities](../../../client-api/session/loading-entities) 
-  and when making [queries](../../../client-api/session/querying/how-to-query).
+* Compare-Exchange items can be included when [loading entities](../../../client-api/session/loading-entities.mdx) 
+  and when making [queries](../../../client-api/session/querying/how-to-query.mdx).
 
-* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   the included Compare Exchange items which means their value can be accessed  
   in that Session without making an additional call to the server.
 
 * In this page:
-    * [Sample data](../../../client-api/operations/compare-exchange/include-compare-exchange#sample-data)
-    * [Include CmpXchg items when loading](../../../client-api/operations/compare-exchange/include-compare-exchange#include-cmpxchg-items-when-loading)
-    * [Include CmpXchg items when querying](../../../client-api/operations/compare-exchange/include-compare-exchange#include-cmpxchg-items-when-querying)
-    * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange#syntax)
+    * [Sample data](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#sample-data)
+    * [Include CmpXchg items when loading](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-loading)
+    * [Include CmpXchg items when querying](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying)
+    * [Syntax](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#syntax)
 
 </Admonition>
 ## Sample data
@@ -224,7 +224,7 @@ foreach (User u in users2){
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sample_data" label="Sample_data">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`{
     // Create some company documents:
     // ==============================
@@ -269,7 +269,7 @@ foreach (User u in users2){
 </CodeBlock>
 </TabItem>
 <TabItem value="Company_class" label="Company_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Company {
     constructor(
         id = null,
@@ -298,8 +298,8 @@ foreach (User u in users2){
 <Admonition type="note" title="Note">
 
 __Include single item__:
-<TabItem value="something-something" label="include_1">
-<CodeBlock language="nodejs">
+<TabItem value="include_1" label="include_1">
+<CodeBlock language="js">
 {`// Open a session with cluster-wide mode to enable calling 'includeCompareExchangeValue'
 const session = documentStore.openSession(\{
     transactionMode: "ClusterWide"
@@ -342,8 +342,8 @@ const value = item.value;
 <Admonition type="note" title="Note">
 
 __Include multiple items__:
-<TabItem value="something-something" label="include_2">
-<CodeBlock language="nodejs">
+<TabItem value="include_2" label="include_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession(\{
     transactionMode: "ClusterWide"
 \});
@@ -390,7 +390,7 @@ const value2 = items["employees/2"].value;
 __dynamic query__:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Open a session with cluster-wide mode to enable calling 'includeCompareExchangeValue'
 const session = documentStore.openSession({
     transactionMode: "ClusterWide"
@@ -429,7 +429,7 @@ assert.equal(session.advanced.numberOfRequests, numberOfRequests);
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery_using_RQL" label="RawQuery_using_RQL">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Open a session with cluster-wide mode to enable calling 'include cmpxchg'
 const session = documentStore.openSession({
     transactionMode: "ClusterWide"
@@ -469,7 +469,7 @@ assert.equal(session.advanced.numberOfRequests, numberOfRequests);
 </CodeBlock>
 </TabItem>
 <TabItem value="RawQuery_using_JS_function" label="RawQuery_using_JS_function">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Open a session with cluster-wide mode to enable calling 'includes.cmpxchg'
 const session = documentStore.openSession({
     transactionMode: "ClusterWide"
@@ -521,7 +521,7 @@ assert.equal(session.advanced.numberOfRequests, numberOfRequests);
 __Index query__:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const session = documentStore.openSession({
     transactionMode: "ClusterWide"
 });
@@ -557,7 +557,7 @@ assert.equal(session.advanced.numberOfRequests, numberOfRequests);
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Companies_ByName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -596,7 +596,7 @@ select includeCmpXchg(c)
 </Tabs>
 
 * Note:  
-  Similar to the above dynamic query example, you can query the index with a [raw query](../../../indexes/querying/query-index#session.advanced.rawquery) using the provided RQL.
+  Similar to the above dynamic query example, you can query the index with a [raw query](../../../indexes/querying/query-index.mdx#session.advanced.rawquery) using the provided RQL.
 
 </Admonition>
 
@@ -610,8 +610,8 @@ __When loading entities or making queries__:
 
 * Use method `includeCompareExchangeValue()` to include compare-exchange items along with `session.load()` or with queries.  
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`includeCompareExchangeValue(path);
 `}
 </CodeBlock>
@@ -626,9 +626,9 @@ __When loading entities or making queries__:
 
 __When querying with RQL__:  
 
-* Use the [include](../../../client-api/session/querying/what-is-rql#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
+* Use the [include](../../../client-api/session/querying/what-is-rql.mdx#include) keyword followed by `cmpxchg()` to include a compare-exchange item.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`include cmpxchg(key)
 `}
@@ -640,9 +640,9 @@ __When querying with RQL__:
 
 __When using javascript functions within RQL__:
 
-* Use `includes.cmpxchg()` In [javascript functions](../../../client-api/session/querying/what-is-rql#declare) within RQL queries. 
+* Use `includes.cmpxchg()` In [javascript functions](../../../client-api/session/querying/what-is-rql.mdx#declare) within RQL queries. 
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`includes.cmpxchg(key);
 `}

@@ -30,13 +30,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and concisely and can always be used to review and easily modify it.  
 
 * In this page:  
-  * [Prerequisites](../integrations/terraform#prerequisites)  
-  * [Prepare Terraform Configuration](../integrations/terraform#prepare-terraform-configuration)  
-     * [Provider](../integrations/terraform#provider)  
-     * [Terraform Local Parameters](../integrations/terraform#terraform-local-parameters)  
-     * [RavenDB Resource](../integrations/terraform#ravendb-resource)  
-     * [Terraform Output Values](../integrations/terraform#terraform-output-values)  
-  * [Apply Terraform Configuration](../integrations/terraform#apply-terraform-configuration)  
+  * [Prerequisites](../integrations/terraform.mdx#prerequisites)  
+  * [Prepare Terraform Configuration](../integrations/terraform.mdx#prepare-terraform-configuration)  
+     * [Provider](../integrations/terraform.mdx#provider)  
+     * [Terraform Local Parameters](../integrations/terraform.mdx#terraform-local-parameters)  
+     * [RavenDB Resource](../integrations/terraform.mdx#ravendb-resource)  
+     * [Terraform Output Values](../integrations/terraform.mdx#terraform-output-values)  
+  * [Apply Terraform Configuration](../integrations/terraform.mdx#apply-terraform-configuration)  
 </Admonition>
 ## Prerequisites
 
@@ -46,7 +46,7 @@ To deploy RavenDB using Terraform, you need:
    * Find [here](https://ravendb.net/buy) what features are supported by each RavenDB 
      license, and acquire the product that suits your needs.  
    * The license you acquire will be provided to RavenDB via the 
-     [Terraform configuration file](../integrations/terraform#prepare-terraform-configuration) 
+     [Terraform configuration file](../integrations/terraform.mdx#prepare-terraform-configuration) 
      to validate your product and determine which of its features would be enabled.  
 
 * **Hosts**  
@@ -59,7 +59,7 @@ To deploy RavenDB using Terraform, you need:
 * **Terraform Configuration File**  
    * Learn [here](https://www.terraform.io/docs/language/index.html) the 
      basics of Terraform's configuration language.  
-   * Read [below](../integrations/terraform#prepare-terraform-configuration) 
+   * Read [below](../integrations/terraform.mdx#prepare-terraform-configuration) 
      how to set the configuration file to provision RavenDB.  
 
 * **Terraform Application**  
@@ -93,10 +93,10 @@ Use the `provider` object to **set RavenDB as the provider**.
 
 Note that the **version number** relates to the RavenDB Terraform 
 Provider version, **not** to the RavenDB Product version (that is 
-defined in the [resource](../integrations/terraform#ravendb-resource) 
+defined in the [resource](../integrations/terraform.mdx#ravendb-resource) 
 block's **package** field).  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`provider "ravendb" \{
   version = "1.0.2"
@@ -108,7 +108,7 @@ block's **package** field).
 Use the `locals` block to **define local configuration properties** 
 that your resources definitions will be able to refer, including:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`locals \{
     # Node Tags
@@ -153,7 +153,7 @@ See the full list of available properties [here](https://github.com/ravendb/terr
 including mandatory properties (also listed in the example below) and optional ones.  
 </Admonition>
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`resource "ravendb_server" "server" \{
 
@@ -232,7 +232,7 @@ including mandatory properties (also listed in the example below) and optional o
 Defining [Output Values](https://www.terraform.io/docs/language/values/outputs.html) 
 makes Terraform return values you're interested in after applying your configuration.  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`# Return a list of installed RavenDB instances 
 output "public_instance_ips" \{
