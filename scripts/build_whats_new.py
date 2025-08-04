@@ -52,11 +52,10 @@ from markdownify import markdownify as md
 # Configuration & paths
 # ============================================================================
 
-API_KEY: str | None = os.environ.get("RAVENDB_API_KEY")
-API_BASE_URL = "https://api.web.ravendb.net/api/v1/documentation/whats-new"
+API_BASE_URL: str | None = os.environ.get("API_WEB_RAVENDB_NET_HOST") + "/api/v1/documentation/whats-new"
 
-if not API_KEY:
-    raise EnvironmentError("Environment variable 'RAVENDB_API_KEY' is not set.")
+if not API_BASE_URL:
+    raise EnvironmentError("Environment variable 'API_WEB_RAVENDB_NET_HOST' is not set.")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent  # «../» relative to /scripts
@@ -87,7 +86,6 @@ def get_api_page(branch: str, page: int = 1) -> Dict[str, Any]:
     response = requests.get(
         API_BASE_URL,
         headers={
-            "Authorization": f"Bearer {API_KEY}",
             "Accept": "application/json",
         },
         params={"version": branch, "page": page},
@@ -124,13 +122,6 @@ def fetch_branch_entries(branch: str) -> List[Dict[str, Any]]:
 # Conversion helpers
 # ============================================================================
 
-def convert_html_to_markdown(html: str) -> str:
-    """Convert HTML → Markdown and patch <hr> so MDX doesn't choke."""
-    md_body = md(html, strip=["hr"])
-    md_body = HR_MARKDOWN.sub("<hr/>", md_body)
-    return md_body.rstrip() + "\n\n"
-
-
 def mdx_heading(entry: Dict[str, Any]) -> str:
     """Create a level‑2 MDX heading from an API entry."""
     date_str = datetime.strptime(entry["buildDate"], API_DATE_FMT).strftime("%Y/%m/%d")
@@ -139,7 +130,7 @@ def mdx_heading(entry: Dict[str, Any]) -> str:
 
 def mdx_block(entry: Dict[str, Any]) -> str:
     """Full MDX chunk for a single changelog entry (heading + body)."""
-    return mdx_heading(entry) + convert_html_to_markdown(entry["changelogHtml"])
+    return mdx_heading(entry) + entry["changelogMarkdown"]
 
 # ============================================================================
 # Filesystem helpers
