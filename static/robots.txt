@@ -1,0 +1,6 @@
+# robots.txt for RavenDB Documentation
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://test.docs.ravendb.net/sitemap.xml
