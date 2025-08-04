@@ -241,7 +241,7 @@ Supported services include:
 
 - [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
 - [GenAI Studio](../../ai-integration/gen-ai-integration/gen-ai-studio)
-- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/security-concerns)
+- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/gen-ai-security-concerns)
 
 ### Vector Search
 
