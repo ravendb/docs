@@ -25,7 +25,7 @@ File locations
 
 Environment variable
 --------------------
-Set your RavenDB docs API key in ``RAVENDB_API_KEY`` before running.
+Set your RavenDB docs API key in ``API_WEB_RAVENDB_NET_HOST`` before running.
 
 Examples
 --------
@@ -46,7 +46,6 @@ from pathlib import Path
 from typing import List, Dict, Any
 
 import requests
-from markdownify import markdownify as md
 
 # ============================================================================
 # Configuration & paths

@@ -12,15 +12,15 @@ Prerequisites
 * **Python ≥ 3** (`python` in PATH) – runs the changelog generator
 * **AWS CLI v2** – credentials via `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
   `AWS_DEFAULT_REGION` (and optional `AWS_SESSION_TOKEN`)
-* Environment variable **`RAVENDB_API_KEY`** set (only required when regenerating
+* Environment variable **`API_WEB_RAVENDB_NET_HOST`** set (only required when regenerating
   *What's New* for specific versions)
 * Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
 
 Example
 -------
 ```powershell
-# RAVENDB_API_KEY must be set if you request specific versions
-$env:RAVENDB_API_KEY = 'YOUR-API-KEY'
+# API_WEB_RAVENDB_NET_HOST must be set if you request specific versions
+$env:API_WEB_RAVENDB_NET_HOST = 'YOUR-API-KEY'
 
 pwsh deploy.ps1 \
      -S3BucketName my-docs-bucket \
@@ -82,7 +82,7 @@ function Process-Changelogs {
     if (-not $VersionsToBuild) { return }
 
     # Ensure API key exists before invoking Python helper
-    ThrowIfEmpty $Env:RAVENDB_API_KEY 'RAVENDB_API_KEY env var must be set when specifying versions'
+    ThrowIfEmpty $Env:API_WEB_RAVENDB_NET_HOST 'API_WEB_RAVENDB_NET_HOST env var must be set when specifying versions'
 
     Write-Host "Generating *What's New* pages for versions: $($VersionsToBuild -join ', ')" -ForegroundColor Cyan
 
@@ -105,10 +105,10 @@ ThrowIfEmpty $Env:AWS_DEFAULT_REGION    'AWS_DEFAULT_REGION not set'
 Write-Host "Region: '$Env:AWS_DEFAULT_REGION' | Bucket: '$S3BucketName'" -ForegroundColor Cyan
 
 # ---------------------------------------------------------------------------
-# 2. Validate RAVENDB_API_KEY when versions are provided
+# 2. Validate API_WEB_RAVENDB_NET_HOST when versions are provided
 # ---------------------------------------------------------------------------
 if ($Versions.Count -gt 0) {
-    ThrowIfEmpty $Env:RAVENDB_API_KEY 'RAVENDB_API_KEY env var must be set when specifying versions'
+    ThrowIfEmpty $Env:API_WEB_RAVENDB_NET_HOST 'API_WEB_RAVENDB_NET_HOST env var must be set when specifying versions'
 }
 
 # ---------------------------------------------------------------------------
