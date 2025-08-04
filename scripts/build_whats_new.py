@@ -46,7 +46,6 @@ from pathlib import Path
 from typing import List, Dict, Any
 
 import requests
-from markdownify import markdownify as md
 
 # ============================================================================
 # Configuration & paths
