@@ -23,11 +23,11 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * The following options are available to **count query results**:
 
-    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
+    * [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
   
-    * [LongCount](../../../client-api/session/querying/how-to-count-query-results#longcount)
+    * [LongCount](../../../client-api/session/querying/how-to-count-query-results.mdx#longcount)
   
-    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
 
 </Admonition>
 ## Count
@@ -187,7 +187,7 @@ where ShipTo.Country == "UK" limit 0, 0
 * When executing a query, you can retrieve the query statistics, which include the total number of results.
 
 * The total number of results is available in the `TotalResults` property of the `QueryStatistics` object.  
-  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics). 
+  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx). 
 
 
 
@@ -199,8 +199,8 @@ where ShipTo.Country == "UK" limit 0, 0
 
 * The following options are available to **count query results**:
 
-    * [`count`](../../../client-api/session/querying/how-to-count-query-results#count)
-    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+    * [`count`](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
 
 </Admonition>
 ## `count`
@@ -237,7 +237,7 @@ When executing a query, you can retrieve query statistics that include the total
 To do this, define a callback function that takes `QueryStatistics` as an argument and applies whatever 
 logic you want to apply.  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`def **statistics_callback(statistics: QueryStatistics) -> None:
    # Read and interact with QueryStatistics here
@@ -250,7 +250,7 @@ logic you want to apply.
 
 Then pass your function as an argument to the `query.statistics` method and use the retrieved `QueryStatistics` object.  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`employees = list(
 session.query(object_type=Employee)
@@ -261,7 +261,7 @@ session.query(object_type=Employee)
 </CodeBlock>
 </TabItem>
 
-Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).  
+Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx).  
 
 
 
@@ -273,8 +273,8 @@ Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to
 
 * The following options are available to **count query results**:
 
-    * [`Count`](../../../client-api/session/querying/how-to-count-query-results#count)
-    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+    * [`Count`](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
 
 </Admonition>
 ## `Count`
@@ -312,7 +312,7 @@ where ShipTo.Country == "UK" limit 0, 0
 ## Get count from query stats
 
 When executing a query, you can retrieve the query statistics that include the total number of results.  
-Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).  
+Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx).  
 
 
 
@@ -324,9 +324,9 @@ Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to
 
 * The following options are available to **count query results**:
 
-    * [Count](../../../client-api/session/querying/how-to-count-query-results#count)
+    * [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count)
   
-    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results#get-count-from-query-stats)
+    * [Get number of results from query stats](../../../client-api/session/querying/how-to-count-query-results.mdx#get-count-from-query-stats)
 
 </Admonition>
 ## Count
@@ -340,7 +340,7 @@ Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const numberOfOrders = await session
     .query({ collection: "Orders" })
     .whereEquals("ShipTo.Country", "UK")
@@ -373,7 +373,7 @@ where ShipTo.Country == "UK" limit 0, 0
 * When executing a query, you can retrieve the query statistics, which include the total number of results.
 
 * The total number of results is available in the `totalResults` property of the `QueryStatistics` object.  
-  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics).
+  Learn more in [Get Query Statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx).
 
 
 

@@ -14,22 +14,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 # Cluster: Cluster API
 
-The easiest way to manage a RavenDB cluster is through the Management Studio's [Cluster View](../../studio/cluster/cluster-view).  
+The easiest way to manage a RavenDB cluster is through the Management Studio's [Cluster View](../../studio/cluster/cluster-view.mdx).  
 All cluster operations are available through the GUI. However, sometimes you'd want to automate things. 
 
 In this section we will demonstrate of how to perform certain cluster operations programmatically using the REST API.
 In the first example we will show how to make a secure call using PowerShell, cURL and the RavenDB C# Client. The rest of the examples are cURL only.
 
-- [Add node to the cluster](../../server/clustering/cluster-api#add-node-to-the-cluster)
-- [Delete node from the cluster](../../server/clustering/cluster-api#delete-node-from-the-cluster)
-- [Promote a watcher node](../../server/clustering/cluster-api#promote-a-node)
-- [Demote a watcher node](../../server/clustering/cluster-api#demote-a-node)
-- [Force elections](../../server/clustering/cluster-api#force-elections)
-- [Force timeout](../../server/clustering/cluster-api#force-timeout)
-- [Bootstrap the cluster](../../server/clustering/cluster-api#bootstrap-cluster)
+- [Add node to the cluster](../../server/clustering/cluster-api.mdx#add-node-to-the-cluster)
+- [Delete node from the cluster](../../server/clustering/cluster-api.mdx#delete-node-from-the-cluster)
+- [Promote a watcher node](../../server/clustering/cluster-api.mdx#promote-a-node)
+- [Demote a watcher node](../../server/clustering/cluster-api.mdx#demote-a-node)
+- [Force elections](../../server/clustering/cluster-api.mdx#force-elections)
+- [Force timeout](../../server/clustering/cluster-api.mdx#force-timeout)
+- [Bootstrap the cluster](../../server/clustering/cluster-api.mdx#bootstrap-cluster)
 
 <Admonition type="note" title="Note">
-If authentication is turned on, a client certificate with either `Cluster Admin` or `Operator` [Security Clearance](../../server/security/authorization/security-clearance-and-permissions) must be supplied, depending on the endpoint.
+If authentication is turned on, a client certificate with either `Cluster Admin` or `Operator` [Security Clearance](../../server/security/authorization/security-clearance-and-permissions.mdx) must be supplied, depending on the endpoint.
 </Admonition>
 
 ## Add node to the cluster
@@ -47,9 +47,9 @@ SecurityClearance: `Cluster Admin`
 
 ### C# Client
 
-* To make a secure call, the Document Store must be supplied with the client certificate ([example](../../client-api/setting-up-authentication-and-authorization#example---initializing-document-store-with-a-client-certificate)).
+* To make a secure call, the Document Store must be supplied with the client certificate ([example](../../client-api/setting-up-authentication-and-authorization.mdx#example---initializing-document-store-with-a-client-certificate)).
 
-<TabItem value="something" label="add_node_with_args">
+<TabItem value="add_node_with_args" label="add_node_with_args">
 <CodeBlock language="csharp">
 {`store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores>"));
 `}
@@ -58,7 +58,7 @@ SecurityClearance: `Cluster Admin`
 
 ### Powershell
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $clientCert = Get-PfxCertificate -FilePath <path-to-pfx-cert>
@@ -69,7 +69,7 @@ Invoke-WebRequest -Method Put -URI "https://<server-url>/admin/cluster/node?url=
 
 ### cURL
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X PUT https://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<node-tag>&watcher=<is-watcher>&maxUtilizedCores=<max-utilized-cores> --cert <path-to-pem-cert>
 `}
@@ -90,7 +90,7 @@ SecurityClearance: `Cluster Admin`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X DELETE https://<server-url>/admin/cluster/node?nodeTag=<node-tag>
 `}
@@ -114,7 +114,7 @@ SecurityClearance: `ClusterAdmin`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST https://<server-url>/admin/cluster/promote?nodeTag=<node-tag> -d ''
 `}
@@ -137,7 +137,7 @@ SecurityClearance: `ClusterAdmin`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST https://<server-url>/admin/cluster/demote?nodeTag=<node-tag> -d ''
 `}
@@ -154,7 +154,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST https://<server-url>/admin/cluster/reelect -d ''
 `}
@@ -171,7 +171,7 @@ SecurityClearance: `Operator`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST https://<server-url>/admin/cluster/timeout -d ''
 `}
@@ -189,7 +189,7 @@ SecurityClearance: `Cluster Admin`
 
 ### Example
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST https://<server-url>/admin/cluster/bootstrap -d ''
 `}

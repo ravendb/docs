@@ -79,7 +79,7 @@ To allow full-text search on the text fields, you can use the analyzers provided
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
-There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation#collation)).
+There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation.mdx#collation)).
 
 ## Using Non-Default Analyzer
 
@@ -130,7 +130,7 @@ You can create a custom analyzer on your own and deploy it to RavenDB server. To
 - your DLL needs to be placed next to RavenDB binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)
 - the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer
 
-<TabItem value="something" label="my_custom_analyzer">
+<TabItem value="my_custom_analyzer" label="my_custom_analyzer">
 <CodeBlock language="csharp">
 {`public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
 \{
@@ -150,7 +150,7 @@ By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` 
 
 This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.
 
-<TabItem value="something-something" label="analyzers_3">
+<TabItem value="analyzers_3" label="analyzers_3">
 <CodeBlock language="java">
 {`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask \{
     public Employees_ByFirstAndLastName() \{
@@ -168,7 +168,7 @@ This behavior can be changed by turning off the field analysis (setting the `Fie
 
 `FieldIndexing.SEARCH` allows performing full text search operations against the field:
 
-<TabItem value="something-something" label="analyzers_4">
+<TabItem value="analyzers_4" label="analyzers_4">
 <CodeBlock language="java">
 {`public static class BlogPosts_ByContent extends AbstractIndexCreationTask \{
     public BlogPosts_ByContent() \{
@@ -184,9 +184,9 @@ This behavior can be changed by turning off the field analysis (setting the `Fie
 </CodeBlock>
 </TabItem>
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.NO` option. This can be useful when you want to [store](../indexes/storing-data-in-index) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
+If you want to disable indexing on a particular field, use the `FieldIndexing.NO` option. This can be useful when you want to [store](../indexes/storing-data-in-index.mdx) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
 
-<TabItem value="something-something" label="analyzers_5">
+<TabItem value="analyzers_5" label="analyzers_5">
 <CodeBlock language="java">
 {`public static class BlogPosts_ByTitle extends AbstractIndexCreationTask \{
     public BlogPosts_ByTitle() \{
@@ -205,7 +205,7 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.NO
 
 ## Ordering When Field is Searchable
 
-When field is marked as `SEARCH` sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).
+When field is marked as `SEARCH` sorting must be done using additional field. More [here](../indexes/querying/sorting.mdx#ordering-when-a-field-is-searchable).
 
 
 </LanguageContent>
@@ -214,7 +214,7 @@ When field is marked as `SEARCH` sorting must be done using additional field. Mo
 <Admonition type="note" title="Note">
 
 * RavenDB supports fast and efficient querying through indexes, 
-  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax),  
+  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax.mdx),  
   a high-performance search engine developed specifically for RavenDB.  
   (You can choose which search engine to use for each index).
 
@@ -229,13 +229,13 @@ When field is marked as `SEARCH` sorting must be done using additional field. Mo
   giving you full flexibility in configuring your indexes.
 
 * In this page:  
-  * [Understanding the role of analyzers](../indexes/using-analyzers#understanding-the-role-of-analyzers)  
-  * [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb)  
-  * [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field)  
-  * [RavenDB's default analyzers](../indexes/using-analyzers#ravendb)  
-  * [Disabling indexing for index-field](../indexes/using-analyzers#disabling-indexing-for-index-field)  
-  * [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)
-  * [Viewing the indexed terms](../indexes/using-analyzers#viewing-the-indexed-terms)
+  * [Understanding the role of analyzers](../indexes/using-analyzers.mdx#understanding-the-role-of-analyzers)  
+  * [Analyzers available in RavenDB](../indexes/using-analyzers.mdx#analyzers-available-in-ravendb)  
+  * [Setting analyzer for index-field](../indexes/using-analyzers.mdx#setting-analyzer-for-index-field)  
+  * [RavenDB's default analyzers](../indexes/using-analyzers.mdx#ravendb)  
+  * [Disabling indexing for index-field](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field)  
+  * [Creating custom analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers)
+  * [Viewing the indexed terms](../indexes/using-analyzers.mdx#viewing-the-indexed-terms)
 
 </Admonition>
 ## Understanding the role of analyzers
@@ -243,14 +243,14 @@ When field is marked as `SEARCH` sorting must be done using additional field. Mo
 <Admonition type="note" title="Note">
 
 ###### Analyzers in the index definition:
-The [index definition](../studio/database/indexes/indexes-overview#index-definition) determines what content from the documents will be indexed for each index-field.  
+The [index definition](../studio/database/indexes/indexes-overview.mdx#index-definition) determines what content from the documents will be indexed for each index-field.  
 For each index-field you can specify a particular analyzer to process the content of that field.
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Analyzers at indexing time:
-During the [indexing process](../studio/database/indexes/indexes-overview#indexing-process),
+During the [indexing process](../studio/database/indexes/indexes-overview.mdx#indexing-process),
 the content to be indexed is processed and broken down into smaller components called tokens (or terms) through a process known as **tokenization**.  
 This is done by the **Analyzers**, which are objects that determine how text is split into tokens.  
 
@@ -259,44 +259,44 @@ Analyzers can apply additional transformations, such as converting text to lower
 (e.g., "the," "and"), or applying stemming (reducing words to their base forms, e.g., "running" → "run").
 
 The resulting tokens are then stored in the index for each index-field and can later be searched by queries,  
-enabling [Full-text search](../indexes/querying/searching).
+enabling [Full-text search](../indexes/querying/searching.mdx).
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Analyzers at query time:
-When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search),  
-the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../indexes/using-analyzers#using-the-default-search-analyzer).
+When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search.mdx),  
+the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
 
-When running a [Full-text search on a static-index](../indexes/querying/query-index),  
+When running a [Full-text search on a static-index](../indexes/querying/query-index.mdx),  
 the **same analyzer** used to tokenize field content at indexing time is typically applied 
 to process the terms provided in the full-text search query before they are sent to the search engine to retrieve matching documents.  
 
 There are two exceptions to this rule:
 
-  1. When setting the [NGramAnalyzer](../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
+  1. When setting the [NGramAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
      it tokenizes the index field at indexing time.  
      However, at query time, when performing a full-text search on that field,  
-     the default [RavenStandardAnalyzer](../indexes/using-analyzers#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
+     the default [RavenStandardAnalyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
 
        Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
        so to address this issue, you have two options:  
-       * Increase the [MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).  
+       * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).  
        * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.  
 
   2. Behavior is also different when making a full-text search with wildcards in the search terms.  
-     This is explained in detail in [Searching with wildcards](../indexes/querying/searching#searching-with-wildcards).
+     This is explained in detail in [Searching with wildcards](../indexes/querying/searching.mdx#searching-with-wildcards).
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Full-text search:
-In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
-For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](../indexes/using-analyzers#creating-custom-analyzers).  
+In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
+For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](../indexes/using-analyzers.mdx#creating-custom-analyzers).  
 It is straightforward and may already be available as a contrib package for Lucene.
 
 You can also configure a specific collation for an index field to sort based on culture specific rules.  
-Learn more in [Sorting and Collation](../indexes/sorting-and-collation#collation).
+Learn more in [Sorting and Collation](../indexes/sorting-and-collation.mdx#collation).
 
 </Admonition>
 
@@ -313,13 +313,13 @@ Learn more in [Sorting and Collation](../indexes/sorting-and-collation#collation
    * **KeywordAnalyzer**
    * **NGramAnalyzer**
 
-* If needed, you can create your own [Customized Analyzers](../indexes/using-analyzers#creating-custom-analyzers).
+* If needed, you can create your own [Customized Analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers).
 
 * To assign the analyzer of your choice to a specific index-field,
-  see: [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field).
+  see: [Setting analyzer for index-field](../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
-  RavenDB will use its [Default Analyzers](../indexes/using-analyzers#ravendb) to process and tokenize the content of a field.
+  RavenDB will use its [Default Analyzers](../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
 <Admonition type="info" title="Info">
 All examples below use the following text:  
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
@@ -368,7 +368,7 @@ All examples below use the following text:
     be aware that analyzers removing common stop words may treat IT as a stop word and exclude it from the resulting terms.
     This can also affect acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".
   * To avoid excluding acronyms, you can either spell out the full title instead of abbreviating it
-    or use an [Analyzer that doesn't remove stop words](../indexes/using-analyzers#analyzers-that-do-not-remove-common-stop-words).
+    or use an [Analyzer that doesn't remove stop words](../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
 
 </Admonition>
 
@@ -459,8 +459,8 @@ All examples below use the following text:
 * **Overriding default token length**: (only when using Lucene as the search engine)  
     
     You can override the default token lengths of the NGram analyzer by setting the following configuration keys:  
-    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.mingram)
-    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram).  
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.mingram)
+    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram).  
     
     For example, setting them to 3 and 4, respectively, will generate the following tokens:  
 
@@ -475,7 +475,7 @@ All examples below use the following text:
     In RavenDB, the analyzer configured in the index definition is typically used both at indexing time and query time (the same analyzer). 
     However, the `NGramAnalyzer` is an exception to this rule.  
   
-    Refer to section [Analyzers at query time](../indexes/using-analyzers#analyzers-at-query-time) to learn about the different behaviors. 
+    Refer to section [Analyzers at query time](../indexes/using-analyzers.mdx#analyzers-at-query-time) to learn about the different behaviors. 
 
 </Admonition>
 </Admonition>
@@ -487,12 +487,12 @@ All examples below use the following text:
   use the `Analyzers.Add()` method within the index definition for that field.
 
 * Either:  
-  * Specify an analyzer from the [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb),  
-  * Or specify your own custom analyzer (see [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)).
+  * Specify an analyzer from the [Analyzers available in RavenDB](../indexes/using-analyzers.mdx#analyzers-available-in-ravendb),  
+  * Or specify your own custom analyzer (see [Creating custom analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers)).
 
-* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../indexes/using-analyzers#ravendb).
+* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../indexes/using-analyzers.mdx#ravendb).
 
-* An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../studio/database/indexes/create-map-index#index-field-options).
+* An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../studio/database/indexes/create-map-index.mdx#index-field-options).
  
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
@@ -559,14 +559,14 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
    depending on the specified Indexing Behavior.
 
 * The **Default Analyzers** are:  
-   * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](../indexes/using-analyzers#using-the-default-search-analyzer). 
-   * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](../indexes/using-analyzers#using-the-default-exact-analyzer). 
-   * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](../indexes/using-analyzers#using-the-default-analyzer). 
+   * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer). 
+   * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](../indexes/using-analyzers.mdx#using-the-default-exact-analyzer). 
+   * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](../indexes/using-analyzers.mdx#using-the-default-analyzer). 
 
 * The available **Indexing Behavior** values are:  
     * `FieldIndexing.Exact` 
     * `FieldIndexing.Search`
-    * `FieldIndexing.No` - This behavior [disables field indexing](../indexes/using-analyzers#disabling-indexing-for-index-field).
+    * `FieldIndexing.No` - This behavior [disables field indexing](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
 <Admonition type="note" title="Note">
@@ -577,13 +577,13 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   By default, this analyzer is the `RavenStandardAnalyzer` (inherits from Lucene's _StandardAnalyzer_).
 
 * To customize a different analyzer that will serve as your Default Search Analyzer,  
-  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration#indexing.analyzers.search.default) configuration key.
+  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.search.default) configuration key.
 
 * Using a search analyzer enables full-text search queries against the field.  
   Given the same sample text from above, _RavenStandardAnalyzer_ will produce the following tokens:  
   `[quick] [brown] [fox] [jumped] [over] [lazy] [dogs] [bob@hotmail.com] [123432]`
 
-<TabItem value="something" label="use_search_analyzer">
+<TabItem value="use_search_analyzer" label="use_search_analyzer">
 <CodeBlock language="csharp">
 {`public class BlogPosts_ByContent : AbstractIndexCreationTask<BlogPost>
 \{
@@ -623,12 +623,12 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   The field's value is indexed exactly as provided, enabling precise, case-sensitive matching at query time.  
 
 * To customize a different analyzer that will serve as your Default Exact Analyzer,  
-  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration#indexing.analyzers.exact.default) configuration key.
+  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexing.analyzers.exact.default) configuration key.
 
 * Given the same sample text from above, _KeywordAnalyzer_ will produce a single token:            
   `[The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.]`
 
-<TabItem value="something" label="use_exact_analyzer">
+<TabItem value="use_exact_analyzer" label="use_exact_analyzer">
 <CodeBlock language="csharp">
 {`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
 \{
@@ -666,12 +666,12 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   The entire content of the field is processed into a single, lowercased token.
 
 * To customize a different analyzer that will serve as your Default Analyzer,  
-  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration#indexing.analyzers.default) configuration key.
+  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.default) configuration key.
 
 * Given the same sample text from above, _LowerCaseKeywordAnalyzer_ will produce a single token:            
   `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-<TabItem value="something" label="use_default_analyzer">
+<TabItem value="use_default_analyzer" label="use_default_analyzer">
 <CodeBlock language="csharp">
 {`public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
 \{
@@ -702,11 +702,11 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   In this case:
     * No analyzer will process the field, and no terms will be generated from its content.
     * The field will not be available for querying.
-    * The field will still be accessible for extraction when [projecting query results](../indexes/querying/projections).
+    * The field will still be accessible for extraction when [projecting query results](../indexes/querying/projections.mdx).
 
-* This is useful when you need to [store the field data in the index](../indexes/storing-data-in-index) and only intend to use it for query projections.
+* This is useful when you need to [store the field data in the index](../indexes/storing-data-in-index.mdx) and only intend to use it for query projections.
 
-<TabItem value="something" label="no_indexing">
+<TabItem value="no_indexing" label="no_indexing">
 <CodeBlock language="csharp">
 {`public class BlogPosts_ByTitle : AbstractIndexCreationTask<BlogPost>
 \{
@@ -758,15 +758,15 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 * **Ways to create**:  
   There are three ways to create a custom analyzer and add it to your server:  
 
-  1. [Add custom analyzer via Studio](../indexes/using-analyzers#add-custom-analyzer-via-studio)  
-  2. [Add custom analyzer via Client API](../indexes/using-analyzers#add-custom-analyzer-via-client-api)  
-  3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers#add-custom-analyzer-directly-to-ravendbs-binaries)  
+  1. [Add custom analyzer via Studio](../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)  
+  2. [Add custom analyzer via Client API](../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)  
+  3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)  
 <Admonition type="note" title="Note">
 
 ##### Add custom analyzer via Studio
 
 Custom analyzers can be added from the Custom Analyzers view in the Studio.  
-Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers) article.
+Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="Note">
@@ -777,7 +777,7 @@ First, create a class that inherits from the abstract `Lucene.Net.Analysis.Analy
 (you need to reference `Lucene.Net.dll`, which is included with the RavenDB Server package).   
 For example:  
 
-<TabItem value="something" label="my_custom_analyzer">
+<TabItem value="my_custom_analyzer" label="my_custom_analyzer">
 <CodeBlock language="csharp">
 {`public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
 \{
@@ -792,24 +792,24 @@ For example:
 </TabItem>
 
 Next, use `PutAnalyzersOperation` to deploy the analyzer to a specific database.  
-By default, `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database) of the document store you're using.  
-To target a different database, use the [ForDatabase()](../client-api/operations/how-to/switch-operations-to-a-different-database) method.
+By default, `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database.mdx) of the document store you're using.  
+To target a different database, use the [ForDatabase()](../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) method.
 
 To make it a server-wide analyzer, use the `PutServerWideOperation` operation.`
 
-<TabItem value="something" label="put_analyzers_1">
+<TabItem value="put_analyzers_1" label="put_analyzers_1">
 <CodeBlock language="csharp">
 {`public PutAnalyzersOperation(params AnalyzerDefinition[] analyzersToAdd)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="put_analyzers_2">
+<TabItem value="put_analyzers_2" label="put_analyzers_2">
 <CodeBlock language="csharp">
 {`public PutServerWideAnalyzersOperation(params AnalyzerDefinition[] analyzersToAdd)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="put_analyzers_3">
+<TabItem value="put_analyzers_3" label="put_analyzers_3">
 <CodeBlock language="csharp">
 {`public class AnalyzerDefinition
 \{
@@ -830,7 +830,7 @@ To make it a server-wide analyzer, use the `PutServerWideOperation` operation.`
 
 **Client API example**:
 
-<TabItem value="something" label="my_custom_analyzer_example">
+<TabItem value="my_custom_analyzer_example" label="my_custom_analyzer_example">
 <CodeBlock language="csharp">
 {`// Define the put analyzer operation:
 var putAnalyzerOp = new PutAnalyzersOperation(new AnalyzerDefinition
@@ -903,7 +903,7 @@ The terms generated for each index-field can be viewed in the Studio.
 <Admonition type="note" title="Note">
 
 * RavenDB supports fast and efficient querying through indexes,
-  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax),  
+  which are powered by either [Lucene](http://lucene.apache.org/) or [Corax](../indexes/search-engine/corax.mdx),  
   a high-performance search engine developed specifically for RavenDB.  
   (You can choose which search engine to use for each index).
 
@@ -918,13 +918,13 @@ The terms generated for each index-field can be viewed in the Studio.
   giving you full flexibility in configuring your indexes.
 
 * In this page:
-    * [Understanding the role of analyzers](../indexes/using-analyzers#understanding-the-role-of-analyzers)
-    * [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb)
-    * [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field)
-    * [RavenDB's default analyzers](../indexes/using-analyzers#ravendb)
-    * [Disabling indexing for index-field](../indexes/using-analyzers#disabling-indexing-for-index-field)
-    * [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)
-    * [Viewing the indexed terms](../indexes/using-analyzers#viewing-the-indexed-terms)
+    * [Understanding the role of analyzers](../indexes/using-analyzers.mdx#understanding-the-role-of-analyzers)
+    * [Analyzers available in RavenDB](../indexes/using-analyzers.mdx#analyzers-available-in-ravendb)
+    * [Setting analyzer for index-field](../indexes/using-analyzers.mdx#setting-analyzer-for-index-field)
+    * [RavenDB's default analyzers](../indexes/using-analyzers.mdx#ravendb)
+    * [Disabling indexing for index-field](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field)
+    * [Creating custom analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers)
+    * [Viewing the indexed terms](../indexes/using-analyzers.mdx#viewing-the-indexed-terms)
 
 </Admonition>
 ## Understanding the role of analyzers
@@ -932,14 +932,14 @@ The terms generated for each index-field can be viewed in the Studio.
 <Admonition type="note" title="Note">
 
 ###### Analyzers in the index definition:
-The [index definition](../studio/database/indexes/indexes-overview#index-definition) determines what content from the documents will be indexed for each index-field.  
+The [index definition](../studio/database/indexes/indexes-overview.mdx#index-definition) determines what content from the documents will be indexed for each index-field.  
 For each index-field you can specify a particular analyzer to process the content of that field.
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Analyzers at indexing time:
-During the [indexing process](../studio/database/indexes/indexes-overview#indexing-process),
+During the [indexing process](../studio/database/indexes/indexes-overview.mdx#indexing-process),
 the content to be indexed is processed and broken down into smaller components called tokens (or terms) through a process known as **tokenization**.  
 This is done by the **Analyzers**, which are objects that determine how text is split into tokens.
 
@@ -948,44 +948,44 @@ Analyzers can apply additional transformations, such as converting text to lower
 (e.g., "the," "and"), or applying stemming (reducing words to their base forms, e.g., "running" → "run").
 
 The resulting tokens are then stored in the index for each index-field and can later be searched by queries,  
-enabling [Full-text search](../indexes/querying/searching).
+enabling [Full-text search](../indexes/querying/searching.mdx).
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Analyzers at query time:
-When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search),  
-the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../indexes/using-analyzers#using-the-default-search-analyzer).
+When running a [Full-text search with a dynamic query](../client-api/session/querying/text-search/full-text-search.mdx),  
+the auto-index created by the server breaks down the text of the searched document field using the [default search analyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
 
-When running a [Full-text search on a static-index](../indexes/querying/query-index),  
+When running a [Full-text search on a static-index](../indexes/querying/query-index.mdx),  
 the **same analyzer** used to tokenize field content at indexing time is typically applied
 to process the terms provided in the full-text search query before they are sent to the search engine to retrieve matching documents.
 
 There are two exceptions to this rule:
 
-1. When setting the [NGramAnalyzer](../indexes/using-analyzers#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
+1. When setting the [NGramAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-tokenize-according-to-the-defined-number-of-characters) in the index definition,
    it tokenizes the index field at indexing time.  
    However, at query time, when performing a full-text search on that field,  
-   the default [RavenStandardAnalyzer](../indexes/using-analyzers#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
+   the default [RavenStandardAnalyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer) is used to tokenize the search term from the query predicate.
 
    Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
    so to address this issue, you have two options:
-    * Increase the [MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).
+    * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).
     * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.
 
 2. Behavior is also different when making a full-text search with wildcards in the search terms.  
-   This is explained in detail in [Searching with wildcards](../indexes/querying/searching#searching-with-wildcards).
+   This is explained in detail in [Searching with wildcards](../indexes/querying/searching.mdx#searching-with-wildcards).
 
 </Admonition>
 <Admonition type="note" title="Note">
 
 ###### Full-text search:
-In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
-For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](../indexes/using-analyzers#creating-custom-analyzers).  
+In most cases, Lucene's [StandardAnalyzer](../indexes/using-analyzers.mdx#analyzers-that-remove-common-stop-words) is sufficient for full-text searches.  
+For languages other than English, or when a custom analysis process is needed, you can provide your own [Custom analyzer](../indexes/using-analyzers.mdx#creating-custom-analyzers).  
 It is straightforward and may already be available as a contrib package for Lucene.
 
 You can also configure a specific collation for an index field to sort based on culture specific rules.  
-Learn more in [Sorting and Collation](../indexes/sorting-and-collation#collation).
+Learn more in [Sorting and Collation](../indexes/sorting-and-collation.mdx#collation).
 
 </Admonition>
 
@@ -1002,13 +1002,13 @@ Learn more in [Sorting and Collation](../indexes/sorting-and-collation#collation
     * **KeywordAnalyzer**
     * **NGramAnalyzer**
 
-* If needed, you can create your own [Customized Analyzers](../indexes/using-analyzers#creating-custom-analyzers).
+* If needed, you can create your own [Customized Analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers).
 
 * To assign the analyzer of your choice to a specific index-field,
-  see: [Setting analyzer for index-field](../indexes/using-analyzers#setting-analyzer-for-index-field).
+  see: [Setting analyzer for index-field](../indexes/using-analyzers.mdx#setting-analyzer-for-index-field).
 
 * When no analyzer is explicitly assigned to an index-field in the index definition,  
-  RavenDB will use its [Default Analyzers](../indexes/using-analyzers#ravendb) to process and tokenize the content of a field.
+  RavenDB will use its [Default Analyzers](../indexes/using-analyzers.mdx#ravendb) to process and tokenize the content of a field.
 <Admonition type="info" title="Info">
 All examples below use the following text:  
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`  
@@ -1057,7 +1057,7 @@ All examples below use the following text:
       be aware that analyzers removing common stop words may treat IT as a stop word and exclude it from the resulting terms.
       This can also affect acronyms such as WHO (World Health Organization) or names such as "The Who" or "The IT Crowd".
     * To avoid excluding acronyms, you can either spell out the full title instead of abbreviating it
-      or use an [Analyzer that doesn't remove stop words](../indexes/using-analyzers#analyzers-that-do-not-remove-common-stop-words).
+      or use an [Analyzer that doesn't remove stop words](../indexes/using-analyzers.mdx#analyzers-that-do-not-remove-common-stop-words).
 
 </Admonition>
 
@@ -1148,8 +1148,8 @@ All examples below use the following text:
 * **Overriding default token length**: (only when using Lucene as the search engine)
 
     You can override the default token lengths of the NGram analyzer by setting the following configuration keys:  
-    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.mingram)
-    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration#indexing.lucene.analyzers.ngram.maxgram).
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.mingram)
+    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram).
 
     For example, setting them to 3 and 4, respectively, will generate the following tokens:
 
@@ -1164,7 +1164,7 @@ All examples below use the following text:
     In RavenDB, the analyzer configured in the index definition is typically used both at indexing time and query time (the same analyzer).
     However, the `NGramAnalyzer` is an exception to this rule.
   
-    Refer to section [Analyzers at query time](../indexes/using-analyzers#analyzers-at-query-time) to learn about the different behaviors.
+    Refer to section [Analyzers at query time](../indexes/using-analyzers.mdx#analyzers-at-query-time) to learn about the different behaviors.
 
 </Admonition>
 </Admonition>
@@ -1176,16 +1176,16 @@ All examples below use the following text:
   set the `analyze()` method within the index definition for that field.
 
 * Either:
-    * Specify an analyzer from the [Analyzers available in RavenDB](../indexes/using-analyzers#analyzers-available-in-ravendb),
-    * Or specify your own custom analyzer (see [Creating custom analyzers](../indexes/using-analyzers#creating-custom-analyzers)).
+    * Specify an analyzer from the [Analyzers available in RavenDB](../indexes/using-analyzers.mdx#analyzers-available-in-ravendb),
+    * Or specify your own custom analyzer (see [Creating custom analyzers](../indexes/using-analyzers.mdx#creating-custom-analyzers)).
 
-* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../indexes/using-analyzers#ravendb).
+* If you want RavenDB to use the default analyzers, see [RavenDB's default analyzers](../indexes/using-analyzers.mdx#ravendb).
 
-* An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../studio/database/indexes/create-map-index#index-field-options).
+* An analyzer may also be set from the Edit Index view in the Studio, see [Index field options](../studio/database/indexes/create-map-index.mdx#index-field-options).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
     constructor() {
         super();
@@ -1206,7 +1206,7 @@ All examples below use the following text:
 </CodeBlock>
 </TabItem>
 <TabItem value="PutIndexesOperation" label="PutIndexesOperation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
 builder.map = \`docs.Posts.Select(post => new {     
     tags = post.tags,     
@@ -1232,14 +1232,14 @@ await store.maintenance
    depending on the specified Indexing Behavior.
 
 * The **Default Analyzers** are:
-    * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](../indexes/using-analyzers#using-the-default-search-analyzer).
-    * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](../indexes/using-analyzers#using-the-default-exact-analyzer).
-    * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](../indexes/using-analyzers#using-the-default-analyzer).
+    * `RavenStandardAnalyzer` - Serves as the [Default Search Analyzer](../indexes/using-analyzers.mdx#using-the-default-search-analyzer).
+    * `KeywordAnalyzer` - Servers as the [Default Exact Analyzer](../indexes/using-analyzers.mdx#using-the-default-exact-analyzer).
+    * `LowerCaseKeywordAnalyzer`- Serves as the [Default Analyzer](../indexes/using-analyzers.mdx#using-the-default-analyzer).
 
 * The available **Indexing Behavior** values are:
     * `Exact`
     * `Search`
-    * `No` - This behavior [disables field indexing](../indexes/using-analyzers#disabling-indexing-for-index-field).
+    * `No` - This behavior [disables field indexing](../indexes/using-analyzers.mdx#disabling-indexing-for-index-field).
 
 * See the detailed explanation for each scenario below:
 <Admonition type="note" title="Note">
@@ -1250,14 +1250,14 @@ await store.maintenance
   By default, this analyzer is the `RavenStandardAnalyzer` (inherits from Lucene's _StandardAnalyzer_).
 
 * To customize a different analyzer that will serve as your Default Search Analyzer,  
-  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration#indexing.analyzers.search.default) configuration key.
+  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.search.default) configuration key.
 
 * Using a search analyzer enables full-text search queries against the field.  
   Given the same sample text from above, _RavenStandardAnalyzer_ will produce the following tokens:  
   `[quick] [brown] [fox] [jumped] [over] [lazy] [dogs] [bob@hotmail.com] [123432]`
 
-<TabItem value="something-something" label="use_search_analyzer">
-<CodeBlock language="nodejs">
+<TabItem value="use_search_analyzer" label="use_search_analyzer">
+<CodeBlock language="js">
 {`class BlogPosts_ByContent extends AbstractIndexCreationTask \{
     constructor() \{
         super();
@@ -1293,13 +1293,13 @@ await store.maintenance
   The field's value is indexed exactly as provided, enabling precise, case-sensitive matching at query time.
 
 * To customize a different analyzer that will serve as your Default Exact Analyzer,  
-  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration#indexing.analyzers.exact.default) configuration key.
+  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexing.analyzers.exact.default) configuration key.
 
 * Given the same sample text from above, _KeywordAnalyzer_ will produce a single token:            
   `[The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.]`
 
-<TabItem value="something-something" label="use_exact_analyzer">
-<CodeBlock language="nodejs">
+<TabItem value="use_exact_analyzer" label="use_exact_analyzer">
+<CodeBlock language="js">
 {`class Employees_ByFirstAndLastName extends AbstractIndexCreationTask \{
     constructor() \{
         super();
@@ -1334,13 +1334,13 @@ await store.maintenance
   The entire content of the field is processed into a single, lowercased token.
 
 * To customize a different analyzer that will serve as your Default Analyzer,  
-  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration#indexing.analyzers.default) configuration key.
+  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.default) configuration key.
 
 * Given the same sample text from above, _LowerCaseKeywordAnalyzer_ will produce a single token:            
   `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-<TabItem value="something-something" label="use_default_analyzer">
-<CodeBlock language="nodejs">
+<TabItem value="use_default_analyzer" label="use_default_analyzer">
+<CodeBlock language="js">
 {`class Employees_ByFirstName extends AbstractIndexCreationTask \{
     constructor() \{
         super();
@@ -1368,12 +1368,12 @@ await store.maintenance
   In this case:
     * No analyzer will process the field, and no terms will be generated from its content.
     * The field will not be available for querying.
-    * The field will still be accessible for extraction when [projecting query results](../indexes/querying/projections).
+    * The field will still be accessible for extraction when [projecting query results](../indexes/querying/projections.mdx).
 
-* This is useful when you need to [store the field data in the index](../indexes/storing-data-in-index) and only intend to use it for query projections.
+* This is useful when you need to [store the field data in the index](../indexes/storing-data-in-index.mdx) and only intend to use it for query projections.
 
-<TabItem value="something-something" label="no_indexing">
-<CodeBlock language="nodejs">
+<TabItem value="no_indexing" label="no_indexing">
+<CodeBlock language="js">
 {`class BlogPosts_ByTitle extends AbstractIndexCreationTask \{
     constructor() \{
         super();
@@ -1421,15 +1421,15 @@ await store.maintenance
 * **Ways to create**:  
   There are three ways to create a custom analyzer and add it to your server:
 
-    1. [Add custom analyzer via Studio](../indexes/using-analyzers#add-custom-analyzer-via-studio)
-    2. [Add custom analyzer via Client API](../indexes/using-analyzers#add-custom-analyzer-via-client-api)
-    3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers#add-custom-analyzer-directly-to-ravendbs-binaries)
+    1. [Add custom analyzer via Studio](../indexes/using-analyzers.mdx#add-custom-analyzer-via-studio)
+    2. [Add custom analyzer via Client API](../indexes/using-analyzers.mdx#add-custom-analyzer-via-client-api)
+    3. [Add custom analyzer directly to RavenDB's binaries](../indexes/using-analyzers.mdx#add-custom-analyzer-directly-to-ravendbs-binaries)
 <Admonition type="note" title="Note">
 
 ##### Add custom analyzer via Studio
 
 Custom analyzers can be added from the Custom Analyzers view in the Studio.  
-Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers) article.
+Learn more in this [Custom analyzers](../studio/database/settings/custom-analyzers.mdx) article.
 
 </Admonition>
 <Admonition type="note" title="Note">
@@ -1440,7 +1440,7 @@ First, create a class that inherits from the abstract `Lucene.Net.Analysis.Analy
 (you need to reference `Lucene.Net.dll`, which is included with the RavenDB Server package).   
 For example:
 
-<TabItem value="something-something" label="my_custom_analyzer">
+<TabItem value="my_custom_analyzer" label="my_custom_analyzer">
 <CodeBlock language="csharp">
 {`public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
 \{
@@ -1455,25 +1455,25 @@ For example:
 </TabItem>
 
 Next, use `PutAnalyzersOperation` to deploy the analyzer to a specific database.  
-By default, `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database) of the document store you're using.  
-To target a different database, use the [forDatabase()](../client-api/operations/how-to/switch-operations-to-a-different-database) method.
+By default, `PutAnalyzersOperation` will apply to the [default database](../client-api/setting-up-default-database.mdx) of the document store you're using.  
+To target a different database, use the [forDatabase()](../client-api/operations/how-to/switch-operations-to-a-different-database.mdx) method.
 
 To make it a server-wide analyzer, use the `PutServerWideOperation` operation.`
 
-<TabItem value="something-something" label="put_analyzers_1">
-<CodeBlock language="nodejs">
+<TabItem value="put_analyzers_1" label="put_analyzers_1">
+<CodeBlock language="js">
 {`await store.maintenance.send(new PutAnalyzersOperation(analyzerDefinition));
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="put_analyzers_2">
-<CodeBlock language="nodejs">
+<TabItem value="put_analyzers_2" label="put_analyzers_2">
+<CodeBlock language="js">
 {`await store.maintenance.send(new PutServerWideAnalyzersOperation(analyzerDefinition));
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="put_analyzers_3">
-<CodeBlock language="nodejs">
+<TabItem value="put_analyzers_3" label="put_analyzers_3">
+<CodeBlock language="js">
 {`const analyzerDefinition = \{
     name: "analyzerName",
     code: "code"
@@ -1489,8 +1489,8 @@ To make it a server-wide analyzer, use the `PutServerWideOperation` operation.`
 
 **Client API example**:
 
-<TabItem value="something-something" label="my_custom_analyzer_example">
-<CodeBlock language="nodejs">
+<TabItem value="my_custom_analyzer_example" label="my_custom_analyzer_example">
+<CodeBlock language="js">
 {`const analyzerDefinition = \{
     name: "MyAnalyzer",
     code: "using System.IO;\\n" +

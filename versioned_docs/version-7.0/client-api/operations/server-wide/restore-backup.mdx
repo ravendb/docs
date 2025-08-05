@@ -21,18 +21,18 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 
 * To restore a database from its backup, use `RestoreBackupOperation`.  
-* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup).  
+* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup.mdx).  
 
 ## Syntax
 
-<TabItem value="something-something" label="restore_1">
+<TabItem value="restore_1" label="restore_1">
 <CodeBlock language="csharp">
 {`public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="restore_2">
+<TabItem value="restore_2" label="restore_2">
 <CodeBlock language="csharp">
 {`public class RestoreBackupConfiguration
 \{
@@ -60,7 +60,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Example
 
-<TabItem value="something-something" label="restore_3">
+<TabItem value="restore_3" label="restore_3">
 <CodeBlock language="csharp">
 {`RestoreBackupConfiguration config = new RestoreBackupConfiguration()
 \{
@@ -80,11 +80,11 @@ store.Maintenance.Server.Send(restoreOperation)
 
 
 * To restore a database from its backup, use `RestoreBackupOperation`.  
-* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup).  
+* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup.mdx).  
 
 ## Syntax
 
-<TabItem value="something-something" label="constructor">
+<TabItem value="constructor" label="constructor">
 <CodeBlock language="java">
 {`public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguration);
 
@@ -93,7 +93,7 @@ public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguratio
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="get_set">
+<TabItem value="get_set" label="get_set">
 <CodeBlock language="java">
 {`public abstract class RestoreBackupConfigurationBase \{
 
@@ -168,7 +168,7 @@ public RestoreBackupOperation(RestoreBackupConfigurationBase restoreConfiguratio
 
 ## Example
 
-<TabItem value="something-something" label="example_java">
+<TabItem value="example_java" label="example_java">
 <CodeBlock language="java">
 {`RestoreBackupConfiguration config = new RestoreBackupConfiguration();
 config.setBackupLocation("C:\\\\backups\\\\Northwind");
@@ -185,19 +185,19 @@ store.maintenance().server().send(restoreOperation);
 
 
 * To restore a database from its backup, use `RestoreBackupOperation`.  
-* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup).  
+* A backup can also be restored using [Studio](../../../studio/database/create-new-database/from-backup.mdx).  
 
 ## Syntax
 
-<TabItem value="something-something" label="restore_1">
-<CodeBlock language="nodejs">
+<TabItem value="restore_1" label="restore_1">
+<CodeBlock language="js">
 {`const restoreBackupOperation = new RestoreBackupOperation(restoreConfiguration, "nodeTag");
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="restore_2">
-<CodeBlock language="nodejs">
+<TabItem value="restore_2" label="restore_2">
+<CodeBlock language="js">
 {`export interface RestoreBackupConfigurationBase \{
     databaseName,
     lastFileNameToRestore,
@@ -225,8 +225,8 @@ store.maintenance().server().send(restoreOperation);
 
 ## Example
 
-<TabItem value="something-something" label="restore_3">
-<CodeBlock language="nodejs">
+<TabItem value="restore_3" label="restore_3">
+<CodeBlock language="js">
 {`restoreConfiguration = \{
     databaseName: "Northwind",
     skipIndexes: false

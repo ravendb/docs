@@ -18,11 +18,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Backups can be easily restored using RavenDB Studio.  
 
 * In this page:  
-  * [New Database From Backup - Studio Databases View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-databases-view)  
-  * [New Database From Backup - Studio Backups View](../../../studio/database/create-new-database/from-backup#new-database-from-backup---studio-backups-view)  
-  * [Backup Source Configuration](../../../studio/database/create-new-database/from-backup#backup-source-configuration)  
-  * [Setting Up High Availability After Restoration](../../../studio/database/create-new-database/from-backup#setting-up-high-availability-after-restoration)  
-  * [Importing Backups into a Sharded Database](../../../studio/database/create-new-database/from-backup#importing-backups-into-a-sharded-database)  
+  * [New Database From Backup - Studio Databases View](../../../studio/database/create-new-database/from-backup.mdx#new-database-from-backup---studio-databases-view)  
+  * [New Database From Backup - Studio Backups View](../../../studio/database/create-new-database/from-backup.mdx#new-database-from-backup---studio-backups-view)  
+  * [Backup Source Configuration](../../../studio/database/create-new-database/from-backup.mdx#backup-source-configuration)  
+  * [Setting Up High Availability After Restoration](../../../studio/database/create-new-database/from-backup.mdx#setting-up-high-availability-after-restoration)  
+  * [Importing Backups into a Sharded Database](../../../studio/database/create-new-database/from-backup.mdx#importing-backups-into-a-sharded-database)  
 
 </Admonition>
 ## New Database From Backup - Studio Databases View
@@ -49,7 +49,7 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 ![Figure 2. Backup Source Configuration](./assets/new-database-from-backup-2.png)
 
-1. [**Name** your new database](../../../studio/database/create-new-database/general-flow#2.-database-name).  
+1. [**Name** your new database](../../../studio/database/create-new-database/general-flow.mdx#2.-database-name).  
 
 2. **Source**  
    Select the source server type to see the fields necessary to access the backup
@@ -62,14 +62,14 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 
 3. **Backup Directory**  
-   Select the file location that you set when you [created your backup](../../../studio/database/tasks/backup-task).  
+   Select the file location that you set when you [created your backup](../../../studio/database/tasks/backup-task.mdx).  
     * If your source is a cloud-based database, you will likely need to enter credentials and passwords as well as location.  
 
 4. **Disable ongoing tasks after restore**  
-   Disabling will likely require [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info) to be created again.  
+   Disabling will likely require [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx) to be created again.  
 
 5. **Skip indexes**  
-   Skipping [indexes](../../../indexes/what-are-indexes) will require your indexes to be built anew.  
+   Skipping [indexes](../../../indexes/what-are-indexes.mdx) will require your indexes to be built anew.  
 
 6. **Restore Point** 
    Choose the backup version which will populate your new, restored database.  
@@ -81,7 +81,7 @@ Another way to access the New Database From Backup interface is via the Studio B
 
 The backup will be restored only on the current node after restoration.  
 To create a database group of at least 3 nodes this database can be added to other nodes 
-using the "Add node" button in the [Manage group](../../../studio/database/settings/manage-database-group#database-group-topology---actions) 
+using the "Add node" button in the [Manage group](../../../studio/database/settings/manage-database-group.mdx#database-group-topology---actions) 
 Studio view.
 
 </Admonition>
@@ -91,7 +91,7 @@ Studio view.
 
 * The backup of a non-sharded database **cannot** be restored as a new sharded database.  
 * The backup of a non-sharded database **can**, however, be imported into an existing sharded database.  
-  Read more about this option [here](../../../sharding/migration#backup).  
+  Read more about this option [here](../../../sharding/migration.mdx#backup).  
 
 
 

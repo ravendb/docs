@@ -21,20 +21,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
   view it as a list of entries or as a graph.  
 * An **Incremental Time Series** is a special type of time series that allows you to 
   handle time series values as counters.  
-  Read more about incremental time series [here](../../../document-extensions/timeseries/incremental-time-series/overview), 
-  and learn how to define them through Studio [below](../../../studio/database/document-extensions/time-series#incremental-time-series).  
+  Read more about incremental time series [here](../../../document-extensions/timeseries/incremental-time-series/overview.mdx), 
+  and learn how to define them through Studio [below](../../../studio/database/document-extensions/time-series.mdx#incremental-time-series).  
 
 * In this page:
-  * [Document View](../../../studio/database/document-extensions/time-series#document-view)
-  * [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view)
-     * [Create new Time Series (by Creating the First Entry)](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-its-first-entry)
-     * [Editing an Entry](../../../studio/database/document-extensions/time-series#editing-an-entry)
-     * [Deleting a Range of Entries](../../../studio/database/document-extensions/time-series#deleting-a-range-of-entries)
-  * [Querying Time Series](../../../studio/database/document-extensions/time-series#querying-time-series)
-     * [Results in Graph View](../../../studio/database/document-extensions/time-series#results-in-graph-view)
-  * [Incremental Time Series](../../../studio/database/document-extensions/time-series#incremental-time-series)
-     * [Creating a new Incremental Time Series (by Creating its First Entry)](../../../studio/database/document-extensions/time-series#creating-a-new-incremental-time-series-by-creating-its-first-entry)
-     * [Editing an Incremental Time Series Entry](../../../studio/database/document-extensions/time-series#editing-an-incremental-time-series-entry)
+  * [Document View](../../../studio/database/document-extensions/time-series.mdx#document-view)
+  * [Time Series View](../../../studio/database/document-extensions/time-series.mdx#time-series-view)
+     * [Create new Time Series (by Creating the First Entry)](../../../studio/database/document-extensions/time-series.mdx#create-new-time-series-by-creating-its-first-entry)
+     * [Editing an Entry](../../../studio/database/document-extensions/time-series.mdx#editing-an-entry)
+     * [Deleting a Range of Entries](../../../studio/database/document-extensions/time-series.mdx#deleting-a-range-of-entries)
+  * [Querying Time Series](../../../studio/database/document-extensions/time-series.mdx#querying-time-series)
+     * [Results in Graph View](../../../studio/database/document-extensions/time-series.mdx#results-in-graph-view)
+  * [Incremental Time Series](../../../studio/database/document-extensions/time-series.mdx#incremental-time-series)
+     * [Creating a new Incremental Time Series (by Creating its First Entry)](../../../studio/database/document-extensions/time-series.mdx#creating-a-new-incremental-time-series-by-creating-its-first-entry)
+     * [Editing an Incremental Time Series Entry](../../../studio/database/document-extensions/time-series.mdx#editing-an-incremental-time-series-entry)
   
 
 </Admonition>
@@ -44,9 +44,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 <Admonition type="warning" title="Actions" id="actions" href="#actions">
 
-1. To view a document's time series, open its [document view](../../../studio/database/documents/document-view) 
+1. To view a document's time series, open its [document view](../../../studio/database/documents/document-view.mdx) 
    and click the time series tab on the right.  
-2. Click 'Add Time Series' to create a new time series [see more below](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-its-first-entry).  
+2. Click 'Add Time Series' to create a new time series [see more below](../../../studio/database/document-extensions/time-series.mdx#create-new-time-series-by-creating-its-first-entry).  
 3. Click to view and modify time series data.  
 
 </Admonition>
@@ -56,7 +56,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * A. Time series info:  
   * B. **Name**  
     <Admonition type="note" title="Note">
-    [Incremental Time Series](../../../studio/database/document-extensions/time-series#incremental-time-series) 
+    [Incremental Time Series](../../../studio/database/document-extensions/time-series.mdx#incremental-time-series) 
     names always begin with `INC:`  
     E.g. **INC: Downloads** in the first time series listed above.  
     </Admonition>
@@ -74,7 +74,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="warning" title="Actions" id="actions" href="#actions">
 
 1. Click to select another time series.  
-2. Click to add a new entry to this time series (StockPrices), or click the dropdown to create a [new time series](../../../studio/database/document-extensions/time-series#create-new-time-series-by-creating-the-first-entry).  
+2. Click to add a new entry to this time series (StockPrices), or click the dropdown to create a [new time series](../../../studio/database/document-extensions/time-series.mdx#create-new-time-series-by-creating-the-first-entry).  
 3. Delete all entries from a specified time range.  
 4. Edit entry.
 
@@ -94,7 +94,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   once all entries have been deleted).  
 
 * Click the **Add Time Series** button from the 
-  [Document View](../../../studio/database/document-extensions/time-series#document-view) 
+  [Document View](../../../studio/database/document-extensions/time-series.mdx#document-view) 
   to create the time series' first entry.  
 
 ![Add Time Series](./assets/new-time-series.png)
@@ -104,25 +104,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 1. **Time Series Type**  
     * **Diasble** to create a **non-incremental time series**.  
-      (Learn now to create an incremental time series [here](../../../studio/database/document-extensions/time-series#incremental-time-series))  
+      (Learn now to create an incremental time series [here](../../../studio/database/document-extensions/time-series.mdx#incremental-time-series))  
 2. **Time Series Name**  
     * Enter time series' name.  
     * Name cannot start with 'INC:' as this prefix is reserved for incremental time series.  
 3. **Entry Timestamp**  
-    * Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
+    * Select a [timestamp](../../../document-extensions/timeseries/overview.mdx#timestamps) for the new entry.  
 4. **Tag** (Optional)  
-    * Optionally give the entry a [tag](../../../document-extensions/timeseries/overview#tags).
+    * Optionally give the entry a [tag](../../../document-extensions/timeseries/overview.mdx#tags).
 5. **Values**  
-    * Add one or more numerical [values](../../../document-extensions/timeseries/overview#values) (up to 32 values).  
+    * Add one or more numerical [values](../../../document-extensions/timeseries/overview.mdx#values) (up to 32 values).  
       ![Named Values](./assets/named-values.png)
     * Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
-      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration).  
+      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings.mdx#add-or-edit-time-series-configuration).  
 
 </Admonition>
 ### Editing an Entry
 
 * Click the **Edit Item** button from the 
-  [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+  [Time Series View](../../../studio/database/document-extensions/time-series.mdx#time-series-view) 
   to edit a time series' entry.  
 
 ![Edit Time Series](./assets/edit-time-series.png)
@@ -139,7 +139,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ### Deleting a Range of Entries
 
 * Click the **Delete Range** button from the 
-  [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+  [Time Series View](../../../studio/database/document-extensions/time-series.mdx#time-series-view) 
   to delete a range of time series entries.  
 
 ![Delete Range Button](./assets/delete-range-button.png)
@@ -170,7 +170,7 @@ To specify a range of time series entries:
 
 1. Enter your RQL query in the query box.  
    Depicted here is a query to get all the **StockPrices** time series values from documents in the Companies collection.  
-   Learn more about time series queries [here](../../../document-extensions/timeseries/querying/overview-and-syntax).  
+   Learn more about time series queries [here](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx).  
 
     <Admonition type="note" title="Note">
      Make sure that the time series Name is placed within double quotes (e.g. "StockPrices", 
@@ -234,7 +234,7 @@ To specify a range of time series entries:
 ## Incremental Time Series
 
 * **Incremental Time Series** are time series whose values 
-  behave as [counters](../../../document-extensions/counters/overview).  
+  behave as [counters](../../../document-extensions/counters/overview.mdx).  
 
 * Similar to Counters, an incremental-time-series value can be increased/decreased by some 
   delta on any node.  
@@ -247,14 +247,14 @@ To specify a range of time series entries:
 * This is opposed to non-incremental time series, where a value that is modified 
   is intended to replace the existing value's contents on all other nodes.  
 
-* learn more in [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series--vs--non-incremental-time-series).  
+* learn more in [Incremental Time Series -vs- Non-incremental Time Series](../../../document-extensions/timeseries/incremental-time-series/overview.mdx#incremental-time-series--vs--non-incremental-time-series).  
 ### Creating a new Incremental Time Series (by Creating its First Entry)
 
 * An incremental time series is created upon the creation of its first entry (and deleted 
   once all entries have been deleted).  
 
 * Click the **Add Time Series** button from the 
-  [Document View](../../../studio/database/document-extensions/time-series#document-view) 
+  [Document View](../../../studio/database/document-extensions/time-series.mdx#document-view) 
   to create the incremental time series' first entry.  
 
 ![Add Time Series](./assets/new-time-series.png)
@@ -269,18 +269,18 @@ To specify a range of time series entries:
     * Incremental time series names **must** start with **INC:** (in either upper 
       or lower case characters).  
 3. **Entry Timestamp**  
-    * Select a [timestamp](../../../document-extensions/timeseries/overview#timestamps) for the new entry.  
+    * Select a [timestamp](../../../document-extensions/timeseries/overview.mdx#timestamps) for the new entry.  
 4. **Values**  
-    * Add one or more numerical [values](../../../document-extensions/timeseries/overview#values) (up to 32 values).  
+    * Add one or more numerical [values](../../../document-extensions/timeseries/overview.mdx#values) (up to 32 values).  
       ![Named Values](./assets/incremental-named-values.png)
     * Time series entry values can be given meaningful names rather than labels like Value #0 and Value #1.  
-      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration).  
+      To set entry values' names, use Studio's [Time Series Settings View](../../../studio/database/settings/time-series-settings.mdx#add-or-edit-time-series-configuration).  
 
 </Admonition>
 ### Editing an Incremental Time Series Entry
 
 * Click the **Edit Item** button from the 
-  [Time Series View](../../../studio/database/document-extensions/time-series#time-series-view) 
+  [Time Series View](../../../studio/database/document-extensions/time-series.mdx#time-series-view) 
   to edit a time series' entry.  
 
 ![Edit Time Series](./assets/edit-incremental-time-series.png)

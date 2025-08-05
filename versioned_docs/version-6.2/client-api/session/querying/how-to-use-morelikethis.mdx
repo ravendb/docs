@@ -24,7 +24,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something" label="more_like_this_1">
+<TabItem value="more_like_this_1" label="more_like_this_1">
 <CodeBlock language="csharp">
 {`IRavenQueryable<T> MoreLikeThis<T>(MoreLikeThisBase moreLikeThis);
 
@@ -40,7 +40,7 @@ IRavenQueryable<T> MoreLikeThis<T>(Action<IMoreLikeThisBuilder<T>> builder);
 
 ### Builder
 
-<TabItem value="something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="csharp">
 {`IMoreLikeThisOperations<T> UsingAnyDocument();
 
@@ -61,7 +61,7 @@ IMoreLikeThisOperations<T> WithOptions(MoreLikeThisOptions options);
 
 ### Options
 
-<TabItem value="something" label="more_like_this_2">
+<TabItem value="more_like_this_2" label="more_like_this_2">
 <CodeBlock language="csharp">
 {`public int? MinimumTermFrequency \{ get; set; \} = 2;
 
@@ -201,7 +201,7 @@ where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }') and Categor
 
 Do not forget to add the following **using** statement which contains necessary extensions:
 
-<TabItem value="something" label="more_like_this_8">
+<TabItem value="more_like_this_8" label="more_like_this_8">
 <CodeBlock language="csharp">
 {`using Raven.Client.Documents;
 `}
@@ -217,7 +217,7 @@ Do not forget to add the following **using** statement which contains necessary 
 
 ## Syntax
 
-<TabItem value="something-something" label="more_like_this_1">
+<TabItem value="more_like_this_1" label="more_like_this_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> moreLikeThis(MoreLikeThisBase moreLikeThis);
 
@@ -233,7 +233,7 @@ IDocumentQuery<T> moreLikeThis(Consumer<IMoreLikeThisBuilderForDocumentQuery<T>>
 
 ### Builder
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="java">
 {`IMoreLikeThisOperations<T> usingAnyDocument();
 
@@ -254,7 +254,7 @@ IMoreLikeThisOperations<T> withOptions(MoreLikeThisOptions options);
 
 ### Options
 
-<TabItem value="something-something" label="more_like_this_2">
+<TabItem value="more_like_this_2" label="more_like_this_2">
 <CodeBlock language="java">
 {`private Integer minimumTermFrequency = 2;
 private Integer maximumQueryTerms = 25;
@@ -356,7 +356,7 @@ to the provided criteria and options.
 
 ## Syntax
 
-<TabItem value="something-something" label="more_like_this_1">
+<TabItem value="more_like_this_1" label="more_like_this_1">
 <CodeBlock language="python">
 {`def more_like_this(
     self, more_like_this_or_builder: Union[MoreLikeThisBase, Callable[[MoreLikeThisBuilder[_T]], None]]
@@ -372,7 +372,7 @@ to the provided criteria and options.
 
 ### Builder
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="python">
 {`def using_any_document(self) -> MoreLikeThisOperations[_T]: ...
 
@@ -394,7 +394,7 @@ def with_options(self, options: MoreLikeThisOptions) -> MoreLikeThisOperations[_
 
 ### Options
 
-<TabItem value="something-something" label="more_like_this_2">
+<TabItem value="more_like_this_2" label="more_like_this_2">
 <CodeBlock language="python">
 {`def __init__(
     self,
@@ -494,7 +494,7 @@ where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }') and Categor
 
 ## Syntax
 
-<TabItem value="something-something" label="more_like_this_1">
+<TabItem value="more_like_this_1" label="more_like_this_1">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -515,7 +515,7 @@ public function moreLikeThis(null|MoreLikeThisBase|Closure $moreLikeThisOrBuilde
 
 ### Builder
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -546,7 +546,7 @@ function withOptions(MoreLikeThisOptions $options): MoreLikeThisOperationsInterf
 
 ### Options
 
-<TabItem value="something-something" label="more_like_this_2">
+<TabItem value="more_like_this_2" label="more_like_this_2">
 <CodeBlock language="php">
 {`public const DEFAULT_MAXIMUM_NUMBER_OF_TOKENS_PARSED = 5000;
 public const DEFAULT_MINIMUM_TERM_FREQUENCY = 2;
@@ -665,8 +665,8 @@ where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }') and Categor
 
 ## Syntax
 
-<TabItem value="something-something" label="more_like_this_1">
-<CodeBlock language="nodejs">
+<TabItem value="more_like_this_1" label="more_like_this_1">
+<CodeBlock language="js">
 {`query.moreLikeThis(moreLikeThis);
 
 query.moreLikeThis(builder);
@@ -681,8 +681,8 @@ query.moreLikeThis(builder);
 
 ### Builder
 
-<TabItem value="something-something" label="more_like_this_3">
-<CodeBlock language="nodejs">
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="js">
 {`builder.usingAnyDocument();
 
 builder.usingDocument(documentJson);
@@ -716,7 +716,7 @@ builder.withOptions(options);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Search for similar articles to 'articles/1'
 // using 'Articles/MoreLikeThis' index and search only field 'body'
 const options = { fields: [ "body" ] };
@@ -743,7 +743,7 @@ where morelikethis(id() = 'articles/1', '{ "Fields" : [ "body" ] }')
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Search for similar articles to 'articles/1'
 // using 'Articles/MoreLikeThis' index and search only field 'body'
 // where article category is 'IT'

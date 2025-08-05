@@ -19,20 +19,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
   from Hub tasks to maintain a live replica of a database or chosen documents of it.  
    * The Sink is always the one to initiate the connection with the Hub, but data can 
      be replicated in either or both directions.  
-   * Hub/Sink connections are secure, and require [certification](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#accesses-and-certificates).  
+   * Hub/Sink connections are secure, and require [certification](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx#accesses-and-certificates).  
 
 * While defining a Sink task using the Studio, you can -  
    * Import a certificate issued by the Hubs that this SInk uses  
    * Choose replication direction/s (`Hub->Sink` / `Hub<-Sink` / `Hub<->Sink`)  
-   * Use [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview#filtered-replication) to choose which documents are to be replicated  
+   * Use [Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx#filtered-replication) to choose which documents are to be replicated  
 
 * In this page:
-   * [Create an Ongoing Replication Sink Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#create-an-ongoing-replication-sink-task)  
-   * [Import Configuration From Hub](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#import-configuration-from-hub)  
-   * [Sink Configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#sink-configuration)  
-   * [Access Configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#access-configuration)  
-   * [Definining Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#defining-filtered-replication)  
-   * [Ongoing Tasks View](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#ongoing-tasks-view)  
+   * [Create an Ongoing Replication Sink Task](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#create-an-ongoing-replication-sink-task)  
+   * [Import Configuration From Hub](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#import-configuration-from-hub)  
+   * [Sink Configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#sink-configuration)  
+   * [Access Configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#access-configuration)  
+   * [Definining Filtered Replication](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#defining-filtered-replication)  
+   * [Ongoing Tasks View](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#ongoing-tasks-view)  
 
 </Admonition>
 ## Create an Ongoing Replication Sink Task
@@ -113,7 +113,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 2. **Certificate Source**  
    Choose a source for the Sink certificate.  
-   ([Import Hub configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task#import-configuration-from-hub) 
+   ([Import Hub configuration](../../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx#import-configuration-from-hub) 
    to save yourself the need to redefine these details.)  
    * **Provide your own certificate**  
      Use this option to import a certificate of your own, e.g. one 

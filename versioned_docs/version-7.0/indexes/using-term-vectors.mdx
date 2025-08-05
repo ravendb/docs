@@ -20,7 +20,7 @@ export const supportedLanguages = ["java", "nodejs", "csharp"];
 <LanguageContent language="java">
 
 
-[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) is leveraging the term vectors to accomplish its purposes.
+[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is leveraging the term vectors to accomplish its purposes.
 
 To create an index and enable Term Vectors on a specific field we can create an index using  the `AbstractIndexCreationTask`, then specify the term vectors there, or define our term vectors in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).
 
@@ -62,7 +62,7 @@ store.maintenance().send(new PutIndexesOperation(indexDefinition));
 
 The available Term Vector options are:
 
-<TabItem value="something-something" label="term_vectors_3">
+<TabItem value="term_vectors_3" label="term_vectors_3">
 <CodeBlock language="java">
 {`public enum FieldTermVector \{
     /**
@@ -98,13 +98,13 @@ The available Term Vector options are:
 <LanguageContent language="nodejs">
 
 
-[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) is leveraging the term vectors to accomplish its purposes.
+[Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) is leveraging the term vectors to accomplish its purposes.
 
 To create an index and enable Term Vectors on a specific field we can create an index using  the `AbstractIndexCreationTask`, then specify the term vectors there, or define our term vectors in the `IndexDefinition` (directly or using the `IndexDefinitionBuilder`).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
     constructor() {
         super();
@@ -122,7 +122,7 @@ To create an index and enable Term Vectors on a specific field we can create an 
 </CodeBlock>
 </TabItem>
 <TabItem value="Operation" label="Operation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
 builder.map = \`docs.Posts.Select(post => new {     
     tags = post.tags,     
@@ -163,13 +163,13 @@ The available Term Vector options are:
   and retrieval, and indexing.  
   A book's index, for example, may have term vector enabled on the book's **subject** field, to be able 
   to use this field to search for books with similar subjects.  
-* RavenDB features like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) leverage 
+* RavenDB features like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) leverage 
   stored term vectors to accomplish their goals.
 
 * In this page:
-   * [Creating an index and enabling Term Vectors on a field](../indexes/using-term-vectors#creating-an-index-and-enabling-term-vectors-on-a-field)
-       * [Using the API](../indexes/using-term-vectors#using-the-api)  
-       * [Using Studio](../indexes/using-term-vectors#using-studio)
+   * [Creating an index and enabling Term Vectors on a field](../indexes/using-term-vectors.mdx#creating-an-index-and-enabling-term-vectors-on-a-field)
+       * [Using the API](../indexes/using-term-vectors.mdx#using-the-api)  
+       * [Using Studio](../indexes/using-term-vectors.mdx#using-studio)
 
 </Admonition>
 ## Creating an index and enabling Term Vectors on a field
@@ -237,7 +237,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 
 Available Term Vector options include:
 
-<TabItem value="something" label="term_vectors_3">
+<TabItem value="term_vectors_3" label="term_vectors_3">
 <CodeBlock language="csharp">
 {`public enum FieldTermVector
 \{
@@ -276,14 +276,14 @@ Learn which Lucene API methods and constants are available [here](https://lucene
 ## Using Studio
 
 Let's use as an example one of Studio's sample indexes, `Product/Search`, that has term vector 
-enabled on its `Name` field so a feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) 
+enabled on its `Name` field so a feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis.mdx) 
 can use this fiels to select a product and find products similar to it.  
 
 ![Term vector enabled on index field](./assets/term-vector-enabled.png)
 
 We can now use a query like:
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from index 'Product/Search' 
 where morelikethis(id() = 'products/7-A')

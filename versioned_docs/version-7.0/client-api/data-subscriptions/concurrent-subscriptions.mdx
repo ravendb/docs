@@ -29,28 +29,28 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 * Documents that were assigned to workers whose connection has ended unexpectedly,  
   can be reassigned by the server to available workers. 
-  See [connection failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure) below.
+  See [connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure) below.
 
 * In this page:  
-   * [Defining concurrent workers](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
-   * [Dropping a connection](../../client-api/data-subscriptions/concurrent-subscriptions#dropping-a-connection)  
-   * [Connection failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure)  
+   * [Defining concurrent workers](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#defining-concurrent-workers)  
+   * [Dropping a connection](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#dropping-a-connection)  
+   * [Connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure)  
 
 </Admonition>
 ## Defining concurrent workers
 
 Concurrent workers are defined similarly to other workers, except their 
-[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-strategies) 
-is set to [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#multiple-workers-per-subscription-strategy).  
+[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
+is set to [SubscriptionOpeningStrategy.Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
 
 * To define a concurrent worker:  
-   * Create the worker using [GetSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview#create-the-subscription-worker).  
-   * Pass it a [SubscriptionWorkerOptions](../../client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions) instance.  
+   * Create the worker using [GetSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker).  
+   * Pass it a [SubscriptionWorkerOptions](../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions) instance.  
    * Set the strategy to `SubscriptionOpeningStrategy.Concurrent`  
 
 * Usage:  
    * Define two concurrent workers  
-<TabItem value="something" label="conSub_defineWorkers">
+<TabItem value="conSub_defineWorkers" label="conSub_defineWorkers">
 <CodeBlock language="csharp">
 {`// Define concurrent subscription workers
 var subscriptionWorker1 = store.Subscriptions.GetSubscriptionWorker<Order>(
@@ -72,7 +72,7 @@ var subscriptionWorker2 = store.Subscriptions.GetSubscriptionWorker<Order>(
 </CodeBlock>
 </TabItem>
    * Run both workers  
-<TabItem value="something" label="conSub_runWorkers">
+<TabItem value="conSub_runWorkers" label="conSub_runWorkers">
 <CodeBlock language="csharp">
 {`// Start the concurrent worker. Workers will connect concurrently to the "All Orders" subscription task.
 var subscriptionRuntimeTask1 = subscriptionWorker1.Run(batch =>
@@ -102,7 +102,7 @@ var subscriptionRuntimeTask2 = subscriptionWorker2.Run(batch =>
 
 * Use `Subscriptions.DropSubscriptionWorker` to **forcefully disconnect** 
   the specified worker from the subscription it is connected to.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public void DropSubscriptionWorker<T>(SubscriptionWorker<T> worker, string database = null)
 `}
@@ -110,7 +110,7 @@ var subscriptionRuntimeTask2 = subscriptionWorker2.Run(batch =>
 </TabItem>
 
 * Usage:  
-<TabItem value="something" label="conSub_dropWorker">
+<TabItem value="conSub_dropWorker" label="conSub_dropWorker">
 <CodeBlock language="csharp">
 {`//drop a concurrent subscription worker
 store.Subscriptions.DropSubscriptionWorker(subscriptionWorker2);
@@ -146,29 +146,29 @@ store.Subscriptions.DropSubscriptionWorker(subscriptionWorker2);
 
 * Documents that were assigned to workers whose connection has ended unexpectedly,  
   can be reassigned by the server to available workers. 
-  See [connection failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure) below.
+  See [connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure) below.
 
 * In this page:  
-   * [Defining concurrent workers](../../client-api/data-subscriptions/concurrent-subscriptions#defining-concurrent-workers)  
-   * [Dropping a connection](../../client-api/data-subscriptions/concurrent-subscriptions#dropping-a-connection)  
-   * [Connection failure](../../client-api/data-subscriptions/concurrent-subscriptions#connection-failure)  
+   * [Defining concurrent workers](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#defining-concurrent-workers)  
+   * [Dropping a connection](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#dropping-a-connection)  
+   * [Connection failure](../../client-api/data-subscriptions/concurrent-subscriptions.mdx#connection-failure)  
 
 </Admonition>
 ## Defining concurrent workers
 
 Concurrent workers are defined similarly to other workers, except their 
-[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-strategies) 
-is set to [Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#multiple-workers-per-subscription-strategy).  
+[strategy](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-strategies) 
+is set to [Concurrent](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#multiple-workers-per-subscription-strategy).  
 
 * To define a concurrent worker:  
-   * Create the worker using [getSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview#create-the-subscription-worker).  
-   * Pass it a [subscription worker options](../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-options) object.  
+   * Create the worker using [getSubscriptionWorker](../../client-api/data-subscriptions/consumption/api-overview.mdx#create-the-subscription-worker).  
+   * Pass it a [subscription worker options](../../client-api/data-subscriptions/consumption/api-overview.mdx#subscription-worker-options) object.  
    * Set the strategy to `Concurrent`  
 
 * Usage:  
    * Define two concurrent workers  
-<TabItem value="something-something" label="concurrent_1">
-<CodeBlock language="nodejs">
+<TabItem value="concurrent_1" label="concurrent_1">
+<CodeBlock language="js">
 {`// Define 2 concurrent subscription workers
 // ========================================
 
@@ -185,8 +185,8 @@ const worker2 = documentStore.subscriptions.getSubscriptionWorker(options);
 </CodeBlock>
 </TabItem>
    * Run both workers  
-<TabItem value="something-something" label="concurrent_2">
-<CodeBlock language="nodejs">
+<TabItem value="concurrent_2" label="concurrent_2">
+<CodeBlock language="js">
 {`worker1.on("batch", (batch, callback) => \{
     try \{
         for (const item of batch.items) \{
@@ -223,16 +223,16 @@ worker2.on("batch", (batch, callback) => \{
 
 * Use `dropConnection` to disconnect ALL workers connected to the specified subscription.
 
-<TabItem value="something-something" label="concurrent_3">
-<CodeBlock language="nodejs">
+<TabItem value="concurrent_3" label="concurrent_3">
+<CodeBlock language="js">
 {`// Drop connection for worker2
 await documentStore.subscriptions.dropSubscriptionWorker(worker2);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="drop_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="drop_syntax" label="drop_syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 dropConnection(options);
 dropConnection(options, database);

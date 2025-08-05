@@ -39,10 +39,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
-   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Remarks](../indexes/map-reduce-indexes#remarks)  
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
+   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
+   * [Remarks](../indexes/map-reduce-indexes.mdx#remarks)  
 
 </Admonition>
 
@@ -51,7 +51,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying) article.  
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
 #### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
@@ -407,14 +407,14 @@ and run the query:
 
 A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
 
-They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), 
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
 or with API as shown below.  
 
 In the following code sample, we want the number of companies, suppliers, and employees per city.  
 We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
 We then define the reduce phase.  
 
-<TabItem value="something-something" label="multi_map_reduce_LINQ">
+<TabItem value="multi_map_reduce_LINQ" label="multi_map_reduce_LINQ">
 <CodeBlock language="csharp">
 {`public class Cities_Details :
   AbstractMultiMapIndexCreationTask<Cities_Details.IndexEntry>
@@ -482,7 +482,7 @@ We then define the reduce phase.
 </TabItem>
 
 A query on the index:
-<TabItem value="something-something" label="multi-map-reduce-index-query">
+<TabItem value="multi-map-reduce-index-query" label="multi-map-reduce-index-query">
 <CodeBlock language="csharp">
 {`// Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
 IList<Cities_Details.IndexEntry> commerceDetails = session
@@ -531,10 +531,10 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../indexes/map-reduce-indexes#example-ii).  
+see [Example II](../indexes/map-reduce-indexes.mdx#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx).  
 ### Artificial Document Properties  
 
 #### IDs
@@ -543,7 +543,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) might generate an output document 
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -553,7 +553,7 @@ ID like this:
 amount whenever the index definition is modified. This can be useful because when an index definition 
 changes, there is a brief transition phase when the new output documents are being created, but the 
 old output documents haven't been deleted yet (this phase is called 
-["side-by-side indexing"](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)). 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
 During this phase, the output collection contains output documents created both by the old version 
 and the new version of the index, and they can be distinguished by this value: the new output 
 documents will always have a higher value (by 1 or more).  
@@ -563,7 +563,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) has this pattern for reference documents:  
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
@@ -579,7 +579,7 @@ to learn about the date formatting in particular.
 
 Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"@flags": "Artificial, FromIndex"
 `}
@@ -592,7 +592,7 @@ These flags are used internally by the database to filter out artificial documen
 The map-reduce output documents are configured with these properties of 
 `IndexDefinition`:  
 
-<TabItem value="something-something" label="syntax_0">
+<TabItem value="syntax_0" label="syntax_0">
 <CodeBlock language="csharp">
 {`string OutputReduceToCollection;
 
@@ -611,12 +611,12 @@ Expression<Func<TReduceResult, string>> PatternForOutputReduceToCollectionRefere
 | - | - | - |
 | **OutputReduceToCollection** | `string` | Collection name for the output documents. |
 | **PatternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<OutputReduceToCollection>/References`. |
-| **PatternForOutputReduceToCollectionReferences** | `string` / `Expression<Func<TReduceResult, string>>` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#define-a-static-index-using-a-custom-class). |
+| **PatternForOutputReduceToCollectionReferences** | `string` / `Expression<Func<TReduceResult, string>>` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes.mdx) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class). |
 
 To index artificial documents in strongly typed syntax (LINQ), you will need the 
 type of reference documents:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public class OutputReduceToCollectionReference
 \{
@@ -737,7 +737,7 @@ public class DailyProductSale
 In the **LINQ** index example above (which inherits `AbstractIndexCreationTask`), 
 the reference document ID pattern is set with a lambda expression:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`PatternForOutputReduceToCollectionReferences = x => $"sales/daily/\{x.Date:yyyy-MM-dd\}";
 `}
@@ -752,7 +752,7 @@ month of May 1998.
 In the **JavaScript** index example (which uses `IndexDefinition`), 
 the reference document ID pattern is set with a `string`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`PatternForOutputReduceToCollectionReferences = "sales/daily/\{Date:yyyy-MM-dd\}"
 `}
@@ -767,7 +767,7 @@ May 6th 1998.
 This is an example of a "recursive" map-reduce index - it indexes the output documents 
 of the index above, using the reference documents.  
 
-<TabItem value="something-something" label="map_reduce_4_0">
+<TabItem value="map_reduce_4_0" label="map_reduce_4_0">
 <CodeBlock language="csharp">
 {`public class NumberOfOrders_ByProduct : AbstractIndexCreationTask<DailyProductSale, OutputDocument>
 \{
@@ -819,7 +819,7 @@ public class OutputReduceToCollectionReference
 
 #### Saving documents
 
-[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 #### Recursive indexing loop
 
@@ -849,12 +849,12 @@ However, it is **not** recommended to edit artificial documents manually since
 any index results update would overwrite all manual modifications made in them.  
 #### Map-Reduce Indexes on a Sharded Database
 
-On a [sharded database](../sharding/overview), the behavior of map-reduce 
+On a [sharded database](../sharding/overview.mdx), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 
-* Read [here](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
+* Read [here](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database) 
   about map-reduce indexes on a sharded database.  
-* Read [here](../sharding/querying#querying-map-reduce-indexes) about querying 
+* Read [here](../sharding/querying.mdx#querying-map-reduce-indexes) about querying 
   map-reduce indexes on a sharded database.  
 
 
@@ -883,9 +883,9 @@ indexes is altered in in a few ways that database operators should be aware of.
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Important Comments](../indexes/map-reduce-indexes#important-comments)  
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
+   * [Important Comments](../indexes/map-reduce-indexes.mdx#important-comments)  
 
 </Admonition>
 
@@ -894,7 +894,7 @@ indexes is altered in in a few ways that database operators should be aware of.
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying) article.  
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
 ### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
@@ -1256,10 +1256,10 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../indexes/map-reduce-indexes#example-ii).  
+see [Example II](../indexes/map-reduce-indexes.mdx#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx).  
 ### Artificial Document Properties  
 
 #### IDs
@@ -1268,7 +1268,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) might generate an output document 
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -1278,7 +1278,7 @@ ID like this:
 amount whenever the index definition is modified. This can be useful because when an index definition 
 changes, there is a brief transition phase when the new output documents are being created, but the 
 old output documents haven't been deleted yet (this phase is called 
-["side-by-side indexing"](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)). 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
 During this phase, the output collection contains output documents created both by the old version 
 and the new version of the index, and they can be distinguished by this value: the new output 
 documents will always have a higher value (by 1 or more).  
@@ -1288,7 +1288,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) has this pattern for reference documents:  
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
@@ -1304,7 +1304,7 @@ to learn about the date formatting in particular.
 
 Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"@flags": "Artificial, FromIndex"
 `}
@@ -1317,7 +1317,7 @@ These flags are used internally by the database to filter out artificial documen
 The map-reduce output documents are configured with these properties of 
 `IndexDefinition`:  
 
-<TabItem value="something-something" label="syntax_0">
+<TabItem value="syntax_0" label="syntax_0">
 <CodeBlock language="java">
 {`private String outputReduceToCollection;
 
@@ -1332,7 +1332,7 @@ private String patternForOutputReduceToCollectionReferences;
 | - | - | - |
 | **outputReduceToCollection** | `String` | Collection name for the output documents. |
 | **patternReferencesCollectionName** | `String` | Optional collection name for the reference documents - by default it is `<outputReduceToCollection>/References`. |
-| **patternForOutputReduceToCollectionReferences** | `String` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
+| **patternForOutputReduceToCollectionReferences** | `String` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
 
 ### Example
 
@@ -1407,7 +1407,7 @@ Here is a map-reduce index with output documents and reference documents:
 In the **LINQ** index example above (which inherits `AbstractIndexCreationTask`), 
 the reference document ID pattern is set with a lambda expression:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`PatternForOutputReduceToCollectionReferences = "sales/daily/\{Date:yyyy-MM-dd\}";
 `}
@@ -1422,7 +1422,7 @@ month of May 1998.
 In the **JavaScript** index example (which uses `IndexDefinition`), 
 the reference document ID pattern is set with a `String`:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`PatternForOutputReduceToCollectionReferences ("sales/daily/\{Date:yyyy-MM-dd\})"
 `}
@@ -1438,7 +1438,7 @@ May 6th 1998.
 ## Important Comments
 
 ## Saving documents
-[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 
 ## Recursive indexing loop
@@ -1469,12 +1469,12 @@ However, it is **not** recommended to edit artificial documents manually since
 any index results update would overwrite all manual modifications made in them.  
 
 ## Map-Reduce Indexes on a Sharded Database
-On a [sharded database](../sharding/overview), the behavior of map-reduce 
+On a [sharded database](../sharding/overview.mdx), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 
-* Read [here](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
+* Read [here](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database) 
   about map-reduce indexes on a sharded database.  
-* Read [here](../sharding/querying#querying-map-reduce-indexes) about querying 
+* Read [here](../sharding/querying.mdx#querying-map-reduce-indexes) about querying 
   map-reduce indexes on a sharded database.  
 
 
@@ -1503,10 +1503,10 @@ indexes is altered in in a few ways that database operators should be aware of.
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
-   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Remarks](../indexes/map-reduce-indexes#remarks)  
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
+   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
+   * [Remarks](../indexes/map-reduce-indexes.mdx#remarks)  
 
 </Admonition>
 
@@ -1515,7 +1515,7 @@ indexes is altered in in a few ways that database operators should be aware of.
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying) article.  
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
 #### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
@@ -1815,13 +1815,13 @@ And run the query:
 
 A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
 
-They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), 
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
 or with API as shown below.  
 
 In the following code sample, we want the number of companies, suppliers, and employees per city.  
 We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
 We then define the reduce phase.  
-<TabItem value="something-something" label="multi_map_reduce_LINQ">
+<TabItem value="multi_map_reduce_LINQ" label="multi_map_reduce_LINQ">
 <CodeBlock language="python">
 {`class Cities_Details(AbstractMultiMapIndexCreationTask):
     class IndexEntry:
@@ -1885,7 +1885,7 @@ We then define the reduce phase.
 </TabItem>
 
 A query on the index:
-<TabItem value="something-something" label="multi-map-reduce-index-query">
+<TabItem value="multi-map-reduce-index-query" label="multi-map-reduce-index-query">
 <CodeBlock language="python">
 {`# Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
 commerce_details = list(
@@ -1934,10 +1934,10 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../indexes/map-reduce-indexes#example-ii).  
+see [Example II](../indexes/map-reduce-indexes.mdx#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx).  
 ### Artificial Document Properties  
 
 #### IDs
@@ -1946,7 +1946,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) might generate an output document 
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) might generate an output document 
 ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -1956,7 +1956,7 @@ ID like this:
 amount whenever the index definition is modified. This can be useful because when an index definition 
 changes, there is a brief transition phase when the new output documents are being created, but the 
 old output documents haven't been deleted yet (this phase is called 
-["side-by-side indexing"](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)). 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
 During this phase, the output collection contains output documents created both by the old version 
 and the new version of the index, and they can be distinguished by this value: the new output 
 documents will always have a higher value (by 1 or more).  
@@ -1966,7 +1966,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in [Example I](../indexes/map-reduce-indexes#example-i) has this pattern for reference documents:  
+The index in [Example I](../indexes/map-reduce-indexes.mdx#example-i) has this pattern for reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
 
@@ -1982,7 +1982,7 @@ to learn about the date formatting in particular.
 
 Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"@flags": "Artificial, FromIndex"
 `}
@@ -1995,7 +1995,7 @@ These flags are used internally by the database to filter out artificial documen
 The map-reduce output documents are configured with these properties of 
 `IndexDefinition`:  
 
-<TabItem value="something-something" label="syntax_0">
+<TabItem value="syntax_0" label="syntax_0">
 <CodeBlock language="python">
 {`self._output_reduce_to_collection = output_reduce_to_collection
 self._pattern_references_collection_name = pattern_references_collection_name
@@ -2008,7 +2008,7 @@ self._pattern_for_output_reduce_to_collection_references = pattern_for_output_re
 | - | - | - |
 | **\_output_reduce_to_collection** | `str` | Collection name for the output documents. |
 | **\_pattern_references_collection_name** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
-| **\_pattern_for_output_reduce_to_collection_references** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
+| **\_pattern_for_output_reduce_to_collection_references** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
 #### Example:
 
 Here is a map-reduce index with output documents and reference documents:  
@@ -2092,7 +2092,7 @@ Here is a map-reduce index with output documents and reference documents:
 In the index example above (which inherits `AbstractIndexCreationTask`), 
 the reference document ID pattern is set with the expression:  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`self._pattern_for_output_reduce_to_collection_references = "sales/daily/\{Date:yyyy-MM-dd\}"
 `}
@@ -2107,7 +2107,7 @@ month of May 1998.
 In the **JavaScript** index example (which uses `IndexDefinition`), 
 the reference document ID pattern is set with a `string`:  
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`pattern_for_output_reduce_to_collection_references="sales/daily/\{Date:yyyy-MM-dd\}"
 `}
@@ -2124,7 +2124,7 @@ May 6th 1998.
 
 #### Saving documents
 
-[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 #### Recursive indexing loop
 
@@ -2155,12 +2155,12 @@ However, it is **not** recommended to edit artificial documents manually since
 any index results update would overwrite all manual modifications made in them.  
 #### Map-Reduce Indexes on a Sharded Database
 
-On a [sharded database](../sharding/overview), the behavior of map-reduce 
+On a [sharded database](../sharding/overview.mdx), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 
-* Read [here](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
+* Read [here](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database) 
   about map-reduce indexes on a sharded database.  
-* Read [here](../sharding/querying#querying-map-reduce-indexes) about querying 
+* Read [here](../sharding/querying.mdx#querying-map-reduce-indexes) about querying 
   map-reduce indexes on a sharded database.  
 
 
@@ -2189,10 +2189,10 @@ indexes is altered in in a few ways that database operators should be aware of.
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
-   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Remarks](../indexes/map-reduce-indexes#remarks)  
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
+   * [Creating Multi-Map-Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
+   * [Remarks](../indexes/map-reduce-indexes.mdx#remarks)  
 
 </Admonition>
 
@@ -2201,7 +2201,7 @@ indexes is altered in in a few ways that database operators should be aware of.
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying) article.  
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
 #### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
@@ -2698,13 +2698,13 @@ $results = $session
 
 A **Multi-Map-Reduce** index allows aggregating (or 'reducing') data from several collections.  
 
-They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index#multi-map-reduce), 
+They can be created and edited via [Studio](../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce), 
 or with API as shown below.  
 
 In the following code sample, we want the number of companies, suppliers, and employees per city.  
 We define the map phase on collections 'Employees', 'Companies', and 'Suppliers'.  
 We then define the reduce phase.  
-<TabItem value="something-something" label="multi_map_reduce_LINQ">
+<TabItem value="multi_map_reduce_LINQ" label="multi_map_reduce_LINQ">
 <CodeBlock language="php">
 {`class Cities_Details_IndexEntry
 \{
@@ -2805,7 +2805,7 @@ class Cities_Details extends AbstractMultiMapIndexCreationTask
 </TabItem>
 
 A query on the index:
-<TabItem value="something-something" label="multi-map-reduce-index-query">
+<TabItem value="multi-map-reduce-index-query" label="multi-map-reduce-index-query">
 <CodeBlock language="php">
 {`// Queries the index "Cities_Details" - filters "Companies" results and orders by "City".
 /** @var array<Cities_Details_IndexEntry> $commerceDetails */
@@ -2857,7 +2857,7 @@ indexes and other operations, and can serve as an intermediary for the output do
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion.  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index) article.  
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx) article.  
 ### Artificial Document Properties  
 
 #### IDs
@@ -2866,7 +2866,7 @@ The identifiers of **map reduce output documents** have three components in this
 
 `<Output collection name>/<incrementing value>/<hash of reduce key values>`  
 
-The index in the [example](../indexes/map-reduce-indexes#example) below may generate 
+The index in the [example](../indexes/map-reduce-indexes.mdx#example) below may generate 
 an output document ID like this:  
 
 `DailyProductSales/35/14369232530304891504`  
@@ -2876,7 +2876,7 @@ an output document ID like this:
 amount whenever the index definition is modified. This can be useful because when an index definition 
 changes, there is a brief transition phase when the new output documents are being created, but the 
 old output documents haven't been deleted yet (this phase is called 
-["side-by-side indexing"](../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)). 
+["side-by-side indexing"](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)). 
 During this phase, the output collection contains output documents created both by the old version 
 and the new version of the index, and they can be distinguished by this value: the new output 
 documents will always have a higher value (by 1 or more).  
@@ -2886,7 +2886,7 @@ case: `hash(Product, Month)`.
 The identifiers of **reference documents** follow some pattern you choose, and this pattern 
 determines which output documents are held by a given reference document.  
 
-The index in this [example](../indexes/map-reduce-indexes#example) has this pattern for 
+The index in this [example](../indexes/map-reduce-indexes.mdx#example) has this pattern for 
 reference documents:  
 
 `sales/daily/{Date:yyyy-MM-dd}`
@@ -2903,7 +2903,7 @@ to learn about the date formatting in particular.
 
 Artificial documents generated by map-reduce indexes get the following `@flags` in their metadata:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"@flags": "Artificial, FromIndex"
 `}
@@ -2916,7 +2916,7 @@ These flags are used internally by the database to filter out artificial documen
 The map-reduce output documents are configured with these properties of 
 `IndexDefinition`:  
 
-<TabItem value="something-something" label="syntax_0">
+<TabItem value="syntax_0" label="syntax_0">
 <CodeBlock language="php">
 {`private ?string $outputReduceToCollection = null;
 
@@ -2932,7 +2932,7 @@ private ?string $patternForOutputReduceToCollectionReferences = null;
 | - | - | - |
 | **outputReduceToCollection** | `str` | Collection name for the output documents. |
 | **patternReferencesCollectionName** | `str` | Optional collection name for the reference documents - by default it is `OutputReduceToCollection/References` |
-| **patternForOutputReduceToCollectionReferences** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying#using-abstractindexcreationtask). |
+| **patternForOutputReduceToCollectionReferences** | `str` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../indexes/creating-and-deploying.mdx#using-maintenance-operations) or [AbstractIndexCreationTask](../indexes/creating-and-deploying.mdx#using-abstractindexcreationtask). |
 #### Example:
 
 Here is a map-reduce index with output documents and reference documents:  
@@ -3062,7 +3062,7 @@ class ProductSales_ByDate extends AbstractIndexCreationTask
 In the index example above (which inherits `AbstractIndexCreationTask`), 
 the reference document ID pattern is set with the expression:  
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`self._pattern_for_output_reduce_to_collection_references = "sales/daily/\{Date:yyyy-MM-dd\}"
 `}
@@ -3077,7 +3077,7 @@ month of May 1998.
 In the **JavaScript** index example (which uses `IndexDefinition`), 
 the reference document ID pattern is set with a `string`:  
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`pattern_for_output_reduce_to_collection_references="sales/daily/\{Date:yyyy-MM-dd\}"
 `}
@@ -3094,7 +3094,7 @@ May 6th 1998.
 
 #### Saving documents
 
-[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 #### Recursive indexing loop
 
@@ -3125,12 +3125,12 @@ However, it is **not** recommended to edit artificial documents manually since
 any index results update would overwrite all manual modifications made in them.  
 #### Map-Reduce Indexes on a Sharded Database
 
-On a [sharded database](../sharding/overview), the behavior of map-reduce 
+On a [sharded database](../sharding/overview.mdx), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 
-* Read [here](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
+* Read [here](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database) 
   about map-reduce indexes on a sharded database.  
-* Read [here](../sharding/querying#querying-map-reduce-indexes) about querying 
+* Read [here](../sharding/querying.mdx#querying-map-reduce-indexes) about querying 
   map-reduce indexes on a sharded database.  
 
 
@@ -3159,9 +3159,9 @@ indexes is altered in in a few ways that database operators should be aware of.
     and then runs the Reduce function to get a final aggregation result per field value.  
 
 * In this page: 
-   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes#creating-map-reduce-indexes)  
-   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
-   * [Important Comments](../indexes/map-reduce-indexes#important-comments)  
+   * [Creating Map Reduce Indexes](../indexes/map-reduce-indexes.mdx#creating-map-reduce-indexes)  
+   * [Reduce Results as Artificial Documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents)  
+   * [Important Comments](../indexes/map-reduce-indexes.mdx#important-comments)  
 
 </Admonition>
 
@@ -3170,13 +3170,13 @@ indexes is altered in in a few ways that database operators should be aware of.
 When it comes to index creation, the only difference between simple indexes and the map-reduce ones 
 is an additional reduce function defined in the index definition.  
 To deploy an index we need to create a definition and deploy it using one of the ways described in the 
-[creating and deploying](../indexes/creating-and-deploying) article.  
+[creating and deploying](../indexes/creating-and-deploying.mdx) article.  
 ### Example I - Count
 
 Let's assume that we want to count the number of products for each category.  
 To do it, we can create the following index using `LoadDocument` inside:  
-<TabItem value="something-something" label="map_reduce_0_0">
-<CodeBlock language="nodejs">
+<TabItem value="map_reduce_0_0" label="map_reduce_0_0">
+<CodeBlock language="js">
 {`class Products_ByCategory extends AbstractCsharpIndexCreationTask \{
 
     constructor() \{
@@ -3203,7 +3203,7 @@ To do it, we can create the following index using `LoadDocument` inside:
 and issue the query:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     .query({ indexName: "Products/ByCategory" })
     .whereEquals("Category", "Seafood")
@@ -3226,8 +3226,8 @@ The above query will return one result for _Seafood_ with the appropriate number
 
 In this example, we will count an average product price for each category.  
 The index definition:  
-<TabItem value="something-something" label="map_reduce_1_0">
-<CodeBlock language="nodejs">
+<TabItem value="map_reduce_1_0" label="map_reduce_1_0">
+<CodeBlock language="js">
 {`class Products_Average_ByCategory extends AbstractCsharpIndexCreationTask \{
 
     constructor() \{
@@ -3264,7 +3264,7 @@ The index definition:
 and the query:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     .query({ indexName: "Products_Average_ByCategory" })
     .whereEquals("Category", "Seafood")
@@ -3288,8 +3288,8 @@ on one of the indexes available in the sample database (`Product/Sales`).
 
 We want to know how many times each product was ordered and how much we earned for it.  
 In order to extract that information, we need to define the following index:  
-<TabItem value="something-something" label="map_reduce_2_0">
-<CodeBlock language="nodejs">
+<TabItem value="map_reduce_2_0" label="map_reduce_2_0">
+<CodeBlock language="js">
 {`class Product_Sales extends AbstractCsharpIndexCreationTask \{
     constructor() \{
         super();
@@ -3315,7 +3315,7 @@ In order to extract that information, we need to define the following index:
 and send the query:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     .query({ indexName: "Product/Sales" })
     .all();
@@ -3363,10 +3363,10 @@ give to their document ID also determines how the output documents are grouped.
 Because reference documents have well known, predictable IDs, they are easier to plug into 
 indexes and other operations, and can serve as an intermediary for the output documents whose 
 IDs are less predictable. This allows you to chain map-reduce indexes in a recursive fashion, 
-see [Example II](../indexes/map-reduce-indexes#example-ii).  
+see [Example II](../indexes/map-reduce-indexes.mdx#example-ii).  
 
 Learn more about how to configure output and reference documents in the 
-[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index).  
+[Studio: Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index.mdx).  
 ### Artificial Document IDs
 
 The identifiers of artificial documents are generated as:
@@ -3385,7 +3385,7 @@ If the aggregation value for a given reduce key changes then we overwrite the ar
 
 Documents generated by map-reduce indexes get the following `@flags` metadata:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"@flags": "Artificial, FromIndex"
 `}
@@ -3399,8 +3399,8 @@ Those flags are used internally by the database to filter out artificial documen
 The map-reduce output documents are configured with these properties of 
 `IndexDefinition`:  
 
-<TabItem value="something-something" label="syntax_0">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_0" label="syntax_0">
+<CodeBlock language="js">
 {`const outputReduceToCollection = indexDefinition.outputReduceToCollection;
 
 const patternReferencesCollectionName = indexDefinition.patternReferencesCollectionName;
@@ -3414,12 +3414,12 @@ const patternForOutputReduceToCollectionReferences = indexDefinition.patternForO
 | - | - | - |
 | **outputReduceToCollection** | `string` | Collection name for the output documents. |
 | **patternReferencesCollectionName** | `string` | Optional collection name for the reference documents - by default it is `<outputReduceToCollection>/References`. |
-| **patternForOutputReduceToCollectionReferences** | `string` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes#put-indexes-operation) or [AbstractJavaScriptIndexCreationTask](../indexes/creating-and-deploying#define-a-static-index-using-a-custom-class). |
+| **patternForOutputReduceToCollectionReferences** | `string` | Document ID format for reference documents. This ID references the fields of the reduce function output, which determines how the output documents are aggregated. The type of this parameter is different depending on if the index is created using [IndexDefinition](../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation) or [AbstractJavaScriptIndexCreationTask](../indexes/creating-and-deploying.mdx#define-a-static-index-using-a-custom-class). |
 
 ### Examples
 
-<TabItem value="something-something" label="map_reduce_3_0">
-<CodeBlock language="nodejs">
+<TabItem value="map_reduce_3_0" label="map_reduce_3_0">
+<CodeBlock language="js">
 {`class Product_Sales_ByMonth extends AbstractCsharpIndexCreationTask \{
     constructor() \{
         super();
@@ -3453,7 +3453,7 @@ const patternForOutputReduceToCollectionReferences = indexDefinition.patternForO
 ## Important Comments
 
 ## Saving documents
-[Artificial documents](../indexes/map-reduce-indexes#reduce-results-as-artificial-documents) 
+[Artificial documents](../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents) 
 are stored immediately after the indexing transaction completes.  
 
 ## Recursive indexing loop
@@ -3484,12 +3484,12 @@ However, it is **not** recommended to edit artificial documents manually since
 any index results update would overwrite all manual modifications made in them.  
 
 ## Map-Reduce Indexes on a Sharded Database
-On a [sharded database](../sharding/overview), the behavior of map-reduce 
+On a [sharded database](../sharding/overview.mdx), the behavior of map-reduce 
 indexes is altered in in a few ways that database operators should be aware of.  
 
-* Read [here](../sharding/indexing#map-reduce-indexes-on-a-sharded-database) 
+* Read [here](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database) 
   about map-reduce indexes on a sharded database.  
-* Read [here](../sharding/querying#querying-map-reduce-indexes) about querying 
+* Read [here](../sharding/querying.mdx#querying-map-reduce-indexes) about querying 
   map-reduce indexes on a sharded database.  
 
 

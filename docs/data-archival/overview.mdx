@@ -22,34 +22,34 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * RavenDB features can detect archived documents and handle them in different ways.
   For example, indexing and data subscriptions can be configured to exclude, include, or handle only archived documents during processing.  
   Limiting processing to either archived or non-archived documents may **improve performance**.  
-  Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features).
+  Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features.mdx).
 
 * Archived documents are stored in **compressed** form, which helps **reduce database size**.  
   Note that while compression saves disk space, retrieving archived documents may be slower and consume more CPU/memory than accessing regular documents.
 
 * To take advantage of the archiving feature, you must first **enable** it.  
   Once enabled, you can **schedule** documents for archiving.  
-  Learn more in the [Overview](../data-archival/overview#overview) section below.
+  Learn more in the [Overview](../data-archival/overview.mdx#overview) section below.
 * In this article:  
-  * [Overview](../data-archival/overview#overview)  
-  * [The archived document](../data-archival/overview#the-archived-document)  
-  * [Licensing](../data-archival/overview#licensing)
+  * [Overview](../data-archival/overview.mdx#overview)  
+  * [The archived document](../data-archival/overview.mdx#the-archived-document)  
+  * [Licensing](../data-archival/overview.mdx#licensing)
 
 </Admonition>
 ## Overview
 
 * **Enable the archiving feature**  
   * To archive documents, you must first enable the archiving feature in RavenDB.  
-    Learn how in the dedicated article: [Enable data archiving](../data-archival/enable-data-archiving).
+    Learn how in the dedicated article: [Enable data archiving](../data-archival/enable-data-archiving.mdx).
 
 * **Schedule documents for archival**
   * Once the feature is enabled, you can schedule any document to be archived at a specific future time.  
     This is done by adding the `@archive-at` metadata property to the document, which specifies the time at which it should be archived.
-    Learn more in the dedicated article: [Schedule document archiving](../data-archival/schedule-document-archiving).  
+    Learn more in the dedicated article: [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).  
   * The server scans the database periodically (at an interval specified when the task is enabled),  
     identifies documents scheduled for archiving, and archives them at the scheduled time.
-  * In a cluster, the archiving task runs on the [preferred node](../client-api/configuration/load-balance/overview#the-preferred-node) (the first node in the cluster topology).  
-    Archived documents are then propagated to the other nodes through [internal replication](../server/clustering/replication/replication#internal-replication).  
+  * In a cluster, the archiving task runs on the [preferred node](../client-api/configuration/load-balance/overview.mdx#the-preferred-node) (the first node in the cluster topology).  
+    Archived documents are then propagated to the other nodes through [internal replication](../server/clustering/replication/replication.mdx#internal-replication).  
 
 * **What is archived**  
   * The JSON document itself is archived.  
@@ -64,7 +64,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Unarchiving documents**  
   * An archived document can be unarchived.  
-    Learn more in the dedicated article: [Unarchiving documents](../data-archival/unarchiving-documents).  
+    Learn more in the dedicated article: [Unarchiving documents](../data-archival/unarchiving-documents.mdx).  
 
 
 
@@ -76,16 +76,16 @@ A document that has been archived is compressed and marked with both a metadata 
    * When a document is archived,  
      the archiving task replaces the `@archive-at` metadata property with `"@archived": true`.    
    * This property is informational only - you **cannot** archive a document by manually adding `"@archived": true` to its metadata.
-     To archive a document, you must schedule it for archival. Learn more in [Schedule document archiving](../data-archival/schedule-document-archiving).
+     To archive a document, you must schedule it for archival. Learn more in [Schedule document archiving](../data-archival/schedule-document-archiving.mdx).
    * This property allows RavenDB features, clients, and users to recognize the document’s archived status and handle it accordingly.
      For example, a user-defined ETL task can use the presence of this property to skip or handle archived documents differently.
-     Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features).
+     Learn more in [Archived documents and other features](../data-archival/archived-documents-and-other-features.mdx).
 
 * **Internal flag**:
   * When a document is archived, the internal flag `"@flags": "Archived"` is added to its metadata.
   * Features like indexing and data subscriptions use this flag to detect archived documents and handle them based on the configured behavior.
-    Learn more in [Archived documents and indexing](../data-archival/archived-documents-and-other-features#archived-documents-and-indexing) & 
-    [Archived documents and data subscriptions](../data-archival/archived-documents-and-other-features#archived-documents-and-subscriptions).
+    Learn more in [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing) & 
+    [Archived documents and data subscriptions](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-subscriptions).
 **An archived document**:  
 
 ![An archived document](./assets/an-archived-document.png)
@@ -104,7 +104,7 @@ A document that has been archived is compressed and marked with both a metadata 
 ## Licensing
 
 The archival feature is available with the **Enterprise** license.  
-Learn more about licensing in [Licensing overview](../start/licensing/licensing-overview).  
+Learn more about licensing in [Licensing overview](../start/licensing/licensing-overview.mdx).  
 
 
 

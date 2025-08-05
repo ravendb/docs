@@ -15,8 +15,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Sharding: Data Subscriptions
 <Admonition type="note" title="Note">
 
-* From a user's point of view, [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions) 
-  are created and [consumed](../client-api/data-subscriptions/consumption/how-to-consume-data-subscription) 
+* From a user's point of view, [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
+  are created and [consumed](../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx) 
   in the exact same way when the database is sharded and when it is not.  
   
 * Old clients are supported and can continue communicating with RavenDB 
@@ -28,8 +28,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
   that serve the workers, and shards that serve the orchestrators.  
 
 * In this page:  
-  * [Data Subscriptions in a Sharded Database](../sharding/subscriptions#data-subscriptions-in-a-sharded-database)  
-  * [Unsupported Features](../sharding/subscriptions#unsupported-features)  
+  * [Data Subscriptions in a Sharded Database](../sharding/subscriptions.mdx#data-subscriptions-in-a-sharded-database)  
+  * [Unsupported Features](../sharding/subscriptions.mdx#unsupported-features)  
 
 </Admonition>
 ## Data Subscriptions in a Sharded Database
@@ -37,12 +37,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 To allow data subscriptions in a sharded database:  
 
 * From a user's point of view, creating a data subscription is 
-  done once, [just like it is done](../client-api/data-subscriptions/creation/how-to-create-data-subscription) 
+  done once, [just like it is done](../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx) 
   under a non-sharded database.  
-* Behind the scenes, though, the [orchestrator](../sharding/overview#client-server-communication) 
+* Behind the scenes, though, the [orchestrator](../sharding/overview.mdx#client-server-communication) 
   that was appointed to handle this client and received its 
   subscription request uses the subscription's settings and 
-  creates a data subscription with each [shard](../sharding/overview#shards).  
+  creates a data subscription with each [shard](../sharding/overview.mdx#shards).  
 * Each shard independently organizes available data in batches 
   and sends the batches to the orchestrator in response to data 
   requests.  
@@ -91,11 +91,11 @@ how large the overall database gets.
 
 Data subscriptions features that are not supported yet under a sharded database:  
 
-* [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions)  
+* [Concurrent Subscriptions](../client-api/data-subscriptions/concurrent-subscriptions.mdx)  
   Allowing multiple workers to connect a common subscription simultaneously.  
-* [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)  
+* [Data Subscriptions Revisions Support](../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning.mdx)  
   Subscribing to document revisions.  
-* [SubscriptionCreationOptions.ChangeVector](../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions&lt;t&gt;)  
+* [SubscriptionCreationOptions.ChangeVector](../client-api/data-subscriptions/creation/api-overview.mdx#subscriptioncreationoptions&lt;t&gt;)  
   Providing an arbitrary change vector from which the subscription would start processing 
   is currently not supported.  
   <Admonition type="note" title="Note">

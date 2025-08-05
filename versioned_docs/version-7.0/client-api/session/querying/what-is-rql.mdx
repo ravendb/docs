@@ -25,35 +25,35 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * A query can be written with RQL directly by either:  
   * Using the session's `RawQuery` method  
-  * Making a query from the [Query view](../../../studio/database/queries/query-view) in Studio  
+  * Making a query from the [Query view](../../../studio/database/queries/query-view.mdx) in Studio  
 
-* Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query). 
+* Learn more about querying from the session in this [Query Overview](../../../client-api/session/querying/how-to-query.mdx). 
 
 * In this page:  
 
-  * [The query pipeline](../../../client-api/session/querying/what-is-rql#the-query-pipeline)
+  * [The query pipeline](../../../client-api/session/querying/what-is-rql.mdx#the-query-pipeline)
   
-  * [RQL keywords and methods](../../../client-api/session/querying/what-is-rql#rql-keywords-and-methods)
+  * [RQL keywords and methods](../../../client-api/session/querying/what-is-rql.mdx#rql-keywords-and-methods)
   
-     * [`declare`](../../../client-api/session/querying/what-is-rql#declare)  
-     * [`from`](../../../client-api/session/querying/what-is-rql#from)
-     * [`where`](../../../client-api/session/querying/what-is-rql#where)
-     * [`group by`](../../../client-api/session/querying/what-is-rql#group-by)
-     * [`include`](../../../client-api/session/querying/what-is-rql#include)
-     * [`order by`](../../../client-api/session/querying/what-is-rql#order-by)
-     * [`select`](../../../client-api/session/querying/what-is-rql#select)
-     * [`load`](../../../client-api/session/querying/what-is-rql#load)
-     * [`limit`](../../../client-api/session/querying/what-is-rql#limit)
-     * [`update`](../../../client-api/session/querying/what-is-rql#update)
+     * [`declare`](../../../client-api/session/querying/what-is-rql.mdx#declare)  
+     * [`from`](../../../client-api/session/querying/what-is-rql.mdx#from)
+     * [`where`](../../../client-api/session/querying/what-is-rql.mdx#where)
+     * [`group by`](../../../client-api/session/querying/what-is-rql.mdx#group-by)
+     * [`include`](../../../client-api/session/querying/what-is-rql.mdx#include)
+     * [`order by`](../../../client-api/session/querying/what-is-rql.mdx#order-by)
+     * [`select`](../../../client-api/session/querying/what-is-rql.mdx#select)
+     * [`load`](../../../client-api/session/querying/what-is-rql.mdx#load)
+     * [`limit`](../../../client-api/session/querying/what-is-rql.mdx#limit)
+     * [`update`](../../../client-api/session/querying/what-is-rql.mdx#update)
     
-  * [RQL comments](../../../client-api/session/querying/what-is-rql#rql-comments)
+  * [RQL comments](../../../client-api/session/querying/what-is-rql.mdx#rql-comments)
 
 </Admonition>
 ## The query pipeline  
 
 The query pipeline in RavenDB includes the following main stages:  
 
-1. __Detect query source__  ([`from`](../../../client-api/session/querying/what-is-rql#from))
+1. __Detect query source__  ([`from`](../../../client-api/session/querying/what-is-rql.mdx#from))
 
    * Based on your query, RavenDB will determine the appropriate data source from which to retrieve results.  
    
@@ -66,26 +66,26 @@ The query pipeline in RavenDB includes the following main stages:
      * `from collection` - Specify the collection to query.  
        RavenDB will decide which index will be used depending on the query criteria.
 
-   * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).
+   * Learn more about these __query scenarios__ in this [Query Overview](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).
 
-2. __Filter the data__ ([`where`](../../../client-api/session/querying/what-is-rql#where))  
+2. __Filter the data__ ([`where`](../../../client-api/session/querying/what-is-rql.mdx#where))  
    * The index is scanned for records that match the query predicate. 
 
-3. __Include related documents__  ([`include`](../../../client-api/session/querying/what-is-rql#include))
-    * [Related documents](../../../client-api/how-to/handle-document-relationships#includes) that are included in the query will be retrieved and returned to the client  
+3. __Include related documents__  ([`include`](../../../client-api/session/querying/what-is-rql.mdx#include))
+    * [Related documents](../../../client-api/how-to/handle-document-relationships.mdx#includes) that are included in the query will be retrieved and returned to the client  
       along with the resulting matching documents, reducing the need to do another network round trip  
       to the database when accessing the included documents.
 
-4. __Sort results__ ([`order by`](../../../client-api/session/querying/what-is-rql#order-by)) 
+4. __Sort results__ ([`order by`](../../../client-api/session/querying/what-is-rql.mdx#order-by)) 
    * Query results can be sorted.  
      For example, you can order by a field value, by the resulting documents' score, by random ordering, etc.
 
-5. __Limit results__ ([`limit`](../../../client-api/session/querying/what-is-rql#limit))
+5. __Limit results__ ([`limit`](../../../client-api/session/querying/what-is-rql.mdx#limit))
    * You can specify the number of results you want to get back from the query  
      and the number of results you want to skip.
 
-6. __Project results__ ([`select`](../../../client-api/session/querying/what-is-rql#select)) 
-   * [Projections](../../../indexes/querying/projections) are specified when you need to retrieve only specific document fields, instead of the whole full document.
+6. __Project results__ ([`select`](../../../client-api/session/querying/what-is-rql.mdx#select)) 
+   * [Projections](../../../indexes/querying/projections.mdx) are specified when you need to retrieve only specific document fields, instead of the whole full document.
      This reduces the amount of data sent over the network and is useful when only partial data is needed.
      When projections are Not defined on the query - then the full document content is retrieved from the document storage.
 
@@ -93,7 +93,7 @@ The query pipeline in RavenDB includes the following main stages:
      This means that the projection doesn't apply to all the documents in the database,  
      only to the results that are actually returned.
 
-   * Data can be loaded ([`load`](../../../client-api/session/querying/what-is-rql#load)) from related documents to be used in the projected fields.  
+   * Data can be loaded ([`load`](../../../client-api/session/querying/what-is-rql.mdx#load)) from related documents to be used in the projected fields.  
    
    * For each record, the server extracts the requested field:  
      If a field is stored in the index - the server will fetch it from the index.  
@@ -107,52 +107,52 @@ The query pipeline in RavenDB includes the following main stages:
 
 The following keywords and methods are available in RQL:
 
-- [DECLARE](../../../client-api/session/querying/what-is-rql#declare)
-- [FROM](../../../client-api/session/querying/what-is-rql#from)
+- [DECLARE](../../../client-api/session/querying/what-is-rql.mdx#declare)
+- [FROM](../../../client-api/session/querying/what-is-rql.mdx#from)
     - index
-- [GROUP BY](../../../client-api/session/querying/what-is-rql#group-by)
-    - [array()](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
-- [WHERE](../../../client-api/session/querying/what-is-rql#where)
+- [GROUP BY](../../../client-api/session/querying/what-is-rql.mdx#group-by)
+    - [array()](../../../client-api/session/querying/how-to-perform-group-by-query.mdx#by-array-content)
+- [WHERE](../../../client-api/session/querying/what-is-rql.mdx#where)
     - id()
-    - [search()](../../../client-api/session/querying/text-search/full-text-search)
+    - [search()](../../../client-api/session/querying/text-search/full-text-search.mdx)
     - cmpxchg()
-    - [boost()](../../../client-api/session/querying/text-search/boost-search-results)
-    - [regex()](../../../client-api/session/querying/text-search/using-regex)
-    - [startsWith()](../../../client-api/session/querying/text-search/starts-with-query)
-    - [endsWith()](../../../client-api/session/querying/text-search/ends-with-query)
-    - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene)
-    - [exists()](../../../client-api/session/querying/how-to-filter-by-field)
-    - [exact()](../../../client-api/session/querying/text-search/exact-match-query)
-    - [intersect()](../../../indexes/querying/intersection)
-    - [spatial.within()](../../../indexes/querying/spatial)
-    - [spatial.contains()](../../../indexes/querying/spatial)
-    - [spatial.disjoint()](../../../indexes/querying/spatial)
-    - [spatial.intersects()](../../../indexes/querying/spatial)
-    - [moreLikeThis()](../../../client-api/session/querying/how-to-use-morelikethis)
-    - [vector.search()](../../../ai-integration/vector-search/vector-search-using-dynamic-query)
-- [ORDER BY](../../../client-api/session/querying/what-is-rql#order-by)
-    - [ASC | ASCENDING](../../../indexes/querying/sorting#basics)
-    - [DESC | DESCENDING](../../../indexes/querying/sorting#basics)
-    - [AS](../../../indexes/querying/sorting#basics)
-        - [string](../../../indexes/querying/sorting#basics)
-        - [long](../../../indexes/querying/sorting#basics)
-        - [double](../../../indexes/querying/sorting#basics)
-        - [alphaNumeric](../../../indexes/querying/sorting#alphanumeric-ordering)
-    - [random()](../../../indexes/querying/sorting#random-ordering)
-    - [score()](../../../indexes/querying/sorting#ordering-by-score)
-    - [spatial.distance()](../../../client-api/session/querying/how-to-make-a-spatial-query#spatial-sorting)
-- [LOAD](../../../client-api/session/querying/what-is-rql#load)
-- [SELECT](../../../client-api/session/querying/what-is-rql#select)
+    - [boost()](../../../client-api/session/querying/text-search/boost-search-results.mdx)
+    - [regex()](../../../client-api/session/querying/text-search/using-regex.mdx)
+    - [startsWith()](../../../client-api/session/querying/text-search/starts-with-query.mdx)
+    - [endsWith()](../../../client-api/session/querying/text-search/ends-with-query.mdx)
+    - [lucene()](../../../client-api/session/querying/document-query/how-to-use-lucene.mdx)
+    - [exists()](../../../client-api/session/querying/how-to-filter-by-field.mdx)
+    - [exact()](../../../client-api/session/querying/text-search/exact-match-query.mdx)
+    - [intersect()](../../../indexes/querying/intersection.mdx)
+    - [spatial.within()](../../../indexes/querying/spatial.mdx)
+    - [spatial.contains()](../../../indexes/querying/spatial.mdx)
+    - [spatial.disjoint()](../../../indexes/querying/spatial.mdx)
+    - [spatial.intersects()](../../../indexes/querying/spatial.mdx)
+    - [moreLikeThis()](../../../client-api/session/querying/how-to-use-morelikethis.mdx)
+    - [vector.search()](../../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx)
+- [ORDER BY](../../../client-api/session/querying/what-is-rql.mdx#order-by)
+    - [ASC | ASCENDING](../../../indexes/querying/sorting.mdx#basics)
+    - [DESC | DESCENDING](../../../indexes/querying/sorting.mdx#basics)
+    - [AS](../../../indexes/querying/sorting.mdx#basics)
+        - [string](../../../indexes/querying/sorting.mdx#basics)
+        - [long](../../../indexes/querying/sorting.mdx#basics)
+        - [double](../../../indexes/querying/sorting.mdx#basics)
+        - [alphaNumeric](../../../indexes/querying/sorting.mdx#alphanumeric-ordering)
+    - [random()](../../../indexes/querying/sorting.mdx#random-ordering)
+    - [score()](../../../indexes/querying/sorting.mdx#ordering-by-score)
+    - [spatial.distance()](../../../client-api/session/querying/how-to-make-a-spatial-query.mdx#spatial-sorting)
+- [LOAD](../../../client-api/session/querying/what-is-rql.mdx#load)
+- [SELECT](../../../client-api/session/querying/what-is-rql.mdx#select)
     - DISTINCT
     - key()
     - sum()
     - count()
-    - [facet()](../../../indexes/querying/faceted-search)
-    - [timeseries()](../../../document-extensions/timeseries/querying/overview-and-syntax#syntax)
-    - [counter()](../../../document-extensions/counters/counters-and-other-features#counters-and-queries)
-- [LIMIT](../../../client-api/session/querying/what-is-rql#limit)
-- [UPDATE](../../../client-api/session/querying/what-is-rql#update)
-- [INCLUDE](../../../client-api/session/querying/what-is-rql#include)
+    - [facet()](../../../indexes/querying/faceted-search.mdx)
+    - [timeseries()](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#syntax)
+    - [counter()](../../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)
+- [LIMIT](../../../client-api/session/querying/what-is-rql.mdx#limit)
+- [UPDATE](../../../client-api/session/querying/what-is-rql.mdx#update)
+- [INCLUDE](../../../client-api/session/querying/what-is-rql.mdx#include)
 
 With the following operators:
 
@@ -187,7 +187,7 @@ And the following values:
 You can use the `declare` keyword to create a JavaScript function that can then be called from a `select` clause when using a projection. 
 JavaScript functions add flexibility to your queries as they can be used to manipulate and format retrieved results.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Declare a JavaScript function 
 declare function output(employee) \{
@@ -203,7 +203,7 @@ from Employees as employee select output(employee)
 </TabItem>
 
 Values are returned from a declared Javascript function as a set of values rather than in a nested array to ease the projection of retrieved values.
-See an example for this usage [here](../../../document-extensions/timeseries/querying/overview-and-syntax#combine-time-series-and-javascript-functions).  
+See an example for this usage [here](../../../document-extensions/timeseries/querying/overview-and-syntax.mdx#combine-time-series-and-javascript-functions).  
 
 
 
@@ -215,7 +215,7 @@ The following options are available:
 
 * __Query a specific collection__: &nbsp;&nbsp; `from <collection-name>`
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Full collection query 
 // Data source: The raw collection documents (Auto-index is Not created)
@@ -224,7 +224,7 @@ from "Employees"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Collection query - by ID 
 // Data source: The raw collection documents (Auto-index is Not created)
@@ -233,7 +233,7 @@ from "Employees" where id() = "employees/1-A"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Dynamic query - with filtering
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
@@ -248,7 +248,7 @@ from "Employees" where FirstName = "Laura"
 
 * __Query all documents__: &nbsp;&nbsp; `from @all_docs`
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// All collections query
 // Data source: All raw collections (Auto-index is Not created)
@@ -257,7 +257,7 @@ from @all_docs
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Dynamic query - with filtering 
 // Data source: Auto-index (server uses an existing auto-index or creates a new one)
@@ -272,7 +272,7 @@ from @all_docs where FirstName = "Laura"
 
 * __Query an index__: &nbsp;&nbsp; `from index <index-name>`
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Index query
 // Data source: The specified index
@@ -281,7 +281,7 @@ from index "Employees/ByFirstName"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Index query - with filtering
 // Data source: The specified index
@@ -302,10 +302,10 @@ Use the `where` keyword with various operators to filter chosen documents from t
 #### Operator: &nbsp;&nbsp; `>=`, `<=`, `<>`, `!=`, `<`, `>`, `=`, `==`
 
 These basic operators can be used with all value types, including 'numbers' and 'strings'.  
-For example, you can return every document from the [Companies collection](../../../client-api/faq/what-is-a-collection) 
+For example, you can return every document from the [Companies collection](../../../client-api/faq/what-is-a-collection.mdx) 
 whose _field value_ **=** _a given input_.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies"
 where Name == "The Big Cheese" // Can use either '=' or'==' 
@@ -316,7 +316,7 @@ where Name == "The Big Cheese" // Can use either '=' or'=='
 Filtering on **nested properties** is also supported.  
 So in order to return all companies from 'Albuquerque' we need to execute following query:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies"
 where Address.City = "Albuquerque"
@@ -332,7 +332,7 @@ where Address.City = "Albuquerque"
 The operator `between` returns results inclusively, and the type of border values used must match.  
 It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Products" 
 where PricePerUnit between 10.5 and 13.0 // Using between
@@ -340,7 +340,7 @@ where PricePerUnit between 10.5 and 13.0 // Using between
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Products" 
 where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
@@ -356,7 +356,7 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0 // Using >= and <=
 The operator `in` is validating if a given field contains passed values.  
 It will return results if a given field matches **any** of the passed values.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies" 
 where Name in ("The Big Cheese", "Unknown company name")
@@ -364,7 +364,7 @@ where Name in ("The Big Cheese", "Unknown company name")
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Orders" 
 where Lines[].ProductName in ("Chang", "Spegesild", "Unknown product name") 
@@ -382,7 +382,7 @@ Due to its mechanics, it is only useful when used on array fields.
 
 The following query will yield no results in contrast to the `in` operator.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
@@ -393,7 +393,7 @@ where Lines[].ProductName all in ("Chang", "Spegesild", "Unknown product name")
 Removing 'Unknown product name' will return only orders that contain products with both  
 'Chang' and 'Spegesild' names.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Orders" 
 where Lines[].ProductName all in ("Chang", "Spegesild") 
@@ -409,7 +409,7 @@ where Lines[].ProductName all in ("Chang", "Spegesild")
 Binary operators can be used to build more complex statements.  
 The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies"
 where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
@@ -417,7 +417,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01'
@@ -425,7 +425,7 @@ where Freight > 500 AND ShippedAt > '1998-01-01'
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Orders"
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
@@ -447,7 +447,7 @@ Subclauses can be used along with binary operators to build even more complex lo
 ## `group by`
 
 The keyword `group by` is used to create an aggregation query.  
-Learn more in [dynamic group by queries](../../../client-api/session/querying/how-to-perform-group-by-query).
+Learn more in [dynamic group by queries](../../../client-api/session/querying/how-to-perform-group-by-query.mdx).
 
 
 
@@ -455,35 +455,35 @@ Learn more in [dynamic group by queries](../../../client-api/session/querying/ho
 
 The keyword `include` has been introduced to support:
 
-- [including related documents](../../../client-api/how-to/handle-document-relationships#includes) in the query response
-- [including counters](../../../document-extensions/counters/counters-and-other-features#including-counters),
-  [time series](../../../document-extensions/timeseries/client-api/session/include/with-raw-queries),
-  or [revisions](../../../document-extensions/revisions/client-api/session/including#include-revisions-when-making-a-raw-query) in the query response
-- [including compare-exchange items](../../../client-api/operations/compare-exchange/include-compare-exchange#include-cmpxchg-items-when-querying) in the query response
-- [highlighting](../../../client-api/session/querying/text-search/highlight-query-results) results
-- [get query timings](../../../client-api/session/querying/debugging/query-timings)
-- [get explanations](../../../client-api/session/querying/debugging/include-explanations)
+- [including related documents](../../../client-api/how-to/handle-document-relationships.mdx#includes) in the query response
+- [including counters](../../../document-extensions/counters/counters-and-other-features.mdx#including-counters),
+  [time series](../../../document-extensions/timeseries/client-api/session/include/with-raw-queries.mdx),
+  or [revisions](../../../document-extensions/revisions/client-api/session/including.mdx#include-revisions-when-making-a-raw-query) in the query response
+- [including compare-exchange items](../../../client-api/operations/compare-exchange/include-compare-exchange.mdx#include-cmpxchg-items-when-querying) in the query response
+- [highlighting](../../../client-api/session/querying/text-search/highlight-query-results.mdx) results
+- [get query timings](../../../client-api/session/querying/debugging/query-timings.mdx)
+- [get explanations](../../../client-api/session/querying/debugging/include-explanations.mdx)
 
 
 
 ## `order by`
 
 Use `order by` to perform sorting.  
-Learn more in this [sorting](../../../indexes/querying/sorting) article.  
+Learn more in this [sorting](../../../indexes/querying/sorting.mdx) article.  
 
 
 
 ## `select`
 
 Use `select` to have the query return a projection instead of the full document.  
-Learn more in this [projection](../../../indexes/querying/projections) article.
+Learn more in this [projection](../../../indexes/querying/projections.mdx) article.
 
 
 
 ## `load`
 
 Use `load`when you need to use data from a related document in projection.  
-See an example in this [projection](../../../indexes/querying/projections#example-viii---projection-using-a-loaded-document) article.
+See an example in this [projection](../../../indexes/querying/projections.mdx#example-viii---projection-using-a-loaded-document) article.
 
 
 
@@ -491,9 +491,9 @@ See an example in this [projection](../../../indexes/querying/projections#exampl
 
 Use `limit` to limit the number of results returned by the query.  
 Specify the number of items to __skip__ from the beginning of the result set and the number of items to __take__ (return).  
-This is useful when [paging](../../../indexes/querying/paging) results.
+This is useful when [paging](../../../indexes/querying/paging.mdx) results.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Available syntax options:
 // =========================
@@ -512,7 +512,7 @@ from "Products" offset 5          // skip 5, take all the rest
 ## `update`
 
 To patch documents on the server-side, use `update` with the desired JavaScript that will be applied to any document matching the query criteria.  
-For more information, please refer to this [patching](../../../client-api/operations/patching/set-based) article.  
+For more information, please refer to this [patching](../../../client-api/operations/patching/set-based.mdx) article.  
 
 
 
@@ -524,7 +524,7 @@ __Single-line comments__:
 
 * Single-line comments start with `//` and end at the end of that line.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// This is a single-line comment.
 from "Companies" 
@@ -533,7 +533,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies"
 where Name = "The Big Cheese" // OR Name = "Richter Supermarkt"
@@ -549,7 +549,7 @@ __Multiline comments__:
 
 * Multiline comments start with `/*` and end with `*/`.
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`/*
 This is a multiline comment.
@@ -561,7 +561,7 @@ where Name = "The Big Cheese" OR Name = "Richter Supermarkt"
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from "Companies"
 where Name = "The Big Cheese" /* this part is a comment */ OR Name = "Richter Supermarkt"

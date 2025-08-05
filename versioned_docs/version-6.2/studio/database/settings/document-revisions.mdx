@@ -17,16 +17,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
 * Revisions configuration settings can be managed from the **Document Revisions** view.  
 
-* Learn more about revisions [here](../../../document-extensions/revisions/overview).
+* Learn more about revisions [here](../../../document-extensions/revisions/overview.mdx).
 
 * In this page:
-  * [Document revisions view](../../../studio/database/settings/document-revisions#document-revisions-view)  
-  * [Revisions configuration](../../../studio/database/settings/document-revisions#revisions-configuration)  
-  * [Define default configuration](../../../studio/database/settings/document-revisions#define-default-configuration)  
-  * [Define collection-specific configuration](../../../studio/database/settings/document-revisions#define-collection-specific-configuration)  
-  * [Edit conflicting document defaults](../../../studio/database/settings/document-revisions#edit-conflicting-document-defaults)  
-     * [Conflicting documents example](../../../studio/database/settings/document-revisions#conflicting-documents-example)  
-  * [Enforce configuration](../../../studio/database/settings/document-revisions#enforce-configuration)  
+  * [Document revisions view](../../../studio/database/settings/document-revisions.mdx#document-revisions-view)  
+  * [Revisions configuration](../../../studio/database/settings/document-revisions.mdx#revisions-configuration)  
+  * [Define default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration)  
+  * [Define collection-specific configuration](../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration)  
+  * [Edit conflicting document defaults](../../../studio/database/settings/document-revisions.mdx#edit-conflicting-document-defaults)  
+     * [Conflicting documents example](../../../studio/database/settings/document-revisions.mdx#conflicting-documents-example)  
+  * [Enforce configuration](../../../studio/database/settings/document-revisions.mdx#enforce-configuration)  
 
 
 </Admonition>
@@ -46,12 +46,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Click after modifying the configuration to apply your changes.  
 
 4. **Revert Revisions**  
-   Click to [revert the database](../../../document-extensions/revisions/revert-revisions) to its state at a specified point in time.  
+   Click to [revert the database](../../../document-extensions/revisions/revert-revisions.mdx) to its state at a specified point in time.  
    You can select whether to revert specific collections or revert all collections.  
    Only documents are reverted. Other entities (such as ongoing tasks) are not modified by this process.  
 
 5. **Enforce Configuration**  
-   Click to [enforce the revisions configuration](../../../studio/database/settings/document-revisions#enforce-configuration).  
+   Click to [enforce the revisions configuration](../../../studio/database/settings/document-revisions.mdx#enforce-configuration).  
    <Admonition type="warning" title="Warning">
    This operation may delete many revisions irrevocably and require substantial 
    server resources.  
@@ -59,16 +59,16 @@ import LanguageContent from "@site/src/components/LanguageContent";
    </Admonition>  
 
 6. **Create document defaults**  
-   Click to define [default configuration](../../../studio/database/settings/document-revisions#define-default-configuration) 
+   Click to define [default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration) 
    that will apply to documents in all collections that don't have a  
    collection-specific configuration defined.   
 
 7. **Add a collection-specific configuration**  
-   Click to create a [configuration for a specific collection](../../../studio/database/settings/document-revisions#define-collection-specific-configuration).  
+   Click to create a [configuration for a specific collection](../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration).  
    If default settings were defined, the collection-specific configuration will override them for this collection.  
 
 8. **The defined Revisions configuration**  
-   Read more [below](../../../studio/database/settings/document-revisions#revisions-configuration).  
+   Read more [below](../../../studio/database/settings/document-revisions.mdx#revisions-configuration).  
 
 
 
@@ -87,7 +87,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ![Defined Configuration](./assets/defined-configuration.png)
 
 1. **Document Defaults**  
-   This is the [default revisions configuration](../../../studio/database/settings/document-revisions#define-default-configuration) that applies to all non-conflicting documents in all collections  
+   This is the [default revisions configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration) that applies to all non-conflicting documents in all collections  
    that don't have a collection-specific configuration defined.   
    These settings are optional and can be removed.  
 
@@ -96,7 +96,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    When enabled, a revision is created for each conflicting item.  
    A revision is also created for the conflict resolution document.      
     * The Conflicting Document Defaults configuration cannot be removed.  
-    * You can [modify](../../../studio/database/settings/document-revisions#edit-conflicting-document-defaults) this configuration,  
+    * You can [modify](../../../studio/database/settings/document-revisions.mdx#edit-conflicting-document-defaults) this configuration,  
       or disable it if not interested in tracking document conflicts using revisions.  
     * When "Document Defaults configuration" is defined, it __overrides__ these conflict defaults.  
     * When a "Collection-specific configuration" is defined,  
@@ -178,7 +178,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    ![Select Collection](./assets/select-collection.png)  
 
 3. **Configuration options**  
-   These options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions#define-default-configuration),  
+   These options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration),  
    the only difference is the configuration scope.  
 
 4. Click __OK__ to keep the configuration, or __Cancel__.  
@@ -199,7 +199,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ![Editing the Conflicting Document Defaults](./assets/edit-conflicting-docs-configuration.png)
 
-* The settings options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions#define-default-configuration).   
+* The settings options are similar to those explained above for the [default configuration](../../../studio/database/settings/document-revisions.mdx#define-default-configuration).   
   
 * Note: the __Limit # of revisions to keep by age__ value is set to `45 Days` by default.  
   This means that revisions created for conflicting documents will start to be purged after 45 days,  
@@ -218,10 +218,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
     3. when the conflict was resolved by replacing the local document with the replicated one.  
        <Admonition type="info" title="Info">
        In this example, the conflict was resolved by placing the replicated version as the current document. 
-       Learn more about conflict resolution [here](../../../studio/database/settings/conflict-resolution#conflict-resolution).  
+       Learn more about conflict resolution [here](../../../studio/database/settings/conflict-resolution.mdx#conflict-resolution).  
        </Admonition>
 
-* To see these revisions, open the document's [Revisions tab](../../../studio/database/document-extensions/revisions/revisions#revisions-tab).  
+* To see these revisions, open the document's [Revisions tab](../../../studio/database/document-extensions/revisions.mdx#revisions-tab).  
   The revision state is indicated by:  
     * A red __title__ at the top (i.e. "Conflict revision" or "Resolved revision").  
     * An __icon__ next to the revision's creation time in the right Properties pane.  

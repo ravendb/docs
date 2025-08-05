@@ -27,20 +27,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Read more about RabbitMQ in the platform's [official documentation](https://www.rabbitmq.com/).
 * This article focuses on how to create a RabbitMQ ETL task using the Client API.  
-  To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task)  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).
+  To define a RabbitMQ ETL task from Studio see [Studio: RabbitMQ ETL Task](../../../../studio/database/tasks/ongoing-tasks/rabbitmq-etl-task.mdx)  
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).
 
 * In this page:
-    * [Add a RabbitMQ connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-connection-string)
-        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#example)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#syntax)
-    * [Add a RabbitMQ ETL task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#add-a-rabbitmq-etl-task)
-        * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#example-basic)
-        * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#delete-processed-documents)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#syntax-1)
-    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#the-transformation-script)
-        * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#the-loadto-method)
-        * [Available method overloads](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#available-method-overloads)
+    * [Add a RabbitMQ connection string](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-connection-string)
+        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#example)
+        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#syntax)
+    * [Add a RabbitMQ ETL task](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#add-a-rabbitmq-etl-task)
+        * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#example-basic)
+        * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#delete-processed-documents)
+        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#syntax-1)
+    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-transformation-script)
+        * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-loadto-method)
+        * [Available method overloads](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#available-method-overloads)
 
 </Admonition>
 ## Add a RabbitMQ connection string
@@ -48,7 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Before setting up the ETL task, define a connection string that the task will use to connect to RabbitMQ.
 #### Example
 
-<TabItem value="something" label="add_rabbitMq_connection_string">
+<TabItem value="add_rabbitMq_connection_string" label="add_rabbitMq_connection_string">
 <CodeBlock language="csharp">
 {`// Prepare the connection string:
 // ==============================
@@ -74,7 +74,7 @@ var res = store.Maintenance.Send(
 </TabItem>
 #### Syntax
 
-<TabItem value="something" label="queue_connection_string">
+<TabItem value="queue_connection_string" label="queue_connection_string">
 <CodeBlock language="csharp">
 {`public class QueueConnectionString : ConnectionString
 \{
@@ -93,7 +93,7 @@ var res = store.Maintenance.Send(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="queue_broker_type">
+<TabItem value="queue_broker_type" label="queue_broker_type">
 <CodeBlock language="csharp">
 {`public enum QueueBrokerType
 \{
@@ -105,7 +105,7 @@ var res = store.Maintenance.Send(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="rabbitMq_con_str_settings">
+<TabItem value="rabbitMq_con_str_settings" label="rabbitMq_con_str_settings">
 <CodeBlock language="csharp">
 {`public sealed class RabbitMqConnectionSettings
 \{
@@ -127,9 +127,9 @@ var res = store.Maintenance.Send(
     * Extract source documents from the "Orders" collection in RavenDB.
     * Process each "Order" document using a defined script that creates a new `orderData` object.
     * Load the `orderData` object to the "OrdersExchange" in a RabbitMQ broker.
-* For more details about the script and the `loadTo` method overloads, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq#the-transformation-script) section below.
+* For more details about the script and the `loadTo` method overloads, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx#the-transformation-script) section below.
 
-<TabItem value="something" label="add_rabbitMq_etl_task">
+<TabItem value="add_rabbitMq_etl_task" label="add_rabbitMq_etl_task">
 <CodeBlock language="csharp">
 {`// Define a transformation script for the task: 
 // ============================================
@@ -199,7 +199,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 
 * Set the optional `Queues` property in your ETL configuration with the list of RabbitMQ queues for which processed documents should be deleted.
 
-<TabItem value="something" label="rabbitMq_delete_documents">
+<TabItem value="rabbitMq_delete_documents" label="rabbitMq_delete_documents">
 <CodeBlock language="csharp">
 {`var etlTask = new QueueEtlConfiguration()
 \{
@@ -234,7 +234,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 </Admonition>
 #### Syntax
 
-<TabItem value="something" label="etl_configuration">
+<TabItem value="etl_configuration" label="etl_configuration">
 <CodeBlock language="csharp">
 {`public class QueueEtlConfiguration
 \{
@@ -284,7 +284,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of a RabbitMQ ETL script are similar to those of other ETL types.  
+The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a RabbitMQ ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which RabbitMQ Exchange to **load** it to.
 #### The loadTo method
@@ -307,7 +307,7 @@ The two methods are equivalent, offering alternative syntax:
       | **ExchangeName** | string  | The name of the RabbitMQ exchange.                                                                                           |
       | **obj**          | object  | The object to transfer.                                                                                                      |
       | **routingKey**   | string  | The RabbitMQ exchange evaluates this attribute to determine how to route the message to queues based on the exchange type.   |
-      | **attributes**   | object  | An object with [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents).                |
+      | **attributes**   | object  | An object with [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents).                |
 
 For example, the following two calls, which load data to the Orders exchange, are equivalent:
 
@@ -331,7 +331,7 @@ In this case, all routing keys will be ignored, and messages will be distributed
 </Admonition>
 A sample script that process documents from the Orders collection:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Create an orderData object
 // ==========================

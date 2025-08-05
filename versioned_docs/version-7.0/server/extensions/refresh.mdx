@@ -21,16 +21,16 @@ export const supportedLanguages = ["csharp"];
 
 <Admonition type="note" title="Note">
 
-* The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector), 
+* The Refresh feature increments a document's [change vector](../../server/clustering/replication/change-vector.mdx), 
   triggering its re-indexation as well as other features that react to document updates.  
 
-* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata).  
+* Refresh is scheduled using the `@refresh` flag in a document's [metadata](../../client-api/session/how-to/get-and-modify-entity-metadata.mdx).  
 
 * In this page:  
-  * [Overview](../../server/extensions/refresh#overview)  
-  * [Examples](../../server/extensions/refresh#examples)
-  * [Syntax](../../server/extensions/refresh#syntax)
-  * [Configure from Studio](../../server/extensions/refresh#configure-from-studio)
+  * [Overview](../../server/extensions/refresh.mdx#overview)  
+  * [Examples](../../server/extensions/refresh.mdx#examples)
+  * [Syntax](../../server/extensions/refresh.mdx#syntax)
+  * [Configure from Studio](../../server/extensions/refresh.mdx#configure-from-studio)
 
 
 </Admonition>
@@ -51,7 +51,7 @@ export const supportedLanguages = ["csharp"];
      <Admonition type="info" title="The exact refresh time is determined by:" id="the-exact-refresh-time-is-determined-by" href="#the-exact-refresh-time-is-determined-by">
 
      1. The refresh time value set for the `@refresh` property.  
-     2. The way you set the [Refresh Configuration](../../server/extensions/refresh#syntax), 
+     2. The way you set the [Refresh Configuration](../../server/extensions/refresh.mdx#syntax), 
         including -  
          - The interval by which the server refreshes documents (set by default to 60 seconds).  
          - The way you set **maximal items to process**, potentially limiting the number 
@@ -59,14 +59,14 @@ export const supportedLanguages = ["csharp"];
 
      </Admonition>
 
-* Refreshing a document causes its [change vector](../../server/clustering/replication/change-vector) 
+* Refreshing a document causes its [change vector](../../server/clustering/replication/change-vector.mdx) 
   to increment the same way it would after any other kind of update to the document.  
   This triggers any features that react to document updating, including but not limited to:  
    - Re-indexing of the document by indexes that cover it  
-   - [Replication](../../server/ongoing-tasks/external-replication), 
-     [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions), 
-     and [ETL](../../server/ongoing-tasks/etl/basics) triggering  
-   - Creation of a [document revision](../../document-extensions/revisions/overview)  
+   - [Replication](../../server/ongoing-tasks/external-replication.mdx), 
+     [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx), 
+     and [ETL](../../server/ongoing-tasks/etl/basics.mdx) triggering  
+   - Creation of a [document revision](../../document-extensions/revisions/overview.mdx)  
 
 
 
@@ -76,7 +76,7 @@ export const supportedLanguages = ["csharp"];
 
 How to set refresh configuration for a database:  
 
-<TabItem value="something" label="refresh_0">
+<TabItem value="refresh_0" label="refresh_0">
 <CodeBlock language="csharp">
 {`var refreshConfig = new RefreshConfiguration \{
     Disabled = false, 
@@ -96,7 +96,7 @@ This activates document refreshing and sets the interval at 5 minutes.
 
 How to set a document to refresh 1 hour from now:  
 
-<TabItem value="something" label="refresh_1">
+<TabItem value="refresh_1" label="refresh_1">
 <CodeBlock language="csharp">
 {`using (var session = documentStore.OpenSession())
 \{
@@ -118,7 +118,7 @@ To activate and/or configure document refreshing, send the server a
 `RefreshConfiguration` object using the `ConfigureRefreshOperation` operation.  
 #### `RefreshConfiguration`
 
-<TabItem value="something" label="refresh_config">
+<TabItem value="refresh_config" label="refresh_config">
 <CodeBlock language="csharp">
 {`public class RefreshConfiguration
 \{

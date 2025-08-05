@@ -28,19 +28,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Read more about Kafka clusters, brokers, topics, partitions, and other related subjects,
   in the platform's [official documentation](https://kafka.apache.org/documentation/#gettingStarted).
 * This article focuses on how to create a Kafka ETL task using the Client API.  
-  To define a Kafka ETL task from the Studio, see [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task).  
-  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview).  
+  To define a Kafka ETL task from the Studio, see [Studio: Kafka ETL Task](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx).  
+  For an **overview of Queue ETL tasks**, see [Queue ETL tasks overview](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx).  
 
 * In this page:
-    * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-connection-string)
-        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/kafka#example)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka#syntax)
-    * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka#add-a-kafka-etl-task)
-        * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka#example-basic)
-        * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka#delete-processed-documents)
-        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka#syntax-1)
-    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka#the-transformation-script)
-        * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/kafka#the-loadto-method)
+    * [Add a Kafka connection string](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-connection-string)
+        * [Exmaple](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example)
+        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#syntax)
+    * [Add a Kafka ETL task](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#add-a-kafka-etl-task)
+        * [Example - basic](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#example-basic)
+        * [Example - delete processed documents](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#delete-processed-documents)
+        * [Syntax](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#syntax-1)
+    * [The transformation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script)
+        * [The loadTo method](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-loadto-method)
 
 </Admonition>
 ## Add a Kafka connection string
@@ -48,7 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Before setting up the ETL task, define a connection string that the task will use to connect to the message broker's bootstrap servers.
 #### Example
 
-<TabItem value="something" label="add_kafka_connection_string">
+<TabItem value="add_kafka_connection_string" label="add_kafka_connection_string">
 <CodeBlock language="csharp">
 {`// Prepare the connection string:
 // ==============================
@@ -74,7 +74,7 @@ var res = store.Maintenance.Send(
 </TabItem>
 #### Syntax
 
-<TabItem value="something" label="queue_connection_string">
+<TabItem value="queue_connection_string" label="queue_connection_string">
 <CodeBlock language="csharp">
 {`public class QueueConnectionString : ConnectionString
 \{
@@ -93,7 +93,7 @@ var res = store.Maintenance.Send(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="queue_broker_type">
+<TabItem value="queue_broker_type" label="queue_broker_type">
 <CodeBlock language="csharp">
 {`public enum QueueBrokerType
 \{
@@ -105,7 +105,7 @@ var res = store.Maintenance.Send(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="kafka_con_str_settings">
+<TabItem value="kafka_con_str_settings" label="kafka_con_str_settings">
 <CodeBlock language="csharp">
 {`public class KafkaConnectionSettings
 \{
@@ -132,9 +132,9 @@ var res = store.Maintenance.Send(
     * Extract source documents from the "Orders" collection in RavenDB.
     * Process each "Order" document using a defined script that creates a new `orderData` object.
     * Load the `orderData` object to the "OrdersTopic" in a Kafka broker.
-* For more details about the script and the `loadTo` method, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka#the-transformation-script) section below.
+* For more details about the script and the `loadTo` method, see the [transromation script](../../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#the-transformation-script) section below.
 
-<TabItem value="something" label="add_kafka_etl_task">
+<TabItem value="add_kafka_etl_task" label="add_kafka_etl_task">
 <CodeBlock language="csharp">
 {`// Define a transformation script for the task: 
 // ============================================
@@ -202,7 +202,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 
 * Set the optional `Queues` property in your ETL configuration with the list of Kafka topics for which processed documents should be deleted.
 
-<TabItem value="something" label="kafka_delete_documents">
+<TabItem value="kafka_delete_documents" label="kafka_delete_documents">
 <CodeBlock language="csharp">
 {`var etlTask = new QueueEtlConfiguration()
 \{
@@ -237,7 +237,7 @@ store.Maintenance.Send(new AddEtlOperation<QueueConnectionString>(etlTask));
 </Admonition>
 #### Syntax
 
-<TabItem value="something" label="etl_configuration">
+<TabItem value="etl_configuration" label="etl_configuration">
 <CodeBlock language="csharp">
 {`public class QueueEtlConfiguration
 \{
@@ -282,7 +282,7 @@ public class EtlQueue
 
 ## The transformation script
 
-The [basic characteristics](../../../../server/ongoing-tasks/etl/basics) of a Kafka ETL script are similar to those of other ETL types.  
+The [basic characteristics](../../../../server/ongoing-tasks/etl/basics.mdx) of a Kafka ETL script are similar to those of other ETL types.  
 The script defines what data to **extract** from the source document, how to **transform** this data,  
 and which Kafka Topic to **load** it to.
 #### The loadTo method
@@ -304,7 +304,7 @@ The two methods are equivalent, offering alternative syntax:
       |----------------|--------|----------------------------------------------------------------------------------------------------------------------------------|
       | **TopicName**  | string | The name of the Kafka topic                                                                                                      |
       | **obj**        | object | The object to transfer                                                                                                           |
-      | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview#cloudevents) |
+      | **attributes** | object | An object with optional & required [CloudEvents attributes](../../../../server/ongoing-tasks/etl/queue-etl/overview.mdx#cloudevents) |
 
 For example, the following two calls, which load data to "OrdersTopic", are equivalent:
 
@@ -312,7 +312,7 @@ For example, the following two calls, which load data to "OrdersTopic", are equi
   * `loadTo('OrdersTopic', obj, {attributes})`
 A sample script that process documents from the Orders collection:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Create an orderData object
 // ==========================

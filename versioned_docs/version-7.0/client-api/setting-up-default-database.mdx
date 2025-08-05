@@ -33,12 +33,12 @@ The default database value itself will Not change.
 explicitly passed.  
 
 * In this page:  
-  * [Example - Without a Default Database](../client-api/setting-up-default-database#example---without-a-default-database)  
-  * [Example - With a Default Database](../client-api/setting-up-default-database#example---with-a-default-database)  
+  * [Example - Without a Default Database](../client-api/setting-up-default-database.mdx#example---without-a-default-database)  
+  * [Example - With a Default Database](../client-api/setting-up-default-database.mdx#example---with-a-default-database)  
 </Admonition>
 ## Example - Without a Default Database
 
-<TabItem value="something" label="default_database_1">
+<TabItem value="default_database_1" label="default_database_1">
 <CodeBlock language="csharp">
 {`using (IDocumentStore store = new DocumentStore
 \{
@@ -64,7 +64,7 @@ explicitly passed.
 ## Example - With a Default Database
 
 The default database is defined in the Document Store's `Database` property.
-<TabItem value="something" label="default_database_2">
+<TabItem value="default_database_2" label="default_database_2">
 <CodeBlock language="csharp">
 {`using (IDocumentStore store = new DocumentStore
 \{
@@ -101,11 +101,11 @@ The default database is defined in the Document Store's `Database` property.
 <LanguageContent language="java">
 
 
-`database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [operations](../client-api/operations/what-are-operations) or create a [session](../client-api/session/what-is-a-session-and-how-does-it-work) without explicitly passing database on which they should operate on then default database is assumed.
+`database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [operations](../client-api/operations/what-are-operations.mdx) or create a [session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
 
 ## Example I
 
-<TabItem value="something-something" label="default_database_1">
+<TabItem value="default_database_1" label="default_database_1">
 <CodeBlock language="java">
 {`// without specifying \`database\`
 // we will need to specify the database in each action
@@ -129,7 +129,7 @@ try (DocumentStore store = new DocumentStore()) \{
 
 ## Example II
 
-<TabItem value="something-something" label="default_database_2">
+<TabItem value="default_database_2" label="default_database_2">
 <CodeBlock language="java">
 {`// when \`database\` is set to \`Northwind\`
 // created \`operations\` or opened \`sessions\`
@@ -166,12 +166,12 @@ By default value of `database` property in `DocumentStore` is `null` which means
 <LanguageContent language="nodejs">
 
 
-`database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [operations](../client-api/operations/what-are-operations) or create a [session](../client-api/session/what-is-a-session-and-how-does-it-work) without explicitly passing database on which they should operate on then default database is assumed.
+`database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [operations](../client-api/operations/what-are-operations.mdx) or create a [session](../client-api/session/what-is-a-session-and-how-does-it-work.mdx) without explicitly passing database on which they should operate on then default database is assumed.
 
 ## Example I
 
-<TabItem value="something-something" label="default_database_1">
-<CodeBlock language="nodejs">
+<TabItem value="default_database_1" label="default_database_1">
+<CodeBlock language="js">
 {`// without specifying \`database\`
 // we will need to specify the database in each action
 // if no database is passed explicitly we will get an error
@@ -193,8 +193,8 @@ await store.maintenance.server.send(
 
 ## Example II
 
-<TabItem value="something-something" label="default_database_2">
-<CodeBlock language="nodejs">
+<TabItem value="default_database_2" label="default_database_2">
+<CodeBlock language="js">
 {`// when \`database\` is set to \`Northwind\`
 // created \`operations\` or opened \`sessions\`
 // will work on \`Northwind\` database by default

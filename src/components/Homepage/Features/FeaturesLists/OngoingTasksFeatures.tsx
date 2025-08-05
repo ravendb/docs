@@ -9,17 +9,17 @@ export default function OngoingTasksFeaturesGrid() {
   const OngoingTasksFeaturesList = [
     {
       title: "Replication",
-      url: `${activeVersion.label}/server/clustering/replication/replication-overview`,
+      url: `/${activeVersion.label}/server/clustering/replication/replication-overview`,
       description: "Short description",
     },
     {
       title: "Subscriptions",
-      url: `${activeVersion.label}/client-api/data-subscriptions/what-are-data-subscriptions`,
+      url: `/${activeVersion.label}/client-api/data-subscriptions/what-are-data-subscriptions`,
       description: "Short description",
     },
     {
       title: "Periodic backups",
-      url: `${activeVersion.label}/server/ongoing-tasks/backup-overview`,
+      url: `/${activeVersion.label}/server/ongoing-tasks/backup-overview`,
       description: "Short description",
     },
   ];

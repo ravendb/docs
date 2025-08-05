@@ -19,7 +19,7 @@ In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro Windows virtual
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
 
-It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
+It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard.mdx) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
 ## Create the VM
@@ -117,7 +117,7 @@ If you intend to run as a service, the write permissions should be granted to th
 ![22](./assets/22.png)
 
 You have a few choices on how to run the RavenDB server. 
-We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
+We will use the [Setup Wizard](../../../start/installation/setup-wizard.mdx), but you can also configure things [manually](../../../start/installation/manual.mdx).
 
 Open PowerShell and navigate to the extracted RavenDB folder. 
 
@@ -131,7 +131,7 @@ The service will be registered. The server will start and you will be redirected
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
 
-You will need to claim your domain, read more [here](../../../start/installation/setup-wizard#secure-setup-with-a-let).
+You will need to claim your domain, read more [here](../../../start/installation/setup-wizard.mdx#secure-setup-with-a-let).
 
 When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
 
@@ -143,7 +143,7 @@ Choose the Private IP address here.
 
 Check the External IP box and enter the public IP address. Then start the installation.
 
-If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq).
+If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq.mdx).
 
 ![29](./assets/29.png)
 
@@ -167,13 +167,13 @@ Chrome will let you select the certificate.
 ![34](./assets/34.png)
 ![36](./assets/36.png)
 
-Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview) for better understanding of certificates and security issues.
+Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview.mdx) for better understanding of certificates and security issues.
 
 ![37](./assets/37.png)
 
 If you want to access the RavenDB CLI, first find out the RavenDB process number in the Task Manager and then open PowerShell and navigate to the server folder. Run the following command using the `rvn tool`.
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`./rvn.exe admin-channel <pid>
 `}
@@ -185,5 +185,5 @@ If you want to access the RavenDB CLI, first find out the RavenDB process number
  
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard.mdx) to construct a cluster during setup.
 

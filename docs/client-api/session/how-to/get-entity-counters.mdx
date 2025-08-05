@@ -28,12 +28,12 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
   The counter names are available for each entity using the `GetCountersFor()` method from the `Advanced` session operations.
 
 * In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
 </Admonition>
 ## Get entity counters
 
-<TabItem value="something" label="example">
+<TabItem value="example" label="example">
 <CodeBlock language="csharp">
 {`// Load a document
 var employee = session.Load<Employee>("employees/1-A");
@@ -48,7 +48,7 @@ List<string> counterNames = session.Advanced.GetCountersFor(employee);
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`List<string> GetCountersFor<T>(T instance);
 `}
@@ -81,12 +81,12 @@ List<string> counterNames = session.Advanced.GetCountersFor(employee);
   method from the `advanced` session operations.
 
 * In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
 </Admonition>
 ## Get entity counters
 
-<TabItem value="something-something" label="example">
+<TabItem value="example" label="example">
 <CodeBlock language="python">
 {`# Load a document
 employee = session.load("employees/1-A")
@@ -101,7 +101,7 @@ counter_names = session.advanced.get_counters_for(employee)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def get_counters_for(self, entity: object) -> List[str]: ...
 `}
@@ -134,12 +134,12 @@ counter_names = session.advanced.get_counters_for(employee)
   method from the `advanced` session operations.
 
 * In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
 </Admonition>
 ## Get entity counters
 
-<TabItem value="something-something" label="example">
+<TabItem value="example" label="example">
 <CodeBlock language="php">
 {`// Load a document
 $employee = $session->load(Employee::class, "employees/1-A");
@@ -154,7 +154,7 @@ $counterNames = $session->advanced()->getCountersFor($employee);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`public function getCountersFor(mixed $instance): ?StringList;
 `}
@@ -185,13 +185,13 @@ $counterNames = $session->advanced()->getCountersFor($employee);
   The counter names are available for each entity using the `getCountersFor()` method from the `advanced` session operations.
 
 * In this page:
-    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters#get-entity-counters)
-    * [Syntax](../../../client-api/session/how-to/get-entity-counters#syntax)
+    * [Get entity counters](../../../client-api/session/how-to/get-entity-counters.mdx#get-entity-counters)
+    * [Syntax](../../../client-api/session/how-to/get-entity-counters.mdx#syntax)
 </Admonition>
 ## Get entity counters
 
-<TabItem value="something-something" label="example">
-<CodeBlock language="nodejs">
+<TabItem value="example" label="example">
+<CodeBlock language="js">
 {`// Load a document
 const employee = await session.load("employees/1-A");
 
@@ -205,8 +205,8 @@ const counterNames = session.advanced.getCountersFor(employee);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`getCountersFor(entity);
 `}
 </CodeBlock>

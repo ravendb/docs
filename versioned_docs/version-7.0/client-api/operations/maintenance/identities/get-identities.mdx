@@ -28,22 +28,22 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * The identity document ID is unique across the entire cluster within the database scope.  
   It is composed of the provided collection name and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view) view.
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 
 <Admonition type="info" title="Info">
 Learn more about identities in:
 
-* [Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
-* [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities)
+* [Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+* [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
 
 </Admonition>
 
 * In this page:
 
-  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities#get-identities-operation)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities#syntax)
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
 
 </Admonition>
 ## Get identities operation 
@@ -119,7 +119,7 @@ var latestIdentityValue = identities["companies|"]; // => value will be 1
 
 ## Syntax 
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public GetIdentitiesOperation();
 `}
@@ -137,7 +137,7 @@ var latestIdentityValue = identities["companies|"]; // => value will be 1
 
 ## Syntax
 
-<TabItem value="something-something" label="sample_1">
+<TabItem value="sample_1" label="sample_1">
 <CodeBlock language="java">
 {`public GetIdentitiesOperation()
 `}
@@ -146,7 +146,7 @@ var latestIdentityValue = identities["companies|"]; // => value will be 1
 
 ## Example
 
-<TabItem value="something-something" label="sample_2">
+<TabItem value="sample_2" label="sample_2">
 <CodeBlock language="java">
 {`Map<String, Long> identities
     = store.maintenance().send(new GetIdentitiesOperation());
@@ -167,24 +167,24 @@ var latestIdentityValue = identities["companies|"]; // => value will be 1
 * The identity document ID is unique across the entire cluster within the database scope.  
   It is composed of the provided collection name and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view) view.
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 
 * Learn more about identities in:
 
-    * [Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
-    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities)
+    * [Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+    * [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
 
 * In this page:
 
-  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities#get-identities-operation)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities#syntax)
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
 
 </Admonition>
 ## Get identities operation 
 
-<TabItem value="something-something" label="get_identities">
+<TabItem value="get_identities" label="get_identities">
 <CodeBlock language="python">
 {`# Create a document with an identity ID:
 # ======================================
@@ -218,7 +218,7 @@ latest_identity_value = identities["companies|"]  # => value will be 1
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class GetIdentitiesOperation(MaintenanceOperation[Dict[str, int]]): ...
 `}
@@ -240,27 +240,27 @@ latest_identity_value = identities["companies|"]  # => value will be 1
 * The identity document ID is unique across the entire cluster within the database scope.  
   It is composed of the provided collection name and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view) view.
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 
 <Admonition type="info" title="Info">
 Learn more about identities in:
 
-* [Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
-* [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers#identities)
+* [Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
+* [Working with document identifiers](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx#identities)
 
 </Admonition>
 
 * In this page:
 
-  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities#get-identities-operation)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities#syntax)
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
 
 </Admonition>
 ## Get identities operation 
 
-<TabItem value="something-something" label="get_identities">
+<TabItem value="get_identities" label="get_identities">
 <CodeBlock language="php">
 {`// Create a document with an identity ID:
 // ======================================
@@ -302,7 +302,7 @@ $latestIdentityValue = $identities["companies|"]; // => value will be 1
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`GetIdentitiesOperation();
 `}
@@ -324,25 +324,25 @@ $latestIdentityValue = $identities["companies|"]; // => value will be 1
 * The identity document ID is unique across the entire cluster within the database scope.  
   It is composed of the provided collection name and an integer value that is continuously incremented.
 
-* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view) view.
+* Identity values can also be managed from the Studio [identities](../../../../studio/database/documents/identities-view.mdx) view.
 
 * Use `GetIdentitiesOperation` to get the dictionary that maps collection names to their corresponding latest identity values.
 
 <Admonition type="info" title="Info">
 Learn more about identities in:
-[Document identifier generation](../../../../server/kb/document-identifier-generation#strategy--3)
+[Document identifier generation](../../../../server/kb/document-identifier-generation.mdx#strategy--3)
 </Admonition>
 
 * In this page:
 
-  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities#get-identities-operation)
-  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities#syntax)
+  * [Get identities operation](../../../../client-api/operations/maintenance/identities/get-identities.mdx#get-identities-operation)
+  * [Syntax](../../../../client-api/operations/maintenance/identities/get-identities.mdx#syntax)
 
 </Admonition>
 ## Get identities operation 
 
-<TabItem value="something-something" label="get_identities">
-<CodeBlock language="nodejs">
+<TabItem value="get_identities" label="get_identities">
+<CodeBlock language="js">
 {`// Create a document with an identity ID:
 // ======================================
 
@@ -379,8 +379,8 @@ const latestIdentityValue = identities["companies|"]; // => value will be 1
 
 ## Syntax 
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const getIdentitiesOp = new GetIdentitiesOperation();
 `}
 </CodeBlock>

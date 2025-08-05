@@ -24,9 +24,9 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * There are situations where new fields are added to some documents in a collection over time.  
 
 * To find the documents that are missing the newly added fields you can either:  
-    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-(dynamic-query))  
-    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
-    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-run-an-rql-query)  
+    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -34,11 +34,11 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `Not` and `WhereExists` extension methods, accessible from the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API, 
+use the `Not` and `WhereExists` extension methods, accessible from the [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API, 
 as shown below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicquery).  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
 
 **Example**
 
@@ -97,7 +97,7 @@ The index definition must contain the following document fields indexed:
 
 **Example**
 
-<TabItem value="something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="csharp">
 {`// Define a static index on the 'Orders' collection
 // ================================================
@@ -183,10 +183,10 @@ where true and not exists("Freight")
 
 ## Use Studio to Run an RQL Query
 
-* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view).  
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
-<TabItem value="something" label="sql">
+* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    
 where exists("Company") and not exists("Freight")
@@ -226,9 +226,9 @@ where exists("Company") and not exists("Freight")
 * There are situations where new fields are added to some documents in a collection over time.  
 
 * To find the documents that are missing the newly added fields you can either:  
-    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-(dynamic-query))  
-    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
-    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-run-an-rql-query)  
+    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -236,11 +236,11 @@ where exists("Company") and not exists("Freight")
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not_` and `where_exists` methods, accessible from the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) 
+use the `not_` and `where_exists` methods, accessible from the [document_query](../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
 API, as demonstrated below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicquery).  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
 
 **Example**
 
@@ -283,7 +283,7 @@ The index definition must contain the following document fields indexed:
 
 **Example**
 
-<TabItem value="something-something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="python">
 {`# Define a static index on the 'Orders' collection
 # ================================================
@@ -338,10 +338,10 @@ where true and not exists("Freight")
 
 ## Use Studio to Run an RQL Query
 
-* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view).  
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
-<TabItem value="something" label="sql">
+* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    
 where exists("Company") and not exists("Freight")
@@ -380,9 +380,9 @@ where exists("Company") and not exists("Freight")
 
 * There are situations where new fields are added to some documents in a collection over time.  
 * To find documents that are missing the newly added fields you can either:  
-    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-(dynamic-query))  
-    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
-    * [Use Studio to run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-run-an-rql-query)  
+    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -390,11 +390,11 @@ where exists("Company") and not exists("Freight")
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not` and `whereExists` extension methods, accessible from the [documentQuery](../../../client-api/session/querying/document-query/what-is-document-query) API, 
+use the `not` and `whereExists` extension methods, accessible from the [documentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) API, 
 as shown below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicquery).  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
 
 **Example**
 
@@ -440,7 +440,7 @@ The index definition must contain the following document fields indexed:
 
 **Example**
 
-<TabItem value="something-something" label="the_index">
+<TabItem value="the_index" label="the_index">
 <CodeBlock language="php">
 {`// Define a static index on the 'Orders' collection
 // ================================================
@@ -526,10 +526,10 @@ where true and not exists("Freight")
 
 ## Use Studio to Run an RQL Query
 
-* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view).  
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
-<TabItem value="something" label="sql">
+* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    
 where exists("Company") and not exists("Freight")
@@ -569,9 +569,9 @@ where exists("Company") and not exists("Freight")
 * There are situations where new fields are added to some documents in a collection over time.  
 
 * To find the documents that are missing the newly added fields you can either:  
-    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-the-collection-(dynamic-query))  
-    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field#query-a-static-index)  
-    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field#use-studio-to-run-an-rql-query)  
+    * [Query the collection (dynamic query)](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-the-collection-(dynamic-query))  
+    * [Query a static index](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#query-a-static-index)  
+    * [Use Studio to Run an RQL Query](../../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx#use-studio-to-run-an-rql-query)  
 
 ----
 
@@ -579,17 +579,17 @@ where exists("Company") and not exists("Freight")
 ## Query the collection (dynamic query)
 
 To run a dynamic query over a collection and find which documents are missing a specified field,  
-use the `not` and `whereExists` extension methods, accessible from the [query](../../../client-api/session/querying/how-to-query) API, 
+use the `not` and `whereExists` extension methods, accessible from the [query](../../../client-api/session/querying/how-to-query.mdx) API, 
 as shown below.  
 
 This will either create a new auto-index or add the queried field to an existing auto-index.  
-Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query#dynamicquery).  
+Learn more about the dynamic query flow [here](../../../client-api/session/querying/how-to-query.mdx#dynamicquery).  
 
 **Example**
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const ordersWithoutFreightField = await session
      // Define a query on 'orders' collection
     .query({ collection: "orders" })
@@ -627,8 +627,8 @@ The index definition must contain the following document fields indexed:
 
 **Example**
 
-<TabItem value="something-something" label="the_index">
-<CodeBlock language="nodejs">
+<TabItem value="the_index" label="the_index">
+<CodeBlock language="js">
 {`// Define a static index on the 'orders' collection
 // ================================================
 
@@ -652,7 +652,7 @@ class Orders_ByFreight extends AbstractJavaScriptIndexCreationTask<Order> \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="DocumentQuery" label="DocumentQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the index
 // ===============
 
@@ -683,10 +683,10 @@ where true and not exists("freight")
 
 ## Use Studio to Run an RQL Query
 
-* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view).  
+* Documents can be searched by missing fields using Studio's [Query view](../../../studio/database/queries/query-view.mdx).  
 
-* Use an [RQL](../../../client-api/session/querying/what-is-rql) expression such as:
-<TabItem value="something" label="sql">
+* Use an [RQL](../../../client-api/session/querying/what-is-rql.mdx) expression such as:
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from "Orders"    
 where exists("Company") and not exists("Freight")

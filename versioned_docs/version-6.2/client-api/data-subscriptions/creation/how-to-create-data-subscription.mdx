@@ -23,9 +23,9 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 
 * A subscription task can be created in two ways:
   * **From the client API**:  
-    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation). 
+    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-creation). 
   * **From the Studio**:  
-    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.   
+    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx) to learn how to create a subscription task on the server via the Studio.   
 
 * Once created, its definition and progress will be stored on the cluster, and not in a single server.  
  
@@ -35,9 +35,9 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 * From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
 * In this page:  
-   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
-   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
-   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#responsible-node)  
 
 </Admonition>
 ## Subscription creation
@@ -50,7 +50,7 @@ However, the criteria can be a complex RQL-like expression defining JavaScript f
 
 * The following is a simple subscription definition:
  
-<TabItem value="something" label="create_whole_collection_generic1">
+<TabItem value="create_whole_collection_generic1" label="create_whole_collection_generic1">
 <CodeBlock language="csharp">
 {`// With the following subscription definition, the server will send ALL documents
 // from the 'Orders' collection to a client that connects to this subscription.
@@ -59,9 +59,9 @@ subscriptionName = store.Subscriptions.Create<Order>();
 </CodeBlock>
 </TabItem>
 
-* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples).  
+* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples.mdx).  
  
-* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription).
 
 
 
@@ -76,7 +76,7 @@ A dedicated name can be useful for use cases like dedicated, long-running batch 
 where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments 
 (as long as subscription creation is taken care of upfront).
 
-<TabItem value="something" label="create_whole_collection_generic_with_name">
+<TabItem value="create_whole_collection_generic_with_name" label="create_whole_collection_generic_with_name">
 <CodeBlock language="csharp">
 {`subscriptionName = store.Subscriptions.Create<Order>(new SubscriptionCreationOptions<Order>
 \{
@@ -104,7 +104,7 @@ but eventually, as long as the originally assigned node is online, it will be th
 Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
 Provide the tag of the node you wish to be responsible in the `MentorNode` property as follows:
 
-<TabItem value="something" label="create_whole_collection_generic_with_mentor_node">
+<TabItem value="create_whole_collection_generic_with_mentor_node" label="create_whole_collection_generic_with_mentor_node">
 <CodeBlock language="csharp">
 {`subscriptionName = store.Subscriptions.Create(new SubscriptionCreationOptions<Order>
 \{
@@ -126,9 +126,9 @@ Manually setting the node can help choose a more suitable server based on factor
 
 * A subscription task can be created in two ways:
   * **From the client API**:  
-    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+    The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-creation).
   * **From the Studio**:  
-    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+    See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx) to learn how to create a subscription task on the server via the Studio.
 
 * Once created, it's definition and progress will be stored on the cluster, and not in a single server.
 
@@ -138,9 +138,9 @@ Manually setting the node can help choose a more suitable server based on factor
 * From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
 * In this page:  
-   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
-   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
-   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#responsible-node)  
 
 </Admonition>
 ## Subscription creation
@@ -153,7 +153,7 @@ However, the criteria can be a complex RQL-like expression defining JavaScript f
 
 * The following is a simple subscription definition:  
 
-<TabItem value="something-something" label="create_whole_collection_generic1">
+<TabItem value="create_whole_collection_generic1" label="create_whole_collection_generic1">
 <CodeBlock language="java">
 {`// With the following subscription definition, the server will send ALL documents
 // from the 'Orders' collection to a client that connects to this subscription.
@@ -162,7 +162,7 @@ name = store.subscriptions().create(Order.class);
 </CodeBlock>
 </TabItem>
 
-* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples).
+* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples.mdx).
 
 
 
@@ -176,7 +176,7 @@ A dedicated name can be useful for use cases like dedicated, long-running batch 
 where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
 (as long as subscription creation is taken care of upfront).
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_name">
+<TabItem value="create_whole_collection_generic_with_name" label="create_whole_collection_generic_with_name">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
 options.setName("OrdersProcessingSubscription");
@@ -202,7 +202,7 @@ but eventually, as long as the originally assigned node is online, it will be th
 Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
 Provide the tag of the node you wish to be responsible in the `MentorNode` property as follows:
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
+<TabItem value="create_whole_collection_generic_with_mentor_node" label="create_whole_collection_generic_with_mentor_node">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions options = new SubscriptionCreationOptions();
 options.setMentorNode("D");
@@ -223,9 +223,9 @@ Manually setting the node can help choose a more suitable server based on factor
 
 * A subscription task can be created in two ways:
     * **From the client API**:  
-      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-creation).
     * **From the Studio**:  
-      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx) to learn how to create a subscription task on the server via the Studio.
 
 * Once created, its definition and progress will be stored on the cluster, and not in a single server.  
 
@@ -235,9 +235,9 @@ Manually setting the node can help choose a more suitable server based on factor
 * From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
 * In this page:  
-   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
-   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
-   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#responsible-node)  
 
 </Admonition>
 ## Subscription creation
@@ -250,7 +250,7 @@ However, the criteria can be a complex RQL-like expression defining JavaScript f
 
 * The following is a simple subscription definition:
 
-<TabItem value="something-something" label="create_whole_collection_generic1">
+<TabItem value="create_whole_collection_generic1" label="create_whole_collection_generic1">
 <CodeBlock language="python">
 {`# With the following subscription definition, the server will send ALL documents
 # from the 'Orders' collection to a client that connects to this subscription.
@@ -259,9 +259,9 @@ name = store.subscriptions.create_for_class(Order)
 </CodeBlock>
 </TabItem>
 
-* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples).
+* For more complex subscription definitions, see these [examples](../../../client-api/data-subscriptions/creation/examples.mdx).
 
-* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription).
 
 
 
@@ -275,7 +275,7 @@ A dedicated name can be useful for use cases like dedicated, long-running batch 
 where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
 (as long as subscription creation is taken care of upfront).
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_name">
+<TabItem value="create_whole_collection_generic_with_name" label="create_whole_collection_generic_with_name">
 <CodeBlock language="python">
 {`name = store.subscriptions.create_for_class(
     Order, SubscriptionCreationOptions(name="OrdersProcessingSubscription")
@@ -301,7 +301,7 @@ but eventually, as long as the originally assigned node is online, it will be th
 Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
 Provide the tag of the node you wish to be responsible in the `mentor_node` property as follows:
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
+<TabItem value="create_whole_collection_generic_with_mentor_node" label="create_whole_collection_generic_with_mentor_node">
 <CodeBlock language="python">
 {`name = store.subscriptions.create_for_class(Order, SubscriptionCreationOptions(mentor_node="D"))
 `}
@@ -320,9 +320,9 @@ Manually setting the node can help choose a more suitable server based on factor
 
 * A subscription task can be created in two ways:
     * **From the client API**:  
-      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview#subscription-creation).
+      The client can create a subscription task on the server using this [creation API](../../../client-api/data-subscriptions/creation/api-overview.mdx#subscription-creation).
     * **From the Studio**:  
-      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task) to learn how to create a subscription task on the server via the Studio.
+      See [creating subscription task](../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx) to learn how to create a subscription task on the server via the Studio.
 
 * Once created, it's definition and progress will be stored on the cluster, and not in a single server.  
 
@@ -332,9 +332,9 @@ Manually setting the node can help choose a more suitable server based on factor
 * From that point and on, clients that will connect to a server in order to consume the subscription will be redirected to the node mentioned above.  
 
 * In this page:  
-   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation)   
-   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
-   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
+   * [Subscription creation](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-creation)   
+   * [Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#subscription-name)  
+   * [Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription.mdx#responsible-node)  
 
 </Admonition>
 ## Subscription creation
@@ -347,8 +347,8 @@ However, the criteria can be a complex RQL-like expression defining JavaScript f
 
 * The following is a simple subscription definition:
 
-<TabItem value="something-something" label="create_whole_collection_generic1">
-<CodeBlock language="nodejs">
+<TabItem value="create_whole_collection_generic1" label="create_whole_collection_generic1">
+<CodeBlock language="js">
 {`// With the following subscription definition, the server will send ALL documents
 // from the 'Orders' collection to a client that connects to this subscription.
 const subscriptionName = await documentStore.subscriptions.create(\{
@@ -358,9 +358,9 @@ const subscriptionName = await documentStore.subscriptions.create(\{
 </CodeBlock>
 </TabItem>
 
-* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples).
+* For more complex subscription creation scenarios, see the these [examples](../../../client-api/data-subscriptions/creation/examples.mdx).
 
-* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples#update-existing-subscription).
+* A subscription also can be modified after it has been created, see [update existing subscription](../../../client-api/data-subscriptions/creation/examples.mdx#update-existing-subscription).
 
 
 
@@ -374,8 +374,8 @@ A dedicated name can be useful for use cases like dedicated, long-running batch 
 where it'll be more comfortable to use a human-readable name in the code and even use the same name between different environments
 (as long as subscription creation is taken care of upfront).
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_name">
-<CodeBlock language="nodejs">
+<TabItem value="create_whole_collection_generic_with_name" label="create_whole_collection_generic_with_name">
+<CodeBlock language="js">
 {`const name = await store.subscriptions.create(\{
     query: "from Orders",
     // Set a custom name for the subscription 
@@ -402,8 +402,8 @@ but eventually, as long as the originally assigned node is online, it will be th
 Nevertheless, there is an option to manually decide which node will be responsible for managing the subscription task.
 Provide the tag of the node you wish to be responsible in the `mentorNode` property as follows:
 
-<TabItem value="something-something" label="create_whole_collection_generic_with_mentor_node">
-<CodeBlock language="nodejs">
+<TabItem value="create_whole_collection_generic_with_mentor_node" label="create_whole_collection_generic_with_mentor_node">
+<CodeBlock language="js">
 {`const name = await store.subscriptions.create(\{
     query: "from Orders",
     // Set a responsible node for the subscritpion task 

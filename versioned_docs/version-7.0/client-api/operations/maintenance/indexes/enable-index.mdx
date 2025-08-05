@@ -23,14 +23,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
+* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
 
 * In this page:
-    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index)
-    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index-from-the-client-api)
-      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---single-node)
-      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---cluster-wide)
-      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index#syntax)
+    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
+    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
+      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
+      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
+      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
 
 </Admonition>
 ## How to enable an index
@@ -42,17 +42,17 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
-  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will re-enable the index 
+  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
   locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
   Modifying the index definition will also re-enable the normal operation of the index.
 
 * The above methods can also be used to enable an index that was 
-  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system), 
+  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
   after removing the `disable.marker` file.  
   
 
@@ -61,10 +61,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 #### Enable index - single node:  
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
-  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
+* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
+  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group.mdx).
 
-* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
 <Tabs groupId='languageSyntax'>
@@ -131,7 +131,7 @@ await store.Maintenance.SendAsync(enableIndexOp);
 </Tabs>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// Available overloads:
 public EnableIndexOperation(string indexName)
@@ -157,7 +157,7 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
 
 ## Syntax
 
-<TabItem value="something-something" label="enable_1">
+<TabItem value="enable_1" label="enable_1">
 <CodeBlock language="java">
 {`public EnableIndexOperation(String indexName)
 `}
@@ -170,7 +170,7 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
 
 ## Example
 
-<TabItem value="something-something" label="enable_2">
+<TabItem value="enable_2" label="enable_2">
 <CodeBlock language="java">
 {`store.maintenance().send(new EnableIndexOperation("Orders/Totals"));
 `}
@@ -185,14 +185,14 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
+* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
 
 * In this page:
-    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index)
-    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index-from-the-client-api)
-      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---single-node)
-      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---cluster-wide)
-      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index#syntax)
+    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
+    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
+      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
+      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
+      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
 
 </Admonition>
 ## How to enable an index
@@ -204,17 +204,17 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
     * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
-  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will re-enable the index 
+  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
   locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
   Modifying the index definition will also re-enable the normal operation of the index.
 
 * The above methods can also be used to enable an index that was 
-  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system), 
+  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
   after removing the `disable.marker` file.  
   
 
@@ -223,13 +223,13 @@ The **EnableIndexOperation** is used to turn on the indexing for a given index.
 
 #### Enable index - single node:  
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
-  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
+* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
+  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group.mdx).
 
-* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
-<TabItem value="something-something" label="enable_1">
+<TabItem value="enable_1" label="enable_1">
 <CodeBlock language="python">
 {`# Define the enable index operation
 # Use this args set to enable on a single node
@@ -245,7 +245,7 @@ store.maintenance.send(enable_index_op)
 </TabItem>
 #### Enable index - cluster wide:  
 
-<TabItem value="something-something" label="enable_2">
+<TabItem value="enable_2" label="enable_2">
 <CodeBlock language="python">
 {`# Define the enable index operation
 # Pass 'True' to enable the index on all nodes in the database-group
@@ -261,7 +261,7 @@ store.maintenance.send(enable_index_op)
 </TabItem>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class EnableIndexOperation(VoidMaintenanceOperation):
     def __init__(self, index_name: str, cluster_wide: bool = False): ...
@@ -284,14 +284,14 @@ store.maintenance.send(enable_index_op)
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
+* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
 
 * In this page:
-    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index)
-    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index-from-the-client-api)
-      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---single-node)
-      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---cluster-wide)
-      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index#syntax)
+    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
+    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
+      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
+      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
+      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
 
 </Admonition>
 ## How to enable an index
@@ -303,17 +303,17 @@ store.maintenance.send(enable_index_op)
     * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
-  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will re-enable the index 
+  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
   locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
   Modifying the index definition will also re-enable the normal operation of the index.
 
 * The above methods can also be used to enable an index that was 
-  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system), 
+  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
   after removing the `disable.marker` file.  
   
 
@@ -322,13 +322,13 @@ store.maintenance.send(enable_index_op)
 
 #### Enable index - single node:  
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
-  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
+* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
+  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group.mdx).
 
-* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
-<TabItem value="something-something" label="enable_1">
+<TabItem value="enable_1" label="enable_1">
 <CodeBlock language="php">
 {`// Define the enable index operation
 // Use this overload to enable on a single node
@@ -344,7 +344,7 @@ $store->maintenance()->send($enableIndexOp);
 </TabItem>
 #### Enable index - cluster wide:  
 
-<TabItem value="something-something" label="enable_2">
+<TabItem value="enable_2" label="enable_2">
 <CodeBlock language="php">
 {`// Define the enable index operation
 // Pass 'true' to enable the index on all nodes in the database-group
@@ -360,7 +360,7 @@ $store->maintenance()->send($enableIndexOp);
 </TabItem>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`// Available overloads:
 EnableIndexOperation(?string $indexName, bool clusterWide = false)
@@ -383,14 +383,14 @@ EnableIndexOperation(?string $indexName, bool clusterWide = false)
 
 * When an index is enabled, indexing will take place, and new data will be indexed.
 
-* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index).
+* To learn how to disable an index, see [disable index](../../../../client-api/operations/maintenance/indexes/disable-index.mdx).
 
 * In this page:
-    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index#how-to-enable-an-index)
-    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index-from-the-client-api)
-      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---single-node)
-      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index#enable-index---cluster-wide)
-      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index#syntax)
+    * [How to enable an index](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#how-to-enable-an-index)
+    * [Enable index from the Client API](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index-from-the-client-api)
+      * [Enable index - single node](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---single-node)
+      * [Enable index - cluster wide](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#enable-index---cluster-wide)
+      * [Syntax](../../../../client-api/operations/maintenance/indexes/enable-index.mdx#syntax)
 
 </Admonition>
 ## How to enable an index
@@ -402,17 +402,17 @@ EnableIndexOperation(?string $indexName, bool clusterWide = false)
     * Cluster wide, on all database-group nodes.  
 
 * **From Studio**:  
-  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions).
+  To enable the index from Studio go to the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions).
 
 * **Reset index**:  
-  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a disabled index will re-enable the index 
+  [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a disabled index will re-enable the index 
   locally, on the node that the reset operation was performed on.
 
 * **Modify index definition**:  
   Modifying the index definition will also re-enable the normal operation of the index.
 
 * The above methods can also be used to enable an index that was 
-  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index#disable-index-manually-via-the-file-system), 
+  [disabled via the file system](../../../../client-api/operations/maintenance/indexes/disable-index.mdx#disable-index-manually-via-the-file-system), 
   after removing the `disable.marker` file.  
   
 
@@ -421,14 +421,14 @@ EnableIndexOperation(?string $indexName, bool clusterWide = false)
 
 #### Enable index - single node:  
 
-* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only.  
-  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group).
+* With this option, the index will be enabled on the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only.  
+  The preferred node is simply the first node in the [database group topology](../../../../studio/database/settings/manage-database-group.mdx).
 
-* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions),  
+* Note: When enabling an index from [Studio](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions),  
   the index will be enabled on the local node the browser is opened on, even if it is Not the preferred node.
 
-<TabItem value="something-something" label="enable_1">
-<CodeBlock language="nodejs">
+<TabItem value="enable_1" label="enable_1">
+<CodeBlock language="js">
 {`// Define the enable index operation
 // Use this overload to enable on a single node
 const enableIndexOp = new EnableIndexOperation("Orders/Totals");
@@ -443,8 +443,8 @@ await documentStore.maintenance.send(enableIndexOp);
 </TabItem>
 #### Enable index - cluster wide:  
 
-<TabItem value="something-something" label="enable_2">
-<CodeBlock language="nodejs">
+<TabItem value="enable_2" label="enable_2">
+<CodeBlock language="js">
 {`// Define the enable index operation
 // Pass 'true' to enable the index on all nodes in the database-group
 const enableIndexOp = new EnableIndexOperation("Orders/Totals", true);
@@ -459,8 +459,8 @@ await documentStore.maintenance.send(enableIndexOp);
 </TabItem>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const enableIndexOp = new EnableIndexOperation(indexName, clusterWide = false);
 `}
 </CodeBlock>

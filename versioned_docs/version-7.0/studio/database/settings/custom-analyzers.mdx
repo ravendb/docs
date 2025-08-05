@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * Analyzers are used by indexes to divide (tokenize) the indexed document fields into searchable 
-tokens to allow a full-text search. Learn more at [Creating Custom Analyzers](../../../indexes/using-analyzers#creating-custom-analyzers).  
+tokens to allow a full-text search. Learn more at [Creating Custom Analyzers](../../../indexes/using-analyzers.mdx#creating-custom-analyzers).  
 
 * Custom analyzers can be defined at either the **database** level, where they can only be used by 
 indexes of that database, or at the **server-wide** level, where they can be used by all databases 
@@ -27,13 +27,13 @@ custom analyzer will be the one used by the indexes of that database.
 
 * Once defined, the custom analyzer is added to the analyzer list, along with the Lucene analyzers 
 that come with RavenDB out of the box. It can then be selected when configuring the 
-[index field options](../../../studio/database/indexes/create-map-index#index-field-options).  
+[index field options](../../../studio/database/indexes/create-map-index.mdx#index-field-options).  
 
 * These views allow you to write your own custom analyzers:  
-  * [Database Custom Analyzer View](../../../studio/database/settings/custom-analyzers#database-custom-analyzer-view)  
-  * [Server-Wide Custom Analyzer View](../../../studio/database/settings/custom-analyzers#server-wide-custom-analyzer-view)  
-  * [Edit Custom Analyzer View](../../../studio/database/settings/custom-analyzers#edit-custom-analyzer-view)  
-  * [Change the Default Analyzers](../../../studio/database/settings/custom-analyzers#change-the-default-analyzers)
+  * [Database Custom Analyzer View](../../../studio/database/settings/custom-analyzers.mdx#database-custom-analyzer-view)  
+  * [Server-Wide Custom Analyzer View](../../../studio/database/settings/custom-analyzers.mdx#server-wide-custom-analyzer-view)  
+  * [Edit Custom Analyzer View](../../../studio/database/settings/custom-analyzers.mdx#edit-custom-analyzer-view)  
+  * [Change the Default Analyzers](../../../studio/database/settings/custom-analyzers.mdx#change-the-default-analyzers)
 
 </Admonition>
 ## Database Custom Analyzer View
@@ -41,9 +41,9 @@ that come with RavenDB out of the box. It can then be selected when configuring 
 ![Figure 1. Database Custom Analyzer View](./assets/custom-analyzer-1.png)
 
 <Admonition type="warning" title="Warning">
-1. Create a new database custom analyzer. Takes you to the analyzer editing view, see [below](../../../studio/database/settings/custom-analyzers#edit-custom-analyzer-view).  
+1. Create a new database custom analyzer. Takes you to the analyzer editing view, see [below](../../../studio/database/settings/custom-analyzers.mdx#edit-custom-analyzer-view).  
 2. Edit an existing analyzer.  
-3. Go to the Server-Wide Custom Analyzer View, see [below](../../../studio/database/settings/custom-analyzers#server-wide-custom-analyzer-view).  
+3. Go to the Server-Wide Custom Analyzer View, see [below](../../../studio/database/settings/custom-analyzers.mdx#server-wide-custom-analyzer-view).  
 </Admonition>
 
 <Admonition type="info" title="Info">
@@ -59,7 +59,7 @@ The database custom analyzer will be the one used by indexes of this database.
 
 <Admonition type="warning" title="Warning">
 1. Create a new server-wide custom analyzer. Takes you to the analyzer editing view, see 
-[below](../../../studio/database/settings/custom-analyzers#edit-custom-analyzer-view).  
+[below](../../../studio/database/settings/custom-analyzers.mdx#edit-custom-analyzer-view).  
 2. Edit an existing analyzer.  
 </Admonition>
 
@@ -73,7 +73,7 @@ The database custom analyzer will be the one used by indexes of this database.
 1. The name of your custom analyzer. This _must_ be the same as the class name of your analyzer as it appears 
 in your code. This cannot be changed afterwards.  
 2. The code of your analyzer. Must be compilable and include all necessary `using` statements. Learn more at 
-[Indexes: Analyzers](../../../indexes/using-analyzers#creating-custom-analyzers).  
+[Indexes: Analyzers](../../../indexes/using-analyzers.mdx#creating-custom-analyzers).  
 3. Load an existing analyzer `*.cs`.  
 4. Save your analyzer.  
 </Admonition>
@@ -88,7 +88,7 @@ RavenDB has three default analyzers that it uses to index text when no other ana
 * **Default Exact Analyzer** - `KeywordAnalyzer`  
 * **Default Search Analyzer** - `StandardAnalyzer`  
 
-Read more [here](../../../indexes/using-analyzers#ravendb).
+Read more [here](../../../indexes/using-analyzers.mdx#ravendb).
 
 ![Figure 4. Database Settings View](./assets/custom-analyzer-4.png)
 

@@ -21,26 +21,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
   using BI (Business Intelligence) tools.  
 
 * Data can be easily transferred from a RavenDB database to a Snowflake warehouse via user-defined Snowflake 
-  [ETL](../../../server/ongoing-tasks/etl/basics) tasks that continuously monitor the origin RavenDB database, 
+  [ETL](../../../server/ongoing-tasks/etl/basics.mdx) tasks that continuously monitor the origin RavenDB database, 
   detect data items as they are added or modified, and update the warehouse on the fly.  
 
 * Snowflake ETL is enabled with a RavenDB [Enterprise License](https://ravendb.net/buy).  
 
 * In this page:  
-  * [Creating a Task](../../../server/ongoing-tasks/etl/snowflake#creating-a-task)  
-  * [Snowflake warehouse setup](../../../server/ongoing-tasks/etl/snowflake#snowflake-warehouse-setup)  
-  * [Snowflake Tables](../../../server/ongoing-tasks/etl/snowflake#snowflake-tables)  
-     * [Performance improvement suggestions](../../../server/ongoing-tasks/etl/snowflake#performance-improvement-suggestions)  
-  * [Transformation Scripts](../../../server/ongoing-tasks/etl/snowflake#transformation-scripts)  
-     * [`loadTo` Method](../../../server/ongoing-tasks/etl/snowflake#method)  
-     * [Alternative Syntax](../../../server/ongoing-tasks/etl/snowflake#alternative-syntax)  
-     * [Filtering](../../../server/ongoing-tasks/etl/snowflake#filtering)  
-     * [Loading Other Documents](../../../server/ongoing-tasks/etl/snowflake#loading-other-documents)  
-     * [Accessing Metadata](../../../server/ongoing-tasks/etl/snowflake#accessing-metadata)  
-     * [Loading to Multiple Tables](../../../server/ongoing-tasks/etl/snowflake#loading-to-multiple-tables)  
-     * [Document Extensions](../../../server/ongoing-tasks/etl/snowflake#document-extensions)  
-  * [Transaction Processing](../../../server/ongoing-tasks/etl/snowflake#transaction-processing)  
-  * [Advanced Options](../../../server/ongoing-tasks/etl/snowflake#advanced-options)  
+  * [Creating a Task](../../../server/ongoing-tasks/etl/snowflake.mdx#creating-a-task)  
+  * [Snowflake warehouse setup](../../../server/ongoing-tasks/etl/snowflake.mdx#snowflake-warehouse-setup)  
+  * [Snowflake Tables](../../../server/ongoing-tasks/etl/snowflake.mdx#snowflake-tables)  
+     * [Performance improvement suggestions](../../../server/ongoing-tasks/etl/snowflake.mdx#performance-improvement-suggestions)  
+  * [Transformation Scripts](../../../server/ongoing-tasks/etl/snowflake.mdx#transformation-scripts)  
+     * [`loadTo` Method](../../../server/ongoing-tasks/etl/snowflake.mdx#method)  
+     * [Alternative Syntax](../../../server/ongoing-tasks/etl/snowflake.mdx#alternative-syntax)  
+     * [Filtering](../../../server/ongoing-tasks/etl/snowflake.mdx#filtering)  
+     * [Loading Other Documents](../../../server/ongoing-tasks/etl/snowflake.mdx#loading-other-documents)  
+     * [Accessing Metadata](../../../server/ongoing-tasks/etl/snowflake.mdx#accessing-metadata)  
+     * [Loading to Multiple Tables](../../../server/ongoing-tasks/etl/snowflake.mdx#loading-to-multiple-tables)  
+     * [Document Extensions](../../../server/ongoing-tasks/etl/snowflake.mdx#document-extensions)  
+  * [Transaction Processing](../../../server/ongoing-tasks/etl/snowflake.mdx#transaction-processing)  
+  * [Advanced Options](../../../server/ongoing-tasks/etl/snowflake.mdx#advanced-options)  
 
 </Admonition>
 ## Creating a Task
@@ -49,16 +49,16 @@ A Snowflake ETL task can be created using **Code** or via **Studio**.
 
 * To create the task using **Code:**
    * Define a [Snowflake Connection String](https://github.com/snowflakedb/snowflake-connector-net/blob/master/doc/Connecting.md) 
-     and register it using the [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string#putconnectionstringoperation) 
+     and register it using the [PutConnectionStringOperation](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#putconnectionstringoperation) 
      operation.  
-     Find an example [Here](../../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-snowflake-connection-string).
+     Find an example [Here](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-snowflake-connection-string).
    * Define an **ETL Task**, associate it with your connection string, and run it using the 
-     [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl#add-etl-operation) operation.  
-     Find an example [Here](../../../client-api/operations/maintenance/etl/add-etl#add-snowflake-etl-task).  
+     [AddEtlOperation](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-etl-operation) operation.  
+     Find an example [Here](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-snowflake-etl-task).  
 
 * To create the task using **Studio**:
   <Admonition type="info" title="Info">
-   Find [Here](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task) 
+   Find [Here](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx) 
    a **detailed look** at the creation of a Snowflake ETL task using Studio.  
   </Admonition>
   In short:
@@ -101,9 +101,9 @@ The column does **not** have to be a table's primary key.
   to the relational database. If your system uses _append-only_, you can boost the 
   ETL process performance by setting Insert Only Mode to insert the data directly 
   without running a set of DELETE statements first.  
-    * Using code (take a look [here](../../../client-api/operations/maintenance/etl/add-etl#add-snowflake-etl-task)
+    * Using code (take a look [here](../../../client-api/operations/maintenance/etl/add-etl.mdx#add-snowflake-etl-task)
       to see the snowflake-table definition in its context):  
-<TabItem value="something" label="snowflake_insert-only">
+<TabItem value="snowflake_insert-only" label="snowflake_insert-only">
 <CodeBlock language="csharp">
 {`new SnowflakeEtlTable 
 \{
@@ -116,7 +116,7 @@ The column does **not** have to be a table's primary key.
 `}
 </CodeBlock>
 </TabItem>
-    * Using Studio: see [Define a Snowflake ETL Task](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task#define-a-snowflake-etl-task).  
+    * Using Studio: see [Define a Snowflake ETL Task](../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx#define-a-snowflake-etl-task).  
 
 * **SQL tables indexes**:  
   To improve performance, you can define SQL tables indexes at least for the column used 
@@ -139,7 +139,7 @@ To load data to the destination table, call the `loadTo<TableName>()` method and
 The name of the table that the document is inserted to is indicated as a part of the `loadTo` method name.  
 E.g., to write data into the database `OrderLines` table, use the following call in the script:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`loadToOrderLines(\{ ... \});
 `}
@@ -148,7 +148,7 @@ E.g., to write data into the database `OrderLines` table, use the following call
 
 You must pass the method a JavaScript object, e.g. -  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`loadToOrderLines(\{
         OrderId: id(this),
@@ -181,7 +181,7 @@ E.g., the following two calls to `loadTo` are equivalent.
 To filter documents out or include them in the transfer, use a logic of your choosing while calling `loadTp`.  
 E.g.,  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`if (this.ShipTo.Country === 'USA') \{
     // load only orders shipped to USA
@@ -194,7 +194,7 @@ E.g.,
 
 Use the `load` method to load a document with a specified ID during script execution.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var company = load(this.Company);
 `}
@@ -204,7 +204,7 @@ Use the `load` method to load a document with a specified ID during script execu
 
 Access metadata as follows:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var value = this['@metadata']['custom-metadata-key'];
 `}
@@ -217,7 +217,7 @@ The following script demonstrates this by looping through the `Lines` array of a
 using consecutive `loadTo` calls to store each line's properties in the `OrderLines` database table.  
 The process is concluded with a final `loadTo` call, storing the lines' total cost in the `Orders` table.  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var orderData = \{
     Id: id(this),
@@ -243,14 +243,14 @@ loadToOrders(orderData);
 </TabItem>
 ### Document Extensions
 
-[Counters](../../../document-extensions/counters/overview), [Time series](../../../document-extensions/timeseries/overview), 
-and [Revisions](../../../document-extensions/revisions/overview) are not supported by Snowflake ETL.  
+[Counters](../../../document-extensions/counters/overview.mdx), [Time series](../../../document-extensions/timeseries/overview.mdx), 
+and [Revisions](../../../document-extensions/revisions/overview.mdx) are not supported by Snowflake ETL.  
 
 #### Loading Attachments
 
 To store binary data that is kept as RavenDB attachments, use the `loadAttachment()` method.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`CREATE TABLE [dbo].[Attachments]
 (
@@ -265,7 +265,7 @@ To store binary data that is kept as RavenDB attachments, use the `loadAttachmen
 
 then you can define the script to load document's attachments:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var attachments = this['@metadata']['@attachments'];
 
@@ -311,7 +311,7 @@ You can set the number of seconds after which an SQL command will timeout.
 Default: `null` (use provider default)  
 
 * **Set using Code**:  
-<TabItem value="something" label="snowflake_command-timeout">
+<TabItem value="snowflake_command-timeout" label="snowflake_command-timeout">
 <CodeBlock language="csharp">
 {`var snowflakeEtlConfig = new SnowflakeEtlConfiguration
 \{

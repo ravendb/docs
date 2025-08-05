@@ -27,9 +27,9 @@ export const supportedLanguages = ["csharp"];
 
 * **Note**:  
   Just scheduling a document for archival does Not archive it at the specified time.  
-  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../data-archival/enable-data-archiving).  
+  Actual archiving is performed only by a background task that runs when the archival feature is [enabled](../data-archival/enable-data-archiving.mdx).  
   This task periodically scans the database for documents scheduled for archival.  
-  The scan frequency is configurable when [enabling ](../data-archival/enable-data-archiving) the archival feature (default: 60 seconds).
+  The scan frequency is configurable when [enabling ](../data-archival/enable-data-archiving.mdx) the archival feature (default: 60 seconds).
  
 * The archiving task will archive any document whose `@archive-at` time has passed at the time of the scan.  
   The `@archive-at` metadata property will then be replaced with `@archived: true`.
@@ -37,10 +37,10 @@ export const supportedLanguages = ["csharp"];
 * You can schedule documents for archival even if the archiving feature is not yet enabled.
   These documents will be archived once the feature is enabled and the task runs - provided the scheduled time has already passed.
 * In this article:  
-  * [Schedule a SINGLE document for archiving - from the Client API](../data-archival/schedule-document-archiving#schedule-a-single-document-for-archiving---from-the-client-api)
-  * [Schedule a SINGLE document for archiving - from the Studio](../data-archival/schedule-document-archiving#schedule-a-single-document-for-archiving---from-the-studio)
-  * [Schedule MULTIPLE documents for archiving - from the Client API](../data-archival/schedule-document-archiving#schedule-multiple-documents-for-archiving---from-the-client-api)
-  * [Schedule MULTIPLE documents for archiving - from the Studio](../data-archival/schedule-document-archiving#schedule-multiple-documents-for-archiving---from-the-studio)
+  * [Schedule a SINGLE document for archiving - from the Client API](../data-archival/schedule-document-archiving.mdx#schedule-a-single-document-for-archiving---from-the-client-api)
+  * [Schedule a SINGLE document for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-a-single-document-for-archiving---from-the-studio)
+  * [Schedule MULTIPLE documents for archiving - from the Client API](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api)
+  * [Schedule MULTIPLE documents for archiving - from the Studio](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-studio)
 
 </Admonition>
 ## Schedule a SINGLE document for archiving - from the Client API
@@ -91,7 +91,7 @@ add the `@archive-at` property directly to the document metadata as follows:
 </TabItem>
 </Tabs>
 
-Learn more about modifying the metadata of a document in [Modifying Document Metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+Learn more about modifying the metadata of a document in [Modifying Document Metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 
 
@@ -250,7 +250,7 @@ await store.Operations.SendAsync(patchByQueryOp);
 </Tabs>
 **Syntax:**
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`archived.archiveAt(doc, utcDateTimeString)
 `}
@@ -262,7 +262,7 @@ await store.Operations.SendAsync(patchByQueryOp);
 | **doc**               | `object`    | The document to schedule for archiving.                                              |
 | **utcDateTimeString** | `string`    | The UTC timestamp (as a string) that specifies when the document should be archived. |
 
-To learn more about the `PatchByQueryOperation`, see [Set-based patch operations](../client-api/operations/patching/set-based).
+To learn more about the `PatchByQueryOperation`, see [Set-based patch operations](../client-api/operations/patching/set-based.mdx).
 
 
 
@@ -275,7 +275,7 @@ To learn more about the `PatchByQueryOperation`, see [Set-based patch operations
 **Example**:
 
 The following patch script, used directly in the Studio,  
-performs the same operation as the [Client API example](../data-archival/schedule-document-archiving#schedule-multiple-documents-for-archiving---from-the-client-api) shown above.
+performs the same operation as the [Client API example](../data-archival/schedule-document-archiving.mdx#schedule-multiple-documents-for-archiving---from-the-client-api) shown above.
 
 ![Schedule multiple documents for archiving](./assets/schedule-multiple-documents-for-archiving.png)
 
@@ -283,7 +283,7 @@ performs the same operation as the [Client API example](../data-archival/schedul
 2. Enter the patch script.
 3. Click to execute the patch.
 4. You can test the patch on a sample document before executing the whole operation.  
-   Learn more in [Test patch](../studio/database/documents/patch-view#test-patch).
+   Learn more in [Test patch](../studio/database/documents/patch-view.mdx#test-patch).
 
 
 

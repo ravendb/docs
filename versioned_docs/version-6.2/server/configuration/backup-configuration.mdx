@@ -17,23 +17,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Configuration options for backups (both on premise and RavenDB Cloud).  
 
-* Another relevant server configuration option can be found [here](../../server/configuration/server-configuration#server.cpucredits.exhaustionbackupdelayinmin).
+* Another relevant server configuration option can be found [here](../../server/configuration/server-configuration.mdx#server.cpucredits.exhaustionbackupdelayinmin).
 
 * In this page:  
-    * [Backup.TempPath](../../server/configuration/backup-configuration#backup.temppath)  
-    * [Backup.LocalRootPath](../../server/configuration/backup-configuration#backup.localrootpath)  
-    * [Backup.AllowedDestinations](../../server/configuration/backup-configuration#backup.alloweddestinations)  
-    * [Backup.AllowedAwsRegions](../../server/configuration/backup-configuration#backup.allowedawsregions)  
-    * [Backup.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration#backup.maxnumberofconcurrentbackups)  
-    * [Backup.ConcurrentBackupsDelayInSec](../../server/configuration/backup-configuration#backup.concurrentbackupsdelayinsec)  
-    * [Backup.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration#backup.lowmemorybackupdelayinmin)  
+    * [Backup.TempPath](../../server/configuration/backup-configuration.mdx#backup.temppath)  
+    * [Backup.LocalRootPath](../../server/configuration/backup-configuration.mdx#backup.localrootpath)  
+    * [Backup.AllowedDestinations](../../server/configuration/backup-configuration.mdx#backup.alloweddestinations)  
+    * [Backup.AllowedAwsRegions](../../server/configuration/backup-configuration.mdx#backup.allowedawsregions)  
+    * [Backup.MaxNumberOfConcurrentBackups](../../server/configuration/backup-configuration.mdx#backup.maxnumberofconcurrentbackups)  
+    * [Backup.ConcurrentBackupsDelayInSec](../../server/configuration/backup-configuration.mdx#backup.concurrentbackupsdelayinsec)  
+    * [Backup.LowMemoryBackupDelayInMin](../../server/configuration/backup-configuration.mdx#backup.lowmemorybackupdelayinmin)  
 
 </Admonition>
 ## Backup.TempPath
 
 Use this setting to specify a different path to the temporary backup files.  
-By default, backup temporary files are written under the Database directory or under [Storage.TempPath](../../server/configuration/storage-configuration) if defined.  
-Learn more about RavenDB directory structure [here](../../server/storage/directory-structure).
+By default, backup temporary files are written under the Database directory or under [Storage.TempPath](../../server/configuration/storage-configuration.mdx) if defined.  
+Learn more about RavenDB directory structure [here](../../server/storage/directory-structure.mdx).
 
 - **Type**: `string`
 - **Default**: `null`

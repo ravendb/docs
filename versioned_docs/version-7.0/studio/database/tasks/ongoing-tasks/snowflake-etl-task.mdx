@@ -15,18 +15,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Studio: Snowflake ETL Task
 <Admonition type="note" title="Note">
 
-* A Snowflake task is an [ETL](../../../../server/ongoing-tasks/etl/basics) process that -  
+* A Snowflake task is an [ETL](../../../../server/ongoing-tasks/etl/basics.mdx) process that -  
   **Extracts** selected data from RavenDB documents,  
   **Transforms** the data to SQL format,  
   and **Loads** the transformed data to a Showflake warehouse.  
 
 * This page explains how to create a Snowflake ETL task using Studio.  
-  Learn more [here](../../../../server/ongoing-tasks/etl/snowflake).  
+  Learn more [here](../../../../server/ongoing-tasks/etl/snowflake.mdx).  
 
 * In this page:  
-  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task#add-a-database-task)  
-  * [Define a Snowflake ETL Task](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task#define-a-snowflake-etl-task)  
-  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task#add-or-edit-transformation-script)  
+  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx#add-a-database-task)  
+  * [Define a Snowflake ETL Task](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx#define-a-snowflake-etl-task)  
+  * [Add or Edit Transformation Script](../../../../studio/database/tasks/ongoing-tasks/snowflake-etl-task.mdx#add-or-edit-transformation-script)  
 
 </Admonition>
 ## Add a Database Task
@@ -59,8 +59,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
    Disabled - No documents are transformed and sent.  
 
 3. **Set responsible node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be responsible for this task.  
-  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) to be responsible for this task.  
+  * If no node is selected, the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 4. **Connection String**  
    The connection string defines the location of the destination warehouse.  

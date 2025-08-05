@@ -22,15 +22,15 @@ export const supportedLanguages = ["csharp"];
 <Admonition type="note" title="Note">
 
 * This article explains how to define a connection string to the [OpenAI Service](https://platform.openai.com/docs/guides/embeddings),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with the OpenAI's API.
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx) with the OpenAI's API.
 
 * Use this connection string format to connect RavenDB to **any OpenAI-compatible provider** offering a similar API for embedding generation.
   As long as the provider follows the OpenAI API format, RavenDB will be able to generate and query vector embeddings using the connection string defined here.
 
 * In this article:
-  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/open-ai#define-the-connection-string---from-the-studio)
-  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/open-ai#define-the-connection-string---from-the-client-api)
-  * [Syntax](../../ai-integration/connection-strings/open-ai#syntax) 
+  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/open-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Syntax](../../ai-integration/connection-strings/open-ai.mdx#syntax) 
     
 </Admonition>
 ## Define the connection string - from the Studio
@@ -41,7 +41,7 @@ export const supportedLanguages = ["csharp"];
    Enter a name for this connection string.
 
 2. **Identifier** (optional)  
-   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview#the-connection-string-identifier) section.
+   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
 
 3. **Connector**  
    Select **OpenAI** from the dropdown menu.
@@ -79,7 +79,7 @@ export const supportedLanguages = ["csharp"];
     * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
       Requests to generate such query embeddings via the AI provider are sent in batches.
     * This parameter defines the maximum number of these batches that can be processed concurrently.  
-      You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
+      You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxconcurrentbatches) configuration key.
 
 11. Click **Test Connection** to confirm the connection string is set up correctly.
 
@@ -89,7 +89,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Define the connection string - from the Client API
 
-<TabItem value="something-something" label="create_connection_string_open_ai">
+<TabItem value="create_connection_string_open_ai" label="create_connection_string_open_ai">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore())
 \{
@@ -123,7 +123,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Syntax
 
-<TabItem value="something-something" label="open_ai_settings">
+<TabItem value="open_ai_settings" label="open_ai_settings">
 <CodeBlock language="csharp">
 {`public class AiConnectionString
 \{

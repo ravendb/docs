@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 **Displaying revisions**:  
 
-* The **All Revisions** view displays all [revisions](../../../../studio/database/document-extensions/revisions/revisions) created over time for all your documents in the database.  
+* The **All Revisions** view displays all [revisions](../../../../studio/database/document-extensions/revisions/revisions.mdx) created over time for all your documents in the database.  
   This is a Studio-only feature; there is no Client API method to retrieve all revisions from the server.
   
 * You can view all existing revisions or filter them by their **Collection** or **Type**.  
@@ -27,19 +27,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **Deleting revisions**:  
 
 * From this view, you can manually delete selected revisions ("Regular Revisions" only).  
-  Other available deletion methods are summarized in [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions#all-ways-to-delete-revisions).
+  Other available deletion methods are summarized in [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#all-ways-to-delete-revisions).
 
 * Removing revisions from a secure server requires a client certificate with an
-  [Admin](../../../../server/security/authorization/security-clearance-and-permissions#section) or higher security clearance.
+  [Admin](../../../../server/security/authorization/security-clearance-and-permissions.mdx#section) or higher security clearance.
 
      <Admonition type="warning" title="Warning">
      * Exercise caution when deleting revisions, as this is a permanent action and cannot be undone.  
        Once a revision is removed, it will no longer be available and will Not be listed in this view.
      </Admonition>
 * In this page:
-  * [Opening the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions#opening-the-all-revisions-view)  
-  * [Using the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions#using-the-all-revisions-view)
-  * [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions#all-ways-to-delete-revisions)
+  * [Opening the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#opening-the-all-revisions-view)  
+  * [Using the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#using-the-all-revisions-view)
+  * [All ways to delete revisions](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#all-ways-to-delete-revisions)
   
 </Admonition>
 ## Opening the All Revisions view
@@ -77,7 +77,7 @@ To access the All Revisions view, go to **Documents &gt; All Revisions**
 3. **Revision Data**  
    The following details are listed for each revision:  
    * Id - The ID of the parent document for this revision. Click to view the content of this revision.
-   * Collection - The collection this revision belongs to. Click to navigate to the [documents view](../../../../studio/database/documents/documents-and-collections#the-documents-view) of this collection.
+   * Collection - The collection this revision belongs to. Click to navigate to the [documents view](../../../../studio/database/documents/documents-and-collections.mdx#the-documents-view) of this collection.
    * Etag - A unique identifier for this revision, used for internal tracking within the database.
    * Change Vector - Tracks the document’s version across the cluster for replication and conflict resolution.
    * Last Modified - The time this revision was created.
@@ -104,19 +104,19 @@ To access the All Revisions view, go to **Documents &gt; All Revisions**
     <Admonition type="warning" title="Warning">
     * Exercise caution when deleting revisions, as this is a **permanent** action and **cannot** be undone.
     * Removing revisions from a secure server requires a client certificate with an
-      [Admin](../../../../server/security/authorization/security-clearance-and-permissions#section) or higher security clearance.
+      [Admin](../../../../server/security/authorization/security-clearance-and-permissions.mdx#section) or higher security clearance.
     </Admonition>
 <Admonition type="note" title="Note">
 
 **Deleting "Regular Revisions"**:
 
 * "Regular Revisions" can be manually deleted from the All Revisions view.   
-  See [using the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions#using-the-all-revisions-view).
+  See [using the All Revisions view](../../../../studio/database/document-extensions/revisions/all-revisions.mdx#using-the-all-revisions-view).
 
-* These revisions can also be deleted through the [Delete revisions operation](../../../../document-extensions/revisions/client-api/operations/delete-revisions) in the Client API.
+* These revisions can also be deleted through the [Delete revisions operation](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx) in the Client API.
 
 * Individual revisions can also be deleted when viewing the revision content.  
-  See [Inspecting the revision](../../../../studio/database/document-extensions/revisions/revisions#revision-inspection).
+  See [Inspecting the revision](../../../../studio/database/document-extensions/revisions/revisions.mdx#revision-inspection).
 
 </Admonition>
 <Admonition type="note" title="Note">
@@ -124,8 +124,8 @@ To access the All Revisions view, go to **Documents &gt; All Revisions**
 **Deleting "Delete Revisions"**:
 
 * "Delete Revisions" can be removed via:
-    * The [Revisions Bin view](../../../../studio/database/document-extensions/revisions/revisions-bin) - manual deletion
-    * The [Revisions Bin Cleaner](../../../../document-extensions/revisions/revisions-bin-cleaner) task - automatic deletion at a defined frequency
+    * The [Revisions Bin view](../../../../studio/database/document-extensions/revisions/revisions-bin.mdx) - manual deletion
+    * The [Revisions Bin Cleaner](../../../../document-extensions/revisions/revisions-bin-cleaner.mdx) task - automatic deletion at a defined frequency
 
 * Removing a "Delete Revision" will delete ALL revisions associated with the deleted document.
 
@@ -136,11 +136,11 @@ To access the All Revisions view, go to **Documents &gt; All Revisions**
 
 * Revisions may be removed based on the configured revisions setting,  
   e.g., limiting the number of revisions to keep or setting an expiration based on age.  
-  See [Default revision configuration](../../../../studio/database/settings/document-revisions#define-default-configuration) and
-  [Collection-specific configuration](../../../../studio/database/settings/document-revisions#define-collection-specific-configuration).
+  See [Default revision configuration](../../../../studio/database/settings/document-revisions.mdx#define-default-configuration) and
+  [Collection-specific configuration](../../../../studio/database/settings/document-revisions.mdx#define-collection-specific-configuration).
 
 * Revisions may also be deleted as a result of enforcing the current revision configuration.  
-  Learn more in [Enforce configuration](../../../../studio/database/settings/document-revisions#enforce-configuration).
+  Learn more in [Enforce configuration](../../../../studio/database/settings/document-revisions.mdx#enforce-configuration).
 
 </Admonition>
 

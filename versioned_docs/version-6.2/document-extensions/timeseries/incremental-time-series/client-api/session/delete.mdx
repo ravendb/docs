@@ -20,10 +20,10 @@ Delete a range of incremental time series entries using `IncrementalTimeSeriesFo
 * You can delete a **single entry** or a **range of entries**.  
 
 * In this page:  
-      * [`IncrementalTimeSeriesFor.Delete`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete#incrementaltimeseriesfor.delete)  
-       * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete#syntax)  
-       * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete#usage-flow)  
-       * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete#code-samples)  
+      * [`IncrementalTimeSeriesFor.Delete`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#incrementaltimeseriesfor.delete)  
+       * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#syntax)  
+       * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#usage-flow)  
+       * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/delete.mdx#code-samples)  
 </Admonition>
 ## `IncrementalTimeSeriesFor.Delete`
 
@@ -44,7 +44,7 @@ their entries.
    * Delete a range of time series entries  
      -or-  
      if values are omitted, delete the entire series.  
-<TabItem value="something" label="incremental_delete-values-range-or-all-values">
+<TabItem value="incremental_delete-values-range-or-all-values" label="incremental_delete-values-range-or-all-values">
 <CodeBlock language="csharp">
 {`// Delete incremental time series values range from .. to,
 // or, if values are omitted, delete the whole series.
@@ -53,7 +53,7 @@ void Delete(DateTime? from = null, DateTime? to = null);
 </CodeBlock>
 </TabItem>
    * Delete a single time series entry.  
-<TabItem value="something" label="incremental_delete-value-at-timestamp">
+<TabItem value="incremental_delete-value-at-timestamp" label="incremental_delete-value-at-timestamp">
 <CodeBlock language="csharp">
 {`// Delete the entry value at the specified time stamp
 void Delete(DateTime at);
@@ -84,9 +84,9 @@ void Delete(DateTime at);
 * Create an instance of `IncrementalTimeSeriesFor` and pass it:  
     * An explicit document ID,  
       -or-  
-      An [entity tracked by the session](../../../../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) 
-      or from [session.Load](../../../../../client-api/session/loading-entities#load).  
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).  
     * The time series name.  
       The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
 * Call `IncrementalTimeSeriesFor.Delete`.  
@@ -97,7 +97,7 @@ void Delete(DateTime at);
 ## Code Samples
 
 * Delete a single entry:  
-<TabItem value="something" label="incremental_delete-single-entry">
+<TabItem value="incremental_delete-single-entry" label="incremental_delete-single-entry">
 <CodeBlock language="csharp">
 {`// Delete a single entry
 using (var session = store.OpenSession())
@@ -112,7 +112,7 @@ using (var session = store.OpenSession())
 </TabItem>
 
 * Delete a range of entries:  
-<TabItem value="something" label="incremental_delete-entries-range">
+<TabItem value="incremental_delete-entries-range" label="incremental_delete-entries-range">
 <CodeBlock language="csharp">
 {`// Delete a range of entries from the time series
 using (var session = store.OpenSession())

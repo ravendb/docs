@@ -28,20 +28,20 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * In this page:
 
-    * [Setup](../../indexes/querying/morelikethis#setup)
-    * [Basic Usage](../../indexes/querying/morelikethis#basic-usage)
-    * [Options](../../indexes/querying/morelikethis#options)
-    * [Stop Words](../../indexes/querying/morelikethis#stop-words)
-    * [Remarks](../../indexes/querying/morelikethis#remarks)
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
 
 </Admonition>
 ## Setup
 
 To be able to work, `MoreLikeThis` requires access to the index text.  
-The queried index needs, therefore, to [store](../../indexes/storing-data-in-index) 
-the fields or the [term vectors](../../indexes/using-term-vectors) for these fields.
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
 
-<TabItem value="something" label="more_like_this_4">
+<TabItem value="more_like_this_4" label="more_like_this_4">
 <CodeBlock language="csharp">
 {`public class Article
 \{
@@ -179,7 +179,7 @@ If a used analyzer does not support *stop words*, or you need to overload these 
 specify your own set of stop words.  
 A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
-<TabItem value="something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="csharp">
 {`session.Store(new MoreLikeThisStopWords
 \{
@@ -217,20 +217,20 @@ and `MinimumWordLength`, may result in filtering out related articles, especiall
 
 * In this page:
 
-    * [Setup](../../indexes/querying/morelikethis#setup)
-    * [Basic Usage](../../indexes/querying/morelikethis#basic-usage)
-    * [Options](../../indexes/querying/morelikethis#options)
-    * [Stop Words](../../indexes/querying/morelikethis#stop-words)
-    * [Remarks](../../indexes/querying/morelikethis#remarks)
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
 
 </Admonition>
 ## Setup
 
 To be able to work, `MoreLikeThis` requires access to the index text.  
-The queried index needs, therefore, to [store](../../indexes/storing-data-in-index) 
-the fields or the [term vectors](../../indexes/using-term-vectors) for these fields.
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
 
-<TabItem value="something-something" label="more_like_this_4">
+<TabItem value="more_like_this_4" label="more_like_this_4">
 <CodeBlock language="java">
 {`public class Article \{
     private String id;
@@ -362,7 +362,7 @@ If a used analyzer does not support *stop words*, or you need to overload these 
 specify your own set of stop words.  
 A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="java">
 {`MoreLikeThisStopWords stopWords = new MoreLikeThisStopWords();
 stopWords.setStopWords(Arrays.asList("I", "A", "Be"));
@@ -398,20 +398,20 @@ and `MinimumWordLength`, may result in filtering out related articles, especiall
 
 * In this page:
 
-    * [Setup](../../indexes/querying/morelikethis#setup)
-    * [Basic Usage](../../indexes/querying/morelikethis#basic-usage)
-    * [Options](../../indexes/querying/morelikethis#options)
-    * [Stop Words](../../indexes/querying/morelikethis#stop-words)
-    * [Remarks](../../indexes/querying/morelikethis#remarks)
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
 
 </Admonition>
 ## Setup
 
 To be able to work, `more_like_this` requires access to the index text.  
-The queried index needs, therefore, to [store](../../indexes/storing-data-in-index) 
-the fields or the [term vectors](../../indexes/using-term-vectors) for these fields.
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
 
-<TabItem value="something-something" label="more_like_this_4">
+<TabItem value="more_like_this_4" label="more_like_this_4">
 <CodeBlock language="python">
 {`from ravendb import AbstractIndexCreationTask, MoreLikeThisOptions
 from ravendb.documents.indexes.definitions import FieldStorage
@@ -523,7 +523,7 @@ If a used analyzer does not support *stop words*, or you need to overload these 
 specify your own set of stop words.  
 A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="python">
 {`stop_words = MoreLikeThisStopWords(stop_words=["I", "A", "Be"])
 session.store(stop_words, "Config/Stopwords")
@@ -558,20 +558,20 @@ and `MinimumWordLength`, may result in filtering out related articles, especiall
 
 * In this page:
 
-    * [Setup](../../indexes/querying/morelikethis#setup)
-    * [Basic Usage](../../indexes/querying/morelikethis#basic-usage)
-    * [Options](../../indexes/querying/morelikethis#options)
-    * [Stop Words](../../indexes/querying/morelikethis#stop-words)
-    * [Remarks](../../indexes/querying/morelikethis#remarks)
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
 
 </Admonition>
 ## Setup
 
 To be able to work, `moreLikeThis` requires access to the index text.  
-The queried index needs, therefore, to [store](../../indexes/storing-data-in-index) 
-the fields or the [term vectors](../../indexes/using-term-vectors) for these fields.
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
 
-<TabItem value="something-something" label="more_like_this_4">
+<TabItem value="more_like_this_4" label="more_like_this_4">
 <CodeBlock language="php">
 {`class Article
 \{
@@ -760,7 +760,7 @@ If a used analyzer does not support *stop words*, or you need to overload these 
 specify your own set of stop words.  
 A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
-<TabItem value="something-something" label="more_like_this_3">
+<TabItem value="more_like_this_3" label="more_like_this_3">
 <CodeBlock language="php">
 {`$mlt = new MoreLikeThisStopWords();
 $mlt->setId("Config/Stopwords");
@@ -797,21 +797,21 @@ and `MinimumWordLength`, may result in filtering out related articles, especiall
 
 * In this page:
 
-    * [Setup](../../indexes/querying/morelikethis#setup)
-    * [Basic Usage](../../indexes/querying/morelikethis#basic-usage)
-    * [Options](../../indexes/querying/morelikethis#options)
-    * [Stop Words](../../indexes/querying/morelikethis#stop-words)
-    * [Remarks](../../indexes/querying/morelikethis#remarks)
+    * [Setup](../../indexes/querying/morelikethis.mdx#setup)
+    * [Basic Usage](../../indexes/querying/morelikethis.mdx#basic-usage)
+    * [Options](../../indexes/querying/morelikethis.mdx#options)
+    * [Stop Words](../../indexes/querying/morelikethis.mdx#stop-words)
+    * [Remarks](../../indexes/querying/morelikethis.mdx#remarks)
 
 </Admonition>
 ## Setup
 
 To be able to work, `MoreLikeThis` requires access to the index text.  
-The queried index needs, therefore, to [store](../../indexes/storing-data-in-index) 
-the fields or the [term vectors](../../indexes/using-term-vectors) for these fields.
+The queried index needs, therefore, to [store](../../indexes/storing-data-in-index.mdx) 
+the fields or the [term vectors](../../indexes/using-term-vectors.mdx) for these fields.
 
-<TabItem value="something-something" label="more_like_this_4">
-<CodeBlock language="nodejs">
+<TabItem value="more_like_this_4" label="more_like_this_4">
+<CodeBlock language="js">
 {`class Article \{
     constructor(id, name, articleBody) \{
         this.id = id;
@@ -845,7 +845,7 @@ The simplest mode will satisfy most usage scenarios.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const articles = await session
     .query({ indexName: "Articles/ByArticleBody" })
     .moreLikeThis(builder => 
@@ -869,7 +869,7 @@ To use only specific fields, pass these fields in the `MoreLikeThisOptions.field
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const options = {
     fields: [ "articleBody" ]
 };
@@ -924,8 +924,8 @@ If a used analyzer does not support *stop words*, or you need to overload these 
 specify your own set of stop words.  
 A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
-<TabItem value="something-something" label="more_like_this_3">
-<CodeBlock language="nodejs">
+<TabItem value="more_like_this_3" label="more_like_this_3">
+<CodeBlock language="js">
 {`const stopWords = new MoreLikeThisStopWords();
 stopWords.stopWords = [ "I", "A", "Be" ];
 await session.store(stopWords, "Config/Stopwords");

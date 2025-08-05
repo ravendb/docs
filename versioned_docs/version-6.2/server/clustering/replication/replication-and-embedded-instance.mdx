@@ -15,22 +15,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Replication: Using Embedded Instance
 
 ## Overview
-[Replication](../../../server/clustering/replication/replication) works by using long-living TCP connections between cluster nodes, or in case of [External Replication](../../../server/ongoing-tasks/external-replication) instances external to the cluster. 
-Essentially, Embedded RavenDB is the same as non-embedded, their only difference is what process is a host. [Here](../../../server/embedded) you can read more in-depth about Embedded RavenDB functionality.
+[Replication](../../../server/clustering/replication/replication.mdx) works by using long-living TCP connections between cluster nodes, or in case of [External Replication](../../../server/ongoing-tasks/external-replication.mdx) instances external to the cluster. 
+Essentially, Embedded RavenDB is the same as non-embedded, their only difference is what process is a host. [Here](../../../server/embedded.mdx) you can read more in-depth about Embedded RavenDB functionality.
 
 ## Configuring Replication between Embedded Instance and a Cluster
 ## Examples in this page 
-  * [Configuring cluster membership of embedded instance through the Studio](../../../server/clustering/replication/replication-and-embedded-instance#configuring-cluster-membership-of-embedded-instance-through-the-studio)  
-  * [Programmatically configuring cluster membership of embedded instance](../../../server/clustering/replication/replication-and-embedded-instance#programmatically-configuring-cluster-membership-of-embedded-instance)  
-  * [Configuring embedded instance as External Replication destination through the Studio](../../../server/clustering/replication/replication-and-embedded-instance#configuring-embedded-instance-as-external-replication-destination-through-the-studio)  
-  * [Programmatically embedded instance as External Replication destination](../../../server/clustering/replication/replication-and-embedded-instance#programmatically-embedded-instance-as-external-replication-destination)  
+  * [Configuring cluster membership of embedded instance through the Studio](../../../server/clustering/replication/replication-and-embedded-instance.mdx#configuring-cluster-membership-of-embedded-instance-through-the-studio)  
+  * [Programmatically configuring cluster membership of embedded instance](../../../server/clustering/replication/replication-and-embedded-instance.mdx#programmatically-configuring-cluster-membership-of-embedded-instance)  
+  * [Configuring embedded instance as External Replication destination through the Studio](../../../server/clustering/replication/replication-and-embedded-instance.mdx#configuring-embedded-instance-as-external-replication-destination-through-the-studio)  
+  * [Programmatically embedded instance as External Replication destination](../../../server/clustering/replication/replication-and-embedded-instance.mdx#programmatically-embedded-instance-as-external-replication-destination)  
 
 
 
 ## Configuring Cluster Membership of Embedded Instance through the Studio
-One possibility would be to configure it through [the studio](../../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster), by adding the Embedded instance to the cluster, then adding the database replicated to relevant [database group](../../../server/clustering/distribution/distributed-database).  
+One possibility would be to configure it through [the studio](../../../studio/cluster/setting-a-cluster.mdx#add-another-node-to-the-cluster), by adding the Embedded instance to the cluster, then adding the database replicated to relevant [database group](../../../server/clustering/distribution/distributed-database.mdx).  
 Studio of the Embedded instance can be opened in the following way:
-<TabItem value="something" label="Embedded_OpenStudio">
+<TabItem value="Embedded_OpenStudio" label="Embedded_OpenStudio">
 <CodeBlock language="csharp">
 {`//this starts the embedded server
 EmbeddedServer.Instance.StartServer(new ServerOptions
@@ -47,7 +47,7 @@ EmbeddedServer.Instance.OpenStudioInBrowser();
 ## Programmatically Configuring Cluster Membership of Embedded Instance
 Another possibility would be to configure it programmatically.
 
-<TabItem value="something" label="Embedded_Replication_Setup">
+<TabItem value="Embedded_Replication_Setup" label="Embedded_Replication_Setup">
 <CodeBlock language="csharp">
 {`//first, initialize connection with one of cluster nodes
 var ravenClusterNodeUrl = "http://localhost:8080";
@@ -104,15 +104,15 @@ using (var store = new DocumentStore
 </TabItem>
 
 ## Configuring Embedded Instance as External Replication Destination through the Studio
-Another possibility to configure the embedded instance as an [external replication](../../../server/ongoing-tasks/external-replication) source or a destination.  
-This can be done in [RavenDB Studio](../../../studio/database/tasks/ongoing-tasks/external-replication-task).
+Another possibility to configure the embedded instance as an [external replication](../../../server/ongoing-tasks/external-replication.mdx) source or a destination.  
+This can be done in [RavenDB Studio](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx).
 <Admonition type="note">
 	External Replication is configured only one way, so in order to create two-way external replication, we would need to configure External Replication Tasks at both RavenDB instances.
 </Admonition>
 
 ## Programmatically Embedded Instance as External Replication Destination
-It is also possible to configure [external replication](../../../server/ongoing-tasks/external-replication) programmatically, so the embedded instance can serve as a source, destination or both.
-<TabItem value="something" label="External_Replication_And_Embedded">
+It is also possible to configure [external replication](../../../server/ongoing-tasks/external-replication.mdx) programmatically, so the embedded instance can serve as a source, destination or both.
+<TabItem value="External_Replication_And_Embedded" label="External_Replication_And_Embedded">
 <CodeBlock language="csharp">
 {`//first, initialize connection with one of cluster nodes
 var ravenClusterNodeUrl = "http://localhost:8080";

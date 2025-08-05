@@ -24,12 +24,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * To check whether a document contains a certain attachment,  
   use the method `Exists()` from the `Advanced.Attachments` session operations.  
 
-* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities) the document or the attachment to the session,  
+* Calling _'Exists'_ does not [Load](../../../client-api/session/loading-entities.mdx) the document or the attachment to the session,  
   and the session will not track them.
 
 * In this page:  
-  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
-  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
 </Admonition>
 ## Check if attachment exists
 
@@ -103,16 +103,16 @@ if (exists)
 * To check whether a document contains a certain attachment, use the method `exists()` from the `session.advanced().attachments()` 
 operations.  
 
-* This does not [load the document](../../../client-api/session/loading-entities) or [the attachment](../../../document-extensions/attachments/loading) 
+* This does not [load the document](../../../client-api/session/loading-entities.mdx) or [the attachment](../../../document-extensions/attachments/loading.mdx) 
 from the server, and it does not cause the session to track the document.  
 
 * In this page:  
-  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
-  * [Example](../../../client-api/session/how-to/check-if-attachment-exists#example)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
+  * [Example](../../../client-api/session/how-to/check-if-attachment-exists.mdx#example)  
 </Admonition>
 ## Syntax
 
-<TabItem value="something-something" label="exists_1">
+<TabItem value="exists_1" label="exists_1">
 <CodeBlock language="java">
 {`boolean exists(String documentId, String name);
 `}
@@ -132,7 +132,7 @@ from the server, and it does not cause the session to track the document.
 
 ## Example
 
-<TabItem value="something-something" label="exists_2">
+<TabItem value="exists_2" label="exists_2">
 <CodeBlock language="java">
 {`boolean exists = session
                     .advanced()
@@ -157,12 +157,12 @@ if (exists) \{
 * To check whether a document contains a certain attachment,  
   use the `session.advanced` operations `attachments.exists` method.  
 
-* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
   the document or the attachment to the session, and the session will not track them.
 
 * In this page:  
-  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
-  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
 </Admonition>
 ## Check if attachment exists
 
@@ -210,12 +210,12 @@ if exists:
 * To check whether a document contains a certain attachment,  
   use the `session.advanced` operations `attachments.exists` method.  
 
-* Calling `exists` does not [load](../../../client-api/session/loading-entities) 
+* Calling `exists` does not [load](../../../client-api/session/loading-entities.mdx) 
   the document or the attachment to the session, and the session will not track them.
 
 * In this page:  
-  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
-  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
 </Admonition>
 ## Check if attachment exists
 
@@ -269,17 +269,17 @@ if exists:
 * To check whether a document contains a certain attachment,  
   use the method `exists()` from the `advanced.attachments` session operations.
 
-* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities) the document or the attachment to the session,  
+* Calling _'exists'_ does not [load](../../../client-api/session/loading-entities.mdx) the document or the attachment to the session,  
   and the session will not track them.
 
 * In this page:  
-  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists#check-if-attachment-exists)  
-  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists#syntax)  
+  * [Check if attachment exists](../../../client-api/session/how-to/check-if-attachment-exists.mdx#check-if-attachment-exists)  
+  * [Syntax](../../../client-api/session/how-to/check-if-attachment-exists.mdx#syntax)  
 </Admonition>
 ## Check if attachment exists
 
-<TabItem value="something-something" label="exists">
-<CodeBlock language="nodejs">
+<TabItem value="exists" label="exists">
+<CodeBlock language="js">
 {`const exists = await session
     .advanced
     .attachments
@@ -296,8 +296,8 @@ if (exists) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`session.advanced.attachments.exists(docId, attachmentName);
 `}
 </CodeBlock>

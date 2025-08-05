@@ -22,17 +22,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   or revert documents from all collections as explained below.
 
 * To revert a single document (or multiple documents) to a specific revision,  
-  see [Revert document to revision operation](../../document-extensions/revisions/client-api/operations/revert-document-to-revision).
+  see [Revert document to revision operation](../../document-extensions/revisions/client-api/operations/revert-document-to-revision.mdx).
 
 * Being able to restore the database to a previous state can simplify auditing, enhance understanding of changes made over time,
   and facilitate instant recovery without the need to search and retrieve a stored backup.
  
 * In this page:  
-   * [The revisions settings view](../../document-extensions/revisions/revert-revisions#the-revisions-settings-view)
-   * [Revert documents](../../document-extensions/revisions/revert-revisions#revert-documents)
-     * [Point in time](../../document-extensions/revisions/revert-revisions#point-in-time)
-     * [Time Window](../../document-extensions/revisions/revert-revisions#time-window)
-     * [Content reverted](../../document-extensions/revisions/revert-revisions#content-reverted)
+   * [The revisions settings view](../../document-extensions/revisions/revert-revisions.mdx#the-revisions-settings-view)
+   * [Revert documents](../../document-extensions/revisions/revert-revisions.mdx#revert-documents)
+     * [Point in time](../../document-extensions/revisions/revert-revisions.mdx#point-in-time)
+     * [Time Window](../../document-extensions/revisions/revert-revisions.mdx#time-window)
+     * [Content reverted](../../document-extensions/revisions/revert-revisions.mdx#content-reverted)
 
 </Admonition>
 ## The revisions settings view
@@ -41,9 +41,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 1. **The revisions settings view**:  
    In the Studio, go to _Settings &gt; Document Revisions_. From this view you can:
-   * [Set](../../studio/database/settings/document-revisions#revisions-configuration) revision configurations
-   * [Enforce](../../studio/database/settings/document-revisions#enforce-configuration) revision configurations
-   * [Revert](../../document-extensions/revisions/revert-revisions#revert-documents) documents to revisions
+   * [Set](../../studio/database/settings/document-revisions.mdx#revisions-configuration) revision configurations
+   * [Enforce](../../studio/database/settings/document-revisions.mdx#enforce-configuration) revision configurations
+   * [Revert](../../document-extensions/revisions/revert-revisions.mdx#revert-documents) documents to revisions
 
 2. **Revision configurations**:  
    * The ability to revert documents to their past revisions depends on revisions being created.  
@@ -53,7 +53,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 3. **Revert documents**:  
    Click the _Revert Revisions_ button to revert documents from all or selected collections to a specified point in time.
-   Learn more [below](../../document-extensions/revisions/revert-revisions#revert-documents).
+   Learn more [below](../../document-extensions/revisions/revert-revisions.mdx#revert-documents).
 
 
 
@@ -61,9 +61,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ![Revert Revisions](./assets/revert-revisions-2.png)
 
-1. Enter the **Point in Time** to which you would like to revert the documents. Learn more [below](../../document-extensions/revisions/revert-revisions#point-in-time).  
+1. Enter the **Point in Time** to which you would like to revert the documents. Learn more [below](../../document-extensions/revisions/revert-revisions.mdx#point-in-time).  
 
-2. Enter the **Time Window**. Learn more [below](../../document-extensions/revisions/revert-revisions#time-window).  
+2. Enter the **Time Window**. Learn more [below](../../document-extensions/revisions/revert-revisions.mdx#time-window).  
 
 3. Revert **All collections** in the database, or toggle to select **Specific collections** to revert.
 
@@ -90,7 +90,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      * Any of these documents that own revisions will be **reverted**  
        to the revision created at the specified Point in Time or to the latest revision preceding this time.  
     
-     * When [setting a limit](../../studio/database/settings/document-revisions#limit-revisions) on the number of revisions that are kept (by number or by age)  
+     * When [setting a limit](../../studio/database/settings/document-revisions.mdx#limit-revisions) on the number of revisions that are kept (by number or by age)  
        then only the most recent revisions are kept for the document.  
        If all of these revisions were created AFTER the Point in Time then the oldest revision will be  
        the one we revert to, even though that revision is newer than the specified time.  
@@ -193,7 +193,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Document extensions:  
   * **Time series**  
-    Time series data is Not reverted. Learn more [here](../../document-extensions/revisions/revisions-and-other-features#reverted-data-1).  
+    Time series data is Not reverted. Learn more [here](../../document-extensions/revisions/revisions-and-other-features.mdx#reverted-data-1).  
   * **Attachments**   
     When a document is reverted to a revision that owns attachments,  
     the attachments are restored to their state when the revision was created.  

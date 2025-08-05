@@ -9,32 +9,32 @@ export default function QueryingFeaturesGrid() {
   const QueryingFeaturesList = [
     {
       title: "Raven Query Language",
-      url: `${activeVersion.label}/client-api/session/querying/what-is-rql`,
+      url: `/${activeVersion.label}/client-api/session/querying/what-is-rql`,
       description: "Short description",
     },
     {
       title: "Full-text search",
-      url: `${activeVersion.label}/client-api/session/querying/text-search/full-text-search`,
+      url: `/${activeVersion.label}/client-api/session/querying/text-search/full-text-search`,
       description: "Short description",
     },
     {
       title: "Patching",
-      url: `${activeVersion.label}/client-api/operations/patching/single-document`,
+      url: `/${activeVersion.label}/client-api/operations/patching/single-document`,
       description: "Short description",
     },
     {
       title: "Facets",
-      url: `${activeVersion.label}/indexes/querying/faceted-search`,
+      url: `/${activeVersion.label}/indexes/querying/faceted-search`,
       description: "Short description",
     },
     {
       title: "MoreLikeThis",
-      url: `${activeVersion.label}/indexes/querying/morelikethis`,
+      url: `/${activeVersion.label}/indexes/querying/morelikethis`,
       description: "Short description",
     },
     {
       title: "Spatial",
-      url: `${activeVersion.label}/indexes/querying/spatial`,
+      url: `/${activeVersion.label}/indexes/querying/spatial`,
       description: "Short description",
     },
   ];

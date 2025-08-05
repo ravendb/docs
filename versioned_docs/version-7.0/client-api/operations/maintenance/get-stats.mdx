@@ -24,19 +24,19 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Statistics can be retrieved for the database and for collections.  
 
 * By default, statistics are retrieved for the database defined in the Document Store.   
-  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).  
+  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
 
 * In this page:
-    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats#get-collection-statistics)
-    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-statistics)
-    * [Get database statistics](../../../client-api/operations/maintenance/get-stats#get-database-statistics)
-    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-database-statistics)
-    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats#get-statistics-for-another-database)
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
 </Admonition>
 ## Get collection statistics
 
 To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
-<TabItem value="something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
 CollectionStatistics stats =
@@ -45,7 +45,7 @@ CollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `CollectionStatistics` object.
-<TabItem value="something" label="stats_1_results">
+<TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="csharp">
 {`// Collection stats results:
 public class CollectionStatistics
@@ -66,7 +66,7 @@ public class CollectionStatistics
 ## Get detailed collection statistics
 
 To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
-<TabItem value="something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store 
 DetailedCollectionStatistics stats =
@@ -75,7 +75,7 @@ DetailedCollectionStatistics stats =
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedCollectionStatistics` object.
-<TabItem value="something" label="stats_2_results">
+<TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="csharp">
 {`// Detailed collection stats results:
 public class DetailedCollectionStatistics
@@ -107,7 +107,7 @@ public class CollectionDetails
 ## Get database statistics
 
 To get **database statistics**, use `GetStatisticsOperation`:  
-<TabItem value="something" label="stats_3">
+<TabItem value="stats_3" label="stats_3">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetStatisticsOperation\` to the store 
 DatabaseStatistics stats =
@@ -116,7 +116,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DatabaseStatistics` object.
-<TabItem value="something" label="stats_3_results">
+<TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="csharp">
 {`// Database stats results:
 public class DatabaseStatistics
@@ -158,7 +158,7 @@ public class DatabaseStatistics
 ## Get detailed database statistics
 
 To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
-<TabItem value="something" label="stats_4">
+<TabItem value="stats_4" label="stats_4">
 <CodeBlock language="csharp">
 {`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
 DetailedDatabaseStatistics stats =
@@ -167,7 +167,7 @@ DetailedDatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedDatabaseStatistics` object.
-<TabItem value="something" label="stats_4_results">
+<TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="csharp">
 {`// Detailed database stats results:
 public class DetailedDatabaseStatistics : DatabaseStatistics
@@ -193,7 +193,7 @@ public class DetailedDatabaseStatistics : DatabaseStatistics
 * Use `ForDatabase` to get database and collection statistics for another database.  
 * `ForDatabase` can be used with **any** of the above statistics options.
 
-<TabItem value="something" label="stats_5">
+<TabItem value="stats_5" label="stats_5">
 <CodeBlock language="csharp">
 {`// Get stats for 'AnotherDatabase':
 DatabaseStatistics stats =
@@ -202,7 +202,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 
-* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 
 
@@ -215,19 +215,19 @@ DatabaseStatistics stats =
 * Statistics can be retrieved for the database and for collections.
 
 * By default, statistics are retrieved for the database defined in the Document Store.   
-  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).
+  To get database and collection statistics for another database use [ForDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).
 
 * In this page:
-    * [Get collection stats](../../../client-api/operations/maintenance/get-stats#get-collection-stats)
-    * [Get detailed collection stats](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-stats)
-    * [Get database stats](../../../client-api/operations/maintenance/get-stats#get-database-stats)
-    * [Get detailed database stats](../../../client-api/operations/maintenance/get-stats#get-detailed-database-stats)
-    * [Get stats for another database](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database)
+    * [Get collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-stats)
+    * [Get detailed collection stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-stats)
+    * [Get database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-database-stats)
+    * [Get detailed database stats](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-stats)
+    * [Get stats for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database)
 </Admonition>
 ## Get collection stats
 <Admonition type="note" title="Note">
 Use `GetCollectionStatisticsOperation` to get **collection stats**.
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="java">
 {`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
 CollectionStatistics stats =
@@ -238,7 +238,7 @@ CollectionStatistics stats =
 </Admonition>
 <Admonition type="note" title="Note">
 Stats are returned in the `CollectionStatistics` object.
-<TabItem value="something-something" label="stats_1_results">
+<TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="java">
 {`public class CollectionStatistics \{
 // Collection stats results:
@@ -258,7 +258,7 @@ Stats are returned in the `CollectionStatistics` object.
 ## Get detailed collection stats
 <Admonition type="note" title="Note">
 Use `GetDetailedCollectionStatisticsOperation` to get **detailed collection stats**.
-<TabItem value="something-something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="java">
 {`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store 
 DetailedCollectionStatistics stats =
@@ -269,7 +269,7 @@ DetailedCollectionStatistics stats =
 </Admonition>
 <Admonition type="note" title="Note">
 Stats are returned in the `DetailedCollectionStatistics` object.
-<TabItem value="something-something" label="stats_2_results">
+<TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="java">
 {`// Detailed collection stats results:
 public class DetailedCollectionStatistics  \{
@@ -299,7 +299,7 @@ public class CollectionDetails \{
 ## Get database stats
 <Admonition type="note" title="Note">
 Use `GetStatisticsOperation` to get **database stats**.
-<TabItem value="something-something" label="stats_3">
+<TabItem value="stats_3" label="stats_3">
 <CodeBlock language="java">
 {`// Pass an instance of class \`GetStatisticsOperation\` to the store 
 DatabaseStatistics stats =
@@ -310,7 +310,7 @@ DatabaseStatistics stats =
 </Admonition>
 <Admonition type="note" title="Note">
 Stats are returned in the `DatabaseStatistics` object.
-<TabItem value="something-something" label="stats_3_results">
+<TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="java">
 {`// Database stats results:
 public class DatabaseStatistics \{
@@ -348,7 +348,7 @@ public class DatabaseStatistics \{
 ## Get detailed database stats
 <Admonition type="note" title="Note">
 Use `GetDetailedStatisticsOperation` to get **detailed database stats**.
-<TabItem value="something-something" label="stats_4">
+<TabItem value="stats_4" label="stats_4">
 <CodeBlock language="java">
 {`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
 DetailedDatabaseStatistics stats =
@@ -359,7 +359,7 @@ DetailedDatabaseStatistics stats =
 </Admonition>
 <Admonition type="note" title="Note">
 Stats are returned in the `DetailedDatabaseStatistics` object.
-<TabItem value="something-something" label="stats_4_results">
+<TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="java">
 {`// Detailed database stats results:
 public class DetailedDatabaseStatistics extends DatabaseStatistics \{
@@ -385,7 +385,7 @@ public class DetailedDatabaseStatistics extends DatabaseStatistics \{
 * Use `forDatabase` to get database & collection stats for another database.
 * 'ForDatabase' can be used with **any** of the above stats options.
  
-<TabItem value="something-something" label="stats_5">
+<TabItem value="stats_5" label="stats_5">
 <CodeBlock language="java">
 {`// Get stats for 'AnotherDatabase':
 DatabaseStatistics stats =
@@ -394,7 +394,7 @@ DatabaseStatistics stats =
 </CodeBlock>
 </TabItem>
 
-* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 </Admonition>
 
@@ -408,19 +408,19 @@ DatabaseStatistics stats =
 * Statistics can be retrieved for the database and for collections.  
 
 * By default, statistics are retrieved for the database defined in the Document Store.   
-  To get database and collection statistics for another database use [for_database](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).  
+  To get database and collection statistics for another database use [for_database](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
 
 * In this page:
-    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats#get-collection-statistics)
-    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-statistics)
-    * [Get database statistics](../../../client-api/operations/maintenance/get-stats#get-database-statistics)
-    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-database-statistics)
-    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats#get-statistics-for-another-database)
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
 </Admonition>
 ## Get collection statistics
 
 To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="python">
 {`# Pass an instance of class 'GetCollectionStatisticsOperation' to the store
 stats = store.maintenance.send(GetCollectionStatisticsOperation())
@@ -428,7 +428,7 @@ stats = store.maintenance.send(GetCollectionStatisticsOperation())
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `CollectionStatistics` object.
-<TabItem value="something-something" label="stats_1_results">
+<TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="python">
 {`class CollectionStatistics:
     def __init__(
@@ -446,7 +446,7 @@ Statistics are returned in the `CollectionStatistics` object.
 ## Get detailed collection statistics
 
 To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="python">
 {`# Pass an instance of class 'GetDetailedCollectionStatisticsOperation' to the store
 stats = store.maintenance.send(GetDetailedCollectionStatisticsOperation())
@@ -454,7 +454,7 @@ stats = store.maintenance.send(GetDetailedCollectionStatisticsOperation())
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedCollectionStatistics` object.
-<TabItem value="something-something" label="stats_2_results">
+<TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="python">
 {`class Size:
     def __init__(self, size_in_bytes: int = None, human_size: str = None): ...
@@ -486,7 +486,7 @@ class DetailedCollectionStatistics:
 ## Get database statistics
 
 To get **database statistics**, use `GetStatisticsOperation`:  
-<TabItem value="something-something" label="stats_3">
+<TabItem value="stats_3" label="stats_3">
 <CodeBlock language="python">
 {`# Pass an instance of class 'GetStatisticsOperation' to the store
 stats = store.maintenance.send(GetStatisticsOperation())
@@ -494,7 +494,7 @@ stats = store.maintenance.send(GetStatisticsOperation())
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DatabaseStatistics` object.
-<TabItem value="something-something" label="stats_3_results">
+<TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="python">
 {`class DatabaseStatistics:
     def __init__(
@@ -530,7 +530,7 @@ Statistics are returned in the `DatabaseStatistics` object.
 ## Get detailed database statistics
 
 To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
-<TabItem value="something-something" label="stats_4">
+<TabItem value="stats_4" label="stats_4">
 <CodeBlock language="python">
 {`# Pass an instance of class 'GetDetailedStatisticsOperation' to the store
 stats = store.maintenance.send(GetDetailedStatisticsOperation())
@@ -538,7 +538,7 @@ stats = store.maintenance.send(GetDetailedStatisticsOperation())
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedDatabaseStatistics` object.
-<TabItem value="something-something" label="stats_4_results">
+<TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="python">
 {`class DetailedDatabaseStatistics(DatabaseStatistics):
     def __init__(
@@ -580,7 +580,7 @@ Statistics are returned in the `DetailedDatabaseStatistics` object.
 * Use `for_database` to get database and collection statistics for another database.  
 * `for_database` can be used with **any** of the above statistics options.
 
-<TabItem value="something-something" label="stats_5">
+<TabItem value="stats_5" label="stats_5">
 <CodeBlock language="python">
 {`# Get stats for 'AnotherDatabase'
 stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOperation())
@@ -588,7 +588,7 @@ stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOper
 </CodeBlock>
 </TabItem>
 
-* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 
 
@@ -601,19 +601,19 @@ stats = store.maintenance.for_database("AnotherDatabase").send(GetStatisticsOper
 * Statistics can be retrieved for the database and for collections.  
 
 * By default, statistics are retrieved for the database defined in the Document Store.   
-  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).  
+  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
 
 * In this page:
-    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats#get-collection-statistics)
-    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-statistics)
-    * [Get database statistics](../../../client-api/operations/maintenance/get-stats#get-database-statistics)
-    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-database-statistics)
-    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats#get-statistics-for-another-database)
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
 </Admonition>
 ## Get collection statistics
 
 To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="php">
 {`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store
 /** @var  CollectionStatistics $stats */
@@ -622,7 +622,7 @@ $stats = $store->maintenance()->send((new GetCollectionStatisticsOperation());
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `CollectionStatistics` object.
-<TabItem value="something-something" label="stats_1_results">
+<TabItem value="stats_1_results" label="stats_1_results">
 <CodeBlock language="php">
 {`// Collection stats results:
 class CollectionStatistics
@@ -645,7 +645,7 @@ class CollectionStatistics
 ## Get detailed collection statistics
 
 To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="php">
 {`// Pass an instance of class \`GetDetailedCollectionStatisticsOperation\` to the store
 /** @var DetailedCollectionStatistics $stats */
@@ -654,7 +654,7 @@ $stats = $store->maintenance()->send(new GetDetailedCollectionStatisticsOperatio
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedCollectionStatistics` object.
-<TabItem value="something-something" label="stats_2_results">
+<TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="php">
 {`// Detailed collection stats results:
 public class DetailedCollectionStatistics
@@ -688,7 +688,7 @@ class CollectionDetails
 ## Get database statistics
 
 To get **database statistics**, use `GetStatisticsOperation`:  
-<TabItem value="something-something" label="stats_3">
+<TabItem value="stats_3" label="stats_3">
 <CodeBlock language="php">
 {`// Pass an instance of class \`GetStatisticsOperation\` to the store
 /** @var DatabaseStatistics $stats */
@@ -697,7 +697,7 @@ $stats = $store->maintenance()->send(new GetStatisticsOperation());
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DatabaseStatistics` object.
-<TabItem value="something-something" label="stats_3_results">
+<TabItem value="stats_3_results" label="stats_3_results">
 <CodeBlock language="php">
 {`// Database stats results:
 class DatabaseStatistics implements ResultInterface
@@ -751,7 +751,7 @@ class DatabaseStatistics implements ResultInterface
 ## Get detailed database statistics
 
 To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
-<TabItem value="something-something" label="stats_4">
+<TabItem value="stats_4" label="stats_4">
 <CodeBlock language="php">
 {`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store
 /** @var DetailedDatabaseStatistics $stats */
@@ -760,7 +760,7 @@ $stats = $store->maintenance()->send(new GetDetailedStatisticsOperation());
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedDatabaseStatistics` object.
-<TabItem value="something-something" label="stats_4_results">
+<TabItem value="stats_4_results" label="stats_4_results">
 <CodeBlock language="php">
 {`// Detailed database stats results:
 class DetailedDatabaseStatistics extends DatabaseStatistics implements ResultInterface
@@ -788,7 +788,7 @@ class DetailedDatabaseStatistics extends DatabaseStatistics implements ResultInt
 * Use `forDatabase` to get database and collection statistics for another database.  
 * `forDatabase` can be used with **any** of the above statistics options.
 
-<TabItem value="something-something" label="stats_5">
+<TabItem value="stats_5" label="stats_5">
 <CodeBlock language="php">
 {`// Get stats for 'AnotherDatabase':
 /** @var DatabaseStatistics $stats */
@@ -797,7 +797,7 @@ $stats = $store->maintenance()->forDatabase("AnotherDatabase")->send(new GetStat
 </CodeBlock>
 </TabItem>
 
-* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 
 
@@ -810,28 +810,28 @@ $stats = $store->maintenance()->forDatabase("AnotherDatabase")->send(new GetStat
 * Statistics can be retrieved for the database and for collections.  
 
 * By default, statistics are retrieved for the database defined in the Document Store.   
-  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats#get-stats-for-another-database).  
+  To get database and collection statistics for another database use [forDatabase](../../../client-api/operations/maintenance/get-stats.mdx#get-stats-for-another-database).  
 
 * In this page:
-    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats#get-collection-statistics)
-    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-collection-statistics)
-    * [Get database statistics](../../../client-api/operations/maintenance/get-stats#get-database-statistics)
-    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats#get-detailed-database-statistics)
-    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats#get-statistics-for-another-database)
+    * [Get collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-collection-statistics)
+    * [Get detailed collection statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-collection-statistics)
+    * [Get database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-database-statistics)
+    * [Get detailed database statistics](../../../client-api/operations/maintenance/get-stats.mdx#get-detailed-database-statistics)
+    * [Get statistics for another database](../../../client-api/operations/maintenance/get-stats.mdx#get-statistics-for-another-database)
 </Admonition>
 ## Get collection statistics
 
 To get **collection statistics**, use `GetCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_1">
-<CodeBlock language="nodejs">
+<TabItem value="stats_1" label="stats_1">
+<CodeBlock language="js">
 {`// Pass an instance of class \`GetCollectionStatisticsOperation\` to the store 
 const stats = await store.maintenance.send(new GetCollectionStatisticsOperation());
 `}
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `CollectionStatistics` object.
-<TabItem value="something-something" label="stats_1_results">
-<CodeBlock language="nodejs">
+<TabItem value="stats_1_results" label="stats_1_results">
+<CodeBlock language="js">
 {`// Object with following props is returned:
 \{
     // Total # of documents in all collections
@@ -850,8 +850,8 @@ Statistics are returned in the `CollectionStatistics` object.
 ## Get detailed collection statistics
 
 To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsOperation`:  
-<TabItem value="something-something" label="stats_2_results">
-<CodeBlock language="nodejs">
+<TabItem value="stats_2_results" label="stats_2_results">
+<CodeBlock language="js">
 {`// Object with following props is returned:
 \{
     // Total # of documents in all collections
@@ -875,7 +875,7 @@ To get **detailed collection statistics**, use `GetDetailedCollectionStatisticsO
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedCollectionStatistics` object.
-<TabItem value="something-something" label="stats_2_results">
+<TabItem value="stats_2_results" label="stats_2_results">
 <CodeBlock language="python">
 {`class Size:
     def __init__(self, size_in_bytes: int = None, human_size: str = None): ...
@@ -907,16 +907,16 @@ class DetailedCollectionStatistics:
 ## Get database statistics
 
 To get **database statistics**, use `GetStatisticsOperation`:  
-<TabItem value="something-something" label="stats_3">
-<CodeBlock language="nodejs">
+<TabItem value="stats_3" label="stats_3">
+<CodeBlock language="js">
 {`// Pass an instance of class \`GetStatisticsOperation\` to the store 
 const stats = await store.maintenance.send(new GetStatisticsOperation());
 `}
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DatabaseStatistics` object.
-<TabItem value="something-something" label="stats_3_results">
-<CodeBlock language="nodejs">
+<TabItem value="stats_3_results" label="stats_3_results">
+<CodeBlock language="js">
 {`// Object with following props is returned:
 \{
     lastDocEtag,      // Last document etag in database
@@ -953,16 +953,16 @@ Statistics are returned in the `DatabaseStatistics` object.
 ## Get detailed database statistics
 
 To get **detailed database statistics**, use `GetDetailedStatisticsOperation`:  
-<TabItem value="something-something" label="stats_4">
-<CodeBlock language="nodejs">
+<TabItem value="stats_4" label="stats_4">
+<CodeBlock language="js">
 {`// Pass an instance of class \`GetDetailedStatisticsOperation\` to the store 
 const stats = await store.maintenance.send(new GetDetailedStatisticsOperation());
 `}
 </CodeBlock>
 </TabItem>
 Statistics are returned in the `DetailedDatabaseStatistics` object.
-<TabItem value="something-something" label="stats_4_results">
-<CodeBlock language="nodejs">
+<TabItem value="stats_4_results" label="stats_4_results">
+<CodeBlock language="js">
 {`// Resulting object contains all database stats props from above and the following in addition:
 \{
     // Total # of identities in database
@@ -986,8 +986,8 @@ Statistics are returned in the `DetailedDatabaseStatistics` object.
 * Use `forDatabase` to get database and collection statistics for another database.  
 * `forDatabase` can be used with **any** of the above statistics options.
 
-<TabItem value="something-something" label="stats_5">
-<CodeBlock language="nodejs">
+<TabItem value="stats_5" label="stats_5">
+<CodeBlock language="js">
 {`// Get stats for 'AnotherDatabase':
 const stats = 
     await store.maintenance.forDatabase("AnotherDatabase").send(new GetStatisticsOperation());
@@ -995,7 +995,7 @@ const stats =
 </CodeBlock>
 </TabItem>
 
-* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+* Learn more about switching operations to another database [here](../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
 
 

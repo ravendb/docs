@@ -25,21 +25,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
   (e.g., a 10-terabyte DB).
 
 * In this page:  
-  * [Sharding](../sharding/overview#sharding)  
-     * [Licensing](../sharding/overview#licensing)
-     * [Client compatibility](../sharding/overview#client-compatibility)
-     * [Client-Server communication](../sharding/overview#client-server-communication)  
-     * [When should sharding be used?](../sharding/overview#when-should-sharding-be-used)  
-  * [Shards](../sharding/overview#shards)  
-     * [Shard replication](../sharding/overview#shard-replication)  
-  * [How documents are distributed among shards](../sharding/overview#how-documents-are-distributed-among-shards)  
-     * [Buckets allocation](../sharding/overview#buckets-allocation)  
-     * [Buckets population](../sharding/overview#buckets-population)  
-     * [Document extensions storage](../sharding/overview#document-extensions-storage)  
-  * [Resharding](../sharding/overview#resharding)  
-  * [Paging](../sharding/overview#paging)  
-  * [Using local IP addresses](../sharding/overview#using-local-ip-addresses)  
-  * [Creating a sharded database](../sharding/overview#creating-a-sharded-database)  
+  * [Sharding](../sharding/overview.mdx#sharding)  
+     * [Licensing](../sharding/overview.mdx#licensing)
+     * [Client compatibility](../sharding/overview.mdx#client-compatibility)
+     * [Client-Server communication](../sharding/overview.mdx#client-server-communication)  
+     * [When should sharding be used?](../sharding/overview.mdx#when-should-sharding-be-used)  
+  * [Shards](../sharding/overview.mdx#shards)  
+     * [Shard replication](../sharding/overview.mdx#shard-replication)  
+  * [How documents are distributed among shards](../sharding/overview.mdx#how-documents-are-distributed-among-shards)  
+     * [Buckets allocation](../sharding/overview.mdx#buckets-allocation)  
+     * [Buckets population](../sharding/overview.mdx#buckets-population)  
+     * [Document extensions storage](../sharding/overview.mdx#document-extensions-storage)  
+  * [Resharding](../sharding/overview.mdx#resharding)  
+  * [Paging](../sharding/overview.mdx#paging)  
+  * [Using local IP addresses](../sharding/overview.mdx#using-local-ip-addresses)  
+  * [Creating a sharded database](../sharding/overview.mdx#creating-a-sharded-database)  
 
 </Admonition>
 ## Sharding
@@ -48,7 +48,7 @@ As a database grows [very large](https://en.wikipedia.org/wiki/Very_large_databa
 System performance may suffer as resources like RAM, CPU, and storage are exhausted, routine chores like indexing and backup become massive tasks, 
 responsiveness to client requests and queries slows down, and the system's throughput spreads thin serving an ever-growing number of clients.  
 
-With sharding, as the volume of stored data grows, the database can be scaled out by splitting it into [shards](../sharding/overview#shards).  
+With sharding, as the volume of stored data grows, the database can be scaled out by splitting it into [shards](../sharding/overview.mdx#shards).  
 This allows the database to be managed by multiple nodes and effectively removes most limits on its growth.  
 In this manner, the size of the overall database, comprised of all shards, can reach dozens of terabytes and more,  
 while keeping the resources of each shard in check and maintaining high performance and throughput.  
@@ -60,7 +60,7 @@ Sharding is fully available with the **Enterprise** license.
 
 * On a **Developer** license, the replication factor is restricted to 1.
 * On **Community** and **Professional** licenses, all shards must be on the same node.  
-* Learn more about licensing [here](../start/licensing/licensing-overview).  
+* Learn more about licensing [here](../start/licensing/licensing-overview.mdx).  
 #### Client compatibility
 
 Sharding is managed by the RavenDB server;  
@@ -95,7 +95,7 @@ is in the vicinity of 250 GB, so the transition is already well established when
 <Admonition type="note" title="Note">
 
 * RavenDB 6.0 and above can **migrate** a non-sharded database to a sharded database via  
-  [external replication](../server/ongoing-tasks/external-replication) or [export & import](../studio/database/tasks/export-database) operations.
+  [external replication](../server/ongoing-tasks/external-replication.mdx) or [export & import](../studio/database/tasks/export-database.mdx) operations.
 
 * To upgrade a non-sharded database from an earlier version of RavenDB to a sharded one,  
   you need to first upgrade the server to version 6.0 (or later), create a new sharded database,  
@@ -116,7 +116,7 @@ Take a 3-shard database, in which shard **1** is populated with documents `Users
 shard **2** contains documents `Users/2001`..`Users/4000`, and shard **3** contains `Users/4001`..`Users/6000`.
 
 A client that connects to this database to retrieve `Users/3000` and `Users/5000` would be served by an
-automatically-appointed [orchestrator node](../sharding/overview#client-server-communication)
+automatically-appointed [orchestrator node](../sharding/overview.mdx#client-server-communication)
 that would seamlessly retrieve `Users/3000` from shard **2**  
 and `Users/5000` from shard **3** and hand them to the client.
 </Admonition>
@@ -128,7 +128,7 @@ can access a sharded database without any alterations.
 
 That said, shard-specific operations are also available:  
 a client can, for example, track the shard where a document is stored and query that shard.  
-Studio can be used to relocate ([reshard](../sharding/resharding)) documents from one shard to another.  
+Studio can be used to relocate ([reshard](../sharding/resharding.mdx)) documents from one shard to another.  
 
 !["Studio Document View"](./assets/overview_document-view.png)
 #### Shard replication 
@@ -156,7 +156,7 @@ The number of documents and the amount of data stored in each bucket may vary.
 
 Upon creating a sharded database, the cluster reserves **1,048,576** (1024 x 1024) buckets for the entire database.  
 Each shard is assigned a range of buckets from this overall set, where documents can be stored.  
-(Note: This default reservation method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix#bucket-management)).
+(Note: This default reservation method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix.mdx#bucket-management)).
 
 !["Buckets Allocation"](./assets/overview_buckets-allocation.png)
 #### Buckets population
@@ -165,7 +165,7 @@ The cluster automatically populates the buckets with documents in the following 
 
 A hashing algorithm is applied to each document ID, generating a number between **0** and **1,048,575**.  
 The resulting number determines the bucket number where the document is stored.  
-(Note: This default hashing method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix#bucket-management).)  
+(Note: This default hashing method differs when using prefixed sharding. Learn more in [Bucket management](../sharding/administration/sharding-by-prefix.mdx#bucket-management).)  
 
 Since the buckets are pre-assigned to the shards,  
 the bucket number assigned to a document also determines which shard the document will reside on.
@@ -177,12 +177,12 @@ the bucket number assigned to a document also determines which shard the documen
 * **Anchoring documents to a bucket**:  
   You can make documents share a bucket (and therefore a shard) based on their document ID suffix.  
   RavenDB uses this suffix to calculate the bucket number for the document.  
-  Learn more in [Anchoring documents to a bucket](../sharding/administration/anchoring-documents).  
+  Learn more in [Anchoring documents to a bucket](../sharding/administration/anchoring-documents.mdx).  
 
 * **Anchoring documents to a shard**:   
   You can make documents reside on a specific shard based on their document ID prefix.  
   RavenDB uses this prefix to calculate a bucket number that resides on the requested shard.  
-  Learn more in [Sharding by prefix](../sharding/administration/sharding-by-prefix).
+  Learn more in [Sharding by prefix](../sharding/administration/sharding-by-prefix.mdx).
 
 </Admonition>
 #### Document extensions storage
@@ -194,7 +194,7 @@ To achieve this, the bucket number (hash code) for these extensions is calculate
 
 ## Resharding
 
-[Resharding](../sharding/resharding) is the relocation of data from one shard to another to maintain a balanced database,  
+[Resharding](../sharding/resharding.mdx) is the relocation of data from one shard to another to maintain a balanced database,  
 where all shards handle approximately the same volume of data.
 
 The resharding process moves all data related to a certain bucket, including documents, document extensions,  
@@ -216,13 +216,13 @@ For example:
 
 ## Paging
 
-From the client's perspective, [paging](../indexes/querying/paging) is conducted similarly in both sharded and non-sharded databases,  
+From the client's perspective, [paging](../indexes/querying/paging.mdx) is conducted similarly in both sharded and non-sharded databases,  
 using the same API.  
 
 However, paging in a sharded database is more costly because the orchestrator must load data **from each shard**  
 and sort the retrieved results before handing the selected page to the client.  
 
-Read more about paging [here](../sharding/querying#paging).  
+Read more about paging [here](../sharding/querying.mdx#paging).  
 
 
 
@@ -234,7 +234,7 @@ Using a node's local IP address for inter-cluster communications can speed up th
 Using this method can be particularly helpful in a sharded cluster, where each client request is handled by an orchestrator
 that may need to communicate with all other shards to process the request and its results. 
 
-Use [this configuration option](../server/configuration/core-configuration#serverurl.cluster) to expose a node's local IP address to other nodes.  
+Use [this configuration option](../server/configuration/core-configuration.mdx#serverurl.cluster) to expose a node's local IP address to other nodes.  
 
 
 
@@ -243,7 +243,7 @@ Use [this configuration option](../server/configuration/core-configuration#serve
 * When a database is created, the user can choose whether it will be sharded or not.  
   RavenDB (version 6.0 and later) provides this option by default, with no further steps required to enable the feature.
 
-* A sharded database can be created via the [Studio](../sharding/administration/studio-admin#creating-a-sharded-database) or the [Client API](../sharding/administration/api-admin).
+* A sharded database can be created via the [Studio](../sharding/administration/studio-admin.mdx#creating-a-sharded-database) or the [Client API](../sharding/administration/api-admin.mdx).
 
 * A RavenDB cluster can run both sharded and non-sharded databases in parallel.  
 

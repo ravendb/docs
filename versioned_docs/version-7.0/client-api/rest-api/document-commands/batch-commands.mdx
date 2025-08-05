@@ -18,20 +18,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Use this endpoint with the **`POST`** method to send multiple commands in one request:  
 `<server URL>/databases/<database name>/bulk_docs`  
 
-* The commands are sent as a JSON array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#body).  
+* The commands are sent as a JSON array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#body).  
 
 * All the commands in the batch will either succeed or fail as a **single transaction**. Changes will not be visible until 
 the entire batch completes.  
 
-* [Options](../../../client-api/rest-api/document-commands/batch-commands#batch-options) can be set to make the server wait 
+* [Options](../../../client-api/rest-api/document-commands/batch-commands.mdx#batch-options) can be set to make the server wait 
 for indexing and replication to complete before returning.  
 
 * In this page:  
-  * [Basic Example](../../../client-api/rest-api/document-commands/batch-commands#basic-example)  
-  * [Request Format](../../../client-api/rest-api/document-commands/batch-commands#request-format)  
-      * [Commands](../../../client-api/rest-api/document-commands/batch-commands#commands)  
-  * [Response Format](../../../client-api/rest-api/document-commands/batch-commands#response-format)  
-  * [More Examples](../../../client-api/rest-api/document-commands/batch-commands#more-examples)  
+  * [Basic Example](../../../client-api/rest-api/document-commands/batch-commands.mdx#basic-example)  
+  * [Request Format](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format)  
+      * [Commands](../../../client-api/rest-api/document-commands/batch-commands.mdx#commands)  
+  * [Response Format](../../../client-api/rest-api/document-commands/batch-commands.mdx#response-format)  
+  * [More Examples](../../../client-api/rest-api/document-commands/batch-commands.mdx#more-examples)  
 </Admonition>
 ## Basic Example
 
@@ -39,9 +39,9 @@ This is a cURL request to a database named "Example" on our [playground server](
 It batches two commands:  
 
 1. Upload a new document called "person/1".  
-2. Execute a [patch](../../../client-api/operations/patching/single-document) on that same document.  
+2. Execute a [patch](../../../client-api/operations/patching/single-document.mdx) on that same document.  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -74,7 +74,7 @@ Linebreaks are added for clarity.
 
 #### Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server: nginx
@@ -114,9 +114,9 @@ Raven-Server-Version: 4.2.4.42
 ## Request Format
 
 This is the general format of a cURL request with a batch of commands that _does not_ include a Put Attachment Command 
-(see the format for batching a Put Attachment Command [below](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command)):  
+(see the format for batching a Put Attachment Command [below](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command)):  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "<server URL>/databases/<database name>/bulk_docs?<batch options>"
 -H "Content-Type: application/json"
@@ -134,7 +134,7 @@ Linebreaks are added for clarity.
 
 #### Query String
 
-The query string takes [batch options](../../../client-api/rest-api/document-commands/batch-commands#batch-options), which 
+The query string takes [batch options](../../../client-api/rest-api/document-commands/batch-commands.mdx#batch-options), which 
 can make the server wait for indexing and replication to finish before responding.  
 
 
@@ -143,7 +143,7 @@ can make the server wait for indexing and replication to finish before respondin
 The header `Content-Type` is required and takes one of two values:  
 
 * `application/json` - if the batch _does not_ include a Put Attachment Command.  
-* `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command) 
+* `multipart/mixed; boundary=<separator>` - if the batch [_does_](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command) 
 include a Put Attachment Command. The "separator" is an arbitrary string used to demarcate the attachment streams and 
 commands array.  
 
@@ -152,7 +152,7 @@ commands array.
 
 The body contains a JSON array of commands.  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`-d "\{
     \\"Commands\\": [
@@ -173,12 +173,12 @@ using a backslash: `"` -&gt; `\"`.
 
 The following commands can be sent using the batch command:  
 
-* [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands#put-document-command)  
-* [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands#patch-document-command)  
-* [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands#delete-document-command)  
-* [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands#delete-by-prefix-command)  
-* [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command)  
-* [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#delete-attachment-command)  
+* [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command)  
+* [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command)  
+* [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command)  
+* [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command)  
+* [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command)  
+* [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command)  
 ### Batch Options
 
 These options, configured in the query string, make the server wait until indexing or replication have completed before responding. If these have not 
@@ -186,7 +186,7 @@ completed before a specified amount of time has passed, the server can either re
 
 This is the general format of a cURL request that includes batch options in the query string:
 
-<TabItem value="something" label="html">
+<TabItem value="html" label="html">
 <CodeBlock language="html">
 {`curl -X POST "<server_URL>/databases/<database_name>/bulk_docs?<batch option>=<value>
              &<batch option>=<value>
@@ -224,9 +224,9 @@ Set to `false` to recieve the normal response body. |
 
 Upload a new document or update an existing document.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
+Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"Id\\": \\"<document ID>\\",
@@ -243,20 +243,20 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 
 | Parameter | Description | Required |
 | - | - | - |
-| **Id** | ID of document to create or update | Yes to update, [no to create](../../../client-api/document-identifiers/working-with-document-identifiers#autogenerated-ids) |
-| **ChangeVector** | When updating an existing document, this parameter that document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. 
+| **Id** | ID of document to create or update | Yes to update, [no to create](../../../client-api/document-identifiers/working-with-document-identifiers.mdx#autogenerated-ids) |
+| **ChangeVector** | When updating an existing document, this parameter that document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. 
 An exception is also thrown if the document does not exist. | No |
 | **Document** | JSON document to create, or to replace the existing document | Yes |
 | **Type** | Set to `PUT` | Yes |
-| **ForceRevisionCreationStrategy** | When updating an existing document, set to `Before` to make a [revision](../../../document-extensions/revisions/overview) of the document before it is updated. | No |
+| **ForceRevisionCreationStrategy** | When updating an existing document, set to `Before` to make a [revision](../../../document-extensions/revisions/overview.mdx) of the document before it is updated. | No |
 ### Patch Document Command
 
-Update a document. A [patch](../../../client-api/operations/patching/single-document) is executed on the server side and 
+Update a document. A [patch](../../../client-api/operations/patching/single-document.mdx) is executed on the server side and 
 does not involve loading the document, avoiding the cost of sending the entire document in a round trip over the network.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
+Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"Id\\": \\"<document ID>\\",
@@ -283,9 +283,9 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Parameter | Description | Required |
 | - | - | - |
 | **Id** | ID of a document to execute the patch on | Yes |
-| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
-| **Patch** | A script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | Yes |
-| **PatchIfMissing** | An alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands#patch-request). | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **Patch** | A script that modifies the specified document. [Details below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-request). | Yes |
+| **PatchIfMissing** | An alternative script to be executed if no document with the given ID is found. This will create a new document with the given ID. [Details below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-request). | No |
 | **Type** | Set to `PATCH` | Yes |
 
 #### Patch Request
@@ -301,9 +301,9 @@ wrap strings.
 
 Delete a document by its ID.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
+Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"Id\\": \\"<document ID>\\",
@@ -317,15 +317,15 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | Parameter | Description | Required |
 | - | - | - |
 | **Id** | ID of document to delete (only one can be deleted per command) | Yes |
-| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `DELETE` | Yes |
 ### Delete by Prefix Command
 
 Delete all documents whose IDs begin with a certain prefix.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
+Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"Id\\": \\"<document ID prefix>\\",
@@ -343,7 +343,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | **Type** | Set to `DELETE` | Yes |
 ### Put Attachment Command
 
-Add an [attachment](../../../document-extensions/attachments/what-are-attachments) to a document, or update an existing attachment.  
+Add an [attachment](../../../document-extensions/attachments/what-are-attachments.mdx) to a document, or update an existing attachment.  
 
 If a batch contains a Put Attachment Command, the cURL format of the request is slightly different from a batch that doesn't.  
 The `Content-Type` header takes `multipart/mixed; boundary="<separator>"` instead of the default `application/json`.  
@@ -352,7 +352,7 @@ same order as their respective Put Attachment Commands within the `Commands` arr
 
 The general form of a cURL request:  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`curl -X POST "<server URL>/databases/<database name>/bulk_docs"
 -H "Content-Type: multipart/mixed; boundary=<separator>"
@@ -389,15 +389,15 @@ The string used as a separator must not appear elsewhere in the request body - i
 | **Id** | Document ID | Yes |
 | **Name** | Name of attachment to create or update | Yes |
 | **ContentType** | Mime type of the attachment | No |
-| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `AttachmentPUT` | Yes |
 ### Delete Attachment Command
 
 Delete an attachment in a certain document.  
 
-Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands#request-format):  
+Format within the `Commands` array in the [request body](../../../client-api/rest-api/document-commands/batch-commands.mdx#request-format):  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"Id\\": \\"<document ID>\\",
@@ -413,7 +413,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 | - | - | - |
 | **Id** | ID of document for which to delete the attachment | Yes |
 | Name | Name of the attachment to delete | Yes |
-| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector). If it does not match the server-side change vector a concurrency exception is thrown. | No |
+| **ChangeVector** | The document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If it does not match the server-side change vector a concurrency exception is thrown. | No |
 | **Type** | Set to `AttachmentDELETE` | Yes |
 
 
@@ -433,7 +433,7 @@ Format within the `Commands` array in the [request body](../../../client-api/res
 
 Results appear in the same order as the commands in the request body.
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Results":[
@@ -446,15 +446,15 @@ Results appear in the same order as the commands in the request body.
 </TabItem>
 
 * Format within the `Results` array in the response body:  
-  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands#put-document-command-1)  
-  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands#patch-document-command-1)  
-  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands#delete-document-command-1)  
-  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands#delete-by-prefix-command-1)  
-  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command-1)  
-  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#delete-attachment-command-1)  
+  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command-1)  
+  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command-1)  
+  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command-1)  
+  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command-1)  
+  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command-1)  
+  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command-1)  
 ### Put Document Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Type": "PUT",
@@ -471,11 +471,11 @@ Results appear in the same order as the commands in the request body.
 | - | - | - |
 | **Type** | Same as the `Type` of the command sent - in this case `PUT`. |
 | **@id** | The ID of the document that has been created or modified. |
-| **@collection** | Name of the [collection](../../../client-api/faq/what-is-a-collection) that contains the document. If none was specified, the collection will be `@empty`. |
+| **@collection** | Name of the [collection](../../../client-api/faq/what-is-a-collection.mdx) that contains the document. If none was specified, the collection will be `@empty`. |
 | **@change-vector** | The document's change vector after the command was executed. |
 ### Patch Document Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "@id": "<document ID>",
@@ -495,7 +495,7 @@ Results appear in the same order as the commands in the request body.
 | **@change-vector** | The document's change vector after the command was executed. Returns `null` if the command did not result in any changes. |
 | **@last-modified** | Date and time (UTC) of the most recent modification made to the document. |
 | **Type** | Same as the `Type` of the command sent - in this case `PATCH`. |
-| **PatchStatus** | See [below](../../../client-api/rest-api/document-commands/batch-commands#patchstatus) |
+| **PatchStatus** | See [below](../../../client-api/rest-api/document-commands/batch-commands.mdx#patchstatus) |
 | **Debug** | Should always return `null` in the context of batch commands. |
 #### PatchStatus
 
@@ -508,7 +508,7 @@ Results appear in the same order as the commands in the request body.
 | **NotModified** | Patch was successful but did not result in a modification to the document. |
 ### Delete Document Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Id": "<document ID>",
@@ -526,7 +526,7 @@ Results appear in the same order as the commands in the request body.
 | **Deleted** | `true` if the document was successfully deleted, `false` if not (for instance, because the specified document did not exist). |
 ### Delete by Prefix Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Id": "<prefix>",
@@ -544,7 +544,7 @@ Results appear in the same order as the commands in the request body.
 | **Deleted** | `true` if the documents were successfully deleted, `false` if not (for instance, because no documents with the specified prefix exist). |
 ### Put Attachment Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Id": "<document ID>",
@@ -572,7 +572,7 @@ Results appear in the same order as the commands in the request body.
 | **DocumentChangeVector** | The document's change vector after the command was executed. |
 ### Delete Attachment Command
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Type": "AttachmentDELETE",
@@ -595,20 +595,20 @@ Results appear in the same order as the commands in the request body.
 
 ## More Examples
 
-[About Northwind](../../../start/about-examples), the database used in our examples.
+[About Northwind](../../../start/about-examples.mdx), the database used in our examples.
 
 * In this section:  
-  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands#put-document-command-2)  
-  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands#patch-document-command-2)  
-  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands#delete-document-command-2)  
-  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands#delete-by-prefix-command-2)  
-  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#put-attachment-command-2)  
-  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands#delete-attachment-command-2)  
+  * [Put Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-document-command-2)  
+  * [Patch Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#patch-document-command-2)  
+  * [Delete Document Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-document-command-2)  
+  * [Delete by Prefix Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-by-prefix-command-2)  
+  * [Put Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#put-attachment-command-2)  
+  * [Delete Attachment Command](../../../client-api/rest-api/document-commands/batch-commands.mdx#delete-attachment-command-2)  
 ### Put Document Command
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -630,7 +630,7 @@ Request:
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"
@@ -660,7 +660,7 @@ Raven-Server-Version:"4.2.4.42"
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -683,7 +683,7 @@ Request:
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"
@@ -714,7 +714,7 @@ Raven-Server-Version:"4.2.4.42"
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -733,7 +733,7 @@ Request:
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"
@@ -762,7 +762,7 @@ Raven-Server-Version:"4.2.4.42"
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -782,7 +782,7 @@ Request:
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"
@@ -810,7 +810,7 @@ Raven-Server-Version:"4.2.4.42"
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: multipart/mixed; boundary=some_boundary"
@@ -837,7 +837,7 @@ Command-Type: AttachmentStream
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"
@@ -870,7 +870,7 @@ Raven-Server-Version:"4.2.4.42"
 
 Request:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X POST "http://live-test.ravendb.net/databases/Example/bulk_docs"
 -H "Content-Type: application/json"
@@ -890,7 +890,7 @@ Request:
 
 Response:
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201 Created
 Server:"nginx"

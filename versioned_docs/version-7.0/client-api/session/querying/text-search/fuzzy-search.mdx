@@ -24,13 +24,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * A **fuzzy search** retrieves documents containing terms that closely match a given term instead of exact matches, 
   assisting in finding relevant results when the search term is misspelled or has minor variations.
 
-* Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) or RQL.
+* Fuzzy search is available only via [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) or RQL.
 
 * Use the `Fuzzy` method when querying with `WhereEquals`.
 
 * In this page:
-    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
-    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#syntax)
 
 </Admonition>
 ## Fuzzy search example
@@ -81,7 +81,7 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`IDocumentQuery<T> Fuzzy(decimal fuzzy);
 `}
@@ -100,12 +100,12 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 
 
 Fuzzy search is supported via `fuzzy` method.  
-This method is available only from [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query) level and can only be performed on single term values.  
+This method is available only from [DocumentQuery](../../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values.  
 Because of that it can be used only right after `whereEquals` method.
 
 ## Syntax
 
-<TabItem value="something-something" label="fuzzy_1">
+<TabItem value="fuzzy_1" label="fuzzy_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> fuzzy(double var1);
 `}
@@ -149,8 +149,8 @@ where fuzzy(Name = 'Ernts Hnadel', 0.5)
 * Use the `fuzzy` method when querying with `where_equals`.
 
 * In this page:
-    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
-    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#syntax)
 
 </Admonition>
 ## Fuzzy search example
@@ -184,7 +184,7 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`def fuzzy(self, fuzzy: float) -> DocumentQuery[_T]: ...
 `}
@@ -212,8 +212,8 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
   misspelled or has minor variations.
 
 * In this page:
-    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
-    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#syntax)
 
 </Admonition>
 ## Fuzzy search example
@@ -249,7 +249,7 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`public function fuzzy(float $fuzzy): DocumentQueryInterface;
 `}
@@ -278,15 +278,15 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 * Use the `fuzzy` method when querying with `whereEquals`.
 
 * In this page:
-    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search#fuzzy-search-example)
-    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search#syntax)
+    * [Fuzzy search example](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#fuzzy-search-example)
+    * [Syntax](../../../../client-api/session/querying/text-search/fuzzy-search.mdx#syntax)
 
 </Admonition>
 ## Fuzzy search example
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const employees = await session
     .query({ collection: "Companies" })
      // Query with a term that is misspelled
@@ -314,8 +314,8 @@ where fuzzy(Name = "Ernts Hnadel", 0.5)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`fuzzy(fuzzy);
 `}
 </CodeBlock>

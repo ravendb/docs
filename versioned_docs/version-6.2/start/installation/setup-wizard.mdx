@@ -31,26 +31,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Or choose to continue in an **unsecure mode**.  
 
 * Note: The RavenDB server can also be **set up manually** if choosing not to use the wizard.  
-  See [Manual Setup](../../start/installation/manual).  
+  See [Manual Setup](../../start/installation/manual.mdx).  
 
 * Note: this page explains how to follow the Setup Wizard, without going into security concerns details.  
   To learn more about how _Authentication_ and _Authorization_ are implemented with RavenDB, and about _Security_ in general, 
-  go to [Security Overview](../../server/security/overview).  
+  go to [Security Overview](../../server/security/overview.mdx).  
 
-* If you are having trouble using the wizard, or with security in general, please visit the [Security Common Errors & FAQ](../../server/security/common-errors-and-faq) section.
+* If you are having trouble using the wizard, or with security in general, please visit the [Security Common Errors & FAQ](../../server/security/common-errors-and-faq.mdx) section.
 
 * In this page:
-   * [Select Setup Mode](../../start/installation/setup-wizard#select-setup-mode)  
-   * [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-free-let)  
-      * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses)  
-      * [Installing The Certificate](../../start/installation/setup-wizard#installing-the-certificate)  
-      * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes)  
-      * [Next Steps](../../start/installation/setup-wizard#next-steps)
-   * [Secure Setup with Your Own Certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)  
-      * [Configuring The Server Addresses](../../start/installation/setup-wizard#configuring-the-server-addresses-1)  
-      * [Setting Up Other Nodes](../../start/installation/setup-wizard#setting-up-other-nodes-1)  
-      * [Next Steps](../../start/installation/setup-wizard#next-steps)
-   * [Unsecure Setup](../../start/installation/setup-wizard#unsecure-setup)  
+   * [Select Setup Mode](../../start/installation/setup-wizard.mdx#select-setup-mode)  
+   * [Secure Setup with a Free Let's Encrypt Certificate](../../start/installation/setup-wizard.mdx#secure-setup-with-a-free-let)  
+      * [Configuring The Server Addresses](../../start/installation/setup-wizard.mdx#configuring-the-server-addresses)  
+      * [Installing The Certificate](../../start/installation/setup-wizard.mdx#installing-the-certificate)  
+      * [Setting Up Other Nodes](../../start/installation/setup-wizard.mdx#setting-up-other-nodes)  
+      * [Next Steps](../../start/installation/setup-wizard.mdx#next-steps)
+   * [Secure Setup with Your Own Certificate](../../start/installation/setup-wizard.mdx#secure-setup-with-your-own-certificate)  
+      * [Configuring The Server Addresses](../../start/installation/setup-wizard.mdx#configuring-the-server-addresses-1)  
+      * [Setting Up Other Nodes](../../start/installation/setup-wizard.mdx#setting-up-other-nodes-1)  
+      * [Next Steps](../../start/installation/setup-wizard.mdx#next-steps)
+   * [Unsecure Setup](../../start/installation/setup-wizard.mdx#unsecure-setup)  
 
 <Admonition type="info" title="Help Us Improve Prompt" id="help-us-improve-prompt" href="#help-us-improve-prompt">
 When you first launch RavenDB, you will see this prompt asking if you'd be willing to 
@@ -102,7 +102,7 @@ records unless explicitly requested by the client.
 
 The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We recommend that 
 **for actual production deployments** and for the highest level of security and control, you'll 
-[use your own certificates and domains](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate), 
+[use your own certificates and domains](../../start/installation/setup-wizard.mdx#secure-setup-with-your-own-certificate), 
 avoiding the need to rely on a third party for such a critical part of your security.
 
 </Admonition>
@@ -148,7 +148,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.raven.development.run) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.raven.development.run) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#settings.json) file. 
+Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options.mdx#settings.json) file. 
 You should have 3 separate RavenDB node folders.
 
 ### Example II - On separate machines for higher availability
@@ -216,7 +216,7 @@ cached certificate and not request a new one from Let's Encrypt.
 
 If the validation fails, you will receive a detailed error. You can go back in the wizard, change the settings and try again.
 
-A [common DNS error](../../server/security/common-errors-and-faq) is that **DNS records didn't yet update** locally.  
+A [common DNS error](../../server/security/common-errors-and-faq.mdx) is that **DNS records didn't yet update** locally.  
 Usually, the solution is to wait a few minutes and try again. If you do not want to wait, you can configure your network card 
 (just for the setup) to use Google's DNS server (8.8.8.8), to bypass caching of DNS (Domain Name System) records.
 
@@ -239,7 +239,7 @@ When you will run the .pfx installation wizard,
 it will set a file path for the certificate in the `settings.json` file.  
 **Make sure not to relocate these files after installation** without also changing the `settings.json` because relocating them will 
 cause a 'System.InvalidOperationException: Unable to start the server.' error. 
-If you must move your folder at a later time, you can [reconfigure the certificate file path](../../server/security/authentication/certificate-configuration#standard-manual-setup-with-certificate-stored-locally) 
+If you must move your folder at a later time, you can [reconfigure the certificate file path](../../server/security/authentication/certificate-configuration.mdx#standard-manual-setup-with-certificate-stored-locally) 
 in the `settings.json` file.
 
 ![Save Cluster Settings Zip in Parent Folder](./assets/Cluster-Settings-Zip-In-Parent-Folder.png)
@@ -251,7 +251,7 @@ so they will let you choose your certificate right before you are redirected.
 Firefox users will have to manually import the certificate 
 to the browser via Tools &gt; Options &gt; Advanced &gt; Certificates &gt; View Certificates.
 
-If you unchecked the box, before you continue, please [register the client certificate](../../server/security/authentication/client-certificate-usage) 
+If you unchecked the box, before you continue, please [register the client certificate](../../server/security/authentication/client-certificate-usage.mdx) 
 in the OS store or import it to the browser.
 ### Install client certificate - Run Certificate Import Wizard
 
@@ -328,7 +328,7 @@ By default, the server certificate will renew automatically because you set up t
   
 <Admonition type="info" title="Registering as a service to increase server availability" id="registering-as-a-service-to-increase-server-availability" href="#registering-as-a-service-to-increase-server-availability">
 
-You can now [register the cluster as a service](../../start/installation/running-as-service) in your OS (it will run in the background 
+You can now [register the cluster as a service](../../start/installation/running-as-service.mdx) in your OS (it will run in the background 
 every time your machine starts).
 
 </Admonition>
@@ -342,7 +342,7 @@ handling technical problems later.
 * **To learn how to fly with RavenDB**, here are a few options:
   * [Demo](https://demo.ravendb.net/) - Step-by-step code walkthrough  
   * [Bootcamp](https://ravendb.net/learn/bootcamp) - Lessons mailed to your inbox 
-  * [Documentation Guide](https://ravendb.net/learn/docs-guide) - In addition to this guide and the [First Steps](../../start/installation/setup-wizard#first-steps-from-our-documentation) 
+  * [Documentation Guide](https://ravendb.net/learn/docs-guide) - In addition to this guide and the [First Steps](../../start/installation/setup-wizard.mdx#first-steps-from-our-documentation) 
     section below, RavenDB's extensive documentation also has detailed explanations of server related operations, external replication, 
     cloud-based servers, and much more. Navigate to related articles on the left and right sides of your screen.  
   * [Workshops](https://workshops.ravendb.net/winter-2022)
@@ -351,22 +351,22 @@ handling technical problems later.
 #### First Steps from our documentation:
 
 * **Importing from Other Databases**
-  * [From SQL Databases](../../studio/database/tasks/import-data/import-from-sql)
-  * [From NoSQL Databases](../../studio/database/tasks/import-data/import-from-other)
-  * [From CSV](../../studio/database/tasks/import-data/import-from-csv)
-  * [From RavenDB file](../../studio/database/tasks/import-data/import-data-file) or from a [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb)
-* [Configure Client Certificates](../../server/security/authentication/certificate-management) to customize security access 
+  * [From SQL Databases](../../studio/database/tasks/import-data/import-from-sql.mdx)
+  * [From NoSQL Databases](../../studio/database/tasks/import-data/import-from-other.mdx)
+  * [From CSV](../../studio/database/tasks/import-data/import-from-csv.mdx)
+  * [From RavenDB file](../../studio/database/tasks/import-data/import-data-file.mdx) or from a [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb.mdx)
+* [Configure Client Certificates](../../server/security/authentication/certificate-management.mdx) to customize security access 
   permissions for each client.  
-* [APIs to Integrate With Your Client](../../client-api/what-is-a-document-store) starting with the Document Store.  
-* [Studio GUI Overview](../../studio/overview) to learn how the built-in RavenDB studio features can save you time and help you 
+* [APIs to Integrate With Your Client](../../client-api/what-is-a-document-store.mdx) starting with the Document Store.  
+* [Studio GUI Overview](../../studio/overview.mdx) to learn how the built-in RavenDB studio features can save you time and help you 
   keep things running smoothly.  
-* [RavenDB Indexing](../../indexes/indexing-basics) is very sophisticated.  Auto-indexing is default and with agility in mind, it adjusts to changes immediately, 
+* [RavenDB Indexing](../../indexes/indexing-basics.mdx) is very sophisticated.  Auto-indexing is default and with agility in mind, it adjusts to changes immediately, 
   but you can set up static indexes manually as well.  
-* [Backup Securely](../../studio/database/tasks/backup-task)  
+* [Backup Securely](../../studio/database/tasks/backup-task.mdx)  
 * **Document Extensions**  
-  * [Time Series](../../document-extensions/timeseries/overview)  
-  * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-  * [Counters](../../document-extensions/counters/overview)  
+  * [Time Series](../../document-extensions/timeseries/overview.mdx)  
+  * [Attachments](../../document-extensions/attachments/what-are-attachments.mdx)  
+  * [Counters](../../document-extensions/counters/overview.mdx)  
 
 
 
@@ -383,7 +383,7 @@ RavenDB will accept PFX server certificates which contain the private key, are n
 - ExtendedKeyUsage: Client Authentication, Server Authentication
 
 If you wish to use the setup wizard to construct a cluster, you must use the same certificate for all nodes. If you wish to use 
-a different certificate for each node, it's possible only through [manual setup](../../start/installation/manual). A wildcard 
+a different certificate for each node, it's possible only through [manual setup](../../start/installation/manual.mdx). A wildcard 
 certificate is probably the easiest way to go. Another option is to issue a certificate which contains all the domains of all the 
 cluster nodes as "Subject Alternative Names" (SANs). 
 
@@ -423,7 +423,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.ravendb.example.com) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.ravendb.example.com) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options#settings.json) file. 
+Each node will run in its own process and have its own data directory and [settings.json](../../server/configuration/configuration-options.mdx#settings.json) file. 
 
 ### Example II - On separate machines
 
@@ -468,7 +468,7 @@ Then the following configuration should be applied:
 
 <Admonition type="note" title="Note">
 
-A [common DNS error](../../server/security/common-errors-and-faq) is that **DNS records didn't yet update** locally.  
+A [common DNS error](../../server/security/common-errors-and-faq.mdx) is that **DNS records didn't yet update** locally.  
 Usually, the solution is to wait a few minutes and try again. If you do not want to wait, you can configure your network card 
 (just for the setup) to use Google's DNS server (8.8.8.8), to bypass caching of DNS (Domain Name System) records.
 
@@ -504,7 +504,7 @@ RavenDB will accept `.pfx` server certificates which contain the private key, ar
   a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, 
   so they will let you choose your certificate right before you are redirected.  
    * Firefox users will have to manually import the certificate to the browser via Tools &gt; Options &gt; Advanced &gt; Certificates &gt; View Certificates.
-   * If you unchecked the box, before you continue please [register the client certificate](../../server/security/authentication/client-certificate-usage) 
+   * If you unchecked the box, before you continue please [register the client certificate](../../server/security/authentication/client-certificate-usage.mdx) 
      in the OS store or import it to the browser.
 
 ![Restart and choose certificate](./assets/w4.png)
@@ -565,7 +565,7 @@ You are responsible to periodically renew your server certificate.
 
 <Admonition type="info" title="Registering as a service to increase server availability" id="registering-as-a-service-to-increase-server-availability" href="#registering-as-a-service-to-increase-server-availability">
 
-You can now [register the cluster as a service](../../start/installation/running-as-service) in your OS (it will run in the background 
+You can now [register the cluster as a service](../../start/installation/running-as-service.mdx) in your OS (it will run in the background 
 every time your machine starts).
 
 </Admonition>
@@ -580,7 +580,7 @@ handling technical problems later.
 * **To learn how to fly with RavenDB**, here are a few options:
   * [Demo](https://demo.ravendb.net/) - Step-by-step code walkthrough  
   * [Bootcamp](https://ravendb.net/learn/bootcamp) - Lessons mailed to your inbox 
-  * [Documentation Guide](https://ravendb.net/learn/docs-guide) - In addition to this guide and the [First Steps](../../start/installation/setup-wizard#first-steps-from-our-documentation) 
+  * [Documentation Guide](https://ravendb.net/learn/docs-guide) - In addition to this guide and the [First Steps](../../start/installation/setup-wizard.mdx#first-steps-from-our-documentation) 
     section below, RavenDB's extensive documentation also has detailed explanations of server related operations, external replication, 
     cloud-based servers, and much more. Navigate to related articles on the left and right sides of your screen.  
   * [Workshops](https://workshops.ravendb.net/winter-2022)
@@ -589,22 +589,22 @@ handling technical problems later.
 #### First Steps from our documentation:
 
 * **Importing from Other Databases**
-  * [From SQL Databases](../../studio/database/tasks/import-data/import-from-sql)
-  * [From NoSQL Databases](../../studio/database/tasks/import-data/import-from-other)
-  * [From CSV](../../studio/database/tasks/import-data/import-from-csv)
-  * [From RavenDB file](../../studio/database/tasks/import-data/import-data-file) or from a [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb)
-* [Configure Client Certificates](../../server/security/authentication/certificate-management) to customize security access 
+  * [From SQL Databases](../../studio/database/tasks/import-data/import-from-sql.mdx)
+  * [From NoSQL Databases](../../studio/database/tasks/import-data/import-from-other.mdx)
+  * [From CSV](../../studio/database/tasks/import-data/import-from-csv.mdx)
+  * [From RavenDB file](../../studio/database/tasks/import-data/import-data-file.mdx) or from a [live RavenDB server](../../studio/database/tasks/import-data/import-from-ravendb.mdx)
+* [Configure Client Certificates](../../server/security/authentication/certificate-management.mdx) to customize security access 
   permissions for each client.  
-* [APIs to Integrate With Your Client](../../client-api/what-is-a-document-store) starting with the Document Store.  
-* [Studio GUI Overview](../../studio/overview) to learn how the built-in RavenDB studio features can save you time and help you 
+* [APIs to Integrate With Your Client](../../client-api/what-is-a-document-store.mdx) starting with the Document Store.  
+* [Studio GUI Overview](../../studio/overview.mdx) to learn how the built-in RavenDB studio features can save you time and help you 
   keep things running smoothly.  
-* [RavenDB Indexing](../../indexes/indexing-basics) is very sophisticated.  Auto-indexing is default and with agility in mind, it adjusts to changes immediately, 
+* [RavenDB Indexing](../../indexes/indexing-basics.mdx) is very sophisticated.  Auto-indexing is default and with agility in mind, it adjusts to changes immediately, 
   but you can set up static indexes manually as well.  
-* [Backup Securely](../../studio/database/tasks/backup-task)  
+* [Backup Securely](../../studio/database/tasks/backup-task.mdx)  
 * **Document Extensions**  
-  * [Time Series](../../document-extensions/timeseries/overview)  
-  * [Attachments](../../document-extensions/attachments/what-are-attachments)  
-  * [Counters](../../document-extensions/counters/overview)  
+  * [Time Series](../../document-extensions/timeseries/overview.mdx)  
+  * [Attachments](../../document-extensions/attachments/what-are-attachments.mdx)  
+  * [Counters](../../document-extensions/counters/overview.mdx)  
 
 
 
@@ -615,7 +615,7 @@ handling technical problems later.
 In the **Unsecure Mode**, all you need to do is specify the **IP address** and **ports** that the server will listen to.  
 <Admonition type="danger" title="Danger" id="danger" href="#danger">
 
-* We strongly recommend [setting up securely](../../start/installation/setup-wizard#secure-setup-with-a-free-let) from the 
+* We strongly recommend [setting up securely](../../start/installation/setup-wizard.mdx#secure-setup-with-a-free-let) from the 
   start to prevent potential future vulnerability.  The process takes a few minutes and is free.  
 
 * All security features (authentication, authorization and encryption) are **disabled** in the Unsecure Mode.  
@@ -637,7 +637,7 @@ In the **Unsecure Mode**, all you need to do is specify the **IP address** and *
                    This new cluster will only contain this node.  
    * **Unchecked** - The server will Not be created in a cluster.  
                      The server will be created in a 
-                     [Passive State](../../studio/cluster/cluster-view#cluster-nodes-states-&-types-flow) 
+                     [Passive State](../../studio/cluster/cluster-view.mdx#cluster-nodes-states-&-types-flow) 
                      and can later be added to an already existing cluster.  
 
 4. **Environment**  
@@ -663,6 +663,6 @@ In each node, start the RavenDB server and complete the Setup Wizard, entering a
 
 Once all the servers are up and running, building the cluster is simple.  
 Access the studio, go to _Manage Server &gt; Cluster_, and add nodes to the cluster by their URL.  
-Learn more in [Adding a Node to a Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster).  
+Learn more in [Adding a Node to a Cluster](../../studio/cluster/setting-a-cluster.mdx#add-another-node-to-the-cluster).  
 
 

@@ -16,13 +16,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * In this article:
-    * [GenAI Task](../../ai-integration/gen-ai-integration/gen-ai-studio#genai-task)  
-    * [Add a GenAI Task](../../ai-integration/gen-ai-integration/gen-ai-studio#add-a-genai-task)
-    * [Configure basic settings](../../ai-integration/gen-ai-integration/gen-ai-studio#configure-basic-settings)
-    * [Generate context objects](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects)
-    * [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema)
-    * [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script)
-    * [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuration-and-save-task)
+    * [GenAI Task](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#genai-task)  
+    * [Add a GenAI Task](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#add-a-genai-task)
+    * [Configure basic settings](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#configure-basic-settings)
+    * [Generate context objects](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#generate-context-objects)
+    * [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#define-prompt-and-json-schema)
+    * [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#provide-update-script)
+    * [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#review-configuration-and-save-task)
 
 </Admonition>
 ## GenAI Task
@@ -35,7 +35,7 @@ A GenAI task is an ongoing task that:
 3. Sends context objects one by one to an AI model for processing.  
 4. Handles the AI model's output.  
 ### The GenAI Task wizard
-Studio's [AI Tasks](../../ai-integration/ai-tasks-list-view) view includes a GenAI **wizard**.  
+Studio's [AI Tasks](../../ai-integration/ai-tasks-list-view.mdx) view includes a GenAI **wizard**.  
 Using this wizard, we can easily **create and configure** our task, as well as **test each step 
 of its creation** in a dedicated "playground".  
 We will go through the task creation and testing sequence below, using the wizard.  
@@ -47,7 +47,7 @@ remove them.
 To use this sample through this guide, simply create a document named `posts/1` with the 
 following content.  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "first post",
@@ -85,7 +85,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
 ![Add a GenAI Task](./assets/gen-ai_add-GenAI-task.png)
 
 1. **AI Hub**  
-   Click to open the [AI Hub view](../../ai-integration/ai-tasks-list-view).  
+   Click to open the [AI Hub view](../../ai-integration/ai-tasks-list-view.mdx).  
    Use this view to handle AI connection strings and tasks, and to view task statistics.  
 2. **AI Tasks**  
    Click to open the AI Tasks view.  
@@ -111,7 +111,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * When you complete creating the task and run it, the task will add a metadata property 
       to documents it processes, named after the identifier you define here. The task will 
       use this property to keep track of document parts it had already processed.  
-      See an example [here](../../ai-integration/gen-ai-integration/gen-ai-studio#run-time).  
+      See an example [here](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#run-time).  
 
 3. **Task state**  
    Use this switch to enable or disable the task.  
@@ -126,8 +126,8 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
    Use this bar to Select or Create the connection string that the GenAI task 
    will use to connect the AI model.  
     * You can create the connection string either here or in the dedicated 
-      [AI Connection Strings](../../ai-integration/connection-strings/connection-strings-overview) view.  
-    * Here is an example for a connection string to a local [Ollama](../../ai-integration/connection-strings/ollama) 
+      [AI Connection Strings](../../ai-integration/connection-strings/connection-strings-overview.mdx) view.  
+    * Here is an example for a connection string to a local [Ollama](../../ai-integration/connection-strings/ollama.mdx) 
       AI model capable of filtering spam entries from a blog.  
       
          ![Ollama connection string](./assets/gen-ai_ollama-connection-string.png)
@@ -154,7 +154,7 @@ To add a new GenAI task, open: **AI Hub** &gt; **AI Tasks** &gt; **Add AI Task**
     * The purpose of the script you provide here is to format the documents' data in 
       common `Context object` that can be easily and methodically processed by the AI model.  
     * An example for a context generation script can be: 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// go through all the comments left for this blog
 for(const comment of this.Comments)
@@ -181,7 +181,7 @@ for(const comment of this.Comments)
     * **Select a document from the source collection**  
       Select a document to test your context generation script on.  
        * To use the same sample document we're using to demonstrate the process, 
-         add `posts/1` and select it here.  
+         add [posts/1](../../.mdx) and select it here.  
        * Or if you prefer it, click `enter a document manually` and enter the sample document content yourself.  
     * To run the test, click the **Test context** button.  
       If all works well, you will see a list of context objects created by your script, one for each comment.  
@@ -192,7 +192,7 @@ for(const comment of this.Comments)
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Configure basic settings](../../ai-integration/gen-ai-integration/gen-ai-studio#configure-basic-settings).  
+      Click to return to the previous step, [Configure basic settings](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#configure-basic-settings).  
     * **Test Context**  
       Click to test your context generation script on the document selected/entered in the playground area.  
        * You do not have to use the playground; you'll be able to define and save your task without testing 
@@ -200,7 +200,7 @@ for(const comment of this.Comments)
        * However, running the test here will allow you to use the generated result set in the playground of 
          the next wizard step.  
     * **Next**  
-      Click to advance to the next step, [Define prompt & JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema).  
+      Click to advance to the next step, [Define prompt & JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#define-prompt-and-json-schema).  
 
 
 
@@ -217,7 +217,7 @@ for(const comment of this.Comments)
 1. **Prompt**  
    These are the instructions for the AI model.  
    For our spam filtering GenAI task, we can specify, for example:  
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`Check if the following blog post comment is spam or not.  
 A spam comment typically includes irrelevant or promotional content, excessive links, 
@@ -236,7 +236,7 @@ Consider the language, intent, and relevance of the comment to the blog post top
       The results object will be formatted as the sample object you provide.  
       
          E.g. if you select this option and provide this object:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{ 
    "Blocked": true, 
@@ -248,7 +248,7 @@ Consider the language, intent, and relevance of the comment to the blog post top
     
          Then result objects returned by the AI model may look like:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Blocked": false,
@@ -257,7 +257,7 @@ Consider the language, intent, and relevance of the comment to the blog post top
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Blocked": true,
@@ -296,12 +296,12 @@ Consider the language, intent, and relevance of the comment to the blog post top
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Generate context objects](../../ai-integration/gen-ai-integration/gen-ai-studio#generate-context-objects).  
+      Click to return to the previous step, [Generate context objects](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#generate-context-objects).  
     * **Test Context**  
       Click to test the prompt and JSON schema you define above, on the context objects generated from the 
       document you provided.  
     * **Next**  
-      Click to advance to the next step, [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script).  
+      Click to advance to the next step, [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#provide-update-script).  
 
 
 
@@ -317,7 +317,7 @@ The update script set in this step, determines what actions should be taken on t
    Provide a JavaScript that processes each results object returned from the AI model and takes needed actions.  
    In our case, as the results determine whether each blog comment is spam or not, the script can react 
    to results indicating that a comment is spam, by removing the comment.  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Find the comment
 const idx = this.Comments.findIndex(c => c.Id == $input.Id);  
@@ -348,14 +348,14 @@ if($output.Blocked)
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio#define-prompt-and-json-schema).  
+      Click to return to the previous step, [Define Prompt and JSON schema](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#define-prompt-and-json-schema).  
     * **Test Context**  
       Click to test the update script you define above.  
       Note that even though in our case we remove comments from existing documents, 
       the update script can leave the original document unchanged, create new documents, 
       and so on - as you choose.  
     * **Next**  
-      Click to advance to the next step, [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio#review-configuration-and-save-task).  
+      Click to advance to the next step, [Review configuration and Save task](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#review-configuration-and-save-task).  
 
 
 
@@ -381,7 +381,7 @@ If your task is enabled, it will start running when you save it.
     * **Cancel**  
       Click to cancel any changes made in the task.  
     * **Back**  
-      Click to return to the previous step, [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio#provide-update-script).  
+      Click to return to the previous step, [Provide update script](../../ai-integration/gen-ai-integration/gen-ai-studio.mdx#provide-update-script).  
     * **Save**  
       Save your task
 

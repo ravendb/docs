@@ -64,7 +64,7 @@ Click on `Create trigger` on the top right corner.
 Let's assume you've imported the template earlier and that you named your host "RavenDB Amazing Server v7.0". 
 
 Name the trigger "Server is down" and enter the following expression into the text box:   
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`\{RavenDB Amazing Server v7.0:serverUpTime.nodata(1800)\}=1
 `}

@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ## Server statistics
 
-Server statistics are available in the `Studio` via the [Server Dashboard](../../studio/server/server-dashboard), and can  
+Server statistics are available in the `Studio` via the [Server Dashboard](../../studio/server/server-dashboard.mdx), and can  
 also be retrieved by dedicated endpoints.
 
 ### Metrics
@@ -43,7 +43,7 @@ A document containing the following metrics is retrieved:
     * ReducedPerSec   
 
 where each meter has the following format:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     Current: 3,
@@ -64,7 +64,7 @@ In order to get server memory statistics, use the `{serverUrl}/admin/debug/memor
 </Admonition>
 
 A document containing the following memory statistics is retrieved:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     WorkingSet: 600551424,
@@ -232,7 +232,7 @@ To get server CPU stats use the `{serverUrl}/admin/debug/cpu/stats` endpoint
 </Admonition>
 
 A document containing the following information is retrieved:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	CpuStats: [
@@ -264,7 +264,7 @@ A document containing the following information is retrieved:
 ## Database statistics
 
 Database statistics are available in the `Studio`, and can also be retrieved by dedicated endpoints  
-or via the Client API (details [here](../../client-api/operations/maintenance/get-stats)).
+or via the Client API (details [here](../../client-api/operations/maintenance/get-stats.mdx)).
  
 ### Database Statistics via the Studio
 
@@ -311,7 +311,7 @@ Database statistics can also be retrieved in a JSON format by using the
 </Admonition>
 
 A document containing the following database statistics is retrieved:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 	CountOfIndexes: 4,
@@ -399,7 +399,7 @@ Similarly to the server metrics endpoint, a document containing the following da
     * ReducedPerSec   
 
 where each meter has the following format:
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     Current: 3,

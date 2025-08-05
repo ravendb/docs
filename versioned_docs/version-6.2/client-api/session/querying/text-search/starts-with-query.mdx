@@ -26,9 +26,9 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
-  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#negate-startswith)
 
 </Admonition>
 ## StartsWith
@@ -210,9 +210,9 @@ where (true and not startsWith(Name, "Ch"))
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
-  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#negate-startswith)
 
 </Admonition>
 ## StartsWith
@@ -310,9 +310,9 @@ where (true and not startsWith(Name, "Ch"))
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#startswith)
-  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#startswith-(case-sensitive))
-  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-startswith)
+  * [StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith)
+  * [StartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query.mdx#startswith-(case-sensitive))
+  * [Negate StartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#negate-startswith)
 
 </Admonition>
 ## StartsWith
@@ -452,17 +452,17 @@ where (true and not startsWith(Name, "Ch"))
 * Unless explicitly specified, the string comparisons are case-insensitive by default.
 
 * In this page:
-  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith)  
-  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query#wherestartswith-(case-sensitive))  
-  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query#negate-wherestartswith)  
-  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-query#syntax)  
+  * [whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#wherestartswith)  
+  * [whereStartsWith (case-sensitive)](../../../../client-api/session/querying/text-search/starts-with-query.mdx#wherestartswith-(case-sensitive))  
+  * [Negate whereStartsWith](../../../../client-api/session/querying/text-search/starts-with-query.mdx#negate-wherestartswith)  
+  * [Syntax](../../../../client-api/session/querying/text-search/starts-with-query.mdx#syntax)  
 
 </Admonition>
 ## whereStartsWith
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
     .query({ collection: "Products" })
      // Call 'whereStartsWith'
@@ -490,7 +490,7 @@ where startsWith(Name, "Ch")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
     .query({ collection: "Products" })
     // Call 'whereStartsWith'
@@ -518,7 +518,7 @@ where exact(startsWith(Name, "Ch"))
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
     .query({ collection: "Products" })
     // Call 'Not' to negate the next predicate
@@ -546,8 +546,8 @@ where exists(Name) and not startsWith(Name, "Ch")
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`// Available overloads:
 whereStartsWith(fieldName, value);
 whereStartsWith(fieldName, value, exact);

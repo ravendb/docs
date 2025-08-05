@@ -19,18 +19,18 @@ In RavenDB `7.0.x`, they are either unavailable or their behavior is inconsisten
 with their behavior in previous versions.  
 
 * In this page:  
-   * [RavenDB now incorporates NLog as its logging system](../../migration/server/server-breaking-changes#ravendb-incorporates-nlog-as-its-logging-system)  
-   * [Removed obsolete properties](../../migration/server/server-breaking-changes#removed-obsolete-properties)  
+   * [RavenDB now incorporates NLog as its logging system](../../migration/server/server-breaking-changes.mdx#ravendb-incorporates-nlog-as-its-logging-system)  
+   * [Removed obsolete properties](../../migration/server/server-breaking-changes.mdx#removed-obsolete-properties)  
 
 </Admonition>
 ## RavenDB incorporates NLog as its logging system
 RavenDB's logging system has changed; the server now incorporates the 
 NLog logging framework and writes all log data through it.  
 One of the changes that NLog brings to RavenDB is the richer set 
-of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs).  
-Read more about Nlog [in the dedicated article](../../server/troubleshooting/logging).
+of logging levels, visible right away through Studio's [admin-logs view](../../studio/server/debug/admin-logs.mdx).  
+Read more about Nlog [in the dedicated article](../../server/troubleshooting/logging.mdx).
 If you migrate to RavenDB `7.x` from an earlier version, please 
-read the section related to NLog in the [migration page](../../migration/server/data-migration).  
+read the section related to NLog in the [migration page](../../migration/server/data-migration.mdx).  
 
 
 
@@ -40,7 +40,7 @@ The following properties are no longer in use, and have been removed from RavenD
 * `ServerOptions`'s `AcceptEula` property is no longer used,  
   Please use `Licensing.EulaAccepted` instead.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Removed 
 c bool AcceptEula
@@ -50,7 +50,7 @@ c bool AcceptEula
 
 * The `MemoryInfoResult` struct no longer includes these classes:  
    - `MemoryUsageIntervals`  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Removed 
 c sealed class MemoryUsageIntervals  
@@ -58,7 +58,7 @@ c sealed class MemoryUsageIntervals
 </CodeBlock>
 </TabItem>
    - `MemoryUsageLowHigh`  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Removed 
 c sealed class MemoryUsageLowHigh  

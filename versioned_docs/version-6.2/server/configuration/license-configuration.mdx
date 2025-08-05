@@ -19,7 +19,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * When using this configuration key in _settings.json_ embed the license key as a __string__, e.g.:  
   `"License": "{ paste your license key including curly brackets here }"`.  
 
-* When using this configuration key as an [environment variable](../../server/configuration/configuration-options#environment-variables) embed the JSON license key __object__.  
+* When using this configuration key as an [environment variable](../../server/configuration/configuration-options.mdx#environment-variables) embed the JSON license key __object__.  
 
 * If `License` is specified, it overrides the `License.Path` configuration.  
 - **Type**: `string`
@@ -117,8 +117,8 @@ EXPERT ONLY.
 Disable automatic updates of the license from the License Server (api.ravendb.net).  
 Can still update the license by either:  
 
-* Setting the [License](../../server/configuration/license-configuration#license) configuration
-* Setting the [License.Path](../../server/configuration/license-configuration#license.path) configuration
+* Setting the [License](../../server/configuration/license-configuration.mdx#license) configuration
+* Setting the [License.Path](../../server/configuration/license-configuration.mdx#license.path) configuration
 * Replacing the _license.json_ file on disk
 - **Type**: `bool`
 - **Default**: `false`

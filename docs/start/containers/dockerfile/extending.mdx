@@ -34,7 +34,7 @@ This approach involves using `FROM ravendb/ravendb` to build upon the official i
 
 ##### **Dockerfile Example for Extension**
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`# Use the official RavenDB image as the base
 FROM ravendb/ravendb:7.0-ubuntu-latest
@@ -61,7 +61,7 @@ CMD ["/bin/bash", "/usr/lib/ravendb/scripts/run-raven.sh"]
 
 Use BuildX if you need to build for multiple architectures (e.g., x64, arm64):
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`docker buildx build --platform linux/amd64,linux/arm64 -t my-ravendb .
 `}
@@ -94,7 +94,7 @@ You can do the same thing in Docker using `-e` argument without tinkering with t
 
 ###### Replace the Entry Script
 Copy and use a custom `run-raven.sh` script:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`COPY my-run-raven.sh /usr/lib/ravendb/scripts/run-raven.sh
 CMD ["/bin/bash", "/usr/lib/ravendb/scripts/run-raven.sh"]
@@ -110,7 +110,7 @@ It's designed to work for anyone, so in some scenarios you may want to chisel it
 Key responsibilities include:
 
 ###### Legacy Data Migration
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`/usr/lib/ravendb/scripts/link-legacy-datadir.sh
 `}
@@ -122,7 +122,7 @@ The data had different directory structure inside Linux back then, so we needed 
 
 ###### Command Construction
 Constructs the RavenDB server start command using arguments and environment variables:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`COMMAND="/usr/lib/ravendb/server/Raven.Server"
 `}
@@ -158,7 +158,7 @@ Define and set variables like `RAVEN_ServerUrl` to match your deployment require
 ###### Handles Shutdown Gracefully
 
 Use signal trapping for smooth termination of the server:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`trap 'kill -TERM "$COMMANDPID"' TERM INT
 `}
@@ -169,7 +169,7 @@ Use signal trapping for smooth termination of the server:
 Add database initialization or additional setup scripts as needed.
 ##### **Example Custom Script**
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`# Custom startup script for RavenDB
 

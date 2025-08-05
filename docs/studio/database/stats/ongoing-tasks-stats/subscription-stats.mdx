@@ -19,12 +19,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
   the task to a client.  
 * The server sends the documents in batches in an orderly manner, waiting for the client to acknowledge the 
   consumption of each batch before sending the next.  
-* Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task).  
+* Learn more about data subscription tasks [here](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx).  
 
 * In this page:  
-   * [Subscription Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats-closed-view)  
-   * [Subscription Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#subscription-stats-expanded-view)  
-   * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats#connection-event-indicators)  
+   * [Subscription Stats Closed View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-closed-view)  
+   * [Subscription Stats Expanded View](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#subscription-stats-expanded-view)  
+   * [Connection Event Indicators](../../../../studio/database/stats/ongoing-tasks-stats/subscription-stats.mdx#connection-event-indicators)  
 
 </Admonition>
 ## Subscription Stats
@@ -52,7 +52,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      Overall connection time.  
    * **Client URL**  
    * **Strategy**  
-     The [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) used by the client.  
+     The [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) used by the client.  
    * **Number of batches acknowledged**  
      The number of batches whose processing was completed & confirmed by the client.  
    * **Size of all batches**  
@@ -67,7 +67,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    * **Included Documents**  
      **Included Counters**  
      **Included Time Series entries**  
-     Number of [included](../../../../client-api/data-subscriptions/creation/examples#create-subscription-with-include-statement) 
+     Number of [included](../../../../client-api/data-subscriptions/creation/examples.mdx#create-subscription-with-include-statement) 
      documents, counters, and time series  
 * **Sending Documents**  
   The time it took the server to send the documents in this batch.  
@@ -78,8 +78,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 Connection Event Indicators signify events related to the initiation, state, 
 or termination of a client connection.  
 
-* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-closed-view) 
-  and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview#task-rulers-expanded-view) 
+* Indicators are shown in both the [Closed](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-closed-view) 
+  and the [Expanded](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx#task-rulers-expanded-view) 
   task views.  
 * Hovering over a connection event indicator will popup information related to it, if available.  
 **Connection Initiated**  
@@ -90,14 +90,14 @@ The client has forcibly aborted the connection.
 **Connection Rejected**  
 ![Rejected Connnection](./assets/stats-view-rejected-connection.png)  
 A subscription task handles only a single client/connection at a time.  
-A client that uses the *OpenIfFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay) 
+A client that uses the *OpenIfFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay) 
 has attempted to open a connection to the subscription task but was rejected 
 because the task is already occupied by another client.  
 **Pending Connection**  
 ![Pending Connnection](./assets/stats-view-pending-connection.png)  
   
 1. Client **A** connects to the subscription task.  
-2. Client **B**, using the *WaitForFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#worker-interplay), 
+2. Client **B**, using the *WaitForFree* [strategy](../../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription.mdx#worker-interplay), 
    attempts to connect the task.  
    Discovering that the task is occupied, Client **B** is now pending, 
    waiting for Client **A** to disconnect.  

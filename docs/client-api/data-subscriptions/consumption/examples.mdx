@@ -22,15 +22,15 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 <Admonition type="note" title="Note">
 
 * In this page:  
-  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)
-  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)
-  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session)
-  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)
-  * [Worker that processes a blittable object](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-a-blittable-object)
-  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)
-  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)
-  * [Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-failover-on-other-nodes)
-  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples#primary-and-secondary-workers)
+  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
+  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
+  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
+  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)
+  * [Worker that processes a blittable object](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-a-blittable-object)
+  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)
+  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)
+  * [Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)
+  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
 
 </Admonition>
 ## Client with full exception handling and processing retries
@@ -38,7 +38,7 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
 Here we implement a client that handles exceptions thrown by the worker.  
 If the exception is recoverable, the client retries creating the worker.
 
-<TabItem value="something" label="reconnecting_client">
+<TabItem value="reconnecting_client" label="reconnecting_client">
 <CodeBlock language="csharp">
 {`while (true)
 \{
@@ -142,7 +142,7 @@ If the exception is recoverable, the client retries creating the worker.
 
 Here we create a worker and specify the maximum number of documents the server will send to the worker in each batch.
 
-<TabItem value="something" label="subscription_worker_with_batch_size">
+<TabItem value="subscription_worker_with_batch_size" label="subscription_worker_with_batch_size">
 <CodeBlock language="csharp">
 {`var workerWBatch = store.Subscriptions.GetSubscriptionWorker<Order>(
     new SubscriptionWorkerOptions(subscriptionName)
@@ -170,7 +170,7 @@ Note:
 The session is opened with `batch.OpenSession` instead of with `Store.OpenSession`.
 </Admonition>
 
-<TabItem value="something" label="subscription_with_open_session_usage">
+<TabItem value="subscription_with_open_session_usage" label="subscription_with_open_session_usage">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -210,7 +210,7 @@ _ = subscriptionWorker.Run(batch =>
 Here we define a subscription that projects the _Order_ documents into a dynamic format.  
 The worker processes the dynamic objects it receives.
 
-<TabItem value="something" label="dynamic_worker">
+<TabItem value="dynamic_worker" label="dynamic_worker">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -249,7 +249,7 @@ _ = subscriptionWorker.Run(batch =>
 Create a worker that processes documents as low level blittable objects.  
 This can be useful in extreme high-performance scenarios, but may be dangerous due to the direct usage of unmanaged memory.
 
-<TabItem value="something" label="blittable_worker">
+<TabItem value="blittable_worker" label="blittable_worker">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -290,7 +290,7 @@ _ = subscriptionWorker.Run(batch =>
 Here we create a subscription client that runs until there are no more new documents to process.  
 This is useful for ad-hoc, single-use processing where the user needs to ensure that all documents are fully processed.
 
-<TabItem value="something" label="single_run">
+<TabItem value="single_run" label="single_run">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -342,7 +342,7 @@ will include all the referenced _Product_ documents in the batch sent to the wor
 
 When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
-<TabItem value="something" label="subscription_with_includes_path_usage">
+<TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -387,7 +387,7 @@ _ = subscriptionWorker.Run(batch =>
 In this configuration, any available node will create a worker.  
 If the worker fails, another available node will take over.
 
-<TabItem value="something" label="waitforfree">
+<TabItem value="waitforfree" label="waitforfree">
 <CodeBlock language="csharp">
 {`var worker = store.Subscriptions.GetSubscriptionWorker<Order>(
     new SubscriptionWorkerOptions(subscriptionName)
@@ -408,7 +408,7 @@ Here we create two workers:
 * The secondary worker, with a `WaitForFree` strategy, will wait for the first worker to fail (due to machine failure, etc.).
 
 The primary worker:  
-<TabItem value="something" label="waiting_subscription_1">
+<TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="csharp">
 {`var primaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
     new SubscriptionWorkerOptions(subscriptionName)
@@ -435,7 +435,7 @@ while (true)
 </TabItem>
 
 The secondary worker:  
-<TabItem value="something" label="waiting_subscription_2">
+<TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="csharp">
 {`var secondaryWorker = store.Subscriptions.GetSubscriptionWorker<Order>(
     new SubscriptionWorkerOptions(subscriptionName)
@@ -470,20 +470,20 @@ while (true)
 <Admonition type="note" title="Note">
 
 *  this page:  
-   * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)  
-   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
-   * [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-left)  
-   * [Worker that processes raw objects](../../../client-api/data-subscriptions/consumption/examples#sworker-that-processes-raw-objects)  
-   * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session)
-   * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)  
-   * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples#primary-and-secondary-workers)  
+   * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)  
+   * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)  
+   * [Subscription that ends when no documents left](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-left)  
+   * [Worker that processes raw objects](../../../client-api/data-subscriptions/consumption/examples.mdx#sworker-that-processes-raw-objects)  
+   * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
+   * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)  
+   * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)  
 
 </Admonition>
 ## Worker with a specified batch size
 
 Here we create a worker and specify the maximum number of documents the server will send to the worker in each batch.
 
-<TabItem value="something-something" label="subscription_worker_with_batch_size">
+<TabItem value="subscription_worker_with_batch_size" label="subscription_worker_with_batch_size">
 <CodeBlock language="java">
 {`SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subscriptionName);
 options.setMaxDocsPerBatch(20);
@@ -500,7 +500,7 @@ workerWBatch.run(x -> \{ /* custom logic */\});
 Here we implement a client that handles exceptions thrown by a worker.  
 If the exception is recoverable, the client retries creating the worker.
 
-<TabItem value="something-something" label="reconnecting_client">
+<TabItem value="reconnecting_client" label="reconnecting_client">
 <CodeBlock language="java">
 {`while (true) \{
     SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subscriptionName);
@@ -582,7 +582,7 @@ Here we create a subscription client that runs only up to the point there are no
 
 This is useful for ad-hoc, single-use processing where the user needs to ensure that all documents are fully processed.
 
-<TabItem value="something-something" label="single_run">
+<TabItem value="single_run" label="single_run">
 <CodeBlock language="java">
 {`SubscriptionWorkerOptions options = new SubscriptionWorkerOptions(subsId);
 
@@ -611,7 +611,7 @@ try \{
 
 Here we create a worker that processes received data as ObjectNode objects.
 
-<TabItem value="something-something" label="dynamic_worker">
+<TabItem value="dynamic_worker" label="dynamic_worker">
 <CodeBlock language="java">
 {`String subscriptionName = "My dynamic subscription";
 
@@ -640,7 +640,7 @@ worker.run(x -> \{
 Here we create a subscription that sends Order documents that do not have a shipping date.  
 The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
-<TabItem value="something-something" label="subscription_with_open_session_usage">
+<TabItem value="subscription_with_open_session_usage" label="subscription_with_open_session_usage">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
 subscriptionCreationOptions.setQuery("from Orders as o where o.ShippedAt = null");
@@ -673,7 +673,7 @@ will include all the referenced _Product_ documents in the batch sent to the wor
 
 When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
-<TabItem value="something-something" label="subscription_with_includes_path_usage">
+<TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
 <CodeBlock language="java">
 {`SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
 subscriptionCreationOptions.setQuery("from Orders include Lines[].Product");
@@ -710,7 +710,7 @@ Here we create two workers:
 
 The primary worker:
 
-<TabItem value="something-something" label="waiting_subscription_1">
+<TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="java">
 {`SubscriptionWorkerOptions options1 = new SubscriptionWorkerOptions(subscriptionName);
 options1.setStrategy(SubscriptionOpeningStrategy.TAKE_OVER);
@@ -733,7 +733,7 @@ while (true) \{
 
 The secondary worker:
 
-<TabItem value="something-something" label="waiting_subscription_2">
+<TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="java">
 {`SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);
 options2.setStrategy(SubscriptionOpeningStrategy.WAIT_FOR_FREE);
@@ -762,14 +762,14 @@ while (true) \{
 <Admonition type="note" title="Note">
 
 * In this page:  
-  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)
-  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)
-  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session)
-  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)
-  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)
-  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)
-  * [Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples#subscription-workers-with-failover-on-other-nodes)
-  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples#primary-and-secondary-workers)
+  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
+  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
+  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
+  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)
+  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)
+  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)
+  * [Subscription workers with failover on other nodes](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-workers-with-failover-on-other-nodes)
+  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
 
 </Admonition>
 ## Client with full exception handling and processing retries
@@ -777,7 +777,7 @@ while (true) \{
 Here we implement a client that handles exceptions thrown by a worker.  
 If the exception is recoverable, the client retries creating the worker.
 
-<TabItem value="something-something" label="reconnecting_client">
+<TabItem value="reconnecting_client" label="reconnecting_client">
 <CodeBlock language="python">
 {`while True:
     options = SubscriptionWorkerOptions(subscription_name)
@@ -853,7 +853,7 @@ If the exception is recoverable, the client retries creating the worker.
 
 Here we create a worker and specify the maximum number of documents the server will send to the worker in each batch.
 
-<TabItem value="something-something" label="subscription_worker_with_batch_size">
+<TabItem value="subscription_worker_with_batch_size" label="subscription_worker_with_batch_size">
 <CodeBlock language="python">
 {`worker_w_batch = store.subscriptions.get_subscription_worker(
     SubscriptionWorkerOptions(subscription_name, max_docs_per_batch=20), Order
@@ -873,7 +873,7 @@ _ = worker_w_batch.run(
 Here we create a subscription that sends _Order_ documents that do not have a shipping date.  
 The worker receiving these documents will update the `ShippedAt` field value and save the document back to the server via the session.
 
-<TabItem value="something-something" label="subscription_with_open_session_usage">
+<TabItem value="subscription_with_open_session_usage" label="subscription_with_open_session_usage">
 <CodeBlock language="python">
 {`subscription_name = store.subscriptions.create_for_options(
     SubscriptionCreationOptions(query="from Orders as o where o.ShippedAt = null")
@@ -903,7 +903,7 @@ _ = subscription_worker.run(_transfer_order_callback)
 Here we define a subscription that projects the _Order_ documents into a dynamic format.  
 The worker processes the dynamic objects it receives.
 
-<TabItem value="something-something" label="dynamic_worker">
+<TabItem value="dynamic_worker" label="dynamic_worker">
 <CodeBlock language="python">
 {`subscription_name = "My dynamic subscription"
 store.subscriptions.create_for_class(
@@ -939,7 +939,7 @@ Here we create a subscription client that runs only up to the point there are no
 
 This is useful for ad-hoc, single-use processing where the user needs to ensure that all documents are fully processed.
 
-<TabItem value="something-something" label="single_run">
+<TabItem value="single_run" label="single_run">
 <CodeBlock language="python">
 {`high_value_orders_worker = store.subscriptions.get_subscription_worker(
     SubscriptionWorkerOptions(
@@ -974,7 +974,7 @@ will include all the referenced _Product_ documents in the batch sent to the wor
 
 When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
-<TabItem value="something" label="subscription_with_includes_path_usage">
+<TabItem value="subscription_with_includes_path_usage" label="subscription_with_includes_path_usage">
 <CodeBlock language="csharp">
 {`// Create the subscription task on the server:
 // ===========================================
@@ -1019,7 +1019,7 @@ _ = subscriptionWorker.Run(batch =>
 In this configuration, any available node will create a worker.  
 If the worker fails, another available node will take over.
 
-<TabItem value="something-something" label="waitforfree">
+<TabItem value="waitforfree" label="waitforfree">
 <CodeBlock language="python">
 {`worker = store.subscriptions.get_subscription_worker(
     SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE), Order
@@ -1038,7 +1038,7 @@ Here we create two workers:
 * The secondary worker, with a `WAIT_FOR_FREE` strategy, will wait for the first worker to fail (due to machine failure, etc.).
 
 The primary worker:  
-<TabItem value="something-something" label="waiting_subscription_1">
+<TabItem value="waiting_subscription_1" label="waiting_subscription_1">
 <CodeBlock language="python">
 {`primary_worker = store.subscriptions.get_subscription_worker(SubscriptionWorkerOptions(subscription_name, strategy=SubscriptionOpeningStrategy.TAKE_OVER), Order)
 
@@ -1052,7 +1052,7 @@ while True:
 </TabItem>
 
 The secondary worker:  
-<TabItem value="something-something" label="waiting_subscription_2">
+<TabItem value="waiting_subscription_2" label="waiting_subscription_2">
 <CodeBlock language="python">
 {`secondary_worker = store.subscriptions.get_subscription_worker(SubscriptionWorkerOptions(subscription_name), strategy=SubscriptionOpeningStrategy.WAIT_FOR_FREE)
 
@@ -1074,13 +1074,13 @@ while True:
 <Admonition type="note" title="Note">
 
 * In this page:
-  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)
-  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples#worker-with-a-specified-batch-size)
-  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples#worker-that-operates-with-a-session)
-  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples#worker-that-processes-dynamic-objects)
-  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples#subscription-that-ends-when-no-documents-are-left)
-  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples#subscription-that-uses-included-documents)
-  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples#primary-and-secondary-workers)
+  * [Client with full exception handling and processing retries](../../../client-api/data-subscriptions/consumption/examples.mdx#client-with-full-exception-handling-and-processing-retries)
+  * [Worker with a specified batch size](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-with-a-specified-batch-size)
+  * [Worker that operates with a session](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-operates-with-a-session)
+  * [Worker that processes dynamic objects](../../../client-api/data-subscriptions/consumption/examples.mdx#worker-that-processes-dynamic-objects)
+  * [Subscription that ends when no documents are left](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-ends-when-no-documents-are-left)
+  * [Subscription that uses included documents](../../../client-api/data-subscriptions/consumption/examples.mdx#subscription-that-uses-included-documents)
+  * [Primary and secondary workers](../../../client-api/data-subscriptions/consumption/examples.mdx#primary-and-secondary-workers)
 
 </Admonition>
 ## Client with full exception handling and processing retries
@@ -1088,8 +1088,8 @@ while True:
 Here we implement a client that handles exceptions thrown by the worker.  
 If the exception is recoverable, the client retries creating the worker.
 
-<TabItem value="something-something" label="consume_1">
-<CodeBlock language="nodejs">
+<TabItem value="consume_1" label="consume_1">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1222,8 +1222,8 @@ async function setupReconnectingWorker(subscriptionName) \{
 
 Here we create a worker and specify the maximum number of documents the server will send to the worker in each batch.
 
-<TabItem value="something-something" label="consume_2">
-<CodeBlock language="nodejs">
+<TabItem value="consume_2" label="consume_2">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1271,8 +1271,8 @@ Note:
 The session is opened with `batch.openSession` instead of with `documentStore.openSession`.
 </Admonition>
 
-<TabItem value="something-something" label="consume_3">
-<CodeBlock language="nodejs">
+<TabItem value="consume_3" label="consume_3">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1318,8 +1318,8 @@ worker.on("batch", async (batch, callback)
 Here we define a subscription that projects the _Order_ documents into a dynamic format.  
 The worker processes the dynamic objects it receives.
 
-<TabItem value="something-something" label="consume_4">
-<CodeBlock language="nodejs">
+<TabItem value="consume_4" label="consume_4">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1360,8 +1360,8 @@ worker.on("batch", (batch, callback) => \{
 Here we create a subscription client that runs until there are no more new documents to process.  
 This is useful for ad-hoc, single-use processing where the user needs to ensure that all documents are fully processed.
 
-<TabItem value="something-something" label="consume_5">
-<CodeBlock language="nodejs">
+<TabItem value="consume_5" label="consume_5">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1420,8 +1420,8 @@ will include all the referenced _Product_ documents in the batch sent to the wor
 
 When the worker accesses these _Product_ documents, no additional requests will be made to the server.
 
-<TabItem value="something-something" label="consume_6">
-<CodeBlock language="nodejs">
+<TabItem value="consume_6" label="consume_6">
+<CodeBlock language="js">
 {`// Create the subscription task on the server:
 // ===========================================
 
@@ -1473,8 +1473,8 @@ Here we create two workers:
 
 The primary worker:
 
-<TabItem value="something-something" label="consume_7">
-<CodeBlock language="nodejs">
+<TabItem value="consume_7" label="consume_7">
+<CodeBlock language="js">
 {`const workerOptions1 = \{
     subscriptionName,
     strategy: "TakeOver",
@@ -1497,8 +1497,8 @@ worker1.on("error", err => \{
 
 The secondary worker:
 
-<TabItem value="something-something" label="consume_8">
-<CodeBlock language="nodejs">
+<TabItem value="consume_8" label="consume_8">
+<CodeBlock language="js">
 {`const workerOptions2 = \{
     subscriptionName,
     strategy: "WaitForFree",

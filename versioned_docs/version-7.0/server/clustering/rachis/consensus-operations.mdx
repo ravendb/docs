@@ -19,13 +19,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   meaning it will either be accepted by the majority of the cluster nodes (n/2 + 1), or completely fail to register.  
 
 * This operation is named **Raft Command** or Raft Log.  
-  Once issued, it is propagated through [Rachis](../../../server/clustering/rachis/what-is-rachis) to all the nodes.  
+  Once issued, it is propagated through [Rachis](../../../server/clustering/rachis/what-is-rachis.mdx) to all the nodes.  
   Only after the cluster's approval (majority of nodes ), it will _eventually_ be executed on all cluster nodes.  
 
 * In this page:  
-  * [Operations that require Consensus](../../../server/clustering/rachis/consensus-operations#operations-that-require-consensus)  
-  * [Operations that do not require Consensus](../../../server/clustering/rachis/consensus-operations#operations-that-do-not-require-consensus)  
-  * [Raft Commands Implementation Details](../../../server/clustering/rachis/consensus-operations#raft-commands-implementation-details)  
+  * [Operations that require Consensus](../../../server/clustering/rachis/consensus-operations.mdx#operations-that-require-consensus)  
+  * [Operations that do not require Consensus](../../../server/clustering/rachis/consensus-operations.mdx#operations-that-do-not-require-consensus)  
+  * [Raft Commands Implementation Details](../../../server/clustering/rachis/consensus-operations.mdx#raft-commands-implementation-details)  
 </Admonition>
 ## Operations that require Consensus
 
@@ -35,9 +35,9 @@ Since getting a consensus is an expensive operation, it is limited to the follow
 * Adding / Removing node to / from a Database Group  
 * Changing database settings  (e.g.   revisions configuraton , conflict resolving)
 * Creating / Deleting Indexes (static and auto indexes)  
-* Configuring the [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info)  
+* Configuring the [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx)  
 
-See [Implementation Details](../../../server/clustering/rachis/consensus-operations#implementation-details) below.  
+See [Implementation Details](../../../server/clustering/rachis/consensus-operations.mdx#implementation-details) below.  
 
 
 
@@ -47,7 +47,7 @@ See [Implementation Details](../../../server/clustering/rachis/consensus-operati
   Any **document CRUD operation** or performing a **query on an _existing_ index** is executed against a _specific node_,  
   even in the case of a cluster partition.  
 
-* Since RavenDB keeps documents synchronized by [Replication](../../../server/clustering/replication/replication), 
+* Since RavenDB keeps documents synchronized by [Replication](../../../server/clustering/replication/replication.mdx), 
   any such operation is automatically replicated to all other nodes in the Database Group, 
   so documents are always available for _Read_, _Write_ and _Query_ even if there is no majority of nodes in the cluster.  
 
@@ -59,7 +59,7 @@ See [Implementation Details](../../../server/clustering/rachis/consensus-operati
 * Every Raft command is assigned a **Raft Index**, which corresponds to the commands sequence execution order.  
   For example, an operation with the index 7 is executed only after _all_ operations with a smaller index have been executed.  
 
-* If needed, a client with [Valid User](../../../server/security/authorization/security-clearance-and-permissions#user) privileges 
+* If needed, a client with [Valid User](../../../server/security/authorization/security-clearance-and-permissions.mdx#user) privileges 
   can wait for a certain Raft command index to be executed on a specific cluster node.  
   This is done by issuing the following REST API call:  
 

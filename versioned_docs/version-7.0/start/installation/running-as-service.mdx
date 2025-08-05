@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Running servers as OS services reduces downtime whenever a machine restarts because the servers automatically start every time the machine boots.  
 
-* After completing the Server configuration process either via the [Setup Wizard](../../start/installation/setup-wizard) 
-  or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server 
+* After completing the Server configuration process either via the [Setup Wizard](../../start/installation/setup-wizard.mdx) 
+  or [Manually](../../start/installation/manual.mdx), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server 
   distribution package.
 
 * After registering RavenDB as a service, be sure to check your OS "Services" manager to see that the "RavenDB" service is there 
@@ -25,15 +25,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 In this page: 
 
-* [Windows](../../start/installation/running-as-service#windows)  
-  * [Registering](../../start/installation/running-as-service#registering)  
-  * [Unregistering](../../start/installation/running-as-service#unregistering)  
-  * [Starting and Stopping](../../start/installation/running-as-service#starting-and-stopping)  
-* [Linux - Ubuntu](../../start/installation/running-as-service#linux---ubuntu)  
+* [Windows](../../start/installation/running-as-service.mdx#windows)  
+  * [Registering](../../start/installation/running-as-service.mdx#registering)  
+  * [Unregistering](../../start/installation/running-as-service.mdx#unregistering)  
+  * [Starting and Stopping](../../start/installation/running-as-service.mdx#starting-and-stopping)  
+* [Linux - Ubuntu](../../start/installation/running-as-service.mdx#linux---ubuntu)  
 
 <Admonition type="info" title="Prerequisites" id="prerequisites" href="#prerequisites">
 
-The prerequisites for running RavenDB as a Service are defined [here](../../start/getting-started#prerequisites).  
+The prerequisites for running RavenDB as a Service are defined [here](../../start/getting-started.mdx#prerequisites).  
 
 </Admonition>
 
@@ -44,7 +44,7 @@ The prerequisites for running RavenDB as a Service are defined [here](../../star
 To register RavenDB as a Service on Windows OS, run PowerShell with administrator privileges.  
 Navigate to the RavenDB package root and execute:  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\setup-as-service.ps1
 `}
@@ -60,7 +60,7 @@ If you receive the following error:
 
 Alternatively, navigate to the node **Server** folder and execute the following command:  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\rvn.exe windows-service register --service-name RavenDB
 `}
@@ -69,7 +69,7 @@ Alternatively, navigate to the node **Server** folder and execute the following 
 
 If you want to run the service under a non-default user (**Local Service** is default) then execute the following command:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\rvn.exe windows-service register --service-name RavenDB --service-user-name MyUser --service-user-password MyPassword
 `}
@@ -80,7 +80,7 @@ If you want to run the service under a non-default user (**Local Service** is de
 
 You can end the service using:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\uninstall-service.ps1
 `}
@@ -89,7 +89,7 @@ You can end the service using:
 
 Alternatively, use the 'unregister' command as follows:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\rvn.exe windows-service unregister --service-name RavenDB
 `}
@@ -100,7 +100,7 @@ Alternatively, use the 'unregister' command as follows:
 
 Service can be also controlled using the `start` and `stop` commands:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`.\\rvn.exe windows-service stop --service-name RavenDB
 .\\rvn.exe windows-service start --service-name RavenDB
@@ -116,7 +116,7 @@ You can run RavenDB as a daemon by running the script `install-daemon.sh` from t
 
 Alternatively, open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super-user permissions:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`[Unit]
 Description=RavenDB NoSQL Database
@@ -145,7 +145,7 @@ WantedBy=multi-user.target
 Note: Replace `<desired-user>` with your **username** and `<path-to-RavenDB>` with your **path**.
 
 Then register the service and enable it on startup:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`systemctl daemon-reload
 systemctl enable ravendb.service
@@ -154,7 +154,7 @@ systemctl enable ravendb.service
 </TabItem>
 
 Start the service:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`systemctl start ravendb.service
 `}
@@ -162,14 +162,14 @@ Start the service:
 </TabItem>
 
 View its status using:
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`systemctl status ravendb.service
 `}
 </CodeBlock>
 </TabItem>
 or
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`journalctl -f -u ravendb.service
 `}

@@ -28,9 +28,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
      * Creating a database on this server  
 
 * In this page:  
-  * [Bootstrap Cluster](../../studio/cluster/setting-a-cluster#bootstrap-cluster)  
-  * [Add Another Node to the Cluster](../../studio/cluster/setting-a-cluster#add-another-node-to-the-cluster)  
-  * [A Cluster with 2 nodes](../../studio/cluster/setting-a-cluster#a-cluster-with-2-nodes)  
+  * [Bootstrap Cluster](../../studio/cluster/setting-a-cluster.mdx#bootstrap-cluster)  
+  * [Add Another Node to the Cluster](../../studio/cluster/setting-a-cluster.mdx#add-another-node-to-the-cluster)  
+  * [A Cluster with 2 nodes](../../studio/cluster/setting-a-cluster.mdx#a-cluster-with-2-nodes)  
 
 </Admonition>
 ## Bootstrap Cluster
@@ -52,14 +52,14 @@ Note: This option is only available when the server is in the `Passive` state.
 1. Enter the server URL of the new node.  
 2. You can optionally specify a tag of your choice for the new node. Use UPPER CASE letters only.  
    If no tag is provided, the server will assign the new node the next available sequential letter.  
-3. Decide whether to add the new node as a `Member` -or- a `Watcher` (difference explained [here](../../studio/cluster/cluster-view#cluster-nodes-types)).  
+3. Decide whether to add the new node as a `Member` -or- a `Watcher` (difference explained [here](../../studio/cluster/cluster-view.mdx#cluster-nodes-types)).  
 4. Toggle whether to use all available cores on the machine for this node.  
     * If you toggle _Use available cores_ **off**, set a maximum number of cores that can be used by this node.  
       ![Maximum number of cores](./assets/cluster-add-node-2_2.png)
 5. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL.  
 6. When done, click *Add* to add this server as a node to the cluster.  
 
-This operation can also be done programatically. Read more [here](../../server/clustering/cluster-api).  
+This operation can also be done programatically. Read more [here](../../server/clustering/cluster-api.mdx).  
 
 
 ## A Cluster with 2 nodes

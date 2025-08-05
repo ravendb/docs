@@ -33,13 +33,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * **Nodes scope**:  
   The priority will be updated on all nodes in the database group.
 
-* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) in the Studio.  
 
 * In this page:
-    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority#index-priority)
-    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
-    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#index-priority)
+    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
 
 </Admonition>
 ## Index priority
@@ -130,7 +130,7 @@ await store.Maintenance.SendAsync(setPriorityOp);
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Available overloads:
 public SetIndexesPriorityOperation(string indexName, IndexPriority priority);
@@ -145,7 +145,7 @@ public SetIndexesPriorityOperation(Parameters parameters);
 | **priority** | `IndexingPriority` | Priority to set |
 | **parameters** | `SetIndexesPriorityOperation.Parameters` | List of indexes + Priority to set.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public enum IndexPriority
 \{
@@ -157,7 +157,7 @@ public SetIndexesPriorityOperation(Parameters parameters);
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public class Parameters
 \{
@@ -187,7 +187,7 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 ## Syntax
 
-<TabItem value="something-something" label="set_priority_1">
+<TabItem value="set_priority_1" label="set_priority_1">
 <CodeBlock language="java">
 {`public SetIndexesPriorityOperation(String indexName, IndexPriority priority) \{
 public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parameters)
@@ -195,7 +195,7 @@ public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parame
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="set_priority_2">
+<TabItem value="set_priority_2" label="set_priority_2">
 <CodeBlock language="java">
 {`public enum IndexPriority \{
     LOW,
@@ -206,7 +206,7 @@ public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parame
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="set_priority_3">
+<TabItem value="set_priority_3" label="set_priority_3">
 <CodeBlock language="java">
 {`public static class Parameters \{
     private String[] indexNames;
@@ -240,7 +240,7 @@ public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parame
 
 ## Example I
 
-<TabItem value="something-something" label="set_priority_4">
+<TabItem value="set_priority_4" label="set_priority_4">
 <CodeBlock language="java">
 {`store.maintenance().send(
     new SetIndexesPriorityOperation("Orders/Totals", IndexPriority.HIGH));
@@ -250,7 +250,7 @@ public SetIndexesPriorityOperation(SetIndexesPriorityOperation.Parameters parame
 
 ## Example II
 
-<TabItem value="something-something" label="set_priority_5">
+<TabItem value="set_priority_5" label="set_priority_5">
 <CodeBlock language="java">
 {`SetIndexesPriorityOperation.Parameters parameters = new SetIndexesPriorityOperation.Parameters();
 parameters.setIndexNames(new String[]\{ "Orders/Totals", "Orders/ByCompany" \});
@@ -279,13 +279,13 @@ store.maintenance().send(new SetIndexesPriorityOperation(parameters));
 * **Nodes scope**:  
   The priority will be updated on all nodes in the database group.
 
-* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) in the Studio.  
 
 * In this page:
-    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority#index-priority)
-    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
-    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#index-priority)
+    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
 
 </Admonition>
 ## Index priority
@@ -302,7 +302,7 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 ## Set priority - single index
 
-<TabItem value="something-something" label="set_priority_single">
+<TabItem value="set_priority_single" label="set_priority_single">
 <CodeBlock language="python">
 {`# Define the set priority operation
 # Pass index name & priority
@@ -319,7 +319,7 @@ store.maintenance.send(set_priority_op)
 
 ## Set priority - multiple indexes
 
-<TabItem value="something-something" label="set_priority_multiple">
+<TabItem value="set_priority_multiple" label="set_priority_multiple">
 <CodeBlock language="python">
 {`# Define the set priority operation, pass multiple index names
 set_priority_op = SetIndexesPriorityOperation(IndexPriority.LOW, "Orders/Totals", "Orders/ByCompany")
@@ -335,7 +335,7 @@ store.maintenance.send(set_priority_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class SetIndexesPriorityOperation(VoidMaintenanceOperation):
     def __init__(self, priority: IndexPriority, *index_names: str): ...
@@ -348,7 +348,7 @@ store.maintenance.send(set_priority_op)
 | **\*index_names** | `str` | Index name for which to change priority |
 | **priority** | `IndexingPriority` | Priority to set |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class IndexPriority(Enum):
     LOW = "Low"
@@ -378,13 +378,13 @@ store.maintenance.send(set_priority_op)
 * **Nodes scope**:  
   The priority will be updated on all nodes in the database group.
 
-* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) in the Studio.  
 
 * In this page:
-    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority#index-priority)
-    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
-    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#index-priority)
+    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
 
 </Admonition>
 ## Index priority
@@ -401,7 +401,7 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 ## Set priority - single index
 
-<TabItem value="something-something" label="set_priority_single">
+<TabItem value="set_priority_single" label="set_priority_single">
 <CodeBlock language="php">
 {`// Define the set priority operation
 // Pass index name & priority
@@ -418,7 +418,7 @@ $store->maintenance()->send($setPriorityOp);
 
 ## Set priority - multiple indexes
 
-<TabItem value="something-something" label="set_priority_multiple">
+<TabItem value="set_priority_multiple" label="set_priority_multiple">
 <CodeBlock language="php">
 {`// Define the index list and the new priority:
 $parameters = new IndexPriorityParameters();
@@ -439,7 +439,7 @@ $store->maintenance()->send($setPriorityOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`// Available overloads:
 SetIndexesPriorityOperation(?string $indexName, ?IndexPriority $priority);
@@ -454,7 +454,7 @@ SetIndexesPriorityOperation(?Parameters $parameters);
 | **$priority** | `?IndexPriority` | Priority to set |
 | **$parameters** | `?Parameters` | Index priority parameters |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class IndexPriority
 \{
@@ -490,13 +490,13 @@ SetIndexesPriorityOperation(?Parameters $parameters);
 * **Nodes scope**:  
   The priority will be updated on all nodes in the database group.
 
-* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) in the Studio.  
+* Setting the priority can also be done from the [indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) in the Studio.  
 
 * In this page:
-    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority#index-priority)
-    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---single-index)
-    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority#set-priority---multiple-indexes)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority#syntax)
+    * [Index priority](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#index-priority)
+    * [Set priority - single index](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---single-index)
+    * [Set priority - multiple indexes](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#set-priority---multiple-indexes)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/set-index-priority.mdx#syntax)
 
 </Admonition>
 ## Index priority
@@ -513,8 +513,8 @@ Setting the priority will affect the indexing thread priority at the operating s
 
 ## Set priority - single index
 
-<TabItem value="something-something" label="set_priority_single">
-<CodeBlock language="nodejs">
+<TabItem value="set_priority_single" label="set_priority_single">
+<CodeBlock language="js">
 {`// Define the set priority operation
 // Pass index name & priority
 const setPriorityOp = new SetIndexesPriorityOperation("Orders/Totals", "High");
@@ -530,8 +530,8 @@ await store.maintenance.send(setPriorityOp);
 
 ## Set priority - multiple indexes
 
-<TabItem value="something-something" label="set_priority_multiple">
-<CodeBlock language="nodejs">
+<TabItem value="set_priority_multiple" label="set_priority_multiple">
+<CodeBlock language="js">
 {`// Define the index list and the new priority:
 const parameters = \{
     indexNames: ["Orders/Totals", "Orders/ByCompany"],
@@ -552,8 +552,8 @@ await store.maintenance.send(setPriorityOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 const setPriorityOp = new SetIndexesPriorityOperation(indexName, priority);
 const setPriorityOp = new SetIndexesPriorityOperation(parameters);
@@ -567,8 +567,8 @@ const setPriorityOp = new SetIndexesPriorityOperation(parameters);
 | **priority** | `"Low"` /<br/> `"Normal"` /<br/> `"High"` | Priority to set |
 | **parameters** | parameters object | List of indexes + Priority to set.<br/>An exception is thrown if any of the specified indexes doesn't exist. |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// parameters object
 \{
     indexNames, // string[], list of index names

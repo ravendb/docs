@@ -24,7 +24,7 @@ To return only documents that match **all** provided sub-queries, use the `Inter
 
 ## Syntax
 
-<TabItem value="something" label="intersect_1">
+<TabItem value="intersect_1" label="intersect_1">
 <CodeBlock language="csharp">
 {`IRavenQueryable<T> Intersect<T>();
 `}
@@ -113,7 +113,7 @@ To return only documents that match **all** provided sub-queries, use the `inter
 
 ## Syntax
 
-<TabItem value="something-something" label="intersect_1">
+<TabItem value="intersect_1" label="intersect_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> intersect();
 `}
@@ -215,7 +215,7 @@ which enables RavenDB to perform server-side intersection queries.
 
 ## Syntax
 
-<TabItem value="something-something" label="intersect_1">
+<TabItem value="intersect_1" label="intersect_1">
 <CodeBlock language="python">
 {`def intersect(self) -> DocumentQuery[_T]: ...
 `}
@@ -287,7 +287,7 @@ To return only documents that match **all** provided sub-queries, use the
 
 ## Syntax
 
-<TabItem value="something-something" label="intersect_1">
+<TabItem value="intersect_1" label="intersect_1">
 <CodeBlock language="php">
 {`public function intersect(): DocumentQueryInterface;
 `}
@@ -335,8 +335,8 @@ To return only documents that match *all* provided sub-queries, use the `interse
 
 ## Syntax
 
-<TabItem value="something-something" label="intersect_1">
-<CodeBlock language="nodejs">
+<TabItem value="intersect_1" label="intersect_1">
+<CodeBlock language="js">
 {`query.intersect();
 `}
 </CodeBlock>
@@ -346,7 +346,7 @@ To return only documents that match *all* provided sub-queries, use the `interse
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// return all T-shirts that are manufactured by 'Raven'
 // and contain both 'Small Blue' and 'Large Gray' types
 const tShirts = await session
@@ -365,7 +365,7 @@ const tShirts = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class TShirts_ByManufacturerColorSizeAndReleaseYearResult {
     constructor(data) {
         this.manufacturer = data.manufacturer;

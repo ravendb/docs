@@ -9,12 +9,12 @@ export default function SecurityFeaturesGrid() {
     const SecurityFeaturesList = [
         {
             title: "Certificates",
-            url: `${activeVersion.label}/server/security/overview`,
+            url: `/${activeVersion.label}/server/security/overview`,
             description: "Short description",
         },
         {
             title: "Encryption",
-            url: `${activeVersion.label}/server/security/encryption/encryption-at-rest`,
+            url: `/${activeVersion.label}/server/security/encryption/encryption-at-rest`,
             description: "Short description",
         },
     ];

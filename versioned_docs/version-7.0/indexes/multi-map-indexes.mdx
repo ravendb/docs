@@ -24,13 +24,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Multi-Map indexes allow you to index data from multiple collections, 
   like polymorphic data or any data common to different types.  
 
-* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
-  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [AddMap & AddMapForAll](../indexes/multi-map-indexes#addmap-&-addmapforall)
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
-  * [Remarks](../indexes/multi-map-indexes#remarks)
+  * [AddMap & AddMapForAll](../indexes/multi-map-indexes.mdx#addmap-&-addmapforall)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
 
 </Admonition>
 
@@ -163,7 +163,7 @@ where Name = 'Mitzy'
 Another great usage of Multi-Map indexes is smart-search.  
 
 To search for products, companies, or employees by their name, you need to define the following index:
-<TabItem value="something" label="multi_map_1_0">
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
 <CodeBlock language="csharp">
 {`public class Smart_Search : AbstractMultiMapIndexCreationTask<Smart_Search.Result>
 \{
@@ -242,7 +242,7 @@ To search for products, companies, or employees by their name, you need to defin
 </TabItem>
 
 and query it using:
-<TabItem value="something" label="multi_map_1_1">
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
 <CodeBlock language="csharp">
 {`IList<Smart_Search.Projection> results = session
     .Query<Smart_Search.Result, Smart_Search>()
@@ -281,13 +281,13 @@ with an **identical** shape (the field names have to match).
 * Multi-Map indexes allow you to index data from multiple collections, 
   like polymorphic data or any data common to different types.  
 
-* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
-  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [AddMap](../indexes/multi-map-indexes#addmap)
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
-  * [Remarks](../indexes/multi-map-indexes#remarks)
+  * [AddMap](../indexes/multi-map-indexes.mdx#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
 
 </Admonition>
 
@@ -402,7 +402,7 @@ where Name = 'Mitzy'
 Another great usage of Multi-Map indexes is smart-search.  
 
 To search for products, companies, or employees by their name, you need to define the following index:
-<TabItem value="something-something" label="multi_map_1_0">
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
 <CodeBlock language="java">
 {`public static class Smart_Search extends AbstractMultiMapIndexCreationTask \{
     public static class Result \{
@@ -520,7 +520,7 @@ To search for products, companies, or employees by their name, you need to defin
 </TabItem>
 
 and query it using:
-<TabItem value="something-something" label="multi_map_1_1">
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
 <CodeBlock language="java">
 {`List<Smart_Search.Projection> results = session
     .query(Smart_Search.Result.class, Smart_Search.class)
@@ -558,13 +558,13 @@ with an **identical** shape (the field names have to match).
 * Multi-Map indexes allow you to index data from multiple collections, 
   like polymorphic data or any data common to different types.  
 
-* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
-  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [`_add_map`](../indexes/multi-map-indexes#_add_map)
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
-  * [Remarks](../indexes/multi-map-indexes#remarks)
+  * [`_add_map`](../indexes/multi-map-indexes.mdx#_add_map)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
 
 </Admonition>
 
@@ -647,7 +647,7 @@ where Name = 'Mitzy'
 Another great usage of Multi-Map indexes is smart-search.  
 
 To search for products, companies, or employees by their name, you need to define the following index:
-<TabItem value="something-something" label="multi_map_1_0">
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
 <CodeBlock language="python">
 {`class Smart_Search(AbstractMultiMapIndexCreationTask):
     class Result:
@@ -717,7 +717,7 @@ To search for products, companies, or employees by their name, you need to defin
 </TabItem>
 
 and query it using:
-<TabItem value="something-something" label="multi_map_1_1">
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
 <CodeBlock language="python">
 {`results = list(
     session.query_index_type(Smart_Search, Smart_Search.Result)
@@ -754,13 +754,13 @@ with an **identical** shape (the field names have to match).
 * Multi-Map indexes allow you to index data from multiple collections, 
   like polymorphic data or any data common to different types.  
 
-* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
-  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [`addMap`](../indexes/multi-map-indexes#addmap)
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)
-  * [Remarks](../indexes/multi-map-indexes#remarks)
+  * [`addMap`](../indexes/multi-map-indexes.mdx#addmap)
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)
 
 </Admonition>
 
@@ -891,7 +891,7 @@ where Name = 'Mitzy'
 Another great usage of Multi-Map indexes is smart-search.  
 
 To search for products, companies, or employees by their name, you need to define the following index:
-<TabItem value="something-something" label="multi_map_1_0">
+<TabItem value="multi_map_1_0" label="multi_map_1_0">
 <CodeBlock language="php">
 {`class Smart_Search_Result
 \{
@@ -1029,7 +1029,7 @@ class Smart_Search extends AbstractMultiMapIndexCreationTask
 </TabItem>
 
 and query it using:
-<TabItem value="something-something" label="multi_map_1_1">
+<TabItem value="multi_map_1_1" label="multi_map_1_1">
 <CodeBlock language="php">
 {`/** @var array<Smart_Search_Projection> $results */
 $results = $session
@@ -1070,13 +1070,13 @@ with an **identical** shape (the field names have to match).
 * Multi-Map indexes allow you to index data from multiple collections, 
   like polymorphic data or any data common to different types.  
 
-* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data)  
-  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes#creating-multi-map-reduce-indexes)  
+* Learn how to [index polymorphic data](../indexes/indexing-polymorphic-data.mdx)  
+  Learn how to [create Multi-Map-Reduce indexes](../indexes/map-reduce-indexes.mdx#creating-multi-map-reduce-indexes)  
 
 * In this page:
-  * [Indexing multiple collections](../indexes/multi-map-indexes#indexing-multiple-collections)  
-  * [Searching across multiple collections](../indexes/multi-map-indexes#searching-across-multiple-collections)  
-  * [Remarks](../indexes/multi-map-indexes#remarks)  
+  * [Indexing multiple collections](../indexes/multi-map-indexes.mdx#indexing-multiple-collections)  
+  * [Searching across multiple collections](../indexes/multi-map-indexes.mdx#searching-across-multiple-collections)  
+  * [Remarks](../indexes/multi-map-indexes.mdx#remarks)  
 
 </Admonition>
 
@@ -1086,19 +1086,19 @@ Let's assume that we have `Dog` and `Cat` classes, both inheriting from the clas
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Dog" label="Dog">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Dog extends Animal { }
 `}
 </CodeBlock>
 </TabItem>
 <TabItem value="Cat" label="Cat">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Cat extends Animal { }
 `}
 </CodeBlock>
 </TabItem>
 <TabItem value="Animal" label="Animal">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Animal {
     constructor(name) {
         this.name = name;
@@ -1111,8 +1111,8 @@ Let's assume that we have `Dog` and `Cat` classes, both inheriting from the clas
 
 Now we can define and query our index as follows:
 
-<TabItem value="something-something" label="multiMapIndex_1">
-<CodeBlock language="nodejs">
+<TabItem value="multiMapIndex_1" label="multiMapIndex_1">
+<CodeBlock language="js">
 {`class Animals_ByName extends AbstractJavaScriptMultiMapIndexCreationTask  \{
     constructor() \{
         super();
@@ -1138,7 +1138,7 @@ Now we can define and query our index as follows:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
      // Query the index
     .query({ indexName: "Animals/ByName" })
@@ -1164,8 +1164,8 @@ where Name == "Mitzy"
 Another great usage of Multi-Map indexes is smart-search.  
 
 To search for products, companies, or employees by their name, you need to define the following index:
-<TabItem value="something-something" label="multiMapIndex_2">
-<CodeBlock language="nodejs">
+<TabItem value="multiMapIndex_2" label="multiMapIndex_2">
+<CodeBlock language="js">
 {`class Smart_Search extends AbstractJavaScriptMultiMapIndexCreationTask  \{
     constructor() \{
         super();
@@ -1214,7 +1214,7 @@ To search for products, companies, or employees by their name, you need to defin
 and query it using:
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     .query({ indexName: "Smart/Search" })
      // Search across all indexed collections

@@ -28,14 +28,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   as well as optional user-defined entries.
 
 * To learn how to access (get and modify) the metadata from your client code,  
-  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 * Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
   This allows you to query for documents based on values stored in the metadata.  
   See the examples below.
 * In this article:  
-   * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)  
-   * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)  
+   * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)  
+   * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)  
 
 </Admonition>
 ## Indexing metadata properties
@@ -227,7 +227,7 @@ Note:
 
 * The `@attachments` metadata property can only be indexed using a **Lucene** index.  
 * The **Corax** search engine does not support indexing complex JSON properties.  
-  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
 
 </Admonition>
 
@@ -245,18 +245,18 @@ Note:
   as well as optional user-defined entries.
 
 * To learn how to access (get and modify) the metadata from your client code,  
-  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 * Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
   This allows you to query for documents based on values stored in the metadata.  
   See the examples below.
 * In this article:  
-   * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
+   * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
 
 </Admonition>
 ## Indexing metadata properties
 
-<TabItem value="something-something" label="index_1">
+<TabItem value="index_1" label="index_1">
 <CodeBlock language="java">
 {`public static class Products_WithMetadata extends AbstractIndexCreationTask \{
     public static class Result \{
@@ -284,7 +284,7 @@ Note:
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="query_1">
+<TabItem value="query_1" label="query_1">
 <CodeBlock language="java">
 {`List<Product> results = session
     .query(Products_WithMetadata.Result.class, Products_WithMetadata.class)
@@ -310,14 +310,14 @@ Note:
   as well as optional user-defined entries.
 
 * To learn how to access (get and modify) the metadata from your client code,  
-  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 * Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
   This allows you to query for documents based on values stored in the metadata.  
   See the examples below.
 * In this article:
-    * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
-    * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
+    * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)
 
 </Admonition>
 ## Indexing metadata properties
@@ -435,7 +435,7 @@ Note:
 
 * The `@attachments` metadata property can only be indexed using a **Lucene** index.
 * The **Corax** search engine does not support indexing complex JSON properties.  
-  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
 
 </Admonition>
 
@@ -453,14 +453,14 @@ Note:
   as well as optional user-defined entries.
 
 * To learn how to access (get and modify) the metadata from your client code,  
-  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 * Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
   This allows you to query for documents based on values stored in the metadata.  
   See the examples below.
 * In this article:
-    * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
-    * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
+    * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)
 
 </Admonition>
 ## Indexing metadata properties
@@ -618,7 +618,7 @@ Note:
 
 * The `@attachments` metadata property can only be indexed using a **Lucene** index.
 * The **Corax** search engine does not support indexing complex JSON properties.  
-  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
 
 </Admonition>
 
@@ -636,14 +636,14 @@ Note:
   as well as optional user-defined entries.
 
 * To learn how to access (get and modify) the metadata from your client code,  
-  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata).
+  see [How to get and modify the metadata](../client-api/session/how-to/get-and-modify-entity-metadata.mdx).
 
 * Content from metadata properties can be extracted and **indexed** within a static index, alongside content from the document fields.
   This allows you to query for documents based on values stored in the metadata.  
   See the examples below.
 * In this article:
-    * [Indexing metadata properties](../indexes/indexing-metadata#indexing-metadata-properties)
-    * [Metadata properties that can be indexed](../indexes/indexing-metadata#metadata-properties-that-can-be-indexed)
+    * [Indexing metadata properties](../indexes/indexing-metadata.mdx#indexing-metadata-properties)
+    * [Metadata properties that can be indexed](../indexes/indexing-metadata.mdx#metadata-properties-that-can-be-indexed)
 
 </Admonition>
 ## Indexing metadata properties
@@ -652,8 +652,8 @@ Note:
 
 * The following index definition indexes content from the `@last-modified` and `@counters` metadata properties.
 
-<TabItem value="something-something" label="index_1">
-<CodeBlock language="nodejs">
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
 {`class Products_ByMetadata extends AbstractJavaScriptIndexCreationTask \{
     constructor () \{
         super();
@@ -681,7 +681,7 @@ Note:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const productsWithCounters = await session
     .query({ indexName: "Products/ByMetadata" })
     .whereEquals("HasCounters", true)
@@ -726,7 +726,7 @@ Note:
 
 * The `@attachments` metadata property can only be indexed using a **Lucene** index.
 * The **Corax** search engine does not support indexing complex JSON properties.  
-  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax#handling-of-complex-json-objects).
+  Learn more in [Corax: Handling complex JSON objects](../indexes/search-engine/corax.mdx#handling-of-complex-json-objects).
 
 </Admonition>
 

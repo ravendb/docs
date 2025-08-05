@@ -21,10 +21,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -32,15 +32,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#replace-configuration)  
-  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#modify-configuration)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
+  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
+  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
 
 </Admonition>
 ## Replace configuration
@@ -296,7 +296,7 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public ConfigureRevisionsOperation(RevisionsConfiguration configuration);
 `}
@@ -307,7 +307,7 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 | - | - | - |
 | **configuration** | `RevisionsConfiguration` | The revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class RevisionsConfiguration
 \{
@@ -323,7 +323,7 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 | **Default** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `Collections`. |
 | **Collections** | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations<br/>The `keys` are the collection names<br/>The `values` are the corresponding configurations.<br/>Overrides the default settings for the collections defined. |
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public class RevisionsCollectionConfiguration
 \{
@@ -344,7 +344,7 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 | **MinimumRevisionsToKeep** | `long` | &lt;ul&gt;&lt;li&gt;This number of revisions will be kept per document.&lt;/li&gt;&lt;li&gt;Older revisions exceeding this number will be purged upon the next document modification.&lt;li&gt; **Default** : `null` = no limit &lt;/li&gt;&lt;/ul&gt; |
 | **MinimumRevisionAgeToKeep** | `TimeSpan` | &lt;ul&gt;&lt;li&gt;Limit the number of revisions kept per document by their age.&lt;/li&gt;&lt;li&gt;Revisions that are older than this time will be purged upon the next document modification.&lt;/li&gt;&lt;li&gt; **Default** : `null` = no age limit&lt;/li&gt;&lt;ul&gt; |
 | **MaximumRevisionsToDeleteUponDocumentUpdate** | `long` | &lt;ul&gt;&lt;li&gt;The maximum number of revisions to delete upon each document modification.&lt;/li&gt;&lt;li&gt; **Default** : `null` = no limit,<br/> all revisions that pend purging will be deleted.&lt;/li&gt;&lt;/ul&gt; |
-| **PurgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).&lt;/li&gt;&lt;li&gt;`true` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
+| **PurgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`true` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
 | **Disabled** | `bool` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions will be created and purged according to the configuration.&lt;/li&gt;&lt;li&gt;`true` - No revisions will be created or purged.&lt;/li&gt;&lt;/ul&gt; |
 
 
@@ -355,41 +355,41 @@ await documentStore.Maintenance.SendAsync(configureRevisionsOp);
 
 <Admonition type="note" title="Note">
 
-* [Revisions](../../../../document-extensions/revisions/overview) are snapshots of documents that 
+* [Revisions](../../../../document-extensions/revisions/overview.mdx) are snapshots of documents that 
   are taken automatically each time a document is updated or deleted.  
 
 * Revisions can be stored indefinitely, or they can be deleted when certain conditions are met. These conditions can be set 
   using the Configure Revisions Operation.  
 
 * In this page:  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
-      * [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration)  
-      * [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionsconfiguration)  
-      * [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation)  
-  * [Example](../../../../document-extensions/revisions/client-api/operations/configure-revisions#example)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
+      * [RevisionsCollectionConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration)  
+      * [RevisionsConfiguration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration)  
+      * [ConfigureRevisionsOperation](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation)  
+  * [Example](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#example)  
 
 </Admonition>
 ## Syntax
 
-The ConfigureRevisionsOperation modifies the revisions settings for a particular [database](../../../../studio/database/settings/manage-database-group). 
-Within that database, each [collection](../../../../client-api/faq/what-is-a-collection) can have its own separate revisions 
+The ConfigureRevisionsOperation modifies the revisions settings for a particular [database](../../../../studio/database/settings/manage-database-group.mdx). 
+Within that database, each [collection](../../../../client-api/faq/what-is-a-collection.mdx) can have its own separate revisions 
 settings.  
 
 To configure the revisions settings for a database and/or the collections in that database, follow these steps:  
 
-[1.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
+[1.](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
 Create a RevisionsCollectionConfiguration` object for each desired collection.  
 
-[2.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionsconfiguration) 
+[2.](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionsconfiguration) 
 Put those `RevisionsCollectionConfiguration` objects in a `RevisionsConfiguration` object.  
 
-[3.](../../../../document-extensions/revisions/client-api/operations/configure-revisions#configurerevisionsoperation) 
+[3.](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#configurerevisionsoperation) 
 Send that RevisionsConfiguration` to the server.  
 ### RevisionsCollectionConfiguration
 
 This object contains the four revisions settings for a particular collection:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class RevisionsCollectionConfiguration
 \{
@@ -428,7 +428,7 @@ document's revisions can exceed these limits.
 This object contains a `Map` of revision configurations for each collection in the database, plus an optional default 
 configuration.  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class RevisionsConfiguration
 \{
@@ -446,7 +446,7 @@ configuration.
 
 Note that when this object is sent to the server, it overrides the configurations for **all** collections, including all existing 
 configurations currently on the server. If a collection is not listed in `collections` and `defaultConfig` has not been set, the 
-default values listed in the table [above](../../../../document-extensions/revisions/client-api/operations/configure-revisions#revisionscollectionconfiguration) 
+default values listed in the table [above](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#revisionscollectionconfiguration) 
 are applied.  
 ### ConfigureRevisionsOperation
 
@@ -454,7 +454,7 @@ Lastly, the operation itself sends the `RevisionsConfiguration` to the server, o
 You'll want to store these configurations on the client-side so they don't have to be created from scratch each time you want to 
 modify them.  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public ConfigureRevisionsOperation(RevisionsConfiguration configuration);
 `}
@@ -469,11 +469,11 @@ modify them.
 
 ## Example
 
-The following code sample updates the settings of the Document Store's [default database](../../../../client-api/setting-up-default-database) 
+The following code sample updates the settings of the Document Store's [default database](../../../../client-api/setting-up-default-database.mdx) 
 - which in this case is a database named "Northwind". To update the configuration of different database, use the 
-[`forDatabase()` method](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).
+[`forDatabase()` method](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).
 
-<TabItem value="something-something" label="operation">
+<TabItem value="operation" label="operation">
 <CodeBlock language="java">
 {`// Create a configuration for the Employees collection
 RevisionsCollectionConfiguration employeesRevConfig = new RevisionsCollectionConfiguration();
@@ -510,10 +510,10 @@ documentStore.maintenance().send(new ConfigureRevisionsOperation(northwindRevCon
 
 <Admonition type="note" title="Note">
 
-* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -521,22 +521,22 @@ documentStore.maintenance().send(new ConfigureRevisionsOperation(northwindRevCon
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#replace-configuration)  
-  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#modify-configuration)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
+  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
+  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
 
 </Admonition>
 ## Replace configuration
 
 In this example, we create a new `RevisionsConfiguration` for the database.  
 If revisions configuration already exists in the database - it will be **replaced**.
-<TabItem value="something-something" label="replace_configuration">
+<TabItem value="replace_configuration" label="replace_configuration">
 <CodeBlock language="python">
 {`# ==============================================================================
 # Define default settings that will apply to ALL collections
@@ -602,7 +602,7 @@ store.maintenance.send(configure_revisions_op)
 ## Modify configuration
 
 In this example, we fetch the existing revisions configuration from the database record and **modify** it.   
-<TabItem value="something-something" label="modify_configuration">
+<TabItem value="modify_configuration" label="modify_configuration">
 <CodeBlock language="python">
 {`# ==============================================================================
 # Define the get database record operation:
@@ -644,7 +644,7 @@ store.maintenance.send(configure_revisions_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class ConfigureRevisionsOperation(MaintenanceOperation[ConfigureRevisionsOperationResult]):
     def __init__(self, configuration: RevisionsConfiguration): ...
@@ -656,7 +656,7 @@ store.maintenance.send(configure_revisions_op)
 | - | - | - |
 | **configuration** | `RevisionsConfiguration` | The revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class RevisionsConfiguration:
     def __init__(
@@ -673,7 +673,7 @@ store.maintenance.send(configure_revisions_op)
 | **default_config** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `collections`. |
 | **collections** | `Dict[str, RevisionsCollectionConfiguration]` | A Dictionary of collection-specific configurations<br/>The `keys` are the collection names<br/>The `values` are the corresponding configurations.<br/>Overrides the default settings for the collections defined. |
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="python">
 {`class RevisionsCollectionConfiguration:
     def __init__(
@@ -695,7 +695,7 @@ store.maintenance.send(configure_revisions_op)
 | **minimum_revisions_to_keep** | `int` | &lt;ul&gt;&lt;li&gt;This number of revisions will be kept per document.&lt;/li&gt;&lt;li&gt;Older revisions exceeding this number will be purged upon the next document modification.&lt;li&gt; **Default** : `None` = no limit &lt;/li&gt;&lt;/ul&gt; |
 | **minimum_revisions_age_to_keep** | `timedelta` | &lt;ul&gt;&lt;li&gt;Limit the number of revisions kept per document by their age.&lt;/li&gt;&lt;li&gt;Revisions that are older than this time will be purged upon the next document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no age limit&lt;/li&gt;&lt;ul&gt; |
 | **disabled** | `bool` | &lt;ul&gt;&lt;li&gt;`fFalse` ( **Default** ) - Revisions will be created and purged according to the configuration.&lt;/li&gt;&lt;li&gt;`True` - No revisions will be created or purged.&lt;/li&gt;&lt;/ul&gt; |
-| **purge_on_delete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
+| **purge_on_delete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
 | **maximum_revisions_to_delete_upon_document_creation** | `int` | &lt;ul&gt;&lt;li&gt;The maximum number of revisions to delete upon each document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no limit,<br/> all revisions that pend purging will be deleted.&lt;/li&gt;&lt;/ul&gt; |
 
 
@@ -706,10 +706,10 @@ store.maintenance.send(configure_revisions_op)
 
 <Admonition type="note" title="Note">
 
-* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -717,22 +717,22 @@ store.maintenance.send(configure_revisions_op)
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#replace-configuration)  
-  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#modify-configuration)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
+  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
+  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
 
 </Admonition>
 ## Replace configuration
 
 In this example, we create a new `RevisionsConfiguration` for the database.  
 If revisions configuration already exists in the database - it will be **replaced**.
-<TabItem value="something-something" label="replace_configuration">
+<TabItem value="replace_configuration" label="replace_configuration">
 <CodeBlock language="php">
 {`// ==============================================================================
 // Define default settings that will apply to ALL collections
@@ -805,7 +805,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 ## Modify configuration
 
 In this example, we fetch the existing revisions configuration from the database record and **modify** it.   
-<TabItem value="something-something" label="modify_configuration">
+<TabItem value="modify_configuration" label="modify_configuration">
 <CodeBlock language="php">
 {`// ==============================================================================
 // Define the get database record operation:
@@ -852,7 +852,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`new ConfigureRevisionsOperation(?RevisionsConfiguration $configuration);
 `}
@@ -863,7 +863,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 | - | - | - |
 | **configuration** | `?RevisionsConfiguration` | The revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class RevisionsConfiguration
 \{
@@ -881,7 +881,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 | **defaultConfig** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `collections`. |
 | **collections** | `null` or `RevisionsCollectionConfigurationArray` or `array` | An array of collection-specific configurations<br/>The `keys` are the collection names<br/>The `values` are the corresponding configurations.<br/>Overrides the default settings for the collections defined. |
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="php">
 {`class RevisionsCollectionConfiguration
 \{
@@ -904,7 +904,7 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 | **minimumRevisionsToKeep** | `?int` | &lt;ul&gt;&lt;li&gt;This number of revisions will be kept per document.&lt;/li&gt;&lt;li&gt;Older revisions exceeding this number will be purged upon the next document modification.&lt;li&gt; **Default** : `None` = no limit &lt;/li&gt;&lt;/ul&gt; |
 | **minimumRevisionAgeToKeep** | `?Duration` | &lt;ul&gt;&lt;li&gt;Limit the number of revisions kept per document by their age.&lt;/li&gt;&lt;li&gt;Revisions that are older than this time will be purged upon the next document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no age limit&lt;/li&gt;&lt;ul&gt; |
 | **disabled** | `bool` | &lt;ul&gt;&lt;li&gt;`fFalse` ( **Default** ) - Revisions will be created and purged according to the configuration.&lt;/li&gt;&lt;li&gt;`True` - No revisions will be created or purged.&lt;/li&gt;&lt;/ul&gt; |
-| **purgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
+| **purgeOnDelete** | `bool` | &lt;ul&gt;&lt;li&gt;`False` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`True` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
 | **maximumRevisionsToDeleteUponDocumentUpdate** | `?int` | &lt;ul&gt;&lt;li&gt;The maximum number of revisions to delete upon each document modification.&lt;/li&gt;&lt;li&gt; **Default** : `None` = no limit,<br/> all revisions that pend purging will be deleted.&lt;/li&gt;&lt;/ul&gt; |
 
 
@@ -915,10 +915,10 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 
 <Admonition type="note" title="Note">
 
-* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions#revisions-configuration) to the database:  
+* Use `ConfigureRevisionsOperation` to apply the following [revisions configuration](../../../../studio/database/settings/document-revisions.mdx#revisions-configuration) to the database:  
   * **Default configuration** - applies to all document collections.  
   * **Collection-specific configurations** - override the default settings for these collections.  
-  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration).  
+  * To apply a configuration for conflict document revisions see [configure conflict revisions](../../../../document-extensions/revisions/client-api/operations/conflict-revisions-configuration.mdx).  
 
 * The configuration passed to this operation will **REPLACE** the current revisions configuration in the database.  
   To **MODIFY** existing configuration, fetch the current configuration from the database record first.  
@@ -926,15 +926,15 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 * After applying the configuration,  
   revisions are created and purged for a document whenever the document is created, modified, or deleted.  
 
-* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation)
+* To create a revision when there is no configuration defined (or enabled) see: [force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation)
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#replace-configuration)  
-  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions#modify-configuration)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions#syntax)  
+  * [Replace configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#replace-configuration)  
+  * [Modify configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#modify-configuration)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx#syntax)  
 
 </Admonition>
 ## Replace configuration
@@ -942,8 +942,8 @@ $documentStore->maintenance()->send($configureRevisionsOp);
 * In this example, we create a new `RevisionsConfiguration` for the database.  
   If revisions configuration already exists in the database - it will be **replaced**.
 
-<TabItem value="something-something" label="replace_configuration">
-<CodeBlock language="nodejs">
+<TabItem value="replace_configuration" label="replace_configuration">
+<CodeBlock language="js">
 {`// ==============================================================================
 // Define default settings that will apply to ALL collections
 // Note: this is optional
@@ -1015,8 +1015,8 @@ await store.maintenance.send(configureRevisionsOp);
 
 * In this example, we fetch the existing revisions configuration from the database record and **modify** it.   
 
-<TabItem value="something-something" label="modify_configuration">
-<CodeBlock language="nodejs">
+<TabItem value="modify_configuration" label="modify_configuration">
+<CodeBlock language="js">
 {`// ==============================================================================
 // Define the get database record operation:
 const getDatabaseRecordOp = new GetDatabaseRecordOperation(documentStore.database);
@@ -1057,8 +1057,8 @@ await documentStore.maintenance.send(configureRevisionsOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const configureRevisionsOp = new ConfigureRevisionsOperation(configuration);
 `}
 </CodeBlock>
@@ -1068,8 +1068,8 @@ await documentStore.maintenance.send(configureRevisionsOp);
 | - | - | - |
 | **configuration** | `RevisionsConfiguration` | The revisions configuration to apply |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class RevisionsConfiguration
 \{
     defaultConfig;
@@ -1084,8 +1084,8 @@ await documentStore.maintenance.send(configureRevisionsOp);
 | **defaultConfig** | `RevisionsCollectionConfiguration` | Optional default settings that apply to any collection Not specified in `collections`. |
 | **collections** | `Dictionary<string, RevisionsCollectionConfiguration>` | A Dictionary of collection-specific configurations<br/>The `keys` are the collection names<br/>The `values` are the corresponding configurations.<br/>Overrides the default settings for the collections defined. |
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class RevisionsCollectionConfiguration
 \{
     minimumRevisionsToKeep;
@@ -1105,7 +1105,7 @@ await documentStore.maintenance.send(configureRevisionsOp);
 | **minimumRevisionsToKeep** | `number` | &lt;ul&gt;&lt;li&gt;This number of revisions will be kept per document.&lt;/li&gt;&lt;li&gt;Older revisions exceeding this number will be purged upon the next document modification.&lt;li&gt; **Default** : `null` = no limit &lt;/li&gt;&lt;/ul&gt; |
 | **minimumRevisionAgeToKeep** | `string` | &lt;ul&gt;&lt;li&gt;Limit the number of revisions kept per document by their age.&lt;/li&gt;&lt;li&gt;Revisions that are older than this time will be purged upon the next document modification.&lt;/li&gt;&lt;li&gt; **Default** : `null` = no age limit&lt;/li&gt;&lt;ul&gt; |
 | **maximumRevisionsToDeleteUponDocumentUpdate** | `number` | &lt;ul&gt;&lt;li&gt;The maximum number of revisions to delete upon each document modification.&lt;/li&gt;&lt;li&gt; **Default** : `null` = no limit,<br/> all revisions that pend purging will be deleted.&lt;/li&gt;&lt;/ul&gt; |
-| **purgeOnDelete** | `boolean` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).&lt;/li&gt;&lt;li&gt;`true` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
+| **purgeOnDelete** | `boolean` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions of a deleted document are moved to the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).&lt;/li&gt;&lt;li&gt;`true` - When a document is deleted all its revisions are also deleted.&lt;/li&gt;&lt;/ul&gt; |
 | **disabled** | `boolean` | &lt;ul&gt;&lt;li&gt;`false` ( **Default** ) - Revisions will be created and purged according to the configuration.&lt;/li&gt;&lt;li&gt;`true` - No revisions will be created or purged.&lt;/li&gt;&lt;/ul&gt; |
 
 

@@ -22,10 +22,10 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 Following methods allow you to subscribe to document changes:
 
-- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
-- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
-- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## ForDocument
 
@@ -33,7 +33,7 @@ Single document changes can be observed using `ForDocument` method.
 
 ### Syntax
 
-<TabItem value="something" label="document_changes_1">
+<TabItem value="document_changes_1" label="document_changes_1">
 <CodeBlock language="csharp">
 {`IChangesObservable<DocumentChange> ForDocument(string docId);
 `}
@@ -46,11 +46,11 @@ Single document changes can be observed using `ForDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
-<TabItem value="something" label="document_changes_2">
+<TabItem value="document_changes_2" label="document_changes_2">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -80,7 +80,7 @@ To observe all document changes in particular collection use `ForDocumentInColle
 
 ### Syntax
 
-<TabItem value="something" label="document_changes_3">
+<TabItem value="document_changes_3" label="document_changes_3">
 <CodeBlock language="csharp">
 {`IChangesObservable<DocumentChange> ForDocumentsInCollection(string collectionName);
 
@@ -95,7 +95,7 @@ IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="Info">
 Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collection name.
@@ -103,7 +103,7 @@ Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collect
 
 ### Example
 
-<TabItem value="something" label="document_changes_4">
+<TabItem value="document_changes_4" label="document_changes_4">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -115,7 +115,7 @@ Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collect
 
 or
 
-<TabItem value="something" label="document_changes_5">
+<TabItem value="document_changes_5" label="document_changes_5">
 <CodeBlock language="csharp">
 {`string collectionName = store.Conventions.FindCollectionName(typeof(Employee));
 IDisposable subscription = store
@@ -134,7 +134,7 @@ To observe all document changes for documents with ID that contains given prefix
 
 ### Syntax
 
-<TabItem value="something" label="document_changes_9">
+<TabItem value="document_changes_9" label="document_changes_9">
 <CodeBlock language="csharp">
 {`IChangesObservable<DocumentChange> ForDocumentsStartingWith(string docIdPrefix);
 `}
@@ -147,11 +147,11 @@ To observe all document changes for documents with ID that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
 ### Example
 
-<TabItem value="something" label="document_changes_1_0">
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -169,7 +169,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 ### Syntax
 
-<TabItem value="something" label="document_changes_1_1">
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
 <CodeBlock language="csharp">
 {`IChangesObservable<DocumentChange> ForAllDocuments();
 `}
@@ -178,11 +178,11 @@ To observe all document changes use `ForAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ### Example
 
-<TabItem value="something" label="document_changes_1_2">
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes()
@@ -198,7 +198,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes#documentchangetypes) | Document change type enum |
+| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
 | **Id** | string | Document identifier |
 | **CollectionName** | string | Document's collection name |
 | **TypeName** | string | Type name |
@@ -236,10 +236,10 @@ To get more method overloads, especially ones supporting **delegates**, please a
 
 Following methods allow you to subscribe to document changes:
 
-- [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
-- [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
-- [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
+- [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## forDocument
 
@@ -247,7 +247,7 @@ Single document changes can be observed using `forDocument` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_1">
+<TabItem value="document_changes_1" label="document_changes_1">
 <CodeBlock language="java">
 {`IChangesObservable<DocumentChange> forDocument(String docId);
 `}
@@ -260,11 +260,11 @@ Single document changes can be observed using `forDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_2">
+<TabItem value="document_changes_2" label="document_changes_2">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store.changes()
     .forDocument("employees/1")
@@ -290,7 +290,7 @@ To observe all document changes in particular collection use `forDocumentInColle
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_3">
+<TabItem value="document_changes_3" label="document_changes_3">
 <CodeBlock language="java">
 {`IChangesObservable<DocumentChange> forDocumentsInCollection(String collectionName);
 
@@ -305,7 +305,7 @@ IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="Info">
 Overload with `TEntity` type uses `conventions.GetCollectionName` to get collection name.
@@ -313,7 +313,7 @@ Overload with `TEntity` type uses `conventions.GetCollectionName` to get collect
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_4">
+<TabItem value="document_changes_4" label="document_changes_4">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -327,7 +327,7 @@ Overload with `TEntity` type uses `conventions.GetCollectionName` to get collect
 
 or
 
-<TabItem value="something-something" label="document_changes_5">
+<TabItem value="document_changes_5" label="document_changes_5">
 <CodeBlock language="java">
 {`String collectionName = store.getConventions().getFindCollectionName().apply(Employee.class);
 CleanCloseable subscription = store
@@ -348,7 +348,7 @@ To observe all document changes for documents with ID that contains given prefix
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_9">
+<TabItem value="document_changes_9" label="document_changes_9">
 <CodeBlock language="java">
 {`IChangesObservable<DocumentChange> forDocumentsStartingWith(String docIdPrefix);
 `}
@@ -361,11 +361,11 @@ To observe all document changes for documents with ID that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_1_0">
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -385,7 +385,7 @@ To observe all document changes use `forAllDocuments` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_1_1">
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
 <CodeBlock language="java">
 {`IChangesObservable<DocumentChange> forAllDocuments();
 `}
@@ -394,11 +394,11 @@ To observe all document changes use `forAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_1_2">
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
 <CodeBlock language="java">
 {`CleanCloseable subscription = store
     .changes()
@@ -416,7 +416,7 @@ To observe all document changes use `forAllDocuments` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes#documentchangetypes) | Document change type enum |
+| **Type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
 | **Id** | String | Document identifier |
 | **CollectionName** | String | Document's collection name |
 | **TypeName** | String | Type name |
@@ -447,10 +447,10 @@ To observe all document changes use `forAllDocuments` method.
 
 Following methods allow you to subscribe to document changes:
 
-- [forDocument()](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
-- [forDocumentsInCollection()](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [forDocumentsStartingWith()](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
-- [forAllDocuments()](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
+- [forDocument()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocument)
+- [forDocumentsInCollection()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsincollection)
+- [forDocumentsStartingWith()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#fordocumentsstartingwith)
+- [forAllDocuments()](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#foralldocuments)
 
 ## forDocument
 
@@ -458,8 +458,8 @@ Single document changes can be observed using `forDocument()` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_1">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_1" label="document_changes_1">
+<CodeBlock language="js">
 {`store.changes().forDocument(docId);
 `}
 </CodeBlock>
@@ -471,12 +471,12 @@ Single document changes can be observed using `forDocument()` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add listeners for events for given document. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add listeners for events for given document. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_2">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_2" label="document_changes_2">
+<CodeBlock language="js">
 {`store.changes().forDocument("employees/1")
     .on("error", err => \{
         //handle error 
@@ -503,8 +503,8 @@ To observe all document changes in particular collection use `forDocumentInColle
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_3">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_3" label="document_changes_3">
+<CodeBlock language="js">
 {`store.changes().forDocumentsInCollection(collectionName);
 store.changes().forDocumentsInCollection(clazz);
 `}
@@ -517,7 +517,7 @@ store.changes().forDocumentsInCollection(clazz);
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 <Admonition type="info" title="Info">
 Overload with entity type uses `conventions.getCollectionNameForType()` to get collection name.
@@ -525,8 +525,8 @@ Overload with entity type uses `conventions.getCollectionNameForType()` to get c
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_4">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_4" label="document_changes_4">
+<CodeBlock language="js">
 {`store.changes().forDocumentsInCollection(Employee)
     .on("data", change => \{
         console.log(change.type + " on document " + change.id);
@@ -537,8 +537,8 @@ Overload with entity type uses `conventions.getCollectionNameForType()` to get c
 
 or
 
-<TabItem value="something-something" label="document_changes_5">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_5" label="document_changes_5">
+<CodeBlock language="js">
 {`const collectionName = store.conventions.getCollectionNameForType(Employee);
 store.changes()
     .forDocumentsInCollection(collectionName)
@@ -557,8 +557,8 @@ To observe all document changes for documents with ID that contains given prefix
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_9">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_9" label="document_changes_9">
+<CodeBlock language="js">
 {`store.changes().forDocumentsStartingWith(docIdPrefix);
 `}
 </CodeBlock>
@@ -570,12 +570,12 @@ To observe all document changes for documents with ID that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_1_0">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_1_0" label="document_changes_1_0">
+<CodeBlock language="js">
 {`store.changes()
     .forDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
     .on("data", change => \{
@@ -593,8 +593,8 @@ To observe all document changes use `forAllDocuments()` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="document_changes_1_1">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_1_1" label="document_changes_1_1">
+<CodeBlock language="js">
 {`store.changes().forAllDocuments();
 `}
 </CodeBlock>
@@ -602,12 +602,12 @@ To observe all document changes use `forAllDocuments()` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
+| IChangesObservable&lt;[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchange)&gt; | Observable that allows to add subscriptions to notifications for all documents. |
 
 ### Example
 
-<TabItem value="something-something" label="document_changes_1_2">
-<CodeBlock language="nodejs">
+<TabItem value="document_changes_1_2" label="document_changes_1_2">
+<CodeBlock language="js">
 {`store.changes().forAllDocuments()
     .on("data", change => \{
         console.log(change.type + " on document " + change.id);
@@ -622,7 +622,7 @@ To observe all document changes use `forAllDocuments()` method.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes#documentchangetypes) | Document change type enum |
+| **type** | [DocumentChangeTypes](../../client-api/changes/how-to-subscribe-to-document-changes.mdx#documentchangetypes) | Document change type enum |
 | **id** | string | Document identifier |
 | **collectionName** | string | Document's collection name |
 | **typeName** | string | Type name |

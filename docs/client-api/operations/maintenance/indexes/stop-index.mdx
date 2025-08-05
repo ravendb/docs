@@ -23,12 +23,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * Use `StopIndexOperation` to **pause a single index** in the database.
 
-* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing).
+* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index#overview)
-    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index#pause-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index#syntax)
+    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
+    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -36,10 +36,10 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 #### Which node is the index paused for?
 
 * When pausing the index from the **client**:  
-  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, 
+  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, 
   Not for all database-group nodes.
 
-* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be paused for the local node the browser is opened on, even if it is Not the preferred node.
 #### What happens when an index is paused for a node?
 
@@ -49,18 +49,18 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * A paused index **can** be queried, but results may be stale when querying the node that the index is paused for.
 #### Resuming the index:
 
-* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index)  
+* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index.mdx)  
 
-* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
 
 * Pausing the index is **Not a persistent operation**.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling it).  
-      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view#database-actions) view,  
-      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state) by the client.
+      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
 
-* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a paused index will resume the normal operation of the index  
+* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will resume the normal operation of the index  
   on the local node where the reset action was performed.
 
 * Modifying the index definition will resume the normal operation of the index  
@@ -115,7 +115,7 @@ Assert.Equal(IndexRunningStatus.Paused, index.Status);
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// class name has "Stop", but this is ok, this is the "Pause" operation
 public StopIndexOperation(string indexName)
@@ -142,7 +142,7 @@ Indexing will be resumed automatically after server restart.
 
 ### Syntax
 
-<TabItem value="something-something" label="stop_1">
+<TabItem value="stop_1" label="stop_1">
 <CodeBlock language="java">
 {`public StopIndexOperation(String indexName)
 `}
@@ -155,7 +155,7 @@ Indexing will be resumed automatically after server restart.
 
 ### Example
 
-<TabItem value="something-something" label="stop_2">
+<TabItem value="stop_2" label="stop_2">
 <CodeBlock language="java">
 {`store.maintenance().send(new StopIndexOperation("Orders/Totals"));
 `}
@@ -170,12 +170,12 @@ Indexing will be resumed automatically after server restart.
 
 * Use `StopIndexOperation` to **pause a single index** in the database.
 
-* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing).
+* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index#overview)
-    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index#pause-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index#syntax)
+    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
+    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -183,10 +183,10 @@ Indexing will be resumed automatically after server restart.
 #### Which node is the index paused for?
 
 * When pausing the index from the **client**:  
-  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, 
+  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, 
   Not for all database-group nodes.
 
-* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be paused for the local node the browser is opened on, even if it is Not the preferred node.
 #### What happens when an index is paused for a node?
 
@@ -196,18 +196,18 @@ Indexing will be resumed automatically after server restart.
 * A paused index **can** be queried, but results may be stale when querying the node that the index is paused for.
 #### Resuming the index:
 
-* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index)  
+* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index.mdx)  
 
-* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
 
 * Pausing the index is **Not a persistent operation**.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling it).  
-      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view#database-actions) view,  
-      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state) by the client.
+      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
 
-* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a paused index will resume the normal operation of the index  
+* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will resume the normal operation of the index  
   on the local node where the reset action was performed.
 
 * Modifying the index definition will resume the normal operation of the index  
@@ -217,7 +217,7 @@ Indexing will be resumed automatically after server restart.
 
 ## Pause index example
 
-<TabItem value="something-something" label="pause_index">
+<TabItem value="pause_index" label="pause_index">
 <CodeBlock language="python">
 {`# Define the resume index operation, pass the index name
 pause_index_op = StopIndexOperation("Orders/Totals")
@@ -241,7 +241,7 @@ self.assertEqual(index.status, IndexRunningStatus.PAUSED)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class StopIndexOperation(VoidMaintenanceOperation):
     # class name has "Stop", but this is ok, this is the "Pause" operation
@@ -264,12 +264,12 @@ self.assertEqual(index.status, IndexRunningStatus.PAUSED)
 
 * Use `StopIndexOperation` to **pause a single index** in the database.
 
-* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing).
+* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index#overview)
-    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index#pause-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index#syntax)
+    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
+    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -277,10 +277,10 @@ self.assertEqual(index.status, IndexRunningStatus.PAUSED)
 #### Which node is the index paused for?
 
 * When pausing the index from the **client**:  
-  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, 
+  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, 
   Not for all database-group nodes.
 
-* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be paused for the local node the browser is opened on, even if it is Not the preferred node.
 #### What happens when an index is paused for a node?
 
@@ -290,18 +290,18 @@ self.assertEqual(index.status, IndexRunningStatus.PAUSED)
 * A paused index **can** be queried, but results may be stale when querying the node that the index is paused for.
 #### Resuming the index:
 
-* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index)  
+* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index.mdx)  
 
-* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
 
 * Pausing the index is **Not a persistent operation**.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling it).  
-      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view#database-actions) view,  
-      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state) by the client.
+      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
 
-* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a paused index will resume the normal operation of the index  
+* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will resume the normal operation of the index  
   on the local node where the reset action was performed.
 
 * Modifying the index definition will resume the normal operation of the index  
@@ -311,7 +311,7 @@ self.assertEqual(index.status, IndexRunningStatus.PAUSED)
 
 ## Pause index example
 
-<TabItem value="something-something" label="pause_index">
+<TabItem value="pause_index" label="pause_index">
 <CodeBlock language="php">
 {`// Define the pause index operation, pass the index name
 $pauseIndexOp = new StopIndexOperation("Orders/Totals");
@@ -341,7 +341,7 @@ $this->assertTrue($index->getStatus()->isRunning());
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`// class name has "Stop", but this is ok, this is the "Pause" operation
 public StopIndexOperation(?string $indexName)
@@ -363,12 +363,12 @@ public StopIndexOperation(?string $indexName)
 
 * Use `StopIndexOperation` to **pause a single index** in the database.
 
-* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing).
+* To pause indexing for ALL indexes in the database use [StopIndexingOperation](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx).
 
 * In this page:
-    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index#overview)
-    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index#pause-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index#syntax)
+    * [Overview](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#overview)
+    * [Pause index example](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#pause-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/stop-index.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -376,10 +376,10 @@ public StopIndexOperation(?string $indexName)
 #### Which node is the index paused for?
 
 * When pausing the index from the **client**:  
-  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview#the-preferred-node) only, 
+  The index will be paused for the [preferred node](../../../../client-api/configuration/load-balance/overview.mdx#the-preferred-node) only, 
   Not for all database-group nodes.
 
-* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When pausing the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index will be paused for the local node the browser is opened on, even if it is Not the preferred node.
 #### What happens when an index is paused for a node?
 
@@ -389,18 +389,18 @@ public StopIndexOperation(?string $indexName)
 * A paused index **can** be queried, but results may be stale when querying the node that the index is paused for.
 #### Resuming the index:
 
-* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index)  
+* Learn how to resume an index by a client here: [Resume index](../../../../client-api/operations/maintenance/indexes/start-index.mdx)  
 
-* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
+* Learn to resume an index from **Studio** here: [Indexes list view](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
 
 * Pausing the index is **Not a persistent operation**.  
   This means the paused index will resume upon either of the following:
     * The server is restarted.
     * The database is re-loaded (by disabling and then enabling it).  
-      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view#database-actions) view,  
-      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state) by the client.
+      Toggling the database state can be done using the **Studio** [database list](../../../../studio/database/databases-list-view.mdx#database-actions) view,  
+      or using [ToggleDatabasesStateOperation](../../../../client-api/operations/server-wide/toggle-databases-state.mdx) by the client.
 
-* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index) a paused index will resume the normal operation of the index  
+* [Resetting](../../../../client-api/operations/maintenance/indexes/reset-index.mdx) a paused index will resume the normal operation of the index  
   on the local node where the reset action was performed.
 
 * Modifying the index definition will resume the normal operation of the index  
@@ -410,8 +410,8 @@ public StopIndexOperation(?string $indexName)
 
 ## Pause index example
 
-<TabItem value="something-something" label="pause_index">
-<CodeBlock language="nodejs">
+<TabItem value="pause_index" label="pause_index">
+<CodeBlock language="js">
 {`// Define the pause index operation, pass the index name 
 const pauseIndexOp = new StopIndexOperation("Orders/Totals");
 
@@ -434,8 +434,8 @@ assert.strictEqual(index.status, "Paused");
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`// class name has "Stop", but this is ok, this is the "Pause" operation
 const pauseIndexOp = new StopIndexOperation(indexName);
 `}

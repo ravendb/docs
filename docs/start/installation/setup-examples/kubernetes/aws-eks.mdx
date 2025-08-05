@@ -32,7 +32,7 @@ It is important to wait until each step is completed before starting the next. F
 
 In this guide, we create a 3-node Standard Cluster with the most basic default settings. We use the Service Role, VPC, subnets and security group which were created earlier in Step1.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`aws eks create-cluster --name RavenDBCluster --role-arn arn:aws:iam::xxxxxxxxxxxx:role/eksServiceRole --resources-vpc-config subnetIds=subnet-0288eed287111aeb2,subnet-04dda7c6e45e6b84d,subnet-0fcfc595512851aa8,securityGroupIds=sg-03945782faf884513
 `}
@@ -41,7 +41,7 @@ In this guide, we create a 3-node Standard Cluster with the most basic default s
 
 Your cluster is ready when you run the following command and get 3 nodes in the READY state.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl get node
 `}
@@ -64,7 +64,7 @@ RavenDB will accept PFX server certificates which contain the private key, are n
 
 If you wish to use a self-signed certificate, you must register the CA certificate in the OS. A Docker image can be created based on the RavenDB image:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`FROM ravendb/ravendb:latest
 ADD my-ca.crt /usr/local/share/ca-certificates/my-ca.crt
@@ -77,14 +77,14 @@ In this guide, we are going to use a wildcard certificate for *.example.ravendb.
 
 You first need to convert the license and certificate files to base64. For example, in C# it can be done like this:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`Convert.ToBase64String(File.ReadAllBytes("example.ravendb.cloud.pfx"))
 `}
 </CodeBlock>
 </TabItem>
 Or in powershell:  
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`[Convert]::ToBase64String([IO.File]::ReadAllBytes("example.ravendb.cloud.pfx"))
 `}
@@ -93,7 +93,7 @@ Or in powershell:
 
 Download [secrets.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl create -f .\\secrets.yaml
 `}
@@ -108,7 +108,7 @@ There are many third-party implementations and for this example, we chose to wor
 
 First, we need to label all of our cluster nodes: 
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl label node role=ingress-controller --all
 `}
@@ -119,7 +119,7 @@ Then we deploy the ingress controller with all of the necessary [RBAC (Role Base
 
 Download [haproxy.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/haproxy.yaml) and deploy it to the cluster:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl create -f .\\haproxy.yaml
 `}
@@ -129,7 +129,7 @@ Download [haproxy.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Do
 You may check that the command was executed by asking `Kubectl` to list all the pods and services in the default namespace. 
 Take a look at the External-IP field. About a minute after deploying, you will receive a public DNS name for your cluster. 
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl get svc
 kubectl get pod
@@ -143,7 +143,7 @@ kubectl get pod
 
 Download [ravendb.yaml](https://raw.githubusercontent.com/ravendb/docs/master/Documentation/4.1/Raven.Documentation.Pages/start/installation/setup-examples/Kubernetes/yamls/eks/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl create -f .\\ravendb.yaml
 `}
@@ -161,7 +161,7 @@ RavenDB should be deployed in a StatefulSet (and not in a Deployment or ReplicaS
 
 To view the status of the cluster, run the following commands:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl get pod
 kubectl get svc
@@ -190,7 +190,7 @@ Open Chrome and go to https://a.example.ravendb.cloud, then use the Cluster View
 If pods or services are not running or if they have errors you can issue a few commands that will help debug the problem.
 
 The `logs` command displays the standard error of the pod. In case RavenDB threw a startup exception, it will be shown there.
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl logs ravendb-0
 `}
@@ -198,7 +198,7 @@ The `logs` command displays the standard error of the pod. In case RavenDB threw
 </TabItem>
 
 Running the `describe` command on any Kubernetes object (sts, svc, ingress, pod) will show details about the deployment of that object and in some cases relevant errors will be written there.
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl describe pod haproxy-ingress-5d4d8d95d8-5rtqh
 `}
@@ -206,7 +206,7 @@ Running the `describe` command on any Kubernetes object (sts, svc, ingress, pod)
 </TabItem>
 
 If you need to restart a pod, simply delete it and it will terminate and then come back.
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl delete pod ravendb-2
 `}
@@ -214,7 +214,7 @@ If you need to restart a pod, simply delete it and it will terminate and then co
 </TabItem>
 
 If you delete the entire StatefulSet, the pods will be terminated by order of creation. 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`kubectl delete sts ravendb
 `}

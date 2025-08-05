@@ -18,13 +18,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This article provides guidance on integrating RavenDB with Akka.Persistence.
 
 * In this page:
-   * [Overview](../../integrations/akka.net-persistence/integrating-with-akka-persistence#overview)
-   * [Akka.Persistence.RavenDB](../../integrations/akka.net-persistence/integrating-with-akka-persistence#akka.persistence.ravendb)
-   * [Installing the RavenDB persistence plugin](../../integrations/akka.net-persistence/integrating-with-akka-persistence#installing-the-ravendb-persistence-plugin)
-   * [Configuring the RavenDB persistence plugin with HOCON](../../integrations/akka.net-persistence/integrating-with-akka-persistence#configuring-the-ravendb-persistence-plugin-with-hocon)
-       * [Configuration keys](../../integrations/akka.net-persistence/integrating-with-akka-persistence#configuration-keys)
-   * [Configuring the RavenDB persistence plugin with Hosting](../../integrations/akka.net-persistence/integrating-with-akka-persistence#configuring-the-ravendb-persistence-plugin-with-hosting)
-       * [Syntax](../../integrations/akka.net-persistence/integrating-with-akka-persistence#syntax)
+   * [Overview](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#overview)
+   * [Akka.Persistence.RavenDB](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#akka.persistence.ravendb)
+   * [Installing the RavenDB persistence plugin](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#installing-the-ravendb-persistence-plugin)
+   * [Configuring the RavenDB persistence plugin with HOCON](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuring-the-ravendb-persistence-plugin-with-hocon)
+       * [Configuration keys](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuration-keys)
+   * [Configuring the RavenDB persistence plugin with Hosting](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuring-the-ravendb-persistence-plugin-with-hosting)
+       * [Syntax](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#syntax)
 
 </Admonition>
 ## Overview
@@ -65,9 +65,9 @@ to ensure that your actor state and critical messages are securely persisted and
 
 With the RavenDB plugin your application can:  
 
-  * Persist and recover Events to/from a **Journal store**. Learn more in [Events](../../integrations/akka.net-persistence/events-and-snapshots#storing-events).
-  * Persist and recover Snapshots to/from a **Snapshot store**. Learn more in [Snapshots](../../integrations/akka.net-persistence/events-and-snapshots#storing-snapshots). 
-  * Query the stored events. Learn more in [Queries](../../integrations/akka.net-persistence/queries).
+  * Persist and recover Events to/from a **Journal store**. Learn more in [Events](../../integrations/akka.net-persistence/events-and-snapshots.mdx#storing-events).
+  * Persist and recover Snapshots to/from a **Snapshot store**. Learn more in [Snapshots](../../integrations/akka.net-persistence/events-and-snapshots.mdx#storing-snapshots). 
+  * Query the stored events. Learn more in [Queries](../../integrations/akka.net-persistence/queries.mdx).
 
 
 
@@ -79,7 +79,7 @@ Integrate RavenDB with Akka.Persistence using one of the two available NuGet pac
     This package allows you to configure the plugin solely through HOCON (Human-Optimized Config Object Notation), 
     which is typically embedded within your _app.config_ or _web.config_ file, or a dedicated HOCON file.
     
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`# Installing via .NET CLI:
 dotnet add package Akka.Persistence.RavenDB
@@ -92,7 +92,7 @@ dotnet add package Akka.Persistence.RavenDB
     by allowing you to configure the plugin through **Hosting** or via a **HOCON** configuration file. 
     Using Hosting provides a fast and easy way to set up your app and its persistence without the need to configure HOCON.  
     
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`# Installing via .NET CLI:
 dotnet add package Akka.Persistence.RavenDB.Hosting
@@ -119,9 +119,9 @@ the configuration provided via Hosting takes precedence and will override the co
   Provide different values for each store as needed.  
 
 * The following is a sample HOCON configuration under the `<akka>` section.  
-  See the full description of each configuration key [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence#configuration-keys).
+  See the full description of each configuration key [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#configuration-keys).
 
-<TabItem value="something-something" label="hocon_config">
+<TabItem value="hocon_config" label="hocon_config">
 <CodeBlock language="csharp">
 {`<akka>
   <hocon>
@@ -255,11 +255,11 @@ Default: `false`
 * Using Hosting, you can easily set up the RavenDB plugin during your application's startup.
 
 * Use method `WithRavenDbPersistence` to configure all relevant parameters.  
-  See the available parameters and method overloads in the syntax section [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence#syntax).
+  See the available parameters and method overloads in the syntax section [below](../../integrations/akka.net-persistence/integrating-with-akka-persistence.mdx#syntax).
 
 * The following example shows a basic configuration using Hosting:
 
-<TabItem value="something-something" label="basic_hosting_config">
+<TabItem value="basic_hosting_config" label="basic_hosting_config">
 <CodeBlock language="csharp">
 {`// Add the following using statements:
 using Microsoft.Extensions.Hosting;
@@ -301,7 +301,7 @@ namespace Raven.Documentation.Samples.Integrations.AkkaPersistence
 </TabItem>
 #### Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// A simple overload providing basic configuration
 // ===============================================
@@ -328,7 +328,7 @@ public static AkkaConfigurationBuilder WithRavenDbPersistence(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public enum PersistenceMode
 \{
@@ -342,7 +342,7 @@ public static AkkaConfigurationBuilder WithRavenDbPersistence(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`// These overloads allow for applying separate configurations to the Journal and Snapshot stores
 // =============================================================================================
@@ -355,7 +355,7 @@ public static AkkaConfigurationBuilder WithRavenDbPersistence(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="csharp">
 {`public static AkkaConfigurationBuilder WithRavenDbPersistence(
     this AkkaConfigurationBuilder builder,
@@ -364,7 +364,7 @@ public static AkkaConfigurationBuilder WithRavenDbPersistence(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_5">
+<TabItem value="syntax_5" label="syntax_5">
 <CodeBlock language="csharp">
 {`// Use this class to define the Journal store configuration
 public class RavenDbJournalOptions
@@ -385,7 +385,7 @@ public class RavenDbJournalOptions
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_6">
+<TabItem value="syntax_6" label="syntax_6">
 <CodeBlock language="csharp">
 {`// Use this class to define the Snapshot store configuration
 public class RavenDbSnapshotOptions

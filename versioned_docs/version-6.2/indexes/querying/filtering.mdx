@@ -24,25 +24,25 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
 
 * RavenDB provides several ways to run queries, including:  
-   * [Query](../../client-api/session/querying/how-to-query) from the basic `Session` API  
-   * [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query) from the `Session.Advanced` API  
-   * [RQL](../../client-api/session/querying/what-is-rql) - Raven Query Language  
+   * [Query](../../client-api/session/querying/how-to-query.mdx) from the basic `Session` API  
+   * [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query.mdx) from the `Session.Advanced` API  
+   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
 
 * The examples in this page demonstrate how filtering is applied by each of the above querying methods.  
 
 * In this page:
-   * [Where](../../indexes/querying/filtering#where)
-   * [Where - Numeric Property](../../indexes/querying/filtering#where---numeric-property)
-   * [Where - Nested Property](../../indexes/querying/filtering#where---nested-property)
-   * [Where + Any](../../indexes/querying/filtering#where-+-any)
-   * [Where + In](../../indexes/querying/filtering#where-+-in)
-   * [Where + ContainsAny](../../indexes/querying/filtering#where-+-containsany)
-   * [Where + ContainsAll](../../indexes/querying/filtering#where-+-containsall)
-   * [Where - StartsWith](../../indexes/querying/filtering#where---startswith)
-   * [Where - EndsWith](../../indexes/querying/filtering#where---endswith)
-   * [Where - Identifier Property](../../indexes/querying/filtering#where---identifier-property)
-   * [Where - Exists](../../indexes/querying/filtering#where---exists)
-   * [Remarks](../../indexes/querying/filtering#remarks)
+   * [Where](../../indexes/querying/filtering.mdx#where)
+   * [Where - Numeric Property](../../indexes/querying/filtering.mdx#where---numeric-property)
+   * [Where - Nested Property](../../indexes/querying/filtering.mdx#where---nested-property)
+   * [Where + Any](../../indexes/querying/filtering.mdx#where-+-any)
+   * [Where + In](../../indexes/querying/filtering.mdx#where-+-in)
+   * [Where + ContainsAny](../../indexes/querying/filtering.mdx#where-+-containsany)
+   * [Where + ContainsAll](../../indexes/querying/filtering.mdx#where-+-containsall)
+   * [Where - StartsWith](../../indexes/querying/filtering.mdx#where---startswith)
+   * [Where - EndsWith](../../indexes/querying/filtering.mdx#where---endswith)
+   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [Where - Exists](../../indexes/querying/filtering.mdx#where---exists)
+   * [Remarks](../../indexes/querying/filtering.mdx#remarks)
 
 </Admonition>
 
@@ -521,12 +521,12 @@ where endsWith(Name, 'ra')
 ## Where - Identifier Property
 
 Once a property used in the `Where` clause is recognized as an identity property of a given entity type 
-(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global#findidentityproperty))
+(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
 and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
 It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
-loading documents with [`session.Load`](../../client-api/session/loading-entities) usage.
+loading documents with [`session.Load`](../../client-api/session/loading-entities.mdx) usage.
 
 
 <Tabs groupId='languageSyntax'>
@@ -591,9 +591,9 @@ where startsWith(id(), 'orders/1')
 
 ## Where - Exists
 
-To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).  
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
@@ -942,22 +942,22 @@ Underneath, `Query` is converting predicates to the `IndexQuery` class so they c
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
 
 * Index queries can be executed using -  
-   * [query_index_type](../../client-api/session/querying/how-to-query) from the basic `session` API  
-   * [RQL](../../client-api/session/querying/what-is-rql) - Raven Query Language  
+   * [query_index_type](../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
+   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
 
 * The examples in this page demonstrate how filtering is applied by each of these methods.  
 
 * In this page:
-   * [`where_equals` - Where equals](../../indexes/querying/filtering#where_equals---where-equals)
-   * [`where_greater_than` - Numeric property](../../indexes/querying/filtering#where_greater_than---numeric-property)
-   * [`where_greater_than` - Nested property](../../indexes/querying/filtering#where_greater_than---nested-property)
-   * [`where_in` - Single -vs- Multiple values](../../indexes/querying/filtering#where_in---single--vs--multiple-values)
-   * [`contains_any` - Any value from specified collection](../../indexes/querying/filtering#contains_any---any-value-from-specified-collection)
-   * [`contains_all` - All values from specified collection](../../indexes/querying/filtering#contains_all---all-values-from-specified-collection)
-   * [`where_starts_with` - All records with given prefix](../../indexes/querying/filtering#where_starts_with---all-records-with-given-prefix)
-   * [`where_ends_with` - All records with given suffix](../../indexes/querying/filtering#where_ends_with---all-records-with-given-suffix)
-   * [Where - Identifier Property](../../indexes/querying/filtering#where---identifier-property)
-   * [`where_exists` - Where exists or doesn't exist](../../indexes/querying/filtering#where_exists---where-exists-or-doesn)
+   * [`where_equals` - Where equals](../../indexes/querying/filtering.mdx#where_equals---where-equals)
+   * [`where_greater_than` - Numeric property](../../indexes/querying/filtering.mdx#where_greater_than---numeric-property)
+   * [`where_greater_than` - Nested property](../../indexes/querying/filtering.mdx#where_greater_than---nested-property)
+   * [`where_in` - Single -vs- Multiple values](../../indexes/querying/filtering.mdx#where_in---single--vs--multiple-values)
+   * [`contains_any` - Any value from specified collection](../../indexes/querying/filtering.mdx#contains_any---any-value-from-specified-collection)
+   * [`contains_all` - All values from specified collection](../../indexes/querying/filtering.mdx#contains_all---all-values-from-specified-collection)
+   * [`where_starts_with` - All records with given prefix](../../indexes/querying/filtering.mdx#where_starts_with---all-records-with-given-prefix)
+   * [`where_ends_with` - All records with given suffix](../../indexes/querying/filtering.mdx#where_ends_with---all-records-with-given-suffix)
+   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [`where_exists` - Where exists or doesn't exist](../../indexes/querying/filtering.mdx#where_exists---where-exists-or-doesn)
 
 </Admonition>
 
@@ -1242,12 +1242,12 @@ where endsWith(Name, 'ra')
 ## Where - Identifier Property
 
 Once a property used in the `where_equals` clause is recognized as an identity property of a given entity type 
-(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global#findidentityproperty))
+(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
 and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
 It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
-loading documents using [`session.load`](../../client-api/session/loading-entities).  
+loading documents using [`session.load`](../../client-api/session/loading-entities.mdx).  
 
 
 <Tabs groupId='languageSyntax'>
@@ -1286,9 +1286,9 @@ where startsWith(id(), 'orders/1')
 
 ## `where_exists` - Where exists or doesn't exist
 
-To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).  
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
@@ -1301,22 +1301,22 @@ To find all documents in a collection that don't have a specified field, see [Ho
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.  
 
 * Index queries can be executed using -  
-   * [query_index_type](../../client-api/session/querying/how-to-query) from the basic `session` API  
-   * [RQL](../../client-api/session/querying/what-is-rql) - Raven Query Language  
+   * [query_index_type](../../client-api/session/querying/how-to-query.mdx) from the basic `session` API  
+   * [RQL](../../client-api/session/querying/what-is-rql.mdx) - Raven Query Language  
 
 * The examples in this page demonstrate how filtering is applied by each of these methods.  
 
 * In this page:
-   * [`whereEquals` - Where equals](../../indexes/querying/filtering#whereequals---where-equals)
-   * [`whereGreaterThan` - Numeric property](../../indexes/querying/filtering#wheregreaterthan---numeric-property)
-   * [`whereGreaterThan` - Nested property](../../indexes/querying/filtering#wheregreaterthan---nested-property)
-   * [`whereIn` - Single -vs- Multiple values](../../indexes/querying/filtering#wherein---single--vs--multiple-values)
-   * [`containsAny` - Any value from specified collection](../../indexes/querying/filtering#containsany---any-value-from-specified-collection)
-   * [`containsAll` - All values from specified collection](../../indexes/querying/filtering#containsall---all-values-from-specified-collection)
-   * [`whereStartsWith` - All records with given prefix](../../indexes/querying/filtering#wherestartswith---all-records-with-given-prefix)
-   * [`whereEndsWith` - All records with given suffix](../../indexes/querying/filtering#whereendswith---all-records-with-given-suffix)
-   * [Where - Identifier Property](../../indexes/querying/filtering#where---identifier-property)
-   * [`whereExists` - Where exists or doesn't exist](../../indexes/querying/filtering#whereexists---where-exists-or-doesn)
+   * [`whereEquals` - Where equals](../../indexes/querying/filtering.mdx#whereequals---where-equals)
+   * [`whereGreaterThan` - Numeric property](../../indexes/querying/filtering.mdx#wheregreaterthan---numeric-property)
+   * [`whereGreaterThan` - Nested property](../../indexes/querying/filtering.mdx#wheregreaterthan---nested-property)
+   * [`whereIn` - Single -vs- Multiple values](../../indexes/querying/filtering.mdx#wherein---single--vs--multiple-values)
+   * [`containsAny` - Any value from specified collection](../../indexes/querying/filtering.mdx#containsany---any-value-from-specified-collection)
+   * [`containsAll` - All values from specified collection](../../indexes/querying/filtering.mdx#containsall---all-values-from-specified-collection)
+   * [`whereStartsWith` - All records with given prefix](../../indexes/querying/filtering.mdx#wherestartswith---all-records-with-given-prefix)
+   * [`whereEndsWith` - All records with given suffix](../../indexes/querying/filtering.mdx#whereendswith---all-records-with-given-suffix)
+   * [Where - Identifier Property](../../indexes/querying/filtering.mdx#where---identifier-property)
+   * [`whereExists` - Where exists or doesn't exist](../../indexes/querying/filtering.mdx#whereexists---where-exists-or-doesn)
 
 </Admonition>
 
@@ -1754,12 +1754,12 @@ where endsWith(Name, 'ra')
 ## Where - Identifier Property
 
 Once a property used in the `whereEquals` clause is recognized as an identity property of a given entity type 
-(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global#findidentityproperty))
+(according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global.mdx#findidentityproperty))
 and there aren't any other fields involved in the query, then it is called a "collection query". 
 Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
 and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine. 
 It means that querying by ID doesn't create an auto-index and has no extra cost. In terms of efficiency, it is the same as
-loading documents using [`session->load`](../../client-api/session/loading-entities).  
+loading documents using [`session->load`](../../client-api/session/loading-entities.mdx).  
 
 
 <Tabs groupId='languageSyntax'>
@@ -1828,9 +1828,9 @@ where startsWith(id(), 'orders/1')
 
 ## `whereExists` - Where exists or doesn't exist
 
-To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).  
+To find all documents in a collection that have a specified field, see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).  
 
-To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
+To find all documents in a collection that don't have a specified field, see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
@@ -1843,24 +1843,24 @@ To find all documents in a collection that don't have a specified field, see [Ho
 * One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition.
 
 * The following examples demonstrate how to add simple conditions to a query:
-  * [Where - equals](../../indexes/querying/filtering#where---equals)
-  * [Where - numeric property](../../indexes/querying/filtering#where---numeric-property)
-  * [Where - nested property](../../indexes/querying/filtering#where---nested-property)
-  * [Where - multiple values](../../indexes/querying/filtering#where---multiple-values)
-  * [Where - in](../../indexes/querying/filtering#where---in)
-  * [Where - containsAny](../../indexes/querying/filtering#where---containsany)
-  * [Where - containsAll](../../indexes/querying/filtering#where---containsall)
-  * [Where - startsWith](../../indexes/querying/filtering#where---startswith)
-  * [Where - endsWith](../../indexes/querying/filtering#where---endswith)
-  * [Where - exists](../../indexes/querying/filtering#where---exists)
-  * [Where - filter by ID](../../indexes/querying/filtering#where---filter-by-id)
+  * [Where - equals](../../indexes/querying/filtering.mdx#where---equals)
+  * [Where - numeric property](../../indexes/querying/filtering.mdx#where---numeric-property)
+  * [Where - nested property](../../indexes/querying/filtering.mdx#where---nested-property)
+  * [Where - multiple values](../../indexes/querying/filtering.mdx#where---multiple-values)
+  * [Where - in](../../indexes/querying/filtering.mdx#where---in)
+  * [Where - containsAny](../../indexes/querying/filtering.mdx#where---containsany)
+  * [Where - containsAll](../../indexes/querying/filtering.mdx#where---containsall)
+  * [Where - startsWith](../../indexes/querying/filtering.mdx#where---startswith)
+  * [Where - endsWith](../../indexes/querying/filtering.mdx#where---endswith)
+  * [Where - exists](../../indexes/querying/filtering.mdx#where---exists)
+  * [Where - filter by ID](../../indexes/querying/filtering.mdx#where---filter-by-id)
 
 </Admonition>
 ## Where - equals
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Basic filtering using "whereEquals":
 // ====================================
 
@@ -1880,7 +1880,7 @@ const filteredEmployees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -1911,7 +1911,7 @@ where FirstName == "Robert" and LastName == "King"
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "whereGreaterThan":
 // ===============================
 
@@ -1927,7 +1927,7 @@ const filteredProducts = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -1953,7 +1953,7 @@ where UnitsInStock > 20
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "whereLessThan":
 // ============================
 
@@ -1969,7 +1969,7 @@ const filteredProducts = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -1999,7 +1999,7 @@ where UnitsInStock < 20
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter by a nested property:
 // ============================
 
@@ -2030,7 +2030,7 @@ where ShipTo.City == "Albuquerque"
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter by multiple values:
 // ==========================
 
@@ -2046,7 +2046,7 @@ const filteredOrders = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByProductNamesPerOrderLine extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2079,7 +2079,7 @@ Use `whereIn` when you want to filter by a single value out of multiple given va
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "whereIn":
 // ======================
 
@@ -2095,7 +2095,7 @@ const filteredEmployees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2128,7 +2128,7 @@ Use `containsAny` to check if an enumeration contains any of the values from the
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "containsAny":
 // ==========================
 
@@ -2144,7 +2144,7 @@ const filteredOrders = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByProductNames extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2177,7 +2177,7 @@ Use `containsAll` to check if an enumeration contains all of the values from the
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "containsAll":
 // ==========================
 
@@ -2193,7 +2193,7 @@ const filteredOrders = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByProductNames extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -2224,7 +2224,7 @@ where ProductNames all in ("ravioli", "pepper")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "whereStartsWith":
 // ==============================
 
@@ -2255,7 +2255,7 @@ where startsWith(Name, "ch")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter with "whereEndsWith":
 // ===========================
 
@@ -2285,10 +2285,10 @@ where endsWith(Name, 'ra')
 ## Where - exists
 
 * To find all documents in a collection that have a specified field,  
-  see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field).
+  see [How to Filter by Field Presence](../../client-api/session/querying/how-to-filter-by-field.mdx).
   
 * To find all documents in a collection that don't have a specified field,  
-  see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field).
+  see [How to Filter by Non-Existing Field](../../client-api/session/querying/how-to-filter-by-non-existing-field.mdx).
 
 
 
@@ -2301,11 +2301,11 @@ where endsWith(Name, 'ra')
   and don't require any additional handling like ordering, full-text searching, etc, are handled directly by the storage engine.
 
 * This means that querying by ID doesn't create an auto-index and has no extra cost.  
-  In terms of efficiency, it is the same as loading documents with [`session.load`](../../client-api/session/loading-entities) usage.
+  In terms of efficiency, it is the same as loading documents with [`session.load`](../../client-api/session/loading-entities.mdx) usage.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter by id:
 // =============
 
@@ -2332,7 +2332,7 @@ where id() == "orders/1-A"
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Filter by whereStartsWith id:
 // =============================
 

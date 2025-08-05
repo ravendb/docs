@@ -24,7 +24,7 @@ Entities can be marked for deletion by using the `Delete` method, but will not b
 
 ## Syntax
 
-<TabItem value="something" label="deleting_1">
+<TabItem value="deleting_1" label="deleting_1">
 <CodeBlock language="csharp">
 {`void Delete<T>(T entity);
 
@@ -95,7 +95,7 @@ In this overload, the Delete() method will not do any change vector based concur
 
 If entity is **not** tracked by session, then executing:  
 
-<TabItem value="something" label="deleting_4">
+<TabItem value="deleting_4" label="deleting_4">
 <CodeBlock language="csharp">
 {`session.Delete("employees/1");
 `}
@@ -104,7 +104,7 @@ If entity is **not** tracked by session, then executing:
 
 is equal to doing:  
 
-<TabItem value="something" label="deleting_5">
+<TabItem value="deleting_5" label="deleting_5">
 <CodeBlock language="csharp">
 {`session.Advanced.Defer(new DeleteCommandData("employees/1", changeVector: null));
 `}
@@ -115,7 +115,7 @@ is equal to doing:
 In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check.  
 </Admonition>
 
-You can read more about defer operations [here](../../client-api/session/how-to/defer-operations).  
+You can read more about defer operations [here](../../client-api/session/how-to/defer-operations.mdx).  
 
 </Admonition>
 
@@ -128,7 +128,7 @@ Entities can be marked for deletion by using the `delete` method, but will not b
 
 ## Syntax
 
-<TabItem value="something-something" label="deleting_1">
+<TabItem value="deleting_1" label="deleting_1">
 <CodeBlock language="java">
 {`<T> void delete(T entity);
 
@@ -147,7 +147,7 @@ void delete(String id, String expectedChangeVector);
 
 ## Example I
 
-<TabItem value="something-something" label="deleting_2">
+<TabItem value="deleting_2" label="deleting_2">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1");
 
@@ -163,7 +163,7 @@ If useOptimisticConcurrency is set to 'true' (default 'false'), the delete() met
 
 ## Example II
 
-<TabItem value="something-something" label="deleting_3">
+<TabItem value="deleting_3" label="deleting_3">
 <CodeBlock language="java">
 {`session.delete("employees/1");
 session.saveChanges();
@@ -179,7 +179,7 @@ In this overload, the delete() method will not do any change vector based concur
 
 If entity is **not** tracked by session, then executing
 
-<TabItem value="something-something" label="deleting_4">
+<TabItem value="deleting_4" label="deleting_4">
 <CodeBlock language="java">
 {`session.delete("employees/1");
 `}
@@ -188,7 +188,7 @@ If entity is **not** tracked by session, then executing
 
 is equal to doing
 
-<TabItem value="something-something" label="deleting_5">
+<TabItem value="deleting_5" label="deleting_5">
 <CodeBlock language="java">
 {`session.advanced().defer(new DeleteCommandData("employees/1", null));
 `}
@@ -212,7 +212,7 @@ Entities can be marked for deletion by using the `delete()` method, but will not
 
 ## Syntax
 
-<TabItem value="something-something" label="deleting_1">
+<TabItem value="deleting_1" label="deleting_1">
 <CodeBlock language="python">
 {`def delete(self, key_or_entity: Union[str, object], expected_change_vector: Optional[str] = None) -> None:
     ...
@@ -227,7 +227,7 @@ Entities can be marked for deletion by using the `delete()` method, but will not
 
 ## Example I
 
-<TabItem value="something-something" label="deleting_2">
+<TabItem value="deleting_2" label="deleting_2">
 <CodeBlock language="python">
 {`employee = session.load("employees/1")
 
@@ -243,7 +243,7 @@ If use_optimistic_concurrency is set to 'True' (default 'False'), the delete() m
 
 ## Example II
 
-<TabItem value="something-something" label="deleting_3">
+<TabItem value="deleting_3" label="deleting_3">
 <CodeBlock language="python">
 {`session.delete("employees/1")
 session.save_changes()
@@ -259,7 +259,7 @@ The delete() method will not do any change vector based concurrency checks becau
 
 If entity is **not** tracked by session, then executing:  
 
-<TabItem value="something-something" label="deleting_4">
+<TabItem value="deleting_4" label="deleting_4">
 <CodeBlock language="python">
 {`session.delete("employees/1")
 `}
@@ -268,7 +268,7 @@ If entity is **not** tracked by session, then executing:
 
 is equal to doing:  
 
-<TabItem value="something-something" label="deleting_5">
+<TabItem value="deleting_5" label="deleting_5">
 <CodeBlock language="python">
 {`session.advanced.defer(DeleteCommandData("employees/1", change_vector=None))
 `}
@@ -279,7 +279,7 @@ is equal to doing:
 In this sample the change vector is None - this means that there will be no concurrency checks. A not-None and valid change vector value will trigger a concurrency check.  
 </Admonition>
 
-You can read more about defer operations [here](../../client-api/session/how-to/defer-operations).  
+You can read more about defer operations [here](../../client-api/session/how-to/defer-operations.mdx).  
 
 </Admonition>
 
@@ -292,7 +292,7 @@ Entities can be marked for deletion by using the `delete` method, but will not b
 
 ## Syntax
 
-<TabItem value="something-something" label="deleting_1">
+<TabItem value="deleting_1" label="deleting_1">
 <CodeBlock language="php">
 {`public function delete(?object $entity): void;
 
@@ -311,7 +311,7 @@ public function delete(?string $id, ?string $expectedChangeVector): void;
 
 ## Example I
 
-<TabItem value="something-something" label="deleting_2">
+<TabItem value="deleting_2" label="deleting_2">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1");
 
@@ -327,7 +327,7 @@ If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() met
 
 ## Example II
 
-<TabItem value="something-something" label="deleting_3">
+<TabItem value="deleting_3" label="deleting_3">
 <CodeBlock language="php">
 {`$session->delete("employees/1");
 $session->saveChanges();
@@ -343,7 +343,7 @@ In this overload, the Delete() method will not do any change vector based concur
 
 If entity is **not** tracked by session, then executing:  
 
-<TabItem value="something-something" label="deleting_4">
+<TabItem value="deleting_4" label="deleting_4">
 <CodeBlock language="php">
 {`$session->delete("employees/1");
 `}
@@ -352,7 +352,7 @@ If entity is **not** tracked by session, then executing:
 
 is equal to doing:  
 
-<TabItem value="something-something" label="deleting_5">
+<TabItem value="deleting_5" label="deleting_5">
 <CodeBlock language="php">
 {`$session->advanced()->defer(new DeleteCommandData("employees/1", null));
 `}
@@ -363,7 +363,7 @@ is equal to doing:
 In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check.  
 </Admonition>
 
-You can read more about defer operations [here](../../client-api/session/how-to/defer-operations).  
+You can read more about defer operations [here](../../client-api/session/how-to/defer-operations.mdx).  
 
 </Admonition>
 
@@ -376,8 +376,8 @@ Entities can be marked for deletion by using the `delete()` method, but will *no
 
 ## Syntax
 
-<TabItem value="something-something" label="deleting_1">
-<CodeBlock language="nodejs">
+<TabItem value="deleting_1" label="deleting_1">
+<CodeBlock language="js">
 {`await session.delete(entity);
 
 await session.delete(id);
@@ -395,8 +395,8 @@ await session.delete(id, [changeVector]);
 
 ## Example I
 
-<TabItem value="something-something" label="deleting_2">
-<CodeBlock language="nodejs">
+<TabItem value="deleting_2" label="deleting_2">
+<CodeBlock language="js">
 {`const employee = await session.load("employees/1");
 
 await session.delete(employee);
@@ -411,8 +411,8 @@ If `useOptimisticConcurrency` is set to *true* (default *false*), the `delete()`
 
 ## Example II
 
-<TabItem value="something-something" label="deleting_3">
-<CodeBlock language="nodejs">
+<TabItem value="deleting_3" label="deleting_3">
+<CodeBlock language="js">
 {`await session.delete("employees/1");
 await session.saveChanges();
 `}
@@ -427,8 +427,8 @@ In this example, the `delete()` method will not do any change vector based concu
 
 If entity is **not** tracked by session, then executing
 
-<TabItem value="something-something" label="deleting_4">
-<CodeBlock language="nodejs">
+<TabItem value="deleting_4" label="deleting_4">
+<CodeBlock language="js">
 {`await session.delete("employees/1");
 `}
 </CodeBlock>
@@ -436,8 +436,8 @@ If entity is **not** tracked by session, then executing
 
 is equal to doing
 
-<TabItem value="something-something" label="deleting_5">
-<CodeBlock language="nodejs">
+<TabItem value="deleting_5" label="deleting_5">
+<CodeBlock language="js">
 {`await session.advanced.defer(new DeleteCommandData("employees/1", null));
 `}
 </CodeBlock>

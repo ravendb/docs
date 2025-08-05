@@ -21,7 +21,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `SaveChanges()` is called.
 
@@ -29,18 +29,18 @@ export const supportedLanguages = ["csharp", "nodejs"];
   to retrieve the **list of all entities tracked by the session**.
 
 * To check what is the actual type of change made to the entities, see:  
-  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes), or
-  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes).
+  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes), or
+  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes).
  
 * In this page:
-  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities#get-tracked-entities)
-  * [Syntax](../../../client-api/session/how-to/get-tracked-entities#syntax)
+  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx#get-tracked-entities)
+  * [Syntax](../../../client-api/session/how-to/get-tracked-entities.mdx#syntax)
 
 </Admonition>
 ## Get tracked entities 
 
 **Tracking stored entities**:
-<TabItem value="something" label="get_tracked_entities_1">
+<TabItem value="get_tracked_entities_1" label="get_tracked_entities_1">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -73,7 +73,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </TabItem>
 
 **Tracking loaded and deleted entities**:
-<TabItem value="something" label="get_tracked_entities_2">
+<TabItem value="get_tracked_entities_2" label="get_tracked_entities_2">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -101,7 +101,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 </TabItem>
 
 **Tracking queried entities**:
-<TabItem value="something" label="get_tracked_entities_3">
+<TabItem value="get_tracked_entities_3" label="get_tracked_entities_3">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -122,13 +122,13 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`IDictionary<string, EntityInfo> GetTrackedEntities();
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class EntityInfo
 \{
@@ -148,7 +148,7 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work#tracking-changes) 
+* The Session [tracks all changes](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx#tracking-changes) 
   made to all the entities it has either loaded, stored, deleted, or queried for,  
   and persists to the server only what is needed when `saveChanges()` is called.
 
@@ -156,19 +156,19 @@ export const supportedLanguages = ["csharp", "nodejs"];
   to retrieve the **list of all entities tracked by the session**.
 
 * To check what is the actual type of change made to the entities, see:  
-  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed#get-entity-changes), or
-  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session#get-session-changes).
+  [Get entity changes](../../../client-api/session/how-to/check-if-entity-has-changed.mdx#get-entity-changes), or
+  [Get session changes](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session.mdx#get-session-changes).
  
 * In this page:
-  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities#get-tracked-entities)
-  * [Syntax](../../../client-api/session/how-to/get-tracked-entities#syntax)
+  * [Get tracked entities](../../../client-api/session/how-to/get-tracked-entities.mdx#get-tracked-entities)
+  * [Syntax](../../../client-api/session/how-to/get-tracked-entities.mdx#syntax)
 
 </Admonition>
 ## Get tracked entities 
 
 **Tracking stored entities**:
-<TabItem value="something-something" label="get_tracked_entities_1">
-<CodeBlock language="nodejs">
+<TabItem value="get_tracked_entities_1" label="get_tracked_entities_1">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Store entities within the session:
@@ -205,8 +205,8 @@ trackedEntities = session.advanced.getTrackedEntities();
 </TabItem>
 
 **Tracking loaded and deleted entities**:
-<TabItem value="something-something" label="get_tracked_entities_2">
-<CodeBlock language="nodejs">
+<TabItem value="get_tracked_entities_2" label="get_tracked_entities_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Load entity:
@@ -235,8 +235,8 @@ await session.saveChanges();
 </TabItem>
 
 **Tracking queried entities**:
-<TabItem value="something-something" label="get_tracked_entities_3">
-<CodeBlock language="nodejs">
+<TabItem value="get_tracked_entities_3" label="get_tracked_entities_3">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Query for all employees:
@@ -256,8 +256,8 @@ const entityInfo2 = trackedEntities[employees[1].id];
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`getTrackedEntities();
 `}
 </CodeBlock>
@@ -267,8 +267,8 @@ const entityInfo2 = trackedEntities[employees[1].id];
 |---------------------------|------------------------------------------------------------------|
 | `Map<string, EntityInfo>` | A dictionary that maps the entity id to the `EntityInfo` object. |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class EntityInfo \{
     // The tracked entity id
     id;       // string

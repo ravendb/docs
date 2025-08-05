@@ -19,23 +19,23 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The data can be filtered and transformed along the way.  
 
 * The external target can be:  
-  * Another RavenDB database instance (outside of the [Database Group](../../../studio/database/settings/manage-database-group))
+  * Another RavenDB database instance (outside of the [Database Group](../../../studio/database/settings/manage-database-group.mdx))
   * A relational database
   * Elasticsearch
   * OLAP (Online Analytical Processing)
   * A message broker such as Apache Kafka, RabbitMQ, or Azure Queue Storage
 
-* ETL can be used on [sharded](../../../sharding/etl) and non-sharded databases alike.  
-  Learn more about how ETL works on a sharded database [here](../../../sharding/etl).
+* ETL can be used on [sharded](../../../sharding/etl.mdx) and non-sharded databases alike.  
+  Learn more about how ETL works on a sharded database [here](../../../sharding/etl.mdx).
 
 * In this page:  
-  * [Why use ETL](../../../server/ongoing-tasks/etl/basics#why-use-etl)  
-  * [Defining ETL Tasks](../../../server/ongoing-tasks/etl/basics#defining-etl-tasks)  
-  * [ETL Stages:](../../../server/ongoing-tasks/etl/basics#etl-stages)  
-      * [Extract](../../../server/ongoing-tasks/etl/basics#extract)  
-      * [Transform](../../../server/ongoing-tasks/etl/basics#transform)  
-      * [Load](../../../server/ongoing-tasks/etl/basics#load)  
-  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics#troubleshooting)  
+  * [Why use ETL](../../../server/ongoing-tasks/etl/basics.mdx#why-use-etl)  
+  * [Defining ETL Tasks](../../../server/ongoing-tasks/etl/basics.mdx#defining-etl-tasks)  
+  * [ETL Stages:](../../../server/ongoing-tasks/etl/basics.mdx#etl-stages)  
+      * [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract)  
+      * [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform)  
+      * [Load](../../../server/ongoing-tasks/etl/basics.mdx#load)  
+  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics.mdx#troubleshooting)  
 </Admonition>
 ## Why use ETL
 
@@ -64,22 +64,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Defining ETL Tasks
 
 * The following ETL tasks can be defined:  
-  * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven) - send data to another _RavenDB database_  
-  * [SQL ETL](../../../server/ongoing-tasks/etl/sql) - send data to an _SQL database_  
-  * [Snowflake ETL](../../../server/ongoing-tasks/etl/snowflake) - send data to a _Snowflake warehouse_  
-  * [OLAP ETL](../../../server/ongoing-tasks/etl/olap) - send data to an _OLAP destination_  
-  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch) - send data to an _Elasticsearch destination_  
-  * [Kafka ETL](../../../server/ongoing-tasks/etl/queue-etl/kafka) - send data to a _Kafka message broker_  
-  * [RabbitMQ ETL](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq) - send data to an _RabbitMQ exchange_  
-  * [Azure Queue Storage ETL](../../../server/ongoing-tasks/etl/queue-etl/azure-queue) - send data to an _Azure Queue Storage message queue_  
-  * [Amazon SQS ETL](../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs) - send data to an _Amazon SQS message queue_  
+  * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven.mdx) - send data to another _RavenDB database_  
+  * [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) - send data to an _SQL database_  
+  * [Snowflake ETL](../../../server/ongoing-tasks/etl/snowflake.mdx) - send data to a _Snowflake warehouse_  
+  * [OLAP ETL](../../../server/ongoing-tasks/etl/olap.mdx) - send data to an _OLAP destination_  
+  * [Elasticsearch ETL](../../../server/ongoing-tasks/etl/elasticsearch.mdx) - send data to an _Elasticsearch destination_  
+  * [Kafka ETL](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx) - send data to a _Kafka message broker_  
+  * [RabbitMQ ETL](../../../server/ongoing-tasks/etl/queue-etl/rabbit-mq.mdx) - send data to an _RabbitMQ exchange_  
+  * [Azure Queue Storage ETL](../../../server/ongoing-tasks/etl/queue-etl/azure-queue.mdx) - send data to an _Azure Queue Storage message queue_  
+  * [Amazon SQS ETL](../../../server/ongoing-tasks/etl/queue-etl/amazon-sqs.mdx) - send data to an _Amazon SQS message queue_  
 
-* All ETL tasks can be defined from the Client API or from the [Studio](../../../studio/database/tasks/ongoing-tasks/general-info).
+* All ETL tasks can be defined from the Client API or from the [Studio](../../../studio/database/tasks/ongoing-tasks/general-info.mdx).
 
 * The destination address and access options are set using a pre-defined **connection string**, simplifying deployment across different environments. 
   For example, with RavenDB ETL, multiple URLs can be configured in the connection string since the target database can reside on multiple nodes within the Database Group of the destination cluster. 
   If one of the destination nodes is unavailable, RavenDB automatically executes the ETL process against another node specified in the connection string. 
-  Learn more in the [Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string) article.  
+  Learn more in the [Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) article.  
 
 
 
@@ -87,9 +87,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 ETL's three stages are:  
 
-* [Extract](../../../server/ongoing-tasks/etl/basics#extract) - Extract the documents from the database  
-* [Transform](../../../server/ongoing-tasks/etl/basics#transform) - Transform & filter the documents data according to the supplied script (optional)  
-* [Load](../../../server/ongoing-tasks/etl/basics#load) - Load (write) the transformed data into the target destination  
+* [Extract](../../../server/ongoing-tasks/etl/basics.mdx#extract) - Extract the documents from the database  
+* [Transform](../../../server/ongoing-tasks/etl/basics.mdx#transform) - Transform & filter the documents data according to the supplied script (optional)  
+* [Load](../../../server/ongoing-tasks/etl/basics.mdx#load) - Load (write) the transformed data into the target destination  
 ### Extract
 
 The ETL process starts with retrieving the documents from the database.  
@@ -112,7 +112,7 @@ The possible options are:
 * You can do any transformation and send only data you are interested in sharing.  
   The following is an example of RavenDB ETL script processing documents from the "Employees" collection:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var managerName = null;
 
@@ -148,12 +148,12 @@ RavenDB introduces the following functions and members that can be used in the t
 Specific ETL functions:  
 
 |---|---|---|
-| `loadTo` | function | Load an object to the specified target.<br/>This command has several syntax options,<br/>see details [below](../../../server/ongoing-tasks/etl/basics#themethod).<br/>**Note:**<br/>An object will only be sent to the destination if the `loadTo` method is called. |
+| `loadTo` | function | Load an object to the specified target.<br/>This command has several syntax options,<br/>see details [below](../../../server/ongoing-tasks/etl/basics.mdx#themethod).<br/>**Note:**<br/>An object will only be sent to the destination if the `loadTo` method is called. |
 | Attachments: |||
 | `loadAttachment(name)` | function | Load an attachment of the current document. |
 | `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document. |
 | `getAttachments()` | function | Get a collection of attachments details for the current document. Each item has the following properties:<br/> `Name`, `Hash`, `ContentType`, `Size`. |
-| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`).<br/>For details specific to Raven ETL, refer to this [section](../../../server/ongoing-tasks/etl/raven#attachments). |
+| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`).<br/>For details specific to Raven ETL, refer to this [section](../../../server/ongoing-tasks/etl/raven.mdx#attachments). |
 
 </Admonition>
 
@@ -198,16 +198,16 @@ For each ETL type, the target must be:
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:
 
-* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 30 sec)  
+* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration.mdx#etl.extractandtransformtimeoutinsec) (default: 30 sec)  
   Time-frame for the extraction and transformation stages (in seconds), after which the loading stage will start.
 
-* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration.mdx#etl.maxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted documents in an ETL batch.
 
-* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteditems) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration.mdx#etl.maxnumberofextracteditems) (default: 8192)  
   Maximum number of extracted items (documents, counters) in an ETL batch.
 
-* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration#etl.maxbatchsizeinmb) (default: 64 MB)  
+* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration.mdx#etl.maxbatchsizeinmb) (default: 64 MB)  
   Maximum size of an ETL batch in MB.
 
 </Admonition>
@@ -215,7 +215,7 @@ The number of documents processed depends on the following configuration limits:
 
 * Loading the results to the target destination is the last stage.
 
-* In contrast to [Replication](../../../server/clustering/replication/replication), 
+* In contrast to [Replication](../../../server/clustering/replication/replication.mdx), 
   ETL is a push-only process that _writes_ data to the destination whenever documents from the relevant collections are changed. **Existing entries on the target will always be overwritten**.
 
 * Updates are implemented by executing consecutive DELETEs and INSERTs.  
@@ -245,7 +245,7 @@ Please note that in such cases, your data encrypted at rest _won't_ be protected
 
 ## Troubleshooting
 
-ETL errors and warnings are [logged to files](../../../server/troubleshooting/logging) and displayed in the notification center panel.  
+ETL errors and warnings are [logged to files](../../../server/troubleshooting/logging.mdx) and displayed in the notification center panel.  
 You will be notified if any of the following events happen:
 
 - Connection error to the target
@@ -259,7 +259,7 @@ You will be notified if any of the following events happen:
 If the ETL cannot proceed the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.  
 The fallback mode means suspending the process and retrying it periodically.  
 The fallback time starts from 5 seconds and it's doubled on every consecutive error according to the time passed since the last error,
-but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration#etl.maxfallbacktimeinsec) configuration (default: 900 sec).  
+but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration.mdx#etl.maxfallbacktimeinsec) configuration (default: 900 sec).  
 
 Once the process is in the fallback mode, then the _Reconnect_ state is shown in the Studio.
 

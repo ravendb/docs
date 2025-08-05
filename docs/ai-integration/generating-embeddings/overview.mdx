@@ -15,19 +15,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Generating Embeddings - Overview
 <Admonition type="note" title="Note">
 
-* RavenDB can serve as a vector database, see [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database#why-choose-ravendb-as-your-vector-database).
+* RavenDB can serve as a vector database, see [Why choose RavenDB as your vector database](../../ai-integration/vector-search/ravendb-as-vector-database.mdx#why-choose-ravendb-as-your-vector-database).
 
 * Vector search can be performed on:   
    * Raw text stored in your documents.   
-   * Pre-made embeddings that you created yourself and stored using these [Data types](../../ai-integration/vector-search/data-types-for-vector-search#numerical-data).  
+   * Pre-made embeddings that you created yourself and stored using these [Data types](../../ai-integration/vector-search/data-types-for-vector-search.mdx#numerical-data).  
    * Pre-made embeddings that are automatically generated from your document content by RavenDB's tasks  
      using external service providers, as explained below.
 * In this article:
-  * [Embeddings generation - overview](../../ai-integration/generating-embeddings/overview#embeddings-generation---overview)
-     * [Embeddings generation - process flow](../../ai-integration/generating-embeddings/overview#embeddings-generation---process-flow)
-     * [Supported providers](../../ai-integration/generating-embeddings/overview#supported-providers)
-  * [Creating an embeddings generation task](../../ai-integration/generating-embeddings/overview#creating-an-embeddings-generation-task)
-  * [Monitoring the tasks](../../ai-integration/generating-embeddings/overview#monitoring-the-tasks)
+  * [Embeddings generation - overview](../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---overview)
+     * [Embeddings generation - process flow](../../ai-integration/generating-embeddings/overview.mdx#embeddings-generation---process-flow)
+     * [Supported providers](../../ai-integration/generating-embeddings/overview.mdx#supported-providers)
+  * [Creating an embeddings generation task](../../ai-integration/generating-embeddings/overview.mdx#creating-an-embeddings-generation-task)
+  * [Monitoring the tasks](../../ai-integration/generating-embeddings/overview.mdx#monitoring-the-tasks)
 
 </Admonition>
 ## Embeddings generation - overview
@@ -36,14 +36,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 #### Embeddings generation - process flow
 * **Define an Embeddings Generation Task**:  
-  Specify a [connection string](../../ai-integration/connection-strings/connection-strings-overview) that defines the AI provider and model for generating embeddings.  
+  Specify a [connection string](../../ai-integration/connection-strings/connection-strings-overview.mdx) that defines the AI provider and model for generating embeddings.  
   Define the source content - what parts of the documents will be used to create the embeddings.  
 
 * **Source content is processed**:  
   1. The task extracts the specified content from the documents.  
   2. If a processing script is defined, it transforms the content before further processing.  
   3. The text is split according to the defined chunking method; a separate embedding will be created for each chunk.  
-  4. Before contacting the provider, RavenDB checks the [embeddings cache](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection)
+  4. Before contacting the provider, RavenDB checks the [embeddings cache](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection)
      to determine whether an embedding already exists for the given content from that provider.
   5. If a matching embedding is found, it is reused, avoiding unnecessary requests.  
      If no cached embedding is found, the transformed and chunked content is sent to the configured AI provider.  
@@ -53,27 +53,27 @@ import LanguageContent from "@site/src/components/LanguageContent";
   If quantization was defined in the task, RavenDB applies it to the embeddings before storing them.
 
 * **Embeddings are stored in your database**:  
-  * Each embedding is stored as an attachment in a [dedicated collection](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-collection).  
-  * RavenDB maintains an [embeddings cache](../../ai-integration/generating-embeddings/embedding-collections#the-embeddings-cache-collection),
+  * Each embedding is stored as an attachment in a [dedicated collection](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-collection).  
+  * RavenDB maintains an [embeddings cache](../../ai-integration/generating-embeddings/embedding-collections.mdx#the-embeddings-cache-collection),
     allowing reuse of embeddings for the same source content and reducing provider calls.
     Cached embeddings expire after a configurable duration.
 
 * **Perform vector search:**  
   Once the embeddings are stored, you can perform vector searches on your document content by:  
-  * Running a [dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
-  * Defining a [static index](../../ai-integration/vector-search/vector-search-using-static-index#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
+  * Running a [dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-pre-made-embeddings-generated-by-tasks), which automatically creates an auto-index for the search.  
+  * Defining a [static index](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-pre-made-text-embeddings) to store and query embeddings efficiently.  
 
       The query search term is split into chunks, and each chunk is looked up in the cache.  
       If not found, RavenDB requests an embedding from the provider and caches it.  
       The embedding (cached or newly created) is then used to compare against stored vectors. 
 
 * **Continuous processing**:  
-  * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info) that process documents as they change.  
+  * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info.mdx) that process documents as they change.  
     Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
   * The requests to generate embeddings from the source text are sent to the provider in batches.  
-    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration#ai.embeddings.maxbatchsize) configuration key.  
+    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxbatchsize) configuration key.  
   * A failed embeddings generation task will retry after the duration set in the  
-    [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration#ai.embeddings.maxfallbacktimeinsec) configuration key.
+    [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxfallbacktimeinsec) configuration key.
 
 </Admonition>
 <Admonition type="note" title="Note">
@@ -81,13 +81,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 #### Supported providers
 * The following service providers are supported for auto-generating embeddings using tasks:
 
-    * [OpenAI & OpenAI-compatible providers](../../ai-integration/connection-strings/open-ai)
-    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai)
-    * [Google AI](../../ai-integration/connection-strings/google-ai)
-    * [Hugging Face](../../ai-integration/connection-strings/hugging-face)
-    * [Ollama](../../ai-integration/connection-strings/ollama)
-    * [Mistral AI](../../ai-integration/connection-strings/mistral-ai)
-    * [bge-micro-v2](../../ai-integration/connection-strings/embedded) (a local embedded model within RavenDB)
+    * [OpenAI & OpenAI-compatible providers](../../ai-integration/connection-strings/open-ai.mdx)
+    * [Azure Open AI](../../ai-integration/connection-strings/azure-open-ai.mdx)
+    * [Google AI](../../ai-integration/connection-strings/google-ai.mdx)
+    * [Hugging Face](../../ai-integration/connection-strings/hugging-face.mdx)
+    * [Ollama](../../ai-integration/connection-strings/ollama.mdx)
+    * [Mistral AI](../../ai-integration/connection-strings/mistral-ai.mdx)
+    * [bge-micro-v2](../../ai-integration/connection-strings/embedded.mdx) (a local embedded model within RavenDB)
 
 </Admonition>
 
@@ -100,8 +100,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Creating an embeddings generation task
 
 * An embeddings generation tasks can be created from:
-    * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../ai-integration/ai-tasks-list-view).
-    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../ai-integration/generating-embeddings/embeddings-generation-task#configuring-an-embeddings-generation-task---from-the-client-api)
+    * The **AI Tasks view in the Studio**, where you can create, edit, and delete tasks. Learn more in [AI Tasks - list view](../../ai-integration/ai-tasks-list-view.mdx).
+    * The **Client API** - see [Configuring an embeddings generation task - from the Client API](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx#configuring-an-embeddings-generation-task---from-the-client-api)
 * From the Studio:  
 
      ![Add ai task 1](./assets/add-ai-task-1.png)
@@ -112,22 +112,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
      ![Add ai task 2](./assets/add-ai-task-2.png)
 
-* See the complete details of the task configuration in the [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task) article.
+* See the complete details of the task configuration in the [Embeddings generation task](../../ai-integration/generating-embeddings/embeddings-generation-task.mdx) article.
 
 
 
 ## Monitoring the tasks
 
-* The status and state of each embeddings generation task are visible in the [AI Tasks - list view](../../ai-integration/ai-tasks-list-view).
+* The status and state of each embeddings generation task are visible in the [AI Tasks - list view](../../ai-integration/ai-tasks-list-view.mdx).
 
 * Task performance and activity over time can be analyzed in the _AI Tasks Stats_ view,  
   where you can track processing duration, batch sizes, and overall progress.  
-  Learn more about the functionality of the stats view in the [Ongoing Tasks Stats](../../studio/database/stats/ongoing-tasks-stats/overview) article.
+  Learn more about the functionality of the stats view in the [Ongoing Tasks Stats](../../studio/database/stats/ongoing-tasks-stats/overview.mdx) article.
 
-* The number of embeddings generation tasks across all databases can also be monitored using [SNMP](../../server/administration/snmp/snmp).  
+* The number of embeddings generation tasks across all databases can also be monitored using [SNMP](../../server/administration/snmp/snmp.mdx).  
   The following SNMP OIDs provide relevant metrics:
-  * [5.1.11.25](../../server/administration/snmp/snmp#5.1.11.25) – Total number of enabled embeddings generation tasks.
-  * [5.1.11.26](../../server/administration/snmp/snmp#5.1.11.26) – Total number of active embeddings generation tasks.
+  * [5.1.11.25](../../server/administration/snmp/snmp.mdx#5.1.11.25) – Total number of enabled embeddings generation tasks.
+  * [5.1.11.26](../../server/administration/snmp/snmp.mdx#5.1.11.26) – Total number of active embeddings generation tasks.
 
 
 

@@ -33,9 +33,9 @@ the server. As far as RavenDB is concerned, it is better to be stale than offlin
 
 The querying response has an `IsStale` property indicating whether the results are stale: that is, whether there were any outstanding tasks against the index at the time of querying.
 
-It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics) method:
+It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics.mdx) method:
 
-<TabItem value="something" label="stale1">
+<TabItem value="stale1" label="stale1">
 <CodeBlock language="csharp">
 {`QueryStatistics stats;
 List<Product> results = session.Query<Product>()
@@ -64,7 +64,7 @@ differently by the user. It is handled by the server, the client won't send any 
 
 You have an option to instruct that a particular query should wait until the index is up-to-date:
 
-<TabItem value="something" label="stale2">
+<TabItem value="stale2" label="stale2">
 <CodeBlock language="csharp">
 {`List<Product> results = session.Query<Product>()
     .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
@@ -78,7 +78,7 @@ You have an option to instruct that a particular query should wait until the ind
 
 You can also apply such customization at the document store level so all queries will wait for non-stale results:
 
-<TabItem value="something" label="stale3">
+<TabItem value="stale3" label="stale3">
 <CodeBlock language="csharp">
 {`store.OnBeforeQuery += (sender, beforeQueryExecutedArgs) =>
 \{
@@ -92,7 +92,7 @@ You can also apply such customization at the document store level so all queries
 
 If you need to ensure the indexes process, the documents stored in the current session before `SaveChanges` returns, you can use:
 
-<TabItem value="something" label="stale4">
+<TabItem value="stale4" label="stale4">
 <CodeBlock language="csharp">
 {`session.Advanced.WaitForIndexesAfterSaveChanges();
 `}
@@ -102,7 +102,7 @@ If you need to ensure the indexes process, the documents stored in the current s
 It will wait for the indexes to catch up with the just saved changes. You can control the behavior and specify indexes you want to wait for using the optional 
 parameters in the following example:
 
-<TabItem value="something" label="stale5">
+<TabItem value="stale5" label="stale5">
 <CodeBlock language="csharp">
 {`session.Advanced.WaitForIndexesAfterSaveChanges(
     timeout: TimeSpan.FromSeconds(5),
@@ -120,7 +120,7 @@ The default parameters are:
   
 <Admonition type="danger" title="Beware of waiting for non stale results overuse" id="beware-of-waiting-for-non-stale-results-overuse" href="#beware-of-waiting-for-non-stale-results-overuse">
 
-The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support#base-for-query-operations). 
+The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support.mdx#base-for-query-operations). 
 In order to avoid querying consistency pitfalls, you need to consider this at the data modeling phase.
 
 The usage of `WaitForNonStaleResults` at the query level is usually reasonable on only rare occasions. 
@@ -155,9 +155,9 @@ the server. As far as RavenDB is concerned, it is better to be stale than offlin
 
 The querying response has an `isStale` method indicating whether the results are stale: that is, whether there were any outstanding tasks against the index at the time of querying.
 
-It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics) method:
+It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics.mdx) method:
 
-<TabItem value="something-something" label="stale1">
+<TabItem value="stale1" label="stale1">
 <CodeBlock language="java">
 {`Reference<QueryStatistics> stats = new Reference<>();
 
@@ -186,7 +186,7 @@ differently by the user. It is handled by the server, the client won't send any 
 
 You have an option to instruct that a particular query should wait until the index is up-to-date:
 
-<TabItem value="something-something" label="stale2">
+<TabItem value="stale2" label="stale2">
 <CodeBlock language="java">
 {`List<Product> results = session
     .query(Product.class)
@@ -201,7 +201,7 @@ You have an option to instruct that a particular query should wait until the ind
 
 You can also apply such customization at the document store level so all queries will wait for non-stale results:
 
-<TabItem value="something-something" label="stale3">
+<TabItem value="stale3" label="stale3">
 <CodeBlock language="java">
 {`store.addBeforeQueryListener(((sender, event) -> \{
     event.getQueryCustomization().waitForNonStaleResults();
@@ -214,7 +214,7 @@ You can also apply such customization at the document store level so all queries
 
 If you need to ensure the indexes process, the documents stored in the current session before `saveChanges` returns, you can use:
 
-<TabItem value="something-something" label="stale4">
+<TabItem value="stale4" label="stale4">
 <CodeBlock language="java">
 {`session.advanced().waitForIndexesAfterSaveChanges();
 `}
@@ -224,7 +224,7 @@ If you need to ensure the indexes process, the documents stored in the current s
 It will wait for the indexes to catch up with the just saved changes. You can control the behavior and specify indexes you want to wait for using the optional 
 parameters in the following example:
 
-<TabItem value="something-something" label="stale5">
+<TabItem value="stale5" label="stale5">
 <CodeBlock language="java">
 {`session
     .advanced()
@@ -245,7 +245,7 @@ The default parameters are:
   
 <Admonition type="danger" title="Beware of waiting for non stale results overuse" id="beware-of-waiting-for-non-stale-results-overuse" href="#beware-of-waiting-for-non-stale-results-overuse">
 
-The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support#base-for-query-operations). 
+The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support.mdx#base-for-query-operations). 
 In order to avoid querying consistency pitfalls, you need to consider this at the data modeling phase.
 
 The usage of `WaitForNonStaleResults` at the query level is usually reasonable on only rare occasions. 
@@ -280,10 +280,10 @@ the server. As far as RavenDB is concerned, it is better to be stale than offlin
 
 The querying response has an `isStale` method indicating whether the results are stale: that is, whether there were any outstanding tasks against the index at the time of querying.
 
-It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics) method:
+It can be retrieved using the [Statistics](../client-api/session/querying/how-to-get-query-statistics.mdx) method:
 
-<TabItem value="something-something" label="stale1">
-<CodeBlock language="nodejs">
+<TabItem value="stale1" label="stale1">
+<CodeBlock language="js">
 {`let stats;
 
 const results = await session.query(Product)
@@ -311,8 +311,8 @@ differently by the user. It is handled by the server, the client won't send any 
 
 You have an option to instruct that a particular query should wait until the index is up-to-date:
 
-<TabItem value="something-something" label="stale2">
-<CodeBlock language="nodejs">
+<TabItem value="stale2" label="stale2">
+<CodeBlock language="js">
 {`const results = session
     .query(Product)
     .waitForNonStaleResults(5000)
@@ -326,8 +326,8 @@ You have an option to instruct that a particular query should wait until the ind
 
 You can also apply such customization at the document store level so all queries will wait for non-stale results:
 
-<TabItem value="something-something" label="stale3">
-<CodeBlock language="nodejs">
+<TabItem value="stale3" label="stale3">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeQuery", event => \{
     event.queryCustomization.waitForNonStaleResults();
 \});
@@ -339,8 +339,8 @@ You can also apply such customization at the document store level so all queries
 
 If you need to ensure the indexes process, the documents stored in the current session before `saveChanges` returns, you can use:
 
-<TabItem value="something-something" label="stale4">
-<CodeBlock language="nodejs">
+<TabItem value="stale4" label="stale4">
+<CodeBlock language="js">
 {`session.advanced.waitForIndexesAfterSaveChanges();
 `}
 </CodeBlock>
@@ -349,8 +349,8 @@ If you need to ensure the indexes process, the documents stored in the current s
 It will wait for the indexes to catch up with the just saved changes. You can control the behavior and specify indexes you want to wait for using the optional 
 parameters in the following example:
 
-<TabItem value="something-something" label="stale5">
-<CodeBlock language="nodejs">
+<TabItem value="stale5" label="stale5">
+<CodeBlock language="js">
 {`session.advanced.waitForIndexesAfterSaveChanges(\{
     withTimeout: 5000,
     throwOnTimeout: false,
@@ -368,7 +368,7 @@ The default parameters are:
   
 <Admonition type="danger" title="Beware of waiting for non stale results overuse" id="beware-of-waiting-for-non-stale-results-overuse" href="#beware-of-waiting-for-non-stale-results-overuse">
 
-The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support#base-for-query-operations). 
+The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support.mdx#base-for-query-operations). 
 In order to avoid querying consistency pitfalls, you need to consider this at the data modeling phase.
 
 The usage of `WaitForNonStaleResults` at the query level is usually reasonable on only rare occasions. 

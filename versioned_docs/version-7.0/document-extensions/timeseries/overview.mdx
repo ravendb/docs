@@ -22,27 +22,27 @@ import LanguageContent from "@site/src/components/LanguageContent";
   with high efficiency and performance.  
 
 * RavenDB Time series can be managed and utilized using a thorough set of 
-  [API methods](../../document-extensions/timeseries/client-api/overview), 
-  the [Studio](../../studio/database/document-extensions/time-series), 
-  and [various RavenDB features](../../document-extensions/timeseries/time-series-and-other-features).  
+  [API methods](../../document-extensions/timeseries/client-api/overview.mdx), 
+  the [Studio](../../studio/database/document-extensions/time-series.mdx), 
+  and [various RavenDB features](../../document-extensions/timeseries/time-series-and-other-features.mdx).  
 
 * Time series data is **compressed** to lower storage usage and transaction time.  
 
 * In this page:  
-  * [Overview](../../document-extensions/timeseries/overview#overview)  
-     * [RavenDB's Time Series Implementation](../../document-extensions/timeseries/overview#ravendbs-time-series-implementation)  
-     * [Distributed Time Series](../../document-extensions/timeseries/overview#distributed-time-series)  
-     * [Time Series as Document Extensions](../../document-extensions/timeseries/overview#time-series-as-document-extensions)  
-     * [Time Series Features](../../document-extensions/timeseries/overview#time-series-features)  
-  * [Time Series Data](../../document-extensions/timeseries/overview#time-series-data)  
-  * [Separate Name and Data Storage](../../document-extensions/timeseries/overview#separate-name-and-data-storage)  
-  * [Time Series Segments](../../document-extensions/timeseries/overview#time-series-segments)  
-      * [Transactions Performance](../../document-extensions/timeseries/overview#transactions-performance)  
-      * [Common-Queries Performance](../../document-extensions/timeseries/overview#common-queries-performance)  
-  * [Time Series Entries](../../document-extensions/timeseries/overview#time-series-entries)  
-      * [Timestamps](../../document-extensions/timeseries/overview#timestamps)  
-      * [Values](../../document-extensions/timeseries/overview#values)  
-      * [Tags](../../document-extensions/timeseries/overview#tags)  
+  * [Overview](../../document-extensions/timeseries/overview.mdx#overview)  
+     * [RavenDB's Time Series Implementation](../../document-extensions/timeseries/overview.mdx#ravendbs-time-series-implementation)  
+     * [Distributed Time Series](../../document-extensions/timeseries/overview.mdx#distributed-time-series)  
+     * [Time Series as Document Extensions](../../document-extensions/timeseries/overview.mdx#time-series-as-document-extensions)  
+     * [Time Series Features](../../document-extensions/timeseries/overview.mdx#time-series-features)  
+  * [Time Series Data](../../document-extensions/timeseries/overview.mdx#time-series-data)  
+  * [Separate Name and Data Storage](../../document-extensions/timeseries/overview.mdx#separate-name-and-data-storage)  
+  * [Time Series Segments](../../document-extensions/timeseries/overview.mdx#time-series-segments)  
+      * [Transactions Performance](../../document-extensions/timeseries/overview.mdx#transactions-performance)  
+      * [Common-Queries Performance](../../document-extensions/timeseries/overview.mdx#common-queries-performance)  
+  * [Time Series Entries](../../document-extensions/timeseries/overview.mdx#time-series-entries)  
+      * [Timestamps](../../document-extensions/timeseries/overview.mdx#timestamps)  
+      * [Values](../../document-extensions/timeseries/overview.mdx#values)  
+      * [Tags](../../document-extensions/timeseries/overview.mdx#tags)  
 
 </Admonition>
 ## Overview
@@ -70,13 +70,13 @@ distributed environment and document model.
 #### Distributed Time Series
 
 Distributed clients and nodes can modify time series concurrently;  
-the modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design#no-conflicts).  
+the modifications are merged by the cluster [without conflict](../../document-extensions/timeseries/design.mdx#no-conflicts).  
 #### Time Series as Document Extensions
 
 RavenDB's Time Series, like its 
-[distributed counters](../../document-extensions/counters/overview), 
-[attachments](../../document-extensions/attachments/what-are-attachments) 
-and [document revisions](../../document-extensions/revisions/overview), 
+[distributed counters](../../document-extensions/counters/overview.mdx), 
+[attachments](../../document-extensions/attachments/what-are-attachments.mdx) 
+and [document revisions](../../document-extensions/revisions/overview.mdx), 
 are **document extensions**.  
 
 * A time series always extends a single specific document.  
@@ -94,31 +94,31 @@ are **document extensions**.
 Notable time series features include -  
 
 * **Highly-Efficient Storage Management**  
-  Time series data is [compressed](../../document-extensions/timeseries/design#compression)
-  and [segmented](../../document-extensions/timeseries/overview#time-series-segments) to minimize storage usage and transmission time.
+  Time series data is [compressed](../../document-extensions/timeseries/design.mdx#compression)
+  and [segmented](../../document-extensions/timeseries/overview.mdx#time-series-segments) to minimize storage usage and transmission time.
 * **A Thorough Set of API Methods**  
-  The [time series API](../../document-extensions/timeseries/client-api/overview) includes a variety of `session methods` and `store operations`.
+  The [time series API](../../document-extensions/timeseries/client-api/overview.mdx) includes a variety of `session methods` and `store operations`.
 * **Full GUI Support**  
-  Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series).
+  Time series can be viewed and managed using the [Studio](../../studio/database/document-extensions/time-series.mdx).
 * **Time Series Indexing**  
-  Time series can be [indexed](../../document-extensions/timeseries/indexing).
+  Time series can be [indexed](../../document-extensions/timeseries/indexing.mdx).
 * **Time Series Querying and Aggregation**
-    * [High-performance common queries](../../document-extensions/timeseries/overview#common-queries-performance)  
+    * [High-performance common queries](../../document-extensions/timeseries/overview.mdx#common-queries-performance)  
       The results of a set of common queries are prepared in advance in time series segments' headers,   
       so the response to querying for a series minimum value, for example, is returned nearly instantly.
-    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax)  
+    * [LINQ and raw RQL queries](../../document-extensions/timeseries/querying/overview-and-syntax.mdx)  
       Flexible queries and aggregations can be executed using LINQ expressions and raw RQL over  
       time series **timestamps**, **values**, and **tags**.
 * **Including Time Series**  
-  You can [include (pre-fetch) time series data](../../document-extensions/timeseries/client-api/session/include/overview) when loading or querying for documents.  
+  You can [include (pre-fetch) time series data](../../document-extensions/timeseries/client-api/session/include/overview.mdx) when loading or querying for documents.  
   Included data is held by the client's session, and is delivered to the user with no additional server calls.
 * **Patching**  
   You can patch time series data into your documents.  
-  Learn more in [Patching time series](../../document-extensions/timeseries/client-api/session/patch).
+  Learn more in [Patching time series](../../document-extensions/timeseries/client-api/session/patch.mdx).
 * **Rollup and Retention Policies**
-    * [Rollup Policies](../../document-extensions/timeseries/rollup-and-retention)  
+    * [Rollup Policies](../../document-extensions/timeseries/rollup-and-retention.mdx)  
       You can set time series rollup policies to aggregate large series into smaller sets by your definitions.
-    * [Retention Policies](../../document-extensions/timeseries/rollup-and-retention)  
+    * [Retention Policies](../../document-extensions/timeseries/rollup-and-retention.mdx)  
       You can set time series retention policies to automatically remove time series entries that have reached their expiration date/time.
 
 
@@ -126,10 +126,10 @@ Notable time series features include -
 ## Time Series Data
 
 Time series **names** are kept in their parent documents' metadata, while their 
-**data** is kept [separately](../../document-extensions/timeseries/overview#separate-name-and-data-storage).  
+**data** is kept [separately](../../document-extensions/timeseries/overview.mdx#separate-name-and-data-storage).  
 Time series data is **compressed** and composed of consecutive 
-[segments](../../document-extensions/timeseries/overview#time-series-segments) and 
-[entries](../../document-extensions/timeseries/overview#time-series-entries).  
+[segments](../../document-extensions/timeseries/overview.mdx#time-series-segments) and 
+[entries](../../document-extensions/timeseries/overview.mdx#time-series-entries).  
 
 
 
@@ -220,7 +220,7 @@ Tags are designated to provide information regarding their entries.
     A reference-tag is preferable when we want the tag to be very short and yet refer us 
     to an unlimited source of information.    
   
-    Reference-tags can be used to [filter time series data](../../document-extensions/timeseries/querying/filtering#using-tags-as-references---) 
+    Reference-tags can be used to [filter time series data](../../document-extensions/timeseries/querying/filtering.mdx#using-tags-as-references---) 
     during a query.  
     **E.g.**, the query can -  
     **1.** load time series entries whose tags refer to device-specification documents.  

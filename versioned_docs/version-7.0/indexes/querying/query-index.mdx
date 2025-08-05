@@ -21,27 +21,27 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).  
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
   
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview).
+* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
 
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).  
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view) 
-     using [RQL](../../client-api/session/querying/what-is-rql).
+   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
+   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
 
 * In this page:  
-   * [Query an index by `Query`](../../indexes/querying/query-index#query-an-index-by-query) (using LINQ)
-   * [Query an index by `DocumentQuery`](../../indexes/querying/query-index#query-an-index-by-documentquery) (low-level API)
-   * [Query an index by `RawQuery`](../../indexes/querying/query-index#query-an-index-by-rawquery) (using RQL)
+   * [Query an index by `Query`](../../indexes/querying/query-index.mdx#query-an-index-by-query) (using LINQ)
+   * [Query an index by `DocumentQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-documentquery) (low-level API)
+   * [Query an index by `RawQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery) (using RQL)
 
 </Admonition>
 ## Query an index by `Query`
 
 * In the following examples we **query an index** using the session's `Session.Query` method, which supports LINQ.  
 
-* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query#custom-methods-and-extensions-for-linq).
+* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
 #### Query index - no filtering:
 
 <Tabs groupId='languageSyntax'>
@@ -241,7 +241,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering).
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
 #### Query index - with paging:
 
 <Tabs groupId='languageSyntax'>
@@ -330,7 +330,7 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging).
+* Read more about paging [here](../../indexes/querying/paging.mdx).
 
 
 
@@ -340,8 +340,8 @@ limit 5, 10 // skip 5, take 10
   giving you more flexibility and control when making complex queries.
 
 * For more information about _DocumentQuery_ see:
-    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query)
-    * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query)
+    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query.mdx)
+    * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
 
 **Example**:
 
@@ -478,9 +478,9 @@ where LastName == "King"
 
 ## Query an index by `RawQuery`
 
-* Queries defined with [Query](../../indexes/querying/query-index#session.query) 
-  or [DocumentQuery](../../indexes/querying/query-index#session.advanced.documentquery) 
-  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql)  
+* Queries defined with [Query](../../indexes/querying/query-index.mdx#session.query) 
+  or [DocumentQuery](../../indexes/querying/query-index.mdx#session.advanced.documentquery) 
+  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the 
@@ -578,7 +578,7 @@ Indexes are used by RavenDB to satisfy queries.
 
 ## Query-Flow
 
-Each query in RavenDB must be expressed by [RQL](../../client-api/session/querying/what-is-rql), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+Each query in RavenDB must be expressed by [RQL](../../client-api/session/querying/what-is-rql.mdx), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
 
 1. `from index | collection` 
   - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
@@ -590,14 +590,14 @@ Each query in RavenDB must be expressed by [RQL](../../client-api/session/queryi
   - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
 
 3. `select`
-  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index) by default).   
+  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index.mdx) by default).   
 
   - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
 
-  - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+  - If a query indicates that [projection](../../indexes/querying/projections.mdx) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
 
 4. `include` 
-  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+  - If any [includes](../../client-api/how-to/handle-document-relationships.mdx#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
 
 5. Return results.
 
@@ -607,7 +607,7 @@ RavenDB Client supports querying for data. This functionality can be accessed us
 
 ### Example I
 
-Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a first parameter to the `query` method:
+Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store.mdx) and [opened session](../../client-api/session/opening-a-session.mdx) and specify a [collection](../../client-api/faq/what-is-a-collection.mdx) type that we want to query (in our case `Employees`) by passing `Employee` as a first parameter to the `query` method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Java" label="Java">
@@ -676,13 +676,13 @@ where id() = 'employees/1-A'
 </Tabs>
 
 
-You can read more about filtering [here](../../indexes/querying/filtering).
+You can read more about filtering [here](../../indexes/querying/filtering.mdx).
 
 ### Example III - Paging
 
 Paging is very simple. The methods `take` and `skip` can be used:
 
-<TabItem value="something-something" label="basics_0_2">
+<TabItem value="basics_0_2" label="basics_0_2">
 <CodeBlock language="java">
 {`// load up to 10 entities from 'Products' collection
 // where there are more than 10 units in stock
@@ -697,11 +697,11 @@ List<Product> results = session
 </CodeBlock>
 </TabItem>
 
-You can read more about paging [here](../../indexes/querying/paging).
+You can read more about paging [here](../../indexes/querying/paging.mdx).
 
 ### Example IV - Querying a Specified Index
 
-In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying).
+In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying.mdx).
 
 In order to specify an index, we need to pass it as a second parameter to the `query` method or pass the index name as a parameter.
 
@@ -756,7 +756,7 @@ If you are filtering by fields that are not present in an index, an exception wi
 ### Remarks
 
 <Admonition type="info" title="Info">
-You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query).
+You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query.mdx).
 </Admonition>
 
 
@@ -765,26 +765,26 @@ You can check the API reference for the `DocumentQuery` [here](../../client-api/
 
 <Admonition type="note" title="Note">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).
 
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview).
+* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
 
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).  
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view) 
-     using [RQL](../../client-api/session/querying/what-is-rql).
+   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
+   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
 
 * In this page:  
-   * [Query an index by `query_index_type` and `query_index`](../../indexes/querying/query-index#query-an-index-by-query_index_type-and-query_index)
-   * [Query an index by `raw_query`](../../indexes/querying/query-index#query-an-index-by-raw_query) (using RQL)
+   * [Query an index by `query_index_type` and `query_index`](../../indexes/querying/query-index.mdx#query-an-index-by-query_index_type-and-query_index)
+   * [Query an index by `raw_query`](../../indexes/querying/query-index.mdx#query-an-index-by-raw_query) (using RQL)
 
 </Admonition>
 ## Query an index by `query_index_type` and `query_index`
 
 * In the following examples we **query an index** using the session `query_index_type` and `query_index` methods.  
 
-* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query#custom-methods).
+* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods).
 #### Query index - no filtering:
 
 <Tabs groupId='languageSyntax'>
@@ -935,7 +935,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering).
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
 #### Query index - with paging:
 
 <Tabs groupId='languageSyntax'>
@@ -1001,15 +1001,15 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging).
+* Read more about paging [here](../../indexes/querying/paging.mdx).
 
 
 
 ## Query an index by `raw_query`
 
-* Queries defined with [Query](../../indexes/querying/query-index#session.query) 
-  or [DocumentQuery](../../indexes/querying/query-index#session.advanced.documentquery) 
-  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql)  
+* Queries defined with [Query](../../indexes/querying/query-index.mdx#session.query) 
+  or [DocumentQuery](../../indexes/querying/query-index.mdx#session.advanced.documentquery) 
+  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the 
@@ -1083,24 +1083,24 @@ where LastName == "King"
 
 <Admonition type="note" title="Note">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).
 
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview).
+* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
 
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).  
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view) 
-     using [RQL](../../client-api/session/querying/what-is-rql).
+   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
+   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
 
-* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query#custom-methods).
+* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods).
 
 * In this page:  
-   * [Query index - no filtering](../../indexes/querying/query-index#query-index---no-filtering)
-   * [Query index - with filtering](../../indexes/querying/query-index#query-index---with-filtering)
-   * [Query index - with paging](../../indexes/querying/query-index#query-index---with-paging)
-   * [Query an index by `documentQuery`](../../indexes/querying/query-index#query-an-index-by-documentquery)
-   * [Query an index by `rawQuery`](../../indexes/querying/query-index#query-an-index-by-rawquery)
+   * [Query index - no filtering](../../indexes/querying/query-index.mdx#query-index---no-filtering)
+   * [Query index - with filtering](../../indexes/querying/query-index.mdx#query-index---with-filtering)
+   * [Query index - with paging](../../indexes/querying/query-index.mdx#query-index---with-paging)
+   * [Query an index by `documentQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-documentquery)
+   * [Query an index by `rawQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery)
 
 </Admonition>
 ## Query index - no filtering
@@ -1307,7 +1307,7 @@ where LastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering).
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
 
 
 
@@ -1401,7 +1401,7 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging).
+* Read more about paging [here](../../indexes/querying/paging.mdx).
 
 
 
@@ -1520,9 +1520,9 @@ where LastName == "King"
 
 ## Query an index by `rawQuery`
 
-* Queries defined with [Query](../../indexes/querying/query-index#session.query) 
-  or [DocumentQuery](../../indexes/querying/query-index#session.advanced.documentquery) 
-  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql)  
+* Queries defined with [Query](../../indexes/querying/query-index.mdx#session.query) 
+  or [DocumentQuery](../../indexes/querying/query-index.mdx#session.advanced.documentquery) 
+  are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
   when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the 
@@ -1622,32 +1622,32 @@ where LastName == "King"
 
 <Admonition type="note" title="Note">
 
-* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query).
+* Prior to this article, it is recommended that you first read this [Query Overview](../../client-api/session/querying/how-to-query.mdx).
 
-* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview).
+* For a basic indexes overview, see the [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
 * Indexing the content of your documents allows for **fast document retrieval** when querying the index.  
  
 * This article is a basic overview of how to query a **static index** using **code**.  
-   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query).
-   * An index can also be queried from [Studio](../../studio/database/queries/query-view) 
-     using [RQL](../../client-api/session/querying/what-is-rql).
+   * For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+   * An index can also be queried from [Studio](../../studio/database/queries/query-view.mdx) 
+     using [RQL](../../client-api/session/querying/what-is-rql.mdx).
 
 * In this page:  
-   * [Query an index by `Query`](../../indexes/querying/query-index#query-an-index-by-query) (using API)
-   * [Query an index by `RawQuery`](../../indexes/querying/query-index#query-an-index-by-rawquery) (using RQL)
+   * [Query an index by `Query`](../../indexes/querying/query-index.mdx#query-an-index-by-query) (using API)
+   * [Query an index by `RawQuery`](../../indexes/querying/query-index.mdx#query-an-index-by-rawquery) (using RQL)
 
 </Admonition>
 ## Query an index by `Query`
 
 * The following examples **query an index** using the session's `query` method.  
 
-* Customize your query with these [API methods](../../client-api/session/querying/how-to-query#query-api).
+* Customize your query with these [API methods](../../client-api/session/querying/how-to-query.mdx#query-api).
 
 **Query index - no filtering**
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - without filtering
 // (Open the 'Index' tab to view the index class definition)
 
@@ -1663,7 +1663,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_overload" label="Query_overload">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - without filtering
 
 const employees = await session
@@ -1678,7 +1678,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index definition:
 
 class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
@@ -1724,7 +1724,7 @@ from index "Employees/ByName"
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - filter by INDEX-field
 
 const employees = await session
@@ -1741,7 +1741,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_overload" label="Query_overload">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - filter by INDEX-field
 
 const employees = await session
@@ -1758,7 +1758,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index definition:
 
 class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
@@ -1804,12 +1804,12 @@ where lastName == "King"
 
 * An exception will be thrown when filtering by fields that are Not defined in the index.
 
-* Read more about filtering [here](../../indexes/querying/filtering).
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
 #### Query index - with paging:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - page results
 
 // This example is based on the previous filtering example
@@ -1825,7 +1825,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Query_overload" label="Query_overload">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query the 'Employees' collection using the index - page results
 
 // This example is based on the previous filtering example
@@ -1841,7 +1841,7 @@ const employees = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index definition:
 
 class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
@@ -1884,13 +1884,13 @@ limit 5, 10 // skip 5, take 10
 </TabItem>
 </Tabs>
 
-* Read more about paging [here](../../indexes/querying/paging).
+* Read more about paging [here](../../indexes/querying/paging.mdx).
 
 
 
 ## Query an index by `RawQuery`
 
-* Queries defined with [query](../../indexes/querying/query-index#session.query) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql) when sent to the server.
+* Queries defined with [query](../../indexes/querying/query-index.mdx#session.query) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx) when sent to the server.
 
 * The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
 
@@ -1898,7 +1898,7 @@ limit 5, 10 // skip 5, take 10
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="RawQuery" label="RawQuery">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query with RawQuery - filter by INDEX-field
 
 const results = await session
@@ -1912,7 +1912,7 @@ const results = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index definition:
 
 class Employees_ByName extends AbstractJavaScriptIndexCreationTask {

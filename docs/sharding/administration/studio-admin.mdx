@@ -16,13 +16,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * This page explains how to create and manage a sharded database using Studio.  
-* Learn [here](../../sharding/administration/api-admin) how to manage 
+* Learn [here](../../sharding/administration/api-admin.mdx) how to manage 
   a sharded database using API commands.  
 
 * In this page:  
-  * [Creating a sharded database](../../sharding/administration/studio-admin#creating-a-sharded-database)  
-  * [Database View](../../sharding/administration/studio-admin#database-view)  
-  * [Database Group](../../sharding/administration/studio-admin#database-group)  
+  * [Creating a sharded database](../../sharding/administration/studio-admin.mdx#creating-a-sharded-database)  
+  * [Database View](../../sharding/administration/studio-admin.mdx#database-view)  
+  * [Database Group](../../sharding/administration/studio-admin.mdx#database-group)  
 
 </Admonition>
 ## Creating a sharded database
@@ -52,7 +52,7 @@ the following view:
    Set the number of shards the database will be comprised of.  
 5. **Set nodes layout manually**  
    The layout determines which nodes host each shard, and whether 
-   nodes can function as [orchestrators](../../sharding/overview#client-server-communication).  
+   nodes can function as [orchestrators](../../sharding/overview.mdx#client-server-communication).  
    Enable this option to set the layout manually.  
    Disable to let RavenDB set it for you.  
 6. **Orchestrator nodes**  
@@ -97,20 +97,20 @@ be available here:
      ![Documents View](./assets/studio-admin_database-view_04_docs-view.png)
 
 5. **Indexes view**  
-   Click to open the [List of Indexes](../../studio/database/indexes/indexes-list-view) view.  
+   Click to open the [List of Indexes](../../studio/database/indexes/indexes-list-view.mdx) view.  
 6. **Backups view**  
-   Click to manage [backup tasks](../../studio/database/tasks/backup-task) and restore existing backups.  
+   Click to manage [backup tasks](../../studio/database/tasks/backup-task.mdx) and restore existing backups.  
 7. **Manage group**  
-   Click to manage the database group ([see below](../../sharding/administration/studio-admin#database-group)).  
+   Click to manage the database group ([see below](../../sharding/administration/studio-admin.mdx#database-group)).  
 
 
 
 ## Database Group
 
 The Database Group view allows you to appoint and dismiss 
-[orchestrators](../../sharding/overview#client-server-communication) 
-and add or remove [shards](../../sharding/overview#shards) and 
-shard [replicas](../../sharding/overview#shard-replication).  
+[orchestrators](../../sharding/overview.mdx#client-server-communication) 
+and add or remove [shards](../../sharding/overview.mdx#shards) and 
+shard [replicas](../../sharding/overview.mdx#shard-replication).  
 
 ![Database Group](./assets/studio-admin_database-group.png)
 

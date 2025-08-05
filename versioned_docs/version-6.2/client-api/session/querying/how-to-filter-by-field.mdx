@@ -22,14 +22,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 <Admonition type="note" title="Note">
 
 * To query for documents that contain a particular field,  
-  use extension method `WhereExists()` which is accessible from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query).  
+  use extension method `WhereExists()` which is accessible from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
 
 * A document that doesn't contain the specified field will be excluded from the query results.
 
 * In this page:  
-  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name)  
-  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-path)  
-  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
 
 </Admonition>
 ## Filter by field name 
@@ -118,7 +118,7 @@ where exists("Address.Location.Latitude")
 
 ## Syntax
 
-<TabItem value="something" label="whereExists_syntax">
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
 <CodeBlock language="csharp">
 {`IDocumentQuery<T> WhereExists(string fieldName);
 
@@ -141,18 +141,18 @@ IDocumentQuery<T> WhereExists<TValue>(Expression<Func<T, TValue>> propertySelect
 <Admonition type="note" title="Note">
 
 * To filter documents by whether they contain a particular field, use the LINQ extension method `whereExists()` accessible 
-from the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query).  
+from the [Document Query](../../../client-api/session/querying/document-query/what-is-document-query.mdx).  
 
 * If a document doesn't contain the specified field, it is excluded from the query results.
 
 * In this page:  
-  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)  
-  * [Examples](../../../client-api/session/querying/how-to-filter-by-field#examples)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)  
+  * [Examples](../../../client-api/session/querying/how-to-filter-by-field.mdx#examples)  
 
 </Admonition>
 ## Syntax
 
-<TabItem value="something-something" label="whereexists_1">
+<TabItem value="whereexists_1" label="whereexists_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> whereExists(String fieldName);
 `}
@@ -221,14 +221,14 @@ where exists("Address.Location.Latitude")
 <Admonition type="note" title="Note">
 
 * To search for documents that contain a specific field by the field **name** or **path**, 
-  use the [document_query](../../../client-api/session/querying/document-query/what-is-document-query) 
+  use the [document_query](../../../client-api/session/querying/document-query/what-is-document-query.mdx) 
   `where_exists` method.  
   Documents that do not contain the specified field will be excluded from the query results.  
 
 * In this page:  
-   * [Filter by Field Name or Path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name-or-path)  
-   * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)  
-   * [Examples](../../../client-api/session/querying/how-to-filter-by-field#examples)  
+   * [Filter by Field Name or Path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name-or-path)  
+   * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)  
+   * [Examples](../../../client-api/session/querying/how-to-filter-by-field.mdx#examples)  
 
 </Admonition>
 ## Filter by Field Name or Path
@@ -237,7 +237,7 @@ To search for documents that contain a specific field by the field's **name** or
 pass the name or the path to `where_exists` as demonstrated below.  
 ### Syntax 
 
-<TabItem value="something-something" label="whereExists_syntax">
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
 <CodeBlock language="python">
 {`def where_exists(self, field_name: str) -> DocumentQuery[_T]: ...
 `}
@@ -305,9 +305,9 @@ where exists("Address.Location.Latitude")
 * A document that doesn't contain the specified field will be excluded from the query results.
 
 * In this page:  
-  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name)  
-  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-path)  
-  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
 
 </Admonition>
 ## Filter by field name 
@@ -365,7 +365,7 @@ where exists("Address.Location.Latitude")
 
 ## Syntax
 
-<TabItem value="something-something" label="whereexists_1">
+<TabItem value="whereexists_1" label="whereexists_1">
 <CodeBlock language="php">
 {`public function whereExists(?string $fieldName): DocumentQueryInterface;
 `}
@@ -389,16 +389,16 @@ where exists("Address.Location.Latitude")
 * A document that doesn't contain the specified field will be excluded from the query results.
 
 * In this page:  
-  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-name)  
-  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field#filter-by-field-path)  
-  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field#syntax)
+  * [Filter by field name](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-name)  
+  * [Filter by field path](../../../client-api/session/querying/how-to-filter-by-field.mdx#filter-by-field-path)  
+  * [Syntax](../../../client-api/session/querying/how-to-filter-by-field.mdx#syntax)
 
 </Admonition>
 ## Filter by field name 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Only documents that contain field 'firstName' will be returned
 
 await session.query({ collection: "Employees" })
@@ -424,7 +424,7 @@ where exists("firstName")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Only documents that contain the 'latitude' property in the specified path will be returned
 
 await session.query({ collection: "Employees" })
@@ -448,8 +448,8 @@ where exists("address.location.latitude")
 
 ## Syntax
 
-<TabItem value="something-something" label="whereExists_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="whereExists_syntax" label="whereExists_syntax">
+<CodeBlock language="js">
 {`whereExists(fieldName);
 `}
 </CodeBlock>

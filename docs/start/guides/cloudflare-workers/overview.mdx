@@ -26,17 +26,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
   This guide assumes you are familiar with Node.js development techniques 
   and the basics of Cloudflare Workers.  
   </Admonition>
-* Watch our tutorial video [below](../../../start/guides/cloudflare-workers/overview#tutorial-video) 
+* Watch our tutorial video [below](../../../start/guides/cloudflare-workers/overview.mdx#tutorial-video) 
   or [on YouTube](https://www.youtube.com/watch?v=qMJfgQicjwk&t=1s).  
 
 * In this page: 
-    * [Before We Get Started](../../../start/guides/cloudflare-workers/overview#before-we-get-started)  
-    * [Create a Cloudflare RavenDB Worker project](../../../start/guides/cloudflare-workers/overview#create-a-cloudflare-ravendb-worker-project)  
-    * [Updating Database Connection Settings](../../../start/guides/cloudflare-workers/overview#updating-database-connection-settings)  
-    * [Connecting to an Authenticated RavenDB Cluster](../../../start/guides/cloudflare-workers/overview#connecting-to-an-authenticated-ravendb-cluster)  
-    * [Deploying to Production](../../../start/guides/cloudflare-workers/overview#deploying-to-production)  
-    * [Using RavenDB in the Worker](../../../start/guides/cloudflare-workers/overview#using-ravendb-in-the-worker)  
-    * [Tutorial Video](../../../start/guides/cloudflare-workers/overview#tutorial-video)  
+    * [Before We Get Started](../../../start/guides/cloudflare-workers/overview.mdx#before-we-get-started)  
+    * [Create a Cloudflare RavenDB Worker project](../../../start/guides/cloudflare-workers/overview.mdx#create-a-cloudflare-ravendb-worker-project)  
+    * [Updating Database Connection Settings](../../../start/guides/cloudflare-workers/overview.mdx#updating-database-connection-settings)  
+    * [Connecting to an Authenticated RavenDB Cluster](../../../start/guides/cloudflare-workers/overview.mdx#connecting-to-an-authenticated-ravendb-cluster)  
+    * [Deploying to Production](../../../start/guides/cloudflare-workers/overview.mdx#deploying-to-production)  
+    * [Using RavenDB in the Worker](../../../start/guides/cloudflare-workers/overview.mdx#using-ravendb-in-the-worker)  
+    * [Tutorial Video](../../../start/guides/cloudflare-workers/overview.mdx#tutorial-video)  
 
 </Admonition>
 
@@ -111,7 +111,7 @@ This means you have successfully connected to your RavenDB database.
 
 The `wrangler.toml` file contains configuration for the worker. Here's an example:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`name = "ravendb-worker"
 main = "./src/index.ts"
@@ -212,7 +212,7 @@ In the project directory, run:
 
 This will display output like:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`Uploading mTLS Certificate ravendb_cert...
 Success! Uploaded mTLS Certificate ravendb_cert
@@ -232,7 +232,7 @@ so that the certificate is made available and used by the Worker at runtime.
 
 Edit your `wrangler.toml` file to update the following:  
 
-<TabItem value="something" label="git">
+<TabItem value="git" label="git">
 <CodeBlock language="git">
 {`mtls_certificates = [
   \{ binding = "DB_CERT", certificate_id = "<CERTIFICATE_ID>" \} 
@@ -321,7 +321,7 @@ A document session is opened per-request and accessible through `env.db`.
 
 ### Example: Load user on route
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`router.get("/users/:id", async (request: IRequest, env: Env) => \{
     const user = await env.db.load("users/" + request.params.id);

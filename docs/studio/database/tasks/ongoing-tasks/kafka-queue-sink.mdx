@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   stores and streams climbs to the big-data zone.  
   
 * RavenDB can collaborate with message brokers like Kafka both as a **producer**, 
-  by running [ETL tasks](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task)), 
+  by running [ETL tasks](../../../../studio/database/tasks/ongoing-tasks/kafka-etl-task.mdx)), 
   and as a **consumer**, using a sink task to consume enqueued messages.  
 
 * To use RavenDB as a consumer, define an ongoing **Queue Sink Task**. Sink tasks 
@@ -28,14 +28,14 @@ import LanguageContent from "@site/src/components/LanguageContent";
   documents using user-defined scripts, and store the documents in RavenDB collections.  
 
 * This page explains how to create a Kafka queue sink task using the Studio.  
-  Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview).  
-  Learn how to define a Kafka queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink).  
+  Learn more about RavenDB queue sinks [here](../../../../server/ongoing-tasks/queue-sink/overview.mdx).  
+  Learn how to define a Kafka queue sink using the API [here](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx).  
 
 * In this page:  
-  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#add-a-database-task)  
-  * [Define a Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-a-kafka-sink-task)  
-      * [Define and Test Task Scripts](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-and-test-task-scripts)  
-  * [Task Statistics](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#task-statistics)  
+  * [Add a Database Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#add-a-database-task)  
+  * [Define a Kafka Sink Task](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task)  
+      * [Define and Test Task Scripts](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-and-test-task-scripts)  
+  * [Task Statistics](../../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#task-statistics)  
 
 </Admonition>
 ## Add a Database Task
@@ -76,10 +76,10 @@ To open the ongoing tasks view:
    Disabled - No documents are read or stored, and the task's script is inactive.  
 
 4. **Responsible Node** (Optional)  
-  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group) 
+  * Select a node from the [Database Group](../../../../studio/database/settings/manage-database-group.mdx) 
     to be responsible for this task.  
   * If no node is selected, the cluster will assign a responsible node 
-    (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)).  
+    (see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)).  
 
 5. **Create a new Kafka connection String**  
    The connection string defines the source Kafka brokers URLs.  
@@ -113,7 +113,7 @@ To open the ongoing tasks view:
 
 2. **Syntax**: Click for assistance and sample scripts.  
 
-3. **Script**: [Edit the script](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#running-user-defined-scripts).  
+3. **Script**: [Edit the script](../../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#running-user-defined-scripts).  
 
 4. **Topic**  
    Enter the name of at least one topic that resides on the Kafka server/s 
@@ -144,7 +144,7 @@ To open the ongoing tasks view:
 
 Sink statistics are added to RavenDB's ongoing tasks stats view, where their 
 performance can be examined from various aspects. To watch these statistics, 
-enter Studio's [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview) 
+enter Studio's [ongoing tasks stats](../../../../studio/database/stats/ongoing-tasks-stats/overview.mdx) 
 view.  
 
 ![Queue Sink Stats](./assets/kafka-stats.png)

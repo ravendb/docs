@@ -31,8 +31,8 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
      either side.  
 
 * In this page:  
-  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling#syntax)  
-  * [Examples](../../../document-extensions/timeseries/querying/gap-filling#examples)  
+  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/gap-filling.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -44,7 +44,7 @@ but several hours are missing (1am, 3pm, etc.), and you want to fill those
 gaps. You will want to group by 1 hour.  
 Or suppose you have a time series with an entry for every hour, and you want to 
 fill in the gap with one data point per minute: you will group by 1 minute.  
-See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
+See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 to learn about aggregation in queries.  
 
 Next, use:  
@@ -117,8 +117,8 @@ one data point for each pair of values found on *both* sides of the gap.
      either side.  
 
 * In this page:  
-  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling#syntax)  
-  * [Examples](../../../document-extensions/timeseries/querying/gap-filling#examples)  
+  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/gap-filling.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -130,7 +130,7 @@ but several hours are missing (1am, 3pm, etc.), and you want to fill those
 gaps. You will want to group by 1 hour.  
 Or suppose you have a time series with an entry for every hour, and you want to 
 fill in the gap with one data point per minute: you will group by 1 minute.  
-See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
+See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 to learn about aggregation in queries.  
 
 Next, use:  
@@ -192,8 +192,8 @@ one data point for each pair of values found on *both* sides of the gap.
      either side.  
 
 * In this page:  
-  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling#syntax)  
-  * [Examples](../../../document-extensions/timeseries/querying/gap-filling#examples)  
+  * [Syntax](../../../document-extensions/timeseries/querying/gap-filling.mdx#syntax)  
+  * [Examples](../../../document-extensions/timeseries/querying/gap-filling.mdx#examples)  
 
 </Admonition>
 ## Syntax
@@ -205,7 +205,7 @@ but several hours are missing (1am, 3pm, etc.), and you want to fill those
 gaps. You will want to group by 1 hour.  
 Or suppose you have a time series with an entry for every hour, and you want to 
 fill in the gap with one data point per minute: you will group by 1 minute.  
-See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections) 
+See [here](../../../document-extensions/timeseries/querying/aggregation-and-projections.mdx) 
 to learn about aggregation in queries.  
 
 Next, use:  
@@ -230,8 +230,8 @@ one data point for each pair of values found on *both* sides of the gap.
 
 ## Examples
 
-<TabItem value="something-something" label="rql_query">
-<CodeBlock language="nodejs">
+<TabItem value="rql_query" label="rql_query">
+<CodeBlock language="js">
 {`const query = session.advanced.rawQuery(
     "from People\\n" +
     "select timeseries(\\n" +

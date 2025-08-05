@@ -26,13 +26,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * When using `PutDocumentCommand`, you must explicitly **specify the collection** to which the document will belong, 
   otherwise, the document will be placed in the `@empty` collection. See how this is done in the example below.
 
-* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities).  
-  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities).
+* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities.mdx).  
+  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities.mdx).
 
 * In this page:
 
-   * [Examples](../../../client-api/commands/documents/put#examples)
-   * [Syntax](../../../client-api/commands/documents/put#syntax)
+   * [Examples](../../../client-api/commands/documents/put.mdx#examples)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -182,7 +182,7 @@ var theDocumentCV = putResult.ChangeVector;
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public PutDocumentCommand(DocumentConventions conventions,
         string id, string changeVector, BlittableJsonReaderObject document)
@@ -193,10 +193,10 @@ var theDocumentCV = putResult.ChangeVector;
 | Parameter        | Type                        | Description                                                                                                                                                                                                                                          |
 |------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string`                    | Unique ID under which document will be stored.                                                                                                                                                                                                       |
-| **changeVector** | `string`                    | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
+| **changeVector** | `string`                    | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
 | **document**     | `BlittableJsonReaderObject` | The document to store. Use:<br/>`session.Advanced.JsonConverter.ToBlittable(doc, docInfo);` to convert your entity to a `BlittableJsonReaderObject`.                                                                                                  |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// The \`PutDocumentCommand\` result:
 // ================================
@@ -224,7 +224,7 @@ public class PutResult
 
 ## Syntax
 
-<TabItem value="something-something" label="put_interface">
+<TabItem value="put_interface" label="put_interface">
 <CodeBlock language="java">
 {`public PutDocumentCommand(String id, String changeVector, ObjectNode document)
 `}
@@ -239,7 +239,7 @@ public class PutResult
 
 ## Example
 
-<TabItem value="something-something" label="put_sample">
+<TabItem value="put_sample" label="put_sample">
 <CodeBlock language="java">
 {`Category doc = new Category();
 doc.setName("My category");
@@ -265,13 +265,13 @@ session.advanced().getRequestExecutor().execute(command);
 
 * In this page:
 
-   * [Example](../../../client-api/commands/documents/put#example)
-   * [Syntax](../../../client-api/commands/documents/put#syntax)
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
 
 </Admonition>
 ## Example
 
-<TabItem value="something-something" label="put_sample">
+<TabItem value="put_sample" label="put_sample">
 <CodeBlock language="python">
 {`# Create a new document
 doc = Category(name="My category", description="My category description")
@@ -294,7 +294,7 @@ session.advanced.request_executor.execute_command(command)
 
 ## Syntax
 
-<TabItem value="something-something" label="put_interface">
+<TabItem value="put_interface" label="put_interface">
 <CodeBlock language="python">
 {`class PutDocumentCommand(RavenCommand[PutResult]):
     def __init__(self, key: str, change_vector: Optional[str], document: dict): ...
@@ -320,13 +320,13 @@ session.advanced.request_executor.execute_command(command)
 
 * In this page:
 
-   * [Example](../../../client-api/commands/documents/put#example)
-   * [Syntax](../../../client-api/commands/documents/put#syntax)
+   * [Example](../../../client-api/commands/documents/put.mdx#example)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
 
 </Admonition>
 ## Example
 
-<TabItem value="something-something" label="put_sample">
+<TabItem value="put_sample" label="put_sample">
 <CodeBlock language="php">
 {`// Create a new document
 $doc = new Category();
@@ -352,7 +352,7 @@ $session->advanced()->getRequestExecutor()->execute($command);
 
 ## Syntax
 
-<TabItem value="something-something" label="put_interface">
+<TabItem value="put_interface" label="put_interface">
 <CodeBlock language="php">
 {`PutDocumentCommand(string $idOrCopy, ?string $changeVector, array $document);
 `}
@@ -378,13 +378,13 @@ $session->advanced()->getRequestExecutor()->execute($command);
 * When using `PutDocumentCommand`, you must explicitly **specify the collection** to which the document will belong,
   otherwise, the document will be placed in the `@empty` collection. See how this is done in the example below.
 
-* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities).  
-  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities).
+* To insert a document to the database using a higher-level method, see [storing entities](../../../client-api/session/storing-entities.mdx).  
+  To update an existing document using a higher-level method, see [update entities](../../../client-api/session/updating-entities.mdx).
 
 * In this page:
 
-   * [Examples](../../../client-api/commands/documents/put#examples)
-   * [Syntax](../../../client-api/commands/documents/put#syntax)
+   * [Examples](../../../client-api/commands/documents/put.mdx#examples)
+   * [Syntax](../../../client-api/commands/documents/put.mdx#syntax)
 
 </Admonition>
 ## Examples
@@ -392,8 +392,8 @@ $session->advanced()->getRequestExecutor()->execute($command);
 <Admonition type="note" title="Note">
 
 **Put document command - using the Store's request executor**:
-<TabItem value="something-something" label="put_document_1">
-<CodeBlock language="nodejs">
+<TabItem value="put_document_1" label="put_document_1">
+<CodeBlock language="js">
 {`// Define the json document to 'put'
 const jsonDocument = \{
     name: "My category",
@@ -425,8 +425,8 @@ assert.strictEqual(theDocumentID, "categories/999");
 <Admonition type="note" title="Note">
 
 **Put document command - using the Session's request executor**:
-<TabItem value="something-something" label="put_document_2">
-<CodeBlock language="nodejs">
+<TabItem value="put_document_2" label="put_document_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Create a new entity
@@ -468,8 +468,8 @@ assert.strictEqual(theDocumentID, "categories/999");
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`PutDocumentCommand(id, changeVector, document);
 `}
 </CodeBlock>
@@ -478,11 +478,11 @@ assert.strictEqual(theDocumentID, "categories/999");
 | Parameter        | Type     | Description                                                                                                                                                                                                                                          |
 |------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **id**           | `string` | Unique ID under which document will be stored.                                                                                                                                                                                                       |
-| **changeVector** | `string` | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
+| **changeVector** | `string` | The change-vector of the document you wish to update,<br/>used for [optimistic concurrency control](../../../server/clustering/replication/change-vector.mdx#concurrency-control-&-change-vectors).<br/>Pass `null` to skip the check and force the 'put'. |
 | **document**     | `object` | The document to store.                                                                                                                                                                                                                               |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Executing \`PutDocumentCommand\` returns the following object:
 \{
     // The document id under which the entity was stored

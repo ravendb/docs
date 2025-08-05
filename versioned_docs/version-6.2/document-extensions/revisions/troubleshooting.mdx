@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * In this page:  
-  * [`ThrowRevisionKeyTooBig` exception](../../document-extensions/revisions/troubleshooting#throwrevisionkeytoobig-exception)  
+  * [`ThrowRevisionKeyTooBig` exception](../../document-extensions/revisions/troubleshooting.mdx#throwrevisionkeytoobig-exception)  
 
 </Admonition>
 ## `ThrowRevisionKeyTooBig` exception
@@ -27,15 +27,15 @@ whose ID length exceeds this limit.
 
 * **How does a revision ID become too long?**  
    * RavenDB servers base the IDs they give revisions (and their tombstones) 
-     on the revisions' [change vectors](../../server/clustering/replication/change-vector).  
-   * Change vectors, on their part, are not limited and may grow [beyond the 1,536 bytes limit](../../client-api/operations/maintenance/clean-change-vector).  
+     on the revisions' [change vectors](../../server/clustering/replication/change-vector.mdx).  
+   * Change vectors, on their part, are not limited and may grow [beyond the 1,536 bytes limit](../../client-api/operations/maintenance/clean-change-vector.mdx).  
    * It may therefore happen that a server would try to give a revision an ID, find its 
      change vector longer than 1,536 bytes, and fail with a `ThrowRevisionKeyTooBig` exception.  
 * **How are Change Vectors bloated?**  
    * A revision's change vector is comprised of the IDs of databases that have handled the revision 
      over time.  
-   * In some cases, such as transferring a revision via [import](../../studio/database/tasks/import-data/import-from-ravendb) 
-     or [external replication](../../server/ongoing-tasks/external-replication), the ID of the 
+   * In some cases, such as transferring a revision via [import](../../studio/database/tasks/import-data/import-from-ravendb.mdx) 
+     or [external replication](../../server/ongoing-tasks/external-replication.mdx), the ID of the 
      revision's Source database is no longer needed but is still added to the revision's change 
      vector on the Destination database.  
    * Repeatedly transferring a revision this way may bloat its change vector beyond the 1,536 bytes 

@@ -24,11 +24,11 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * Use `PutClientCertificateOperation` to register an existing client certificate.
 
 * To register an existing client certificate from the Studio,
-  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-client-certificate).
+  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view.mdx#upload-an-existing-client-certificate).
 
 * In this article:
-  * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate#put-client-certificate-example)
-  * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate#syntax)
+  * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#put-client-certificate-example)
+  * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#syntax)
 
 </Admonition>
 ## Put client certificate example
@@ -72,7 +72,7 @@ await store.Maintenance.Server.SendAsync(putClientCertificateOp);
 
 ## Syntax
 
-<TabItem value="something" label="put_syntax">
+<TabItem value="put_syntax" label="put_syntax">
 <CodeBlock language="csharp">
 {`public PutClientCertificateOperation(
     string name, 
@@ -90,7 +90,7 @@ await store.Maintenance.Server.SendAsync(putClientCertificateOp);
 | **permissions** | `Dictionary<string, DatabaseAccess>` | A dictionary mapping database name to access level.<br/>Relevant only when clearance is `ValidUser`. |
 | **clearance**   | `SecurityClearance`                  | Access level (role) assigned to the certificate.                                                    |
 
-<TabItem value="something" label="cert_1_2">
+<TabItem value="cert_1_2" label="cert_1_2">
 <CodeBlock language="csharp">
 {`// The role assigned to the certificate:
 public enum SecurityClearance
@@ -103,7 +103,7 @@ public enum SecurityClearance
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="cert_1_3">
+<TabItem value="cert_1_3" label="cert_1_3">
 <CodeBlock language="csharp">
 {`// The access level for a 'ValidUser' security clearance:
 public enum DatabaseAccess
@@ -127,16 +127,16 @@ public enum DatabaseAccess
 * Use `PutClientCertificateOperation` to register an existing client certificate.
 
 * To register an existing client certificate from the Studio,
-  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-client-certificate).
+  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view.mdx#upload-an-existing-client-certificate).
 
 * In this article:
-    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate#put-client-certificate-example)
-    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate#syntax)
+    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#put-client-certificate-example)
+    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#syntax)
 
 </Admonition>
 ## Put client certificate example
 
-<TabItem value="something-something" label="cert_put_2">
+<TabItem value="cert_put_2" label="cert_put_2">
 <CodeBlock language="java">
 {`byte[] rawCert = Files.readAllBytes(Paths.get("<path-to-certificate.crt>"));
 String certificateAsBase64 = Base64.getEncoder().encodeToString(rawCert);                
@@ -155,7 +155,7 @@ store.maintenance().server().send(
 
 ## Syntax
 
-<TabItem value="something-something" label="cert_put_1">
+<TabItem value="cert_put_1" label="cert_put_1">
 <CodeBlock language="java">
 {`public PutClientCertificateOperation(String name,
                                      String certificate,
@@ -172,7 +172,7 @@ store.maintenance().server().send(
 | **permissions** | `Map<String, DatabaseAccess>` | A dictionary mapping database name to access level.<br/>Relevant only when clearance is `VALID_USER`. |
 | **clearance**   | `SecurityClearance`           | Access level (role) assigned to the certificate.                                                     |
 
-<TabItem value="something-something" label="cert_1_2">
+<TabItem value="cert_1_2" label="cert_1_2">
 <CodeBlock language="java">
 {`public enum SecurityClearance \{
     CLUSTER_ADMIN,
@@ -183,7 +183,7 @@ store.maintenance().server().send(
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="cert_1_3">
+<TabItem value="cert_1_3" label="cert_1_3">
 <CodeBlock language="java">
 {`public enum DatabaseAccess \{
     READ,
@@ -205,17 +205,17 @@ store.maintenance().server().send(
 * Use `PutClientCertificateOperation` to register an existing client certificate.
 
 * To register an existing client certificate from the Studio,
-  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view#upload-an-existing-client-certificate).
+  see [Upload an existing client certificate](../../../../studio/server/certificates/server-management-certificates-view.mdx#upload-an-existing-client-certificate).
 
 * In this article:
-    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate#put-client-certificate-example)
-    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate#syntax)
+    * [Put client certificate example](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#put-client-certificate-example)
+    * [Syntax](../../../../client-api/operations/server-wide/certificates/put-client-certificate.mdx#syntax)
 
 </Admonition>
 ## Put client certificate example
 
-<TabItem value="something-something" label="cert_put_2">
-<CodeBlock language="nodejs">
+<TabItem value="cert_put_2" label="cert_put_2">
+<CodeBlock language="js">
 {`const rawCert = fs.readFileSync("<path-to-certificate.crt>");
 const certificateAsBase64 = rawCert.toString("base64");
 
@@ -234,8 +234,8 @@ await store.maintenance.server.send(putClientCertificateOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const putOperation = 
     new PutClientCertificateOperation(name, certificate, permissions, clearance);
 `}

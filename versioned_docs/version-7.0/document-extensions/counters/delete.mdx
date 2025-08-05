@@ -25,12 +25,12 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * All the document's Counters are deleted when the document itself is deleted.  
 
-* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `CountersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-    * [`Delete ` usage](../../document-extensions/counters/delete#delete-usage)
-    * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#syntax)
+    * [`Delete ` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
 
 </Admonition>
 ## `Delete ` usage
@@ -40,8 +40,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 * Open a session.  
 * Create an instance of `CountersFor`.  
     * Either pass `CountersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
 * Call `CountersFor.Delete`.
 * Call `session.SaveChanges` for the changes to take effect.  
 
@@ -55,7 +55,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 ## Example
 
-<TabItem value="something" label="counters_region_Delete">
+<TabItem value="counters_region_Delete" label="counters_region_Delete">
 <CodeBlock language="csharp">
 {`// 1. Open a session
 using (var session = docStore.OpenSession())
@@ -77,7 +77,7 @@ using (var session = docStore.OpenSession())
 
 ## Syntax
 
-<TabItem value="something" label="Delete-definition">
+<TabItem value="Delete-definition" label="Delete-definition">
 <CodeBlock language="csharp">
 {`void Delete(string counterName);
 `}
@@ -100,12 +100,12 @@ using (var session = docStore.OpenSession())
 
 * All the document's Counters are deleted when the document itself is deleted.
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
-    * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#syntax)
+    * [`delete ` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
 
 </Admonition>
 ## `delete ` usage
@@ -129,7 +129,7 @@ using (var session = docStore.OpenSession())
 
 ## Example
 
-<TabItem value="something-something" label="counters_region_Delete">
+<TabItem value="counters_region_Delete" label="counters_region_Delete">
 <CodeBlock language="java">
 {`// 1. Open a session
 try (IDocumentSession session = docStore.openSession()) \{
@@ -150,7 +150,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="Delete-definition">
+<TabItem value="Delete-definition" label="Delete-definition">
 <CodeBlock language="java">
 {`void delete(String counterName);
 `}
@@ -173,12 +173,12 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 * All the document's Counters are deleted when the document itself is deleted.  
 
-* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `counters_for` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
-    * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#syntax)
+    * [`delete ` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
 
 </Admonition>
 ## `delete ` usage
@@ -188,8 +188,8 @@ try (IDocumentSession session = docStore.openSession()) \{
 * Open a session.  
 * Create an instance of `counters_for`.  
     * Either pass `counters_for` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
 * Call `document_counters.delete`.
 * Call `session.save_changes` for the changes to take effect.  
 
@@ -203,7 +203,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="Delete-definition">
+<TabItem value="Delete-definition" label="Delete-definition">
 <CodeBlock language="python">
 {`def delete(self, counter: str) -> None: ...
 `}
@@ -212,7 +212,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 | Parameter     | Type   | Description    |
 |---------------|--------|----------------|
-| **counter** | `str` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
+| **counter** | `str` | Counter name ([see example](../../document-extensions/counters/overview.mdx#managing-counters)) |
 
 
 
@@ -226,12 +226,12 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 * All the document's Counters are deleted when the document itself is deleted.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-    * [`delete` usage](../../document-extensions/counters/delete#delete-usage)
-    * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#syntax)
+    * [`delete` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
 
 </Admonition>
 ## `delete` usage
@@ -241,8 +241,8 @@ try (IDocumentSession session = docStore.openSession()) \{
 * Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
 * Call `documentCounters.delete`.
 * Call `session.saveChanges` for the changes to take effect.  
 
@@ -256,7 +256,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 ## Syntax
 
-<TabItem value="something-something" label="Delete-definition">
+<TabItem value="Delete-definition" label="Delete-definition">
 <CodeBlock language="php">
 {`public function delete(?string $counter): void;
 `}
@@ -265,7 +265,7 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 | Parameter     | Type   | Description    |
 |---------------|--------|----------------|
-| **counter** | `string` | Counter name ([see example](../../document-extensions/counters/overview#managing-counters)) |
+| **counter** | `string` | Counter name ([see example](../../document-extensions/counters/overview.mdx#managing-counters)) |
 
 
 
@@ -279,12 +279,12 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 * All the document's Counters are deleted when the document itself is deleted.  
 
-* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview#counter-methods-and-the--object).
+* For all other `countersFor` methods see this [Overview](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object).
 
 * In this page:
-    * [`delete ` usage](../../document-extensions/counters/delete#delete-usage)
-    * [Example](../../document-extensions/counters/delete#example)
-    * [Syntax](../../document-extensions/counters/delete#syntax)
+    * [`delete ` usage](../../document-extensions/counters/delete.mdx#delete-usage)
+    * [Example](../../document-extensions/counters/delete.mdx#example)
+    * [Syntax](../../document-extensions/counters/delete.mdx#syntax)
 
 </Admonition>
 ## `delete ` usage
@@ -294,8 +294,8 @@ try (IDocumentSession session = docStore.openSession()) \{
 * Open a session.  
 * Create an instance of `countersFor`.  
     * Either pass `countersFor` an explicit document ID, -or-  
-    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+    * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
 * Call `countersFor.delete`.
 * Call `session.saveChanges` for the changes to take effect.  
 
@@ -309,8 +309,8 @@ try (IDocumentSession session = docStore.openSession()) \{
 
 ## Example
 
-<TabItem value="something-something" label="delete">
-<CodeBlock language="nodejs">
+<TabItem value="delete" label="delete">
+<CodeBlock language="js">
 {`// Open a session
 const session = documentStore.openSession();
        
@@ -330,8 +330,8 @@ await session.saveChanges();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`delete(counter);
 `}
 </CodeBlock>

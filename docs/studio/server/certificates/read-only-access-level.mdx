@@ -15,17 +15,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # The Read-Only Access Level
 <Admonition type="note" title="Note">
 
-* A [client certificate](../../../server/security/authentication/client-certificate-usage) with a User security clearance 
+* A [client certificate](../../../server/security/authentication/client-certificate-usage.mdx) with a User security clearance 
 can grant different levels of access for different databases. These access levels are **Admin**, 
 **Read/Write**, and **Read Only**.  
 
 * The Read Only access level only allows you to read data from a database, but not to write data. 
-You cannot update existing documents, change any configurations, define [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info) 
-or [static indexes](../../../indexes/creating-and-deploying#static-indexes). However, the database 
-will still create [auto-indexes](../../../indexes/creating-and-deploying#auto-indexes) in response 
+You cannot update existing documents, change any configurations, define [ongoing tasks](../../../studio/database/tasks/ongoing-tasks/general-info.mdx) 
+or [static indexes](../../../indexes/creating-and-deploying.mdx#static-indexes). However, the database 
+will still create [auto-indexes](../../../indexes/creating-and-deploying.mdx#auto-indexes) in response 
 to the clients' queries.  
 
-* Clients with Read Only access can still become [subscription workers](../../../client-api/data-subscriptions/what-are-data-subscriptions) 
+* Clients with Read Only access can still become [subscription workers](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
 to consume data subscriptions.  
 
 * When in 'Read Only mode', there are various slight differences in the appearance of the Studio 
@@ -33,8 +33,8 @@ that make it clear to the user what they can and can't do.
 
 * In this page:  
 
-  * [Create a Client Certificate with Read Only Access](../../../studio/server/certificates/read-only-access-level#create-a-client-certificate-with-read-only-access)
-  * [The Studio in "Read Only" Mode](../../../studio/server/certificates/read-only-access-level#the-studio-in-"read-only"-mode)
+  * [Create a Client Certificate with Read Only Access](../../../studio/server/certificates/read-only-access-level.mdx#create-a-client-certificate-with-read-only-access)
+  * [The Studio in "Read Only" Mode](../../../studio/server/certificates/read-only-access-level.mdx#the-studio-in-"read-only"-mode)
 
 </Admonition>
 ## Create a Client Certificate with Read Only Access
@@ -112,7 +112,7 @@ the **Admin** and **Read/Write** access levels.
 
 The Manage Server views that can be accessed with a User security clearance are:  
 
-* The [Cluster View](../../../studio/cluster/cluster-view), where info about the 
+* The [Cluster View](../../../studio/cluster/cluster-view.mdx), where info about the 
 cluster topology can be viewed.  
 * The Running Queries view, a live display of queries the server is currently processing.  
 

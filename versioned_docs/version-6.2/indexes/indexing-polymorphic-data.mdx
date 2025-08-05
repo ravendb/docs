@@ -25,9 +25,9 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   and do not consider the inheritance hierarchy.
 
 * In this Page:  
-   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
-      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
-      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data.mdx#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data.mdx#other-options)  
 
 </Admonition>
 ## Polymorphic Data
@@ -41,7 +41,7 @@ while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from cat in docs.Cats
 select new \{ cat.Name \}
@@ -51,7 +51,7 @@ select new \{ cat.Name \}
 
 And for dogs:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from dog in docs.Dogs
 select new \{ dog.Name \}
@@ -136,7 +136,7 @@ where Name = 'Mitzy'
 
 Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
-<TabItem value="something" label="other_ways_1">
+<TabItem value="other_ways_1" label="other_ways_1">
 <CodeBlock language="csharp">
 {`DocumentStore store = new DocumentStore()
 \{
@@ -156,7 +156,7 @@ Another option would be to modify the way we generate the Collection for subclas
 
 Using this method, we can now index on all animals using:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from animal in docs.Animals
 select new \{ animal.Name \}
@@ -168,7 +168,7 @@ But what happens when you don't want to modify the entity name of an entity itse
 
 You can create a polymorphic index using:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new \{ animal.Name \}
@@ -190,9 +190,9 @@ It will generate an index that matches both Cats and Dogs.
   and do not consider the inheritance hierarchy.
 
 * In this Page:  
-   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
-      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
-      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data.mdx#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data.mdx#other-options)  
 
 </Admonition>
 ## Polymorphic Data
@@ -206,7 +206,7 @@ while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from cat in docs.Cats
 select new \{ cat.name \}
@@ -216,7 +216,7 @@ select new \{ cat.name \}
 
 And for dogs:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from dog in docs.Dogs
 select new \{ dog.name \}
@@ -285,7 +285,7 @@ where name = 'Mitzy'
 
 Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
-<TabItem value="something-something" label="other_ways_1">
+<TabItem value="other_ways_1" label="other_ways_1">
 <CodeBlock language="java">
 {`try (IDocumentStore store = new DocumentStore()) \{
     store.getConventions().setFindCollectionName(clazz -> \{
@@ -302,7 +302,7 @@ Another option would be to modify the way we generate the Collection for subclas
 
 Using this method, we can now index on all animals using:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from animal in docs.Animals
 select new \{ animal.name \}
@@ -314,7 +314,7 @@ But what happens when you don't want to modify the entity name of an entity itse
 
 You can create a polymorphic index using:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new \{ animal.Name \}
@@ -336,9 +336,9 @@ It will generate an index that matches both Cats and Dogs.
   and do not consider the inheritance hierarchy.
 
 * In this Page:  
-   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
-      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
-      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data.mdx#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data.mdx#other-options)  
 
 </Admonition>
 ## Polymorphic Data
@@ -352,7 +352,7 @@ while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`from cat in docs.Cats
 select new \{ cat.Name \}
@@ -362,7 +362,7 @@ select new \{ cat.Name \}
 
 And for dogs:
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`from dog in docs.Dogs
 select new \{ dog.Name \}
@@ -426,7 +426,7 @@ where Name = 'Mitzy'
 
 Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
-<TabItem value="something-something" label="other_ways_1">
+<TabItem value="other_ways_1" label="other_ways_1">
 <CodeBlock language="python">
 {`store = DocumentStore()
 
@@ -442,7 +442,7 @@ store.conventions.find_collection_name = _custom_find_collection_name
 
 Using this method, we can now index on all animals using:
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`from animal in docs.Animals
 select new \{ animal.Name \}
@@ -454,7 +454,7 @@ But what happens when you don't want to modify the entity name of an entity itse
 
 You can create a polymorphic index using:
 
-<TabItem value="something" label="python">
+<TabItem value="python" label="python">
 <CodeBlock language="python">
 {`from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new \{ animal.Name \}
@@ -476,9 +476,9 @@ It will generate an index that matches both Cats and Dogs.
   and do not consider the inheritance hierarchy.
 
 * In this Page:  
-   * [Polymorphic Data](../indexes/indexing-polymorphic-data#polymorphic-data)  
-      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data#multi-map-indexes)  
-      * [Other Options](../indexes/indexing-polymorphic-data#other-options)  
+   * [Polymorphic Data](../indexes/indexing-polymorphic-data.mdx#polymorphic-data)  
+      * [Multi-Map Indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)  
+      * [Other Options](../indexes/indexing-polymorphic-data.mdx#other-options)  
 
 </Admonition>
 ## Polymorphic Data
@@ -492,7 +492,7 @@ while a `Dog` document will be placed in the "Dogs" collection.
 
 If we intend to create a simple Map-index for Cat documents based on their names, we would write:
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`from cat in docs.Cats
 select new \{ cat.Name \}
@@ -502,7 +502,7 @@ select new \{ cat.Name \}
 
 And for dogs:
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`from dog in docs.Dogs
 select new \{ dog.Name \}
@@ -581,7 +581,7 @@ where Name = 'Mitzy'
 
 Another option would be to modify the way we generate the Collection for subclasses of `Animal`:
 
-<TabItem value="something-something" label="other_ways_1">
+<TabItem value="other_ways_1" label="other_ways_1">
 <CodeBlock language="php">
 {`$store = new DocumentStore();
 $store->getConventions()->setFindCollectionName(
@@ -598,7 +598,7 @@ $store->getConventions()->setFindCollectionName(
 
 Using this method, we can now index on all animals using:
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`from animal in docs.Animals
 select new \{ animal.Name \}
@@ -610,7 +610,7 @@ But what happens when you don't want to modify the entity name of an entity itse
 
 You can create a polymorphic index using:
 
-<TabItem value="something" label="php">
+<TabItem value="php" label="php">
 <CodeBlock language="php">
 {`from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new \{ animal.Name \}
@@ -632,11 +632,11 @@ It will generate an index that matches both Cats and Dogs.
   and do not consider the inheritance hierarchy.
 
 * In this page:
-    * [The challenge](../indexes/indexing-polymorphic-data#the-challenge)
-    * [Possible solutions:](../indexes/indexing-polymorphic-data#possible-solutions)
-        * [Multi-map index](../indexes/indexing-polymorphic-data#multi-map-index)
-        * [Polymorphic index](../indexes/indexing-polymorphic-data#polymorphic-index)
-        * [Customize collection](../indexes/indexing-polymorphic-data#customize-collection)
+    * [The challenge](../indexes/indexing-polymorphic-data.mdx#the-challenge)
+    * [Possible solutions:](../indexes/indexing-polymorphic-data.mdx#possible-solutions)
+        * [Multi-map index](../indexes/indexing-polymorphic-data.mdx#multi-map-index)
+        * [Polymorphic index](../indexes/indexing-polymorphic-data.mdx#polymorphic-index)
+        * [Customize collection](../indexes/indexing-polymorphic-data.mdx#customize-collection)
 
 </Admonition>
 ## The challenge
@@ -654,7 +654,7 @@ If we intend to create a simple Map-index for Cat documents based on their names
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Cats_ByName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -671,7 +671,7 @@ If we intend to create a simple Map-index for Cat documents based on their names
 </CodeBlock>
 </TabItem>
 <TabItem value="Class" label="Class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Animal {
     constructor(name) {
         this.name = name;
@@ -688,7 +688,7 @@ And for Dogs:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Dogs_ByName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -705,7 +705,7 @@ And for Dogs:
 </CodeBlock>
 </TabItem>
 <TabItem value="Class" label="Class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Animal {
     constructor(name) {
         this.name = name;
@@ -729,11 +729,11 @@ However, what if we need to query across ALL animal collections?
 <Admonition type="note" title="Note">
 
 <a id="multi-map-index"/> **Multi-Map Index**:
-Writing a [Multi-map index](../indexes/multi-map-indexes) enables getting results from all collections the index was defined for.
+Writing a [Multi-map index](../indexes/multi-map-indexes.mdx) enables getting results from all collections the index was defined for.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="MultiMap_Index" label="MultiMap_Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class CatsAndDogs_ByName extends AbstractJavaScriptMultiMapIndexCreationTask  {
     constructor() {
         super();
@@ -762,7 +762,7 @@ Query the Multi-map index:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const catsAndDogs = await session
     // Query the index
     .query({ indexName: "CatsAndDogs/ByName" })
@@ -794,7 +794,7 @@ listed in the method.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Polymorphic_index" label="Polymorphic_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class CatsAndDogs_ByName extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
@@ -815,7 +815,7 @@ Query the polymorphic-index:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const catsAndDogs = await session
     // Query the index
     .query({ indexName: "CatsAndDogs/ByName" })
@@ -843,10 +843,10 @@ where name == "Mitzy"
 This option involves customizing the collection name that is assigned to documents created from  
 subclasses of the _Animal_ class.
 
-This is done by setting the [findCollectionName](../client-api/configuration/conventions#findcollectionname) convention on the document store.
+This is done by setting the [findCollectionName](../client-api/configuration/conventions.mdx#findcollectionname) convention on the document store.
 
-<TabItem value="something-something" label="define_convention">
-<CodeBlock language="nodejs">
+<TabItem value="define_convention" label="define_convention">
+<CodeBlock language="js">
 {`const documentStore = new DocumentStore(["serverUrl_1", "serverUrl_2", "..."], "DefaultDB");
 
 // Customize the findCollectionName convention 
@@ -871,7 +871,7 @@ Now you can define a Map-index on the "Animals" collection:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Animals_ByName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -893,7 +893,7 @@ Query the index:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const animals = await session
     // Query the index
     .query({ indexName: "Animals/ByName" })

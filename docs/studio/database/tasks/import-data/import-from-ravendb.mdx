@@ -15,25 +15,25 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Import Data from a Live RavenDB Server
 <Admonition type="note" title="Note">
 
-* In addition to importing data from a [.ravendbdump](../../../../studio/database/tasks/import-data/import-data-file) file, 
+* In addition to importing data from a [.ravendbdump](../../../../studio/database/tasks/import-data/import-data-file.mdx) file, 
   data can also be imported directly from an existing database on a **live RavenDB server**.  
 
 * Backward compatibility is supported.  
   You can import a database from a previous RavenDB version into your current server.  
 
 * The process consists of the following steps:  
-  1st Step: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb#1st-step:-prepare-servers-for-the-import-process)   
-  2nd Step: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd-step:-access-the-import-view)  
-  3rd Step: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb#3rd-step:-set-the-source-server-url-and-database)  
-  4th Step: [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#4th-step:-set-import-options)  
-  5th Step: [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#5th-step:-advanced-import-options)  
+  1st Step: [Prepare Servers for the Import Process](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#1st-step:-prepare-servers-for-the-import-process)   
+  2nd Step: [Access the Import View](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#2nd-step:-access-the-import-view)  
+  3rd Step: [Set the Source Server URL and database](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#3rd-step:-set-the-source-server-url-and-database)  
+  4th Step: [Set Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#4th-step:-set-import-options)  
+  5th Step: [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#5th-step:-advanced-import-options)  
 </Admonition>
 ## 1st Step: Prepare Servers for the Import Process 
 
 * Before migrating data from a secure source server, the destination server must also be secure.  
   You must pass the certificate from the destination to the source server.  The following steps explain how.
 
-* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb#2nd:-access-the-import-view).
+* Perform this step only if your source RavenDB server is a secure verion 4.x (or newer) server that is running on HTTPS.  For other servers, skip this step and continue to [Step 2](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#2nd:-access-the-import-view).
 
 * To import, the destination server needs to access the existing source database and fetch data from it.  
   To grant such access, you must first register the destination server certificate as a client certificate on your source server.  
@@ -46,7 +46,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      Click the Manage Server tab.
 
   2. **Certificates**.  
-     Select Certificates. (See [Certificates Management](../../../../server/security/authentication/certificate-management)) for more information on this Studio view.  
+     Select Certificates. (See [Certificates Management](../../../../server/security/authentication/certificate-management.mdx)) for more information on this Studio view.  
  
   3. **Server certificates**  
      Export the destination RavenDB certificate **from the DESTINATION RavenDB server**.  
@@ -67,8 +67,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
    1. **Name**  
       Enter a name for this certificate. For future clarity, consider naming each certificate after the role that it will enable in your system (Full Stack Development, HR, Customer, Unregistered Guest, etc...)  
    2. **Security Clearance**  
-      Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions) for this certificate. 
-      Read about [Security Clearance](../../../../server/security/authorization/security-clearance-and-permissions#authorization-security-clearance-and-permissions) to choose appropriate level.  
+      Set [authorization level](../../../../server/security/authorization/security-clearance-and-permissions.mdx) for this certificate. 
+      Read about [Security Clearance](../../../../server/security/authorization/security-clearance-and-permissions.mdx#authorization-security-clearance-and-permissions) to choose appropriate level.  
    3. **Certificate file**  
       Upload the `.pfx` certificate file from the destination server installation folder.  
    4. **Certificate Passphrase**  
@@ -76,7 +76,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
    5. **Database permissions**  
       Select databases and permission levels for this certificate.  
       If you choose *User* security clearance, you can give access to specific databases on the server and 
-      configure [User](../../../../server/security/authorization/security-clearance-and-permissions#user) 
+      configure [User](../../../../server/security/authorization/security-clearance-and-permissions.mdx#user) 
       authorization levels for this certificate.  
  
     Click **Upload** to complete the process.  
@@ -125,7 +125,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## 4th Step: Set Import Options
 
 * Filter the data you want to import.  
-* Customize advanced configuration and apply a transform script under the [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb#step-#5:-advanced-import-options).
+* Customize advanced configuration and apply a transform script under the [Advanced Import Options](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#step-#5:-advanced-import-options).
 
 ![Import Options](./assets/import-from-ravendb-options.png)
 
@@ -134,21 +134,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
  </Admonition>
 
 1. **Documents**  
- - [Include Documents](../../../../studio/database/documents/document-view)  
+ - [Include Documents](../../../../studio/database/documents/document-view.mdx)  
    Toggle to include documents and to enable inclusion of the following document related items:  
-   - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments)  
-   - [Include Counters](../../../../document-extensions/counters/overview)  
-   - [Include Time Series](../../../../document-extensions/timeseries/overview)  
-   - [Include Revisions](../../../../document-extensions/revisions/overview)  
-   - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side)  
+   - [Include Attachments](../../../../document-extensions/attachments/what-are-attachments.mdx)  
+   - [Include Counters](../../../../document-extensions/counters/overview.mdx)  
+   - [Include Time Series](../../../../document-extensions/timeseries/overview.mdx)  
+   - [Include Revisions](../../../../document-extensions/revisions/overview.mdx)  
+   - [Include Conflicts](../../../../client-api/cluster/document-conflicts-in-client-side.mdx)  
 2. **Indexes**  
- - [Include Indexes](../../../../indexes/what-are-indexes)  
-    - [Remove Analyzers](../../../../indexes/using-analyzers)  
+ - [Include Indexes](../../../../indexes/what-are-indexes.mdx)  
+    - [Remove Analyzers](../../../../indexes/using-analyzers.mdx)  
 3. **Other**  
- - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers)  
- - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview)  
- - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions)  
- - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb#customize-configuration-and-ongoing-tasks) 
+ - [Include Identities](../../../../client-api/document-identifiers/working-with-document-identifiers.mdx)  
+ - [Include Compare Exchange](../../../../client-api/operations/compare-exchange/overview.mdx)  
+ - [Include Subscriptions](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)  
+ - [Include Configuration and OngoingTasks](../../../../studio/database/tasks/import-data/import-from-ravendb.mdx#customize-configuration-and-ongoing-tasks) 
 
 
 <Admonition type="note" title="Importing an item that doesn't exist" id="importing-an-item-that-doesn-t-exist" href="#importing-an-item-that-doesn-t-exist">
@@ -171,7 +171,7 @@ In the Studio, select **database** &gt; click **Task** tab &gt; select **Import*
 
 Sample transform javascripts:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Example 1
 delete this['@metadata']['@change-vector']
@@ -199,23 +199,23 @@ In the Studio, select **database** &gt; click **Task** tab &gt; select **Import*
 
 1. **Ongoing tasks:**
 
- - [Periodic Backups](../../../../studio/database/tasks/backup-task)  
- - [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
- - [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics)  
- - [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
- - [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)  
+ - [Periodic Backups](../../../../studio/database/tasks/backup-task.mdx)  
+ - [External replications](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)  
+ - [ETL Tasks - Extract, Transform, Load](../../../../server/ongoing-tasks/etl/basics.mdx)  
+ - [Pull Replication Sinks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
+ - [Pull Replication Hubs](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
 
 2. **Other:**
 
- - [Settings](../../../../studio/database/settings/database-settings)  
- - [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver)  
- - [Revisions Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions)  
- - [Document Expiration](../../../../server/extensions/expiration)  
- - [Client Configuration](../../../../studio/server/client-configuration)  
- - [Custom Sorters](../../../../indexes/querying/sorting#creating-a-custom-sorter)  
+ - [Settings](../../../../studio/database/settings/database-settings.mdx)  
+ - [Conflict Solver Configuration](../../../../client-api/operations/server-wide/modify-conflict-solver.mdx)  
+ - [Revisions Configuration](../../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx)  
+ - [Document Expiration](../../../../server/extensions/expiration.mdx)  
+ - [Client Configuration](../../../../studio/server/client-configuration.mdx)  
+ - [Custom Sorters](../../../../indexes/querying/sorting.mdx#creating-a-custom-sorter)  
 
 3. **Connection Strings:**
 
- - [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string) used by ETL tasks to authenticate and connect to external databases will be imported.
+ - [Connection Strings](../../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx) used by ETL tasks to authenticate and connect to external databases will be imported.
 
 

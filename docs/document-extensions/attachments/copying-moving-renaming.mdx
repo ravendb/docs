@@ -30,7 +30,7 @@ Attachment can be copied using one of the `session.Advanced.Attachments.Copy` me
 
 ### Syntax
 
-<TabItem value="something" label="copy_0">
+<TabItem value="copy_0" label="copy_0">
 <CodeBlock language="csharp">
 {`void Copy(
     object sourceEntity,
@@ -82,7 +82,7 @@ Attachment can be moved using one of the `session.Advanced.Attachments.Move` met
 
 ### Syntax
 
-<TabItem value="something" label="move_0">
+<TabItem value="move_0" label="move_0">
 <CodeBlock language="csharp">
 {`void Move(object sourceEntity, string sourceName, object destinationEntity, string destinationName);
 
@@ -126,7 +126,7 @@ Attachment can be renamed using one of the `session.Advanced.Attachments.Rename`
 
 ### Syntax
 
-<TabItem value="something" label="rename_0">
+<TabItem value="rename_0" label="rename_0">
 <CodeBlock language="csharp">
 {`void Rename(object entity, string name, string newName);
 
@@ -177,7 +177,7 @@ Attachment can be copied using one of the `session.advanced().attachments().copy
 
 ### Syntax
 
-<TabItem value="something-something" label="copy_0">
+<TabItem value="copy_0" label="copy_0">
 <CodeBlock language="java">
 {`void copy(Object sourceEntity, String sourceName,
           Object destinationEntity, String destinationName);
@@ -190,7 +190,7 @@ void copy(String sourceDocumentId, String sourceName,
 
 ### Example
 
-<TabItem value="something-something" label="copy_1">
+<TabItem value="copy_1" label="copy_1">
 <CodeBlock language="java">
 {`Employee employee1 = session.load(Employee.class, "employees/1-A");
 Employee employee2 = session.load(Employee.class, "employees/2-A");
@@ -212,7 +212,7 @@ Attachment can be moved using one of the `session.advanced().attachments().move`
 
 ### Syntax
 
-<TabItem value="something-something" label="move_0">
+<TabItem value="move_0" label="move_0">
 <CodeBlock language="java">
 {`void move(Object sourceEntity, String sourceName,
           Object destinationEntity, String destinationName);
@@ -225,7 +225,7 @@ void move(String sourceDocumentId, String sourceName,
 
 ### Example
 
-<TabItem value="something-something" label="move_1">
+<TabItem value="move_1" label="move_1">
 <CodeBlock language="java">
 {`Employee employee1 = session.load(Employee.class, "employees/1-A");
 Employee employee2 = session.load(Employee.class, "employees/2-A");
@@ -247,7 +247,7 @@ Attachment can be renamed using one of the `session.advanced().attachments().ren
 
 ### Syntax
 
-<TabItem value="something-something" label="rename_0">
+<TabItem value="rename_0" label="rename_0">
 <CodeBlock language="java">
 {`void rename(Object entity, String name, String newName);
 
@@ -258,7 +258,7 @@ void rename(String documentId, String name, String newName);
 
 ### Example
 
-<TabItem value="something-something" label="rename_1">
+<TabItem value="rename_1" label="rename_1">
 <CodeBlock language="java">
 {`Employee employee1 = session.load(Employee.class, "employees/1-A");
 
@@ -288,7 +288,7 @@ Attachment can be copied using one of the `session.advanced.attachments.copy` me
 
 ### Syntax
 
-<TabItem value="something-something" label="copy_0">
+<TabItem value="copy_0" label="copy_0">
 <CodeBlock language="python">
 {`def copy(
     self,
@@ -303,7 +303,7 @@ Attachment can be copied using one of the `session.advanced.attachments.copy` me
 
 ### Example
 
-<TabItem value="something-something" label="copy_1">
+<TabItem value="copy_1" label="copy_1">
 <CodeBlock language="python">
 {`employee_1 = session.load("employees/1-A")
 employee_2 = session.load("employees/2-A")
@@ -323,7 +323,7 @@ Attachment can be moved using one of the `session.advanced.attachments.move` met
 
 ### Syntax
 
-<TabItem value="something-something" label="move_0">
+<TabItem value="move_0" label="move_0">
 <CodeBlock language="python">
 {`def move(
     self,
@@ -338,7 +338,7 @@ Attachment can be moved using one of the `session.advanced.attachments.move` met
 
 ### Example
 
-<TabItem value="something-something" label="move_1">
+<TabItem value="move_1" label="move_1">
 <CodeBlock language="python">
 {`employee1 = session.load("employees/1-A")
 employee2 = session.load("employees/2-A")
@@ -358,7 +358,7 @@ Attachment can be renamed using one of the `session.advanced.attachments.rename`
 
 ### Syntax
 
-<TabItem value="something-something" label="rename_0">
+<TabItem value="rename_0" label="rename_0">
 <CodeBlock language="python">
 {`def rename(self, entity_or_document_id: Union[str, object], name: str, new_name: str) -> None: ...
 `}
@@ -367,7 +367,7 @@ Attachment can be renamed using one of the `session.advanced.attachments.rename`
 
 ### Example
 
-<TabItem value="something-something" label="rename_1">
+<TabItem value="rename_1" label="rename_1">
 <CodeBlock language="python">
 {`employee = session.load("employees/1-A", Employee)
 
@@ -395,7 +395,7 @@ Attachment can be copied using one of the `session.advanced.attachments.copy` me
 
 ### Syntax
 
-<TabItem value="something-something" label="copy_0">
+<TabItem value="copy_0" label="copy_0">
 <CodeBlock language="php">
 {`function copy(object|string $sourceIdOrEntity, ?string $sourceName, object|string $destinationIdOrEntity, ?string $destinationName): void;
 `}
@@ -404,7 +404,7 @@ Attachment can be copied using one of the `session.advanced.attachments.copy` me
 
 ### Example
 
-<TabItem value="something-something" label="copy_1">
+<TabItem value="copy_1" label="copy_1">
 <CodeBlock language="php">
 {`$employee1 = $session->load(Employee::class, "employees/1-A");
 $employee2 = $session->load(Employee::class, "employees/2-A");
@@ -424,7 +424,7 @@ Attachment can be moved using one of the `session.advanced.attachments.move` met
 
 ### Syntax
 
-<TabItem value="something-something" label="move_0">
+<TabItem value="move_0" label="move_0">
 <CodeBlock language="php">
 {`public function move(object|string $sourceIdOrEntity, ?string $sourceName, object|string $destinationIdOrEntity, ?string $destinationName): void;
 `}
@@ -433,7 +433,7 @@ Attachment can be moved using one of the `session.advanced.attachments.move` met
 
 ### Example
 
-<TabItem value="something-something" label="move_1">
+<TabItem value="move_1" label="move_1">
 <CodeBlock language="php">
 {`$employee1 = $session->load(Employee::class, "employees/1-A");
 $employee2 = $session->load(Employee::class, "employees/2-A");
@@ -453,7 +453,7 @@ Attachment can be renamed using one of the `session.advanced.attachments.rename`
 
 ### Syntax
 
-<TabItem value="something-something" label="rename_0">
+<TabItem value="rename_0" label="rename_0">
 <CodeBlock language="php">
 {`function rename(string|object $idOrEntity, ?string $name, ?string $newName): void;
 `}
@@ -462,7 +462,7 @@ Attachment can be renamed using one of the `session.advanced.attachments.rename`
 
 ### Example
 
-<TabItem value="something-something" label="rename_1">
+<TabItem value="rename_1" label="rename_1">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1-A");
 
@@ -487,10 +487,10 @@ $session->saveChanges();
   removing the need to transfer the entire attachment binary data over the network in order to perform the action.
 
 * In this page:  
-  * [Copy attachment](../../document-extensions/attachments/copying-moving-renaming#copy-attachment)
-  * [Move attachment](../../document-extensions/attachments/copying-moving-renaming#move-attachment)
-  * [Rename attachment](../../document-extensions/attachments/copying-moving-renaming#rename-attachment)
-  * [Syntax](../../document-extensions/attachments/copying-moving-renaming#syntax)
+  * [Copy attachment](../../document-extensions/attachments/copying-moving-renaming.mdx#copy-attachment)
+  * [Move attachment](../../document-extensions/attachments/copying-moving-renaming.mdx#move-attachment)
+  * [Rename attachment](../../document-extensions/attachments/copying-moving-renaming.mdx#rename-attachment)
+  * [Syntax](../../document-extensions/attachments/copying-moving-renaming.mdx#syntax)
 
 </Admonition>
 ## Copy attachment
@@ -499,7 +499,7 @@ Use `session.advanced.attachments.copy` to copy an attachment from one document 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Copy_with_entity" label="Copy_with_entity">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Load entities
 const employee1 = await session.load("employees/1-A");
 const employee2 = await session.load("employees/2-A");
@@ -514,7 +514,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Copy_with_document_ID" label="Copy_with_document_ID">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Call method 'copy'
 // Copy attachment from "employees/1-A" to "employees/2-A"
 session.advanced.attachments.copy("employees/1-A", "photo.jpg", "employees/2-A", "photo-copy.jpg");
@@ -534,7 +534,7 @@ Use `session.advanced.attachments.move` to move an attachment from one document 
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Move_with_entity" label="Move_with_entity">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Load entities 
 const employee1 = await session.load("employees/1-A");
 const employee2 = await session.load("employees/2-A");
@@ -549,7 +549,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Move_with_document_ID" label="Move_with_document_ID">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Call method 'move'
 // Move attachment from "employees/1-A" to "employees/2-A"
 session.advanced.attachments.move("employees/1-A", "photo.jpg", "employees/2-A", "photo.jpg");
@@ -569,7 +569,7 @@ Use `session.advanced.attachments.rename` to rename an attachment.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Rename_with_entity" label="Rename_with_entity">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Load entity
 const employee = await session.load("employees/1-A");
 
@@ -583,7 +583,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Rename_with_document_ID" label="Rename_with_document_ID">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Call method 'rename'
 // Rename "photo.jpg"
 session.advanced.attachments.rename("employees/1-A", "photo.jpg", "photo-new.jpg");
@@ -599,8 +599,8 @@ await session.saveChanges();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_copy">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_copy" label="syntax_copy">
+<CodeBlock language="js">
 {`// Copy - available overloads:
 // ===========================
 copy(sourceEntity, sourceName, destinationEntity, destinationName);
@@ -609,8 +609,8 @@ copy(sourceDocumentId, sourceName, destinationDocumentId, destinationName);
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_move">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_move" label="syntax_move">
+<CodeBlock language="js">
 {`// Move - a vailable overloads:
 // ============================
 move(sourceEntity, sourceName, destinationEntity, destinationName);
@@ -629,8 +629,8 @@ move(sourceDocumentId, sourceName, destinationDocumentId, destinationName);
 | **destinationName**       | string   | Destination attachment name |
 
 
-<TabItem value="something-something" label="syntax_rename">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_rename" label="syntax_rename">
+<CodeBlock language="js">
 {`// Rename - available overloads:
 // =============================
 rename(entity, name, newName);

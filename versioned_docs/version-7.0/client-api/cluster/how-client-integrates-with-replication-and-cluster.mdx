@@ -22,11 +22,11 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 <Admonition type="note" title="Note">
 
 * In this page:
-    * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#failover-behavior)
-    * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#cluster-topology-in-the-client)
-    * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#topology-discovery)
-    * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#configuring-topology-nodes)
-    * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#write-assurance-and-database-groups)
+    * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)
+    * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#cluster-topology-in-the-client)
+    * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#topology-discovery)
+    * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#configuring-topology-nodes)
+    * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#write-assurance-and-database-groups)
 
 </Admonition>
 ## Failover behavior
@@ -39,7 +39,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the `ReadBalanceBehavior` and `LoadBalanceBehavior` configuration values.
-  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview). 
+  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview.mdx). 
 
     <Admonition type="note" title="Note">
     Each failure to connect to a node spawns a health check for that node.  
@@ -91,7 +91,7 @@ By listing multiple nodes in the cluster, we can ensure that if a single node is
 If the cluster sizes are small (three to five nodes), we'll typically list all the nodes in the cluster. 
 But for larger clusters, we'll usually just list enough nodes that having them all go down at once will mean that you have more pressing concerns then a new client coming up.
 
-<TabItem value="something" label="InitializationSample">
+<TabItem value="InitializationSample" label="InitializationSample">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore
 \{
@@ -115,12 +115,12 @@ But for larger clusters, we'll usually just list enough nodes that having them a
 
 ## Write assurance and database groups
 
-In RavenDB clusters, the databases are hosted in [database groups](../../glossary/database-group). 
+In RavenDB clusters, the databases are hosted in [database groups](../../glossary/database-group.mdx). 
 Since there is a master-master replication configured between database group members, a write to one of the nodes will be replicated to all other instances of the group.
 If there are some writes that are important, it is possible to make the client wait until the transaction data gets replicated to multiple nodes. 
 It is called a 'write assurance', and it is available with the `WaitForReplicationAfterSaveChanges()` method.
 
-<TabItem value="something" label="WriteAssuranceSample">
+<TabItem value="WriteAssuranceSample" label="WriteAssuranceSample">
 <CodeBlock language="csharp">
 {`using (var session = store.OpenSession())
 \{
@@ -151,11 +151,11 @@ It is called a 'write assurance', and it is available with the `WaitForReplicati
 <Admonition type="note" title="Note">
 
 * In this page:
-    * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#failover-behavior)
-    * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#cluster-topology-in-the-client)
-    * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#topology-discovery)
-    * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#configuring-topology-nodes)
-    * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#write-assurance-and-database-groups)
+    * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)
+    * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#cluster-topology-in-the-client)
+    * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#topology-discovery)
+    * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#configuring-topology-nodes)
+    * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#write-assurance-and-database-groups)
 
 </Admonition>
 ## Failover behavior
@@ -168,7 +168,7 @@ It is called a 'write assurance', and it is available with the `WaitForReplicati
   If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the `ReadBalanceBehavior` and `LoadBalanceBehavior` configuration values.
-  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview). 
+  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview.mdx). 
 
      <Admonition type="note" title="Note">
      Each failure to connect to a node spawns a health check for that node.  
@@ -220,7 +220,7 @@ By listing multiple nodes in the cluster, we can ensure that if a single node is
 If the cluster sizes are small (three to five nodes), we'll typically list all the nodes in the cluster. 
 But for larger clusters, we'll usually just list enough nodes that having them all go down at once will mean that you have more pressing concerns then a new client coming up.
 
-<TabItem value="something-something" label="InitializationSample">
+<TabItem value="InitializationSample" label="InitializationSample">
 <CodeBlock language="java">
 {`try (IDocumentStore store = new DocumentStore(new String[]\{
     "http://[node A url]",
@@ -246,7 +246,7 @@ Since there is a master-master replication configured between database group mem
 If there are some writes that are important, it is possible to make the client wait until the transaction data gets replicated to multiple nodes.
 It is called a 'write assurance', and it is available with the `WaitForReplicationAfterSaveChanges()` method.
 
-<TabItem value="something-something" label="WriteAssuranceSample">
+<TabItem value="WriteAssuranceSample" label="WriteAssuranceSample">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     User user = new User();
@@ -274,11 +274,11 @@ It is called a 'write assurance', and it is available with the `WaitForReplicati
 <Admonition type="note" title="Note">
 
 * In this page:
-  * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#failover-behavior)
-  * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#cluster-topology-in-the-client)
-  * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#topology-discovery)
-  * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#configuring-topology-nodes)
-  * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster#write-assurance-and-database-groups)
+  * [Failover behavior](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#failover-behavior)
+  * [Cluster topology in the client](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#cluster-topology-in-the-client)
+  * [Topology discovery](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#topology-discovery)
+  * [Configuring topology nodes](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#configuring-topology-nodes)
+  * [Write assurance and database groups](../../client-api/cluster/how-client-integrates-with-replication-and-cluster.mdx#write-assurance-and-database-groups)
 
 </Admonition>
 ## Failover behavior
@@ -291,7 +291,7 @@ It is called a 'write assurance', and it is available with the `WaitForReplicati
   If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the `ReadBalanceBehavior` and `LoadBalanceBehavior` configuration values.
-  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview). 
+  For more information about the different values and the node selection process, see [Load balancing client requests](../../client-api/configuration/load-balance/overview.mdx). 
       
      <Admonition type="note" title="Note">
      Each failure to connect to a node spawns a health check for that node.  
@@ -343,8 +343,8 @@ By listing multiple nodes in the cluster, we can ensure that if a single node is
 If the cluster sizes are small (three to five nodes), we'll typically list all the nodes in the cluster.
 But for larger clusters, we'll usually just list enough nodes that having them all go down at once will mean that you have more pressing concerns then a new client coming up.
 
-<TabItem value="something-something" label="InitializationSample">
-<CodeBlock language="nodejs">
+<TabItem value="InitializationSample" label="InitializationSample">
+<CodeBlock language="js">
 {`const store = new DocumentStore([
     "http://[node A url]",
     "http://[node B url]",
@@ -367,8 +367,8 @@ Since there is a master-master replication configured between database group mem
 If there are some writes that are important, it is possible to make the client wait until the transaction data gets replicated to multiple nodes.
 It is called a 'write assurance', and it is available with the `waitForReplicationAfterSaveChanges()` method.
 
-<TabItem value="something-something" label="WriteAssuranceSample">
-<CodeBlock language="nodejs">
+<TabItem value="WriteAssuranceSample" label="WriteAssuranceSample">
+<CodeBlock language="js">
 {`const session = store.openSession();
 const user = new User("John Doe");
 

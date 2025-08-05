@@ -23,16 +23,16 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:  
-    * [Projection Methods](../../indexes/querying/projections#select):  
-      * [Select](../../indexes/querying/projections#select)  
-      * [ProjectInto](../../indexes/querying/projections#projectinto)  
-      * [SelectFields](../../indexes/querying/projections#selectfields)  
-    * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)  
-    * [OfType](../../indexes/querying/projections#oftype)  
+    * [Projection Methods](../../indexes/querying/projections.mdx#select):  
+      * [Select](../../indexes/querying/projections.mdx#select)  
+      * [ProjectInto](../../indexes/querying/projections.mdx#projectinto)  
+      * [SelectFields](../../indexes/querying/projections.mdx#selectfields)  
+    * [Projection behavior with a static-index](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index)  
+    * [OfType](../../indexes/querying/projections.mdx#oftype)  
 
 </Admonition>
 ## Select
@@ -125,14 +125,14 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
   * In the above example, the fields to return by the projection that are specified in the `Select` method  
     (`x.FirstName` & `x.LastName`) are recognized by the compiler as fields of the `IndexEntry` class.
   
-  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections#oftype) that uses `OfType`.  
+  * If you wish to specify fields from the original 'Employee' class type then follow [this example](../../indexes/querying/projections.mdx#oftype) that uses `OfType`.  
 
 * **Source of projection fields**:  
 
-  * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+  * Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index.mdx), and no projection behavior was defined,  
     resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
   
-  * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+  * This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 
 </Admonition>
 
@@ -212,7 +212,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 * In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
   so by default, the resulting values will come directly from the index and Not from the Employee document in the storage.
 
-* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 </Admonition>
 
 <Admonition type="note" title="Note">
@@ -951,10 +951,10 @@ select ContactName, ContactTitle
 
 ## SelectFields
 
-The `SelectFields` method can only be used by a [Document Query](../../client-api/session/querying/document-query/what-is-document-query).  
+The `SelectFields` method can only be used by a [Document Query](../../client-api/session/querying/document-query/what-is-document-query.mdx).  
 It has two overloads:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// 1) Select fields to project by the projection class type
 IDocumentQuery<TProjection> SelectFields<TProjection>();
@@ -1166,7 +1166,7 @@ select ProductName, PricePerUnit
 ## Projection behavior with a static-index
 
 * **By default**, when querying a static-index and projecting query results,  
-  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index.mdx).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
 * This behavior can be modified by setting the **projection behavior**.
@@ -1523,8 +1523,8 @@ where ContactTitle == "owner"
 
 There are couple of ways to perform projections in RavenDB:
 
-- projections using [SelectFields](../../indexes/querying/projections#selectfields)
-- using [OfType](../../indexes/querying/projections#oftype)
+- projections using [SelectFields](../../indexes/querying/projections.mdx#selectfields)
+- using [OfType](../../indexes/querying/projections.mdx#oftype)
 
 ## What are Projections and When to Use Them
 
@@ -1551,7 +1551,7 @@ Another consideration to take into account is the cost of running the projection
 
 ## Projections and Stored Fields
 
-If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
+If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index.mdx).
 
 ## SelectFields
 The most basic projection can be done using `selectFields` method:
@@ -1943,7 +1943,7 @@ select {
 
 ## OfType
 
-`OfType` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection).
+`OfType` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-project-query-results.mdx#oftype-(as)---simple-projection).
 
 
 
@@ -1958,19 +1958,19 @@ Because you are working with projections and not directly with documents, they a
 
 * This article provides examples of projecting query results when querying a **static-index**.  
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * Projections can be applied using the `select_fields` and `select_fields_query_data` methods.  
 
 * In this page:  
 
-  * [What are Projections and When to Use Them](../../indexes/querying/projections#what-are-projections-and-when-to-use-them)
-  * [`select_fields`](../../indexes/querying/projections#select_fields)
-  * [Examples](../../indexes/querying/projections#examples)
-  * [Projection Behavior](../../indexes/querying/projections#projection-behavior)
-  * [Projections and the Session](../../indexes/querying/projections#projections-and-the-session)
-  * [Syntax](../../indexes/querying/projections#syntax)
+  * [What are Projections and When to Use Them](../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
+  * [`select_fields`](../../indexes/querying/projections.mdx#select_fields)
+  * [Examples](../../indexes/querying/projections.mdx#examples)
+  * [Projection Behavior](../../indexes/querying/projections.mdx#projection-behavior)
+  * [Projections and the Session](../../indexes/querying/projections.mdx#projections-and-the-session)
+  * [Syntax](../../indexes/querying/projections.mdx#syntax)
   
 </Admonition>
 ## What are Projections and When to Use Them
@@ -2010,7 +2010,7 @@ projection, and exceeding these (quite generous) limits will fail the query.
 If a projection function only requires fields that are stored, then the document will not be loaded from 
 storage and all data will come from the index directly. This can increase query performance (by the cost 
 of disk space used) in many situations when whole document is not needed. You can read more about field 
-storing [here](../../indexes/storing-data-in-index).
+storing [here](../../indexes/storing-data-in-index.mdx).
 
 
 
@@ -2563,7 +2563,7 @@ select {
 The `select_fields` methods can also take a `ProjectionBehavior` parameter, which
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query#projection).  
+[here](../../client-api/session/querying/how-to-customize-query.mdx#projection).  
 
 
 
@@ -2574,7 +2574,7 @@ Modifications to a projection will not modify the document when `save_changes` i
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_select_fields">
+<TabItem value="syntax_select_fields" label="syntax_select_fields">
 <CodeBlock language="python">
 {`def select_fields(
     self,
@@ -2612,7 +2612,7 @@ class QueryData:
 </TabItem>
 #### `ProjectionBehavior` Syntax:
 
-<TabItem value="something-something" label="ProjectionBehavior_syntax">
+<TabItem value="ProjectionBehavior_syntax" label="ProjectionBehavior_syntax">
 <CodeBlock language="python">
 {`class ProjectionBehavior(Enum):
     DEFAULT = "Default"
@@ -2655,18 +2655,18 @@ class QueryData:
 
 * This article provides examples of projecting query results when querying a **static-index**.  
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * Projections can be applied using the `selectFields` method.  
 
 * In this page:  
 
-  * [What are Projections and When to Use Them](../../indexes/querying/projections#what-are-projections-and-when-to-use-them)
-  * [`selectFields`](../../indexes/querying/projections#selectfields)
-  * [Examples](../../indexes/querying/projections#examples)
-  * [Projection Behavior](../../indexes/querying/projections#projection-behavior)
-  * [Projections and the Session](../../indexes/querying/projections#projections-and-the-session)
+  * [What are Projections and When to Use Them](../../indexes/querying/projections.mdx#what-are-projections-and-when-to-use-them)
+  * [`selectFields`](../../indexes/querying/projections.mdx#selectfields)
+  * [Examples](../../indexes/querying/projections.mdx#examples)
+  * [Projection Behavior](../../indexes/querying/projections.mdx#projection-behavior)
+  * [Projections and the Session](../../indexes/querying/projections.mdx#projections-and-the-session)
   
 </Admonition>
 ## What are Projections and When to Use Them
@@ -2706,7 +2706,7 @@ projection, and exceeding these (quite generous) limits will fail the query.
 If a projection function only requires fields that are stored, then the document will not be loaded from 
 storage and all data will come from the index directly. This can increase query performance (by the cost 
 of disk space used) in many situations when whole document is not needed. You can read more about field 
-storing [here](../../indexes/storing-data-in-index).
+storing [here](../../indexes/storing-data-in-index.mdx).
 
 
 
@@ -3368,7 +3368,7 @@ select {
 The `selectFields` methods can also take a `ProjectionBehavior` parameter, which
 determines whether the query should retrieve indexed data or directly retrieve 
 document data, and what to do when the data can't be retrieved. Learn more 
-[here](../../client-api/session/querying/how-to-customize-query#projection).  
+[here](../../client-api/session/querying/how-to-customize-query.mdx#projection).  
 
 
 
@@ -3385,13 +3385,13 @@ Modifications to a projection will not modify the document when `saveChanges` is
 
 * This article provides examples of projecting query results when querying a **static-index**.
 
-* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results) 
+* Prior to reading this article, please refer to [query results projection overview](../../client-api/session/querying/how-to-project-query-results.mdx) 
   for general knowledge about Projections and for dynamic-queries examples.  
 
 * In this page:
-   * [SelectFields](../../indexes/querying/projections#selectfields)
-   * [Projection behavior with a static-index](../../indexes/querying/projections#projection-behavior-with-a-static-index)
-   * [ofType](../../indexes/querying/projections#oftype)
+   * [SelectFields](../../indexes/querying/projections.mdx#selectfields)
+   * [Projection behavior with a static-index](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index)
+   * [ofType](../../indexes/querying/projections.mdx#oftype)
 
 </Admonition>
 ## SelectFields
@@ -3402,7 +3402,7 @@ Modifications to a projection will not modify the document when `saveChanges` is
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Alias names for the projected fields can be defined using a QueryData object 
 const queryData = new QueryData(
     ["FirstName", "LastName"],                   // Document-fields to project
@@ -3425,7 +3425,7 @@ const projectedResults = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3452,10 +3452,10 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 </TabItem>
 </Tabs>
 
-* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index), and no projection behavior was defined,  
+* Since the index-fields in this example are not [Stored in the index](../../indexes/storing-data-in-index.mdx), and no projection behavior was defined,  
   resulting values for `FirstName` & `LastName` will be retrieved from the matching Employee document in the storage.
 
-* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 
 </Admonition>
 
@@ -3465,7 +3465,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session
     .query({ indexName: "Employees/ByNameAndTitleWithStoredFields" })
      // Call 'selectFields' 
@@ -3476,7 +3476,7 @@ select FirstName as EmployeeFirstName, LastName as EmployeeLastName
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNameAndTitleWithStoredFields extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3509,7 +3509,7 @@ select FirstName, LastName
 * In this example, the projected fields (`FirstName` and `LastName`) are stored in the index,  
   so by default, the resulting values will come directly from the index and not from the Employee document in the storage.
 
-* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections#projection-behavior-with-a-static-index) used when querying a static-index.
+* This behavior can be modified by setting the [projection behavior](../../indexes/querying/projections.mdx#projection-behavior-with-a-static-index) used when querying a static-index.
 </Admonition>
 
 <Admonition type="note" title="Note">
@@ -3518,7 +3518,7 @@ select FirstName, LastName
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const queryData = new QueryData(
     // Retrieve the City property from the ShipTo object
     // and all product names from the Lines array
@@ -3533,7 +3533,7 @@ const projectedResults = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByCompanyAndShipToAndLines extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3577,7 +3577,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define the projected data expression within a custom function.
 // Any expression can be provided for the projected content.
 const queryData = QueryData.customFunction("e", \`{
@@ -3592,7 +3592,7 @@ const projectedResults = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3628,7 +3628,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from index "Orders/ByCompanyAndShipToAndLines" as x
                select {
@@ -3644,7 +3644,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByCompanyAndShipToAndLines extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3684,7 +3684,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`// Define a function
                declare function output(x) {
@@ -3699,7 +3699,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNameAndTitle extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3738,7 +3738,7 @@ select output(e)
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from index "Orders/ByCompanyAndShippedAt" as o
                load o.Company as c         // Load the related document to use in the projection
@@ -3751,7 +3751,7 @@ select output(e)
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Orders_ByCompanyAndShippedAt extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3788,7 +3788,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from index "Employees/ByFirstNameAndBirthday" as x
                select {
@@ -3801,7 +3801,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByFirstNameAndBirthday extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3838,7 +3838,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session.advanced
     .rawQuery(\`from index "Employees/ByFirstNameAndBirthday" as x
                select {
@@ -3850,7 +3850,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByFirstNameAndBirthday extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3884,7 +3884,7 @@ select {
 ## Projection behavior with a static-index
 
 * **By default**, when querying a static-index and projecting query results,  
-  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index).  
+  the server will try to retrieve the fields' values from the fields [stored in the index](../../indexes/storing-data-in-index.mdx).  
   If the index does Not store those fields then the fields' values will be retrieved from the documents.
 
 * This behavior can be modified by setting the **projection behavior**.
@@ -3898,7 +3898,7 @@ select {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const projectedResults = await session
     .query({ indexName: "Employees/ByNameAndTitleWithStoredFields" })
      // Pass the requested projection behavior to the 'SelectFields' method
@@ -3908,7 +3908,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Employees_ByNameAndTitleWithStoredFields extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -3930,7 +3930,7 @@ select {
 </CodeBlock>
 </TabItem>
 <TabItem value="Projection_class" label="Projection_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class ProjectionClass {
     constructor(firstName, title) {
         // The projection class contains field names from the index-fields
@@ -3994,8 +3994,8 @@ The projection behavior in the above example is set to `FromIndexOrThrow` and so
 * As opposed to projection queries where results are not tracked by the session,  
   In the case of non-projecting queries that use _ofType_, the session does track the resulting document entities.
 
-<TabItem value="something-something" label="projections_10">
-<CodeBlock language="nodejs">
+<TabItem value="projections_10" label="projections_10">
+<CodeBlock language="js">
 {`// Make a query without a projection
 const results = await session
     .query(\{ indexName: "Employees/ByNameAndTitle" \})

@@ -24,7 +24,7 @@ Lucene flavored syntax can be used with the `WhereLucene` method, a part of the 
 
 ## Syntax
 
-<TabItem value="something" label="lucene_1">
+<TabItem value="lucene_1" label="lucene_1">
 <CodeBlock language="csharp">
 {`IDocumentQuery<T> WhereLucene(string fieldName, string whereClause);
 `}
@@ -81,7 +81,7 @@ Lucene flavored syntax can be used with the `whereLucene` method, a part of the 
 
 ## Syntax
 
-<TabItem value="something-something" label="lucene_1">
+<TabItem value="lucene_1" label="lucene_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> whereLucene(String fieldName, String whereClause);
 `}
@@ -129,8 +129,8 @@ Lucene flavored syntax can be used with the `whereLucene()` method, a part of th
 
 ## Syntax
 
-<TabItem value="something-something" label="lucene_1">
-<CodeBlock language="nodejs">
+<TabItem value="lucene_1" label="lucene_1">
+<CodeBlock language="js">
 {`query.whereLucene(fieldName, whereClause, exact);
 `}
 </CodeBlock>
@@ -146,7 +146,7 @@ Lucene flavored syntax can be used with the `whereLucene()` method, a part of th
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Node.js" label="Node.js">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const companies = await session.advanced
     .documentQuery({ collection: "Companies" })
     .whereLucene("Name", "bistro")

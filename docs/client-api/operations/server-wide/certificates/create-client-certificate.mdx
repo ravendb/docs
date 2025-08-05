@@ -23,13 +23,13 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * You can generate a client certificate using **CreateClientCertificateOperation**.  
 
-* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
 
 </Admonition>
 
 ## Syntax
 
-<TabItem value="something" label="cert_1_1">
+<TabItem value="cert_1_1" label="cert_1_1">
 <CodeBlock language="csharp">
 {`public CreateClientCertificateOperation(string name, 
     Dictionary<string, DatabaseAccess> permissions, 
@@ -39,7 +39,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="cert_1_2">
+<TabItem value="cert_1_2" label="cert_1_2">
 <CodeBlock language="csharp">
 {`// The role assigned to the certificate:
 public enum SecurityClearance
@@ -53,7 +53,7 @@ public enum SecurityClearance
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="cert_1_3">
+<TabItem value="cert_1_3" label="cert_1_3">
 <CodeBlock language="csharp">
 {`// The access level for a 'ValidUser' security clearance:
 public enum DatabaseAccess
@@ -79,7 +79,7 @@ public enum DatabaseAccess
 
 ## Example I
 
-<TabItem value="something" label="cert_1_4">
+<TabItem value="cert_1_4" label="cert_1_4">
 <CodeBlock language="csharp">
 {`// With the security clearance set to Cluster Administrator or Operator,
 // the user of this certificate will have access to all databases
@@ -95,7 +95,7 @@ byte[] cert = certificateRawData.RawData;
 
 ## Example II
 
-<TabItem value="something" label="cert_1_5">
+<TabItem value="cert_1_5" label="cert_1_5">
 <CodeBlock language="csharp">
 {`// When the security clearance is ValidUser, you must specify an access level for each database
 CreateClientCertificateOperation operation = 
@@ -119,13 +119,13 @@ byte[] cert = certificateRawData.RawData;
 
 * You can generate a client certificate using **CreateClientCertificateOperation**.  
 
-* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
 
 </Admonition>
 
 ## Syntax
 
-<TabItem value="something-something" label="cert_1_1">
+<TabItem value="cert_1_1" label="cert_1_1">
 <CodeBlock language="java">
 {`public CreateClientCertificateOperation(String name,
                                         Map<String, DatabaseAccess> permissions,
@@ -139,7 +139,7 @@ public CreateClientCertificateOperation(String name,
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="cert_1_2">
+<TabItem value="cert_1_2" label="cert_1_2">
 <CodeBlock language="java">
 {`public enum SecurityClearance \{
     CLUSTER_ADMIN,
@@ -151,7 +151,7 @@ public CreateClientCertificateOperation(String name,
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="cert_1_3">
+<TabItem value="cert_1_3" label="cert_1_3">
 <CodeBlock language="java">
 {`public enum DatabaseAccess \{
     READ,
@@ -175,7 +175,7 @@ public CreateClientCertificateOperation(String name,
 
 ## Example I
 
-<TabItem value="something-something" label="cert_1_4">
+<TabItem value="cert_1_4" label="cert_1_4">
 <CodeBlock language="java">
 {`// With user role set to Cluster Administrator or Operator the user of this certificate
 // is going to have access to all databases
@@ -190,7 +190,7 @@ byte[] certificatesZipped = certificateRawData.getRawData();
 
 ## Example II
 
-<TabItem value="something-something" label="cert_1_5">
+<TabItem value="cert_1_5" label="cert_1_5">
 <CodeBlock language="java">
 {`// when security clearance is ValidUser, you need to specify per database permissions
 CreateClientCertificateOperation operation = new CreateClientCertificateOperation("user1",
@@ -212,14 +212,14 @@ byte[] certificateZipped = certificateRawData.getRawData();
 
 * You can generate a client certificate using **CreateClientCertificateOperation**.  
 
-* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management#the-ravendb-security-authorization-approach)
+* Learn the rationale needed to properly define client certificates in [The RavenDB Security Authorization Approach](../../../../server/security/authentication/certificate-management.mdx#the-ravendb-security-authorization-approach)
 
 </Admonition>
 
 ## Usage
 
-<TabItem value="something-something" label="cert_1_1">
-<CodeBlock language="nodejs">
+<TabItem value="cert_1_1" label="cert_1_1">
+<CodeBlock language="js">
 {`const cert1 = await store.maintenance.server.send(
     new CreateClientCertificateOperation([name], [permissions], [clearance], [password]));
 `}
@@ -252,8 +252,8 @@ byte[] certificateZipped = certificateRawData.getRawData();
 
 ## Example I
 
-<TabItem value="something-something" label="cert_1_4">
-<CodeBlock language="nodejs">
+<TabItem value="cert_1_4" label="cert_1_4">
+<CodeBlock language="js">
 {`// With user role set to Cluster Administrator or Operator the user of this certificate
 // is going to have access to all databases
 const clientCertificateOperation = await store.maintenance.server.send(
@@ -265,8 +265,8 @@ const certificateRawData = clientCertificateOperation.rawData;
 
 ## Example II
 
-<TabItem value="something-something" label="cert_1_5">
-<CodeBlock language="nodejs">
+<TabItem value="cert_1_5" label="cert_1_5">
+<CodeBlock language="js">
 {`// when security clearance is ValidUser, you need to specify per database permissions
 
 const clearance = \{

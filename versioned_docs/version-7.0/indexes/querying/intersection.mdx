@@ -25,14 +25,14 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   that match **all** the provided sub-queries, we introduced the query intersection feature.
 
 * In this page:
-  * [Intersection](../../indexes/querying/intersection#intersection)
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
 
 </Admonition>
 ## Intersection
 
 Let's consider a case where we have a T-Shirt class:
 
-<TabItem value="something" label="intersection_1">
+<TabItem value="intersection_1" label="intersection_1">
 <CodeBlock language="csharp">
 {`public class TShirt
 \{
@@ -57,7 +57,7 @@ public class TShirtType
 
 We will fill our database with a few records:
 
-<TabItem value="something" label="intersection_3">
+<TabItem value="intersection_3" label="intersection_3">
 <CodeBlock language="csharp">
 {`session.Store(new TShirt
 \{
@@ -209,14 +209,14 @@ and `tshirts/3` will not be included because it is not available in `Small Blue`
   that match **all** the provided sub-queries, we introduced the query intersection feature.
 
 * In this page:
-  * [Intersection](../../indexes/querying/intersection#intersection)
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
 
 </Admonition>
 ## Intersection
 
 Let's consider a case where we have a T-Shirt class:
 
-<TabItem value="something-something" label="intersection_1">
+<TabItem value="intersection_1" label="intersection_1">
 <CodeBlock language="java">
 {`public class TShirt \{
     private String id;
@@ -291,7 +291,7 @@ public class TShirtType \{
 
 We will fill our database with few records:
 
-<TabItem value="something-something" label="intersection_3">
+<TabItem value="intersection_3" label="intersection_3">
 <CodeBlock language="java">
 {`TShirt tShirt1 = new TShirt();
 tShirt1.setId("tshirts/1");
@@ -441,14 +441,14 @@ and `tshirts/3` is not available in `Small Blue` so it does not match **all** th
   that match **all** the provided sub-queries, we introduced the query intersection feature.
 
 * In this page:
-  * [Intersection](../../indexes/querying/intersection#intersection)
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
 
 </Admonition>
 ## Intersection
 
 Let's consider a case where we have a T-Shirt class:
 
-<TabItem value="something-something" label="intersection_1">
+<TabItem value="intersection_1" label="intersection_1">
 <CodeBlock language="python">
 {`class TShirtType:
     def __init__(self, color: str = None, size: str = None):
@@ -470,7 +470,7 @@ class TShirt:
 
 We will fill our database with a few records:
 
-<TabItem value="something-something" label="intersection_3">
+<TabItem value="intersection_3" label="intersection_3">
 <CodeBlock language="python">
 {`session.store(
     TShirt(
@@ -592,14 +592,14 @@ and `tshirts/3` will not be included because it is not available in `Small Blue`
   that match **all** the provided sub-queries, we introduced the query intersection feature.
 
 * In this page:
-  * [Intersection](../../indexes/querying/intersection#intersection)
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
 
 </Admonition>
 ## Intersection
 
 Let's consider a case where we have a T-Shirt class:
 
-<TabItem value="something-something" label="intersection_1">
+<TabItem value="intersection_1" label="intersection_1">
 <CodeBlock language="php">
 {`class TShirt
 \{
@@ -694,7 +694,7 @@ class TShirtTypeList extends TypedList
 
 We will fill our database with a few records:
 
-<TabItem value="something-something" label="intersection_3">
+<TabItem value="intersection_3" label="intersection_3">
 <CodeBlock language="php">
 {`// first tShirt
 $tShirt = new TShirt();
@@ -832,15 +832,15 @@ and `tshirts/3` will not be included because it is not available in `Small Blue`
   that match **all** the provided sub-queries, we introduced the query intersection feature.
 
 * In this page:
-  * [Intersection](../../indexes/querying/intersection#intersection)
+  * [Intersection](../../indexes/querying/intersection.mdx#intersection)
 
 </Admonition>
 ## Intersection
 
 Let's consider a case where we have a T-Shirt class:
 
-<TabItem value="something-something" label="intersection_1">
-<CodeBlock language="nodejs">
+<TabItem value="intersection_1" label="intersection_1">
+<CodeBlock language="js">
 {`class TShirt \{
     constructor(data) \{
         this.id = data.id;
@@ -862,8 +862,8 @@ class TShirtType \{
 
 We will fill our database with few records:
 
-<TabItem value="something-something" label="intersection_3">
-<CodeBlock language="nodejs">
+<TabItem value="intersection_3" label="intersection_3">
+<CodeBlock language="js">
 {`const tShirt1 = new TShirt(\{
     id: "tshirts/1",
     manufacturer: "Raven",
@@ -921,7 +921,7 @@ To do this, we need to use the `intersect` query method:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const result = await session.query({ 
         indexName: "TShirts/ByManufacturerColorSizeAndReleaseYear"
     })
@@ -940,7 +940,7 @@ To do this, we need to use the `intersect` query method:
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class TShirts_ByManufacturerColorSizeAndReleaseYearResult {
     constructor(data) {
         this.manufacturer = data.manufacturer;

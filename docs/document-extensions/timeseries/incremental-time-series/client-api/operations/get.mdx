@@ -19,10 +19,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Using this method, you can retrieve node values from incremental time series entries.  
 
 * In this page:  
-      * [`GetTimeSeriesOperation`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#gettimeseriesoperation)  
-         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#syntax)  
-         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#usage-flow)  
-         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get#usage-sample)  
+      * [`GetTimeSeriesOperation`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx#gettimeseriesoperation)  
+         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx#syntax)  
+         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx#usage-flow)  
+         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/operations/get.mdx#usage-sample)  
 
 </Admonition>
 ## `GetTimeSeriesOperation`
@@ -31,7 +31,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
 ### Syntax
 
 * `GetTimeSeriesOperation` Definition:  
-<TabItem value="something" label="incremental_declaration_GetTimeSeriesOperation">
+<TabItem value="incremental_declaration_GetTimeSeriesOperation" label="incremental_declaration_GetTimeSeriesOperation">
 <CodeBlock language="csharp">
 {`public GetTimeSeriesOperation(
     string docId, string timeseries, DateTime? @from = null,
@@ -50,12 +50,12 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
     | `from` (optional) | `DateTime?` | Range start  <br/> Default: `DateTime.Min` ||
     | `to` (optional) | `DateTime?` | Range end  <br/> Default: `DateTime.Max` ||
     | `start` | `int` | Start of first Page |
-    | `pageSize` | `int` | Size of each page, counted in [entries with unique timestamps](../../../../../document-extensions/timeseries/incremental-time-series/overview#incremental-time-series-structure) |
+    | `pageSize` | `int` | Size of each page, counted in [entries with unique timestamps](../../../../../document-extensions/timeseries/incremental-time-series/overview.mdx#incremental-time-series-structure) |
     | `returnFullResults` | `bool` | If true, retrieve the values stored per-node. <br/> If false, return `null ` in `TimeSeriesEntry.NodeValues`. |
      
 
 * **Return Value**: **`TimeSeriesRangeResult<TimeSeriesEntry>`**  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class TimeSeriesRangeResult 
     \{
@@ -69,7 +69,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class TimeSeriesEntry 
     \{
@@ -101,7 +101,7 @@ Use `GetTimeSeriesOperation` to retrieve the distinct values stored per-node for
   two per-node values in each entry.  
   We then calculate where the next `Get` operation should start, and run another `Get` 
   operation starting there.  
-<TabItem value="something" label="incremental_GetTimeSeriesOperation">
+<TabItem value="incremental_GetTimeSeriesOperation" label="incremental_GetTimeSeriesOperation">
 <CodeBlock language="csharp">
 {`int pageSize = 100;
 var entries = store.Operations
@@ -124,7 +124,7 @@ entries = store.Operations
 ## `GetMultipleTimeSeriesOperation`
 
 To retrieve data from **multiple** time series, 
-use [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get#getmultipletimeseriesoperation).  
+use [GetMultipleTimeSeriesOperation](../../../../../document-extensions/timeseries/client-api/operations/get.mdx#getmultipletimeseriesoperation).  
 
 
 

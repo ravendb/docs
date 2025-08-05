@@ -17,10 +17,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The **Documents Compression** feature employs the `Zstd` compression algorithm  
   to achieve more efficient data storage with constantly improving compression ratios.  
-  Learn more in this [overview](../../../server/storage/documents-compression#overview).
+  Learn more in this [overview](../../../server/storage/documents-compression.mdx#overview).
 
 * Documents compression can be set for all collections, selected collections, and revisions.  
-  Default compression settings are [configurable](../../../server/configuration/database-configuration#databases.compression.compressallcollectionsdefault). 
+  Default compression settings are [configurable](../../../server/configuration/database-configuration.mdx#databases.compression.compressallcollectionsdefault). 
 
 * When turned on, compression will be applied to:  
     * **New documents**:  
@@ -28,15 +28,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * **Existing documents**:  
         * Existing documents that are modified and saved will be compressed.  
         * Existing documents that are Not modified will only be compressed when executing the    
-          [compact database operation](../../../client-api/operations/server-wide/compact-database#compaction-triggers-compression).
+          [compact database operation](../../../client-api/operations/server-wide/compact-database.mdx#compaction-triggers-compression).
 
 * From the Studio, go to **Settings** &gt; **Documents Compression** to set compression for a particular database.  
-  Compression can also be set from the [Client API](../../../server/storage/documents-compression).
+  Compression can also be set from the [Client API](../../../server/storage/documents-compression.mdx).
 
-* To see the contents and size details of your database storage go to the [Storage Report](../../../studio/database/stats/storage-report) view in the Studio.  
+* To see the contents and size details of your database storage go to the [Storage Report](../../../studio/database/stats/storage-report.mdx) view in the Studio.  
 
 * In this page:  
-  * [Set documents compression from Studio](../../../studio/database/settings/documents-compression#set-documents-compression-from-studio)  
+  * [Set documents compression from Studio](../../../studio/database/settings/documents-compression.mdx#set-documents-compression-from-studio)  
 
 </Admonition>
 ## Set documents compression from Studio

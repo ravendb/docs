@@ -24,7 +24,7 @@ export const supportedLanguages = ["java", "csharp", "python", "php", "nodejs"];
 
 ## Syntax
 
-<TabItem value="something-something" label="highlight_1">
+<TabItem value="highlight_1" label="highlight_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> highlight(String fieldName,
                             int fragmentLength,
@@ -51,7 +51,7 @@ IDocumentQuery<T> highlight(String fieldName,
 
 ### Options
 
-<TabItem value="something-something" label="options">
+<TabItem value="options" label="options">
 <CodeBlock language="java">
 {`private String groupKey;
 private String[] preTags;
@@ -138,21 +138,21 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 
 <Admonition type="note" title="Note">
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
+* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search.mdx),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a **list of text fragments that highlight the searched terms**.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a **dynamic-query**.  
-  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting).
+  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting.mdx).
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results#syntax)
+  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
+      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
+      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
+  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
+  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
   
 </Admonition>
 ## Highlight - basic example
@@ -228,7 +228,7 @@ include highlight(Notes, 35, 4)
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="fragments_1">
+<TabItem value="fragments_1" label="fragments_1">
 <CodeBlock language="csharp">
 {`// Process results:
 // ================
@@ -301,7 +301,7 @@ string fragmentsHtml = builder.AppendLine("</ul>").ToString();
   - &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
 
 * The html tags that wrap the highlighted terms can be **customized** to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
+  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
 
 </Admonition>
 
@@ -402,7 +402,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="fragments_2">
+<TabItem value="fragments_2" label="fragments_2">
 <CodeBlock language="csharp">
 {`// The resulting salesHighlights fragments:
 // ========================================
@@ -424,7 +424,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 
 ## Highlight - projected results
 
-* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results).
+* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -482,7 +482,7 @@ include highlight(Notes, 35, 2)
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="fragments_3">
+<TabItem value="fragments_3" label="fragments_3">
 <CodeBlock language="csharp">
 {`// The resulting fragments from termsHighlights:
 // =============================================
@@ -503,7 +503,7 @@ include highlight(Notes, 35, 2)
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`IRavenQueryable<T> Highlight(
     string fieldName,
@@ -547,7 +547,7 @@ IRavenQueryable<T> Highlight(
 
 **Highlighting options**:
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public string GroupKey \{ get; set; \}
 public string[] PreTags \{ get; set; \}
@@ -558,7 +558,7 @@ public string[] PostTags \{ get; set; \}
 
 | Option       | Type      | Description                                                                                                                                                                                                                                                                                                      |
 |--------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **GroupKey** | string    | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
+| **GroupKey** | string    | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
 | **PreTags**  | string[]  | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                               |
 | **PostTags** | string[]  | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                              |
 
@@ -566,7 +566,7 @@ public string[] PostTags \{ get; set; \}
 
 **Highlightings object**:
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public string FieldName \{ get; \}
 public IEnumerable<string> ResultIndents;
@@ -579,7 +579,7 @@ public IEnumerable<string> ResultIndents;
 | **FieldName**     | string               | Name of the field that contains the searched terms to highlight. |
 | **ResultIndents** | `IEumerable<string>` | The resulting keys (document IDs, or the map-reduce keys).        |
 
-<TabItem value="something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="csharp">
 {`public string[] GetFragments(string key);
 `}
@@ -598,21 +598,21 @@ public IEnumerable<string> ResultIndents;
 
 <Admonition type="note" title="Note">
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
+* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search.mdx),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a **list of text fragments that highlight the searched terms**.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a **dynamic-query**.  
-  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting).
+  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting.mdx).
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results#syntax)
+  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
+      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
+      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
+  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
+  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
   
 </Admonition>
 ## Highlight - basic example
@@ -657,7 +657,7 @@ include highlight(Notes, 35, 4)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_1">
+<TabItem value="fragments_1" label="fragments_1">
 <CodeBlock language="python">
 {`# Process results:
 # ================
@@ -725,7 +725,7 @@ fragments_html = builder.append(f"\{os.linesep\}</ul>")
   - &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
 
 * The html tags that wrap the highlighted terms can be **customized** to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
+  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
 
 </Admonition>
 
@@ -803,7 +803,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_2">
+<TabItem value="fragments_2" label="fragments_2">
 <CodeBlock language="python">
 {`# The resulting salesHighlights fragments:
 # ========================================
@@ -825,7 +825,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 
 ## Highlight - projected results
 
-* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results).
+* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -866,7 +866,7 @@ include highlight(Notes, 35, 2)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_3">
+<TabItem value="fragments_3" label="fragments_3">
 <CodeBlock language="python">
 {`# The resulting fragments from termsHighlights:
 # =============================================
@@ -887,7 +887,7 @@ include highlight(Notes, 35, 2)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`def highlight(
     self,
@@ -913,7 +913,7 @@ include highlight(Notes, 35, 2)
 
 **Highlighting options**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`def __init__(self, group_key: str = None, pre_tags: List[str] = None, post_tags: List[str] = None):
     self.group_key = group_key
@@ -925,7 +925,7 @@ include highlight(Notes, 35, 2)
 
 | Option       | Type      | Description  |
 |--------------|-----------|--------------|
-| **group_key** | `str` | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br/>If `None` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
+| **group_key** | `str` | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `None` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
 | **pre_tags** | `List[str]` | Array of PRE tags used to wrap the highlighted search terms in the text fragments. |
 | **post_tags** | `List[str]` | Array of POST tags used to wrap the highlighted search terms in the text fragments. |
 
@@ -933,7 +933,7 @@ include highlight(Notes, 35, 2)
 
 **Highlightings object**:
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="python">
 {`def __init__(self, field_name: str):
     self.field_name = field_name
@@ -950,7 +950,7 @@ def result_indents(self) -> Set[str]: ...
 | **field_name**     | `str`      | Name of the field that contains the searched terms to highlight |
 | **result_indents** | `Set[str]` | The resulting keys (document IDs, or the map-reduce keys) |
 
-<TabItem value="something-something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="python">
 {`def get_fragments(self, key: str) -> List[str]: ...
 `}
@@ -969,21 +969,21 @@ def result_indents(self) -> Set[str]: ...
 
 <Admonition type="note" title="Note">
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
+* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search.mdx),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a **list of text fragments that highlight the searched terms**.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a **dynamic-query**.  
-  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting).
+  For highlighting search results when querying a **static-index** see [highlight index search results](../../../../indexes/querying/highlighting.mdx).
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results#syntax)
+  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
+      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
+      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
+  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
+  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
   
 </Admonition>
 ## Highlight - basic example
@@ -1025,7 +1025,7 @@ include highlight(Notes, 35, 4)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_1">
+<TabItem value="fragments_1" label="fragments_1">
 <CodeBlock language="php">
 {`// Process results:
 // ================
@@ -1098,7 +1098,7 @@ $fragmentsHtml = $builder;
   - &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
 
 * The html tags that wrap the highlighted terms can be **customized** to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
+  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
 
 </Admonition>
 
@@ -1172,7 +1172,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_2">
+<TabItem value="fragments_2" label="fragments_2">
 <CodeBlock language="php">
 {`// The resulting salesHighlights fragments:
 // ========================================
@@ -1194,7 +1194,7 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 
 ## Highlight - projected results
 
-* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results).
+* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="query" label="query">
@@ -1227,7 +1227,7 @@ include highlight(Notes, 35, 2)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_3">
+<TabItem value="fragments_3" label="fragments_3">
 <CodeBlock language="php">
 {`// The resulting fragments from termsHighlights:
 // =============================================
@@ -1248,7 +1248,7 @@ include highlight(Notes, 35, 2)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`function highlight(
     ?string              $fieldName,
@@ -1273,7 +1273,7 @@ include highlight(Notes, 35, 2)
 
 **Highlighting options**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`private ?string $groupKey;
 private ?StringArray $preTags = null;
@@ -1286,7 +1286,7 @@ private ?StringArray $postTags = null;
 
 | Option       | Type      | Description  |
 |--------------|-----------|--------------|
-| **$groupKey** | `?string` | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br/>If `None` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
+| **$groupKey** | `?string` | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `None` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
 | **$preTags** | `?StringArray` | Array of PRE tags used to wrap the highlighted search terms in the text fragments. |
 | **$postTags** | `?StringArray` | Array of POST tags used to wrap the highlighted search terms in the text fragments. |
 
@@ -1294,7 +1294,7 @@ private ?StringArray $postTags = null;
 
 **Highlightings object**:
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="php">
 {`private ?string $fieldName = null;
 public function getResultIndents(): array;
@@ -1307,7 +1307,7 @@ public function getResultIndents(): array;
 | **$fieldName**     | `?string`      | Name of the field that contains the searched terms to highlight |
 | **getResultIndents()** | function returning an `array` | The resulting keys (document IDs, or the map-reduce keys) |
 
-<TabItem value="something-something" label="syntax_4">
+<TabItem value="syntax_4" label="syntax_4">
 <CodeBlock language="php">
 {`public function getFragments(?string $key): array;
 `}
@@ -1326,28 +1326,28 @@ public function getResultIndents(): array;
 
 <Admonition type="note" title="Note">
 
-* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search),  
+* When making a [Full-Text Search query](../../../../client-api/session/querying/text-search/full-text-search.mdx),  
   in addition to retrieving documents that contain the searched terms in the results,  
   you can also request to get a __list of text fragments that highlight the searched terms__.
 
 * The highlighted terms can enhance user experience when searching for documents with specific content.
 
 * This article shows highlighting search results when making a __dynamic-query__.  
-  For highlighting search results when querying a __static-index__ see [highlight index search results](../../../../indexes/querying/highlighting).
+  For highlighting search results when querying a __static-index__ see [highlight index search results](../../../../indexes/querying/highlighting.mdx).
 * In this page:
-  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---basic-example)
-      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-tags)
-      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results#highlight-results-in-studio)
-  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags)
-  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---projected-results)
-  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results#syntax)
+  * [Highlight - basic example](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---basic-example)
+      * [Highlight tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-tags)
+      * [Highlight results in Studio](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight-results-in-studio)
+  * [Highlight - customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags)
+  * [Highlight - projected results](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---projected-results)
+  * [Syntax](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#syntax)
   
 </Admonition>
 ## Highlight - basic example
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Make a full-text search dynamic query:
 // ======================================
 
@@ -1381,8 +1381,8 @@ include highlight(Notes, 35, 4)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_1">
-<CodeBlock language="nodejs">
+<TabItem value="fragments_1" label="fragments_1">
+<CodeBlock language="js">
 {`// Process results:
 // ================
 
@@ -1452,7 +1452,7 @@ fragmentsHtml += "</ul>";
   - &lt;span style="border-left: 10px solid powderblue"&gt;&nbsp;&lt;/span&gt;powderblue
 
 * The html tags that wrap the highlighted terms can be __customized__ to any other tags.  
-  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results#highlight---customize-tags) below.
+  See [customize tags](../../../../client-api/session/querying/text-search/highlight-query-results.mdx#highlight---customize-tags) below.
 
 </Admonition>
 
@@ -1480,7 +1480,7 @@ fragmentsHtml += "</ul>";
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define customized tags to use for highlighting the searched terms
 // =================================================================
 const tagsToUse = {
@@ -1524,8 +1524,8 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_2">
-<CodeBlock language="nodejs">
+<TabItem value="fragments_2" label="fragments_2">
+<CodeBlock language="js">
 {`// The resulting salesHighlights fragments:
 // ========================================
 
@@ -1546,11 +1546,11 @@ include highlight(Notes, 35, 1, $p0), highlight(Title, 35, 1, $p1)
 
 ## Highlight - projected results
 
-* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results).
+* Highlighting can also be used when [projecting query results](../../../../client-api/session/querying/how-to-project-query-results.mdx).
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Make a full-text search dynamic query & project results:
 // ========================================================
 
@@ -1591,8 +1591,8 @@ include highlight(Notes, 35, 2)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="fragments_3">
-<CodeBlock language="nodejs">
+<TabItem value="fragments_3" label="fragments_3">
+<CodeBlock language="js">
 {`// The resulting fragments from termsHighlights:
 // =============================================
 
@@ -1612,8 +1612,8 @@ include highlight(Notes, 35, 2)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`highlight(parameters, hightlightingsCallback);
 `}
 </CodeBlock>
@@ -1633,7 +1633,7 @@ __The Highlighting parameters:__
 | __fieldName__      | string          | Name of the field that contains the searched terms to highlight.                                                                                                                                                                                                                                                     |
 | __fragmentLength__ | number          | Maximum length of a text fragment. Must be `>= 18`.                                                                                                                                                                                                                                                                  |
 | __fragmentCount__  | number          | Maximum number of text fragments that will be returned.                                                                                                                                                                                                                                                              |
-| __groupKey__       | string          | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
+| __groupKey__       | string          | Grouping key for the results.<br/>Used when highlighting query results from a [Map-Reduce index](../../../../indexes/querying/highlighting.mdx#highlight-results---map-reduce-index).<br/>If `null` results are grouped by document ID (default).<br/>Note: Highlighting is Not available for dynamic aggregation queries. |
 | __preTags__        | string[]        | Array of PRE tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                                   |
 | __postTags__       | string[]        | Array of POST tags used to wrap the highlighted search terms in the text fragments.                                                                                                                                                                                                                                  |
 
@@ -1641,8 +1641,8 @@ __The Highlighting parameters:__
 
 __The Highlightings object__:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class Highlightings \{
     // Name of the field that contains the searched terms to highlight.
     get fieldName();

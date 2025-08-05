@@ -37,18 +37,18 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
       E.g., to invoke an event after SaveChanges() is called by **any subsequent session**, use -  
       `store.OnAfterSaveChanges += OnAfterSaveChangesEvent;`
 
-      Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
+      Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events.mdx).  
 
 * In this Page:  
-   * [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events#onbeforestore)  
-   * [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events#onbeforedelete)  
-   * [OnAfterSaveChanges](../../../client-api/session/how-to/subscribe-to-events#onaftersavechanges)  
-   * [OnBeforeQuery](../../../client-api/session/how-to/subscribe-to-events#onbeforequery)  
-   * [OnBeforeConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontodocument)  
-   * [OnAfterConversionToDocument](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontodocument)  
-   * [OnBeforeConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onbeforeconversiontoentity)  
-   * [OnAfterConversionToEntity](../../../client-api/session/how-to/subscribe-to-events#onafterconversiontoentity)  
-   * [OnSessionDisposing](../../../client-api/session/how-to/subscribe-to-events#onsessiondisposing)  
+   * [OnBeforeStore](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforestore)  
+   * [OnBeforeDelete](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforedelete)  
+   * [OnAfterSaveChanges](../../../client-api/session/how-to/subscribe-to-events.mdx#onaftersavechanges)  
+   * [OnBeforeQuery](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforequery)  
+   * [OnBeforeConversionToDocument](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontodocument)  
+   * [OnAfterConversionToDocument](../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontodocument)  
+   * [OnBeforeConversionToEntity](../../../client-api/session/how-to/subscribe-to-events.mdx#onbeforeconversiontoentity)  
+   * [OnAfterConversionToEntity](../../../client-api/session/how-to/subscribe-to-events.mdx#onafterconversiontoentity)  
+   * [OnSessionDisposing](../../../client-api/session/how-to/subscribe-to-events.mdx#onsessiondisposing)  
 
 </Admonition>
 
@@ -57,7 +57,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 This event is invoked as a part of `SaveChanges` but before it is actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args);
 `}
@@ -71,7 +71,7 @@ It should be defined with this signature:
 
 The class `BeforeStoreEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class BeforeStoreEventArgs
 \{
@@ -88,7 +88,7 @@ The class `BeforeStoreEventArgs`:
 
 Say we want to discontinue all of the products that are not in stock.  
 
-<TabItem value="something" label="on_before_store_event">
+<TabItem value="on_before_store_event" label="on_before_store_event">
 <CodeBlock language="csharp">
 {`private void OnBeforeStoreEvent(object sender, BeforeStoreEventArgs args)
 \{
@@ -104,7 +104,7 @@ Say we want to discontinue all of the products that are not in stock.
 
 After we subscribe to the event, every stored entity will invoke the method.  
 
-<TabItem value="something" label="store_session">
+<TabItem value="store_session" label="store_session">
 <CodeBlock language="csharp">
 {`// Subscribe to the event
 session.Advanced.OnBeforeStore += OnBeforeStoreEvent;
@@ -133,7 +133,7 @@ This event is invoked by `Delete(id)` or `Delete(entity)`. It is only executed w
 is called, but before the commands are actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args);
 `}
@@ -147,7 +147,7 @@ It should be defined with this signature:
 
 The class `BeforeDeleteEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class BeforeDeleteEventArgs
 \{
@@ -164,7 +164,7 @@ The class `BeforeDeleteEventArgs`:
 
 To prevent anyone from deleting entities we can create a method as follows:
 
-<TabItem value="something" label="on_before_delete_event">
+<TabItem value="on_before_delete_event" label="on_before_delete_event">
 <CodeBlock language="csharp">
 {`private void OnBeforeDeleteEvent(object sender, BeforeDeleteEventArgs args)
 \{
@@ -176,7 +176,7 @@ To prevent anyone from deleting entities we can create a method as follows:
 
 and subscribe it to the session:
 
-<TabItem value="something" label="delete_session">
+<TabItem value="delete_session" label="delete_session">
 <CodeBlock language="csharp">
 {`// Subscribe to the event
 session.Advanced.OnBeforeDelete += OnBeforeDeleteEvent;
@@ -202,7 +202,7 @@ session.SaveChanges(); // NotSupportedException will be thrown
 This event is invoked after the `SaveChanges` is returned.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args);
 `}
@@ -216,7 +216,7 @@ It should be defined with this signature:
 
 The class `AfterSaveChangesEventArgs`:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AfterSaveChangesEventArgs
 \{
@@ -232,7 +232,7 @@ The class `AfterSaveChangesEventArgs`:
 
 If we want to log each entity that was saved, we can create a method as follows:  
 
-<TabItem value="something" label="on_after_save_changes_event">
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
 <CodeBlock language="csharp">
 {`private void OnAfterSaveChangesEvent(object sender, AfterSaveChangesEventArgs args)
 \{
@@ -250,7 +250,7 @@ If we want to log each entity that was saved, we can create a method as follows:
 This event is invoked just before the query is sent to the server. 
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args);
 `}
@@ -260,11 +260,11 @@ It should be defined with this signature:
 | Parameters | Type | Description |
 | - | - | - |
 | **sender** | `IDocumentSession` | The session on which `SaveChanges()` has been called, triggering this event |
-| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `SaveChanges()` has been called, and the query's [query customizations](../../../client-api/session/querying/how-to-customize-query). |
+| **args** | `BeforeQueryEventArgs` | `args` contains the session on which `SaveChanges()` has been called, and the query's [query customizations](../../../client-api/session/querying/how-to-customize-query.mdx). |
 
 The class `BeforeQueryEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class BeforeQueryEventArgs
 \{
@@ -279,7 +279,7 @@ The class `BeforeQueryEventArgs`:
 
 If you want to disable caching of all query results, you can implement the method as follows:  
 
-<TabItem value="something" label="on_before_query_execute_event">
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
 <CodeBlock language="csharp">
 {`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
 \{
@@ -291,9 +291,9 @@ If you want to disable caching of all query results, you can implement the metho
 
 ### Example II
 
-If you want each query to [wait for non-stale results](../../../indexes/stale-indexes) you can create an event as follows:  
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:  
 
-<TabItem value="something" label="on_before_query_execute_event_2">
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
 <CodeBlock language="csharp">
 {`private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
 \{
@@ -310,7 +310,7 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnBeforeConversionToDocumentEvent(object sender, BeforeConversionToDocumentEventArgs args);
 `}
@@ -324,7 +324,7 @@ It should be defined with this signature:
 
 The class `BeforeConversionToDocumentEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class BeforeConversionToDocumentEventArgs
 \{
@@ -338,7 +338,7 @@ The class `BeforeConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something" label="on_before_conversion_to_document">
+<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
 <CodeBlock language="csharp">
 {`private void OnBeforeConversionToDocument(object sender, BeforeConversionToDocumentEventArgs args)
 \{
@@ -356,7 +356,7 @@ The class `BeforeConversionToDocumentEventArgs`:
 This event is invoked after conversion of an entity to blittable JSON document.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnAfterConversionToDocumentEvent(object sender, AfterConversionToDocumentEventArgs args);
 `}
@@ -370,7 +370,7 @@ It should be defined with this signature:
 
 The class `AfterConversionToDocumentEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class AfterConversionToDocumentEventArgs
 \{
@@ -384,7 +384,7 @@ The class `AfterConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something" label="on_after_conversion_to_document">
+<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
 <CodeBlock language="csharp">
 {`private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
 \{
@@ -411,7 +411,7 @@ This event is invoked before conversion of a JSON document to an entity. E.g. it
 
 It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
 
-<TabItem value="something" label="on_before_conversion_to_entity">
+<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
 <CodeBlock language="csharp">
 {`private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args)
 \{
@@ -433,7 +433,7 @@ It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JS
 
 This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
 
-<TabItem value="something" label="on_after_conversion_to_entity">
+<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
 <CodeBlock language="csharp">
 {`private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args)
 \{
@@ -452,7 +452,7 @@ This event is invoked by the disposal of a session, **before** the session is di
 Keeping track of sessions disposal allows you, among other uses, to verify that sessions 
 that are no longer needed are disposed of.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`private void OnSessionDisposingEvent(object sender, SessionDisposingEventArgs args);
 `}
@@ -466,7 +466,7 @@ that are no longer needed are disposed of.
 
 The class `SessionDisposingEventArgs`:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class SessionDisposingEventArgs : EventArgs
 \{
@@ -492,14 +492,14 @@ The class `SessionDisposingEventArgs`:
 
 * Subscribing to an event at the `DocumentStore` level subscribes to this 
   event in all subsequent sessions.  
-  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
+  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events.mdx).  
 
 ## beforeStoreListener
 
 This event is invoked as a part of `saveChanges` but before it is actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler);
 
@@ -514,14 +514,14 @@ public void removeBeforeStoreListener(EventHandler<BeforeStoreEventArgs> handler
 
 The class `BeforeStoreEventArgs`:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public BeforeStoreEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class BeforeStoreEventArgs
 \{
@@ -540,7 +540,7 @@ The class `BeforeStoreEventArgs`:
 
 Say we want to discontinue all of the products that are not in stock.  
 
-<TabItem value="something-something" label="on_before_store_event">
+<TabItem value="on_before_store_event" label="on_before_store_event">
 <CodeBlock language="java">
 {`private void onBeforeStoreEvent(Object sender, BeforeStoreEventArgs args) \{
     if (args.getEntity() instanceof Product) \{
@@ -556,7 +556,7 @@ Say we want to discontinue all of the products that are not in stock.
 
 After we subscribe to the event, every stored entity will invoke the method.  
 
-<TabItem value="something-something" label="store_session">
+<TabItem value="store_session" label="store_session">
 <CodeBlock language="java">
 {`// subscribe to the event
 store.addBeforeStoreListener(this::onBeforeStoreEvent);
@@ -587,7 +587,7 @@ This event is invoked by `delete(id)` or `delete(entity)`. It is only executed w
 is called, but before the commands are actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handler);
 
@@ -602,14 +602,14 @@ public void removeBeforeDeleteListener(EventHandler<BeforeDeleteEventArgs> handl
 
 The class `BeforeDeleteEventArgs`:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public BeforeDeleteEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class BeforeDeleteEventArgs
 \{
@@ -628,7 +628,7 @@ The class `BeforeDeleteEventArgs`:
 
 To prevent anyone from deleting entities we can create a method as follows:
 
-<TabItem value="something-something" label="on_before_delete_event">
+<TabItem value="on_before_delete_event" label="on_before_delete_event">
 <CodeBlock language="java">
 {`private void onBeforeDeleteEvent(Object sender, BeforeDeleteEventArgs args) \{
     throw new NotImplementedException("Sample");
@@ -639,7 +639,7 @@ To prevent anyone from deleting entities we can create a method as follows:
 
 and subscribe it to the session:
 
-<TabItem value="something-something" label="delete_session">
+<TabItem value="delete_session" label="delete_session">
 <CodeBlock language="java">
 {`// subscribe to the event
 store.addBeforeDeleteListener(this::onBeforeDeleteEvent);
@@ -662,7 +662,7 @@ try (IDocumentSession session = store.openSession()) \{
 This event is invoked after the `saveChanges` is returned.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArgs> handler);
 
@@ -679,14 +679,14 @@ public void removeAfterSaveChangesListener(EventHandler<AfterSaveChangesEventArg
 The class `AfterSaveChangesEventArgs`:
 
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public AfterSaveChangesEventArgs(InMemoryDocumentSessionOperations session, String documentId, Object entity);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class AfterSaveChangesEventArgs
 \{
@@ -705,7 +705,7 @@ The class `AfterSaveChangesEventArgs`:
 
 If we want to log each entity that was saved, we can create a method as follows:  
 
-<TabItem value="something-something" label="on_after_save_changes_event">
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
 <CodeBlock language="java">
 {`private void onAfterSaveChangesEvent(Object sender, AfterSaveChangesEventArgs args) \{
     if (log.isLoggable(Level.INFO)) \{
@@ -723,7 +723,7 @@ If we want to log each entity that was saved, we can create a method as follows:
 This event is invoked just before the query is sent to the server. 
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler);
 
@@ -738,7 +738,7 @@ public void removeBeforeQueryListener(EventHandler<BeforeQueryEventArgs> handler
 
 The class `BeforeQueryEventArgs`:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class BeforeQueryEventArgs
 \{
@@ -755,7 +755,7 @@ The class `BeforeQueryEventArgs`:
 
 If you want to disable caching of all query results, you can implement the method as follows:  
 
-<TabItem value="something-something" label="on_before_query_execute_event">
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
 <CodeBlock language="java">
 {`private void onBeforeQueryEvent(Object sender, BeforeQueryEventArgs args) \{
     args.getQueryCustomization().noCaching();
@@ -766,9 +766,9 @@ If you want to disable caching of all query results, you can implement the metho
 
 ### Example II
 
-If you want each query to [wait for non-stale results](../../../indexes/stale-indexes) you can create an event as follows:  
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:  
 
-<TabItem value="something-something" label="on_before_query_execute_event_2">
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
 <CodeBlock language="java">
 {`private void onBeforeQueryEvent(BeforeQueryEventArgs args) \{
     args.getQueryCustomization().waitForNonStaleResults(Duration.ofSeconds(30));
@@ -784,7 +784,7 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addBeforeConversionToDocumentListener(EventHandler<BeforeConversionToDocumentEventArgs> handler);
 
@@ -799,7 +799,7 @@ public void removeBeforeConversionToDocumentListener(EventHandler<BeforeConversi
 
 The class `BeforeConversionToDocumentEventArgs`:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public BeforeConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity);
 `}
@@ -807,7 +807,7 @@ The class `BeforeConversionToDocumentEventArgs`:
 </TabItem>
 
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class BeforeConversionToDocumentEventArgs
 \{
@@ -823,7 +823,7 @@ The class `BeforeConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something-something" label="on_before_conversion_to_document">
+<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
 <CodeBlock language="java">
 {`private void onBeforeConversionToDocument(Object sender, BeforeConversionToDocumentEventArgs args) \{
     if (args.getEntity() instanceof Item) \{
@@ -842,7 +842,7 @@ The class `BeforeConversionToDocumentEventArgs`:
 This event is invoked after conversion of an entity to blittable JSON document.  
 It should be defined with this signature:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addAfterConversionToDocumentListener(EventHandler<AfterConversionToDocumentEventArgs> handler);
 
@@ -857,14 +857,14 @@ public void removeAfterConversionToDocumentListener(EventHandler<AfterConversion
 
 The class `AfterConversionToDocumentEventArgs`:  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public AfterConversionToDocumentEventArgs(InMemoryDocumentSessionOperations session, String id, Object entity, Reference<ObjectNode> document);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class AfterConversionToDocumentEventArgs
 \{
@@ -881,7 +881,7 @@ The class `AfterConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something-something" label="on_after_conversion_to_document">
+<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
 <CodeBlock language="java">
 {`private void onAfterConversionToDocument(Object sender, AfterConversionToDocumentEventArgs args) \{
     if (args.getEntity() instanceof Item)
@@ -902,7 +902,7 @@ This event is invoked before conversion of a JSON document to an entity. E.g. it
 
 It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addBeforeConversionToEntityListener(EventHandler<BeforeConversionToEntityEventArgs> handler);
 
@@ -916,7 +916,7 @@ public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversion
 | **handler** | `EventHandler<BeforeConversionToEntityEventArgs>` | handle this event |
 
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class BeforeConversionToEntityEventArgs\{
 
@@ -931,7 +931,7 @@ public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversion
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="on_before_conversion_to_entity">
+<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
 <CodeBlock language="java">
 {`private void onBeforeConversionToEntity(Object sender, BeforeConversionToEntityEventArgs args) \{
     if (args.getId() == "item/1-A")
@@ -951,7 +951,7 @@ public void removeBeforeConversionToEntityListener(EventHandler<BeforeConversion
 
 This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public void addAfterConversionToEntityListener(EventHandler<AfterConversionToEntityEventArgs> handler);
 
@@ -964,7 +964,7 @@ public void removeAfterConversionToEntityListener(EventHandler<AfterConversionTo
 | - | - | - |
 | **handler** | `EventHandler<AfterConversionToEntityEventArgs>` | handle this event |
 
-<TabItem value="something" label="java">
+<TabItem value="java" label="java">
 <CodeBlock language="java">
 {`public class AfterConversionToEntityEventArgs \{
 
@@ -979,7 +979,7 @@ public void removeAfterConversionToEntityListener(EventHandler<AfterConversionTo
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="on_after_conversion_to_entity">
+<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
 <CodeBlock language="java">
 {`private void onAfterConversionToEntity(Object sender, AfterConversionToEntityEventArgs args) \{
     if (args.getEntity() instanceof Item) \{
@@ -1007,15 +1007,15 @@ public void removeAfterConversionToEntityListener(EventHandler<AfterConversionTo
 
 * Subscribing to an event at the `DocumentStore` level subscribes to this 
   event in all subsequent sessions.  
-  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events).  
+  Read more about `DocumentStore` events [here](../../../client-api/how-to/subscribe-to-store-events.mdx).  
 
 ## OnBeforeStore
 
 This event is invoked as a part of `saveChanges()` but before it is actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="OnBeforeStore">
-<CodeBlock language="nodejs">
+<TabItem value="OnBeforeStore" label="OnBeforeStore">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeStore", event => onBeforeStore(event));
 `}
 </CodeBlock>
@@ -1023,8 +1023,8 @@ It should be defined with this signature:
 
 The usage of `SessionBeforeStoreEventArgs`:  
 
-<TabItem value="something-something" label="beforeStoreEventArgs">
-<CodeBlock language="nodejs">
+<TabItem value="beforeStoreEventArgs" label="beforeStoreEventArgs">
+<CodeBlock language="js">
 {`const beforeStoreEventArgs = new SessionBeforeStoreEventArgs(session, documentId, entity);
 `}
 </CodeBlock>
@@ -1034,8 +1034,8 @@ The usage of `SessionBeforeStoreEventArgs`:
 
 Say we want to discontinue all of the products that are not in stock.  
 
-<TabItem value="something-something" label="on_before_store_event">
-<CodeBlock language="nodejs">
+<TabItem value="on_before_store_event" label="on_before_store_event">
+<CodeBlock language="js">
 {`function onBeforeStore(args) \{
     if (args.getEntity() instanceof Product) \{
         const product = args.getEntity();
@@ -1050,8 +1050,8 @@ Say we want to discontinue all of the products that are not in stock.
 
 After we subscribe to the event, every stored entity will invoke the method.  
 
-<TabItem value="something-something" label="store_session">
-<CodeBlock language="nodejs">
+<TabItem value="store_session" label="store_session">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeStore", event => onBeforeStore(event));
 
 session = store.openSession();
@@ -1082,8 +1082,8 @@ This event is invoked by `delete(id)` or `delete(entity)`. It is only executed w
 is called, but before the commands are actually sent to the server.  
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="before_delete_event">
-<CodeBlock language="nodejs">
+<TabItem value="before_delete_event" label="before_delete_event">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
 `}
 </CodeBlock>
@@ -1091,8 +1091,8 @@ It should be defined with this signature:
 
 The usage of `SessionBeforeDeleteEventArgs`:  
 
-<TabItem value="something-something" label="beforeDeleteEventArgs">
-<CodeBlock language="nodejs">
+<TabItem value="beforeDeleteEventArgs" label="beforeDeleteEventArgs">
+<CodeBlock language="js">
 {`const beforeDeleteEventArgs = new SessionBeforeDeleteEventArgs(session, documentId, entity);
 `}
 </CodeBlock>
@@ -1102,8 +1102,8 @@ The usage of `SessionBeforeDeleteEventArgs`:
 
 To prevent anyone from deleting entities we can create a method as follows:
 
-<TabItem value="something-something" label="on_Before_Delete_Event">
-<CodeBlock language="nodejs">
+<TabItem value="on_Before_Delete_Event" label="on_Before_Delete_Event">
+<CodeBlock language="js">
 {`function onBeforeDelete(args) \{
     throw new Error("Not implemented");
 \}
@@ -1113,8 +1113,8 @@ To prevent anyone from deleting entities we can create a method as follows:
 
 and subscribe it to the session:
 
-<TabItem value="something-something" label="delete_session">
-<CodeBlock language="nodejs">
+<TabItem value="delete_session" label="delete_session">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeDelete", event => onBeforeDelete(event));
 
 session = store.openSession();
@@ -1139,8 +1139,8 @@ await session.saveChanges(); // NotSupportedException will be thrown
 This event is invoked after the `saveChanges` is returned.  
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="after_save_event">
-<CodeBlock language="nodejs">
+<TabItem value="after_save_event" label="after_save_event">
+<CodeBlock language="js">
 {`store.addSessionListener("afterSave", event => onAfterSaveChanges(event));
 `}
 </CodeBlock>
@@ -1149,8 +1149,8 @@ It should be defined with this signature:
 
 The usage of `SessionAfterSaveChangesEventArgs`:
 
-<TabItem value="something-something" label="afterSaveChangesEventArgs">
-<CodeBlock language="nodejs">
+<TabItem value="afterSaveChangesEventArgs" label="afterSaveChangesEventArgs">
+<CodeBlock language="js">
 {`const afterSaveChangesEventArgs = new SessionAfterSaveChangesEventArgs(session, documentId, entity);
 `}
 </CodeBlock>
@@ -1161,8 +1161,8 @@ The usage of `SessionAfterSaveChangesEventArgs`:
 
 If we want to log each entity that was saved, we can create a method as follows:  
 
-<TabItem value="something-something" label="on_after_save_changes_event">
-<CodeBlock language="nodejs">
+<TabItem value="on_after_save_changes_event" label="on_after_save_changes_event">
+<CodeBlock language="js">
 {`function onAfterSaveChanges(args) \{
     console.log("Document " + args.documentId + " was saved.");
 \}
@@ -1177,8 +1177,8 @@ If we want to log each entity that was saved, we can create a method as follows:
 This event is invoked just before the query is sent to the server. 
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="before_query_event">
-<CodeBlock language="nodejs">
+<TabItem value="before_query_event" label="before_query_event">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeQuery", event => onBeforeQuery(event));
 `}
 </CodeBlock>
@@ -1186,8 +1186,8 @@ It should be defined with this signature:
 
 The usage of `SessionBeforeQueryEventArgs`:  
 
-<TabItem value="something-something" label="beforeQueryEventArgs">
-<CodeBlock language="nodejs">
+<TabItem value="beforeQueryEventArgs" label="beforeQueryEventArgs">
+<CodeBlock language="js">
 {`const beforeQueryEventArgs = new SessionBeforeQueryEventArgs(session, documentId, entity);
 `}
 </CodeBlock>
@@ -1197,8 +1197,8 @@ The usage of `SessionBeforeQueryEventArgs`:
 
 If you want to disable caching of all query results, you can implement the method as follows:  
 
-<TabItem value="something-something" label="on_before_query_execute_event">
-<CodeBlock language="nodejs">
+<TabItem value="on_before_query_execute_event" label="on_before_query_execute_event">
+<CodeBlock language="js">
 {`function onBeforeQuery(args) \{
     args.queryCustomization.noCaching();
 \}
@@ -1208,10 +1208,10 @@ If you want to disable caching of all query results, you can implement the metho
 
 ### Example II
 
-If you want each query to [wait for non-stale results](../../../indexes/stale-indexes) you can create an event as follows:  
+If you want each query to [wait for non-stale results](../../../indexes/stale-indexes.mdx) you can create an event as follows:  
 
-<TabItem value="something-something" label="on_before_query_execute_event_2">
-<CodeBlock language="nodejs">
+<TabItem value="on_before_query_execute_event_2" label="on_before_query_execute_event_2">
+<CodeBlock language="js">
 {`function onBeforeQuery(args) \{
     args.queryCustomization.waitForNonStaleResults(30);
 \}
@@ -1226,8 +1226,8 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.  
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="beforeConversionToDocument_event">
-<CodeBlock language="nodejs">
+<TabItem value="beforeConversionToDocument_event" label="beforeConversionToDocument_event">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeConversionToDocument", event => onBeforeConversionToDocument(event));
 `}
 </CodeBlock>
@@ -1235,8 +1235,8 @@ It should be defined with this signature:
 
 The usage of `BeforeConversionToDocumentEventArgs`:  
 
-<TabItem value="something-something" label="beforeConversionToDocument">
-<CodeBlock language="nodejs">
+<TabItem value="beforeConversionToDocument" label="beforeConversionToDocument">
+<CodeBlock language="js">
 {`const beforeConversionToDocumentEventArgs = new BeforeConversionToDocumentEventArgs(session, documentId, entity);
 `}
 </CodeBlock>
@@ -1244,8 +1244,8 @@ The usage of `BeforeConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something-something" label="on_before_conversion_to_document">
-<CodeBlock language="nodejs">
+<TabItem value="on_before_conversion_to_document" label="on_before_conversion_to_document">
+<CodeBlock language="js">
 {`function onBeforeConversionToDocument(args) \{
     if (args.getEntity() instanceof Product) \{
         const product = args.getEntity();
@@ -1263,8 +1263,8 @@ The usage of `BeforeConversionToDocumentEventArgs`:
 This event is invoked after conversion of an entity to blittable JSON document.  
 It should be defined with this signature:  
 
-<TabItem value="something-something" label="afterConversionToDocument_event">
-<CodeBlock language="nodejs">
+<TabItem value="afterConversionToDocument_event" label="afterConversionToDocument_event">
+<CodeBlock language="js">
 {`store.addSessionListener("afterConversionToDocument", event => onAfterConversionToDocument(event));
 `}
 </CodeBlock>
@@ -1272,8 +1272,8 @@ It should be defined with this signature:
 
 The class `AfterConversionToDocumentEventArgs`:  
 
-<TabItem value="something-something" label="afterConversionToDocument">
-<CodeBlock language="nodejs">
+<TabItem value="afterConversionToDocument" label="afterConversionToDocument">
+<CodeBlock language="js">
 {`const afterConversionToDocument = new AfterConversionToDocumentEventArgs(session, documentId, entity, document);
 `}
 </CodeBlock>
@@ -1282,8 +1282,8 @@ The class `AfterConversionToDocumentEventArgs`:
 
 ### Example
 
-<TabItem value="something-something" label="on_after_conversion_to_document">
-<CodeBlock language="nodejs">
+<TabItem value="on_after_conversion_to_document" label="on_after_conversion_to_document">
+<CodeBlock language="js">
 {`function onAfterConversionToDocument(args) \{
     if (args.getEntity() instanceof Product) \{
         const product = args.getEntity();
@@ -1304,8 +1304,8 @@ This event is invoked before conversion of a JSON document to an entity. E.g. it
 
 It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance.  
 
-<TabItem value="something-something" label="on_before_conversion_to_entity">
-<CodeBlock language="nodejs">
+<TabItem value="on_before_conversion_to_entity" label="on_before_conversion_to_entity">
+<CodeBlock language="js">
 {`store.addSessionListener("beforeConversionToEntity", (event: BeforeConversionToEntityEventArgs) => \{
     const document = ObjectUtil.clone(event.document);
 
@@ -1323,8 +1323,8 @@ It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JS
 
 This event is invoked after conversion of a JSON document to an entity. It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.  
 
-<TabItem value="something-something" label="on_after_conversion_to_entity">
-<CodeBlock language="nodejs">
+<TabItem value="on_after_conversion_to_entity" label="on_after_conversion_to_entity">
+<CodeBlock language="js">
 {`store.addSessionListener("afterConversionToEntity", (event: AfterConversionToEntityEventArgs) => \{
     if (event.entity instanceof Item) \{
         const item = event.entity;

@@ -28,11 +28,11 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
   for a specific entity, for entities returned by a query, for all entities in a session, or globally using conventions.
 
 * In this article:
-  * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-changes-for-a-specific-entity)
-  * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-  * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-  * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
-  * [Using 'Include' in a NoTracking session will throw](../../../client-api/session/configuration/how-to-disable-tracking#using-)
+  * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
+  * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+  * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+  * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+  * [Using 'Include' in a NoTracking session will throw](../../../client-api/session/configuration/how-to-disable-tracking.mdx#using-)
 
 </Admonition>
 ## Disable tracking changes for a specific entity
@@ -80,7 +80,7 @@ await asyncSession.SaveChangesAsync();
 
 **Syntax**
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`void IgnoreChangesFor(object entity);
 `}
@@ -246,7 +246,7 @@ await asyncSession.SaveChangesAsync();
 
 **Example**
 
-<TabItem value="something-something" label="disable_tracking_4">
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore()
 \{
@@ -285,7 +285,7 @@ await asyncSession.SaveChangesAsync();
 
 **Syntax**
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public Func<InMemoryDocumentSessionOperations, object, string, bool> ShouldIgnoreEntityChanges;
 `}
@@ -441,10 +441,10 @@ await asyncSession.SaveChangesAsync();
   for a specific entity, for entities returned by a query, for all entities in a session, or globally using conventions.
 
 * In this article:
-    * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-changes-for-a-specific-entity)
-    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+    * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
+    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 
 </Admonition>
 ## Disable tracking changes for a specific entity
@@ -457,7 +457,7 @@ await asyncSession.SaveChangesAsync();
   
 **Example**
 
-<TabItem value="something-something" label="disable_tracking_1">
+<TabItem value="disable_tracking_1" label="disable_tracking_1">
 <CodeBlock language="python">
 {`# Load a product entity - the session will track the entity by default
 product = session.load("products/1-A", Product)
@@ -474,7 +474,7 @@ session.save_changes()
 
 **Syntax**
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`def ignore_changes_for(self, entity: object) -> None: ...
 `}
@@ -494,7 +494,7 @@ session.save_changes()
   * Method `store` will Not be available (an exception will be thrown if used).
   * Calling `load` or `query` will generate a call to the server and create new entities instances.  
 
-<TabItem value="something-something" label="disable_tracking_2">
+<TabItem value="disable_tracking_2" label="disable_tracking_2">
 <CodeBlock language="python">
 {`with store.open_session(
     SessionOptions(
@@ -549,12 +549,12 @@ session.save_changes()
 * You can further customize and fine-tune which entities will not be tracked  
   by configuring the `should_ignore_entity_changes` convention method on the document store.
 * This customization rule will apply to all sessions opened for this document store.
-* Implement rules under your [ShouldIgnoreEntityChanges](../../../client-api/session/configuration/how-to-disable-tracking#syntax) subclass.  
+* Implement rules under your [ShouldIgnoreEntityChanges](../../../client-api/session/configuration/how-to-disable-tracking.mdx#syntax) subclass.  
   Apply the class's `check` method to control the ignore flow.
 
 **Example**:
 
-<TabItem value="something-something" label="disable_tracking_4">
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
 <CodeBlock language="python">
 {`with DocumentStore() as store:
     # Define the 'ignore' convention on your document store:
@@ -591,7 +591,7 @@ session.save_changes()
 
 **Syntax**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`@should_ignore_entity_changes.setter
 def should_ignore_entity_changes(self, value: ShouldIgnoreEntityChanges) -> None: ...
@@ -633,10 +633,10 @@ class ShouldIgnoreEntityChanges(ABC):
   for a specific entity, for entities returned by a query, for all entities in a session, or globally using conventions.
 
 * In this article:
-    * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-changes-for-a-specific-entity)
-    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
+    * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
+    * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+    * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+    * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
 
 </Admonition>
 ## Disable tracking changes for a specific entity
@@ -649,7 +649,7 @@ class ShouldIgnoreEntityChanges(ABC):
   
 **Example**
 
-<TabItem value="something-something" label="disable_tracking_1">
+<TabItem value="disable_tracking_1" label="disable_tracking_1">
 <CodeBlock language="php">
 {`// Load a product entity - the session will track the entity by default
 /** @var Product $product */
@@ -675,7 +675,7 @@ $session->saveChanges();
   * Method `store` will Not be available (an exception will be thrown if used).
   * Calling `load` or `query` will generate a call to the server and create new entities instances.  
 
-<TabItem value="something-something" label="disable_tracking_2">
+<TabItem value="disable_tracking_2" label="disable_tracking_2">
 <CodeBlock language="php">
 {`$sessionOptions = new SessionOptions();
 // Disable tracking for all entities in the session's options
@@ -767,7 +767,7 @@ try {
 
 #### Example:
 
-<TabItem value="something-something" label="disable_tracking_4">
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
 <CodeBlock language="php">
 {`// Define the 'ignore' convention on your document store
 $conventions = new DocumentConventions();
@@ -827,11 +827,11 @@ try \{
   for a specific entity, for entities returned by a query, for all entities in a session, or globally using conventions.
 
 * In this article:
-  * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-changes-for-a-specific-entity)
-  * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-all-entities-in-session)
-  * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking#disable-tracking-query-results)
-  * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking#customize-tracking-in-conventions)
-  * [Using 'Include' in a NoTracking session will throw](../../../client-api/session/configuration/how-to-disable-tracking#using-)
+  * [Disable tracking changes for a specific entity](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-changes-for-a-specific-entity)
+  * [Disable tracking all entities in session](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-all-entities-in-session)
+  * [Disable tracking query results](../../../client-api/session/configuration/how-to-disable-tracking.mdx#disable-tracking-query-results)
+  * [Customize tracking in conventions](../../../client-api/session/configuration/how-to-disable-tracking.mdx#customize-tracking-in-conventions)
+  * [Using 'Include' in a NoTracking session will throw](../../../client-api/session/configuration/how-to-disable-tracking.mdx#using-)
 
 </Admonition>
 ## Disable tracking changes for a specific entity
@@ -844,8 +844,8 @@ try \{
   
 **Example**
 
-<TabItem value="something-something" label="disable_tracking_1">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_1" label="disable_tracking_1">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();        
 
 // Load a product entity - the session will track the entity by default
@@ -864,8 +864,8 @@ await session.saveChanges();
 
 **Syntax**
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`session.advanced.ignoreChangesFor(entity);
 `}
 </CodeBlock>
@@ -884,8 +884,8 @@ await session.saveChanges();
   * Method `store` will Not be available (an exception will be thrown if used).
   * Calling `load` or `query` will generate a call to the server and create new entities instances.
 
-<TabItem value="something-something" label="disable_tracking_2">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_2" label="disable_tracking_2">
+<CodeBlock language="js">
 {`const session = documentStore.openSession(\{
     // Disable tracking for all entities in the session's options
     noTracking: true
@@ -912,8 +912,8 @@ await session.saveChanges();
 
 * Tracking can be disabled for all entities resulting from a query.
 
-<TabItem value="something-something" label="disable_tracking_3">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_3" label="disable_tracking_3">
+<CodeBlock language="js">
 {`const session = documentStore.openSession();
 
 // Define a query
@@ -943,8 +943,8 @@ session.saveChanges();
 
 **Example**
 
-<TabItem value="something-something" label="disable_tracking_4">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_4" label="disable_tracking_4">
+<CodeBlock language="js">
 {`const customStore = new DocumentStore();
 
 // Define the 'ignore' convention on your document store
@@ -979,8 +979,8 @@ session.saveChanges();         // Only employee2 is persisted
 
 **Syntax**
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`store.conventions.shouldIgnoreEntityChanges = (sessionOperations, entity, documentId) => \{
     // Write your logic
     // return value:
@@ -1015,8 +1015,8 @@ session.saveChanges();         // Only employee2 is persisted
   e.g., documents, compare-exchange items, counters, revisions, and time series.
 **Include when loading**:
 
-<TabItem value="something-something" label="disable_tracking_5">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_5" label="disable_tracking_5">
+<CodeBlock language="js">
 {`const session = documentStore.openSession(\{
     // Working with a non-tracking session
     noTracking: true
@@ -1037,8 +1037,8 @@ catch (error) \{
 
 **Include when querying**:
 
-<TabItem value="something-something" label="disable_tracking_6">
-<CodeBlock language="nodejs">
+<TabItem value="disable_tracking_6" label="disable_tracking_6">
+<CodeBlock language="js">
 {`const session = documentStore.openSession(\{
     // Working with a non-tracking session
     noTracking: true

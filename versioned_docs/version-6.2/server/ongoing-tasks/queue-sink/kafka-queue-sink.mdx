@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   increases and the number of events it needs to stream climbs to the big-data zone.  
   
 * RavenDB can harness the advantages presented by message brokers like Kafka 
-  both as a producer (by [running ETL tasks](../../../server/ongoing-tasks/etl/queue-etl/kafka)) 
+  both as a producer (by [running ETL tasks](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx)) 
   and as a **consumer** (using a sink task to consume enqueued messages).  
 
 * To use RavenDB as a consumer, define an ongoing Sink task that will read batches 
@@ -28,11 +28,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   user-defined scripts, and store the documents in RavenDB collections.  
 
 * In this page:  
-  * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#the-queue-sink-task)  
-  * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#client-api)  
-     * [Add a Kafka Connection String](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string)  
-     * [Add a Kafka Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-sink-task)  
-     * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#configuration-options)  
+  * [The Queue Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#the-queue-sink-task)  
+  * [Client API](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#client-api)  
+     * [Add a Kafka Connection String](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-connection-string)  
+     * [Add a Kafka Sink Task](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-sink-task)  
+     * [Configuration Options](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options)  
 </Admonition>
 ## The Queue Sink Task
 
@@ -46,14 +46,14 @@ In the message broker architecture, RavenDB sinks take the role of data consumer
 A sink would connect a Kafka broker using a connection string, and retrieve messages 
 from the broker's Topics.  
 
-Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#add-a-kafka-connection-string) 
+Read [below](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#add-a-kafka-connection-string) 
 about adding a connection string via API.  
-Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink#define-a-kafka-sink-task) 
+Read [here](../../../studio/database/tasks/ongoing-tasks/kafka-queue-sink.mdx#define-a-kafka-sink-task) 
 about adding a connection string using Studio.  
 
 <Admonition type="warning" title="Warning">
 Like all ongoing tasks, a sink task is operated by a 
-[responsible node](../../../server/clustering/distribution/highly-available-tasks#responsible-node).  
+[responsible node](../../../server/clustering/distribution/highly-available-tasks.mdx#responsible-node).  
 When the responsibility for the task is moved from one node to another, 
 e.g. from node `A` to node `B` as a result of node `A` down time:  
 
@@ -76,7 +76,7 @@ will then be stored in RavenDB.
 
 The script can simply store the whole message as a document, as in this 
 segment:  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`// Add the document a metadata \`@collection\` property to keep it in 
 // this collection, or do not set it to store the document in @empty).  
@@ -94,7 +94,7 @@ that defines the document's structure and contents, and a second section
 that stores the document.  
 
 E.g., for Kafka messages of this format -  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
    "Id" : 13,
@@ -106,7 +106,7 @@ E.g., for Kafka messages of this format -
 </TabItem>
 
 We can create this script -  
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var item = \{ 
     Id : this.Id, 
@@ -128,7 +128,7 @@ The script can also apply various other JavaScript commands, including
 `load` to load a RavenDB document (e.g. to construct a document that 
 includes data from the retrieved message and complementing data from 
 existing RavenDB documents), `del` to remove existing RavenDB documents, 
-and [many others](../../../server/kb/javascript-engine#predefined-javascript-functions).  
+and [many others](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 #### Storing documents in RavenDB collections
 
 The sink task consumes batches of queued messages and stores them in RavenDB 
@@ -142,11 +142,11 @@ user in Studio, but **continue processing the batch**.
 Once a batch is consumed, the task confirms it by calling `kafkaConsumer.Commit()`.  
 
 Note that the number of documents included in a batch is 
-[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink#configuration-options).
+[configurable](../../../server/ongoing-tasks/queue-sink/kafka-queue-sink.mdx#configuration-options).
 
 <Admonition type="warning" title="Take care of duplicates" id="take-care-of-duplicates" href="#take-care-of-duplicates">
 Producers may enqueue 
-[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/kafka#idempotence-and-message-duplication) 
+[multiple instances](../../../server/ongoing-tasks/etl/queue-etl/kafka.mdx#idempotence-and-message-duplication) 
 of the same document.  
 if processing each message only once is important to the consumer, 
 it is **the consumer's responsibility** to verify the uniqueness of 
@@ -173,7 +173,7 @@ To create the connection string:
   Pass it to the `PutConnectionStringOperation` store operation to add the connection string.  
 
     `QueueConnectionString`:  
-<TabItem value="something" label="add_kafka_connection-string">
+<TabItem value="add_kafka_connection-string" label="add_kafka_connection-string">
 <CodeBlock language="csharp">
 {`// Add Kafka connection string
 var res = store.Maintenance.Send(
@@ -190,7 +190,7 @@ var res = store.Maintenance.Send(
 </TabItem>
   
     `QueueBrokerType`:  
-<TabItem value="something" label="QueueBrokerType">
+<TabItem value="QueueBrokerType" label="QueueBrokerType">
 <CodeBlock language="csharp">
 {`public enum QueueBrokerType
 \{
@@ -214,7 +214,7 @@ To create the Sink task:
 * Create `QueueSinkScript` instances to define scripts with which the 
   task can process retrieved messages, apply JavaScript commands, construct 
   documents and store them in RavenDB.  
-<TabItem value="something" label="define-kafka-sink-script">
+<TabItem value="define-kafka-sink-script" label="define-kafka-sink-script">
 <CodeBlock language="csharp">
 {`// Define a Sink script
 QueueSinkScript queueSinkScript = new QueueSinkScript
@@ -253,7 +253,7 @@ QueueSinkScript queueSinkScript = new QueueSinkScript
     | **Script** | `string  ` | The script contents |
 
 **Code Sample**:  
-<TabItem value="something" label="add_kafka_sink-task">
+<TabItem value="add_kafka_sink-task" label="add_kafka_sink-task">
 <CodeBlock language="csharp">
 {`// Add Kafka connection string
 var res = store.Maintenance.Send(
@@ -303,9 +303,9 @@ AddQueueSinkOperationResult addQueueSinkOperationResult =
 
 Use these configuration options to gain more control over queue sink tasks.  
 
-* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration#queuesink.maxbatchsize)  
+* [QueueSink.MaxBatchSize](../../../server/configuration/queue-sink-configuration.mdx#queuesink.maxbatchsize)  
   The maximum number of pulled messages consumed in a single batch.
-* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration#queuesink.maxfallbacktimeinsec)  
+* [QueueSink.MaxFallbackTimeInSec](../../../server/configuration/queue-sink-configuration.mdx#queuesink.maxfallbacktimeinsec)  
   The maximum number of seconds the Queue Sink process will be in a fallback 
   mode (i.e. suspending the process) after a connection failure.  
 

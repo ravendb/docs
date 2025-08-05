@@ -24,12 +24,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * A Prometheus endpoint is provided by RavenDB instances both on-premise and on the cloud.  
 
 * In this page:  
-   * [Prometheus](../../../server/administration/monitoring/prometheus#prometheus)  
-   * [RavenDB Prometheus Endpoint](../../../server/administration/monitoring/prometheus#ravendb-prometheus-endpoint)  
-       * [Omit or Include Selected Metrics](../../../server/administration/monitoring/prometheus#omit-or-include-selected-metrics)  
-       * [Metrics Provided by the Prometheus Endpoint](../../../server/administration/monitoring/prometheus#metrics-provided-by-the-prometheus-endpoint)  
-   * [Using the RavenDB Endpoint by a Prometheus Server](../../../server/administration/monitoring/prometheus#using-the-ravendb-endpoint-by-a-prometheus-server)  
-       * [Fetching Additional RavenDB Information](../../../server/administration/monitoring/prometheus#fetching-additional-ravendb-information)  
+   * [Prometheus](../../../server/administration/monitoring/prometheus.mdx#prometheus)  
+   * [RavenDB Prometheus Endpoint](../../../server/administration/monitoring/prometheus.mdx#ravendb-prometheus-endpoint)  
+       * [Omit or Include Selected Metrics](../../../server/administration/monitoring/prometheus.mdx#omit-or-include-selected-metrics)  
+       * [Metrics Provided by the Prometheus Endpoint](../../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint)  
+   * [Using the RavenDB Endpoint by a Prometheus Server](../../../server/administration/monitoring/prometheus.mdx#using-the-ravendb-endpoint-by-a-prometheus-server)  
+       * [Fetching Additional RavenDB Information](../../../server/administration/monitoring/prometheus.mdx#fetching-additional-ravendb-information)  
 
 </Admonition>
 ## Prometheus
@@ -51,7 +51,7 @@ E.g. [http://live-test.ravendb.net/admin/monitoring/v1/prometheus](http://live-t
 
 * As prometheus handles only numeric values, the endpoint outputs all values as numbers, 
   providing legends that explain what the numbers mean.  
-  Metrics values are also explained in the [table below](../../../server/administration/monitoring/prometheus#metrics-provided-by-the-prometheus-endpoint).  
+  Metrics values are also explained in the [table below](../../../server/administration/monitoring/prometheus.mdx#metrics-provided-by-the-prometheus-endpoint).  
 
 ## Omit or Include Selected Metrics
 
@@ -183,7 +183,7 @@ To direct a Prometheus server to the Prometheus endpoint of a RavenDB instance
 to the Prometheus `yml` configuration file.  
 
 * **Prometheus.yml**:  
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`- job_name: "local-raven-instance"
     # Monitor a local, non-secure RavenDB server

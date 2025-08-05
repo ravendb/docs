@@ -23,12 +23,12 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * Use `GetRevisionsOperation` to GET the document's revisions.
 
-* To only COUNT the number of revisions without getting them, use the [GetCountFor](../../../../document-extensions/revisions/client-api/session/counting) session method.
+* To only COUNT the number of revisions without getting them, use the [GetCountFor](../../../../document-extensions/revisions/client-api/session/counting.mdx) session method.
 
 * In this page:  
-  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions#get-all-revisions)  
-  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions#paging-results)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions#syntax)  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#get-all-revisions)  
+  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#paging-results)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#syntax)  
 
 </Admonition>
 ## Get all revisions
@@ -161,7 +161,7 @@ RevisionsResult<Company> revisions = await documentStore.Operations.SendAsync(
 
 Available overloads:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Get all revisions for the specified document:
 public GetRevisionsOperation(string id);
@@ -180,7 +180,7 @@ public GetRevisionsOperation(Parameters parameters)
 | **pageSize** | `int` | Number of revisions to get |
 | **parameters** | `Parameters` | An object that wraps `Id`, `Start`, and `PageSize` (see below) |
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class Parameters
 \{
@@ -197,7 +197,7 @@ public GetRevisionsOperation(Parameters parameters)
 | `RevisionsResult<T>` | Object with revisions results |
 
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public class RevisionsResult<T>
 \{  
@@ -218,17 +218,17 @@ public GetRevisionsOperation(Parameters parameters)
 
 * Use `GetRevisionsOperation` to GET the document's revisions.
 
-* To only COUNT the number of revisions without getting them, use the [get_count_for](../../../../document-extensions/revisions/client-api/session/counting) session method.
+* To only COUNT the number of revisions without getting them, use the [get_count_for](../../../../document-extensions/revisions/client-api/session/counting.mdx) session method.
 
 * In this page:  
-  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions#get-all-revisions)  
-  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions#paging-results)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions#syntax)  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#get-all-revisions)  
+  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#paging-results)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#syntax)  
 
 </Admonition>
 ## Get all revisions
 
-<TabItem value="something-something" label="getAllRevisions">
+<TabItem value="getAllRevisions" label="getAllRevisions">
 <CodeBlock language="python">
 {`# Define the get revisions operation, pass the document id
 get_revisions_op = GetRevisionsOperation("companies/1-A")
@@ -248,7 +248,7 @@ revisions_count = revisions.total_results  # Total number of revisions
 ## Paging results
 
 * Get and process revisions, one page at a time:
-<TabItem value="something-something" label="getRevisionsWithPaging">
+<TabItem value="getRevisionsWithPaging" label="getRevisionsWithPaging">
 <CodeBlock language="python">
 {`start = 0
 page_size = 100
@@ -270,7 +270,7 @@ while True:
 </TabItem>
 
 * The document ID, start & page size can be wrapped in a `Parameters` object:
-<TabItem value="something-something" label="getRevisionsWithPagingParams">
+<TabItem value="getRevisionsWithPagingParams" label="getRevisionsWithPagingParams">
 <CodeBlock language="python">
 {`parameters = GetRevisionsOperation.Parameters("companies/1-A", 0, 100)
 
@@ -300,17 +300,17 @@ revisions = store.operations.send(GetRevisionsOperation.from_parameters(paramete
 
 * Use `GetRevisionsOperation` to GET the document's revisions.
 
-* To only COUNT the number of revisions without getting them, use the [get_count_for](../../../../document-extensions/revisions/client-api/session/counting) session method.
+* To only COUNT the number of revisions without getting them, use the [get_count_for](../../../../document-extensions/revisions/client-api/session/counting.mdx) session method.
 
 * In this page:  
-  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions#get-all-revisions)  
-  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions#paging-results)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions#syntax)  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#get-all-revisions)  
+  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#paging-results)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#syntax)  
 
 </Admonition>
 ## Get all revisions
 
-<TabItem value="something-something" label="getAllRevisions">
+<TabItem value="getAllRevisions" label="getAllRevisions">
 <CodeBlock language="php">
 {`// Define the get revisions operation, pass the document id
 $getRevisionsOp = new GetRevisionsOperation(Company::class, "Companies/1-A");
@@ -332,7 +332,7 @@ $revisionsCount = $revisions->getTotalResults();    // Total number of revisions
 ## Paging results
 
 * Get and process revisions, one page at a time:
-<TabItem value="something-something" label="getRevisionsWithPaging">
+<TabItem value="getRevisionsWithPaging" label="getRevisionsWithPaging">
 <CodeBlock language="php">
 {`$start = 0;
 $pageSize = 100;
@@ -358,7 +358,7 @@ while (true)
 </TabItem>
 
 * The document ID, start & page size can be wrapped in a `Parameters` object:
-<TabItem value="something-something" label="getRevisionsWithPagingParams">
+<TabItem value="getRevisionsWithPagingParams" label="getRevisionsWithPagingParams">
 <CodeBlock language="php">
 {`$parameters = new GetRevisionsOperationParameters();
 $parameters->setId("Companies/1-A");
@@ -393,18 +393,18 @@ $revisions = $documentStore->operations->send(
 
 * Use `GetRevisionsOperation` to GET the document's revisions.
 
-* To only COUNT the number of revisions without getting them, use the [getCountFor](../../../../document-extensions/revisions/client-api/session/counting) session method.
+* To only COUNT the number of revisions without getting them, use the [getCountFor](../../../../document-extensions/revisions/client-api/session/counting.mdx) session method.
 
 * In this page:  
-  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions#get-all-revisions)  
-  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions#paging-results)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions#syntax)  
+  * [Get all revisions](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#get-all-revisions)  
+  * [Paging results](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#paging-results)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/get-revisions.mdx#syntax)  
 
 </Admonition>
 ## Get all revisions
 
-<TabItem value="something-something" label="getAllRevisions">
-<CodeBlock language="nodejs">
+<TabItem value="getAllRevisions" label="getAllRevisions">
+<CodeBlock language="js">
 {`// Define the get revisions operation, pass the document id
 const getRevisionsOp = new GetRevisionsOperation("Companies/1-A");
 
@@ -424,8 +424,8 @@ const revisionsCount = revisions.totalResults; // Total number of revisions
 
 * Get and process revisions, one page at a time:
 
-<TabItem value="something-something" label="getRevisionsWithPaging">
-<CodeBlock language="nodejs">
+<TabItem value="getRevisionsWithPaging" label="getRevisionsWithPaging">
+<CodeBlock language="js">
 {`const parameters = \{
     start: 0,
     pageSize: 100
@@ -456,8 +456,8 @@ while (true)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 const getRevisionsOp = new GetRevisionsOperation(id);
 const getRevisionsOp = new GetRevisionsOperation(id, parameters);
@@ -470,8 +470,8 @@ const getRevisionsOp = new GetRevisionsOperation(id, parameters);
 | **id** | `string` | Document ID for which to get revisions |
 | **parameters** | `object` | An object that wraps `start` and `pageSize` (see below) |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The parameters object
 \{
     start,   // Revision number to start from
@@ -485,8 +485,8 @@ const getRevisionsOp = new GetRevisionsOperation(id, parameters);
 | - | - |
 | `RevisionsResult` | Object with revisions results |
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class RevisionsResult
 \{
     results;      // The retrieved revisions

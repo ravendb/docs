@@ -28,43 +28,43 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
   updating denormalized data in entities.
 
 * Since the operation is executed in a single request to the database,  
-  the patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support).  
+  the patch command is performed in a single write [transaction](../../../client-api/faq/transaction-support.mdx).  
 
 * The current page covers patch operations on single documents.
 
-* Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document#session-api), 
-[Session API using Defer](../../../client-api/operations/patching/single-document#session-api-using-defer), 
-and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
+* Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), 
+[Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), 
+and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
 
-* Patching can be done from the [client API](../../../client-api/operations/patching/single-document#examples) as well as in the [studio](../../../studio/database/documents/patch-view).  
+* Patching can be done from the [client API](../../../client-api/operations/patching/single-document.mdx#examples) as well as in the [studio](../../../studio/database/documents/patch-view.mdx).  
 
 In this page:  
 
-* [API overview](../../../client-api/operations/patching/single-document#api-overview)  
-  * [Session API](../../../client-api/operations/patching/single-document#session-api)
-  * [Session API using Defer](../../../client-api/operations/patching/single-document#session-api-using-defer)
-  * [Operations API](../../../client-api/operations/patching/single-document#operations-api)
-  * [List of script methods](../../../client-api/operations/patching/single-document#list-of-script-methods)
-* [Examples](../../../client-api/operations/patching/single-document#examples)  
-  * [Change value of single field](../../../client-api/operations/patching/single-document#change-value-of-single-field)  
-  * [Change values of two fields](../../../client-api/operations/patching/single-document#change-values-of-two-fields)  
-  * [Increment value](../../../client-api/operations/patching/single-document#increment-value)  
-  * [Add or increment](../../../client-api/operations/patching/single-document#add-or-increment)  
-  * [Add or patch](../../../client-api/operations/patching/single-document#add-or-patch)  
-  * [Add or patch to an existing array](../../../client-api/operations/patching/single-document#add-or-patch-to-an-existing-array)  
-  * [Add item to array](../../../client-api/operations/patching/single-document#add-item-to-array)  
-  * [Insert item into specific position in array](../../../client-api/operations/patching/single-document#insert-item-into-specific-position-in-array)  
-  * [Modify item in specific position in array](../../../client-api/operations/patching/single-document#modify-item-in-specific-position-in-array)  
-  * [Remove items from array](../../../client-api/operations/patching/single-document#remove-items-from-array)  
-  * [Loading documents in a script](../../../client-api/operations/patching/single-document#loading-documents-in-a-script)  
-  * [Remove property](../../../client-api/operations/patching/single-document#remove-property)  
-  * [Rename property](../../../client-api/operations/patching/single-document#rename-property)  
-  * [Add document](../../../client-api/operations/patching/single-document#add-document)  
-  * [Clone document](../../../client-api/operations/patching/single-document#clone-document)  
-  * [Increment counter](../../../client-api/operations/patching/single-document#increment-counter)  
-  * [Delete counter](../../../client-api/operations/patching/single-document#delete-counter)  
-  * [Get counter](../../../client-api/operations/patching/single-document#get-counter)  
-  * [Patching using inline string compilation](../../../client-api/operations/patching/single-document#patching-using-inline-string-compilation)  
+* [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Session API](../../../client-api/operations/patching/single-document.mdx#session-api)
+  * [Session API using Defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer)
+  * [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api)
+  * [List of script methods](../../../client-api/operations/patching/single-document.mdx#list-of-script-methods)
+* [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+  * [Change value of single field](../../../client-api/operations/patching/single-document.mdx#change-value-of-single-field)  
+  * [Change values of two fields](../../../client-api/operations/patching/single-document.mdx#change-values-of-two-fields)  
+  * [Increment value](../../../client-api/operations/patching/single-document.mdx#increment-value)  
+  * [Add or increment](../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
+  * [Add or patch](../../../client-api/operations/patching/single-document.mdx#add-or-patch)  
+  * [Add or patch to an existing array](../../../client-api/operations/patching/single-document.mdx#add-or-patch-to-an-existing-array)  
+  * [Add item to array](../../../client-api/operations/patching/single-document.mdx#add-item-to-array)  
+  * [Insert item into specific position in array](../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
+  * [Modify item in specific position in array](../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
+  * [Remove items from array](../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
+  * [Loading documents in a script](../../../client-api/operations/patching/single-document.mdx#loading-documents-in-a-script)  
+  * [Remove property](../../../client-api/operations/patching/single-document.mdx#remove-property)  
+  * [Rename property](../../../client-api/operations/patching/single-document.mdx#rename-property)  
+  * [Add document](../../../client-api/operations/patching/single-document.mdx#add-document)  
+  * [Clone document](../../../client-api/operations/patching/single-document.mdx#clone-document)  
+  * [Increment counter](../../../client-api/operations/patching/single-document.mdx#increment-counter)  
+  * [Delete counter](../../../client-api/operations/patching/single-document.mdx#delete-counter)  
+  * [Get counter](../../../client-api/operations/patching/single-document.mdx#get-counter)  
+  * [Patching using inline string compilation](../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
 
 </Admonition>
 
@@ -80,7 +80,7 @@ This way it's possible to perform multiple operations in one request to the serv
 
 ### Increment field value
 `Session.Advanced.Increment`
-<TabItem value="something" label="patch_generic_interface_increment">
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
 <CodeBlock language="csharp">
 {`void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
 
@@ -98,9 +98,9 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **delta** | `U` | Value to be added. |
 
-* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb) in RavenDB.
+* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
 `Session.Advanced.AddOrIncrement`
-<TabItem value="something" label="add_or_increment_generic">
+<TabItem value="add_or_increment_generic" label="add_or_increment_generic">
 <CodeBlock language="csharp">
 {`void AddOrIncrement<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU valToAdd);
 `}
@@ -122,7 +122,7 @@ void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 
 ### Set field value
 `Session.Advanced.Patch`
-<TabItem value="something" label="patch_generic_interface_set_value">
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
 <CodeBlock language="csharp">
 {`void Patch<T, U>(string id, Expression<Func<T, U>> fieldPath, U value);
 
@@ -141,7 +141,7 @@ void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
 | **delta** | `U` | Value to set. |
 `Session.Advanced.AddOrPatch`
 
-<TabItem value="something" label="add_or_patch_generic">
+<TabItem value="add_or_patch_generic" label="add_or_patch_generic">
 <CodeBlock language="csharp">
 {`void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, TU>> path, TU value);
 `}
@@ -163,7 +163,7 @@ void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
 
 ### Array manipulation
 `Session.Advanced.Patch`
-<TabItem value="something" label="patch_generic_interface_array_modification_lambda">
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
 <CodeBlock language="csharp">
 {`void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> fieldPath,
     Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
@@ -183,7 +183,7 @@ void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
 | **fieldPath**                | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **arrayModificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
 `Session.Advanced.AddOrPatch`
-<TabItem value="something" label="add_or_patch_array_generic">
+<TabItem value="add_or_patch_array_generic" label="add_or_patch_array_generic">
 <CodeBlock language="csharp">
 {`void AddOrPatch<T, TU>(string id, T entity, Expression<Func<T, List<TU>>> path, 
     Expression<Func<JavaScriptArray<TU>, object>> arrayAdder);
@@ -225,7 +225,7 @@ One of the possible commands is the `PatchCommandData`, describing single docume
 The patch request will be sent to the server only when calling `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
 `Session.Advanced.Defer`
-<TabItem value="something" label="patch_non_generic_interface_in_session">
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
 <CodeBlock language="csharp">
 {`void Defer(ICommandData[] commands);
 `}
@@ -268,7 +268,7 @@ An operations interface that exposes the full functionality and allows performin
 `Raven.Client.Documents.Operations.Send`  
 `Raven.Client.Documents.Operations.SendAsync`  
 
-<TabItem value="something" label="patch_non_generic_interface_in_store">
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
 <CodeBlock language="csharp">
 {`PatchStatus Send(PatchOperation operation);
 
@@ -296,7 +296,7 @@ Task<PatchStatus> SendAsync(PatchOperation operation,
 ## List of script methods
 
 This is a list of a few of the javascript methods that can be used in patch scripts.  
-See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine#predefined-javascript-functions).  
+See the more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 
 | Method               | Arguments                                           | Description                                                                                                                                                                                                                                            |
 |----------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -502,7 +502,7 @@ session.SaveChanges();
 
 `AddOrIncrement` increments an existing field or adds a new one in documents where they didn't exist.
 
-<TabItem value="something" label="Add_Or_Increment_Sample">
+<TabItem value="Add_Or_Increment_Sample" label="Add_Or_Increment_Sample">
 <CodeBlock language="csharp">
 {`// While running AddOrIncrement specify <entity type, field type>
 session.Advanced.AddOrIncrement<User, int>(
@@ -528,7 +528,7 @@ session.Advanced.AddOrIncrement<User, int>(
 
 If the document doesn't yet exist, this operation adds the document but doesn't patch it.  
 
-<TabItem value="something" label="Add_Or_Patch_Sample">
+<TabItem value="Add_Or_Patch_Sample" label="Add_Or_Patch_Sample">
 <CodeBlock language="csharp">
 {`// While running AddOrPatch specify <entity type, field type>
 session.Advanced.AddOrPatch<User, DateTime>(
@@ -552,7 +552,7 @@ session.SaveChanges();
 
 This sample shows how to patch an existing array or add it to documents where it doesn't yet exist.
 
-<TabItem value="something" label="Add_Or_Patch_Array_Sample">
+<TabItem value="Add_Or_Patch_Array_Sample" label="Add_Or_Patch_Array_Sample">
 <CodeBlock language="csharp">
 {`// While running AddOrPatch specify <entity type, field type>
 session.Advanced.AddOrPatch<User, DateTime>(
@@ -1164,7 +1164,7 @@ The method can be called by document ID or by document reference.
 * When using a JavaScript script with the _defer_ or _operations_ syntax,  
   you can apply logic using **inline string compilation**.
 
-* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration#patching.allowstringcompilation) configuration key to _true_.
+* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration.mdx#patching.allowstringcompilation) configuration key to _true_.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Patching_usingFunction" label="Patching_usingFunction">
@@ -1246,13 +1246,13 @@ The whole operation is executed on the server side and is useful as a performanc
 
 The current page deals with patch operations on single documents.
 
-Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document#session-api), [Session API using defer](../../../client-api/operations/patching/single-document#session-api-using-defer), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
+Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), [Session API using defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
 
 Patching can be done from the client as well as in the studio.  
 
 In this page:  
-[API overview](../../../client-api/operations/patching/single-document#api-overview)  
-[Examples](../../../client-api/operations/patching/single-document#examples)  
+[API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
+[Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
 </Admonition>
 
 ## API overview
@@ -1264,7 +1264,7 @@ The patch request will be sent to server only when calling `saveChanges`, this w
 
 ### Increment Field Value
 `session.advanced().increment`
-<TabItem value="something-something" label="patch_generic_interface_increment">
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
 <CodeBlock language="java">
 {`<T, U> void increment(String id, String path, U valueToAdd);
 
@@ -1281,11 +1281,11 @@ The patch request will be sent to server only when calling `saveChanges`, this w
 | **entity id** | `String` | Entity ID on which the operation should be performed. |
 | **delta** | `U` | Value to be added. |
 
-* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb) in RavenDB.
+* Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.
 
 ### Set Field Value
 `session.advanced().patch`
-<TabItem value="something-something" label="patch_generic_interface_set_value">
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
 <CodeBlock language="java">
 {`<T, U> void patch(String id, String path, U value);
 
@@ -1304,7 +1304,7 @@ The patch request will be sent to server only when calling `saveChanges`, this w
 
 ### Array Manipulation
 `session.advanced().patch`
-<TabItem value="something-something" label="patch_generic_interface_array_modification_lambda">
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
 <CodeBlock language="java">
 {`<T, U> void patch(T entity, String pathToArray, Consumer<JavaScriptArray<U>> arrayAdder);
 
@@ -1341,7 +1341,7 @@ One of the possible commands is the `PatchCommandData`, describing single docume
 The patch request will be sent to server only when calling `saveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
 `session.advanced().defer`
-<TabItem value="something-something" label="patch_non_generic_interface_in_session">
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
 <CodeBlock language="java">
 {`void defer(ICommandData[] commands);
 `}
@@ -1376,7 +1376,7 @@ We highly recommend using scripts with parameters. This allows RavenDB to cache 
 ## Operations API
 An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
 
-<TabItem value="something-something" label="patch_non_generic_interface_in_store">
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
 <CodeBlock language="java">
 {`PatchStatus send(PatchOperation operation);
 
@@ -1406,7 +1406,7 @@ PatchStatus send(PatchOperation operation, SessionInfo sessionInfo);
 ## List of Script Methods
 
 This is a list of a few of the javascript methods that can be used in patch scripts. See the 
-more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine#predefined-javascript-functions).  
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
 
 | Method | Arguments | Description |
 | - | - | - |
@@ -2021,47 +2021,47 @@ The method can be called by document ID or by document reference
 * This is particularly efficient for large documents or when only a small portion of the document needs to be changed, 
   reducing the amount of data transferred over the network.
 
-* The patching operation is executed on the server-side within a [Single write transaction](../../../client-api/faq/transaction-support).
+* The patching operation is executed on the server-side within a [Single write transaction](../../../client-api/faq/transaction-support.mdx).
 
 * This article covers patch operations on single documents from the Client API.  
-  To patch multiple documents that match certain criteria see [Set based patching](../../../client-api/operations/patching/set-based).  
-  Patching can also be done from the [Studio](../../../studio/database/documents/patch-view).  
+  To patch multiple documents that match certain criteria see [Set based patching](../../../client-api/operations/patching/set-based.mdx).  
+  Patching can also be done from the [Studio](../../../studio/database/documents/patch-view.mdx).  
 
 * In this page:  
 
-  * [API overview](../../../client-api/operations/patching/single-document#api-overview)    
+  * [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)    
   
-  * [Examples](../../../client-api/operations/patching/single-document#examples)  
-      * [Modify value of single field](../../../client-api/operations/patching/single-document#modify-value-of-single-field)  
-      * [Modify values of two fields](../../../client-api/operations/patching/single-document#modify-values-of-two-fields)  
-      * [Increment value](../../../client-api/operations/patching/single-document#increment-value)  
-      * [Add or increment](../../../client-api/operations/patching/single-document#add-or-increment)  
-      * [Add or patch](../../../client-api/operations/patching/single-document#add-or-patch)
-      * [Add item to array](../../../client-api/operations/patching/single-document#add-item-to-array)
-      * [Add or patch an existing array](../../../client-api/operations/patching/single-document#add-or-patch-an-existing-array)  
-      * [Insert item into specific position in array](../../../client-api/operations/patching/single-document#insert-item-into-specific-position-in-array)  
-      * [Modify item in specific position in array](../../../client-api/operations/patching/single-document#modify-item-in-specific-position-in-array)  
-      * [Remove items from array](../../../client-api/operations/patching/single-document#remove-items-from-array)  
-      * [Load documents in a script](../../../client-api/operations/patching/single-document#load-documents-in-a-script)  
-      * [Remove property](../../../client-api/operations/patching/single-document#remove-property)  
-      * [Rename property](../../../client-api/operations/patching/single-document#rename-property)  
-      * [Add document](../../../client-api/operations/patching/single-document#add-document)  
-      * [Clone document](../../../client-api/operations/patching/single-document#clone-document)  
-      * [Create/Increment counter](../../../client-api/operations/patching/single-document#createincrement-counter)  
-      * [Delete counter](../../../client-api/operations/patching/single-document#delete-counter)  
-      * [Get counter](../../../client-api/operations/patching/single-document#get-counter)  
-      * [Patching using inline string compilation](../../../client-api/operations/patching/single-document#patching-using-inline-string-compilation)  
+  * [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+      * [Modify value of single field](../../../client-api/operations/patching/single-document.mdx#modify-value-of-single-field)  
+      * [Modify values of two fields](../../../client-api/operations/patching/single-document.mdx#modify-values-of-two-fields)  
+      * [Increment value](../../../client-api/operations/patching/single-document.mdx#increment-value)  
+      * [Add or increment](../../../client-api/operations/patching/single-document.mdx#add-or-increment)  
+      * [Add or patch](../../../client-api/operations/patching/single-document.mdx#add-or-patch)
+      * [Add item to array](../../../client-api/operations/patching/single-document.mdx#add-item-to-array)
+      * [Add or patch an existing array](../../../client-api/operations/patching/single-document.mdx#add-or-patch-an-existing-array)  
+      * [Insert item into specific position in array](../../../client-api/operations/patching/single-document.mdx#insert-item-into-specific-position-in-array)  
+      * [Modify item in specific position in array](../../../client-api/operations/patching/single-document.mdx#modify-item-in-specific-position-in-array)  
+      * [Remove items from array](../../../client-api/operations/patching/single-document.mdx#remove-items-from-array)  
+      * [Load documents in a script](../../../client-api/operations/patching/single-document.mdx#load-documents-in-a-script)  
+      * [Remove property](../../../client-api/operations/patching/single-document.mdx#remove-property)  
+      * [Rename property](../../../client-api/operations/patching/single-document.mdx#rename-property)  
+      * [Add document](../../../client-api/operations/patching/single-document.mdx#add-document)  
+      * [Clone document](../../../client-api/operations/patching/single-document.mdx#clone-document)  
+      * [Create/Increment counter](../../../client-api/operations/patching/single-document.mdx#createincrement-counter)  
+      * [Delete counter](../../../client-api/operations/patching/single-document.mdx#delete-counter)  
+      * [Get counter](../../../client-api/operations/patching/single-document.mdx#get-counter)  
+      * [Patching using inline string compilation](../../../client-api/operations/patching/single-document.mdx#patching-using-inline-string-compilation)  
   
-  * [Syntax](../../../client-api/operations/patching/single-document#syntax)
-      * [Session API syntax](../../../client-api/operations/patching/single-document#session-api-syntax)
-      * [Session API using defer syntax](../../../client-api/operations/patching/single-document#session-api-using-defer-syntax)
-      * [Operations API syntax](../../../client-api/operations/patching/single-document#operations-api-syntax)
-      * [List of script methods syntax](../../../client-api/operations/patching/single-document#list-of-script-methods-syntax)
+  * [Syntax](../../../client-api/operations/patching/single-document.mdx#syntax)
+      * [Session API syntax](../../../client-api/operations/patching/single-document.mdx#session-api-syntax)
+      * [Session API using defer syntax](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax)
+      * [Operations API syntax](../../../client-api/operations/patching/single-document.mdx#operations-api-syntax)
+      * [List of script methods syntax](../../../client-api/operations/patching/single-document.mdx#list-of-script-methods-syntax)
 
 </Admonition>
 ## API overview
 
-Patching can be performed using either of the following interfaces (detailed syntax is provided [below](../../../client-api/operations/patching/single-document#syntax)):
+Patching can be performed using either of the following interfaces (detailed syntax is provided [below](../../../client-api/operations/patching/single-document.mdx#syntax)):
 
 * **Session API**
 * **Session API using defer** 
@@ -2072,10 +2072,10 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 * This interface allows performing most common patch operations.
 
-* Multiple patch methods can be defined on the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work) 
-  and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../client-api/session/saving-changes).
+* Multiple patch methods can be defined on the [session](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx) 
+  and are sent to the server for execution in a single batch (along with any other modified documents) only when calling [SaveChanges](../../../client-api/session/saving-changes.mdx).
 
-* This API includes the following patching methods (see examples [below](../../../client-api/operations/patching/single-document#examples)):
+* This API includes the following patching methods (see examples [below](../../../client-api/operations/patching/single-document.mdx#examples)):
   * `patch`
   * `addOrPatch`
   * `increment`
@@ -2102,7 +2102,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 
 #### Operations API
 
-* [Operations](../../../client-api/operations/what-are-operations) allow performing ad-hoc requests directly on the document store **without** creating a session.
+* [Operations](../../../client-api/operations/what-are-operations.mdx) allow performing ad-hoc requests directly on the document store **without** creating a session.
 
 * Similar to the above _defer_ usage, define the patch request yourself with a script and optional variables.  
 
@@ -2118,7 +2118,7 @@ Patching can be performed using either of the following interfaces (detailed syn
 #### Modify value of single field  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert using the 'patch' method
 // ===================================================
 
@@ -2128,7 +2128,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert using 'defer' with 'PatchCommandData'
 // ================================================================
 
@@ -2144,7 +2144,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert via 'PatchOperation' on the documentStore
 // ====================================================================
 
@@ -2165,7 +2165,7 @@ await documentStore.operations.send(patchOp);
 #### Modify values of two fields
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert and LastName to Carter in single request
 // ===================================================================
 
@@ -2185,7 +2185,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert and LastName to Carter in single request
 // ===================================================================
 
@@ -2206,7 +2206,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify FirstName to Robert and LastName to Carter in single request
 // ===================================================================
 
@@ -2232,7 +2232,7 @@ await documentStore.operations.send(patchOp);
 #### Increment value
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Increment UnitsInStock property value by 10
 // ===========================================
 
@@ -2242,7 +2242,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Increment UnitsInStock property value by 10
 // ===========================================
 
@@ -2260,7 +2260,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Increment UnitsInStock property value by 10
 // ===========================================
 
@@ -2296,7 +2296,7 @@ await documentStore.operations.send(patchOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// An entity that will be used in case the specified document is not found:
 const newUser = new User();
 newUser.firstName = "John";
@@ -2319,7 +2319,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="User_class" label="User_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class User {
     constructor(
         id = null,
@@ -2362,7 +2362,7 @@ await session.saveChanges();
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// An entity that will be used in case the specified document is not found:
 const newUser = new User();
 newUser.firstName = "John";
@@ -2385,7 +2385,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="User_class" label="User_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class User {
     constructor(
         id = null,
@@ -2425,7 +2425,7 @@ await session.saveChanges();
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add a new comment to an array
 // =============================
 
@@ -2447,7 +2447,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add a new comment to an array
 // =============================
 
@@ -2470,7 +2470,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add a new comment to an array
 // =============================
 
@@ -2491,7 +2491,7 @@ await documentStore.operations.send(patchOp);
 </CodeBlock>
 </TabItem>
 <TabItem value="Blog_classes" label="Blog_classes">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPost {
     constructor(
         id = null,
@@ -2542,7 +2542,7 @@ class BlogComment {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// An entity that will be used in case the specified document is not found:
 const newUser = new User();
 newUser.firstName = "John";
@@ -2565,7 +2565,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="User_class" label="User_class">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class User {
     constructor(
         id = null,
@@ -2599,7 +2599,7 @@ await session.saveChanges();
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Insert a new comment at position 1
 // ==================================
 
@@ -2622,7 +2622,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Insert a new comment at position 1
 // ==================================
 
@@ -2643,7 +2643,7 @@ await documentStore.operations.send(patchOp);
 </CodeBlock>
 </TabItem>
 <TabItem value="Blog_classes" label="Blog_classes">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPost {
     constructor(
         id = null,
@@ -2685,7 +2685,7 @@ class BlogComment {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify comment at position 3
 // ============================
 
@@ -2708,7 +2708,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify comment at position 3
 // ============================
 
@@ -2729,7 +2729,7 @@ await documentStore.operations.send(patchOp);
 </CodeBlock>
 </TabItem>
 <TabItem value="Blog_classes" label="Blog_classes">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPost {
     constructor(
         id = null,
@@ -2771,7 +2771,7 @@ class BlogComment {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Remove all comments that contain the word "wrong" in their content
 // ==================================================================
 
@@ -2792,7 +2792,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Remove all comments that contain the word "wrong" in their content
 // ==================================================================
 
@@ -2811,7 +2811,7 @@ await documentStore.operations.send(patchOp);
 </CodeBlock>
 </TabItem>
 <TabItem value="Blog_classes" label="Blog_classes">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPost {
     constructor(
         id = null,
@@ -2852,7 +2852,7 @@ class BlogComment {
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Load a related document and update a field
 // ==========================================
 
@@ -2872,7 +2872,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Load a related document and update a field
 // ==========================================
 
@@ -2899,7 +2899,7 @@ await documentStore.operations.send(patchOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Remove a document property
 // ==========================
 
@@ -2916,7 +2916,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Remove a document property
 // ==========================
 
@@ -2940,7 +2940,7 @@ await documentStore.operations.send(patchOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Rename property Name to ProductName
 // ===================================
 
@@ -2963,7 +2963,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Rename property Name to ProductName
 // ===================================
 
@@ -2993,7 +2993,7 @@ await documentStore.operations.send(patchOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add a new document
 // ==================
 
@@ -3017,7 +3017,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Add a new document
 // ==================
 
@@ -3048,7 +3048,7 @@ await documentStore.operations.send(patchOp);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Clone a document
 // ================
 
@@ -3068,7 +3068,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Clone a document
 // ================
 
@@ -3101,7 +3101,7 @@ Attachments, counters, time series data, and revisions from the source document 
 #### Create/Increment counter  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Increment/Create counter
 // ========================
 
@@ -3112,7 +3112,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Create/Increment counter
 // ========================
 
@@ -3135,7 +3135,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Create/Increment counter
 // ========================
 
@@ -3159,7 +3159,7 @@ await documentStore.operations.send(patchOp);
 
 <Admonition type="info" title="Info">
 
-Learn more about Counters in this [Counters Overview](../../../document-extensions/counters/overview).
+Learn more about Counters in this [Counters Overview](../../../document-extensions/counters/overview.mdx).
 
 </Admonition>
 
@@ -3169,7 +3169,7 @@ Learn more about Counters in this [Counters Overview](../../../document-extensio
 #### Delete counter  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Delete counter
 // ==============
 
@@ -3179,7 +3179,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Delete counter
 // ==============
 
@@ -3201,7 +3201,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Delete counter
 // ==============
 
@@ -3228,7 +3228,7 @@ await documentStore.operations.send(patchOp);
 #### Get counter  
 <Tabs groupId='languageSyntax'>
 <TabItem value="Session_syntax" label="Session_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Get counter value
 // =================
 
@@ -3237,7 +3237,7 @@ const counters = await session.counterFor("products/1-A").get("Likes");
 </CodeBlock>
 </TabItem>
 <TabItem value="Session_defer_syntax" label="Session_defer_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Get counter value
 // =================
 
@@ -3262,7 +3262,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Operations_syntax" label="Operations_syntax">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Get counter value
 // =================
 
@@ -3292,11 +3292,11 @@ await documentStore.operations.send(patchOp);
 #### Patching using inline string compilation  
 * When using a JavaScript script with the _defer_ or _operations_ syntax,  
   you can apply logic using **inline string compilation**.
-* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration#patching.allowstringcompilation) configuration key to _true_.
+* To enable this, set the [Patching.AllowStringCompilation](../../../server/configuration/patching-configuration.mdx#patching.allowstringcompilation) configuration key to _true_.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Patching_usingFunction" label="Patching_usingFunction">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify value using inline string compilation
 // ============================================
 
@@ -3332,7 +3332,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Patching_usingEval" label="Patching_usingEval">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Modify value using inline string compilation
 // ============================================
 
@@ -3374,8 +3374,8 @@ await documentStore.operations.send(patchOp);
 ### Session API syntax
 
 
-<TabItem value="something-something" label="patch_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="patch_syntax" label="patch_syntax">
+<CodeBlock language="js">
 {`patch(id, path, value);
 patch(entity, path, value);
 `}
@@ -3389,8 +3389,8 @@ patch(entity, path, value);
 | **Path**     | `string` | The path to the field.                                                                                                                            |
 | **value**    | `object` | Value to set.                                                                                                                                     |
 
-<TabItem value="something-something" label="add_or_patch_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="add_or_patch_syntax" label="add_or_patch_syntax">
+<CodeBlock language="js">
 {`addOrPatch(id, entity, pathToObject, value);
 `}
 </CodeBlock>
@@ -3403,8 +3403,8 @@ patch(entity, path, value);
 | **Path**    | `string` | The path to the field.                                                                   |
 | **value**   | `object` | Value to set.                                                                            |
 
-<TabItem value="something-something" label="increment_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="increment_syntax" label="increment_syntax">
+<CodeBlock language="js">
 {`increment(id, path, valueToAdd);
 increment(entity, path, valueToAdd);
 `}
@@ -3416,10 +3416,10 @@ increment(entity, path, valueToAdd);
 | **id**          | `string` | Document ID on which patching should be performed.                                                                                                |
 | **entity**      | `object` | Entity on which patching should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation. |
 | **path**        | `string` | The path to the field.                                                                                                                            |
-| **valueToAdd**  | `object` | Value to increment by.<br/>Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb) in RavenDB.            |
+| **valueToAdd**  | `object` | Value to increment by.<br/>Note how numbers are handled with the [JavaScript engine](../../../server/kb/numbers-in-ravendb.mdx) in RavenDB.            |
 
-<TabItem value="something-something" label="add_or_increment_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="add_or_increment_syntax" label="add_or_increment_syntax">
+<CodeBlock language="js">
 {`addOrIncrement(id, entity, pathToObject, valToAdd);
 `}
 </CodeBlock>
@@ -3432,8 +3432,8 @@ increment(entity, path, valueToAdd);
 | **path**       | `string` | The path to the field.                                                                   |
 | **valueToAdd** | `object` | Value to increment by.                                                                   |
 
-<TabItem value="something-something" label="patch_array_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="patch_array_syntax" label="patch_array_syntax">
+<CodeBlock language="js">
 {`patchArray(id, pathToArray, arrayAdder);
 patchArray(entity, pathToArray, arrayAdder);
 `}
@@ -3447,8 +3447,8 @@ patchArray(entity, pathToArray, arrayAdder);
 | **pathToArray** | `string`                    | The path to the array field.                                                                                                                      |
 | **arrayAdder**  | `(JavaScriptArray) => void` | Function that modifies the array.                                                                                                                 |
 
-<TabItem value="something-something" label="add_or_patch_array_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="add_or_patch_array_syntax" label="add_or_patch_array_syntax">
+<CodeBlock language="js">
 {`addOrPatchArray(id, entity, pathToObject, arrayAdder);
 `}
 </CodeBlock>
@@ -3461,8 +3461,8 @@ patchArray(entity, pathToArray, arrayAdder);
 | **pathToArray** | `string`                    | The path to the array field.                                                             |
 | **arrayAdder**  | `(JavaScriptArray) => void` | Function that modifies the array.                                                        |                                                                                                                                 |
 
-<TabItem value="something-something" label="class_JavaScriptArray">
-<CodeBlock language="nodejs">
+<TabItem value="class_JavaScriptArray" label="class_JavaScriptArray">
+<CodeBlock language="js">
 {`class JavaScriptArray \{
     push(...u);      // Add a list of values to add to the array
     removeAt(index); // Remove an item from position 'index' in the array
@@ -3472,8 +3472,8 @@ patchArray(entity, pathToArray, arrayAdder);
 </TabItem>
 ### Session API using defer syntax
 
-<TabItem value="something-something" label="defer_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="defer_syntax" label="defer_syntax">
+<CodeBlock language="js">
 {`session.advanced.defer(...commands);
 `}
 </CodeBlock>
@@ -3483,8 +3483,8 @@ patchArray(entity, pathToArray, arrayAdder);
 |--------------|------------|-----------------------------------------------------------------------------------------------------------|
 | **commands** | `object[]` | List of commands that will be executed on the server.<br/>Use the `PatchCommandData` command for patching. |
 
-<TabItem value="something-something" label="class_PatchCommandData">
-<CodeBlock language="nodejs">
+<TabItem value="class_PatchCommandData" label="class_PatchCommandData">
+<CodeBlock language="js">
 {`class PatchCommandData \{
     // ID of document to be patched
     id; // string
@@ -3503,8 +3503,8 @@ patchArray(entity, pathToArray, arrayAdder);
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="class_PatchRequest">
-<CodeBlock language="nodejs">
+<TabItem value="class_PatchRequest" label="class_PatchRequest">
+<CodeBlock language="js">
 {`class PatchRequest \{
     //  The JavaScript code to be run on the server
     script; // string
@@ -3521,10 +3521,10 @@ patchArray(entity, pathToArray, arrayAdder);
 </TabItem>
 ### Operations API syntax
 
-* Learn more about using operations in this [Operations overview](../../../client-api/operations/what-are-operations).
+* Learn more about using operations in this [Operations overview](../../../client-api/operations/what-are-operations.mdx).
 
-<TabItem value="something-something" label="operations_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="operations_syntax" label="operations_syntax">
+<CodeBlock language="js">
 {`const patchOperation = new PatchOperation(id, changeVector, patch);
 
 const patchOperation = new PatchOperation(id, changeVector, patch, patchIfMissing,
@@ -3543,7 +3543,7 @@ const patchOperation = new PatchOperation(id, changeVector, patch, patchIfMissin
 ### List of script methods syntax
 
 * For a complete list of JavaScript methods available in patch scripts,  
-  refer to [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine#predefined-javascript-functions).
+  refer to [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).
 
 
 

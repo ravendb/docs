@@ -20,7 +20,7 @@ Indexes in RavenDB are user provided LINQ queries running on top of dynamic JSON
 
 An index definition such as the following one will fail:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "Posts_TitleLength",
@@ -34,7 +34,7 @@ An index definition such as the following one will fail:
 
 The error is the use of single quotes to enclose a string, something that is not allowed in C#. This will result in the following compilation error:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`IndexCompilationException: Failed to compile index Posts_TitleLength
 
@@ -95,7 +95,7 @@ Please note that the index definition differs from the send one, because interna
 
 A common case is an index that doesn't take into account that other documents also exists on the server. For example, let us take this index:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Name": "YearOfBirth",
@@ -119,7 +119,7 @@ Index execution errors can be viewed in two places:
 
 * View **index statistics** and **index error statistics** 
   in `/indexes/stats` and `/indexes/errors`.  
-* View indexes activity, including errors, in a human-readable form via [Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+* View indexes activity, including errors, in a human-readable form via [Studio](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors).  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Statistics" label="Statistics">

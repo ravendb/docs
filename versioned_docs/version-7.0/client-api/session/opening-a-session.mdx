@@ -21,21 +21,21 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store).  
+* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
 
 * A Session can operate Synchronously or Asynchronously.  
   * `OpenSession()` - Open a Session for a **Synchronous** mode of operation.  
   * `OpenAsyncSession()` - Open a Session for **Asynchronous** mode of operation.  
 
 * Various Session options can be configured using the `SessionOptions` object.  
-  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database) (stored in the Document Store) is assumed.
+  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.
 
 * Be sure to wrap the Session variable with a 'using' statement to ensure proper disposal.
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session#syntax)  
-  * [Session options](../../client-api/session/opening-a-session#session-options)  
-  * [Open session example](../../client-api/session/opening-a-session#open-session-example)
+  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session options](../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Open session example](../../client-api/session/opening-a-session.mdx#open-session-example)
 </Admonition>
 ## Syntax
 
@@ -74,7 +74,7 @@ IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `string`           | The Session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
+| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options). |
 
 | Return Value                                 | Description                   |
 |----------------------------------------------|-------------------------------|
@@ -89,16 +89,16 @@ IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
 | Option                                                  | Type              | Description                                                                                                                                                                                                                               | Default Value                                         |
 |---------------------------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **Database**                                            | `string`            | The Session will operate on this database,<br/>overriding the Default Database.                                                                                                                                                            | `null` - the Session operates on the Default Database |
-| **NoTracking**                                          | `bool`              | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false`                                               |
-| **NoCaching**                                           | `bool`              | `true` - Server responses will Not be cached.<br/>`false` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `false`                                               |
+| **NoTracking**                                          | `bool`              | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false`                                               |
+| **NoCaching**                                           | `bool`              | `true` - Server responses will Not be cached.<br/>`false` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `false`                                               |
 | **RequestExecutor**                                     | `RequestExecutor` | ( _Advanced option_ ) <br/>The request executor the Session should use.                                                                                                                                                                    | `null` - the default request executor is used         |
-| **TransactionMode**                                     | `TransactionMode` | Specify the Session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                          |
+| **TransactionMode**                                     | `TransactionMode` | Specify the Session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                          |
 
 * Experts Only:
 
 | Option                                                       | Type                | Description                                                                                                                                                                                                                                             | Default Value |
 |--------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **DisableAtomicDocumentWrites-<br/>InClusterWideTransaction** | `bool?`               | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `false`       |
+| **DisableAtomicDocumentWrites-<br/>InClusterWideTransaction** | `bool?`               | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) | `false`       |
 
 
 
@@ -184,7 +184,7 @@ To open session use the `openSession` method from `DocumentStore`.
 
 There are three overloads of `openSession` methods
 
-<TabItem value="something-something" label="open_session_1">
+<TabItem value="open_session_1" label="open_session_1">
 <CodeBlock language="java">
 {`// Open session for a 'default' database configured in 'DocumentStore'
 IDocumentSession openSession();
@@ -199,7 +199,7 @@ IDocumentSession openSession(SessionOptions sessionOptions);
 
 The first method is an equivalent of doing
 
-<TabItem value="something-something" label="open_session_2">
+<TabItem value="open_session_2" label="open_session_2">
 <CodeBlock language="java">
 {`store.openSession(new SessionOptions());
 `}
@@ -208,7 +208,7 @@ The first method is an equivalent of doing
 
 The second method is an equivalent of doing
 
-<TabItem value="something-something" label="open_session_3">
+<TabItem value="open_session_3" label="open_session_3">
 <CodeBlock language="java">
 {`SessionOptions sessionOptions = new SessionOptions();
 sessionOptions.setDatabase(databaseName);
@@ -227,7 +227,7 @@ store.openSession(sessionOptions);
 
 ## Options
 
-<TabItem value="something-something" label="session_options">
+<TabItem value="session_options" label="session_options">
 <CodeBlock language="java">
 {`private String database;
 private boolean noTracking;
@@ -242,16 +242,16 @@ private TransactionMode transactionMode;
 
 | Options | | |
 | ------------- | ------------- | ----- |
-| **database** | String | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database) is used. |
-| **noTracking** | boolean | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking). |
-| **noCaching** | boolean | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching). |
+| **database** | String | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database.mdx) is used. |
+| **noTracking** | boolean | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking.mdx). |
+| **noCaching** | boolean | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching.mdx). |
 | **requestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
-| **transactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SINGLE_NODE`, but session can also operate 'CLUSTER_WIDE'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
+| **transactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SINGLE_NODE`, but session can also operate 'CLUSTER_WIDE'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions.mdx). |
 
 
 ## Example I
 
-<TabItem value="something-something" label="open_session_4">
+<TabItem value="open_session_4" label="open_session_4">
 <CodeBlock language="java">
 {`try (IDocumentSession session = store.openSession()) \{
     // code here
@@ -262,7 +262,7 @@ private TransactionMode transactionMode;
 
 ## Example II - Disabling Entities Tracking
 
-<TabItem value="something-something" label="open_session_tracking_1">
+<TabItem value="open_session_tracking_1" label="open_session_tracking_1">
 <CodeBlock language="java">
 {`SessionOptions sessionOptions = new SessionOptions();
 sessionOptions.setNoTracking(true);
@@ -290,25 +290,25 @@ try (IDocumentSession session = store.openSession()) \{
 
 <Admonition type="note" title="Note">
 
-* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store).  
+* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
 
 * Open a session using `open_session()`.  
 
 * Various Session options can be configured using the `SessionOptions` object.  
-  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database) (stored in the Document Store) is assumed.  
+  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.  
 
 * Be sure to wrap the session variable using a 'with' statement to ensure proper disposal.
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session#syntax)  
-  * [Session options](../../client-api/session/opening-a-session#session-options)  
-  * [Open session example](../../client-api/session/opening-a-session#open-session-example)
+  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session options](../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Open session example](../../client-api/session/opening-a-session.mdx#open-session-example)
 </Admonition>
 ## Syntax
 
 Use `open_session()` to open a session from the Document Store.  
 
-<TabItem value="something-something" label="open_session_1">
+<TabItem value="open_session_1" label="open_session_1">
 <CodeBlock language="python">
 {`# Open a Session, you may pass either specified database, or preconfigured SessionOptions object
 # Passing no optional arguments opens a session for the default database configured in DocumentStore.database
@@ -323,7 +323,7 @@ def open_session(
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `str`              | The session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
+| **options**  | `SessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options). |
 
 | Return Value                                 | Description                   |
 |----------------------------------------------|-------------------------------|
@@ -338,16 +338,16 @@ def open_session(
 | Option                                                  | Type               | Description                                                                                                                                                                                                                               | Default Value                                         |
 |---------------------------------------------------------|------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **database**                                            | `str`                | The Session will operate on this database,<br/>overriding the Default Database.                                                                                                                                                            | `None` - the Session operates on the Default Database |
-| **no_tracking**                                         | `bool`               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`False` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `False`                                               |
-| **no_caching**                                          | `bool`               | `True` - Server responses will not be cached.<br/>`False` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `False`                                               |
+| **no_tracking**                                         | `bool`               | `True` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`False` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `False`                                               |
+| **no_caching**                                          | `bool`               | `True` - Server responses will not be cached.<br/>`False` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `False`                                               |
 | **request_executor**                                    | `RequestExecutor`  | ( _Advanced option_ ) <br/>The request executor the Session should use.                                                                                                                                                                    | `None` - the default request executor is used         |
-| **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br/>`SINGLE_NODE` / `CLUSTER_WIDE`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
+| **transaction_mode**                                    | `TransactionMode`  | Specify the Session's transaction mode<br/>`SINGLE_NODE` / `CLUSTER_WIDE`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction)      | `SINGLE_NODE`                                         |
 
 * Experts Only:
 
 | Option                                                             | Type                | Description                                                                                                                                                                                                                                             | Default Value |
 |--------------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **disable_atomic_document_writes_in_cluster_wide_transaction**     | `bool`                | **Experts only**<br/>`True` - Disable Atomic-Guards in cluster-wide sessions.<br/>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `False`       |
+| **disable_atomic_document_writes_in_cluster_wide_transaction**     | `bool`                | **Experts only**<br/>`True` - Disable Atomic-Guards in cluster-wide sessions.<br/>`False` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) | `False`       |
 
 
 
@@ -355,7 +355,7 @@ def open_session(
 
 * The following example opens a **cluster-wide Session**:
 
-<TabItem value="something-something" label="open_session_2">
+<TabItem value="open_session_2" label="open_session_2">
 <CodeBlock language="python">
 {`with DocumentStore() as store:
     store.open_session()
@@ -378,27 +378,27 @@ def open_session(
 
 <Admonition type="note" title="Note">
 
-* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store).  
+* A Session object is obtained from the [Document Store](../../client-api/what-is-a-document-store.mdx).  
 
 * Open a session using `openSession()`.  
 
 * Various Session options can be configured using the `sessionOptions` object.  
-  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database) (stored in the Document Store) is assumed.
+  If no database is specified in the options then the [Default Database](../../client-api/setting-up-default-database.mdx) (stored in the Document Store) is assumed.
 
 * Make sure you release allocated session resources using the `close` method or wrapping 
-  the session object in a `try` statement ([see below](../../client-api/session/opening-a-session#example-3---releasing-session-resources)).  
+  the session object in a `try` statement ([see below](../../client-api/session/opening-a-session.mdx#example-3---releasing-session-resources)).  
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session#syntax)  
-  * [Session options](../../client-api/session/opening-a-session#session-options)  
-  * [Open session examples](../../client-api/session/opening-a-session#open-session-examples)
+  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session options](../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Open session examples](../../client-api/session/opening-a-session.mdx#open-session-examples)
 </Admonition>
 ## Syntax
 
 * Use `openSession()` to open a session from the Document Store.  
 * The following overloads are available:  
 
-<TabItem value="something-something" label="open_session_1">
+<TabItem value="open_session_1" label="open_session_1">
 <CodeBlock language="php">
 {`// Open session for a 'default' database configured in 'DocumentStore'
 public function openSession(): DocumentSessionInterface;
@@ -414,7 +414,7 @@ public function openSession(SessionOptions $sessionOptions): DocumentSessionInte
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | `string`         | The Session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `sessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
+| **options**  | `sessionOptions` | An object with Session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options). |
 
 | Return Value               | Description                |
 |----------------------------|----------------------------|
@@ -429,23 +429,23 @@ public function openSession(SessionOptions $sessionOptions): DocumentSessionInte
 | Option                | Type              | Description                                                                                                                                                                                                                               | Default Value                                         |
 |-----------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | **Database**          | `string`          | The Session will operate on this database,<br/>overriding the Default Database.                                                                                                                                                            | `null` - the Session operates on the Default Database |
-| **NoTracking**        | `bool`            | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false`                                               |
-| **NoCaching**         | `bool`            | `true` - Server responses will Not be cached.<br/>`false` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `false`                                               |
+| **NoTracking**        | `bool`            | `true` - The Session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false`                                               |
+| **NoCaching**         | `bool`            | `true` - Server responses will Not be cached.<br/>`false` - The Session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `false`                                               |
 | **RequestExecutor**   | `RequestExecutor` | ( _Advanced option_ ) <br/>The request executor the Session should use.                                                                                                                                                                    | `null` - the default request executor is used         |
-| **TransactionMode**   | `TransactionMode` | Specify the Session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                          |
+| **TransactionMode**   | `TransactionMode` | Specify the Session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                          |
 
 * Experts Only:
 
 | Option                                                       | Type                | Description                                                                                                                                                                                                                                             | Default Value |
 |--------------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **DisableAtomicDocumentWrites-<br/>InClusterWideTransaction** | `bool?`               | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `false`       |
+| **DisableAtomicDocumentWrites-<br/>InClusterWideTransaction** | `bool?`               | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) | `false`       |
 
 
 
 ## Open session examples
 
 #### Example 1
-<TabItem value="something-something" label="open_session_2">
+<TabItem value="open_session_2" label="open_session_2">
 <CodeBlock language="php">
 {`$store->openSession(new SessionOptions());
 `}
@@ -453,7 +453,7 @@ public function openSession(SessionOptions $sessionOptions): DocumentSessionInte
 </TabItem>
 
 #### Example 2
-<TabItem value="something-something" label="open_session_3">
+<TabItem value="open_session_3" label="open_session_3">
 <CodeBlock language="php">
 {`$sessionOptions = new SessionOptions();
 $sessionOptions->setDatabase($databaseName);
@@ -467,7 +467,7 @@ $store->openSession($sessionOptions);
 Always remember to release allocated session resources after usage by 
 invoking the `close` method or wrapping the session object in a `try` statement.
 </Admonition>
-<TabItem value="something-something" label="open_session_4">
+<TabItem value="open_session_4" label="open_session_4">
 <CodeBlock language="php">
 {`$session = $store->openSession();
 try \{
@@ -480,7 +480,7 @@ try \{
 </TabItem>
 
 #### Example 4 - Disable entities tracking
-<TabItem value="something-something" label="open_session_no_tracking">
+<TabItem value="open_session_no_tracking" label="open_session_no_tracking">
 <CodeBlock language="php">
 {`$sessionOptions = new SessionOptions();
 $sessionOptions->setNoTracking(true);
@@ -500,7 +500,7 @@ try \{
 </TabItem>
 
 #### Example 5 - Disable session caching
-<TabItem value="something-something" label="open_session_no_caching">
+<TabItem value="open_session_no_caching" label="open_session_no_caching">
 <CodeBlock language="php">
 {`$sessionOptions = new SessionOptions();
 $sessionOptions->setNoCaching(true);
@@ -522,27 +522,27 @@ try \{
 
 <Admonition type="note" title="Note">
 
-* A session object is obtained from the [document store](../../client-api/what-is-a-document-store).  
+* A session object is obtained from the [document store](../../client-api/what-is-a-document-store.mdx).  
 
 * Various session options can be configured using the `SessionOptions` object.  
-  If no database is specified in the options then the [default database](../../client-api/setting-up-default-database) is assumed.  
+  If no database is specified in the options then the [default database](../../client-api/setting-up-default-database.mdx) is assumed.  
 
 * Most methods on the session object are asynchronous and return a `Promise`.    
   Either use `async & await` or `.then() & callback functions`.  
   Refer to the specific documentation for each method usage.
 
 * In this page:  
-  * [Syntax](../../client-api/session/opening-a-session#syntax)  
-  * [Session options](../../client-api/session/opening-a-session#session-options)  
-  * [Open session example](../../client-api/session/opening-a-session#open-session-example)
+  * [Syntax](../../client-api/session/opening-a-session.mdx#syntax)  
+  * [Session options](../../client-api/session/opening-a-session.mdx#session-options)  
+  * [Open session example](../../client-api/session/opening-a-session.mdx#open-session-example)
 </Admonition>
 ## Syntax
 
 * Use `openSession()` to open a session from the document store.  
 * The following overloads are available:
 
-<TabItem value="something-something" label="open_session_1">
-<CodeBlock language="nodejs">
+<TabItem value="open_session_1" label="open_session_1">
+<CodeBlock language="js">
 {`openSession();
 
 openSession(database);
@@ -555,7 +555,7 @@ openSession(sessionOptions);
 | Parameter    | Type             | Description                                                                                                                    |
 |--------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | **database** | string           | The session will operate on this database,<br/>overriding the default database set in the document store.                       |
-| **options**  | `SessionOptions` | An object with session configuration options. See details [below](../../client-api/session/opening-a-session#session-options). |
+| **options**  | `SessionOptions` | An object with session configuration options. See details [below](../../client-api/session/opening-a-session.mdx#session-options). |
 
 | Return Value        | Description                    |
 |---------------------|--------------------------------|
@@ -570,16 +570,16 @@ openSession(sessionOptions);
 | Option              | Type              | Description                                                                                                                                                                                                                               | Default Value                                          |
 |---------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
 | **database**        | string            | The session will operate on this database,<br/>overriding the Default Database.                                                                                                                                                            | `null` - the session operates on the Default Database |
-| **noTracking**      | boolean           | `true` - The session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false`                                                |
-| **noCaching**       | boolean           | `true` - Server responses will Not be cached.<br/>`false` - The session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching)                                     | `false`                                                |
+| **noTracking**      | boolean           | `true` - The session tracks changes made to all entities it loaded, stored, or queried for.<br/>`false` - Tracking will be turned off.<br/>Learn more in [Disable tracking](../../client-api/session/configuration/how-to-disable-tracking.mdx) | `false`                                                |
+| **noCaching**       | boolean           | `true` - Server responses will Not be cached.<br/>`false` - The session caches the server responses.<br/>Learn more in [Disable caching](../../client-api/session/configuration/how-to-disable-caching.mdx)                                     | `false`                                                |
 | **requestExecutor** | `RequestExecutor` | ( _Advanced option_ ) <br/>The request executor the session should use.                                                                                                                                                                    | `null` - the default request executor is used          |
-| **transactionMode** | `TransactionMode` | Specify the session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                           |
+| **transactionMode** | `TransactionMode` | Specify the session's transaction mode<br/>`SingleNode` / `ClusterWide`<br/>Learn more in [Cluster-wide vs. Single-node](../../client-api/session/cluster-transaction/overview.mdx#cluster-wide-transaction-vs.-single-node-transaction)        | `SingleNode`                                           |
 
 * Experts Only:
 
 | Option                                                         | Type     | Description                                                                                                                                                                                                                                             | Default Value |
 |----------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| **disableAtomicDocumentWrites-<br/>InClusterWideTransaction**   | boolean  | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards) | `false`       |
+| **disableAtomicDocumentWrites-<br/>InClusterWideTransaction**   | boolean  | ( _Experts only_ ) <br/>`true` - Disable Atomic-Guards in cluster-wide sessions.<br/>`false` - Automatic atomic writes in cluster-wide sessions are enabled.<br/>Learn more in [Atomic-Guards](../../client-api/session/cluster-transaction/atomic-guards.mdx) | `false`       |
 
 
 
@@ -589,7 +589,7 @@ openSession(sessionOptions);
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Using-await" label="Using-await">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Open the session, pass the options object to the session
 const session = documentStore.openSession({
     database: "your_database_name",
@@ -618,7 +618,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Using-then" label="Using-then">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Open the session, pass the options object to the session
 const session = documentStore.openSession({
     database: "your_database_name",

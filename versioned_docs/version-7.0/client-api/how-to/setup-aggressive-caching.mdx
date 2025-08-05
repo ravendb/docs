@@ -24,7 +24,7 @@ export const supportedLanguages = ["csharp", "java"];
 
 The RavenDB client provides a caching mechanism out of the box. The default caching configuration is to cache all requests.
 
-The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../client-api/configuration/conventions#maxhttpcachesize).
+The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../client-api/configuration/conventions.mdx#maxhttpcachesize).
 
 The client utilizes the notion of the `304 Not Modified` server's response and will serve the data from the cache if available.
 
@@ -33,7 +33,7 @@ The client utilizes the notion of the `304 Not Modified` server's response and w
 The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache without any usage of `304 Not Modified` status. 
 Results will be returned very fast. 
 
-Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
+Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api.mdx). By taking advantage of them, he is able to invalidate cached documents when they are changed.
 The client knows when it can serve the response from the cache, and when it has to send the request to get the up-to-date result. 
 
 <Admonition type="warning" title="Important" id="important" href="#important">
@@ -42,7 +42,7 @@ Despite the fact that the aggressive cache uses the notifications to invalidate 
 
 Options for aggressive caching can be set in the Document Store conventions:
 
-<TabItem value="something" label="aggressive_cache_conventions">
+<TabItem value="aggressive_cache_conventions" label="aggressive_cache_conventions">
 <CodeBlock language="csharp">
 {`var documentStore = new DocumentStore
 \{
@@ -65,7 +65,7 @@ We can activate this mode globally from the store or per session.
 
 To activate this mode globally from the store we just need to add one of the following lines:
 
-<TabItem value="something" label="aggressive_cache_global">
+<TabItem value="aggressive_cache_global" label="aggressive_cache_global">
 <CodeBlock language="csharp">
 {`documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
 
@@ -76,7 +76,7 @@ documentStore.AggressivelyCache(); // Defines the cache duration for 1 day
 
 If we want to activate this mode only in the session we need to add this in the session:
 
-<TabItem value="something" label="aggressive_cache_load">
+<TabItem value="aggressive_cache_load" label="aggressive_cache_load">
 <CodeBlock language="csharp">
 {`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
 \{
@@ -88,7 +88,7 @@ If we want to activate this mode only in the session we need to add this in the 
 
 If there is a value in the cache for `orders/1` that is at most 5 minutes old and we haven't got any change notification about it, we can directly return it. The same mechanism works on queries as well:
 
-<TabItem value="something" label="aggressive_cache_query">
+<TabItem value="aggressive_cache_query" label="aggressive_cache_query">
 <CodeBlock language="csharp">
 {`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
 \{
@@ -100,7 +100,7 @@ If there is a value in the cache for `orders/1` that is at most 5 minutes old an
 
 The usage of the notification system means that you can set an aggressive cache duration to a longer period. The document store exposes the method:
 
-<TabItem value="something" label="aggressive_cache_for_one_day_1">
+<TabItem value="aggressive_cache_for_one_day_1" label="aggressive_cache_for_one_day_1">
 <CodeBlock language="csharp">
 {`using (session.Advanced.DocumentStore.AggressivelyCache())
 \{ \}
@@ -110,7 +110,7 @@ The usage of the notification system means that you can set an aggressive cache 
 
 which is equivalent to:
 
-<TabItem value="something" label="aggressive_cache_for_one_day_2">
+<TabItem value="aggressive_cache_for_one_day_2" label="aggressive_cache_for_one_day_2">
 <CodeBlock language="csharp">
 {`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromDays(1)))
 \{ \}
@@ -120,7 +120,7 @@ which is equivalent to:
 
 ### Disable Change Tracking
 
-The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api). You can choose to ignore 
+The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api.mdx). You can choose to ignore 
 these notifications from the server by changing the `AggressiveCacheMode` in the Document Store conventions.  
 
 The modes are:  
@@ -129,7 +129,7 @@ those items are invalidated from the cache. The next time these items are loaded
 * `AggressiveCacheMode.DoNotTrackChanges` - Notifications from the server will be ignored. For the aggressive cache `Duration`, results will be 
 retrieved from the cache and may therefore be stale.  
 
-<TabItem value="something" label="disable_change_tracking">
+<TabItem value="disable_change_tracking" label="disable_change_tracking">
 <CodeBlock language="csharp">
 {`documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5), AggressiveCacheMode.DoNotTrackChanges);
 
@@ -147,7 +147,7 @@ We can disable the aggressive mode by simply using `documentStore.DisableAggress
 globally in the store. But what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `DisableAggressiveCaching()`
 per session?
 
-<TabItem value="something" label="disable_aggressive_cache">
+<TabItem value="disable_aggressive_cache" label="disable_aggressive_cache">
 <CodeBlock language="csharp">
 {`using (session.Advanced.DocumentStore.DisableAggressiveCaching())
 \{
@@ -165,7 +165,7 @@ per session?
 
 The RavenDB client provides a caching mechanism out of the box. The default caching configuration is to cache all requests.
 
-The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../client-api/configuration/conventions#maxhttpcachesize).
+The size of cache can be configured by changing [`MaxHttpCacheSize` convention](../../client-api/configuration/conventions.mdx#maxhttpcachesize).
 
 The client utilizes the notion of the `304 Not Modified` server's response and will serve the data from the cache if available.
 
@@ -174,7 +174,7 @@ The client utilizes the notion of the `304 Not Modified` server's response and w
 The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache without any usage of `304 Not Modified` status. 
 Results will be returned very fast. 
 
-Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
+Here's how it works: The client subscribes to server notifications using the [Changes API](../changes/what-is-changes-api.mdx). By taking advantage of them, he is able to invalidate cached documents when they are changed.
 The client knows when it can serve the response from the cache, and when it has to send the request to get the up-to-date result. 
 
 <Admonition type="warning" title="Important" id="important" href="#important">
@@ -183,7 +183,7 @@ Despite the fact that the aggressive cache uses the notifications to invalidate 
 
 Options for aggressive caching can be set in the Document Store conventions:
 
-<TabItem value="something-something" label="aggressive_cache_conventions">
+<TabItem value="aggressive_cache_conventions" label="aggressive_cache_conventions">
 <CodeBlock language="java">
 {`try (IDocumentStore documentStore = new DocumentStore()) \{
     DocumentConventions conventions = documentStore.getConventions();
@@ -200,7 +200,7 @@ We can activate this mode globally from the store or per session.
 
 To activate this mode globally from the store we just need to add one of the following lines:
 
-<TabItem value="something-something" label="aggressive_cache_global">
+<TabItem value="aggressive_cache_global" label="aggressive_cache_global">
 <CodeBlock language="java">
 {`documentStore.aggressivelyCacheFor(Duration.ofMinutes(5));
 
@@ -211,7 +211,7 @@ documentStore.aggressivelyCache(); // Defines the cache duration for 1 day
 
 If we want to activate this mode only in the session we need to add this in the session:
 
-<TabItem value="something-something" label="aggressive_cache_load">
+<TabItem value="aggressive_cache_load" label="aggressive_cache_load">
 <CodeBlock language="java">
 {`try (CleanCloseable cacheScope = session.advanced().getDocumentStore()
         .aggressivelyCacheFor(Duration.ofMinutes(5))) \{
@@ -223,7 +223,7 @@ If we want to activate this mode only in the session we need to add this in the 
 
 If there is a value in the cache for `orders/1` that is at most 5 minutes old and we haven't got any change notification about it, we can directly return it. The same mechanism works on queries as well:
 
-<TabItem value="something-something" label="aggressive_cache_query">
+<TabItem value="aggressive_cache_query" label="aggressive_cache_query">
 <CodeBlock language="java">
 {`try (CleanCloseable cacheScope = session.advanced().getDocumentStore()
         .aggressivelyCacheFor(Duration.ofMinutes(5))) \{
@@ -236,7 +236,7 @@ If there is a value in the cache for `orders/1` that is at most 5 minutes old an
 
 The usage of the notification system means that you can set an aggressive cache duration to a longer period. The document store exposes the method:
 
-<TabItem value="something-something" label="aggressive_cache_for_one_day_1">
+<TabItem value="aggressive_cache_for_one_day_1" label="aggressive_cache_for_one_day_1">
 <CodeBlock language="java">
 {`try (CleanCloseable cacheScope = session
     .advanced().getDocumentStore().aggressivelyCache()) \{
@@ -248,7 +248,7 @@ The usage of the notification system means that you can set an aggressive cache 
 
 which is equivalent to:
 
-<TabItem value="something-something" label="aggressive_cache_for_one_day_2">
+<TabItem value="aggressive_cache_for_one_day_2" label="aggressive_cache_for_one_day_2">
 <CodeBlock language="java">
 {`try (CleanCloseable cacheScope = session
     .advanced().getDocumentStore().aggressivelyCacheFor(Duration.ofDays(1))) \{
@@ -260,7 +260,7 @@ which is equivalent to:
 
 ### Disable Change Tracking
 
-The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api). You can choose to ignore 
+The client subscribes to change notifications from the server using the [Changes API](../changes/what-is-changes-api.mdx). You can choose to ignore 
 these notifications by changing the `AggressiveCacheMode` in the Document Store conventions.  
 
 The modes are:  
@@ -269,7 +269,7 @@ those items are invalidated from the cache. The next time these items are loaded
 * `AggressiveCacheMode.DO_NOT_TRACK_CHANGES` - Notifications from the server will be ignored. For the aggressive cache `Duration`, results will be 
 retrieved from the cache and may therefore be stale.  
 
-<TabItem value="something-something" label="disable_change_tracking">
+<TabItem value="disable_change_tracking" label="disable_change_tracking">
 <CodeBlock language="java">
 {`documentStore.aggressivelyCacheFor(Duration.ofMinutes(5), AggressiveCacheMode.DO_NOT_TRACK_CHANGES);
 
@@ -287,7 +287,7 @@ We can disable the aggressive mode by simply using `documentStore.disableAggress
 globally in the store. But what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `disableAggressiveCaching()`
 per session?
 
-<TabItem value="something-something" label="disable_aggressive_cache">
+<TabItem value="disable_aggressive_cache" label="disable_aggressive_cache">
 <CodeBlock language="java">
 {`try (CleanCloseable cacheScope = session.advanced().getDocumentStore()
         .disableAggressiveCaching()) \{

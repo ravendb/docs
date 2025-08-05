@@ -22,9 +22,9 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 
 
-Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection) on the server side. Collection names are also used to build document identifiers. There are two functions that the client uses to determine a collection name for a given type. The first one is used for standard objects with a well-defined type:
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection.mdx) on the server side. Collection names are also used to build document identifiers. There are two functions that the client uses to determine a collection name for a given type. The first one is used for standard objects with a well-defined type:
 
-<TabItem value="something" label="find_type_collection_name">
+<TabItem value="find_type_collection_name" label="find_type_collection_name">
 <CodeBlock language="csharp">
 {`FindCollectionName = type => // function that provides the collection name based on the entity type
 `}
@@ -33,7 +33,7 @@ Documents that have the same `@collection` metadata belong to the same [collecti
 
 The second one is dedicated for dynamic objects:
 
-<TabItem value="something" label="find_dynamic_collection_name">
+<TabItem value="find_dynamic_collection_name" label="find_dynamic_collection_name">
 <CodeBlock language="csharp">
 {`FindCollectionNameForDynamic =
     dynamicObject => // function to determine the collection name for the given dynamic object
@@ -47,7 +47,7 @@ The `FindCollectionNameForDynamic` only works on objects that inherit from [IDyn
 
 For example, if we want to determine a collection using a `Collection` property from a dynamic object, we need to set `FindCollectionNameForDynamic` as follows:
 
-<TabItem value="something" label="find_dynamic_collection_name_sample_1">
+<TabItem value="find_dynamic_collection_name_sample_1" label="find_dynamic_collection_name_sample_1">
 <CodeBlock language="csharp">
 {`FindCollectionNameForDynamic = o => o.Collection
 `}
@@ -56,7 +56,7 @@ For example, if we want to determine a collection using a `Collection` property 
 
 After that we can store our dynamic object as follows:
 
-<TabItem value="something" label="find_dynamic_collection_name_sample_2">
+<TabItem value="find_dynamic_collection_name_sample_2" label="find_dynamic_collection_name_sample_2">
 <CodeBlock language="csharp">
 {`dynamic car = new ExpandoObject();
 car.Name = "Ford";
@@ -79,7 +79,7 @@ session.Store(animal);
 
 Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `TransformTypeCollectionNameToDocumentIdPrefix` which takes the collection name and produces the prefix:
 
-<TabItem value="something" label="transform_collection_name_to_prefix">
+<TabItem value="transform_collection_name_to_prefix" label="transform_collection_name_to_prefix">
 <CodeBlock language="csharp">
 {`TransformTypeCollectionNameToDocumentIdPrefix =
     collectionName => // transform the collection name to the prefix of a identifier, e.g. [prefix]/12
@@ -93,7 +93,7 @@ Its default behavior for a collection which contains one upper character is to s
 
 In the metadata of all documents stored in a database, you can find the following property which specifies the client-side type. For instance:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Raven-Clr-Type": "Orders.Shipper, Northwind"
@@ -104,7 +104,7 @@ In the metadata of all documents stored in a database, you can find the followin
 
 This property is used by RavenDB client to perform a conversion between a .NET object and a JSON document stored in a database. A function responsible for retrieving the CLR type of an entity is defined by `FindClrTypeName` convention:
 
-<TabItem value="something" label="find_type_name">
+<TabItem value="find_type_name" label="find_type_name">
 <CodeBlock language="csharp">
 {`FindClrTypeName = type => // use reflection to determine the type;
 `}
@@ -113,7 +113,7 @@ This property is used by RavenDB client to perform a conversion between a .NET o
 
 To properly perform the revert conversion that is from a JSON result into a .NET object, we need to retrieve the CLR type from the `Raven-Clr-Type` metadata:
 
-<TabItem value="something" label="find_clr_type">
+<TabItem value="find_clr_type" label="find_clr_type">
 <CodeBlock language="csharp">
 {`FindClrType = (id, doc) =>
 \{
@@ -131,7 +131,7 @@ To properly perform the revert conversion that is from a JSON result into a .NET
 
 The client must know where in your entity an identifier is stored to be properly able to transform it into JSON document. It uses the `FindIdentityProperty` convention for that. The default and very common convention is that a property named `Id` is the identifier, so is the default one:
 
-<TabItem value="something" label="find_identity_property">
+<TabItem value="find_identity_property" label="find_identity_property">
 <CodeBlock language="csharp">
 {`FindIdentityProperty = memberInfo => memberInfo.Name == "Id"
 `}
@@ -146,7 +146,7 @@ It can happen that sometimes the results returned by the server don't have ident
 
 To perform the conversion into a .NET object, a function that finds the identity property name for a given entity name is applied:
 
-<TabItem value="something" label="find_identity_property_name_from_collection_name">
+<TabItem value="find_identity_property_name_from_collection_name" label="find_identity_property_name_from_collection_name">
 <CodeBlock language="csharp">
 {`FindIdentityPropertyNameFromCollectionName = collectionName => "Id"
 `}
@@ -158,7 +158,7 @@ To perform the conversion into a .NET object, a function that finds the identity
 According to the default, convention document identifiers have the following format: `[collectionName]/[identityValue]-[nodeTag]`. The slash character (`/`) separates the two parts of an identifier.
 You can overwrite it by using `IdentityPartsSeparator` convention. Its default definition is:
 
-<TabItem value="something" label="identity_part_separator">
+<TabItem value="identity_part_separator" label="identity_part_separator">
 <CodeBlock language="csharp">
 {`IdentityPartsSeparator = "/"
 `}
@@ -172,9 +172,9 @@ You can overwrite it by using `IdentityPartsSeparator` convention. Its default d
 
 
 
-Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection) on the server side. Collection names are also used to build document identifiers. 
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection.mdx) on the server side. Collection names are also used to build document identifiers. 
 
-<TabItem value="something-something" label="find_type_collection_name">
+<TabItem value="find_type_collection_name" label="find_type_collection_name">
 <CodeBlock language="java">
 {`conventions.setFindCollectionName(
     clazz -> // function that provides the collection name based on the entity class
@@ -186,7 +186,7 @@ Documents that have the same `@collection` metadata belong to the same [collecti
 
 Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `TransformClassCollectionNameToDocumentIdPrefix` which takes the collection name and produces the prefix:
 
-<TabItem value="something-something" label="transform_collection_name_to_prefix">
+<TabItem value="transform_collection_name_to_prefix" label="transform_collection_name_to_prefix">
 <CodeBlock language="java">
 {`conventions.setTransformClassCollectionNameToDocumentIdPrefix(
     collectionName -> // transform the collection name to the prefix of a identifier, e.g. [prefix]/12
@@ -200,7 +200,7 @@ Its default behavior is that for a collection which contains one upper character
 
 In the metadata of all documents stored by RavenDB Java Client, you can find the following property which specifies the client-side type. For instance:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Raven-Java-Type": "com.example.Customer"
@@ -211,7 +211,7 @@ In the metadata of all documents stored by RavenDB Java Client, you can find the
 
 This property is used by RavenDB client to perform a conversion between a Java object and a JSON document stored in a database. A function responsible for retrieving the Java class of an entity is defined by `findJavaClassName` convention:
 
-<TabItem value="something-something" label="find_type_name">
+<TabItem value="find_type_name" label="find_type_name">
 <CodeBlock language="java">
 {`conventions.setFindJavaClassName(
     clazz -> // use reflection to determinate the type
@@ -221,7 +221,7 @@ This property is used by RavenDB client to perform a conversion between a Java o
 
 To properly perform the revert conversion that is from a JSON result into a Java object, we need to retrieve the Java class from the `Raven-Java-Type` metadata:
 
-<TabItem value="something-something" label="find_clr_type">
+<TabItem value="find_clr_type" label="find_clr_type">
 <CodeBlock language="java">
 {`conventions.setFindJavaClass((id, doc) -> \{
     return Optional.ofNullable((ObjectNode) doc.get(Constants.Documents.Metadata.KEY))
@@ -238,7 +238,7 @@ To properly perform the revert conversion that is from a JSON result into a Java
 
 The client must know where in your entity an identifier is stored to be properly able to transform it into JSON document. It uses the `FindIdentityProperty` convention for that. The default and very common convention is that a property named `Id` is the identifier, so is the default one:
 
-<TabItem value="something-something" label="find_identity_property">
+<TabItem value="find_identity_property" label="find_identity_property">
 <CodeBlock language="java">
 {`conventions.setFindIdentityProperty(fieldInfo -> "Id".equals(fieldInfo.getName()));
 `}
@@ -253,7 +253,7 @@ It can happen that sometimes the results returned by the server don't have ident
 
 To perform the conversion into a Java object, a function that finds the identity property name for a given entity name is applied:
 
-<TabItem value="something-something" label="find_identity_property_name_from_collection_name">
+<TabItem value="find_identity_property_name_from_collection_name" label="find_identity_property_name_from_collection_name">
 <CodeBlock language="java">
 {`conventions.setFindIdentityPropertyNameFromCollectionName(
     collectionName -> "Id"
@@ -267,7 +267,7 @@ To perform the conversion into a Java object, a function that finds the identity
 According to the default, convention document identifiers have the following format: `[collectionName]/[identityValue]-[nodeTag]`. The slash character (`/`) separates the two parts of an identifier.
 You can overwrite it by using `IdentityPartsSeparator` convention. Its default definition is:
 
-<TabItem value="something-something" label="identity_part_separator">
+<TabItem value="identity_part_separator" label="identity_part_separator">
 <CodeBlock language="java">
 {`conventions.setIdentityPartsSeparator("/");
 `}
@@ -281,10 +281,10 @@ You can overwrite it by using `IdentityPartsSeparator` convention. Its default d
 
 
 
-Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection) on the server side. Collection names are also used to build document identifiers. 
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection.mdx) on the server side. Collection names are also used to build document identifiers. 
 
-<TabItem value="something-something" label="find_type_collection_name">
-<CodeBlock language="nodejs">
+<TabItem value="find_type_collection_name" label="find_type_collection_name">
+<CodeBlock language="js">
 {`conventions.findCollectionName =
     type => // function that provides the collection name based on the entity type 
 `}
@@ -295,8 +295,8 @@ Documents that have the same `@collection` metadata belong to the same [collecti
 
 Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `transformClassCollectionNameToDocumentIdPrefix()` which takes the collection name and produces the prefix:
 
-<TabItem value="something-something" label="transform_collection_name_to_prefix">
-<CodeBlock language="nodejs">
+<TabItem value="transform_collection_name_to_prefix" label="transform_collection_name_to_prefix">
+<CodeBlock language="js">
 {`conventions.transformClassCollectionNameToDocumentIdPrefix =
     collectionName => // transform the collection name to the prefix of an identifier, e.g. [prefix]/12
 `}
@@ -309,7 +309,7 @@ Its default behavior is that for a collection which contains one upper character
 
 In the metadata of all documents stored by RavenDB Node.js Client, you can find the following property which specifies the client-side type. For instance:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Raven-Node-Type": "Customer"
@@ -320,8 +320,8 @@ In the metadata of all documents stored by RavenDB Node.js Client, you can find 
 
 This property is used by RavenDB client to perform a conversion between a JS object and a JSON document stored in a database. A function responsible for retrieving the JS type of an entity is defined by `findJsTypeName()` convention:
 
-<TabItem value="something-something" label="find_type_name">
-<CodeBlock language="nodejs">
+<TabItem value="find_type_name" label="find_type_name">
+<CodeBlock language="js">
 {`conventions.findJsTypeName = 
     type => // determine the type name based on type
 `}
@@ -330,8 +330,8 @@ This property is used by RavenDB client to perform a conversion between a JS obj
 
 To properly perform the reverse conversion that is from a JSON result into a JS object, we need to retrieve the JS type from the `Raven-Node-Type` metadata:
 
-<TabItem value="something-something" label="find_clr_type">
-<CodeBlock language="nodejs">
+<TabItem value="find_clr_type" label="find_clr_type">
+<CodeBlock language="js">
 {`conventions.findJsType((id, doc) => \{
         const metadata = doc["@metadata"];
         if (metadata) \{
@@ -352,8 +352,8 @@ It can happen that sometimes the results returned by the server don't have ident
 
 To perform the conversion into a JS object, a function that finds the identity property name for a given collection name is applied:
 
-<TabItem value="something-something" label="find_identity_property_name_from_collection_name">
-<CodeBlock language="nodejs">
+<TabItem value="find_identity_property_name_from_collection_name" label="find_identity_property_name_from_collection_name">
+<CodeBlock language="js">
 {`conventions.findIdentityPropertyNameFromCollectionName =
     collectionName => "id";
 `}
@@ -365,8 +365,8 @@ To perform the conversion into a JS object, a function that finds the identity p
 By default, convention document identifiers have the following format: `[collectionName]/[identityValue]-[nodeTag]`. The slash character (`/`) separates the two parts of an identifier.
 You can overwrite it by using `IdentityPartsSeparator` convention. Its default definition is:
 
-<TabItem value="something-something" label="identity_part_separator">
-<CodeBlock language="nodejs">
+<TabItem value="identity_part_separator" label="identity_part_separator">
+<CodeBlock language="js">
 {`conventions.identityPartsSeparator = "/";
 `}
 </CodeBlock>
@@ -377,8 +377,8 @@ You can overwrite it by using `IdentityPartsSeparator` convention. Its default d
 This convention is *not defined by default*. It's only useful when using object literals as entities. It defines how the client obtains a collection name for an object literal. If it's undefined object literals stored with `session.store()` are going to land up in `@empty` collection having a UUID for an ID. 
 
 For instance here's mapping of the *category* field to collection name:
-<TabItem value="something-something" label="find_collection_name_for_object_literal">
-<CodeBlock language="nodejs">
+<TabItem value="find_collection_name_for_object_literal" label="find_collection_name_for_object_literal">
+<CodeBlock language="js">
 {`conventions.findCollectionNameForObjectLiteral = 
     entity => entity["category"]; 
     // function that provides the collection name based on the entity object

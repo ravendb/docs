@@ -19,17 +19,17 @@ In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsisten
 with their behavior in previous versions.  
 
 * In this page:
-   * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/client-breaking-changes#counterbatchoperation-default-increment-delta-is-1)  
-   * [CmpXchg item can only be created with an index of 0](../../migration/client-api/client-breaking-changes#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
-   * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/client-breaking-changes#dynamic-linq-query-cannot-apply-.any-with-logical-and-(&&))  
-   * [`LoadDocument` must be provided with a collection name string](../../migration/client-api/client-breaking-changes#loaddocument-must-be-provided-with-a-collection-name-string)  
-   * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/client-breaking-changes#tracking-operations-using-the-changes-api-now-requires-node-tag)  
-   * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes#consistency-in-null-handling)  
+   * [`CounterBatchOperation` default increment Delta is 1](../../migration/client-api/client-breaking-changes.mdx#counterbatchoperation-default-increment-delta-is-1)  
+   * [CmpXchg item can only be created with an index of 0](../../migration/client-api/client-breaking-changes.mdx#cmpxchg-item-can-only-be-created-with-an-index-of-0)  
+   * [Dynamic Linq query cannot apply `.Any` with logical AND (`&&`)](../../migration/client-api/client-breaking-changes.mdx#dynamic-linq-query-cannot-apply-.any-with-logical-and-(&&))  
+   * [`LoadDocument` must be provided with a collection name string](../../migration/client-api/client-breaking-changes.mdx#loaddocument-must-be-provided-with-a-collection-name-string)  
+   * [Tracking operations using the Changes API now requires Node Tag](../../migration/client-api/client-breaking-changes.mdx#tracking-operations-using-the-changes-api-now-requires-node-tag)  
+   * [Consistency in `null` handling](../../migration/client-api/client-breaking-changes.mdx#consistency-in-null-handling)  
 
 </Admonition>
 ## `CounterBatchOperation` default increment Delta is 1
 
-When [CounterBatchOperation](../../client-api/operations/counters/counter-batch) is 
+When [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) is 
 called to `Increment` a batch of counters, and no `Delta` is specified to indicate 
 what value should be added to the counters, the operation will increment the counters 
 by a default `Delta`.  
@@ -37,7 +37,7 @@ by a default `Delta`.
   * Previous RavenDB versions set a default `Delta` of `0`, leaving the counters value unchanged.  
   * Starting RavenDB `6.2` the default `Delta` is `1` to make it consistent with the rest of the API.  
 
-<TabItem value="something-something" label="CounterBatchOperation">
+<TabItem value="CounterBatchOperation" label="CounterBatchOperation">
 <CodeBlock language="csharp">
 {`var operationResult = store.Operations.Send(new CounterBatchOperation(new CounterBatch
 \{
@@ -72,11 +72,11 @@ by a default `Delta`.
 
 ## CmpXchg item can only be created with an index of 0
 
-Creating a [compare exchange item](../../client-api/operations/compare-exchange/put-compare-exchange-value) 
+Creating a [compare exchange item](../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx) 
 using `PutCompareExchangeValueOperation` is now possible only if the `index` parameter 
 passed to the method is `0`.  
 
-<TabItem value="something-something" label="CmpXchg">
+<TabItem value="CmpXchg" label="CmpXchg">
 <CodeBlock language="csharp">
 {`// Creating the item will fail because the index is not 0
 CompareExchangeResult<string> compareExchangeResult
@@ -98,7 +98,7 @@ RavenDB does not support dynamic Linq queries (i.e. queries executed over auto i
 when they attempt to apply multiple conditions using the `.Any` method with a logical AND (`&&`).  
 The below query, for example, is *not supported*.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`using (var store = new DocumentStore())
 \{
@@ -115,15 +115,15 @@ The below query, for example, is *not supported*.
 While _auto_ indexes do not currently support this type of query, _static_ indexes do.  
 You can define a **static fanout index** that creates separate index entries for different 
 document sub-objects, and run your query over these entries.  
-Read about the indexing of nested data [here](../../indexes/indexing-nested-data),  
-and find explanations and samples for fanout indexes [here](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).  
+Read about the indexing of nested data [here](../../indexes/indexing-nested-data.mdx),  
+and find explanations and samples for fanout indexes [here](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).  
 </Admonition>
 
 
 
 ## `LoadDocument` must be provided with a collection name String
 
-When [LoadDocument](../../indexes/indexing-related-documents) is used in an index query 
+When [LoadDocument](../../indexes/indexing-related-documents.mdx) is used in an index query 
 to load related documents, it is passed a **document ID** and a **collection name**.  
 
 The collection name **must** be passed to `LoadDocument` as a regular string; attempting 
@@ -132,7 +132,7 @@ exception and this message: `LoadDocument method has to be called with constant 
 
 The following query, for example, will fail because it attempts to build the collection name dynamically.  
 
-<TabItem value="something" label="sql">
+<TabItem value="sql" label="sql">
 <CodeBlock language="sql">
 {`from doc in docs.Orders
 select new \{
@@ -155,7 +155,7 @@ will not be thrown.
 
 ## Tracking operations using the Changes API now requires Node Tag
 
-[Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes) 
+[Tracking operations using the changes API](../../client-api/changes/how-to-subscribe-to-operation-changes.mdx) 
 now requires that you pass the changes API both a database name **and** a node tag for the specific node that 
 runs the operation/s you want to track, to ensure that the API consistently tracks this selected node.  
 
@@ -165,7 +165,7 @@ API this way will fail with an `ArgumentException` exception and the following m
 `"Changes API must be provided a node tag in order to track node-specific operations."`
 
 To track operations, open the API using this overload:  
-<TabItem value="something-something" label="changes-definition">
+<TabItem value="changes-definition" label="changes-definition">
 <CodeBlock language="csharp">
 {`ISingleNodeDatabaseChanges Changes(string database, string nodeTag);
 `}
@@ -174,7 +174,7 @@ To track operations, open the API using this overload:
 
 Then, you can use `ForOperationId` or `ForAllOperations` to track a certain operation or all 
 the operations executed by the selected node. Here's a simple usage example:  
-<TabItem value="something-something" label="changes_ForOperationId">
+<TabItem value="changes_ForOperationId" label="changes_ForOperationId">
 <CodeBlock language="csharp">
 {`IDisposable subscription = store
     .Changes(database, nodeTag)
@@ -212,7 +212,7 @@ the operations executed by the selected node. Here's a simple usage example:
 do not throw an exception when they are passed `null`, becoming consistent with the 
 behavior of the majority of RavenDB's methods.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// This will work without issues
 IAsyncDocumentSession.LoadAsync(null)

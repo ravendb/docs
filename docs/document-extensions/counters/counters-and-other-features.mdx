@@ -26,15 +26,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
-  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
-  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler)  
-  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
-  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
 </Admonition>
 
 
@@ -44,24 +44,24 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+* Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [Session.Query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
+* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-<TabItem value="something" label="counters_region_query">
+<TabItem value="counters_region_query" label="counters_region_query">
 <CodeBlock language="csharp">
 {`using (var session = docStore.OpenSession())
 \{
@@ -83,7 +83,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -127,7 +127,7 @@ var query = session.Advanced
     </Tabs>
 ### Counters and Revisions  
 
-A [document revision](../../document-extensions/revisions/overview) stores all the document Counters' 
+A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
 names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  
@@ -138,15 +138,15 @@ names and values when the revision was created.
    * Counter **value** modifications do **not** cause the creation of new revisions.  
 ### Counters and Smuggler  
 
-[Smuggler](../../client-api/smuggler/what-is-smuggler) is a DocumentStore property, that can be used 
-to [export](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions) chosen 
-database items to an external file or to [import](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions) 
+[Smuggler](../../client-api/smuggler/what-is-smuggler.mdx) is a DocumentStore property, that can be used 
+to [export](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions) chosen 
+database items to an external file or to [import](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions) 
 database items from an existing file into the database.  
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
 * To make Smuggler handle Counters, include `DatabaseItemType.CountersGroups` in `OperateOnTypes`'s list of entities to import or export.  
-<TabItem value="something" label="smuggler_options">
+<TabItem value="smuggler_options" label="smuggler_options">
 <CodeBlock language="csharp">
 {`OperateOnTypes = DatabaseItemType.Indexes
                  | DatabaseItemType.Documents
@@ -156,7 +156,7 @@ database items from an existing file into the database.
 </TabItem>
 ### Counters and Changes API
 
-[Changes API](../../client-api/changes/what-is-changes-api#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes#changes-api--how-to-subscribe-to-counter-changes).  
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
 You can target all Counters, or specify the ones you wish to follow.  
 
 * **Pushed Counter Value**: **Accumulated**  
@@ -164,39 +164,39 @@ You can target all Counters, or specify the ones you wish to follow.
 * The service is initiated by **Counter Value Modification**.  
 ### Counters and Ongoing Tasks:
 
-Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) relates to Counters in its own way.  
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
 
 * **Counters** and the **Backup task**  
-    There are two [backup](../../studio/database/tasks/backup-task) types: **logical-backup** and **snapshot**.  
+    There are two [backup](../../studio/database/tasks/backup-task.mdx) types: **logical-backup** and **snapshot**.  
     Both types store and restore **all** data, including Counters.  
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
-    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task) task replicates all data, including Counters.  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
     * **Replicated Counter Value**: **Distributed**  
         Counters are replicated along with their values on all nodes.  
     * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
 
 * **Counters** and the **ETL task**  
-    [ETL](../../server/ongoing-tasks/etl/basics) is used to export data from RavenDB to an external (either Raven or SQL) database.  
-    * [SQL ETL](../../server/ongoing-tasks/etl/sql) is **not supported**.  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
       Counters cannot be exported to an SQL database over SQL ETL.  
-    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven) **is supported**.  
-      Counters [are](../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
-* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
+* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions) task**  
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
     Documents will **not** be delivered in reaction to Counter Value modification.  
 
@@ -218,25 +218,25 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler) | _No trigger_ | _Distributed_ |
-| [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_ | |
-| [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 ### Including Counters  
-You can [include](../../client-api/how-to/handle-document-relationships#includes) Counters while loading a document.  
+You can [include](../../client-api/how-to/handle-document-relationships.mdx#includes) Counters while loading a document.  
 An included Counter is retrieved in the same request as its owner-document and is held by the session, 
 so it can be immediately retrieved when needed with no additional remote calls.
 
 
-* **Including Counters when using [Session.Load](../../client-api/session/loading-entities#session--loading-entities)**:  
+* **Including Counters when using [Session.Load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `IncludeCounter`.  
     * Include multiple Counters using `IncludeCounters`.  
 
@@ -264,7 +264,7 @@ var productPage = session.Load<Product>("orders/1-A", includeBuilder =>
 </TabItem>
     </Tabs>
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
     * Include a single Counter using `IncludeCounter`.  
     * Include multiple Counters using `IncludeCounters`.  
 
@@ -296,7 +296,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 * Syntax  
 
    * `CountersFor`
-<TabItem value="something" label="CountersFor-definition">
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
 <CodeBlock language="csharp">
 {`public CountersBulkInsert CountersFor(string id)
 `}
@@ -308,7 +308,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
         | `id` | `string` | Document ID |
 
    *   `Increment`
-<TabItem value="something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="csharp">
 {`public void Increment(string name, long delta = 1L)
 `}
@@ -329,7 +329,7 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 
 * Usage Sample  
   In this sample, we attach a counter to all User documents.
-<TabItem value="something" label="bulk-insert-counters">
+<TabItem value="bulk-insert-counters" label="bulk-insert-counters">
 <CodeBlock language="csharp">
 {`// Choose user profiles to add counters to
 using (var session = store.OpenSession())
@@ -371,15 +371,15 @@ using (var bulkInsert = store.BulkInsert())
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
-  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
-  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler)  
-  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
-  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
 </Admonition>
 
 
@@ -399,14 +399,14 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
 * Counter values **can** be projected from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
 * Use `Session.Query` to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-<TabItem value="something" label="counters_region_query">
+<TabItem value="counters_region_query" label="counters_region_query">
 <CodeBlock language="csharp">
 {`using (var session = docStore.OpenSession())
 \{
@@ -475,7 +475,7 @@ List<CounterResultRaw> query = session
     </Tabs>
 ### Counters and Revisions  
 
-A [document revision](../../document-extensions/revisions/overview) stores all the document Counters' 
+A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
 names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  
@@ -493,7 +493,7 @@ to **export** chosen database items to an external file or to
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
 * To make Smuggler handle Counters, include `DatabaseItemType.COUNTERS` in `OperateOnTypes`'s list of entities to import or export.  
-<TabItem value="something-something" label="smuggler_options">
+<TabItem value="smuggler_options" label="smuggler_options">
 <CodeBlock language="java">
 {`exportOptions.setOperateOnTypes(EnumSet.of(
     DatabaseItemType.INDEXES,
@@ -504,7 +504,7 @@ to **export** chosen database items to an external file or to
 </TabItem>
 ### Counters and Changes API
 
-[Changes API](../../client-api/changes/what-is-changes-api#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes#changes-api--how-to-subscribe-to-counter-changes).  
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
 You can target all Counters, or specify the ones you wish to follow.  
 
 * **Pushed Counter Value**: **Accumulated**  
@@ -512,7 +512,7 @@ You can target all Counters, or specify the ones you wish to follow.
 * The service is initiated by **Counter Value Modification**.  
 ### Counters and Ongoing Tasks:
 
-Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) relates to Counters in its own way.  
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
 
 * **Counters** and the **Backup task**  
     There are two backup types: **logical-backup** and **snapshot**.  
@@ -520,31 +520,31 @@ Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) rela
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
-    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task) task replicates all data, including Counters.  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
     * **Replicated Counter Value**: **Distributed**  
         Counters are replicated along with their values on all nodes.  
     * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
 
 * **Counters** and the **ETL task**  
-    [ETL](../../server/ongoing-tasks/etl/basics) is used to export data from RavenDB to an external (either Raven or SQL) database.  
-    * [SQL ETL](../../server/ongoing-tasks/etl/sql) is **not supported**.  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
       Counters cannot be exported to an SQL database over SQL ETL.  
-    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven) **is supported**.  
-      Counters [are](../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
-* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
+* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions) task**  
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
     Documents will **not** be delivered in reaction to Counter Value modification.  
 
@@ -566,15 +566,15 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler) | _No trigger_ | _Distributed_ |
-| [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_ | |
-| [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 ### Including Counters  
@@ -649,7 +649,7 @@ Use its `countersFor` interface's `increment` method to add or update counters w
 * Syntax  
 
    * `countersFor`
-<TabItem value="something-something" label="CountersFor-definition">
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
 <CodeBlock language="java">
 {`public CountersBulkInsert countersFor(String id);
 `}
@@ -661,7 +661,7 @@ Use its `countersFor` interface's `increment` method to add or update counters w
         | `id` | `String` | Document ID |
 
    *   `increment`
-<TabItem value="something-something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="java">
 {`void increment(String counterName);
 
@@ -685,7 +685,7 @@ void increment(String id, String name, long delta);
 
 * Usage Sample  
   In this sample, we attach a counter to all User documents.
-<TabItem value="something-something" label="bulk-insert-counters">
+<TabItem value="bulk-insert-counters" label="bulk-insert-counters">
 <CodeBlock language="java">
 {`try (IDocumentSession session = docStore.openSession()) \{
     IDocumentQuery<User> query = session.query(User.class)
@@ -719,14 +719,14 @@ try (BulkInsertOperation bulkInsert = docStore.bulkInsert()) \{
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
-  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
-  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
-  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
 </Admonition>
 
 
@@ -736,24 +736,24 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+* Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [session.query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
+* Use [session.query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-<TabItem value="something-something" label="counters_region_query">
+<TabItem value="counters_region_query" label="counters_region_query">
 <CodeBlock language="python">
 {`_include_single_Counter
             # include a single Counter
@@ -762,7 +762,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -802,7 +802,7 @@ query = list(session.advanced.raw_query("from users as u select counterRaw(u, 'd
     </Tabs>
 ### Counters and Revisions  
 
-A [document revision](../../document-extensions/revisions/overview) stores all the document Counters' 
+A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
 names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  
@@ -813,7 +813,7 @@ names and values when the revision was created.
    * Counter **value** modifications do **not** cause the creation of new revisions.  
 ### Counters and Changes API
 
-[Changes API](../../client-api/changes/what-is-changes-api#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes#changes-api--how-to-subscribe-to-counter-changes).  
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
 You can target all Counters, or specify the ones you wish to follow.  
 
 * **Pushed Counter Value**: **Accumulated**  
@@ -821,39 +821,39 @@ You can target all Counters, or specify the ones you wish to follow.
 * The service is initiated by **Counter Value Modification**.  
 ### Counters and Ongoing Tasks:
 
-Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) relates to Counters in its own way.  
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
 
 * **Counters** and the **Backup task**  
-    There are two [backup](../../studio/database/tasks/backup-task) types: **logical-backup** and **snapshot**.  
+    There are two [backup](../../studio/database/tasks/backup-task.mdx) types: **logical-backup** and **snapshot**.  
     Both types store and restore **all** data, including Counters.  
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
-    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task) task replicates all data, including Counters.  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
     * **Replicated Counter Value**: **Distributed**  
         Counters are replicated along with their values on all nodes.  
     * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
 
 * **Counters** and the **ETL task**  
-    [ETL](../../server/ongoing-tasks/etl/basics) is used to export data from RavenDB to an external (either Raven or SQL) database.  
-    * [SQL ETL](../../server/ongoing-tasks/etl/sql) is **not supported**.  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
       Counters cannot be exported to an SQL database over SQL ETL.  
-    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven) **is supported**.  
-      Counters [are](../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
-* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
+* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions) task**  
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
     Documents will **not** be delivered in reaction to Counter Value modification.  
 
@@ -875,25 +875,25 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler) | _No trigger_ | _Distributed_ |
-| [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_ | |
-| [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 ### Including Counters  
-You can [include](../../client-api/how-to/handle-document-relationships#includes) Counters while loading a document.  
+You can [include](../../client-api/how-to/handle-document-relationships.mdx#includes) Counters while loading a document.  
 An included Counter is retrieved in the same request as its owner-document and is held by the session, 
 so it can be immediately retrieved when needed with no additional remote calls.
 
 
-* **Including Counters when using [session.load](../../client-api/session/loading-entities#session--loading-entities)**:  
+* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `include_counter`  
     * Include multiple Counters using `include_counters`  
 
@@ -926,7 +926,7 @@ product_page = session.load(
 </TabItem>
     </Tabs>
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
     * Include a single Counter using `include_counter`.  
     * Include multiple Counters using `include_counters`.  
 
@@ -956,7 +956,7 @@ Use its `counters_for` interface's `increment` method to add or update counters 
 * Syntax  
 
    * `counters_for`
-<TabItem value="something-something" label="CountersFor-definition">
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
 <CodeBlock language="python">
 {`def counters_for(self, id_: str) -> CountersBulkInsert:
     ...
@@ -969,7 +969,7 @@ Use its `counters_for` interface's `increment` method to add or update counters 
        | **id** | `str` | Document ID |
 
    * `Increment`
-<TabItem value="something-something" label="Increment-definition">
+<TabItem value="Increment-definition" label="Increment-definition">
 <CodeBlock language="python">
 {`def increment(self, name: str, delta: int = 1) -> None: ...
 `}
@@ -990,7 +990,7 @@ Use its `counters_for` interface's `increment` method to add or update counters 
 
 * Usage Sample  
   In this sample, we attach a counter to all User documents.
-<TabItem value="something-something" label="bulk-insert-counters">
+<TabItem value="bulk-insert-counters" label="bulk-insert-counters">
 <CodeBlock language="python">
 {`with store.open_session() as session:
     result = list(session.query(object_type=User).where_less_than("Age", 30))
@@ -1021,13 +1021,13 @@ with store.bulk_insert() as bulk_insert:
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
-  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
-  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`
-  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
 </Admonition>
 
 
@@ -1037,21 +1037,21 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Send the server **raw queries** for execution.  
 
 * You can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+* Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get counter values from a query without downloading whole documents.  
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -1105,7 +1105,7 @@ A document revision stores all the document Counters' names and values when the 
    * Counter **value** modifications do **not** cause the creation of new revisions.  
 ### Counters and Changes API
 
-[Changes API](../../client-api/changes/what-is-changes-api#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes#changes-api--how-to-subscribe-to-counter-changes).  
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
 You can target all Counters, or specify the ones you wish to follow.  
 
 * **Pushed Counter Value**: **Accumulated**  
@@ -1113,10 +1113,10 @@ You can target all Counters, or specify the ones you wish to follow.
 * The service is initiated by **Counter Value Modification**.  
 ### Counters and Ongoing Tasks:
 
-Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) relates to Counters in its own way.  
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
 
 * **Counters** and the **Backup task**  
-    There are two [backup](../../studio/database/tasks/backup-task) types: **logical-backup** and **snapshot**.  
+    There are two [backup](../../studio/database/tasks/backup-task.mdx) types: **logical-backup** and **snapshot**.  
     Both types store and restore **all** data, including Counters.  
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
@@ -1128,21 +1128,21 @@ Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) rela
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
-    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task) task replicates all data, including Counters.  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
     * **Replicated Counter Value**: **Distributed**  
         Counters are replicated along with their values on all nodes.  
     * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
 
 * **Counters** and the **ETL task**  
-    [ETL](../../server/ongoing-tasks/etl/basics) is used to export data from RavenDB to an external (either Raven or SQL) database.  
-    * [SQL ETL](../../server/ongoing-tasks/etl/sql) is **not supported**.  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
       Counters cannot be exported to an SQL database over SQL ETL.  
-    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven) **is supported**.  
-      Counters [are](../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
 <Admonition type="note" title="Note">
@@ -1162,23 +1162,23 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 ### Including Counters  
-You can [include](../../client-api/how-to/handle-document-relationships#includes) Counters while loading a document.  
+You can [include](../../client-api/how-to/handle-document-relationships.mdx#includes) Counters while loading a document.  
 An included Counter is retrieved in the same request as its owner-document and is held by the session, 
 so it can be immediately retrieved when needed with no additional remote calls.
 
 
-* **Including Counters when using [session.load](../../client-api/session/loading-entities#session--loading-entities)**:  
+* **Including Counters when using [session.load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `include_counter`  
     * Include multiple Counters using `include_counters`  
 
@@ -1210,7 +1210,7 @@ $productPage = $session->load(Product::class, "products/1-C", function($includeB
 </TabItem>
     </Tabs>
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
     * Include a single Counter using `include_counter`.  
     * Include multiple Counters using `include_counters`.  
 
@@ -1251,15 +1251,15 @@ $query = $session->query(Product::class)
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing)  
-  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries)  
-  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features#counters-and-revisions)  
-  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler)  
-  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api)  
-  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
-  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features#counters-and-other-features-summary)  
-  * [Including Counters](../../document-extensions/counters/counters-and-other-features#including-counters)  
-  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features#counters-bulk-insert)  
+  * [Counters and Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing)  
+  * [Counters and Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries)  
+  * [Counters and Revisions](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions)  
+  * [Counters and Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler)  
+  * [Counters and Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-other-features-summary)  
+  * [Including Counters](../../document-extensions/counters/counters-and-other-features.mdx#including-counters)  
+  * [Counters Bulk-Insert](../../document-extensions/counters/counters-and-other-features.mdx#counters-bulk-insert)  
 </Admonition>
 
 
@@ -1269,25 +1269,25 @@ Indexing Counters can speed-up finding them and the documents that contain them.
 
 * **Indexing Counter Values**
     Dynamic indexes (aka auto-indexes) _cannot_ index counter values. To index counter values, 
-    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing)).
+    create a static index that inherits from `AbstractCountersIndexCreationTask` ([see here](../../document-extensions/counters/indexing.mdx)).
 
 * **Indexing Counter Names**  
     Re-indexing due to Counter-name modification is normally rare enough to pause no performance issues.  
-    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing#section-1).  
+    To index a document's Counters by name, use [CounterNamesFor](../../document-extensions/counters/indexing.mdx#section-1).  
 ### Counters and Queries  
 
 Create queries **using code**, or send the server **raw queries** for execution.  
 
 * Either way, you can query Counters **by name** but **not by value**.  
-  This is because queries are generally [based on indexes](../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+  This is because queries are generally [based on indexes](../../start/getting-started.mdx#example-iii---querying), and Counter values are [not indexed](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing).  
+* Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [Session.Query](../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
+* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
-<TabItem value="something-something" label="counters_region_query">
-<CodeBlock language="nodejs">
+<TabItem value="counters_region_query" label="counters_region_query">
+<CodeBlock language="js">
 {`const session = store.openSession();
 const query = session.query(\{collection: "Products"\})
     .selectFields("ProductLikes");
@@ -1300,7 +1300,7 @@ for (let counterValue in queryResults) \{
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -1314,7 +1314,7 @@ for (let counterValue in queryResults) \{
     `counter` and `counterRaw` samples:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="counter" label="counter">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`//Various RQL expressions sent to the server using counter()
 //Returned Counter value is accumulated
 const rawquery1 = session.advanced
@@ -1332,7 +1332,7 @@ const rawquery3 = session.advanced
 </CodeBlock>
 </TabItem>
 <TabItem value="counterRaw" label="counterRaw">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`//An RQL expression sent to the server using counterRaw()
 //Returned Counter value is distributed
 const query = session.advanced
@@ -1344,7 +1344,7 @@ const query = session.advanced
     </Tabs>
 ### Counters and Revisions  
 
-A [document revision](../../document-extensions/revisions/overview) stores all the document Counters' 
+A [document revision](../../document-extensions/revisions/overview.mdx) stores all the document Counters' 
 names and values when the revision was created.  
  
 * **Stored Counter Values**: **Accumulated**  
@@ -1355,9 +1355,9 @@ names and values when the revision was created.
    * Counter **value** modifications do **not** cause the creation of new revisions.  
 ### Counters and Smuggler  
 
-[Smuggler](../../client-api/smuggler/what-is-smuggler) is a DocumentStore property, that can be used 
-to [export](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions) chosen 
-database items to an external file or to [import](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions) 
+[Smuggler](../../client-api/smuggler/what-is-smuggler.mdx) is a DocumentStore property, that can be used 
+to [export](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions) chosen 
+database items to an external file or to [import](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions) 
 database items from an existing file into the database.  
 
 * **Transferred Counter Value**: **Distributed**  
@@ -1385,7 +1385,7 @@ database items from an existing file into the database.
 * `TimeSeries`  
 ### Counters and Changes API
 
-[Changes API](../../client-api/changes/what-is-changes-api#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes#changes-api--how-to-subscribe-to-counter-changes).  
+[Changes API](../../client-api/changes/what-is-changes-api.mdx#changes-api) is a Push service, that can inform you of various changes on the Server, including [changes in Counter values](../../client-api/changes/how-to-subscribe-to-counter-changes.mdx#changes-api--how-to-subscribe-to-counter-changes).  
 You can target all Counters, or specify the ones you wish to follow.  
 
 * **Pushed Counter Value**: **Accumulated**  
@@ -1393,39 +1393,39 @@ You can target all Counters, or specify the ones you wish to follow.
 * The service is initiated by **Counter Value Modification**.  
 ### Counters and Ongoing Tasks:
 
-Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info) relates to Counters in its own way.  
+Each [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info.mdx) relates to Counters in its own way.  
 
 * **Counters** and the **Backup task**  
-    There are two [backup](../../studio/database/tasks/backup-task) types: **logical-backup** and **snapshot**.  
+    There are two [backup](../../studio/database/tasks/backup-task.mdx) types: **logical-backup** and **snapshot**.  
     Both types store and restore **all** data, including Counters.  
     Both types operate as an ongoing backup routine, with a pre-set time schedule.  
     * Logical Backup:  
       **Backed-up Counter values**: **Distributed**  
-      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler).  
+      A logical backup is a higher-level implementation of [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
       A snapshot stores all data and settings as a single binary image.
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
-    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task) task replicates all data, including Counters.  
+    The ongoing [external replication](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task replicates all data, including Counters.  
     * **Replicated Counter Value**: **Distributed**  
         Counters are replicated along with their values on all nodes.  
     * Replication can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
 
 * **Counters** and the **ETL task**  
-    [ETL](../../server/ongoing-tasks/etl/basics) is used to export data from RavenDB to an external (either Raven or SQL) database.  
-    * [SQL ETL](../../server/ongoing-tasks/etl/sql) is **not supported**.  
+    [ETL](../../server/ongoing-tasks/etl/basics.mdx) is used to export data from RavenDB to an external (either Raven or SQL) database.  
+    * [SQL ETL](../../server/ongoing-tasks/etl/sql.mdx) is **not supported**.  
       Counters cannot be exported to an SQL database over SQL ETL.  
-    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven) **is supported**.  
-      Counters [are](../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
+    * [RavenDB ETL](../../server/ongoing-tasks/etl/raven.mdx) **is supported**.  
+      Counters [are](../../server/ongoing-tasks/etl/raven.mdx#counters) exported over RavenDB ETL.  
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+      * Counters can be [exported using a script](../../server/ongoing-tasks/etl/raven.mdx#adding-counter-explicitly-in-a-script).  
         **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
-* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
+* **Counters** and the **[Data Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx#data-subscriptions) task**  
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
     Documents will **not** be delivered in reaction to Counter Value modification.  
 
@@ -1447,32 +1447,32 @@ and how the various features handle Counter values.
 
 | **Feature** | **Triggered by** | **Counter Value** |
 |-------------|:-------------|:-------------|
-| [Indexing](../../document-extensions/counters/counters-and-other-features#counters-and-indexing) | _Document Change_ | doesn't handle values |
-| [LINQ Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | _Accumulated_ |
-| [Raw Queries](../../document-extensions/counters/counters-and-other-features#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
-| [Smuggler](../../document-extensions/counters/counters-and-other-features#counters-and-smuggler) | _No trigger_ | _Distributed_ |
-| [Backup Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
-| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [External Replication task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
-| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features#counters-and-ongoing-tasks) | _Document Change_ | |
-| [Changes API](../../document-extensions/counters/counters-and-other-features#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
-| [Revision creation](../../document-extensions/counters/counters-and-other-features#counters-and-revisions) | _Document Change_ | _Accumulated_ |
+| [Indexing](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-indexing) | _Document Change_ | doesn't handle values |
+| [LINQ Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | _Accumulated_ |
+| [Raw Queries](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-queries) | _No trigger_ | `counter()` - _Accumulated_ <br/> `counterRaw()` - _Distributed_ |
+| [Smuggler](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-smuggler) | _No trigger_ | _Distributed_ |
+| [Backup Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Time Schedule_ | _Distributed_ |
+| [RavenDB ETL Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [External Replication task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_, <br/> _Countrer Value Modification_ | _Distributed_ |
+| [Data Subscriptions Update Task](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-ongoing-tasks) | _Document Change_ | |
+| [Changes API](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-changes-api) | _Countrer Value Modification_ | _Accumulated_ |
+| [Revision creation](../../document-extensions/counters/counters-and-other-features.mdx#counters-and-revisions) | _Document Change_ | _Accumulated_ |
 
 </Admonition>
 ### Including Counters  
-You can [include](../../client-api/how-to/handle-document-relationships#includes) Counters while loading a document.  
+You can [include](../../client-api/how-to/handle-document-relationships.mdx#includes) Counters while loading a document.  
 An included Counter is retrieved in the same request as its owner-document and is held by the session, 
 so it can be immediately retrieved when needed with no additional remote calls.
 
 
-* **Including Counters when using [Session.Load](../../client-api/session/loading-entities#session--loading-entities)**:  
+* **Including Counters when using [Session.Load](../../client-api/session/loading-entities.mdx#session--loading-entities)**:  
     * Include a single Counter using `IncludeCounter`.  
     * Include multiple Counters using `IncludeCounters`.  
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const productPage = await session.load("orders/1-A", {
     includes: includeBuilder => includeBuilder
         .includeDocuments("products/1-C")
@@ -1482,7 +1482,7 @@ so it can be immediately retrieved when needed with no additional remote calls.
 </CodeBlock>
 </TabItem>
 <TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const productPage = await session.load("orders/1-A", {
         documentType: Product,
         includes: includeBuilder =>
@@ -1495,14 +1495,14 @@ so it can be immediately retrieved when needed with no additional remote calls.
 </TabItem>
     </Tabs>
 
-* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query#session--querying--how-to-query)**:  
+* **Including Counters when using [Session.Query](../../client-api/session/querying/how-to-query.mdx#session--querying--how-to-query)**:  
     * Include a single Counter using `IncludeCounter`.  
     * Include multiple Counters using `IncludeCounters`.  
 
     `IncludeCounter` and `IncludeCounters` usage samples:  
 <Tabs groupId='languageSyntax'>
 <TabItem value="IncludeCounter" label="IncludeCounter">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const query = session.query({collection: "Product"})
     .include(includeBuilder =>
         includeBuilder.includeCounter("ProductLikes"));
@@ -1510,7 +1510,7 @@ so it can be immediately retrieved when needed with no additional remote calls.
 </CodeBlock>
 </TabItem>
 <TabItem value="IncludeCounters" label="IncludeCounters">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const query = session.query({collection: "Product"})
     .include(includeBuilder =>
         includeBuilder.includeCounters("ProductLikes", "ProductDownloads"));
@@ -1525,8 +1525,8 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
 * Usage  
 
    * `countersFor`
-<TabItem value="something-something" label="CountersFor-definition">
-<CodeBlock language="nodejs">
+<TabItem value="CountersFor-definition" label="CountersFor-definition">
+<CodeBlock language="js">
 {`const counter = session.countersFor("documentid")
 `}
 </CodeBlock>
@@ -1537,8 +1537,8 @@ Use its `CountersFor` interface's `Increment` method to add or update counters w
         | `id` | `string` | Document ID |
 
    *   `increment`
-<TabItem value="something-something" label="Increment-definition">
-<CodeBlock language="nodejs">
+<TabItem value="Increment-definition" label="Increment-definition">
+<CodeBlock language="js">
 {`const incerment = store.openSession();
 session.countersFor("documentid").increment("likes", 100);
 //
@@ -1560,8 +1560,8 @@ session.countersFor("documentid").increment("likes", 100);
 
 * Usage Sample  
   In this sample, we attach a counter to all User documents.
-<TabItem value="something-something" label="bulk-insert-counters">
-<CodeBlock language="nodejs">
+<TabItem value="bulk-insert-counters" label="bulk-insert-counters">
+<CodeBlock language="js">
 {`const query = session.query(\{collection: "User"\})
     .whereBetween("Age", 0, 30)
 const result = query.all();

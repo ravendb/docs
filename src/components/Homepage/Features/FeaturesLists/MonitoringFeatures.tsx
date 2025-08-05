@@ -9,17 +9,17 @@ export default function MonitoringFeaturesGrid() {
   const MonitoringFeaturesList = [
     {
       title: "Cluster dashboard",
-      url: `${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
+      url: `/${activeVersion.label}/studio/cluster/cluster-dashboard/cluster-dashboard-overview`,
       description: "Short description",
     },
     {
       title: "SNMP monitoring",
-      url: `${activeVersion.label}/server/administration/snmp/snmp-overview`,
+      url: `/${activeVersion.label}/server/administration/snmp/snmp-overview`,
       description: "Short description",
     },
     {
       title: "Telegraf and Grafana",
-      url: `${activeVersion.label}/server/administration/monitoring/telegraf`,
+      url: `/${activeVersion.label}/server/administration/monitoring/telegraf`,
       description: "Short description",
     },
   ];

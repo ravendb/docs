@@ -24,7 +24,7 @@ ETL is processing documents from the point where the last batch finished. To sta
 
 ## Syntax
 
-<TabItem value="something" label="reset_etl_1">
+<TabItem value="reset_etl_1" label="reset_etl_1">
 <CodeBlock language="csharp">
 {`public ResetEtlOperation(string configurationName, string transformationName)
 `}
@@ -38,7 +38,7 @@ ETL is processing documents from the point where the last batch finished. To sta
 
 ## Example
 
-<TabItem value="something" label="reset_etl_2">
+<TabItem value="reset_etl_2" label="reset_etl_2">
 <CodeBlock language="csharp">
 {`ResetEtlOperation operation = new ResetEtlOperation("OrdersExport", "script1");
 store.Maintenance.Send(operation);
@@ -55,7 +55,7 @@ ETL is processing documents from the point where the last batch finished. To sta
 
 ## Syntax
 
-<TabItem value="something-something" label="reset_etl_1">
+<TabItem value="reset_etl_1" label="reset_etl_1">
 <CodeBlock language="java">
 {`public ResetEtlOperation(String configurationName, String transformationName);
 `}
@@ -69,7 +69,7 @@ ETL is processing documents from the point where the last batch finished. To sta
 
 ## Example
 
-<TabItem value="something-something" label="reset_etl_2">
+<TabItem value="reset_etl_2" label="reset_etl_2">
 <CodeBlock language="java">
 {`ResetEtlOperation resetEtlOperation = new ResetEtlOperation("OrdersExport", "script1");
 store.maintenance().send(resetEtlOperation);

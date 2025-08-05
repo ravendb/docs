@@ -31,12 +31,12 @@ export const supportedLanguages = ["csharp", "nodejs"];
   We assume you are familiar with .NET development techniques and the basics of Azure Function apps.  
 
 * In this page:
-    * [Before We Get Started](../../../start/guides/azure-functions/existing-project#before-we-get-started)  
-    * [Installing the RavenDB Client SDK](../../../start/guides/azure-functions/existing-project#installing-the-ravendb-client-sdk)  
-    * [Initializing the Document Store](../../../start/guides/azure-functions/existing-project#initializing-the-document-store)  
-    * [Adding Support for App Settings](../../../start/guides/azure-functions/existing-project#adding-support-for-app-settings)  
-    * [Configuring Support for Certificates](../../../start/guides/azure-functions/existing-project#configuring-support-for-certificates)  
-    * [Configuring Azure](../../../start/guides/azure-functions/existing-project#configuring-azure)  
+    * [Before We Get Started](../../../start/guides/azure-functions/existing-project.mdx#before-we-get-started)  
+    * [Installing the RavenDB Client SDK](../../../start/guides/azure-functions/existing-project.mdx#installing-the-ravendb-client-sdk)  
+    * [Initializing the Document Store](../../../start/guides/azure-functions/existing-project.mdx#initializing-the-document-store)  
+    * [Adding Support for App Settings](../../../start/guides/azure-functions/existing-project.mdx#adding-support-for-app-settings)  
+    * [Configuring Support for Certificates](../../../start/guides/azure-functions/existing-project.mdx#configuring-support-for-certificates)  
+    * [Configuring Azure](../../../start/guides/azure-functions/existing-project.mdx#configuring-azure)  
 
 </Admonition>
 
@@ -49,7 +49,7 @@ You will need the following before continuing:
 - [.NET 6.x][ms-download-dotnet]  
 
 <Admonition type="note" title="Starting from scratch?" id="starting-from-scratch" href="#starting-from-scratch">
-For a brand new Azure Functions app, we recommend using the [RavenDB Azure Functions .NET template](../../../start/guides/azure-functions/overview) 
+For a brand new Azure Functions app, we recommend using the [RavenDB Azure Functions .NET template](../../../start/guides/azure-functions/overview.mdx) 
 which is set up with dependency injection and X.509 certificate support.  
 You can also reference the template to see how the integration is set up.  
 </Admonition>
@@ -63,7 +63,7 @@ which provides the .NET client SDK.
 
 Using the .NET CLI:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet add package RavenDB.Client
 `}
@@ -77,7 +77,7 @@ Using the .NET CLI:
 Import the `DocumentStore` from `Raven.Client.Documents` namespace to create a new instance with 
 the required configuration and initialize your connection to RavenDB by calling the `Initialize` method.  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`using Raven.Client.Documents;
 
@@ -99,7 +99,7 @@ For Azure Function methods, it's recommended to configure the document store and
 sessions with .NET dependency injection. The easiest way is to use the community Nuget package 
 [RavenDB.DependencyInjection][nuget-ravendb-di]:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet add package RavenDB.DependencyInjection
 `}
@@ -120,7 +120,7 @@ which exposes two extension methods:
 
 The resulting service configuration will look like this:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`// Requires a using statement
 using Raven.DependencyInjection;
@@ -136,7 +136,7 @@ services.AddRavenDbAsyncSession();
 
 You can customize the options before they get passed down to the underlying `DocumentStore` with an overload:
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`services.AddRavenDbDocStore(options => \{
     // ...
@@ -170,7 +170,7 @@ Within your `FunctionsStartup` class, override the `ConfigureAppConfiguration` m
 
 Here's an example startup file for an in-process C# Azure Function app:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`using System;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -212,7 +212,7 @@ For more on the different configuration providers supported, see [Configuration 
 
 An example `appsettings.json` file may look like this:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "RavenSettings": \{
@@ -245,7 +245,7 @@ supports `X509Certificate2` which is passed to the `DocumentStore.Certificate` o
 
 You can load PFX files with or without a password by providing the certificate path using `RavenSettings:CertFilePath`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "RavenSettings": \{
@@ -262,7 +262,7 @@ The dependency injection logic will automatically load the certificate from this
 
 If the `.pfx` file requires a password, provide it using the .NET secrets tool by setting `RavenSettings:CertPassword`:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`dotnet user-secrets init
 dotnet user-secrets set "RavenSettings:CertPassword" "<CERT_PASSWORD>"
@@ -298,7 +298,7 @@ You can also install and view certificates using PowerShell through the
 
 To specify the thumbprint you can add a new `RavenSettings:CertThumbprint` setting:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "RavenSettings": \{
@@ -318,7 +318,7 @@ In Azure, certificates will be stored in the `CurrentUser\My` cert store.
 
 Here is how the starter template adds support for loading certificates by thumbprint:  
 
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`using System;
 using System.IO;
@@ -505,12 +505,12 @@ To use this method, you will need to use a Windows-based plan.
   We assume you are familiar with Node.js development techniques and the basics of Azure Function apps.  
 
 * In this page:
-    * [Before We Get Started](../../../start/guides/azure-functions/existing-project#before-we-get-started)  
-    * [Installing the RavenDB Client SDK](../../../start/guides/azure-functions/existing-project#installing-the-ravendb-client-sdk)
-    * [Initializing the Document Store](../../../start/guides/azure-functions/existing-project#initializing-the-document-store)
-    * [Adding Support for App Settings](../../../start/guides/azure-functions/existing-project#adding-support-for-app-settings)
-    * [Configuring Support for Certificates](../../../start/guides/azure-functions/existing-project#configuring-support-for-certificates)
-    * [Configuring Azure](../../../start/guides/azure-functions/existing-project#configuring-azure)
+    * [Before We Get Started](../../../start/guides/azure-functions/existing-project.mdx#before-we-get-started)  
+    * [Installing the RavenDB Client SDK](../../../start/guides/azure-functions/existing-project.mdx#installing-the-ravendb-client-sdk)
+    * [Initializing the Document Store](../../../start/guides/azure-functions/existing-project.mdx#initializing-the-document-store)
+    * [Adding Support for App Settings](../../../start/guides/azure-functions/existing-project.mdx#adding-support-for-app-settings)
+    * [Configuring Support for Certificates](../../../start/guides/azure-functions/existing-project.mdx#configuring-support-for-certificates)
+    * [Configuring Azure](../../../start/guides/azure-functions/existing-project.mdx#configuring-azure)
 
 </Admonition>
 
@@ -523,7 +523,7 @@ You will need the following before continuing:
 - [Node.js][nodejs] 18+  
 
 <Admonition type="note" title="Starting from scratch?" id="starting-from-scratch" href="#starting-from-scratch">
-For a brand new Azure Functions app, we recommend using the [RavenDB Azure Functions Node.js template](../../../start/guides/azure-functions/overview) 
+For a brand new Azure Functions app, we recommend using the [RavenDB Azure Functions Node.js template](../../../start/guides/azure-functions/overview.mdx) 
 which is set up with PEM certificate support.  
 You can also reference the template to see how the integration is set up.  
 </Admonition>
@@ -536,7 +536,7 @@ Get started by installing the [ravendb][npm-ravendb-client] npm package in your 
 
 Using npm:
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`npm install ravendb
 `}
@@ -553,7 +553,7 @@ You can then export a function to initialize a document session to use in your A
 
 Example `db.js` Node module:
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ DocumentStore \} from "ravendb";
 
@@ -599,7 +599,7 @@ You will need a way to pass options to the `DocumentStore` on your local machine
 
 Node.js Azure Functions support a `local.settings.json` file which you can use to add additional settings locally. For example:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
   "IsEncrypted": false,
@@ -617,7 +617,7 @@ Node.js Azure Functions support a `local.settings.json` file which you can use t
 
 You can then load environment variables through `process.env`:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ readFileSync \} from "fs";
 import \{ DocumentStore \} from "ravendb";
@@ -671,7 +671,7 @@ There are multiple ways to load a certificate:
 
 You can load PFX files with or without a password by providing the certificate buffer using `authOptions.certificate`:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`const authOptions = \{
     type: "pfx",
@@ -709,7 +709,7 @@ can be provided through Azure app settings without deploying any files.
 
 Unlike a `.pfx` file, a PEM-encoded certificate is plain-text encoded:  
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`-----BEGIN CERTIFICATE-----
 MIIFCzCCAvO...
@@ -724,7 +724,7 @@ MIIJKAIBAAK...
 To pass a PEM-encoded certificate, you can read an environment variable like `DB_CERT_PEM` and 
 set `authOptions` using the `pem` certificate type:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`const authOptions = \{
     type: "pem",
@@ -749,7 +749,7 @@ file, you will need to format the value for JSON using [a stringify tool][tool-s
 
 Here is how the starter template adds support for loading certificates using a `DB_CERT_PEM` environment variable:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`import \{ EOL \} from "os";
 import \{ readFile \} from "fs/promises";

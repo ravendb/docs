@@ -29,7 +29,7 @@ By default, the `DocumentStore.Smuggler` works on the default document store dat
 
 In order to switch it to a different database use the `.ForDatabase` method.
 
-<TabItem value="something" label="for_database">
+<TabItem value="for_database" label="for_database">
 <CodeBlock language="csharp">
 {`var northwindSmuggler = store
     .Smuggler
@@ -44,7 +44,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 
 ### Syntax
 
-<TabItem value="something" label="export_syntax">
+<TabItem value="export_syntax" label="export_syntax">
 <CodeBlock language="csharp">
 {`Task<Operation> ExportAsync(
     DatabaseSmugglerExportOptions options,
@@ -61,7 +61,7 @@ Task<Operation> ExportAsync(
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `string` | Path to a file where exported data will be written |
 | **token** | `CancellationToken` | Token used to cancel the operation |
@@ -81,12 +81,12 @@ Task<Operation> ExportAsync(
 | **IncludeArtificial** | `bool` | Should artificial documents be exported. <br/> Default: `false` |
 | **IncludeArchived** | `bool` | Should archived documents be exported. <br/> Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br/> Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br/> Default: **10000** |
 
 ### Example
 
-<TabItem value="something" label="export_example">
+<TabItem value="export_example" label="export_example">
 <CodeBlock language="csharp">
 {`// export only Indexes and Documents to a given file
 var exportOperation = await store
@@ -111,7 +111,7 @@ await exportOperation.WaitForCompletionAsync();
 
 ### Syntax
 
-<TabItem value="something" label="import_syntax">
+<TabItem value="import_syntax" label="import_syntax">
 <CodeBlock language="csharp">
 {`Task<Operation> ImportAsync(
     DatabaseSmugglerImportOptions options,
@@ -128,7 +128,7 @@ Task<Operation> ImportAsync(
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
 | **fromFile** | `string` | Path to a file from which data will be imported |
 | **token** | `CancellationToken` | Token used to cancel the operation |
@@ -148,12 +148,12 @@ Task<Operation> ImportAsync(
 | **IncludeArtificial** | `bool` | Should artificial documents be imported. <br/> Default: `false` |
 | **IncludeArchived** | `bool` | Should archived documents be imported. <br/> Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. <br/> Default: `false` |
-| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that the transform script can process before failing. <br/> Default: **10000** |
 
 ### Example
 
-<TabItem value="something" label="import_example">
+<TabItem value="import_example" label="import_example">
 <CodeBlock language="csharp">
 {`// import only Documents from a given file
 var importOperation = await store
@@ -178,9 +178,9 @@ await importOperation.WaitForCompletionAsync();
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var id = this['@metadata']['@id'];
 if (id === 'orders/999-A')
@@ -207,7 +207,7 @@ By default, the `IDocumentStore.smuggler` works on the default document store da
 
 In order to switch it to a different database use the `.forDatabase` method.
 
-<TabItem value="something-something" label="for_database">
+<TabItem value="for_database" label="for_database">
 <CodeBlock language="java">
 {`DatabaseSmuggler northwindSmuggler = store.smuggler().forDatabase("Northwind");
 `}
@@ -220,7 +220,7 @@ In order to switch it to a different database use the `.forDatabase` method.
 
 ### Syntax
 
-<TabItem value="something-something" label="export_syntax">
+<TabItem value="export_syntax" label="export_syntax">
 <CodeBlock language="java">
 {`//export
 public Operation exportAsync(DatabaseSmugglerExportOptions options, String toFile);
@@ -232,7 +232,7 @@ public Operation exportAsync(DatabaseSmugglerExportOptions options, DatabaseSmug
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `String` | Path to a file where exported data will be written |
 
@@ -249,12 +249,12 @@ public Operation exportAsync(DatabaseSmugglerExportOptions options, DatabaseSmug
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
 | **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 ### Example
 
-<TabItem value="something-something" label="export_example">
+<TabItem value="export_example" label="export_example">
 <CodeBlock language="java">
 {`// export only Indexes and Documents to a given file
 Operation exportOperation = store.smuggler().exportAsync(exportOptions, "C:\\\\ravendb-exports\\\\Northwind.ravendbdump");
@@ -268,7 +268,7 @@ Operation exportOperation = store.smuggler().exportAsync(exportOptions, "C:\\\\r
 
 ### Syntax
 
-<TabItem value="something-something" label="import_syntax">
+<TabItem value="import_syntax" label="import_syntax">
 <CodeBlock language="java">
 {`public Operation importAsync(DatabaseSmugglerImportOptions options, String fromFile);
 public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream stream);
@@ -278,7 +278,7 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `InputStream` | Stream with data to import |
 | **fromFile** | `String` | Path to a file from which data will be imported |
 
@@ -295,13 +295,13 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 | **operateOnDatabaseRecordType** | `DatabaseRecordItemType` | Indicates what should be imported. Default: `CLIENT`, `CONFLICT_SOLVER_CONFIG`, `EXPIRATION`, `EXTERNAL_REPLICATIONS`, `PERIODIC_BACKUPS`, `RAVEN_CONNECTION_STRINGS`, `RAVEN_ETLS`, `REVISIONS`, `SQL_CONNECTION_STRINGS`, `SORTERS`, `SQL_ETLS`, `HUB_PULL_REPLICATIONS`, `SINK_PULL_REPLICATIONS` |
 | **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **transformScript** | `String` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 
 
 ### Example
 
-<TabItem value="something-something" label="import_example">
+<TabItem value="import_example" label="import_example">
 <CodeBlock language="java">
 {`Operation importOperation = store.smuggler().importAsync(importOptions, "C:\\\\ravendb-exports\\\\Northwind.ravendbdump");
 `}
@@ -314,9 +314,9 @@ public Operation importAsync(DatabaseSmugglerImportOptions options, InputStream 
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var id = this['@metadata']['@id'];
 if (id === 'orders/999-A')
@@ -343,8 +343,8 @@ By default, the `DocumentStore.smuggler` works on the default document store dat
 
 In order to switch it to a different database use the `.forDatabase` method.
 
-<TabItem value="something-something" label="for_database">
-<CodeBlock language="nodejs">
+<TabItem value="for_database" label="for_database">
+<CodeBlock language="js">
 {`const northwindSmuggler = store
     .smuggler
     .forDatabase("Northwind");
@@ -358,8 +358,8 @@ In order to switch it to a different database use the `.forDatabase` method.
 
 ### Usage
 
-<TabItem value="something-something" label="export_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="export_syntax" label="export_syntax">
+<CodeBlock language="js">
 {`const operation = await store.smuggler.export(options, toDatabase);
 
 const operation = await store.smuggler.export(options, toFile);
@@ -369,7 +369,7 @@ const operation = await store.smuggler.export(options, toFile);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerexportoptions). |
+| **options** | `DatabaseSmugglerExportOptions` | Options that will be used during the export. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerexportoptions). |
 | **toDatabase** | `DatabaseSmuggler` | `DatabaseSmuggler` instance used as a destination |
 | **toFile** | `string` | Path to a file where exported data will be written |
 
@@ -387,15 +387,15 @@ const operation = await store.smuggler.export(options, toFile);
 | **includeExpired** | `boolean` | Should expired documents be included in the export. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
 
 ### Example
 
-<TabItem value="something-something" label="export_example">
-<CodeBlock language="nodejs">
+<TabItem value="export_example" label="export_example">
+<CodeBlock language="js">
 {`const options = new DatabaseSmugglerExportOptions();
 options.operateOnTypes = ["Documents"];
 const operation = await store
@@ -412,8 +412,8 @@ await operation.waitForCompletion();
 
 ### Usage
 
-<TabItem value="something-something" label="import_syntax">
-<CodeBlock language="nodejs">
+<TabItem value="import_syntax" label="import_syntax">
+<CodeBlock language="js">
 {`const operation = await store.smuggler.import(options, fromFile);
 
 const operation = await store.smuggler.import(options, stream);
@@ -423,7 +423,7 @@ const operation = await store.smuggler.import(options, stream);
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler#databasesmugglerimportoptions). |
+| **options** | `DatabaseSmugglerImportOptions` | Options that will be used during the import. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#databasesmugglerimportoptions). |
 | **stream** | `Stream` | Stream with data to import |
 | **fromFile** | `string` | Path to a file from which data will be imported |
 
@@ -440,15 +440,15 @@ const operation = await store.smuggler.import(options, stream);
 | **includeExpired** | `boolean` | Should expired documents be included in the import. Default: `true` |
 | **includeArtificial** | `boolean` | ? |
 | **removeAnalyzers** | `boolean` | Should analyzers be removed from Indexes. Default: `false` |
-| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
+| **transformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler.mdx#transformscript). |
 | **maxStepsForTransformScript** | `number` | Maximum number of steps that transform script can process before failing. Default: 10000 |
 | **skipRevisionCreation** | `boolean` | skip revision creation |
 | **encryptionKey** | `string` | Encryption key used for restore |
 
 ### Example
 
-<TabItem value="something-something" label="import_example">
-<CodeBlock language="nodejs">
+<TabItem value="import_example" label="import_example">
+<CodeBlock language="js">
 {`const options = new DatabaseSmugglerImportOptions();
 options.operateOnTypes = ["Documents"];
 const operation = await store.smuggler.import(options, "C:\\\\ravendb-exports\\\\Northwind.ravendbdump");
@@ -463,9 +463,9 @@ await operation.waitForCompletion();
 
 `TransformScript` exposes the ability to modify or even filter-out the document during the import and export process using the provided JavaScript. 
 
-Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
+Underneath the JavaScript engine is exactly the same as used for [patching operations](../../client-api/operations/patching/single-document.mdx) giving you identical syntax and capabilities with additional **ability to filter out documents by throwing a 'skip' exception**.
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`var id = this['@metadata']['@id'];
 if (id === 'orders/999-A')

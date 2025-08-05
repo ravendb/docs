@@ -27,8 +27,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   are returned in the `QueryStatistics` object.
 
 * In This Page:  
-   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
-   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
 
 </Admonition>
 ## Get query statistics
@@ -100,7 +100,7 @@ string indexNameUsed = stats.IndexName;   // Get index name used in query
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`IRavenQueryable<T> Statistics(out QueryStatistics stats);
 `}
@@ -113,7 +113,7 @@ string indexNameUsed = stats.IndexName;   // Get index name used in query
 
 <br/> 
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class QueryStatistics
 \{
@@ -137,8 +137,8 @@ string indexNameUsed = stats.IndexName;   // Get index name used in query
 |--------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **IsStale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                                                      |
 | **DurationInMs**   | `long`           | Query duration on the server side in Milliseconds                                                                                                                                                            |
-| **TotalResults**   | `long`           | The total count of results that matched the query as `Int32`.<br/>Matching query results can also be counted as `Int32` using [Count](../../../client-api/session/querying/how-to-count-query-results#count). |
-| **SkippedResults** | `long`           | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                                           |
+| **TotalResults**   | `long`           | The total count of results that matched the query as `Int32`.<br/>Matching query results can also be counted as `Int32` using [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **SkippedResults** | `long`           | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                                           |
 | **ScannedResults** | `long?`          | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                                                                        |
 | **Timestamp**      | `DateTime`       | The time when the query results were unstale                                                                                                                                                                 |
 | **IndexName**      | `string`         | The name of the queried index                                                                                                                                                                                |
@@ -159,7 +159,7 @@ To access statistics use the `statistics` method.
 
 ## Example
 
-<TabItem value="something-something" label="stats_3">
+<TabItem value="stats_3" label="stats_3">
 <CodeBlock language="java">
 {`Reference<QueryStatistics> stats = new Reference<>();
 
@@ -176,7 +176,7 @@ long durationInMs = stats.value.getDurationInMs();
 
 ## Syntax
 
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="java">
 {`IDocumentQuery<T> statistics(Reference<QueryStatistics> stats);
 `}
@@ -187,7 +187,7 @@ long durationInMs = stats.value.getDurationInMs();
 | ------------- | ------------- | ----- |
 | **stats** | `QueryStatistics` | Statistics for query. |
 
-<TabItem value="something-something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="java">
 {`public class QueryStatistics \{
 
@@ -214,7 +214,7 @@ long durationInMs = stats.value.getDurationInMs();
 | **IsStale**        | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
 | **DurationInMs**   | `long`    | Query duration on the server side in Milliseconds                                                                                                                  |
 | **TotalResults**   | `long`    | The total count of results that matched the query as `int`                                                                                                         |
-| **SkippedResults** | `long`    | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results). |
+| **SkippedResults** | `long`    | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results). |
 | **ScannedResults** | `long`    | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                              |
 | **Timestamp**      | `Date`    | The time when the query results were unstale                                                                                                                       |
 | **IndexName**      | `string`  | The name of the queried index                                                                                                                                      |
@@ -235,8 +235,8 @@ long durationInMs = stats.value.getDurationInMs();
   are returned in the `QueryStatistics` object.
 
 * In This Page:  
-   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
-   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
 
 </Admonition>
 ## Get query statistics
@@ -270,7 +270,7 @@ employees = list(
 
 ## Syntax
 
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="python">
 {`def statistics(self, stats_callback: Callable[[QueryStatistics], None]) -> DocumentQuery[_T]: ...
 
@@ -301,8 +301,8 @@ with self.embedded_server.get_document_store("QueryStatistics") as store:
 |---------------------|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **is_stale**        | `bool`           | Are the results returned by the query potentially stale                                                                                                                               |
 | **duration_in_ms**  | `int`            | Query duration on the server side in Milliseconds                                                                                                                                     |
-| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../client-api/session/querying/how-to-count-query-results#count). |
-| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                    |
+| **total_results**   | `int`            | The total count of results that matched the query<br/>Matching query results can also be counted using [count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **skipped_results** | `int`            | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                    |
 | **timestamp**       | `datetime`       | The time when the query results were unstale                                                                                                                                          |
 | **index_name**      | `str`            | The name of the queried index                                                                                                                                                         |
 | **index_timestamp** | `IndexTimestamp` | The timestamp of the queried index                                                                                                                                                    |
@@ -324,8 +324,8 @@ with self.embedded_server.get_document_store("QueryStatistics") as store:
   are returned in the `QueryStatistics` object.
 
 * In This Page:  
-   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)  
-   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)  
+   * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)  
+   * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)  
 
 </Admonition>
 ## Get query statistics
@@ -357,7 +357,7 @@ $durationInMs = $stats->getDurationInMs();
 
 ## Syntax
 
-<TabItem value="something-something" label="stats_1">
+<TabItem value="stats_1" label="stats_1">
 <CodeBlock language="php">
 {`public function statistics(QueryStatistics &$stats): DocumentQueryInterface;
 `}
@@ -370,7 +370,7 @@ $durationInMs = $stats->getDurationInMs();
 
 <br/> 
 
-<TabItem value="something-something" label="stats_2">
+<TabItem value="stats_2" label="stats_2">
 <CodeBlock language="php">
 {`class QueryStatistics
 \{
@@ -395,8 +395,8 @@ $durationInMs = $stats->getDurationInMs();
 |---------------------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **$isStale**                                | `bool`               | Are the results returned by the query potentially stale                                                                                                                                |
 | **$durationInMs**                           | `int`                | Query duration on the server side in Milliseconds                                                                                                                                      |
-| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../client-api/session/querying/how-to-count-query-results#count). |
-| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results).                     |
+| **$totalResults**,<br/>**$longTotalResults** | `int`                | The total count of results that matched the query.<br/>Matching query results can also be counted using [Count](../../../client-api/session/querying/how-to-count-query-results.mdx#count). |
+| **$skippedResults**                         | `int`                | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results).                     |
 | **$timestamp**                              | `?DateTimeInterface` | The time when the query results were unstale                                                                                                                                           |
 | **$indexName**                              | `?string`            | The name of the queried index                                                                                                                                                          |
 | **$indexTimestamp**                         | `?DateTimeInterface` | The timestamp of the queried index                                                                                                                                                     |
@@ -418,15 +418,15 @@ $durationInMs = $stats->getDurationInMs();
   are returned in the `QueryStatistics` object.
 
 * In This Page:
-    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics#get-query-statistics)
-    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics#syntax)
+    * [Get query statistics](../../../client-api/session/querying/how-to-get-query-statistics.mdx#get-query-statistics)
+    * [Syntax](../../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax)
 
 </Admonition>
 ## Get query statistics
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an output param for getting the query stats
 let stats;
 
@@ -458,8 +458,8 @@ const indexNameUsed = stats.value.indexName;      // Get index name used in quer
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`query.statistics(statsCallback);
 `}
 </CodeBlock>
@@ -474,7 +474,7 @@ const indexNameUsed = stats.value.indexName;      // Get index name used in quer
 | **isStale**         | `boolean` | Are the results returned by the query potentially stale                                                                                                            |
 | **durationInMs**    | `number`  | Query duration on the server side in Milliseconds                                                                                                                  |
 | **totalResults**    | `number`  | The total count of results that matched the query                                                                                                                  |
-| **skippedResults**  | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging#paging-through-tampered-results). |
+| **skippedResults**  | `number`  | The number of results skipped by the server.<br/>Learn more in [paging through tampered results](../../../indexes/querying/paging.mdx#paging-through-tampered-results). |
 | **scannedResults**  | `long?`   | The number of results scanned by the query.<br/>Relevant only when using a filter clause in the query.                                                              |
 | **timestamp**       | `Date`    | The time when the query results were unstale                                                                                                                       |
 | **indexName**       | `string`  | The name of the queried index                                                                                                                                      |

@@ -24,30 +24,30 @@ export const supportedLanguages = ["csharp", "java"];
 * In this section, we explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) 
   to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of 
-  [prerequisites](../server/embedded#prerequisite) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../server/embedded.mdx) package with the same set of 
+  [prerequisites](../server/embedded.mdx#prerequisite) as embedded servers to run the tests.  
 
 * In this page: 
-   - [`RavenTestDriver`](../start/test-driver#raventestdriver)
-   - [Pre-initializing the store: `PreInitialize`](../start/test-driver#pre-initializing-the-store:-preinitialize)
-   - [Configure the server: `ConfigureServer`](../start/test-driver#configure-the-server:-configureserver)
-   - [Unit test](../start/test-driver#unit-test)
-   - [Complete example](../start/test-driver#complete-example)
-   - [Continuous Integration (CI) Servers](../start/test-driver#continuous-integration-(ci)-servers)
-   - [Licensing](../start/test-driver#licensing)
+   - [`RavenTestDriver`](../start/test-driver.mdx#raventestdriver)
+   - [Pre-initializing the store: `PreInitialize`](../start/test-driver.mdx#pre-initializing-the-store:-preinitialize)
+   - [Configure the server: `ConfigureServer`](../start/test-driver.mdx#configure-the-server:-configureserver)
+   - [Unit test](../start/test-driver.mdx#unit-test)
+   - [Complete example](../start/test-driver.mdx#complete-example)
+   - [Continuous Integration (CI) Servers](../start/test-driver.mdx#continuous-integration-(ci)-servers)
+   - [Licensing](../start/test-driver.mdx#licensing)
 
 </Admonition>
 
 ## `RavenTestDriver`
 
 Start by creating a class that derives from `RavenTestDriver`.  
-Find below a list of test driver methods, followed by [samples](../start/test-driver#complete-example).  
+Find below a list of test driver methods, followed by [samples](../start/test-driver.mdx#complete-example).  
 
 ### TestDriver Methods
 
 #### `DatabaseDumpFilePath`
 Override the path to the database dump file that is loaded when calling ImportDatabase.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual string DatabaseDumpFilePath => null;
 `}
@@ -56,7 +56,7 @@ Override the path to the database dump file that is loaded when calling ImportDa
 
 #### `DatabaseDumpFileStream`
 Allow overriding the stream containing the database dump loaded when calling ImportDatabase.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual Stream DatabaseDumpFileStream => null;
 `}
@@ -65,7 +65,7 @@ Allow overriding the stream containing the database dump loaded when calling Imp
 
 #### `GetDocumentStore`
 Get an IDocumentStore instance for the requested database.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, 
                                                 TimeSpan? waitForIndexingTimeout = null)
@@ -75,7 +75,7 @@ Get an IDocumentStore instance for the requested database.
   
 #### `PreInitialize`
 Pre-initialize IDocumentStore.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual void PreInitialize(IDocumentStore documentStore)
 `}
@@ -84,7 +84,7 @@ Pre-initialize IDocumentStore.
 
 #### `PreConfigureDatabase`
 Pre configure the database record before creating it.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual void PreConfigureDatabase(DatabaseRecord databaseRecord)
 `}
@@ -93,7 +93,7 @@ Pre configure the database record before creating it.
 
 #### `SetupDatabase`
 Initialize the database  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual void SetupDatabase(IDocumentStore documentStore)
 `}
@@ -102,7 +102,7 @@ Initialize the database
 
 #### `DriverDisposed`  
 An event raised when the test driver is disposed of  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected event EventHandler DriverDisposed;
 `}
@@ -111,7 +111,7 @@ An event raised when the test driver is disposed of
 
 #### `ConfigureServer`  
 Configure the server before running it
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public static void ConfigureServer(TestServerOptions options)
 `}
@@ -120,7 +120,7 @@ Configure the server before running it
 
 #### `WaitForIndexing`
 Wait for indexes to become non-stale  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public void WaitForIndexing(IDocumentStore store, string database = null, 
                                                     TimeSpan? timeout = null)
@@ -130,7 +130,7 @@ Wait for indexes to become non-stale
 
 #### `WaitForUserToContinueTheTest`  
 Pause the test and launch Studio to examine database state  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public void WaitForUserToContinueTheTest(IDocumentStore store)
 `}
@@ -139,7 +139,7 @@ Pause the test and launch Studio to examine database state
 
 #### `OpenBrowser`  
 Open browser  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`protected virtual void OpenBrowser(string url)
 `}
@@ -148,7 +148,7 @@ Open browser
 
 #### `Dispose`  
 Dispose of the server  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`public virtual void Dispose()
 `}
@@ -163,7 +163,7 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 
 ### Example
 
-<TabItem value="something" label="test_driver_PreInitialize">
+<TabItem value="test_driver_PreInitialize" label="test_driver_PreInitialize">
 <CodeBlock language="csharp">
 {`//This allows us to modify the conventions of the store we get from 'GetDocumentStore'
 protected override void PreInitialize(IDocumentStore documentStore)
@@ -183,7 +183,7 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 
 * `ConfigureServer` can only be set once per test run.  
   It needs to be set before `GetDocumentStore` is called.  
-  See an [example](../start/test-driver#complete-example) below.  
+  See an [example](../start/test-driver.mdx#complete-example) below.  
 
 * If it is called twice, or within the `DocumentStore` scope, you will get the following error message:
   `System.InvalidOperationException : Cannot configure server after it was started. Please call 'ConfigureServer' method before any 'GetDocumentStore' is called.`  
@@ -191,16 +191,16 @@ You can use it with `TestServerOptions` to change the path to the Raven server b
 <Admonition type="info" title="TestServerOptions" id="testserveroptions" href="#testserveroptions">
 
 Defining TestServerOptions allows you to be more in control of 
-how the embedded server is going to run with just a minor [definition change](../start/test-driver#example-2).
+how the embedded server is going to run with just a minor [definition change](../start/test-driver.mdx#example-2).
 
-* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../server/embedded#serveroptions).  
-* It's important to be sure that the correct [.NET FrameworkVersion](../server/embedded#net-frameworkversion) is set.
+* To see the complete list of `TestServerOptions`, which inherits from embedded servers, go to embedded [ServerOptions](../server/embedded.mdx#serveroptions).  
+* It's important to be sure that the correct [.NET FrameworkVersion](../server/embedded.mdx#net-frameworkversion) is set.
 
 </Admonition>
 
 #### Example
 
-<TabItem value="something" label="test_driver_ConfigureServer">
+<TabItem value="test_driver_ConfigureServer" label="test_driver_ConfigureServer">
 <CodeBlock language="csharp">
 {`var testServerOptions = new TestServerOptions
 \{
@@ -230,7 +230,7 @@ We use [xunit](https://www.nuget.org/packages/xunit/) for the test framework in 
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.  
 </Admonition>
 
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
 
 #### Example
 
@@ -242,7 +242,7 @@ and index are deployed (we can remove this line after the test succeeds).
 Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
-<TabItem value="something" label="test_driver_MyFirstTest">
+<TabItem value="test_driver_MyFirstTest" label="test_driver_MyFirstTest">
 <CodeBlock language="csharp">
 {`[Fact]
 public void MyFirstTest()
@@ -289,7 +289,7 @@ and index are deployed (we can remove this line after the test succeeds).
 Finally, we use `session.Query` to query for "TestDocument" where the name contains the word 'hello', 
 and we assert that we have only one such document.
 
-<TabItem value="something" label="test_full_example">
+<TabItem value="test_full_example" label="test_full_example">
 <CodeBlock language="csharp">
 {`using Raven.Client.Documents;
 using Raven.TestDriver;
@@ -415,7 +415,7 @@ will be able to use up to 9 cores and run way faster.
      is used, can explicitly set the configuration option to **`false`**.  
 
 * Additional `TestServerOptions.Licensing` configuration options are available as well, 
-  you can read about them [here](../server/embedded#licensing-options).  
+  you can read about them [here](../server/embedded.mdx#licensing-options).  
 
 
 
@@ -431,15 +431,15 @@ will be able to use up to 9 cores and run way faster.
 * In this section, we explain how to use [ravendb-test-driver](https://central.sonatype.com/search?q=g:net.ravendb%20%20a:ravendb-test-driver&core=gav&smo=true) 
   to write RavenDB unit tests.  
 
-* TestDriver uses an [Embedded Server](../server/embedded) package with the same set of 
-  [prerequisites](../server/embedded#prerequisites) as embedded servers to run the tests.  
+* TestDriver uses an [Embedded Server](../server/embedded.mdx) package with the same set of 
+  [prerequisites](../server/embedded.mdx#prerequisites) as embedded servers to run the tests.  
 
 * In this page: 
-   - [RavenTestDriver](../start/test-driver#raventestdriver)
-   - [Pre-initializing the store](../start/test-driver#preinitialize)
-   - [ConfigureServer](../start/test-driver#configureserver)
-   - [Unit test](../start/test-driver#unittest)
-   - [Complete example](../start/test-driver#complete-example)
+   - [RavenTestDriver](../start/test-driver.mdx#raventestdriver)
+   - [Pre-initializing the store](../start/test-driver.mdx#preinitialize)
+   - [ConfigureServer](../start/test-driver.mdx#configureserver)
+   - [Unit test](../start/test-driver.mdx#unittest)
+   - [Complete example](../start/test-driver.mdx#complete-example)
 
 </Admonition>
 
@@ -459,7 +459,7 @@ First, please make sure that the Raven TestDriver is added to your project depen
 Then, define a class that derives from the Raven TestDriver.
 
 We can start by reviewing TestDriver methods, and then get into implementation 
-(find a complete Raven TestDriver code sample [below](../start/test-driver#complete-example)).  
+(find a complete Raven TestDriver code sample [below](../start/test-driver.mdx#complete-example)).  
 ### Methods
 
 | Signature | Description |
@@ -489,7 +489,7 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 
 ### Example
 
-<TabItem value="something-something" label="test_driver_PreInitialize">
+<TabItem value="test_driver_PreInitialize" label="test_driver_PreInitialize">
 <CodeBlock language="java">
 {`//This allows us to modify the conventions of the store we get from 'getDocumentStore'
 @Override
@@ -506,11 +506,11 @@ protected void preInitialize(IDocumentStore documentStore) \{
 
 We'll be using [JUnit](https://junit.org/) for my test framework in the below example.
 Note that the test itself is meant to show different capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver.mdx#complete-example)
 
 ### Example
 
-<TabItem value="something-something" label="test_driver_MyFirstTest">
+<TabItem value="test_driver_MyFirstTest" label="test_driver_MyFirstTest">
 <CodeBlock language="java">
 {`@Test
 public void myFirstTest() \{
@@ -576,7 +576,7 @@ with just a minor change. Here you can change your targetServerLocation.
 
 ### Example
 
-<TabItem value="something-something" label="test_driver_ConfigureServer">
+<TabItem value="test_driver_ConfigureServer" label="test_driver_ConfigureServer">
 <CodeBlock language="java">
 {`ServerOptions testServerOptions = new ServerOptions();
 
@@ -593,7 +593,7 @@ testServerOptions.setDataDirectory("PATH_TO_RAVENDB_DATADIR");
 
 ## Complete Example
 
-<TabItem value="something-something" label="test_full_example">
+<TabItem value="test_full_example" label="test_full_example">
 <CodeBlock language="java">
 {`public class RavenDBTestDriverFull extends RavenTestDriver \{
 

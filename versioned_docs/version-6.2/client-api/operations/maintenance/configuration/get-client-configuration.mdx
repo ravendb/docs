@@ -21,13 +21,13 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
   
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
@@ -64,14 +64,14 @@ ClientConfiguration clientConfiguration = config.Configuration;
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public GetClientConfigurationOperation()
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// Executing the operation returns the following object: 
 public class Result
@@ -97,14 +97,14 @@ public class Result
 
 ## Syntax
 
-<TabItem value="something-something" label="config_1_0">
+<TabItem value="config_1_0" label="config_1_0">
 <CodeBlock language="java">
 {`GetClientConfigurationOperation()
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="config_1_1">
+<TabItem value="config_1_1" label="config_1_1">
 <CodeBlock language="java">
 {`public static class Result \{
     private long etag;
@@ -137,7 +137,7 @@ public class Result
 
 ## Example
 
-<TabItem value="something-something" label="config_1_2">
+<TabItem value="config_1_2" label="config_1_2">
 <CodeBlock language="java">
 {`GetClientConfigurationOperation.Result config
     = store.maintenance().send(new GetClientConfigurationOperation());
@@ -152,18 +152,18 @@ ClientConfiguration clientConfiguration = config.getConfiguration();
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
   
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
 
-<TabItem value="something-something" label="get_config">
+<TabItem value="get_config" label="get_config">
 <CodeBlock language="python">
 {`# Define the get client-configuration operation
 get_client_config_op = GetClientConfigurationOperation()
@@ -180,7 +180,7 @@ client_configuration = result.configuration
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class GetClientConfigurationOperation(MaintenanceOperation): ...
 
@@ -189,7 +189,7 @@ client_configuration = result.configuration
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`# Executing the operation returns the following object:
 class Result:
@@ -210,18 +210,18 @@ class Result:
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
   
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
 
-<TabItem value="something-something" label="get_config">
+<TabItem value="get_config" label="get_config">
 <CodeBlock language="php">
 {`// Define the get client-configuration operation
 $getClientConfigOp = new GetClientConfigurationOperation();
@@ -239,14 +239,14 @@ $clientConfiguration = $result->getConfiguration();
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`public GetClientConfigurationOperation()
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`// Executing the operation returns the following object:
 class GetClientConfigurationResult implements ResultInterface
@@ -267,19 +267,19 @@ class GetClientConfigurationResult implements ResultInterface
 
 <Admonition type="note" title="Note">
 
-* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration) article.
+* It is recommended to first refer to the **client-configuration description** in the [put client-configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx) article.
 
 * Use `GetClientConfigurationOperation` to get the current client-configuration set on the server for the database.
 
 * In this page:
-    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration#get-client-configuration)
-    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration#syntax)
+    * [Get client-configuration](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#get-client-configuration)
+    * [Syntax](../../../../client-api/operations/maintenance/configuration/get-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Get client-configuration
 
-<TabItem value="something-something" label="get_config">
-<CodeBlock language="nodejs">
+<TabItem value="get_config" label="get_config">
+<CodeBlock language="js">
 {`// Define the get client-configuration operation 
 const getClientConfigOp = new GetClientConfigurationOperation();
 
@@ -295,15 +295,15 @@ const configuration = result.configuration;
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const getClientConfigOp = new GetClientConfigurationOperation();
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Object returned from store.maintenance.send(getClientConfigOp):
 \{
    etag,

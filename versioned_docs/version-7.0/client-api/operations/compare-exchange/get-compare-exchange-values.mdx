@@ -23,18 +23,18 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * Use `GetCompareExchangeValuesOperation` to return the saved compare-exchange _Values_ for the specified _Keys_.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
-  * [Example I - Get Values for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-i---get-values-for-specified-keys)  
-  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-ii---get-values-for-keys-with-common-prefix)  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)  
+  * [Example I - Get Values for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-i---get-values-for-specified-keys)  
+  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-ii---get-values-for-keys-with-common-prefix)  
 </Admonition>
 ## Syntax
 
 **Methods**:
 
-<TabItem value="something" label="get_list_1">
+<TabItem value="get_list_1" label="get_list_1">
 <CodeBlock language="csharp">
 {`public GetCompareExchangeValuesOperation(string startWith, int? start = null, int? pageSize = null)
 `}
@@ -49,7 +49,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 **Returned object**:
 
-<TabItem value="something" label="compare_exchange_value">
+<TabItem value="compare_exchange_value" label="compare_exchange_value">
 <CodeBlock language="csharp">
 {`public class CompareExchangeValue<T>
 \{
@@ -66,17 +66,17 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 | `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary containing _'Key'_ to _'CompareExchangeValue'_ associations |
 
 <Admonition type="info" title="Session Interface and Lazy Get" id="session-interface-and-lazy-get" href="#session-interface-and-lazy-get">
-You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange) 
+You can also get compare exchange values through the [session cluster transactions](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange) 
 at `session.Advanced.ClusterTransaction`.  
 
-This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction/compare-exchange#get-compare-exchange).  
+This method also exposes methods getting compare exchange [lazily](../../../client-api/session/cluster-transaction/compare-exchange.mdx#get-compare-exchange).  
 </Admonition>
 
 
 
 ## Example I - Get Values for Specified Keys
 
-<TabItem value="something" label="get_list_2">
+<TabItem value="get_list_2" label="get_list_2">
 <CodeBlock language="csharp">
 {`Dictionary<string, CompareExchangeValue<string>> compareExchangeValues
     = store.Operations.Send(
@@ -89,7 +89,7 @@ This method also exposes methods getting compare exchange [lazily](../../../clie
 
 ## Example II - Get Values for Keys with Common Prefix
 
-<TabItem value="something" label="get_list_3">
+<TabItem value="get_list_3" label="get_list_3">
 <CodeBlock language="csharp">
 {`// Get values for keys that have the common prefix 'users'
 // Retrieve maximum 20 entries
@@ -109,24 +109,24 @@ Dictionary<string, CompareExchangeValue<User>> compareExchangeValues
 
 * Use `GetCompareExchangeValuesOperation` to return the saved compare-exchange _Values_ for the specified _Keys_.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
-  * [Example I - Get Value for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-i---get-values-for-specified-keys)  
-  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-ii---get-values-for-keys-with-common-prefix)  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)  
+  * [Example I - Get Value for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-i---get-values-for-specified-keys)  
+  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#example-ii---get-values-for-keys-with-common-prefix)  
 </Admonition>
 ## Syntax
 
 **Methods**:
-<TabItem value="something-something" label="get_list_0">
+<TabItem value="get_list_0" label="get_list_0">
 <CodeBlock language="java">
 {`GetCompareExchangeValuesOperation(Class<T> clazz, String[] keys);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="get_list_1">
+<TabItem value="get_list_1" label="get_list_1">
 <CodeBlock language="java">
 {`GetCompareExchangeValuesOperation(Class<T> clazz, String startWith)
 GetCompareExchangeValuesOperation(Class<T> clazz, String startWith, Integer start)
@@ -143,7 +143,7 @@ GetCompareExchangeValuesOperation(Class<T> clazz, String startWith, Integer star
 | **pageSize** | int | The maximum number of values that will be retrieved |
 
 **Returned object**:
-<TabItem value="something-something" label="compare_exchange_value">
+<TabItem value="compare_exchange_value" label="compare_exchange_value">
 <CodeBlock language="java">
 {`public class CompareExchangeValue<T> \{
     private String key;
@@ -191,7 +191,7 @@ GetCompareExchangeValuesOperation(Class<T> clazz, String startWith, Integer star
 
 ## Example I - Get Values for Specified Keys
 
-<TabItem value="something-something" label="get_list_2">
+<TabItem value="get_list_2" label="get_list_2">
 <CodeBlock language="java">
 {`Map<String, CompareExchangeValue<String>> compareExchangeValues
     = store.operations().send(
@@ -203,7 +203,7 @@ GetCompareExchangeValuesOperation(Class<T> clazz, String startWith, Integer star
 
 ## Example II - Get Values for Keys with Common Prefix
 
-<TabItem value="something-something" label="get_list_3">
+<TabItem value="get_list_3" label="get_list_3">
 <CodeBlock language="java">
 {`// Get values for keys that have the common prefix 'users'
 // Retrieve maximum 20 entries
@@ -225,15 +225,15 @@ Map<String, CompareExchangeValue<User>> compareExchangeValues
     * List of keys
     * A common prefix for keys to retrieve
 
-* Compare-exchange items can also be managed via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange),  
+* Compare-exchange items can also be managed via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange.mdx),  
   which also expose getting the compare-exchange lazily,  
-  or from the [Studio](../../../studio/database/documents/compare-exchange-view).
+  or from the [Studio](../../../studio/database/documents/compare-exchange-view.mdx).
 
 * In this page:
-  * [Examples](../../../client-api/operations/compare-exchange/get-compare-exchange-values#examples) 
-      * [Get cmpXchg items for specified keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values#get-cmpxchg-items-for-specified-keys)  
-      * [Get cmpXchg items for keys with common prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values#get-cmpxchg-items-for-keys-with-common-prefix)
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)    
+  * [Examples](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#examples) 
+      * [Get cmpXchg items for specified keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#get-cmpxchg-items-for-specified-keys)  
+      * [Get cmpXchg items for keys with common prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#get-cmpxchg-items-for-keys-with-common-prefix)
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)    
 
 </Admonition>
 ## Examples
@@ -241,8 +241,8 @@ Map<String, CompareExchangeValue<User>> compareExchangeValues
 <Admonition type="note" title="Note">
 
 <a id="get-cmpxchg-items-for-specified-keys"/> __Get cmpXchg items for specified keys__:
-<TabItem value="something-something" label="get_values_1">
-<CodeBlock language="nodejs">
+<TabItem value="get_values_1" label="get_values_1">
+<CodeBlock language="js">
 {`// Save some new compare-exchange items
 await documentStore.operations.send(
     new PutCompareExchangeValueOperation("employees/1-A", "someValue1", 0));
@@ -276,8 +276,8 @@ assert.equal(items["employees/3-A"].value, "someValue3");
 <Admonition type="note" title="Note">
 
 <a id="get-cmpxchg-items-for-keys-with-common-prefix"/> __Get cmpXchg items for keys with common prefix__:
-<TabItem value="something-something" label="get_values_2">
-<CodeBlock language="nodejs">
+<TabItem value="get_values_2" label="get_values_2">
+<CodeBlock language="js">
 {`// Get multiple compare-exchange items with common key prefix:
 // ===========================================================
 
@@ -305,15 +305,15 @@ const items = await documentStore.operations.send(getCmpXchgOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const getCmpXchgOp = new GetCompareExchangeValuesOperation(parameters);
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// the parameters object:
 \{
     // Keys of the items to retrieve 
@@ -339,8 +339,8 @@ const items = await documentStore.operations.send(getCmpXchgOp);
 |--------------------------------------------|------------------------------------------------------|
 | `Dictionary<string, CompareExchangeValue>` | A Dictionary with a compare-exchange value per _key_ |
 
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`class CompareExchangeValue \{
     key;
     value;

@@ -19,9 +19,9 @@ In RavenDB `6.2.x`, they are either unavailable or their behavior is inconsisten
 with their behavior in previous versions.  
 
 * In this page:  
-   * [MSSQL connection string requires an Encrypt property](../../migration/server/server-breaking-changes#mssql-connection-string-requires-an-encrypt-property)  
-   * [Corax handling of complex JSON objects in static indexes is configurable](../../migration/server/server-breaking-changes#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)  
-   * [Customizable identifier parts separator](../../migration/server/server-breaking-changes#customizable-identifier-parts-separator)  
+   * [MSSQL connection string requires an Encrypt property](../../migration/server/server-breaking-changes.mdx#mssql-connection-string-requires-an-encrypt-property)  
+   * [Corax handling of complex JSON objects in static indexes is configurable](../../migration/server/server-breaking-changes.mdx#corax-handling-of-complex-json-objects-in-static-indexes-is-configurable)  
+   * [Customizable identifier parts separator](../../migration/server/server-breaking-changes.mdx#customizable-identifier-parts-separator)  
 
 </Admonition>
 ## MSSQL connection string requires an Encrypt property
@@ -47,7 +47,7 @@ or [Encrypt=Strict](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.
 in your connection string and provide the server you use with a valid certificate to encrypt the connection.  
 
 Provide the connection string using code 
-([like so](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-an-sql-connection-string)) 
+([like so](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string)) 
 or via Studio:  
 
 ![SQL ETL task](./assets/breaking-changes_SQL-ETL-task.png)
@@ -56,14 +56,14 @@ or via Studio:
 
 ## Corax handling of complex JSON objects in static indexes is configurable
 
-The behavior of RavenDB's [Corax](../../indexes/search-engine/corax) search engine while 
-handling [complex JSON objects](../../indexes/search-engine/corax#handling-of-complex-json-objects) 
+The behavior of RavenDB's [Corax](../../indexes/search-engine/corax.mdx) search engine while 
+handling [complex JSON objects](../../indexes/search-engine/corax.mdx#handling-of-complex-json-objects) 
 in **static indexes** is now configurable using the `Indexing.Corax.Static.ComplexFieldIndexingBehavior` 
-configuration option (the [handling of auto indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+configuration option (the [handling of auto indexes](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
 remains unchanged).  
 
 * By default, `ComplexFieldIndexingBehavior` is set to **`Throw`**, instructing the search 
-  engine to throw a [NotSupportedInCoraxException](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing) 
+  engine to throw a [NotSupportedInCoraxException](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
   exception when it encounters a complex field in a static index.  
 
 * If you prefer it, you can set `ComplexFieldIndexingBehavior` to **`Skip`** to disable the 
@@ -71,14 +71,14 @@ remains unchanged).
 
 <Admonition type="info" title="Info">
 
-* The configuration option will apply only to [new static indexes](../../indexes/search-engine/corax#if-corax-encounters-a-complex-property-while-indexing), 
+* The configuration option will apply only to [new static indexes](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing), 
   created after the release of RavenDB `6.2`. It will not affect older indexes.  
-* [ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration#indexing.corax.static.complexfieldindexingbehavior) 
+* [ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.corax.static.complexfieldindexingbehavior) 
   can be set for a particular index as well as for all indexes.  
-* Though complex fields cannot be indexed, they **can** still be [stored and projected](../../indexes/search-engine/corax#revise-index-definition-and-fields-usage).  
+* Though complex fields cannot be indexed, they **can** still be [stored and projected](../../indexes/search-engine/corax.mdx#revise-index-definition-and-fields-usage).  
 * To search by the contents of a static index's complex field, you can convert 
   it to a string (using `ToString` on the field value in the index definition). 
-  It is recommended, though, to index [individual properties](../../indexes/search-engine/corax#index-a-simple-property-contained-in-the-complex-field) 
+  It is recommended, though, to index [individual properties](../../indexes/search-engine/corax.mdx#index-a-simple-property-contained-in-the-complex-field) 
   of the complex field.  
 
 </Admonition>
@@ -87,7 +87,7 @@ remains unchanged).
 
 ## Customizable identifier parts separator
 
-Picking an [identifier parts separator](../../server/kb/document-identifier-generation#id-generation-by-server) 
+Picking an [identifier parts separator](../../server/kb/document-identifier-generation.mdx#id-generation-by-server) 
 allows you to choose which character would be placed as a separator between ID parts 
 when new documents are given their IDs.  
 

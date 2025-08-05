@@ -24,7 +24,7 @@ One of the greatest advantages of a document database is that we have very few l
 One very common scenario is the usage of hierarchical data structures.   
 The most trivial of them is the comment thread:
 
-<TabItem value="something-something" label="indexes_1">
+<TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="java">
 {`public static class BlogPost \{
     private String author;
@@ -162,7 +162,7 @@ store.maintenance().send(new PutIndexesOperation(indexDefinition));
 
 This will index all the comments in the thread, regardless of their location in the hierarchy.
 
-<TabItem value="something-something" label="indexes_4">
+<TabItem value="indexes_4" label="indexes_4">
 <CodeBlock language="java">
 {`List<BlogPost> results = session
     .query(BlogPost.class, BlogPosts_ByCommentAuthor.class)
@@ -181,9 +181,9 @@ This will index all the comments in the thread, regardless of their location in 
 * Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:  
-   * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
-   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)
-   * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)
+   * [Hierarchical data](../indexes/indexing-hierarchical-data.mdx#hierarchical-data)  
+   * [Index hierarchical data](../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)
+   * [Query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index)
 
 </Admonition>
 ## Hierarchical data
@@ -191,7 +191,7 @@ This will index all the comments in the thread, regardless of their location in 
 One significant advantage of document databases is their tendency not to impose limits on data structuring.
 **Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
 
-<TabItem value="something" label="classes_1">
+<TabItem value="classes_1" label="classes_1">
 <CodeBlock language="csharp">
 {`public class BlogPost
 \{
@@ -222,7 +222,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 
 `BlogPosts/1-A`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Author": "John",
@@ -263,7 +263,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.  
 
 The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
-We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
+We can then [query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
@@ -401,11 +401,11 @@ where Authors == "Moon"
 
 **Query the index using Studio**:
 
-  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view) view:
 
       !["List of Indexes view"](./assets/list-of-indexes-view.png)
 
-  * View the query results in the [Query](../studio/database/queries/query-view) view:
+  * View the query results in the [Query](../studio/database/queries/query-view.mdx) view:
 
       !["Query View"](./assets/query-view.png)
 
@@ -426,9 +426,9 @@ where Authors == "Moon"
 * Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:  
-   * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
-   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)  
-   * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)  
+   * [Hierarchical data](../indexes/indexing-hierarchical-data.mdx#hierarchical-data)  
+   * [Index hierarchical data](../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)  
+   * [Query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index)  
 
 </Admonition>
 ## Hierarchical data
@@ -436,7 +436,7 @@ where Authors == "Moon"
 One significant advantage of document databases is their tendency not to impose limits on data structuring.
 **Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
 
-<TabItem value="something-something" label="indexes_1">
+<TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="python">
 {`class BlogPost:
     def __init__(self, author: str = None, title: str = None, text: str = None, comments: List[BlogPostComment] = None):
@@ -466,7 +466,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 
 `BlogPosts/1-A`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Author": "John",
@@ -507,7 +507,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
 
 The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
-We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
+We can then [query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
@@ -575,11 +575,11 @@ where Authors == "Moon"
 
 **Query the index using Studio**:
 
-  * Query the index from Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
+  * Query the index from Studio's [List of Indexes](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view) view:  
      
       !["List of Indexes view"](./assets/list-of-indexes-view.png)
 
-  * View the query results in the [Query](../studio/database/queries/query-view) view:  
+  * View the query results in the [Query](../studio/database/queries/query-view.mdx) view:  
     
       !["Query View"](./assets/query-view.png)
     
@@ -600,9 +600,9 @@ where Authors == "Moon"
 * Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:  
-   * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)  
-   * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)  
-   * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)  
+   * [Hierarchical data](../indexes/indexing-hierarchical-data.mdx#hierarchical-data)  
+   * [Index hierarchical data](../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)  
+   * [Query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index)  
 
 </Admonition>
 ## Hierarchical data
@@ -610,7 +610,7 @@ where Authors == "Moon"
 One significant advantage of document databases is their tendency not to impose limits on data structuring.
 **Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
 
-<TabItem value="something-something" label="indexes_1">
+<TabItem value="indexes_1" label="indexes_1">
 <CodeBlock language="php">
 {`class BlogPost
 \{
@@ -719,7 +719,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 
 `BlogPosts/1-A`:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Author": "John",
@@ -760,7 +760,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
 
 The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
-We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
+We can then [query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="AbstractIndexCreationTask" label="AbstractIndexCreationTask">
@@ -853,11 +853,11 @@ where Authors == "Moon"
 
 **Query the index using Studio**:
 
-  * Query the index from Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:  
+  * Query the index from Studio's [List of Indexes](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view) view:  
      
       !["List of Indexes view"](./assets/list-of-indexes-view.png)
 
-  * View the query results in the [Query](../studio/database/queries/query-view) view:  
+  * View the query results in the [Query](../studio/database/queries/query-view.mdx) view:  
     
       !["Query View"](./assets/query-view.png)
     
@@ -878,9 +878,9 @@ where Authors == "Moon"
 * Use the `Recurse` method to traverse the layers of a hierarchical document and index its fields.
 
 * In this Page:
-    * [Hierarchical data](../indexes/indexing-hierarchical-data#hierarchical-data)
-    * [Index hierarchical data](../indexes/indexing-hierarchical-data#index-hierarchical-data)
-    * [Query the index](../indexes/indexing-hierarchical-data#query-the-index)
+    * [Hierarchical data](../indexes/indexing-hierarchical-data.mdx#hierarchical-data)
+    * [Index hierarchical data](../indexes/indexing-hierarchical-data.mdx#index-hierarchical-data)
+    * [Query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index)
 
 </Admonition>
 ## Hierarchical data
@@ -888,8 +888,8 @@ where Authors == "Moon"
 One significant advantage of document databases is their tendency not to impose limits on data structuring.
 **Hierarchical data structures** exemplify this quality well; for example, consider the commonly used comment thread, implemented using objects such as:
 
-<TabItem value="something-something" label="class_1">
-<CodeBlock language="nodejs">
+<TabItem value="class_1" label="class_1">
+<CodeBlock language="js">
 {`class BlogPost \{
     constructor(title, author, text, comments) \{
         this.title = title;
@@ -921,7 +921,7 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 
 `BlogPosts/1-A`:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "author": "John",
@@ -962,11 +962,11 @@ For example, the following document, `BlogPosts/1-A`, represents a blog post by 
 To index the elements of a hierarchical structure like the one above, use RavenDB's `Recurse` method.
 
 The sample index below shows how to use `Recurse` to traverse the comments in the post thread and index them by their authors.
-We can then [query the index](../indexes/indexing-hierarchical-data#query-the-index) for all blog posts that contain comments by specific authors.
+We can then [query the index](../indexes/indexing-hierarchical-data.mdx#query-the-index) for all blog posts that contain comments by specific authors.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class BlogPosts_ByCommentAuthor extends AbstractCsharpIndexCreationTask {
     constructor() {
         super();
@@ -981,7 +981,7 @@ We can then [query the index](../indexes/indexing-hierarchical-data#query-the-in
 </CodeBlock>
 </TabItem>
 <TabItem value="Put_indexes_operation" label="Put_indexes_operation">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const indexDefinition = new IndexDefinition();
 
 indexDefinition.name = "BlogPosts/ByCommentAuthor";
@@ -1011,7 +1011,7 @@ The index can be queried for all blog posts that contain comments made by specif
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const results = await session
     .query({ indexName: "BlogPosts/ByCommentAuthor" })
      // Query for all blog posts that contain comments by 'Moon':
@@ -1031,11 +1031,11 @@ where authors == "Moon"
 
 **Query the index using Studio**:  
 
-  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view#indexes-list-view) view:
+  * Query the index from the Studio's [List of Indexes](../studio/database/indexes/indexes-list-view.mdx#indexes-list-view) view:
 
       !["List of Indexes view"](./assets/list-of-indexes-view.png)
 
-  * View the query results in the [Query](../studio/database/queries/query-view) view:
+  * View the query results in the [Query](../studio/database/queries/query-view.mdx) view:
 
       !["Query View"](./assets/query-view.png)
 

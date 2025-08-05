@@ -26,7 +26,7 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Syntax
 
-<TabItem value="something" label="get_last_modified_1">
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
 <CodeBlock language="csharp">
 {`DateTime? GetLastModifiedFor<T>(T instance);
 `}
@@ -44,7 +44,7 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Example
 
-<TabItem value="something" label="get_last_modified_2">
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
 <CodeBlock language="csharp">
 {`Employee employee = session.Load<Employee>("employees/1-A");
 DateTime? lastModified = session.Advanced.GetLastModifiedFor(employee);
@@ -63,7 +63,7 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Syntax
 
-<TabItem value="something-something" label="get_last_modified_1">
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
 <CodeBlock language="java">
 {`<T> Date getLastModifiedFor(T instance)
 `}
@@ -81,7 +81,7 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Example
 
-<TabItem value="something-something" label="get_last_modified_2">
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1-A");
 Date lastModified = session.advanced().getLastModifiedFor(employee);
@@ -102,7 +102,7 @@ entity using the `get_last_modified_for` method from the `advanced` session oper
 
 ## Syntax
 
-<TabItem value="something-something" label="get_last_modified_1">
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
 <CodeBlock language="python">
 {`def get_last_modified_for(self, entity: object) -> datetime: ...
 `}
@@ -119,7 +119,7 @@ entity using the `get_last_modified_for` method from the `advanced` session oper
 
 ## Example
 
-<TabItem value="something-something" label="get_last_modified_2">
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
 <CodeBlock language="python">
 {`employee = session.load("employees/1-A")
 last_modified = session.advanced.get_last_modified_for(employee)
@@ -140,7 +140,7 @@ entity using the `getLastModifiedFor` method from the `advanced` session operati
 
 ## Syntax
 
-<TabItem value="something-something" label="get_last_modified_1">
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
 <CodeBlock language="php">
 {`public function getLastModifiedFor($instance): ?DateTimeInterface;
 `}
@@ -157,7 +157,7 @@ entity using the `getLastModifiedFor` method from the `advanced` session operati
 
 ## Example
 
-<TabItem value="something-something" label="get_last_modified_2">
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1-A");
 $lastModified = $session->advanced()->getLastModifiedFor($employee);
@@ -176,8 +176,8 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Syntax
 
-<TabItem value="something-something" label="get_last_modified_1">
-<CodeBlock language="nodejs">
+<TabItem value="get_last_modified_1" label="get_last_modified_1">
+<CodeBlock language="js">
 {`session.advanced.getLastModifiedFor(instance);
 `}
 </CodeBlock>
@@ -194,8 +194,8 @@ Last modified date is stored within the metadata in session and is available for
 
 ## Example
 
-<TabItem value="something-something" label="get_last_modified_2">
-<CodeBlock language="nodejs">
+<TabItem value="get_last_modified_2" label="get_last_modified_2">
+<CodeBlock language="js">
 {`const employee = await session.load("employees/1-A");
 const lastModified = session.advanced.getLastModifiedFor(employee);
 `}

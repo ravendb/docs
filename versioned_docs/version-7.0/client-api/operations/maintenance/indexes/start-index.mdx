@@ -21,18 +21,18 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 <Admonition type="note" title="Note">
 
-* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx),  
   use `StartIndexOperation` to **resume the index**.  
 
 * When resuming the index from the **client**:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
-    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index.mdx#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index.mdx#syntax)
 
 </Admonition>
 ## Resume index example
@@ -82,7 +82,7 @@ Assert.Equal(IndexRunningStatus.Running, index.Status);
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// class name has "Start", but this is ok, this is the "Resume" operation
 public StartIndexOperation(string indexName)
@@ -105,7 +105,7 @@ The **StartIndexOperation** is used to resume indexing for an index.
 
 ### Syntax
 
-<TabItem value="something-something" label="start_1">
+<TabItem value="start_1" label="start_1">
 <CodeBlock language="java">
 {`public StartIndexOperation(String indexName)
 `}
@@ -118,7 +118,7 @@ The **StartIndexOperation** is used to resume indexing for an index.
 
 ### Example
 
-<TabItem value="something-something" label="start_2">
+<TabItem value="start_2" label="start_2">
 <CodeBlock language="java">
 {`store.maintenance().send(new StartIndexOperation("Orders/Totals"));
 `}
@@ -131,23 +131,23 @@ The **StartIndexOperation** is used to resume indexing for an index.
 
 <Admonition type="note" title="Note">
 
-* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx),  
   use `StartIndexOperation` to **resume the index**.  
 
 * When resuming the index from the **client**:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
-    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index.mdx#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index.mdx#syntax)
 
 </Admonition>
 ## Resume index example
 
-<TabItem value="something-something" label="resume_index">
+<TabItem value="resume_index" label="resume_index">
 <CodeBlock language="python">
 {`# Define the resume index operation, pass the index name
 resume_index_op = StartIndexOperation("Orders/Totals")
@@ -171,7 +171,7 @@ self.assertEqual(index.status, IndexRunningStatus.RUNNING)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class StartIndexOperation(VoidMaintenanceOperation):
     def __init__(self, index_name: str): ...
@@ -191,23 +191,23 @@ self.assertEqual(index.status, IndexRunningStatus.RUNNING)
 
 <Admonition type="note" title="Note">
 
-* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx),  
   use `StartIndexOperation` to **resume the index**.  
 
 * When resuming the index from the **client**:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
-    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index.mdx#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index.mdx#syntax)
 
 </Admonition>
 ## Resume index example
 
-<TabItem value="something-something" label="resume_index">
+<TabItem value="resume_index" label="resume_index">
 <CodeBlock language="php">
 {`// Define the resume index operation, pass the index name
 $resumeIndexOp = new StartIndexOperation("Orders/Totals");
@@ -237,7 +237,7 @@ $this->assertTrue($index->getStatus()->isRunning());
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`// class name begins with "Start" but this is still the "Resume" operation
 StartIndexOperation(?string $indexName)
@@ -257,24 +257,24 @@ StartIndexOperation(?string $indexName)
 
 <Admonition type="note" title="Note">
 
-* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index),  
+* After an index has been paused using [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx),  
   use `StartIndexOperation` to **resume the index**.  
 
 * When resuming the index from the **client**:  
   The index is resumed on the preferred node only, and Not on all the database-group nodes.
 
-* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) view:  
+* When resuming the index from the **Studio** [indexes list](../../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions) view:  
   The index is resumed on the local node the browser is opened on, even if it is Not the preferred node.
 
 * In this page:
-    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index#resume-index-example)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index#syntax)
+    * [Resume index example](../../../../client-api/operations/maintenance/indexes/start-index.mdx#resume-index-example)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/start-index.mdx#syntax)
 
 </Admonition>
 ## Resume index example
 
-<TabItem value="something-something" label="resume_index">
-<CodeBlock language="nodejs">
+<TabItem value="resume_index" label="resume_index">
+<CodeBlock language="js">
 {`// Define the resume index operation, pass the index name 
 const resumeIndexOp = new StartIndexOperation("Orders/Totals");
 
@@ -297,8 +297,8 @@ assert.strictEqual(index.status, "Running");
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`// class name has "Start", but this is ok, this is the "Resume" operation
 const resumeIndexOp = new StartIndexOperation(indexName);
 `}

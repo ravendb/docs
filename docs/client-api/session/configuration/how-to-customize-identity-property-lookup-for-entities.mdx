@@ -24,7 +24,7 @@ The client must know which property of your entity is considered as an identity.
 
 ## Syntax
 
-<TabItem value="something" label="identity_1">
+<TabItem value="identity_1" label="identity_1">
 <CodeBlock language="csharp">
 {`Func<MemberInfo, bool> FindIdentityProperty \{ get; set; \}
 `}
@@ -37,7 +37,7 @@ The client must know which property of your entity is considered as an identity.
 
 The simplest example would be to check if the property name is equal to 'Identifier'.
 
-<TabItem value="something" label="identity_2">
+<TabItem value="identity_2" label="identity_2">
 <CodeBlock language="csharp">
 {`store.Conventions.FindIdentityProperty = memberInfo => memberInfo.Name == "Identifier";
 `}
@@ -53,7 +53,7 @@ The client must know which property of your entity is considered as an identity.
 
 ## Syntax
 
-<TabItem value="something-something" label="identity_1">
+<TabItem value="identity_1" label="identity_1">
 <CodeBlock language="java">
 {`public void setFindIdentityProperty(Function<PropertyDescriptor, Boolean> findIdentityProperty);
 `}
@@ -66,7 +66,7 @@ The client must know which property of your entity is considered as an identity.
 
 The simplest example would be to check if the property name is equal to 'Identifier'.
 
-<TabItem value="something-something" label="identity_2">
+<TabItem value="identity_2" label="identity_2">
 <CodeBlock language="java">
 {`store.getConventions().setFindIdentityProperty(property -> "Identifier".equals(property.getName()));
 `}
@@ -86,7 +86,7 @@ The simplest example would be to check if the property name is equal to 'Identif
 
 ## Syntax
 
-<TabItem value="something-something" label="identity_1">
+<TabItem value="identity_1" label="identity_1">
 <CodeBlock language="php">
 {`public function setFindIdentityProperty(?Closure $findIdentityProperty): void;
 `}
@@ -97,7 +97,7 @@ The simplest example would be to check if the property name is equal to 'Identif
 
 The simplest example would be to check if the property name is equal to 'Identifier'.
 
-<TabItem value="something-something" label="identity_2">
+<TabItem value="identity_2" label="identity_2">
 <CodeBlock language="php">
 {`$store->getConventions()->setFindIdentityProperty(function($property) \{
         return "Identifier" == $property->getName();
@@ -115,8 +115,8 @@ The client must know which property of your entity is considered as an identity.
 
 ## Syntax
 
-<TabItem value="something-something" label="identity_1">
-<CodeBlock language="nodejs">
+<TabItem value="identity_1" label="identity_1">
+<CodeBlock language="js">
 {`store.conventions.identityProperty;
 `}
 </CodeBlock>
@@ -126,8 +126,8 @@ The client must know which property of your entity is considered as an identity.
 
 Here's how to change it to `Identifier` field.
 
-<TabItem value="something-something" label="identity_2">
-<CodeBlock language="nodejs">
+<TabItem value="identity_2" label="identity_2">
+<CodeBlock language="js">
 {`store.conventions.identityProperty = "Identifier"; 
 `}
 </CodeBlock>

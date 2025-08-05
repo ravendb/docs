@@ -24,29 +24,29 @@ export const supportedLanguages = ["csharp"];
 * Use `DeleteRevisionsOperation` to delete document revisions.  
   The document itself is not deleted, only its revisions will be deleted, as specified by the operation's params.
 
-* Existing revisions will be deleted regardless of the current [revisions settings](../../../../studio/database/settings/document-revisions),  
+* Existing revisions will be deleted regardless of the current [revisions settings](../../../../studio/database/settings/document-revisions.mdx),  
   even if these settings are disabled.
 
 * When working with a secure server:  
-  * The delete revisions action will be logged in the [audit log](../../../../server/security/audit-log/audit-log).  
-  * This operation is only available for a client certificate with a [security clearance](../../../../server/security/authorization/security-clearance-and-permissions) of _DatabaseAdmin_ or higher.
+  * The delete revisions action will be logged in the [audit log](../../../../server/security/audit-log/audit-log.mdx).  
+  * This operation is only available for a client certificate with a [security clearance](../../../../server/security/authorization/security-clearance-and-permissions.mdx) of _DatabaseAdmin_ or higher.
 
-* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database).  
-  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database).  
+* By default, the operation will be applied to the [default database](../../../../client-api/setting-up-default-database.mdx).  
+  To operate on a different database see [switch operations to different database](../../../../client-api/operations/how-to/switch-operations-to-a-different-database.mdx).  
 
 * In this page:  
-  * [Delete all revisions - single document](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-all-revisions---single-document)
-  * [Delete revisions - multiple documents](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions---multiple-documents)
-  * [Delete revisions by time frame](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions-by-time-frame)  
-  * [Delete revisions by change vectors](../../../../document-extensions/revisions/client-api/operations/delete-revisions#delete-revisions-by-change-vectors)  
-  * [Syntax](../../../../document-extensions/revisions/client-api/operations/delete-revisions#syntax)  
+  * [Delete all revisions - single document](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-all-revisions---single-document)
+  * [Delete revisions - multiple documents](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions---multiple-documents)
+  * [Delete revisions by time frame](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions-by-time-frame)  
+  * [Delete revisions by change vectors](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#delete-revisions-by-change-vectors)  
+  * [Syntax](../../../../document-extensions/revisions/client-api/operations/delete-revisions.mdx#syntax)  
 
 </Admonition>
 ## Delete all revisions - single document
 
 In this example, we delete ALL revisions of a document.  
-Both types of revisions, those resulting from the [revisions settings](../../../../studio/database/settings/document-revisions) and those generated manually via  
-[force revision creation](../../../../document-extensions/revisions/overview#force-revision-creation), will be deleted.
+Both types of revisions, those resulting from the [revisions settings](../../../../studio/database/settings/document-revisions.mdx) and those generated manually via  
+[force revision creation](../../../../document-extensions/revisions/overview.mdx#force-revision-creation), will be deleted.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Sync" label="Sync">
@@ -165,7 +165,7 @@ var numberOfRevisionsDeleted = await store.Maintenance.SendAsync(deleteRevisions
 
 ## Delete revisions by change vectors
 
-Each revision has its own unique [change vector](../../../../document-extensions/revisions/client-api/session/loading#get-revisions-by-change-vector).  
+Each revision has its own unique [change vector](../../../../document-extensions/revisions/client-api/session/loading.mdx#get-revisions-by-change-vector).  
 You can specify which revisions to delete by providing their corresponding change vectors.  
 No exception is thrown if a change vector doesn’t match any revision.
 
@@ -219,7 +219,7 @@ Consider the following scenario:
 
 1. A document that has revisions is deleted.
 
-2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions#revisions-bin).
+2. A "Delete Revision" is created for the document, and it will be listed in the [Revisions Bin](../../../../studio/database/document-extensions/revisions.mdx#revisions-bin).
 
 3. The revisions of this deleted document remain accessible via the Revisions Bin.
 
@@ -232,7 +232,7 @@ Consider the following scenario:
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`Available overloads:
 ====================
@@ -258,7 +258,7 @@ public DeleteRevisionsOperation(string documentId,
 |---------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **documentId**                  | `string`       | The ID of the document whose revisions you want to delete.                                                                                                                            |
 | **documentIds**                 | `List<string>` | A list of document IDs whose revisions you want to delete.                                                                                                                            |
-| **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../../document-extensions/revisions/overview#force-revision-creation) in the deletion.<br/>`false` - Exclude force-created revisions. |
+| **removeForceCreatedRevisions** | `bool`         | `true` - Include [force-created revisions](../../../../document-extensions/revisions/overview.mdx#force-revision-creation) in the deletion.<br/>`false` - Exclude force-created revisions. |
 | **from**                        | `DateTime`     | The start of the date range for the revisions to delete (inclusive).                                                                                                                  |
 | **to**                          | `DateTime`     | The end of the date range for the revisions to delete (inclusive).                                                                                                                    |
 | **revisionsChangeVectors**      | `List<string>` | A list of change vectors corresponding to the revisions that you want to delete.                                                                                                      |

@@ -30,19 +30,19 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * In this page:
 
-    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results#streaming-overview)
+    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results.mdx#streaming-overview)
      
-    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results#stream-by-query)
-        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-query)
-        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-raw-query)
-        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-projected-query)
-        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)
-        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents)
-        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results#by-query-syntax)
+    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-query)
+        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-raw-query)
+        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-projected-query)
+        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query)
+        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents)
+        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-query-syntax)
       
-    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-by-prefix)
-        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-results-by-prefix)
-        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results#by-prefix-syntax)
+    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-prefix)
+        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-results-by-prefix)
+        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-prefix-syntax)
 
 </Admonition>
 ## Streaming overview
@@ -63,10 +63,10 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * __Query limitations:__:  
 
   * A streaming query does not wait for indexing by design.  
-    So calling [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults) is Not supported and will result in an exception.   
+    So calling [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.   
   
-  * Using [Include](../../../client-api/how-to/handle-document-relationships#includes) to load a related document to the session in a streaming query is Not supported.  
-    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
+  * Using [Include](../../../client-api/how-to/handle-document-relationships.mdx#includes) to load a related document to the session in a streaming query is Not supported.  
+    Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).
 
 
 
@@ -394,8 +394,8 @@ public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
 #### Stream related documents
 __Why streaming query results does not support 'include'__:
 
-* A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).
-* An [Include](../../../client-api/how-to/handle-document-relationships#includes) clause in a non-streamed query loads these related documents to the session  
+* A document can reference [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
+* An [Include](../../../client-api/how-to/handle-document-relationships.mdx#includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
@@ -403,7 +403,7 @@ __Why streaming query results does not support 'include'__:
 
 __How to stream related documents__:
 
-* Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections).
+* Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections.mdx).
 * The projected query results will not be just the documents from the queried collection.  
   Instead, each result will be an entity containing the related document entities in addition to the original queried document.
 * On the client side, you need to define a class that matches the projected query result.
@@ -510,7 +510,7 @@ public class AllDocsProjection
 <Admonition type="note" title="Note">
 #### By query syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`// Stream by query:
 IEnumerator<StreamResult<T>> Stream<T>(IQueryable<T> query);
@@ -527,12 +527,12 @@ IEnumerator<StreamResult<T>> Stream<T>(IRawDocumentQuery<T> query, out StreamQue
 
 | Parameters | type | description |
 | - | - | - |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | The query for which to stream results |
-| `out` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query.mdx#session.query), [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) | The query for which to stream results |
+| `out` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics.mdx) | Information about performed query |
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
 </Admonition>
 
@@ -595,7 +595,7 @@ await using (IAsyncEnumerator<StreamResult<Order>> streamResults =
 <Admonition type="note" title="Note">
 #### By prefix syntax
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// Stream by prefix:
 IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
@@ -614,7 +614,7 @@ IEnumerator<StreamResult<T>> Stream<T>(string startsWith, string matches = null,
 
 | Return Value | |
 | - | - |
-| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result)&gt; | Enumerator with resulting entities |
+| IEnumerator&lt;[StreamResult&lt;T&gt;](../../../glossary/stream-result.mdx)&gt; | Enumerator with resulting entities |
 
 </Admonition>
 
@@ -648,15 +648,15 @@ To stream results, use the `stream` method from the `advanced` session operation
 * __Query limitations:__:
 
     * A streaming query does not wait for indexing by design.  
-      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults) is Not supported and will result in an exception.
+      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
 
-    * Using [include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
+    * Using [include](../../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
 
 
 
 ## Syntax
 
-<TabItem value="something-something" label="stream_1">
+<TabItem value="stream_1" label="stream_1">
 <CodeBlock language="java">
 {`<T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
 
@@ -671,7 +671,7 @@ To stream results, use the `stream` method from the `advanced` session operation
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
+| **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) | Query to stream results for. |
 | `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
 
 | Return Value | |
@@ -680,7 +680,7 @@ To stream results, use the `stream` method from the `advanced` session operation
 
 ## Example I - Using Static Index
 
-<TabItem value="something-something" label="stream_2">
+<TabItem value="stream_2" label="stream_2">
 <CodeBlock language="java">
 {`IDocumentQuery<Employee> query = session
     .query(Employee.class, Employees_ByFirstName.class)
@@ -697,7 +697,7 @@ while (results.hasNext()) \{
 
 ## Example II - Dynamic Document Query
 
-<TabItem value="something-something" label="stream_3">
+<TabItem value="stream_3" label="stream_3">
 <CodeBlock language="java">
 {`IDocumentQuery<Employee> query = session
     .advanced()
@@ -716,7 +716,7 @@ while (results.hasNext()) \{
 
 ## Example III - Dynamic Raw Query
 
-<TabItem value="something-something" label="stream_4">
+<TabItem value="stream_4" label="stream_4">
 <CodeBlock language="java">
 {`IRawDocumentQuery<Employee> query = session.advanced()
     .rawQuery(Employee.class, "from Employees where FirstName = 'Robert'");
@@ -745,19 +745,19 @@ while (results.hasNext()) \{
 
 * In this page:
 
-    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results#streaming-overview)
+    * [Streaming overview](../../../client-api/session/querying/how-to-stream-query-results.mdx#streaming-overview)
 
-    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results#stream-by-query)
-        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-query)
-        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-dynamic-raw-query)
-        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results#stream-a-projected-query)
-        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results#stream-an-index-query)
-        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents)
-        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results#by-query-syntax)
+    * [Stream by query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-query)
+        * [Stream a dynamic query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-query)
+        * [Stream a dynamic raw query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-dynamic-raw-query)
+        * [Stream a projected query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-a-projected-query)
+        * [Stream an index query](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-an-index-query)
+        * [Stream related documents](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents)
+        * [By query syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-query-syntax)
 
-    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-by-prefix)
-        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results#stream-results-by-prefix)
-        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results#by-prefix-syntax)
+    * [Stream by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-by-prefix)
+        * [Stream results by prefix](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-results-by-prefix)
+        * [By prefix syntax](../../../client-api/session/querying/how-to-stream-query-results.mdx#by-prefix-syntax)
 
 </Admonition>
 ## Streaming overview
@@ -778,10 +778,10 @@ while (results.hasNext()) \{
 * __Query limitations:__:
 
     * A streaming query does not wait for indexing by design.  
-      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults) is Not supported and will result in an exception.
+      So calling [waitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query.mdx#waitfornonstaleresults) is Not supported and will result in an exception.
 
-    * Using [include](../../../client-api/session/loading-entities#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
-      Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results#stream-related-documents).
+    * Using [include](../../../client-api/session/loading-entities.mdx#load-with-includes) to load a related document to the session in a streaming query is Not supported.  
+      Learn how to __stream related documents__ here [below](../../../client-api/session/querying/how-to-stream-query-results.mdx#stream-related-documents).
 
 
 
@@ -790,8 +790,8 @@ while (results.hasNext()) \{
 <Admonition type="note" title="Note">
 #### Stream a dynamic query
 
-<TabItem value="something-something" label="stream_1">
-<CodeBlock language="nodejs">
+<TabItem value="stream_1" label="stream_1">
+<CodeBlock language="js">
 {`// Define a query on a collection
 const query = session.query(\{ collection: "employees" \})
     .whereEquals('FirstName', 'Robert');
@@ -847,8 +847,8 @@ queryStream.on("error", err => \{
 <Admonition type="note" title="Note">
 #### Stream a dynamic raw query
 
-<TabItem value="something-something" label="stream_2">
-<CodeBlock language="nodejs">
+<TabItem value="stream_2" label="stream_2">
+<CodeBlock language="js">
 {`// Define a raw query using RQL
 const rawQuery = session.advanced
     .rawQuery("from Employees where FirstName = 'Robert'");
@@ -866,8 +866,8 @@ const queryStream = await session.advanced.stream(rawQuery);
 <Admonition type="note" title="Note">
 #### Stream a projected query
 
-<TabItem value="something-something" label="stream_3">
-<CodeBlock language="nodejs">
+<TabItem value="stream_3" label="stream_3">
+<CodeBlock language="js">
 {`// Define a query with projected results
 // Each query result is not an Employee document but an entity containing selected fields only.
 const projectedQuery = session.query(\{collection: 'employees'\})
@@ -893,7 +893,7 @@ queryStream.on("data", resultItem => \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define a query on an index
 const query = session.query({ indexName: "Employees/ByFirstName" })
     .whereEquals("FirstName", "Robert");
@@ -913,7 +913,7 @@ queryStream.once("stats", queryStats => {
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// The index:
 class Employees_ByFirstName extends AbstractJavaScriptIndexCreationTask {
 
@@ -938,8 +938,8 @@ class Employees_ByFirstName extends AbstractJavaScriptIndexCreationTask {
 #### Stream related documents
 __Why streaming query results does not support 'include'__:
 
-* A document can reference [related documents](../../../indexes/indexing-related-documents#what-are-related-documents).
-* An [include](../../../client-api/session/loading-entities#load-with-includes) clause in a non-streamed query loads these related documents to the session  
+* A document can reference [related documents](../../../indexes/indexing-related-documents.mdx#what-are-related-documents).
+* An [include](../../../client-api/session/loading-entities.mdx#load-with-includes) clause in a non-streamed query loads these related documents to the session  
   so that they can be accessed without an additional query to the server.
 * Those included documents are sent to the client at the end of the query results.  
   This does not mesh well with streaming, which is designed to allow transferring massive amounts of data,  
@@ -947,7 +947,7 @@ __Why streaming query results does not support 'include'__:
 
 __How to stream related documents__:
 
-* Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections).
+* Instead of using _include_, define the query so that it will return a [projection](../../../indexes/querying/projections.mdx).
 * The projected query results will not be just the documents from the queried collection.  
   Instead, each result will be an entity containing the related document entities in addition to the original queried document.
 * On the client side, you need to define a class that matches the projected query result.
@@ -960,8 +960,8 @@ __Example__:
   The projected class in the example contains the full related documents.  
   However, you can project just the needed properties from the related documents.
 
-<TabItem value="something-something" label="stream_5">
-<CodeBlock language="nodejs">
+<TabItem value="stream_5" label="stream_5">
+<CodeBlock language="js">
 {`// Define a query with a 'select' clause to project the results.
 
 // The related Company & Employee documents are 'loaded',
@@ -998,8 +998,8 @@ queryStream.on("data", resultItem => \{
 <Admonition type="note" title="Note">
 #### By query syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`await session.advanced.stream(query, [statsCallback]);
 `}
 </CodeBlock>
@@ -1033,8 +1033,8 @@ queryStream.on("data", resultItem => \{
 * Streamed data can also be filtered by an __ID prefix__ and by some __filtering options__, see below.
 * Note: No auto-index is created when streaming results by a prefix.
 
-<TabItem value="something-something" label="stream_6">
-<CodeBlock language="nodejs">
+<TabItem value="stream_6" label="stream_6">
+<CodeBlock language="js">
 {`const idPrefix = "Order";
 
 // Filter streamed results by passing an ID prefix
@@ -1055,8 +1055,8 @@ queryStream.on("error", err => \{
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="stream_7">
-<CodeBlock language="nodejs">
+<TabItem value="stream_7" label="stream_7">
+<CodeBlock language="js">
 {`const idPrefix = "Orders/";
 const options = \{
     matches: "*25-A|77?-A"
@@ -1090,8 +1090,8 @@ queryStream.on("error", err => \{
 <Admonition type="note" title="Note">
 #### By prefix syntax
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`await session.advanced.stream(idPrefix);
 await session.advanced.stream(idPrefix, options);
 `}

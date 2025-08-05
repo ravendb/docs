@@ -33,19 +33,19 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * In this page:
 
-    * [No-paging example](../../indexes/querying/paging#no---paging-example)
-    * [Paging examples](../../indexes/querying/paging#paging-examples)
-    * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
-    * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
@@ -406,9 +406,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehints.maxnumberofresults) configuration key.
 
-* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
 
 ![Figure 1. Performance Hint](./assets/performance-hint.png)
 
@@ -424,9 +424,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [Distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
 
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In those cases:
 
@@ -814,19 +814,19 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
 
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, indexes with more than `int.MaxValue` entries can be created and used.
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.  
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * In this page:
 
-    * [No-paging example](../../indexes/querying/paging#no---paging-example)
-    * [Paging examples](../../indexes/querying/paging#paging-examples)
-    * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
-    * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
@@ -967,9 +967,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehints.maxnumberofresults) configuration key.
 
-* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
 
 ![Figure 1. Performance Hint](./assets/performance-hint.png)
 
@@ -985,9 +985,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [Distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
 
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In those cases:
 
@@ -1120,20 +1120,20 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
   
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, 
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, 
       indexes with more than a C# `int.MaxValue` entries can be created and used.  
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * In this page:
 
-    * [No-paging example](../../indexes/querying/paging#no---paging-example)
-    * [Paging examples](../../indexes/querying/paging#paging-examples)
-    * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
-    * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
@@ -1336,9 +1336,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehints.maxnumberofresults) configuration key.
 
-* As suggested by this performance hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+* As suggested by this performance hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
   
      ![Figure 1. Performance Hint](./assets/performance-hint.png)
 
@@ -1354,9 +1354,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [Distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
 
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In these cases:
 
@@ -1549,20 +1549,20 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
   
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, 
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, 
       indexes with more than a C# `int.MaxValue` entries can be created and used.  
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * In this page:
 
-  * [No-paging example](../../indexes/querying/paging#no-paging-example)
-  * [Paging examples](../../indexes/querying/paging#paging-examples)
-  * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
-  * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
+  * [No-paging example](../../indexes/querying/paging.mdx#no-paging-example)
+  * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+  * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+  * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
@@ -1884,9 +1884,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehints.maxnumberofresults) configuration key.
 
-* As suggested by this performance hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+* As suggested by this performance hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
   
      ![Figure 1. Performance Hint](./assets/performance-hint.png)
 
@@ -1902,9 +1902,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:  
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [Distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [Distinct](../../indexes/querying/distinct.mdx).
   
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In these cases:
 
@@ -2234,26 +2234,26 @@ limit 0, 50  // First loop will skip 0, take 50, etc.
 
     * Querying **Corax** indexes:  
       The default page size is the same as the one employed by Lucene.  
-      Note: when using [Corax](../../indexes/search-engine/corax) as the search engine, indexes with more than `2,147,483,647` entries can be created and used.
+      Note: when using [Corax](../../indexes/search-engine/corax.mdx) as the search engine, indexes with more than `2,147,483,647` entries can be created and used.
       To match this capacity, queries over Corax indexes can skip a number of results that exceed this max value and take documents from that location.  
 
 * **Performance**:  
   Using paging is beneficial when handling large result datasets, contributing to improved performance.  
-  See [paging and performance](../../indexes/querying/paging#paging-and-performance) here below.
+  See [paging and performance](../../indexes/querying/paging.mdx#paging-and-performance) here below.
 
 * In this page:
 
-    * [No-paging example](../../indexes/querying/paging#no---paging-example)
-    * [Paging examples](../../indexes/querying/paging#paging-examples)
-    * [Paging and performance](../../indexes/querying/paging#paging-and-performance)
-    * [Paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results)
+    * [No-paging example](../../indexes/querying/paging.mdx#no---paging-example)
+    * [Paging examples](../../indexes/querying/paging.mdx#paging-examples)
+    * [Paging and performance](../../indexes/querying/paging.mdx#paging-and-performance)
+    * [Paging through tampered results](../../indexes/querying/paging.mdx#paging-through-tampered-results)
 
 </Admonition>
 ## No-paging example
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// A simple query without paging:
 // ==============================
 
@@ -2268,7 +2268,7 @@ const allResults = await session
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -2298,7 +2298,7 @@ where UnitsInStock > 10
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Retrieve only the 3'rd page - when page size is 10:
 // ===================================================
 
@@ -2330,7 +2330,7 @@ const totalResults = stats.totalResults;
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -2356,7 +2356,7 @@ limit 20, 10 // skip 20, take 10
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for all results - page by page:
 // =====================================
 
@@ -2385,7 +2385,7 @@ while (pagedResults.length > 0); // Fetch next results
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -2430,9 +2430,9 @@ This practice has several benefits:
 
 * By default, if the number of returned results exceeds **2048**, the server will issue a "Page size too big" notification (visible in the Studio) with information about the query.
 
-* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration#performancehints.maxnumberofresults) configuration key.
+* This threshold can be customized by modifying the value of the [PerformanceHints.MaxNumberOfResults](../../server/configuration/performance-hints-configuration.mdx#performancehints.maxnumberofresults) configuration key.
 
-* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results) instead of paging.
+* As suggested by the hint, you may consider using [Streaming query results](../../client-api/session/querying/how-to-stream-query-results.mdx) instead of paging.
 
 ![Figure 1. Performance Hint](./assets/performance-hint.png)
 
@@ -2448,9 +2448,9 @@ This practice has several benefits:
 
 * The server will skip duplicate results internally in the following two scenarios:
 
-    1. When making a [Projection query](../../indexes/querying/projections) with [distinct](../../indexes/querying/distinct).
+    1. When making a [Projection query](../../indexes/querying/projections.mdx) with [distinct](../../indexes/querying/distinct.mdx).
 
-    2. When querying a [Fanout index](../../indexes/indexing-nested-data#fanout-index---multiple-index-entries-per-document).
+    2. When querying a [Fanout index](../../indexes/indexing-nested-data.mdx#fanout-index---multiple-index-entries-per-document).
 
 * In those cases:
 
@@ -2469,7 +2469,7 @@ This practice has several benefits:
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`let pagedResults;
 let stats;
 
@@ -2515,7 +2515,7 @@ while (pagedResults.length > 0); // Fetch next results
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask  {
     constructor() {
         super();
@@ -2543,7 +2543,7 @@ limit 0, 10  // First loop will skip 0, take 10, etc.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`let pagedResults;
 let stats;
 
@@ -2583,7 +2583,7 @@ while (pagedResults.length > 0); // Fetch next results
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// A fanout index - creating MULTIPLE index-entries per document:
 // ==============================================================
 

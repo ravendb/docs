@@ -16,7 +16,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * Schedule an **External Replication Task** to have a _live_ replica of your data in another database:
-    * In a separate RavenDB cluster [on local machines](../../start/getting-started) or [a cloud instance](../../cloud/cloud-overview),  
+    * In a separate RavenDB cluster [on local machines](../../start/getting-started.mdx) or [a cloud instance](../../cloud/cloud-overview.mdx),  
       which can be used as a failover if the source cluster is down.
     * In the same cluster if you want a live copy that won't be a client failover target.
 
@@ -24,20 +24,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Any changes in the source database will be reflected in the replica once they occur.
 
 * This ongoing task replicates **one-way**, from the source to the destination.  
-  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication).
+  For additional functionality such as filtration and two-way replication consider [Hub/Sink Replication](../../server/ongoing-tasks/hub-sink-replication.mdx).
 
 * To replicate between two separate, secure RavenDB servers,  
-  you need to [pass a client certificate](../../server/ongoing-tasks/external-replication#step-by-step-guide) from the source server to the destination.
+  you need to [pass a client certificate](../../server/ongoing-tasks/external-replication.mdx#step-by-step-guide) from the source server to the destination.
 
 * The External Replication task **does _not_ create a backup** of your data and indexes.  
-  See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task#backup-task--vs--replication-task)
+  See more in [Backup -vs- Replication](../../studio/database/tasks/backup-task.mdx#backup-task--vs--replication-task)
 * In this page: 
-  * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication#general-information-about-external-replication-task)
-  * [Code Sample](../../server/ongoing-tasks/external-replication#code-sample)
-  * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication#step-by-step-guide)
-  * [Definition](../../server/ongoing-tasks/external-replication#definition)  
-  * [Offline Behavior](../../server/ongoing-tasks/external-replication#offline-behavior)
-  * [Delayed Replication](../../server/ongoing-tasks/external-replication#delayed-replication)
+  * [General Information about External Replication Task](../../server/ongoing-tasks/external-replication.mdx#general-information-about-external-replication-task)
+  * [Code Sample](../../server/ongoing-tasks/external-replication.mdx#code-sample)
+  * [Step-by-Step Guide](../../server/ongoing-tasks/external-replication.mdx#step-by-step-guide)
+  * [Definition](../../server/ongoing-tasks/external-replication.mdx#definition)  
+  * [Offline Behavior](../../server/ongoing-tasks/external-replication.mdx#offline-behavior)
+  * [Delayed Replication](../../server/ongoing-tasks/external-replication.mdx#delayed-replication)
 
 </Admonition>
 
@@ -46,22 +46,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **What is being replicated:**
 
 * All database documents and related data:
-    * [Attachments](../../document-extensions/attachments/what-are-attachments)
-    * [Revisions](../../document-extensions/revisions/overview)
-    * [Counters](../../document-extensions/counters/overview)
-    * [Time Series](../../document-extensions/timeseries/overview)
+    * [Attachments](../../document-extensions/attachments/what-are-attachments.mdx)
+    * [Revisions](../../document-extensions/revisions/overview.mdx)
+    * [Counters](../../document-extensions/counters/overview.mdx)
+    * [Time Series](../../document-extensions/timeseries/overview.mdx)
 **What is _not_ being replicated:**
 
 * Server and cluster level features:
-    * [Indexes](../../indexes/creating-and-deploying)
-    * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts#conflict-resolution-script)
-    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview)
-    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions)
-    * [Identities](../../server/kb/document-identifier-generation#strategy--3)
+    * [Indexes](../../indexes/creating-and-deploying.mdx)
+    * [Conflict resolution scripts](../../server/clustering/replication/replication-conflicts.mdx#conflict-resolution-script)
+    * [Compare-Exchange](../../client-api/operations/compare-exchange/overview.mdx)
+    * [Subscriptions](../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)
+    * [Identities](../../server/kb/document-identifier-generation.mdx#strategy--3)
     * Ongoing tasks
-        * [ETL](../../server/ongoing-tasks/etl/basics)
-        * [Backup](../../studio/database/tasks/backup-task)
-        * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview)
+        * [ETL](../../server/ongoing-tasks/etl/basics.mdx)
+        * [Backup](../../studio/database/tasks/backup-task.mdx)
+        * [Hub/Sink Replication](../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)
 
           <Admonition type="note" title="Note">
 
@@ -79,13 +79,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 **Conflicts:**
 
 * Two databases that have an External Replication task defined between them will detect and resolve document
-  [conflicts](../../server/clustering/replication/replication-conflicts) according to each database's conflict resolution policy.
-* It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts#configuring-conflict-resolution-using-the-client)
+  [conflicts](../../server/clustering/replication/replication-conflicts.mdx) according to each database's conflict resolution policy.
+* It is recommended to have the same [policy configuration](../../server/clustering/replication/replication-conflicts.mdx#configuring-conflict-resolution-using-the-client)
   on both the source and the target databases.
 **Sharding Support:**
 
-External replication is supported by both [sharded](../../sharding/overview) and non-sharded databases.  
-Learn more about the way ETL works on a sharded database [here](../../sharding/external-replication).
+External replication is supported by both [sharded](../../sharding/overview.mdx) and non-sharded databases.  
+Learn more about the way ETL works on a sharded database [here](../../sharding/external-replication.mdx).
 
 
 
@@ -94,9 +94,9 @@ Learn more about the way ETL works on a sharded database [here](../../sharding/e
 The required elements of an External Replication task are:
 
 * The `UpdateExternalReplicationOperation()` method.
-* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management#enabling-communication-between-servers:-importing-and-exporting-certificates) 
+* The destination server needs the [certificate from the source server](../../server/security/authentication/certificate-management.mdx#enabling-communication-between-servers:-importing-and-exporting-certificates) 
   so that it will trust the source.
-* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string#add-a-raven-connection-string) 
+* The [connection string](../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-raven-connection-string) 
   with the destination server URL and any other details needed to access the destination server.
 * The following properties in the `ExternalReplication` object:
   * **ConnectionStringName**  
@@ -104,7 +104,7 @@ The required elements of an External Replication task are:
   * **Name**  
     The External Replication task name.
 
-<TabItem value="something" label="ExternalReplication">
+<TabItem value="ExternalReplication" label="ExternalReplication">
 <CodeBlock language="csharp">
 {`Properties
         public class ExternalReplication
@@ -126,7 +126,7 @@ Optional elements include the following properties in the `ExternalReplication` 
   The amount of time to delay replication.  
   The following sample shows a 30-minute delay.  Delay can also be set by days, hours, and seconds.  
 
-<TabItem value="something" label="ExternalReplicationWithMentorAndDelay">
+<TabItem value="ExternalReplicationWithMentorAndDelay" label="ExternalReplicationWithMentorAndDelay">
 <CodeBlock language="csharp">
 {`//define external replication with mentor node and delay timespan
 await sourceStore.Maintenance.SendAsync(
@@ -144,7 +144,7 @@ await sourceStore.Maintenance.SendAsync(
 
 `ExternalReplication` properties:
 
-<TabItem value="something" label="ExternalReplicationProperties">
+<TabItem value="ExternalReplicationProperties" label="ExternalReplicationProperties">
 <CodeBlock language="csharp">
 {`public class ExternalReplication
 \{
@@ -162,15 +162,15 @@ await sourceStore.Maintenance.SendAsync(
 
 ## Step-by-Step Guide
 
-To create an external replication task via the RavenDB Studio, see the [Step-by-Step Guide](../../studio/database/tasks/ongoing-tasks/external-replication-task#step-by-step-guide)
+To create an external replication task via the RavenDB Studio, see the [Step-by-Step Guide](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#step-by-step-guide)
 
 
 
 ## Definition
 
-To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication#code-sample).  
+To learn how to define an external replication task via code, see [code sample](../../server/ongoing-tasks/external-replication.mdx#code-sample).  
 
-You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
+You can also configure external eplication tasks [via RavenDB Studio](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition).  
 
 
 
@@ -210,5 +210,5 @@ due to a faulty patch script or other human errors.
 While you can and should always use backup for those cases, having a live database makes it quick to failover 
 to prevent business losses while you repair the faulty databases.  
 
-* To set delayed replication, see "3. **Set Replication Delay Time**" in the [definition instructions](../../studio/database/tasks/ongoing-tasks/external-replication-task#definition).  
+* To set delayed replication, see "3. **Set Replication Delay Time**" in the [definition instructions](../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx#definition).  
 

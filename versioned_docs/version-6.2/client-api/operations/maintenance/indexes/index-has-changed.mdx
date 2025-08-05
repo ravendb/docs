@@ -32,8 +32,8 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     on the server to avoid any unwanted changes to the existing indexed data.  
 
 * In this page:
-    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed#check-if-index-has-changed)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed#syntax)
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
 
 </Admonition>
 ## Check if index has changed
@@ -90,7 +90,7 @@ bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
 
 ## Syntax
 
-<TabItem value="something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="csharp">
 {`public IndexHasChangedOperation(IndexDefinition definition)
 `}
@@ -99,7 +99,7 @@ bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
 
 | Parameters | Type | Description |
 | - | - | - |
-| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) | The index definition to check |
+| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
 
 | Return Value | Description |
 | - | - |
@@ -117,7 +117,7 @@ bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="index_has_changed_1">
+<TabItem value="index_has_changed_1" label="index_has_changed_1">
 <CodeBlock language="java">
 {`public IndexHasChangedOperation(IndexDefinition definition)
 `}
@@ -136,7 +136,7 @@ bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
 
 ## Example
 
-<TabItem value="something-something" label="index_has_changed_2">
+<TabItem value="index_has_changed_2" label="index_has_changed_2">
 <CodeBlock language="java">
 {`Boolean ordersIndexHasChanged =
     store.maintenance().send(new IndexHasChangedOperation(ordersIndexDefinition));
@@ -161,13 +161,13 @@ bool indexHasChanged = await store.Maintenance.SendAsync(indexHasChangedOp);
     on the server to avoid any unwanted changes to the existing indexed data.  
 
 * In this page:
-    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed#check-if-index-has-changed)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed#syntax)
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
 
 </Admonition>
 ## Check if index has changed
 
-<TabItem value="something-something" label="index_has_changed">
+<TabItem value="index_has_changed" label="index_has_changed">
 <CodeBlock language="python">
 {`# Some index definition
 index_definition = IndexDefinition(
@@ -192,7 +192,7 @@ index_has_changed = store.maintenance.send(index_has_changed_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="python">
 {`class IndexHasChangedOperation(MaintenanceOperation[bool]):
     def __init__(self, index: IndexDefinition): ...
@@ -202,7 +202,7 @@ index_has_changed = store.maintenance.send(index_has_changed_op)
 
 | Parameters | Type | Description |
 | - | - | - |
-| **index** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) | The index definition to check |
+| **index** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
 
 | Return Value | Description |
 | - | - |
@@ -228,13 +228,13 @@ index_has_changed = store.maintenance.send(index_has_changed_op)
     on the server to avoid any unwanted changes to the existing indexed data.  
 
 * In this page:
-    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed#check-if-index-has-changed)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed#syntax)
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
 
 </Admonition>
 ## Check if index has changed
 
-<TabItem value="something-something" label="index_has_changed">
+<TabItem value="index_has_changed" label="index_has_changed">
 <CodeBlock language="php">
 {`// Some index definition
 $indexDefinition = new IndexDefinition();
@@ -259,7 +259,7 @@ $store->maintenance()->send($indexHasChangedOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
+<TabItem value="syntax" label="syntax">
 <CodeBlock language="php">
 {`IndexHasChangedOperation(?IndexDefinition $definition)
 `}
@@ -268,7 +268,7 @@ $store->maintenance()->send($indexHasChangedOp);
 
 | Parameters | Type | Description |
 | - | - | - |
-| **$definition** | [?IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) | The index definition to check |
+| **$definition** | [?IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
 
 | Return Value | Description |
 | - | - |
@@ -294,14 +294,14 @@ $store->maintenance()->send($indexHasChangedOp);
     on the server to avoid any unwanted changes to the existing indexed data.  
 
 * In this page:
-    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed#check-if-index-has-changed)
-    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed#syntax)
+    * [Check if index has changed](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#check-if-index-has-changed)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/index-has-changed.mdx#syntax)
 
 </Admonition>
 ## Check if index has changed
 
-<TabItem value="something-something" label="index_has_changed">
-<CodeBlock language="nodejs">
+<TabItem value="index_has_changed" label="index_has_changed">
+<CodeBlock language="js">
 {`// Some index definition
 const indexDefinition = new IndexDefinition();
 indexDefinition.name = "UsersByName";
@@ -325,8 +325,8 @@ const indexHasChanged = await documentStore.maintenance.send(indexHasChangedOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax">
-<CodeBlock language="nodejs">
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
 {`const indexHasChangedOp = new IndexHasChangedOperation(definition);
 `}
 </CodeBlock>
@@ -334,7 +334,7 @@ const indexHasChanged = await documentStore.maintenance.send(indexHasChangedOp);
 
 | Parameters | Type | Description |
 | - | - | - |
-| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes#indexdefinition) | The index definition to check |
+| **definition** | [IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#indexdefinition) | The index definition to check |
 
 | Return Value | Description |
 | - | - |

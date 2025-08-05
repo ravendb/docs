@@ -24,9 +24,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   are also supported by sharded databases. Unsupported features are listed below.  
 
 * In this page:  
-  * [Indexing](../sharding/indexing#indexing)  
-  * [Map-Reduce Indexes on a Sharded Database](../sharding/indexing#map-reduce-indexes-on-a-sharded-database)  
-  * [Unsupported Indexing Features](../sharding/indexing#unsupported-indexing-features)  
+  * [Indexing](../sharding/indexing.mdx#indexing)  
+  * [Map-Reduce Indexes on a Sharded Database](../sharding/indexing.mdx#map-reduce-indexes-on-a-sharded-database)  
+  * [Unsupported Indexing Features](../sharding/indexing.mdx#unsupported-indexing-features)  
 
 </Admonition>
 ## Indexing
@@ -49,7 +49,7 @@ shard during indexation, and on the orchestrator machine each time a query uses 
    and then reduces them again.  
   
 <Admonition type="note" title="Note">
-Learn about **querying map-reduce indexes** in a sharded database [here](../sharding/querying#orderby-in-a-map-reduce-index).  
+Learn about **querying map-reduce indexes** in a sharded database [here](../sharding/querying.mdx#orderby-in-a-map-reduce-index).  
 </Admonition>
 
 ## Unsupported Indexing Features
@@ -57,7 +57,7 @@ Learn about **querying map-reduce indexes** in a sharded database [here](../shar
 Unsupported or yet-unimplemented indexing features include: 
 
 * **Rolling index deployment**  
-  [Rolling index deployment](../indexes/rolling-index-deployment) 
+  [Rolling index deployment](../indexes/rolling-index-deployment.mdx) 
   is not supported in a Sharded Database.  
 * **Loading documents from other shards**  
   Loading a document during indexing is possible only if the document 
@@ -65,7 +65,7 @@ Unsupported or yet-unimplemented indexing features include:
   Consider the below index, for example, that attempts to load a document.  
   If the requested document is stored on a different shard, the load operation 
   will be ignored.  
-<TabItem value="something" label="csharp">
+<TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
 {`Map = products => from product in products
                         select new Result
@@ -78,13 +78,13 @@ Unsupported or yet-unimplemented indexing features include:
   <Admonition type="note" title="Note">
   You can make sure that documents share a bucket, and 
   can therefore locate and load each other, using the 
-  [$ syntax](../sharding/administration/anchoring-documents).  
+  [$ syntax](../sharding/administration/anchoring-documents.mdx).  
   </Admonition>
 * **Map-Reduce Output Documents**  
-  Using [OutputReduceToCollection](../indexes/map-reduce-indexes#map-reduce-output-documents) 
+  Using [OutputReduceToCollection](../indexes/map-reduce-indexes.mdx#map-reduce-output-documents) 
   to output the results of a map-reduce index to a collection 
   is not supported in a Sharded Database.  
-* [Custom Sorters](../indexes/querying/sorting#creating-a-custom-sorter) 
+* [Custom Sorters](../indexes/querying/sorting.mdx#creating-a-custom-sorter) 
   are not supported in a Sharded Database.  
 
 

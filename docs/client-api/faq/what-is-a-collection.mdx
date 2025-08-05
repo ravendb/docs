@@ -27,10 +27,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Collections are used throughout many RavenDB features, such as defining indexes, setting revisions, and much more.
 
 * In this page:  
-  * [Collection Name Generation](../../client-api/faq/what-is-a-collection#collection-name-generation)
-  * [Collection Usages](../../client-api/faq/what-is-a-collection#collection-usages)
+  * [Collection Name Generation](../../client-api/faq/what-is-a-collection.mdx#collection-name-generation)
+  * [Collection Usages](../../client-api/faq/what-is-a-collection.mdx#collection-usages)
 
-* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections)
+* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections.mdx)
 </Admonition>
 
 ![Figure 1. What is a Collection](./assets/what-is-a-collection.png)
@@ -44,7 +44,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   e.g. storing an entity of type `Order` will generate the collection name `Orders`.  
 
 * The function that is responsible for tagging the documents can be overridden.  
-  See: [Global Identifier Generation Conventions](../../client-api/configuration/identifier-generation/global#findtypetagname-and-finddynamictagname). 
+  See: [Global Identifier Generation Conventions](../../client-api/configuration/identifier-generation/global.mdx#findtypetagname-and-finddynamictagname). 
 
 ----
 
@@ -54,7 +54,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   e.g  Documents that are created with the following IDs: `users|23` / `users/45` / `users/17`  
   will all belong to the same `Users` collection.  
 
-* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections)  
+* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections.mdx)  
 
 
 ## Collection Usages
@@ -64,21 +64,21 @@ import LanguageContent from "@site/src/components/LanguageContent";
     This internal index is used to query the database and retrieve only documents from a specified collection.  
 
 * **In Indexing**
-  * Each [Map Index](../../indexes/map-indexes) is built against a single collection (or muliple collections when using a [Multi-Map Index](../../indexes/multi-map-indexes).  
+  * Each [Map Index](../../indexes/map-indexes.mdx) is built against a single collection (or muliple collections when using a [Multi-Map Index](../../indexes/multi-map-indexes.mdx).  
     During the indexing process, the index function iterates only over the documents that belong to the specified collection(s).  
 
 * **In Revisions**
-  * Documents [Revisions](../../document-extensions/revisions/overview) can be defined per collection.  
+  * Documents [Revisions](../../document-extensions/revisions/overview.mdx) can be defined per collection.  
 
 * **In Ongoing Tasks**
-  * A [RavenDB ETL Task](../../server/ongoing-tasks/etl/raven) & [SQL ETL Task](../../server/ongoing-tasks/etl/sql) are defined on specified collections.  
+  * A [RavenDB ETL Task](../../server/ongoing-tasks/etl/raven.mdx) & [SQL ETL Task](../../server/ongoing-tasks/etl/sql.mdx) are defined on specified collections.  
 
 * **The @hilo Collection**
-  * The ranges of available IDs values returned by [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) are per collection name.  
-    Learn more in: [The @hilo Collection](../../studio/database/documents/documents-and-collections#the-@hilo-collection)  
+  * The ranges of available IDs values returned by [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm.mdx) are per collection name.  
+    Learn more in: [The @hilo Collection](../../studio/database/documents/documents-and-collections.mdx#the-@hilo-collection)  
 
 * **The @empty Collection**
-  * Learn more in: [The @empty Collection](../../studio/database/documents/documents-and-collections#the-@empty-collection)  
+  * Learn more in: [The @empty Collection](../../studio/database/documents/documents-and-collections.mdx#the-@empty-collection)  
 
 
 

@@ -19,17 +19,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * There is no need to explicitly create or delete a time series.  
    * A time series is created when its first entry is incremented.  
-   * A time series is deleted when all entries are [deleted](../../../../../document-extensions/timeseries/client-api/session/delete) from it.  
+   * A time series is deleted when all entries are [deleted](../../../../../document-extensions/timeseries/client-api/session/delete.mdx) from it.  
 
-* You can add a single [incremental time series entry](../../../../../document-extensions/timeseries/design#time-series-entries) at a time.  
+* You can add a single [incremental time series entry](../../../../../document-extensions/timeseries/design.mdx#time-series-entries) at a time.  
   Note, however, that you can `Increment` as many times as you need to before calling 
   `session.SaveChanges`, to create multiple entries in a single transaction.  
 
 * In this page:  
-      * [`IncrementalTimeSeriesFor.Increment`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment#timeseriesfor.append)  
-         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment#syntax)  
-         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment#usage-flow)  
-         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment#code-samples)  
+      * [`IncrementalTimeSeriesFor.Increment`](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#timeseriesfor.append)  
+         * [Syntax](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#syntax)  
+         * [Usage Flow](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#usage-flow)  
+         * [Code Samples](../../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx#code-samples)  
 </Admonition>
 ## `IncrementalTimeSeriesFor.Increment`
 
@@ -50,7 +50,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * There are four `IncrementalTimeSeriesFor.Increment` methods:  
    * Increment a time series entry's array of values at the provided timestamp.   
-<TabItem value="something" label="incremental_declaration_increment-values-array-at-provided-timestamp">
+<TabItem value="incremental_declaration_increment-values-array-at-provided-timestamp" label="incremental_declaration_increment-values-array-at-provided-timestamp">
 <CodeBlock language="csharp">
 {`// Increment a time series entry's array of values at the provided timestamp
 void Increment(DateTime timestamp, IEnumerable<double> values);
@@ -58,7 +58,7 @@ void Increment(DateTime timestamp, IEnumerable<double> values);
 </CodeBlock>
 </TabItem>
    * Increment a time series entry's array of values at the current time.  
-<TabItem value="something" label="incremental_declaration_increment-values-array-at-current-time">
+<TabItem value="incremental_declaration_increment-values-array-at-current-time" label="incremental_declaration_increment-values-array-at-current-time">
 <CodeBlock language="csharp">
 {`// Increment a time series entry's array of values at the current time
 void Increment(IEnumerable<double> values);
@@ -68,7 +68,7 @@ void Increment(IEnumerable<double> values);
    * Increment an entry value at the provided timestamp.  
      (If the entry exists and has more than one value, only the first 
      value in its list will be incremented by the passed value.)  
-<TabItem value="something" label="incremental_declaration_increment-value-at-provided-timestamp">
+<TabItem value="incremental_declaration_increment-value-at-provided-timestamp" label="incremental_declaration_increment-value-at-provided-timestamp">
 <CodeBlock language="csharp">
 {`// Increment an entry value at the provided timestamp
 void Increment(DateTime timestamp, double value);
@@ -78,7 +78,7 @@ void Increment(DateTime timestamp, double value);
    * Increment an entry value at the current time.  
      (If the entry exists and has more than one value, only the first 
      value in its list will be incremented by the passed value.)  
-<TabItem value="something" label="incremental_declaration_increment-value-at-current-time">
+<TabItem value="incremental_declaration_increment-value-at-current-time" label="incremental_declaration_increment-value-at-current-time">
 <CodeBlock language="csharp">
 {`// Increment an entry value at the current time
 void Increment(double value);
@@ -105,9 +105,9 @@ void Increment(double value);
 * Create an instance of `IncrementalTimeSeriesFor` and pass it:  
     * An explicit document ID,  
       -or-  
-      An [entity tracked by the session](../../../../../client-api/session/loading-entities), 
-      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query) 
-      or from [session.Load](../../../../../client-api/session/loading-entities#load).  
+      An [entity tracked by the session](../../../../../client-api/session/loading-entities.mdx), 
+      e.g. a document object returned from [session.Query](../../../../../client-api/session/querying/how-to-query.mdx) 
+      or from [session.Load](../../../../../client-api/session/loading-entities.mdx#load).  
     * The time series name.  
       The name **must** begin with "INC:" (can be upper or lower case) to identify the time series as incremental.  
 * Call `IncrementalTimeSeriesFor.Increment`.  
@@ -118,7 +118,7 @@ void Increment(double value);
 ## Code Samples
 
 * Increment an array of values in an incremental time series entry.  
-<TabItem value="something" label="incremental_create-incremental-time-series">
+<TabItem value="incremental_create-incremental-time-series" label="incremental_create-incremental-time-series">
 <CodeBlock language="csharp">
 {`var ts = session.IncrementalTimeSeriesFor("companies/webstore", "INC:Downloads");
 ts.Increment(baseline.AddMinutes(1), new double[] \{ 10, -10, 0, 0 \});

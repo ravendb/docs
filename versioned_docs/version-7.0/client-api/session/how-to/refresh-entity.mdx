@@ -25,7 +25,7 @@ from `Advanced` session operations.
 
 ## Syntax
 
-<TabItem value="something" label="refresh_1">
+<TabItem value="refresh_1" label="refresh_1">
 <CodeBlock language="csharp">
 {`void Refresh<T>(T entity);
 `}
@@ -38,7 +38,7 @@ from `Advanced` session operations.
 
 ## Example
 
-<TabItem value="something" label="refresh_2">
+<TabItem value="refresh_2" label="refresh_2">
 <CodeBlock language="csharp">
 {`Employee employee = session.Load<Employee>("employees/1");
 Assert.Equal("Doe", employee.LastName);
@@ -65,7 +65,7 @@ from `advanced` session operations.
 
 ## Syntax
 
-<TabItem value="something-something" label="refresh_1">
+<TabItem value="refresh_1" label="refresh_1">
 <CodeBlock language="java">
 {`<T> void refresh(T entity);
 `}
@@ -78,7 +78,7 @@ from `advanced` session operations.
 
 ## Example
 
-<TabItem value="something-something" label="refresh_2">
+<TabItem value="refresh_2" label="refresh_2">
 <CodeBlock language="java">
 {`Employee employee = session.load(Employee.class, "employees/1");
 Assert.assertEquals("Doe", employee.getLastName());
@@ -105,7 +105,7 @@ To update an entity with the latest changes from the server, use the `refresh` m
 
 ## Syntax
 
-<TabItem value="something-something" label="refresh_1">
+<TabItem value="refresh_1" label="refresh_1">
 <CodeBlock language="python">
 {`def refresh(self, entity: object) -> object: ...
 `}
@@ -118,7 +118,7 @@ To update an entity with the latest changes from the server, use the `refresh` m
 
 ## Example
 
-<TabItem value="something-something" label="refresh_2">
+<TabItem value="refresh_2" label="refresh_2">
 <CodeBlock language="python">
 {`employee = session.load("employees/1", Employee)
 self.assertEquals("Doe", employee.last_name)
@@ -144,7 +144,7 @@ To update an entity with the latest changes from the server, use the `refresh` m
 
 ## Syntax
 
-<TabItem value="something-something" label="refresh_1">
+<TabItem value="refresh_1" label="refresh_1">
 <CodeBlock language="php">
 {`public function refresh(object $entity): void;
 `}
@@ -157,7 +157,7 @@ To update an entity with the latest changes from the server, use the `refresh` m
 
 ## Example
 
-<TabItem value="something-something" label="refresh_2">
+<TabItem value="refresh_2" label="refresh_2">
 <CodeBlock language="php">
 {`$employee = $session->load(Employee::class, "employees/1");
 $this->assertEquals("Doe", $employee->getLastName());
@@ -185,8 +185,8 @@ from `advanced` session operations.
 
 ## Syntax
 
-<TabItem value="something-something" label="refresh_1">
-<CodeBlock language="nodejs">
+<TabItem value="refresh_1" label="refresh_1">
+<CodeBlock language="js">
 {`session.advanced.refresh(entity);
 `}
 </CodeBlock>
@@ -198,8 +198,8 @@ from `advanced` session operations.
 
 ## Example
 
-<TabItem value="something-something" label="refresh_2">
-<CodeBlock language="nodejs">
+<TabItem value="refresh_2" label="refresh_2">
+<CodeBlock language="js">
 {`const employee = await session.load("employees/1");
 assert.strictEqual("Doe", employee.lastName);
 

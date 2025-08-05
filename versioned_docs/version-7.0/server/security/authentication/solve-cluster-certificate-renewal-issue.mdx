@@ -18,13 +18,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   your own Let's Encrypt certificates as client certificates, the next certificate 
   renewal may cause permission issues that need to be handled manually.  
 
-* Find [whether this issue is relevant for you](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#current-situation) 
-  and if so, [how to handle it](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#solutions).  
+* Find [whether this issue is relevant for you](../../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx#current-situation) 
+  and if so, [how to handle it](../../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx#solutions).  
 
 * **In this page**:  
-   * [Errors Relevant To This Issue](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#errors-relevant-to-this-issue)  
-   * [Background And Current Situation](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#background-and-current-situation)  
-   * [Solutions](../../../server/security/authentication/solve-cluster-certificate-renewal-issue#solutions)  
+   * [Errors Relevant To This Issue](../../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx#errors-relevant-to-this-issue)  
+   * [Background And Current Situation](../../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx#background-and-current-situation)  
+   * [Solutions](../../../server/security/authentication/solve-cluster-certificate-renewal-issue.mdx#solutions)  
 
 ## Errors Relevant To This Issue  
 
@@ -62,7 +62,7 @@ as **Studio alerts** and/or **responses to client requests**.
   that it can trust the new source certificate.  
 
 * **Original Solution**  
-  To solve this problem, we introduced [Implicit Trust](../../../server/security/authentication/certificate-renewal-and-rotation#implicit-trust-by-public-key-pinning-hash) 
+  To solve this problem, we introduced [Implicit Trust](../../../server/security/authentication/certificate-renewal-and-rotation.mdx#implicit-trust-by-public-key-pinning-hash) 
   by using the certificate's **Public Key Pinning Hash**.  
   Now, if the source cluster renews its certificate **by using the same private key and 
   issuer**, the new certificate will have the same Public Key Pinning Hash, and the 
@@ -103,7 +103,7 @@ This is relevant for you -
 Register the pinning hash of the old issuer in the destination cluster. In settings.json, 
 on every node of the destination cluster add the following:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`"Security.WellKnownIssuers.Admin": "jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="
 `}

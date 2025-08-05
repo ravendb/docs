@@ -27,9 +27,9 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 as when documents are modified in the indexed collection(s).  
 
 * In this page:  
-  * [Syntax](../indexes/indexing-compare-exchange-values#syntax)  
-  * [Examples](../indexes/indexing-compare-exchange-values#examples)  
-  * [Querying the Index](../indexes/indexing-compare-exchange-values#querying-the-index)  
+  * [Syntax](../indexes/indexing-compare-exchange-values.mdx#syntax)  
+  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
+  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
 
 </Admonition>
 ## Syntax
@@ -37,7 +37,7 @@ as when documents are modified in the indexed collection(s).
 When creating an index using `AbstractIndexCreationTask`, use the method 
 `LoadCompareExchangeValue()` to load a compare exchange value by its key.  
 
-<TabItem value="something-something" label="methods">
+<TabItem value="methods" label="methods">
 <CodeBlock language="csharp">
 {`//Load one compare exchange value
 T LoadCompareExchangeValue<T>(string key);
@@ -164,9 +164,9 @@ List<HotelRoom> VIPRooms = session
 as when documents are modified in the indexed collection(s).  
 
 * In this page:  
-  * [How to use](../indexes/indexing-compare-exchange-values#how-to-use)  
-  * [Examples](../indexes/indexing-compare-exchange-values#examples)  
-  * [Querying the Index](../indexes/indexing-compare-exchange-values#querying-the-index)  
+  * [How to use](../indexes/indexing-compare-exchange-values.mdx#how-to-use)  
+  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
+  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
 
 </Admonition>
 ## How to use 
@@ -234,9 +234,9 @@ representing the guests in those rooms.
 as when documents are modified in the indexed collection(s).  
 
 * In this page:  
-  * [Syntax](../indexes/indexing-compare-exchange-values#syntax)  
-  * [Examples](../indexes/indexing-compare-exchange-values#examples)  
-  * [Querying the Index](../indexes/indexing-compare-exchange-values#querying-the-index)  
+  * [Syntax](../indexes/indexing-compare-exchange-values.mdx#syntax)  
+  * [Examples](../indexes/indexing-compare-exchange-values.mdx#examples)  
+  * [Querying the Index](../indexes/indexing-compare-exchange-values.mdx#querying-the-index)  
 
 </Admonition>
 ## Syntax
@@ -252,8 +252,8 @@ For javascript indexes, use the method `cmpxchg(<key>)`.
 These indexes map the rooms in a hotel, as well as compare exchange values 
 representing the guests in those rooms.  
 
-<TabItem value="something-something" label="index_1">
-<CodeBlock language="nodejs">
+<TabItem value="index_1" label="index_1">
+<CodeBlock language="js">
 {`class Compare_Exchange_Index extends AbstractCsharpIndexCreationTask \{
     constructor() \{
         super();
@@ -272,8 +272,8 @@ representing the guests in those rooms.
 
 ## Querying the Index
 
-<TabItem value="something-something" label="query_2">
-<CodeBlock language="nodejs">
+<TabItem value="query_2" label="query_2">
+<CodeBlock language="js">
 {`const VIPRooms = await session
     .advanced.rawQuery<HotelRoom>(
     "   from Hotelrooms as room\\n"+

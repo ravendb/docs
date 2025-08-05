@@ -33,18 +33,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
   This second stage groups the specified requested fields that were indexed in the Map stage,  
   and then runs the Reduce function to get a final aggregation result per field value.  
 
-* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
+* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer.mdx).  
 
 * In this page:  
-  * [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
-  * [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage)  
-  * [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index#important-guidelines)  
-  * [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index#map-reduce-query-results)  
-  * [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index#multi-map-reduce)    
-  * [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))  
-      * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index#artificial-documents--vs--regular-documents)  
-      * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index#artificial-documents-usage)  
-      * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index#limitations)  
+  * [The Map Stage](../../../studio/database/indexes/create-map-reduce-index.mdx#the-map-stage)  
+  * [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index.mdx#the-reduce-stage)  
+  * [Important Guidelines](../../../studio/database/indexes/create-map-reduce-index.mdx#important-guidelines)  
+  * [Map-Reduce Query Results](../../../studio/database/indexes/create-map-reduce-index.mdx#map-reduce-query-results)  
+  * [Multi-Map-Reduce](../../../studio/database/indexes/create-map-reduce-index.mdx#multi-map-reduce)    
+  * [Saving Map-Reduce Results into a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index.mdx#saving-map-reduce-results-in-a-collection-(artificial-documents))  
+      * [Artificial -vs- Regular Documents](../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents--vs--regular-documents)  
+      * [Artificial Documents Usage](../../../studio/database/indexes/create-map-reduce-index.mdx#artificial-documents-usage)  
+      * [Artificial Documents Limitations](../../../studio/database/indexes/create-map-reduce-index.mdx#limitations)  
 </Admonition>
 ## The Map Stage
 
@@ -82,7 +82,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      The accumulative value of this field will represent the total amount spent by a company on _all_ orders.  
 
 3. Next, click 'Add Reduction' to continue and add the 'Reduce' function. 
-   See [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index#the-reduce-stage).
+   See [The Reduce Stage](../../../studio/database/indexes/create-map-reduce-index.mdx#the-reduce-stage).
 
 
 ## The Reduce Stage
@@ -105,7 +105,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
        (How much money the company has spent all together, on _all_ orders).  
 
 2. Optional: The results of the Map-Reduce index can be saved in a new collection.  
-   Learn more in [Saving Map-Reduce Results in a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index#saving-map-reduce-results-in-a-collection-(artificial-documents))
+   Learn more in [Saving Map-Reduce Results in a Collection (Artificial Documents)](../../../studio/database/indexes/create-map-reduce-index.mdx#saving-map-reduce-results-in-a-collection-(artificial-documents))
 
 
 ## Important Guidelines
@@ -126,7 +126,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   The total amount of all orders per company is represented in the `TotalOrdersAmount` column.  
   The column names correspond to the Map-Reduce fields definition.  
 
-* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
+* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer.mdx).  
 
 
 
@@ -155,7 +155,7 @@ the document IDs of output documents.
 
 * These documents created by Map-Reduce Indexes are called **Artificial Documents**.  
 
-* Learn more about using Artificial Documents from the client code in [Map-Reduce Indexes: Reduce Results as Artificial Documents](../../../indexes/map-reduce-indexes#reduce-results-as-artificial-documents).  
+* Learn more about using Artificial Documents from the client code in [Map-Reduce Indexes: Reduce Results as Artificial Documents](../../../indexes/map-reduce-indexes.mdx#reduce-results-as-artificial-documents).  
 
 ![Figure 5. Save Map-Reduce Results into a Collection](./assets/create-map-reduce-index-5.png)
 
@@ -194,9 +194,9 @@ to edit them manually since any index results update would overwrite all manual 
 * You can set up indexes on top of the Artificial Documents collection, including additional MapReduce indexes,  
   giving you the option to create recursive map-reduce operations.  
 
-* You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
+* You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) 
   on the Artificial Documents collection to a dedicated database on a separate cluster for further processing, 
-  as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions).
+  as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql.mdx) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx).
 </Admonition>
 
 <Admonition type="note" title="Note">
@@ -217,12 +217,12 @@ to edit them manually since any index results update would overwrite all manual 
   each node in the database group has its own (independent) copy of the index results.  
   Therefore:
 
-  1. It is recommended to use artificial documents with [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) only on a _single_ node.  
+  1. It is recommended to use artificial documents with [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx) only on a _single_ node.  
      A Subscription failover to another node may cause the subscription to send Artificial Documents  
      that the subscription has already acknowledged.  
 
-  2. Artificial documents cannot use [Revisions](../../../document-extensions/revisions/overview) 
-     or [Attachments](../../../document-extensions/attachments/what-are-attachments).  
+  2. Artificial documents cannot use [Revisions](../../../document-extensions/revisions/overview.mdx) 
+     or [Attachments](../../../document-extensions/attachments/what-are-attachments.mdx).  
 
 </Admonition>
 

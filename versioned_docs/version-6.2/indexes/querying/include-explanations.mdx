@@ -23,17 +23,17 @@ export const supportedLanguages = ["csharp", "nodejs"];
 
 * This article provides examples of including explanations when querying a static-index.  
 
-* **Prior to this article**, please refer to [Include Query Explanations](../../client-api/session/querying/debugging/include-explanations) for dynamic-query examples  
+* **Prior to this article**, please refer to [Include Query Explanations](../../client-api/session/querying/debugging/include-explanations.mdx) for dynamic-query examples  
   and general knowledge about including explanations to retrieve the score of resulting documents.
   
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine for static-indexes.
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * In this page:
-  * [Include explanations when querying Map index](../../indexes/querying/include-explanations#include-explanations-when-querying-map-index)  
-  * [Include explanations when querying Map-Reduce index](../../indexes/querying/include-explanations#include-explanations-when-querying-map-reduce-index)  
-  * [Syntax](../../indexes/querying/include-explanations#syntax)
+  * [Include explanations when querying Map index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-index)  
+  * [Include explanations when querying Map-Reduce index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-reduce-index)  
+  * [Syntax](../../indexes/querying/include-explanations.mdx#syntax)
 
 </Admonition>
 ## Include explanations when querying Map index
@@ -338,7 +338,7 @@ include explanations($p0)
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Use this overload when querying a Map index
 IDocumentQuery<T> IncludeExplanations(out Explanations explanations);
@@ -354,7 +354,7 @@ IDocumentQuery<T> IncludeExplanations(ExplanationOptions options, out Explanatio
 | **explanations**  | `Explanations`       | An _out_ param that will be filled with the explanations results.       |
 | **options**       | `ExplanationOptions` | An object that specifies the GroupKey when querying a Map-Reduce index. |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class Explanations
 \{
@@ -366,7 +366,7 @@ IDocumentQuery<T> IncludeExplanations(ExplanationOptions options, out Explanatio
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public sealed class ExplanationOptions
 \{
@@ -387,24 +387,24 @@ IDocumentQuery<T> IncludeExplanations(ExplanationOptions options, out Explanatio
 
 * This article provides examples of including explanations when querying a static-index.  
 
-* **Prior to this article**, please refer to [Include Query Explanations](../../client-api/session/querying/debugging/include-explanations) for dynamic-query examples  
+* **Prior to this article**, please refer to [Include Query Explanations](../../client-api/session/querying/debugging/include-explanations.mdx) for dynamic-query examples  
   and general knowledge about including explanations to retrieve the score of resulting documents.
   
     <Admonition type="info" title="Info">
     * Including explanations is available only when using **Lucene** as the underlying search engine for static-indexes.
-    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax#selecting-the-search-engine).
+    * You can configure which search engine will be used. Learn how in [Selecting the search engine](../../indexes/search-engine/corax.mdx#selecting-the-search-engine).
     </Admonition>
 * In this page:
-  * [Include explanations when querying Map index](../../indexes/querying/include-explanations#include-explanations-when-querying-map-index)  
-  * [Include explanations when querying Map-Reduce index](../../indexes/querying/include-explanations#include-explanations-when-querying-map-reduce-index)  
-  * [Syntax](../../indexes/querying/include-explanations#syntax)
+  * [Include explanations when querying Map index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-index)  
+  * [Include explanations when querying Map-Reduce index](../../indexes/querying/include-explanations.mdx#include-explanations-when-querying-map-reduce-index)  
+  * [Syntax](../../indexes/querying/include-explanations.mdx#syntax)
 
 </Admonition>
 ## Include explanations when querying Map index
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_index" label="Map_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -423,7 +423,7 @@ IDocumentQuery<T> IncludeExplanations(ExplanationOptions options, out Explanatio
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an object that will receive the explanations results
 let explanationsResults;
 
@@ -464,7 +464,7 @@ include explanations()
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Map_Reduce_index" label="Map_Reduce_index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class NumberOfUnitsOrdered_PerCategory extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -490,7 +490,7 @@ include explanations()
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Define an object that will receive the explanations results
 let explanationsResults;
 
@@ -529,8 +529,8 @@ include explanations($p0)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Use this overload when querying a Map index
 query.includeExplanations(explanationsCallback)
 
@@ -545,8 +545,8 @@ query.includeExplanations(options, explanationsCallback)
 | **explanationsCallback** | `(explanationsResults) => void` | &lt;ul&gt;&lt;li&gt;A callback function with an output parameter.&lt;/li&gt;&lt;li&gt;The parameter passed to the callback will be filled with the `Explanations` object when query returns.&lt;/li&gt;&lt;/ul&gt; |
 | **options**              | `object`                        | An object that specifies the group key when querying a Map-Reduce index.                                                                                                       |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The Explanations object:
 // ========================
 
@@ -558,8 +558,8 @@ class Explanations \{
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something-something" label="syntax_3">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_3" label="syntax_3">
+<CodeBlock language="js">
 {`// The Explanation Options object:
 // ===============================
 \{

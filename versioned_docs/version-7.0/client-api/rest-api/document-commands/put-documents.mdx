@@ -19,10 +19,10 @@ import LanguageContent from "@site/src/components/LanguageContent";
 `<server URL>/databases/<database name>/docs`  
 
 * In this page:  
-  * [Examples](../../../client-api/rest-api/document-commands/put-documents#examples)  
-  * [Request Format](../../../client-api/rest-api/document-commands/put-documents#request-format)  
-      * [Request Body](../../../client-api/rest-api/document-commands/put-documents#request-body)  
-  * [Response Format](../../../client-api/rest-api/document-commands/put-documents#response-format)  
+  * [Examples](../../../client-api/rest-api/document-commands/put-documents.mdx#examples)  
+  * [Request Format](../../../client-api/rest-api/document-commands/put-documents.mdx#request-format)  
+      * [Request Body](../../../client-api/rest-api/document-commands/put-documents.mdx#request-body)  
+  * [Response Format](../../../client-api/rest-api/document-commands/put-documents.mdx#response-format)  
 
 </Admonition>  
 ## Examples
@@ -32,7 +32,7 @@ then modify a document.
 
 #### 1) Store a new document "person/1-A" in the collection "People"  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X PUT "http://live-test.ravendb.net/databases/Example/docs?id=person/1-A"
 -d "\{ 
@@ -50,7 +50,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201
 status: 201
@@ -73,7 +73,7 @@ Raven-Server-Version: 4.2.3.42
 
 #### 2) Update that same document  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X PUT "http://live-test.ravendb.net/databases/Example/docs?id=person/1-A"
 --header "If-Match: A:1-L8hp6eYcA02dkVIEifGfKg"
@@ -91,7 +91,7 @@ Raven-Server-Version: 4.2.3.42
 
 The response is the same as the previous response except for the updated change vector:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 201
 status: 201
@@ -118,7 +118,7 @@ Raven-Server-Version: 4.2.3.42
 
 This is the general format of the cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X PUT "<server URL>/databases/<database name>/docs?id=<document ID>"
 --header "If-Match: <expected change vector>"
@@ -137,14 +137,14 @@ This is the general format of the cURL request:
 
 | Header | Description | Required |
 | - | - | - |
-| **If-Match** | When updating an existing document, this header passes the document's expected [change vector](../../../server/clustering/replication/change-vector). If this change vector doesn't match the document's server-side change vector, a concurrency exception is thrown. | No |
+| **If-Match** | When updating an existing document, this header passes the document's expected [change vector](../../../server/clustering/replication/change-vector.mdx). If this change vector doesn't match the document's server-side change vector, a concurrency exception is thrown. | No |
 
 #### Request Body
 
 The body contains a JSON document. This will replace the existing document with the specified ID if one exists. Otherwise, 
 it will become a new document with the specified ID.  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`\{
     \\"<field>\\": \\"<value>\\",
@@ -160,14 +160,14 @@ it will become a new document with the specified ID.
 Depending on the shell you're using to run cURL, you will probably need to escape all double quotes within the request body 
 using a backslash: `"` -&gt; `\"`.  
 
-When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection) 
+When updating an existing document, you'll need to include its [collection](../../../client-api/faq/what-is-a-collection.mdx) 
 name in the metadata or an exception will be thrown. Exceptions to this rule are documents in the collection `@empty` - 
 i.e. not in any collection. A document's collection cannot be modified.  
 
 Another way to make this request is to save your document as a file (such as a `.txt`), and pass the path to that file in 
 the request body:  
 
-<TabItem value="something" label="batch">
+<TabItem value="batch" label="batch">
 <CodeBlock language="batch">
 {`curl -X PUT "<server URL>/databases/<database name>/docs?id=<document ID>"
 -d "<@path/to/yourDocument.txt>"
@@ -179,9 +179,9 @@ the request body:
 
 ## Response Format
 
-The response body is JSON and contains the document ID and current [change vector](../../../server/clustering/replication/change-vector):
+The response body is JSON and contains the document ID and current [change vector](../../../server/clustering/replication/change-vector.mdx):
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Id": "<document ID>",

@@ -21,11 +21,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   and more.
 
 * In this article:  
-  * [Indexes list view](../../../studio/database/indexes/indexes-list-view#indexes-list-view)  
-  * [Indexes list view - Actions](../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions)  
-  * [Indexes list view - Index errors](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors)  
-  * [Indexes list view - Side by side indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)
-  * [Indexes list view - Rolling deployment](../../../studio/database/indexes/indexes-list-view#indexes-list-view---rolling-deployment)
+  * [Indexes list view](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view)  
+  * [Indexes list view - Actions](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---actions)  
+  * [Indexes list view - Index errors](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---errors)  
+  * [Indexes list view - Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing)
+  * [Indexes list view - Rolling deployment](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---rolling-deployment)
 </Admonition>
 ## Indexes list view
 
@@ -35,7 +35,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Name** - The name of the index.  
   For example, in the above example, the index name is _NamesIndex_.
-* **Type** - The [index Type](../../../studio/database/indexes/indexes-overview#index-types), which can be one of the following:  
+* **Type** - The [index Type](../../../studio/database/indexes/indexes-overview.mdx#index-types), which can be one of the following:  
     * Map  
     * Map-Reduce  
     * Auto Map  
@@ -61,7 +61,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
     * `Error`
     * `Faulty`
      
-* For a full description of each state, refer to [Index states](../../../indexes/index-administration#index-states).
+* For a full description of each state, refer to [Index states](../../../indexes/index-administration.mdx#index-states).
 
 #### 4. Index source
 
@@ -71,7 +71,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * **Entries** - The number of documents that are the result of a basic query on this index.  
   (e.g., _from index 'NamesIndex'_)  
-* **Status** - Indicate whether the index is up-to-date or [stale](../../../indexes/stale-indexes).  
+* **Status** - Indicate whether the index is up-to-date or [stale](../../../indexes/stale-indexes.mdx).  
 
 
 
@@ -81,7 +81,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 #### 1. Crate a new index
 
-* Learn more in [Create new index](../../../studio/database/indexes/create-map-index).  
+* Learn more in [Create new index](../../../studio/database/indexes/create-map-index.mdx).  
 
 #### 2. &gt;
 
@@ -105,13 +105,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * **State**  
   _'Disable'_ index or set as _'Paused'_.  
   The index will stop indexing on the local node the browser is opened on.  
-  For a full description of all possible index states, refer to [Index states](../../../indexes/index-administration#index-states).
+  For a full description of all possible index states, refer to [Index states](../../../indexes/index-administration.mdx#index-states).
 * **Priority**  
   Set the indexing-process thread priority.  
   By default, RavenDB prioritizes request processing over indexing to ensure responsiveness.
 * **Mode**  
   Set the modification behavior (for static-indexes only):  
-   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing).  
+   * Unlocked - Changes to the index definition will be applied. See [Side by side indexing](../../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing).  
    * Locked - Changes to the index definition will not be applied. No error is raised.  
    * Locked(Error) - Changes to the index definition will not be applied,  
      and an error is raised when attempting to modify the index.  
@@ -131,7 +131,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Click this button again ("Resume indexing")  
   * Restart the server  
   * Reload the database (by disabling and then enabling the database state)  
-  * Resume indexing from the client code. See [Resume indexing operation](../../../client-api/operations/maintenance/indexes/start-indexing).
+  * Resume indexing from the client code. See [Resume indexing operation](../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
 
 
 
@@ -147,7 +147,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Resetting the index will re-index all documents matching its definition and clear the previous errors.  
 
 * In the above example, the index _'ByCompany'_ is in an _'Error'_ state after encountering 500 errors.  
-  Learn more in [Debugging index errors](../../../indexes/troubleshooting/debugging-index-errors).  
+  Learn more in [Debugging index errors](../../../indexes/troubleshooting/debugging-index-errors.mdx).  
 
 #### 2. Faulty index
 
@@ -181,7 +181,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Once the 'new index' has completed its work, it will automatically replace the old one.  
   You can also force an immediate replacement if needed, by clicking **'Swap Now'** (label **'3'** in the figure above).  
 
-* The 'old index' definition can still be referenced as RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history),  
+* The 'old index' definition can still be referenced as RavenDB keeps a [history of index revisions](../../../studio/database/indexes/index-history.mdx),  
   allowing you to revert an index to any of its past revisions.  
 
 
@@ -192,7 +192,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 #### 1. Rolling deployment
 
-* When an index that is [defined](../../../studio/database/indexes/create-map-index#edit-index-view) with [Rolling deployment](../../../indexes/rolling-index-deployment) is created or modified,  
+* When an index that is [defined](../../../studio/database/indexes/create-map-index.mdx#edit-index-view) with [Rolling deployment](../../../indexes/rolling-index-deployment.mdx) is created or modified,  
   the indexing process progress is displayed per node.  
 
 #### 2. Force parallel
@@ -204,12 +204,12 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Node `A` is currently running the _'TradeVolumeByMonth'_ index.  
   The indexing progress and the estimated time left are displayed.   
-* For more information, see [The rolling procedure](../../../indexes/rolling-index-deployment#the-rolling-procedure).
+* For more information, see [The rolling procedure](../../../indexes/rolling-index-deployment.mdx#the-rolling-procedure).
 
 #### 4. Indexing done
 
 * Nodes `B` and `C` are waiting for their turn to run the _'TradeVolumeByMonth'_ index.  
-* For more information, see [Deployment order](../../../indexes/rolling-index-deployment#deployment-concurrency-and-order).
+* For more information, see [Deployment order](../../../indexes/rolling-index-deployment.mdx#deployment-concurrency-and-order).
 
 
 

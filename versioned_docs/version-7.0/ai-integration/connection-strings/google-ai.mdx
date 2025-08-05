@@ -22,14 +22,14 @@ export const supportedLanguages = ["csharp"];
 <Admonition type="note" title="Note">
 
 * This article explains how to define a connection string to [Google AI](https://ai.google.dev/gemini-api/docs/embeddings),  
-  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview) with Google's AI services.
+  enabling RavenDB to seamlessly integrate its [embeddings generation tasks](../../ai-integration/generating-embeddings/overview.mdx) with Google's AI services.
 
 * This configuration supports **Google AI provider** only and is not compatible with Vertex AI.
 
 * In this article:
-  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/google-ai#define-the-connection-string---from-the-studio)
-  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/google-ai#define-the-connection-string---from-the-client-api)
-  * [Syntax](../../ai-integration/connection-strings/google-ai#syntax) 
+  * [Define the connection string - from the Studio](../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string---from-the-studio)
+  * [Define the connection string - from the Client API](../../ai-integration/connection-strings/google-ai.mdx#define-the-connection-string---from-the-client-api)
+  * [Syntax](../../ai-integration/connection-strings/google-ai.mdx#syntax) 
     
 </Admonition>
 ## Define the connection string - from the Studio
@@ -41,7 +41,7 @@ export const supportedLanguages = ["csharp"];
 
 2. **Identifier** (optional)  
    Enter an identifier for this connection string.  
-   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview#the-connection-string-identifier) section.
+   Learn more about the identifier in the [connection string identifier](../../ai-integration/connection-strings/connection-strings-overview.mdx#the-connection-string-identifier) section.
 
 3. **Connector**  
    Select **Google AI** from the dropdown menu.
@@ -64,7 +64,7 @@ export const supportedLanguages = ["csharp"];
    * When making vector search queries, the content of the search terms must also be converted to embeddings to compare them against the stored vectors.
      Requests to generate such query embeddings via the AI provider are sent in batches.
    * This parameter defines the maximum number of these batches that can be processed concurrently.  
-     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration#ai.embeddings.maxconcurrentbatches) configuration key.
+     You can set a default value using the [Ai.Embeddings.MaxConcurrentBatches](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxconcurrentbatches) configuration key.
 
 9. Click **Test Connection** to confirm the connection string is set up correctly.
 
@@ -74,7 +74,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Define the connection string - from the Client API
 
-<TabItem value="something-something" label="create_connection_string_google_ai">
+<TabItem value="create_connection_string_google_ai" label="create_connection_string_google_ai">
 <CodeBlock language="csharp">
 {`using (var store = new DocumentStore())
 \{
@@ -108,7 +108,7 @@ export const supportedLanguages = ["csharp"];
 
 ## Syntax
 
-<TabItem value="something-something" label="google_ai_settings">
+<TabItem value="google_ai_settings" label="google_ai_settings">
 <CodeBlock language="csharp">
 {`public class AiConnectionString
 \{

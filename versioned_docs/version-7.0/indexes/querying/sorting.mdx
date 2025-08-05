@@ -23,15 +23,15 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
 
 * This article provides examples of sorting query results when querying a static-index.  
 
-* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
   and general knowledge about Sorting.
 
 * All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
 
 * In this page:
-    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
-    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
-    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)  
 
 </Admonition>
 ## Order by index-field value
@@ -132,7 +132,7 @@ order by UnitsInStock as long desc
   because that property data type is an integer.
 
 * Different ordering can be forced.  
-  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) for all available ordering types.  
   The same syntax used with dynamic queries also applies to queries made on indexes.
 
 </Admonition>
@@ -141,9 +141,9 @@ order by UnitsInStock as long desc
 
 ## Order results when index-field is searchable
 
-* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching.mdx), 
   the content of the index-field is broken down into terms at indexing time. 
-  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
 
 * **When querying such index**, if you order by that searchable index-field, 
   results will come back sorted based on the terms, and not based on the original text of the field.
@@ -277,15 +277,15 @@ order by NameForSorting
 
 * Refer to the examples in the links below to see how each option is achieved.
 
-  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 
-  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
 
-  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
 
-  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
 
-  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
 
 
 
@@ -486,7 +486,7 @@ order by UnitsInStock, score(), Name desc
 
 ## Random Ordering
 
-If you want to randomize the order of your results each time the query is executed, use the `randomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
+If you want to randomize the order of your results each time the query is executed, use the `randomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query.mdx#randomordering)):
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Java" label="Java">
@@ -523,7 +523,7 @@ order by random()
 
 ## Ordering When a Field is Searchable
 
-When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable, and sort by it.
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers.mdx), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable, and sort by it.
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Java" label="Java">
@@ -629,7 +629,7 @@ order by Name as alphanumeric
 
 If your data contains geographical locations, you might want to sort the query result by distance from a given point.
 
-This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-make-a-spatial-query)):
+This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-make-a-spatial-query.mdx)):
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
@@ -672,15 +672,15 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 * This article provides examples of sorting query results when querying a static-index.  
 
-* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
   and general knowledge about Sorting.
 
 * All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
 
 * In this page:
-    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
-    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
-    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)  
 
 </Admonition>
 ## Order by index-field value
@@ -745,7 +745,7 @@ order by UnitsInStock as long desc
   because that property data type is an integer.
 
 * Different ordering can be forced.  
-  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) 
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) 
   for all available ordering types.  
   The same syntax used with dynamic queries also applies to queries made on indexes.
 
@@ -755,9 +755,9 @@ order by UnitsInStock as long desc
 
 ## Order results when index-field is searchable
 
-* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching.mdx), 
   the content of the index-field is broken down into terms at indexing time. 
-  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
 
 * **When querying such index**, if you order by that searchable index-field, 
   results will come back sorted based on the terms, and not based on the original text of the field.
@@ -851,15 +851,15 @@ order by NameForSorting
 
 * Refer to the examples in the links below to see how each option is achieved.
 
-  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 
-  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
 
-  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
 
-  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
 
-  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
 
 
 
@@ -871,15 +871,15 @@ order by NameForSorting
 
 * This article provides examples of sorting query results when querying a static-index.  
 
-* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
   and general knowledge about Sorting.
 
 * All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
 
 * In this page:
-    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
-    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
-    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)  
 
 </Admonition>
 ## Order by index-field value
@@ -974,7 +974,7 @@ order by UnitsInStock as long desc
   because that property data type is an integer.
 
 * Different ordering can be forced.  
-  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) 
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) 
   for all available ordering types.  
   The same syntax used with dynamic queries also applies to queries made on indexes.
 
@@ -984,9 +984,9 @@ order by UnitsInStock as long desc
 
 ## Order results when index-field is searchable
 
-* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching.mdx), 
   the content of the index-field is broken down into terms at indexing time. 
-  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
 
 * **When querying such index**, if you order by that searchable index-field, 
   results will come back sorted based on the terms, and not based on the original text of the field.
@@ -1122,15 +1122,15 @@ order by NameForSorting
 
 * Refer to the examples in the links below to see how each option is achieved.
 
-  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 
-  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
 
-  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
 
-  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
 
-  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
 
 
 
@@ -1142,15 +1142,15 @@ order by NameForSorting
 
 * This article provides examples of sorting query results when querying a static-index.  
 
-* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results) for dynamic-queries examples  
+* **Prior to this article**, please refer to [Sort dynamic queries results](../../client-api/session/querying/sort-query-results.mdx) for dynamic-queries examples  
   and general knowledge about Sorting.
 
 * All sorting capabilities provided for a dynamic query can also be used when querying a static-index.
 
 * In this page:
-    * [Order by index-field value](../../indexes/querying/sorting#order-by-index-field-value)  
-    * [Order results when index-field is searchable](../../indexes/querying/sorting#order-results-when-index-field-is-searchable)  
-    * [Additional Sorting Options](../../indexes/querying/sorting#additional-sorting-options)  
+    * [Order by index-field value](../../indexes/querying/sorting.mdx#order-by-index-field-value)  
+    * [Order results when index-field is searchable](../../indexes/querying/sorting.mdx#order-results-when-index-field-is-searchable)  
+    * [Additional Sorting Options](../../indexes/querying/sorting.mdx#additional-sorting-options)  
 
 </Admonition>
 ## Order by index-field value
@@ -1159,7 +1159,7 @@ order by NameForSorting
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
      // Query the index
     .query({ indexName: "Products/ByUnitsInStock" })
@@ -1176,7 +1176,7 @@ order by NameForSorting
 </CodeBlock>
 </TabItem>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_ByUnitsInStock extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -1210,7 +1210,7 @@ order by unitsInStock as long desc
 * In the above example, the ordering type was set to `Long`.
 
 * Different ordering can be forced.  
-  See section [Force ordering type](../../client-api/session/querying/sort-query-results#force-ordering-type) for all available ordering types.  
+  See section [Force ordering type](../../client-api/session/querying/sort-query-results.mdx#force-ordering-type) for all available ordering types.  
   The same syntax used with dynamic queries also applies to queries made on indexes.
 
 </Admonition>
@@ -1219,9 +1219,9 @@ order by unitsInStock as long desc
 
 ## Order results when index-field is searchable
 
-* **When configuring an index-field** for [full-text search](../../indexes/querying/searching), 
+* **When configuring an index-field** for [full-text search](../../indexes/querying/searching.mdx), 
   the content of the index-field is broken down into terms at indexing time. 
-  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers) used.
+  The specific tokenization depends on the [analyzer](../../indexes/using-analyzers.mdx) used.
 
 * **When querying such index**, if you order by that searchable index-field, 
   results will come back sorted based on the terms, and not based on the original text of the field.
@@ -1230,7 +1230,7 @@ order by unitsInStock as long desc
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Index" label="Index">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`class Products_BySearchName extends AbstractJavaScriptIndexCreationTask {
     constructor() {
         super();
@@ -1256,7 +1256,7 @@ order by unitsInStock as long desc
 </CodeBlock>
 </TabItem>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`const products = await session
     // Query the index
     .query({ indexName: "Products/BySearchName"})
@@ -1317,15 +1317,15 @@ order by nameForSorting
 
 * Refer to the examples in the links below to see how each option is achieved.
 
-  * [Order by score](../../client-api/session/querying/sort-query-results#order-by-score)
+  * [Order by score](../../client-api/session/querying/sort-query-results.mdx#order-by-score)
 
-  * [Order by random](../../client-api/session/querying/sort-query-results#order-by-random)
+  * [Order by random](../../client-api/session/querying/sort-query-results.mdx#order-by-random)
 
-  * [Order by spatial](../../client-api/session/querying/sort-query-results#order-by-spatial)
+  * [Order by spatial](../../client-api/session/querying/sort-query-results.mdx#order-by-spatial)
 
-  * [Chain ordering](../../client-api/session/querying/sort-query-results#chain-ordering)
+  * [Chain ordering](../../client-api/session/querying/sort-query-results.mdx#chain-ordering)
 
-  * [Custom sorters](../../client-api/session/querying/sort-query-results#custom-sorters)
+  * [Custom sorters](../../client-api/session/querying/sort-query-results.mdx#custom-sorters)
 
 
 

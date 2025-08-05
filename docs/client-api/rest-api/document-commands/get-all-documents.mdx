@@ -21,20 +21,20 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Query parameters can be used to page the results.  
 
 * In this page:  
-  * [Basic Example](../../../client-api/rest-api/document-commands/get-all-documents#basic-example)  
-  * [Request Format](../../../client-api/rest-api/document-commands/get-all-documents#request-format)  
-  * [Response Format](../../../client-api/rest-api/document-commands/get-all-documents#response-format)  
-  * [Query Parameter Examples](../../../client-api/rest-api/document-commands/get-all-documents#query-parameter-examples)  
-      * [start](../../../client-api/rest-api/document-commands/get-all-documents#start)  
-      * [pageSize](../../../client-api/rest-api/document-commands/get-all-documents#pagesize)
-      * [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents#metadataonly)  
+  * [Basic Example](../../../client-api/rest-api/document-commands/get-all-documents.mdx#basic-example)  
+  * [Request Format](../../../client-api/rest-api/document-commands/get-all-documents.mdx#request-format)  
+  * [Response Format](../../../client-api/rest-api/document-commands/get-all-documents.mdx#response-format)  
+  * [Query Parameter Examples](../../../client-api/rest-api/document-commands/get-all-documents.mdx#query-parameter-examples)  
+      * [start](../../../client-api/rest-api/document-commands/get-all-documents.mdx#start)  
+      * [pageSize](../../../client-api/rest-api/document-commands/get-all-documents.mdx#pagesize)
+      * [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents.mdx#metadataonly)  
 </Admonition>  
 ## Basic Example
 
 This is a cURL request to a database named "Example" on our [playground server](http://live-test.ravendb.net). Paging 
 through all of the documents in the database, the request skips the first 9 documents and retrieves the next 2.  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=9&pageSize=2"
 `}
@@ -43,7 +43,7 @@ through all of the documents in the database, the request skips the first 9 docu
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx 
@@ -108,7 +108,7 @@ Raven-Server-Version: 4.2.4.42
 
 This is the general format of a cURL request that uses all query string parameters:  
 
-<TabItem value="something" label="batch">
+<TabItem value="batch" label="batch">
 <CodeBlock language="batch">
 {`curl -X GET "<server URL>/databases/<database name>/docs?
             &start=<integer>
@@ -156,13 +156,13 @@ Linebreaks are added for clarity.
 
 #### Body
 
-Retrieved documents are sorted in descending order of their [change vectors](../../../server/clustering/replication/change-vector). 
+Retrieved documents are sorted in descending order of their [change vectors](../../../server/clustering/replication/change-vector.mdx). 
 A retrieved document is identical in contents and format to the document stored in the server - unless the `metadataOnly` 
 parameter is set to `true`.  
 
 This is the general format of the JSON response body:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Results": [
@@ -186,19 +186,19 @@ Linebreaks are added for clarity.
 
 ## Query Parameter Examples
 
-[About Northwind](../../../start/about-examples), the database used in our examples.
+[About Northwind](../../../start/about-examples.mdx), the database used in our examples.
 
 In this section:  
 
-* [start](../../../client-api/rest-api/document-commands/get-all-documents#start)  
-* [pageSize](../../../client-api/rest-api/document-commands/get-all-documents#pagesize)  
-* [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents#metadataonly)  
+* [start](../../../client-api/rest-api/document-commands/get-all-documents.mdx#start)  
+* [pageSize](../../../client-api/rest-api/document-commands/get-all-documents.mdx#pagesize)  
+* [metadataOnly](../../../client-api/rest-api/document-commands/get-all-documents.mdx#metadataonly)  
 ### start
 
 Skip first 1,057 documents, and retrieve the rest (our version of Northwind contains 1,059 documents).  
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?start=1057"
 `}
@@ -207,7 +207,7 @@ cURL request:
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -269,7 +269,7 @@ Raven-Server-Version: 4.2.4.42
 Retrieve the first document.  
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?pageSize=1"
 `}
@@ -278,7 +278,7 @@ cURL request:
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -349,7 +349,7 @@ Raven-Server-Version: 4.2.4.42
 Skip first 123 documents, take the next 5, and retrieve only the metadata of each document.  
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
                 start=123
@@ -362,7 +362,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx

@@ -16,26 +16,26 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * This page explains how to manage a sharded database using RavenDB's API.  
-* Learn [here](../../sharding/administration/studio-admin) how to manage 
+* Learn [here](../../sharding/administration/studio-admin.mdx) how to manage 
   a sharded database using Studio.  
 
 * In this page:  
-  * [Creating a Sharded Database](../../sharding/administration/api-admin#creating-a-sharded-database)  
-  * [Orchestrator Administration](../../sharding/administration/api-admin#orchestrator-administration)  
-     * [Adding an Orchestrator](../../sharding/administration/api-admin#adding-an-orchestrator)  
-     * [Removing an Orchestrator](../../sharding/administration/api-admin#removing-an-orchestrator)  
-  * [Shard Administration](../../sharding/administration/api-admin#shard-administration)  
-     * [Adding a Shard](../../sharding/administration/api-admin#adding-a-shard)  
-     * [Adding a Shard Replica](../../sharding/administration/api-admin#adding-a-shard-replica)  
-     * [Promoting a Shard Replica](../../sharding/administration/api-admin#promoting-a-shard-replica)  
-     * [Removing a Shard](../../sharding/administration/api-admin#removing-a-shard)  
+  * [Creating a Sharded Database](../../sharding/administration/api-admin.mdx#creating-a-sharded-database)  
+  * [Orchestrator Administration](../../sharding/administration/api-admin.mdx#orchestrator-administration)  
+     * [Adding an Orchestrator](../../sharding/administration/api-admin.mdx#adding-an-orchestrator)  
+     * [Removing an Orchestrator](../../sharding/administration/api-admin.mdx#removing-an-orchestrator)  
+  * [Shard Administration](../../sharding/administration/api-admin.mdx#shard-administration)  
+     * [Adding a Shard](../../sharding/administration/api-admin.mdx#adding-a-shard)  
+     * [Adding a Shard Replica](../../sharding/administration/api-admin.mdx#adding-a-shard-replica)  
+     * [Promoting a Shard Replica](../../sharding/administration/api-admin.mdx#promoting-a-shard-replica)  
+     * [Removing a Shard](../../sharding/administration/api-admin.mdx#removing-a-shard)  
 
 </Admonition>
 ## Creating a Sharded Database
 
 To create a sharded database:  
 
-* Use [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database) 
+* Use [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database.mdx) 
   to create the database.  
 * Define `ShardingConfiguration` in the database record.  
    * The initial configuration can define just the database topologies for as many shards 
@@ -43,7 +43,7 @@ To create a sharded database:
    * Orchestrators and shards can be added and removed later on, after the database is created.  
 
 ### `ShardingConfiguration`
-<TabItem value="something" label="ShardingConfiguration_definition">
+<TabItem value="ShardingConfiguration_definition" label="ShardingConfiguration_definition">
 <CodeBlock language="csharp">
 {`public class ShardingConfiguration
 \{
@@ -64,7 +64,7 @@ To create a sharded database:
 </TabItem>
 
 ### Example
-<TabItem value="something" label="createShardedDatabase">
+<TabItem value="createShardedDatabase" label="createShardedDatabase">
 <CodeBlock language="csharp">
 {`DatabaseRecord dbRecord = new DatabaseRecord("sampleDB");
 
@@ -96,7 +96,7 @@ orchestrators nodes that host no shards.
 
 * To add an orchestrator pass the database name and the node to be added 
   as orchestrator to the `AddNodeToOrchestratorTopologyOperation` operation.  
-<TabItem value="something" label="AddNodeToOrchestratorTopologyOperation_Definition">
+<TabItem value="AddNodeToOrchestratorTopologyOperation_Definition" label="AddNodeToOrchestratorTopologyOperation_Definition">
 <CodeBlock language="csharp">
 {`public AddNodeToOrchestratorTopologyOperation(string databaseName, string node = null)
 `}
@@ -111,7 +111,7 @@ orchestrators nodes that host no shards.
     | `node ` | string | Node tag for the node to be made orchestrator |
 
 * Return value: `ModifyOrchestratorTopologyResult`  
-<TabItem value="something" label="ModifyOrchestratorTopologyResult">
+<TabItem value="ModifyOrchestratorTopologyResult" label="ModifyOrchestratorTopologyResult">
 <CodeBlock language="csharp">
 {`public class ModifyOrchestratorTopologyResult
 \{
@@ -128,7 +128,7 @@ orchestrators nodes that host no shards.
 * To stop a node from functioning as an orchestrator pass the database name 
   and the node tag to the `RemoveNodeFromOrchestratorTopologyOperation` 
   operation.  
-<TabItem value="something" label="RemoveNodeFromOrchestratorTopologyOperation_Definition">
+<TabItem value="RemoveNodeFromOrchestratorTopologyOperation_Definition" label="RemoveNodeFromOrchestratorTopologyOperation_Definition">
 <CodeBlock language="csharp">
 {`public RemoveNodeFromOrchestratorTopologyOperation(string databaseName, string node)
 `}
@@ -143,7 +143,7 @@ orchestrators nodes that host no shards.
     | `node ` | string | The node to be removed as orchestrator |
 
 * Return value: `ModifyOrchestratorTopologyResult`  
-<TabItem value="something" label="ModifyOrchestratorTopologyResult">
+<TabItem value="ModifyOrchestratorTopologyResult" label="ModifyOrchestratorTopologyResult">
 <CodeBlock language="csharp">
 {`public class ModifyOrchestratorTopologyResult
 \{
@@ -162,19 +162,19 @@ orchestrators nodes that host no shards.
 ## Adding a Shard 
 
 * To add a new shard, use one of the `AddDatabaseShardOperation` operation overloads.  
-<TabItem value="something" label="AddDatabaseShardOperation_Overload-1">
+<TabItem value="AddDatabaseShardOperation_Overload-1" label="AddDatabaseShardOperation_Overload-1">
 <CodeBlock language="csharp">
 {`public AddDatabaseShardOperation(string databaseName, int? shardNumber = null)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="AddDatabaseShardOperation_Overload-2">
+<TabItem value="AddDatabaseShardOperation_Overload-2" label="AddDatabaseShardOperation_Overload-2">
 <CodeBlock language="csharp">
 {`public AddDatabaseShardOperation(string databaseName, string[] nodes, int? shardNumber = null)
 `}
 </CodeBlock>
 </TabItem>
-<TabItem value="something" label="AddDatabaseShardOperation_Overload-3">
+<TabItem value="AddDatabaseShardOperation_Overload-3" label="AddDatabaseShardOperation_Overload-3">
 <CodeBlock language="csharp">
 {`public AddDatabaseShardOperation(string databaseName, int? replicationFactor, int? shardNumber = null)
 `}
@@ -207,7 +207,7 @@ orchestrators nodes that host no shards.
 
 
 * Return value: `AddDatabaseShardResult`  
-<TabItem value="something" label="AddDatabaseShardResult">
+<TabItem value="AddDatabaseShardResult" label="AddDatabaseShardResult">
 <CodeBlock language="csharp">
 {`public class AddDatabaseShardResult
 \{
@@ -230,7 +230,7 @@ orchestrators nodes that host no shards.
     there is no need to update it explicitly.  
     </Admonition>
 
-<TabItem value="something" label="AddDatabaseNodeOperation_Definition">
+<TabItem value="AddDatabaseNodeOperation_Definition" label="AddDatabaseNodeOperation_Definition">
 <CodeBlock language="csharp">
 {`public AddDatabaseNodeOperation(string databaseName, int shardNumber, string node = null)
 `}
@@ -246,7 +246,7 @@ orchestrators nodes that host no shards.
     | `node ` | string | The node that the replica will be set on (optional). <br/> If not provided, RavenDB will select an available node. |
 
 * Return value: `DatabasePutResult`  
-<TabItem value="something" label="DatabasePutResult">
+<TabItem value="DatabasePutResult" label="DatabasePutResult">
 <CodeBlock language="csharp">
 {`public class DatabasePutResult
 \{
@@ -265,7 +265,7 @@ orchestrators nodes that host no shards.
 
 ## Promoting a Shard Replica
 
-* Shard replicas can be [promoted](../../client-api/operations/server-wide/promote-database-node) 
+* Shard replicas can be [promoted](../../client-api/operations/server-wide/promote-database-node.mdx) 
   as non-sharded databases can.  
 
     To promote a shard, pass the database name, shard number and 
@@ -273,7 +273,7 @@ orchestrators nodes that host no shards.
     This will help locate the  exact shard instance we want to 
     promote, leading to the database, then to the specific shard, 
     and finally to the specific replica of that shard.  
-<TabItem value="something" label="PromoteDatabaseNodeOperation_Definition">
+<TabItem value="PromoteDatabaseNodeOperation_Definition" label="PromoteDatabaseNodeOperation_Definition">
 <CodeBlock language="csharp">
 {`public PromoteDatabaseNodeOperation(string databaseName, int shardNumber, string node)
 `}
@@ -289,7 +289,7 @@ orchestrators nodes that host no shards.
     | `node` | string | Node tag |
 
 * Return value: `DatabasePutResult`  
-<TabItem value="something" label="DatabasePutResult">
+<TabItem value="DatabasePutResult" label="DatabasePutResult">
 <CodeBlock language="csharp">
 {`public class DatabasePutResult
 \{
@@ -313,7 +313,7 @@ orchestrators nodes that host no shards.
   is empty. If any buckets remain in the database the operation will 
   be aborted.  
 * To remove a shard use the designated `DeleteDatabasesOperation` overload.  
-<TabItem value="something" label="DeleteDatabasesOperation_Definition">
+<TabItem value="DeleteDatabasesOperation_Definition" label="DeleteDatabasesOperation_Definition">
 <CodeBlock language="csharp">
 {`public DeleteDatabasesOperation(
     string databaseName, 
@@ -336,7 +336,7 @@ orchestrators nodes that host no shards.
     | `timeToWaitForConfirmation` | TimeSpan? |  |
 
 * Return value: `DeleteDatabaseResult`  
-<TabItem value="something" label="DeleteDatabaseResult">
+<TabItem value="DeleteDatabaseResult" label="DeleteDatabaseResult">
 <CodeBlock language="csharp">
 {`public class DeleteDatabaseResult
 \{

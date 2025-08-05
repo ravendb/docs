@@ -29,19 +29,19 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * Creating a new compare exchange item is possible only when the passed _index_ is `0`.  
   
-* For an overview of the 'Compare Exchange' feature see: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview).
+* For an overview of the 'Compare Exchange' feature see: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx).
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)  
-  * [Example I - Create a new key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i---create-a-new-key)  
-  * [Example II - Update an existing key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-ii---update-an-existing-key)  
-  * [Example III - Try to create an item with a non-zero index](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-iii---try-to-create-an-item-with-a-non-zero-index)  
+  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#syntax)  
+  * [Example I - Create a new key](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#example-i---create-a-new-key)  
+  * [Example II - Update an existing key](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#example-ii---update-an-existing-key)  
+  * [Example III - Try to create an item with a non-zero index](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#example-iii---try-to-create-an-item-with-a-non-zero-index)  
   
 </Admonition>
 ## Syntax
 
 **Method**:
-<TabItem value="something" label="put_0">
+<TabItem value="put_0" label="put_0">
 <CodeBlock language="csharp">
 {`public PutCompareExchangeValueOperation(string key, T value, long index)
 `}
@@ -56,7 +56,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 * The current version of _Value_ when updating a value for an existing key. |
 
 **Returned object**:
-<TabItem value="something" label="compare_exchange_result">
+<TabItem value="compare_exchange_result" label="compare_exchange_result">
 <CodeBlock language="csharp">
 {`public class CompareExchangeResult<T>
 \{
@@ -85,7 +85,7 @@ The value is updated only if the two are **equal** (exchange stage).
 
 ## Example I - Create a new key
 
-<TabItem value="something" label="put_1">
+<TabItem value="put_1" label="put_1">
 <CodeBlock language="csharp">
 {`CompareExchangeResult<string> compareExchangeResult
     = store.Operations.Send(
@@ -100,7 +100,7 @@ bool successful = compareExchangeResult.Successful;
 
 ## Example II - Update an existing key
 
-<TabItem value="something" label="put_2">
+<TabItem value="put_2" label="put_2">
 <CodeBlock language="csharp">
 {`// Get existing value
 CompareExchangeValue<User> readResult =
@@ -123,7 +123,7 @@ bool saveResultSuccessful = saveResult.Successful;
 
 ## Example III - Try to create an item with a non-zero index
 
-<TabItem value="something" label="put_3">
+<TabItem value="put_3" label="put_3">
 <CodeBlock language="csharp">
 {`// Creating the item will fail because the index is not 0
 CompareExchangeResult<string> compareExchangeResult
@@ -150,17 +150,17 @@ compareExchangeResult = store.Operations.Send(
 
 * The _Value_ is saved only if the _index_ passed is equal to the _index_ currently stored in the server for the specified _Key_.  
 
-* For an overview of the 'Compare Exchange' feature see: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview).
+* For an overview of the 'Compare Exchange' feature see: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx).
 
 * In this page:
-  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)
-  * [Example I - Create a new key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i---create-a-new-key)  
-  * [Example II - Update an existing key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-ii---update-an-existing-key)
+  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#syntax)
+  * [Example I - Create a new key](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#example-i---create-a-new-key)  
+  * [Example II - Update an existing key](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#example-ii---update-an-existing-key)
 </Admonition>
 ## Syntax
 
 **Method**:
-<TabItem value="something-something" label="put_0">
+<TabItem value="put_0" label="put_0">
 <CodeBlock language="java">
 {`public PutCompareExchangeValueOperation(String key, T value, long index)
 `}
@@ -175,7 +175,7 @@ compareExchangeResult = store.Operations.Send(
 * The current version of _Value_ when updating a value for an existing key. |
 
 **Returned object**:
-<TabItem value="something-something" label="compare_exchange_result">
+<TabItem value="compare_exchange_result" label="compare_exchange_result">
 <CodeBlock language="java">
 {`public class CompareExchangeResult<T> \{
     private T value;
@@ -227,7 +227,7 @@ The value is updated only if the two are **equal** (exchange stage).
 
 ## Example I - Create a new key
 
-<TabItem value="something-something" label="put_1">
+<TabItem value="put_1" label="put_1">
 <CodeBlock language="java">
 {`CompareExchangeResult<String> compareExchangeResult = store.operations().send(
     new PutCompareExchangeValueOperation<>("Emails/foo@example.org", "users/123", 0));
@@ -241,7 +241,7 @@ boolean successful = compareExchangeResult.isSuccessful();
 
 ## Example II - Update an existing key
 
-<TabItem value="something-something" label="put_2">
+<TabItem value="put_2" label="put_2">
 <CodeBlock language="java">
 {`// Get existing value
 CompareExchangeValue<User> readResult
@@ -273,20 +273,20 @@ boolean saveResultSuccessful = saveResult.isSuccessful();
   * **Create** a new compare-exchange item  
   * **Update** the value or metadata of an existing compare-exchange item
 
-* Compare-exchange items can also be managed via [advanced session](../../../client-api/session/cluster-transaction/compare-exchange) methods 
-  or from the [Studio](../../../studio/database/documents/compare-exchange-view).
+* Compare-exchange items can also be managed via [advanced session](../../../client-api/session/cluster-transaction/compare-exchange.mdx) methods 
+  or from the [Studio](../../../studio/database/documents/compare-exchange-view.mdx).
   
 * In this page:  
-  * [Create new cmpXchg item](../../../client-api/operations/compare-exchange/put-compare-exchange-value#create-new-cmpxchg-item)  
-  * [Create new cmpXchg item with metadata](../../../client-api/operations/compare-exchange/put-compare-exchange-value#create-new-cmpxchg-item-with-metadata)  
-  * [Update existing cmpXchg item](../../../client-api/operations/compare-exchange/put-compare-exchange-value#update-existing-cmpxchg-item)
-  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)
+  * [Create new cmpXchg item](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#create-new-cmpxchg-item)  
+  * [Create new cmpXchg item with metadata](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#create-new-cmpxchg-item-with-metadata)  
+  * [Update existing cmpXchg item](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#update-existing-cmpxchg-item)
+  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value.mdx#syntax)
 
 </Admonition>
 ## Create new cmpXchg item
 
-<TabItem value="something-something" label="put_1">
-<CodeBlock language="nodejs">
+<TabItem value="put_1" label="put_1">
+<CodeBlock language="js">
 {`// Create a new CmpXchg item:
 // ==========================
 
@@ -316,8 +316,8 @@ const indexForItem = result.index;    // The version number assigned to the new 
 
 ## Create new cmpXchg item with metadata
 
-<TabItem value="something-something" label="put_2">
-<CodeBlock language="nodejs">
+<TabItem value="put_2" label="put_2">
+<CodeBlock language="js">
 {`// Create a new CmpXchg item with metadata:
 // ========================================
 
@@ -343,7 +343,7 @@ const indexForItem = result.index;    // The version number assigned to the new 
 </CodeBlock>
 </TabItem>
 
-* Find more examples of adding metadata to a compare-exchange item in [compare-exchange metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata).
+* Find more examples of adding metadata to a compare-exchange item in [compare-exchange metadata](../../../client-api/operations/compare-exchange/compare-exchange-metadata.mdx).
 
 
 
@@ -353,8 +353,8 @@ const indexForItem = result.index;    // The version number assigned to the new 
   the index from the request is compared to the index that is currently stored in the server for the specified _key_.
 * The compare-exchange item is updated only if the two are equal.
 
-<TabItem value="something-something" label="put_3">
-<CodeBlock language="nodejs">
+<TabItem value="put_3" label="put_3">
+<CodeBlock language="js">
 {`// Modify an existing CmpXchg item:
 // ================================
 
@@ -389,8 +389,8 @@ assert(newIndex > item.index);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 // ====================
 const putCmpXchgOp = new PutCompareExchangeValueOperation(key, value, index);
@@ -406,8 +406,8 @@ const putCmpXchgOp = new PutCompareExchangeValueOperation(key, value, index, met
 | **index**     | `number`    | &lt;ul&gt;&lt;li&gt;Pass `0` to create a new key.&lt;/li&gt;&lt;li&gt;When updating an existing key, pass the current number for concurrency control.&lt;/li&gt;&lt;ul&gt;      |
 | **metadata**  | `object`    | &lt;ul&gt;&lt;li&gt;Metadata to be saved for the specified _key_.&lt;/li&gt;&lt;li&gt;Must be a valid JSON object.&lt;/li&gt;&lt;/ul&gt;                                        |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Return value of store.operations.send(putCmpXchgOp)
 // ===================================================
 class CompareExchangeResult \{

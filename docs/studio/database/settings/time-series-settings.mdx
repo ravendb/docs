@@ -19,11 +19,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * The **Time Series Settings view** allows you to define and manage time series 
   configurations per collection. Configurations may include:  
 
-    * [Named Values](../../../document-extensions/timeseries/client-api/named-time-series-values)  
+    * [Named Values](../../../document-extensions/timeseries/client-api/named-time-series-values.mdx)  
       A customized name can be set per time series value.  
       API methods can access time series values by their names.  
     
-    * [Rollup Policies](../../../document-extensions/timeseries/rollup-and-retention#what-are-rollups)  
+    * [Rollup Policies](../../../document-extensions/timeseries/rollup-and-retention.mdx#what-are-rollups)  
       Rollup policies define the time frame by which data from an origin time series 
       will be aggregated into a new **rollup time series**. 
       They summarize the current data and zoom out 
@@ -31,17 +31,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
       You can set different levels of resolution by adding new rollup policies that further aggregate 
       the previously aggregated data.
 
-    * [Retention Periods](../../../document-extensions/timeseries/rollup-and-retention)  
+    * [Retention Periods](../../../document-extensions/timeseries/rollup-and-retention.mdx)  
       A retention period defines how long time series entries are kept.  
       An entry that exceeds this period will be removed.  
       You can set a different retention period for each rollup so that you can delete the previous data after it has been summarized/aggregated.
 
 * In this page:  
-  * [Rationale for Configuring Time Series Policies](../../../studio/database/settings/time-series-settings#rationale-for-configuring-time-series-policies)  
-  * [Time Series Settings View](../../../studio/database/settings/time-series-settings#time-series-settings-view)  
-  * [Defined Time Series Configurations](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)  
-  * [Add or Edit Time Series Configuration](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration)  
-  * [Rollup Policies for Rollup Time Series](../../../studio/database/settings/time-series-settings#rollup-policies-for-rollup-time-series)  
+  * [Rationale for Configuring Time Series Policies](../../../studio/database/settings/time-series-settings.mdx#rationale-for-configuring-time-series-policies)  
+  * [Time Series Settings View](../../../studio/database/settings/time-series-settings.mdx#time-series-settings-view)  
+  * [Defined Time Series Configurations](../../../studio/database/settings/time-series-settings.mdx#defined-time-series-configurations)  
+  * [Add or Edit Time Series Configuration](../../../studio/database/settings/time-series-settings.mdx#add-or-edit-time-series-configuration)  
+  * [Rollup Policies for Rollup Time Series](../../../studio/database/settings/time-series-settings.mdx#rollup-policies-for-rollup-time-series)  
 </Admonition>
 ## Rationale for Configuring Time Series Policies
 
@@ -114,7 +114,7 @@ Here are the different levels of resolution that they want to see:
    2 seconds will still be checked and executed every 8 seconds.  
    </Admonition>
 4. **Defined Time Series Configurations**  
-   View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings#defined-time-series-configurations)).  
+   View and manage the time series configurations that were already defined (read more [below](../../../studio/database/settings/time-series-settings.mdx#defined-time-series-configurations)).  
 5. **Add or Edit time series configurations**  
     * Click the **Add a collection-specific configuration** button to create a new configuration.  
     * Click a defined configuration **Edit** button to edit an existing configuration.  
@@ -131,11 +131,11 @@ Here are the different levels of resolution that they want to see:
    Check to select/deselect this configuration.  
    Rollup and Retention policies for selected configurations 
    can be enabled or disabled using the 
-   [time series settings view](../../../studio/database/settings/time-series-settings#time-series-settings-view) **Set Status** button.  
+   [time series settings view](../../../studio/database/settings/time-series-settings.mdx#time-series-settings-view) **Set Status** button.  
 2. **Enable/Disable Configuration**  
    Click to enable or disable Rollup and Retention policies for this configuration.  
 3. **Edit**  
-   Click to [edit this configuration](../../../studio/database/settings/time-series-settings#add-or-edit-time-series-configuration).  
+   Click to [edit this configuration](../../../studio/database/settings/time-series-settings.mdx#add-or-edit-time-series-configuration).  
 4. **Remove**  
   Click to remove this configuration.  
 !["Defined Time Series Configurations - Info"](./assets/time-series-settings-04_per-collection-configuration-info.png)
@@ -226,7 +226,7 @@ Here are the different levels of resolution that they want to see:
    <Admonition type="note" title="Note">
    Rollup policies can be defined both for **raw time series data** 
    and for **rollup time series**.  
-   Read more [here](../../../studio/database/settings/time-series-settings#rollup-policies-for-rollup-time-series).  
+   Read more [here](../../../studio/database/settings/time-series-settings.mdx#rollup-policies-for-rollup-time-series).  
    </Admonition>
    In the above image, the rollup policy aggregates the **raw data** 
    of the selected collection's time series, into **new** rollup time series.  

@@ -16,8 +16,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 <Admonition type="note" title="Note">
 
 * In this page:
-   * [Clusters should have an odd number of at least 3 nodes](../../server/clustering/cluster-best-practice-and-configuration#clusters-should-have-an-odd-number-of-at-least-3-nodes)
-   * [Avoid different cluster configurations among the cluster's nodes](../../server/clustering/cluster-best-practice-and-configuration#avoid-different-cluster-configurations-among-the-clusters-nodes)
+   * [Clusters should have an odd number of at least 3 nodes](../../server/clustering/cluster-best-practice-and-configuration.mdx#clusters-should-have-an-odd-number-of-at-least-3-nodes)
+   * [Avoid different cluster configurations among the cluster's nodes](../../server/clustering/cluster-best-practice-and-configuration.mdx#avoid-different-cluster-configurations-among-the-clusters-nodes)
 
 </Admonition>
 
@@ -33,11 +33,11 @@ This means that it is not highly available.
 **A two nodes cluster:**  
 Also not recommended since the cluster must have a consensus among the majority of nodes to operate.  
 With a two-node cluster, if one of the nodes is down or partitioned, the other node is not considered a 'majority'
-and thus no [Raft](../../glossary/raft-algorithm) 
+and thus no [Raft](../../glossary/raft-algorithm.mdx) 
 command will be created, although any database on the surviving node will still be responsive to the user.  
 
 **Odd number of 3 or more nodes:**  
-For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions), 
+For ACID guarantees, a majority of the nodes must agree on every [cluster-wide transaction](../../server/clustering/cluster-transactions.mdx), 
 so having an odd number of nodes makes achieving the majority easier.
 
 
@@ -48,7 +48,7 @@ so having an odd number of nodes makes achieving the majority easier.
 
 Configuration mismatches tend to cause interaction problems between nodes.
 
-If you must set [cluster configurations](../../server/configuration/cluster-configuration) differently in separate nodes,  
+If you must set [cluster configurations](../../server/configuration/cluster-configuration.mdx) differently in separate nodes,  
 **we recommend first testing it** in a development environment to see that each node interacts properly with the others.
 
 

@@ -22,19 +22,19 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 <Admonition type="note" title="Note">
 
 * Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
-  using [session.Advanced.Defer](../../../../client-api/operations/patching/single-document#session-api-using-defer), as described below.
+  using [session.Advanced.Defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), as described below.
   * You can handle a single document at a time.
-  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support).
+  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
   
-* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
-  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch).
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx),  
+  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch.mdx).
 
 * In this page:
-   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch#usage)  
-   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch#patching-examples)
-     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#append-multiple-entries) 
-     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#delete-multiple-entries) 
-   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch.mdx#usage)  
+   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-examples)
+     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries) 
+     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries) 
+   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -57,7 +57,7 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 In this example, we append 100 time series entries with random heart rate values to a document.  
 
-<TabItem value="something" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Append-100-Random-TS-Entries" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
 <CodeBlock language="csharp">
 {`var baseline = DateTime.Today;
 
@@ -102,7 +102,7 @@ session.SaveChanges();
 
 In this example, we remove a range of 50 time series entries from a document.  
 
-<TabItem value="something" label="TS_region-Session_Patch-Delete-50-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Delete-50-TS-Entries" label="TS_region-Session_Patch-Delete-50-TS-Entries">
 <CodeBlock language="csharp">
 {`// Delete time-series entries
 session.Advanced.Defer(new PatchCommandData("users/1-A", null,
@@ -132,7 +132,7 @@ session.SaveChanges();
 
 **`PatchCommandData`**
 
-<TabItem value="something" label="PatchCommandData-definition">
+<TabItem value="PatchCommandData-definition" label="PatchCommandData-definition">
 <CodeBlock language="csharp">
 {`public PatchCommandData(string id, string changeVector,
     PatchRequest patch, PatchRequest patchIfMissing)
@@ -140,10 +140,10 @@ session.SaveChanges();
 </CodeBlock>
 </TabItem>
 
-Learn more about `PatchCommandData` [here](../../../../client-api/operations/patching/single-document#session-api-using-defer).
+Learn more about `PatchCommandData` [here](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer).
 **`PatchRequest`**
 
-<TabItem value="something" label="PatchRequest-definition">
+<TabItem value="PatchRequest-definition" label="PatchRequest-definition">
 <CodeBlock language="csharp">
 {`public class PatchRequest
 \{
@@ -157,7 +157,7 @@ Learn more about `PatchCommandData` [here](../../../../client-api/operations/pat
 </CodeBlock>
 </TabItem>
 
-Learn more about `PatchRequest` [here](../../../../client-api/operations/patching/single-document#session-api-using-defer).
+Learn more about `PatchRequest` [here](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer).
 
 
 
@@ -168,19 +168,19 @@ Learn more about `PatchRequest` [here](../../../../client-api/operations/patchin
 <Admonition type="note" title="Note">
 
 * Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
-  using [session.advanced.defer](../../../../client-api/operations/patching/single-document#session-api-using-defer), as described below.
+  using [session.advanced.defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), as described below.
   * You can handle a single document at a time.
-  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support).
+  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
   
-* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
-  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch).
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx),  
+  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch.mdx).
 
 * In this page:
-   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch#usage)  
-   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch#patching-examples)
-     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#append-multiple-entries) 
-     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#delete-multiple-entries) 
-   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch.mdx#usage)  
+   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-examples)
+     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries) 
+     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries) 
+   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -203,7 +203,7 @@ Learn more about `PatchRequest` [here](../../../../client-api/operations/patchin
 
 In this example, we append 100 time series entries with random heart rate values to a document.  
 
-<TabItem value="something-something" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Append-100-Random-TS-Entries" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
 <CodeBlock language="python">
 {`base_line = datetime.utcnow()
 
@@ -250,7 +250,7 @@ session.save_changes()
 
 In this example, we remove a range of 50 time series entries from a document.  
 
-<TabItem value="something-something" label="TS_region-Session_Patch-Delete-50-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Delete-50-TS-Entries" label="TS_region-Session_Patch-Delete-50-TS-Entries">
 <CodeBlock language="python">
 {`# Delete time-series entries
 session.advanced.defer(
@@ -278,7 +278,7 @@ session.advanced.defer(
 
 **`PatchCommandData`**
 
-<TabItem value="something-something" label="PatchCommandData-definition">
+<TabItem value="PatchCommandData-definition" label="PatchCommandData-definition">
 <CodeBlock language="python">
 {`class PatchCommandData(CommandData):
     def __init__(
@@ -292,10 +292,10 @@ session.advanced.defer(
 </CodeBlock>
 </TabItem>
 
-Learn more about `PatchCommandData` [here](../../../../client-api/operations/patching/single-document#session-api-using-defer).
+Learn more about `PatchCommandData` [here](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer).
 **`PatchRequest`**
 
-<TabItem value="something-something" label="PatchRequest-definition">
+<TabItem value="PatchRequest-definition" label="PatchRequest-definition">
 <CodeBlock language="python">
 {`class PatchRequest:
     def __init__(self, script: Optional[str] = "", values: Optional[Dict[str, object]] = None): ...
@@ -303,7 +303,7 @@ Learn more about `PatchCommandData` [here](../../../../client-api/operations/pat
 </CodeBlock>
 </TabItem>
 
-Learn more about `PatchRequest` [here](../../../../client-api/operations/patching/single-document#session-api-using-defer).
+Learn more about `PatchRequest` [here](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer).
 
 
 
@@ -318,15 +318,15 @@ Learn more about `PatchRequest` [here](../../../../client-api/operations/patchin
   * You can handle a single document at a time.
   * The patching action is defined by the provided `JavaScript`.
   
-* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx),  
   where multiple documents can be handled at a time.  
 
 * In this page:
-   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch#usage)  
-   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch#patching-examples)
-     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#append-multiple-entries) 
-     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#delete-multiple-entries) 
-   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch.mdx#usage)  
+   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-examples)
+     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries) 
+     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries) 
+   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -349,7 +349,7 @@ Learn more about `PatchRequest` [here](../../../../client-api/operations/patchin
 
 In this example, we append 100 time series entries with random heart rate values to a document.  
 
-<TabItem value="something-something" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Append-100-Random-TS-Entries" label="TS_region-Session_Patch-Append-100-Random-TS-Entries">
 <CodeBlock language="php">
 {`$baseTime = DateUtils::today();
 
@@ -391,7 +391,7 @@ session->saveChanges();
 
 In this example, we remove a range of 50 time series entries from a document.  
 
-<TabItem value="something-something" label="TS_region-Session_Patch-Delete-50-TS-Entries">
+<TabItem value="TS_region-Session_Patch-Delete-50-TS-Entries" label="TS_region-Session_Patch-Delete-50-TS-Entries">
 <CodeBlock language="php">
 {`// Delete time-series entries
 $patchRequest = new PatchRequest();
@@ -419,7 +419,7 @@ $session->saveChanges();
 
 **`PatchCommandData`**
 
-<TabItem value="something-something" label="PatchCommandData-definition">
+<TabItem value="PatchCommandData-definition" label="PatchCommandData-definition">
 <CodeBlock language="php">
 {`new PatchCommandData(?string $id, ?string $changeVector, ?PatchRequest $patch, ?PatchRequest $patchIfMissing = null);
 `}
@@ -427,7 +427,7 @@ $session->saveChanges();
 </TabItem>
 **`PatchRequest`**
 
-<TabItem value="something-something" label="PatchRequest-definition">
+<TabItem value="PatchRequest-definition" label="PatchRequest-definition">
 <CodeBlock language="php">
 {`class PatchRequest
 \{
@@ -452,19 +452,19 @@ $session->saveChanges();
 <Admonition type="note" title="Note">
 
 * Patching multiple time series entries (append or delete entries) can be performed via the _Session_  
-  using [session.advanced.defer](../../../../client-api/operations/patching/single-document#session-api-using-defer), as described below.
+  using [session.advanced.defer](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), as described below.
   * You can handle a single document at a time.
-  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support).
+  * The patching action is defined by the provided [JavaScript](../../../../document-extensions/timeseries/client-api/javascript-support.mdx).
   
-* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations),  
-  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch).
+* Patching time series entries can also be done directly on the _Store_ via [Operations](../../../../client-api/operations/what-are-operations.mdx),  
+  where multiple documents can be handled at a time. Learn more in [Patching time series operations](../../../../document-extensions/timeseries/client-api/operations/patch.mdx).
 
 * In this page:
-   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch#usage)  
-   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch#patching-examples)
-     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#append-multiple-entries) 
-     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch#delete-multiple-entries) 
-   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch#syntax)
+   * [Usage](../../../../document-extensions/timeseries/client-api/session/patch.mdx#usage)  
+   * [Patching examples](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-examples)
+     * [Append multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#append-multiple-entries) 
+     * [Delete multiple entries](../../../../document-extensions/timeseries/client-api/session/patch.mdx#delete-multiple-entries) 
+   * [Syntax](../../../../document-extensions/timeseries/client-api/session/patch.mdx#syntax)
 
 </Admonition>
 ## Usage
@@ -487,8 +487,8 @@ $session->saveChanges();
 
 In this example, we append 100 time series entries with random heart rate values to a document.  
 
-<TabItem value="something-something" label="patch_1">
-<CodeBlock language="nodejs">
+<TabItem value="patch_1" label="patch_1">
+<CodeBlock language="js">
 {`const baseTime = new Date();
 
 // Prepare random values and timestamps to patch
@@ -545,8 +545,8 @@ await session.saveChanges();
 
 In this example, we remove a range of 50 time series entries from a document.  
 
-<TabItem value="something-something" label="patch_2">
-<CodeBlock language="nodejs">
+<TabItem value="patch_2" label="patch_2">
+<CodeBlock language="js">
 {`// Define the patch request
 // ========================
 
@@ -587,7 +587,7 @@ await session.saveChanges();
 ## Syntax
 
 A detailed syntax description for `PatchCommandData` & `PatchRequest` can be found in the following section:  
-[Session API using defer syntax](../../../../client-api/operations/patching/single-document#session-api-using-defer-syntax).
+[Session API using defer syntax](../../../../client-api/operations/patching/single-document.mdx#session-api-using-defer-syntax).
 
 
 

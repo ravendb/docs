@@ -21,22 +21,22 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * Query parameters can be used to filter and page the results.  
 
 * In this page:  
-  * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-prefix#basic-example)  
-  * [Request Format](../../../client-api/rest-api/document-commands/get-documents-by-prefix#request-format)  
-  * [Response Format](../../../client-api/rest-api/document-commands/get-documents-by-prefix#response-format)  
-  * [More Examples](../../../client-api/rest-api/document-commands/get-documents-by-prefix#more-examples)  
-      * [Get Using `matches`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-using)  
-      * [Get Using `matches` and `exclude`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-usingand)  
-      * [Get Using `startAfter`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-using-1)  
-      * [Page Results](../../../client-api/rest-api/document-commands/get-documents-by-prefix#page-results)  
-      * [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-document-metadata-only)
+  * [Basic Example](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#basic-example)  
+  * [Request Format](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#request-format)  
+  * [Response Format](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#response-format)  
+  * [More Examples](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#more-examples)  
+      * [Get Using `matches`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-using)  
+      * [Get Using `matches` and `exclude`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-usingand)  
+      * [Get Using `startAfter`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-using-1)  
+      * [Page Results](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#page-results)  
+      * [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-document-metadata-only)
 </Admonition>  
 ## Basic Example
 
 This is a cURL request to retrieve all documents whose IDs begin with the prefix "ship" from a database named "Example" on 
 our [playground server](http://live-test.ravendb.net):  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?startsWith=ship"
 `}
@@ -45,7 +45,7 @@ our [playground server](http://live-test.ravendb.net):
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -102,7 +102,7 @@ Raven-Server-Version: 4.2.4.42
 
 This is the general format of a cURL request that uses all parameters:  
 
-<TabItem value="something" label="batch">
+<TabItem value="batch" label="batch">
 <CodeBlock language="batch">
 {`curl -X GET "<server URL>/databases/<database name>/docs?
             startsWith=<prefix>
@@ -164,7 +164,7 @@ document IDs. A retrieved document is identical in contents and format to the do
 
 This is the general JSON format of the response body:  
 
-<TabItem value="something" label="javascript">
+<TabItem value="javascript" label="javascript">
 <CodeBlock language="javascript">
 {`\{
     "Results": [ 
@@ -188,20 +188,20 @@ Linebreaks are added for clarity.
 
 ## More Examples
 
-[About Northwind](../../../start/about-examples), the database used in our examples.
+[About Northwind](../../../start/about-examples.mdx), the database used in our examples.
 
 In this section:  
 
-* [Get Using `matches`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-using)  
-* [Get Using `matches` and `exclude`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-usingand)  
-* [Get Using `startAfter`](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-using-1)  
-* [Page Results](../../../client-api/rest-api/document-commands/get-documents-by-prefix#page-results)  
-* [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-prefix#get-document-metadata-only)
+* [Get Using `matches`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-using)  
+* [Get Using `matches` and `exclude`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-usingand)  
+* [Get Using `startAfter`](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-using-1)  
+* [Page Results](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#page-results)  
+* [Get Document Metadata Only](../../../client-api/rest-api/document-commands/get-documents-by-prefix.mdx#get-document-metadata-only)
 ### Get Using&nbsp;`matches`
 
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             startsWith=shipp
@@ -213,7 +213,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -257,7 +257,7 @@ Raven-Server-Version: 4.2.4.42
 
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             startsWith=shipp
@@ -270,7 +270,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -304,7 +304,7 @@ Raven-Server-Version: 4.2.4.42
 
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             startsWith=shipp
@@ -316,7 +316,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -360,7 +360,7 @@ Raven-Server-Version: 4.2.4.42
 
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             startsWith=product
@@ -373,7 +373,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx
@@ -433,7 +433,7 @@ Note that the document ID numbers are 55 and 56 rather than the expected 51 and 
 
 cURL request:  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`curl -X GET "http://live-test.ravendb.net/databases/Example/docs?
             startsWith=regio
@@ -445,7 +445,7 @@ Linebreaks are added for clarity.
 
 Response:  
 
-<TabItem value="something" label="http">
+<TabItem value="http" label="http">
 <CodeBlock language="http">
 {`HTTP/1.1 200 OK
 Server: nginx

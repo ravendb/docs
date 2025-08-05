@@ -28,11 +28,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
   allowing you to refine the displayed or logged entries based on criteria such as the entry content,  
   originating resource, logger, or any other criteria.
 * In this article:  
-  * [Admin Logs view](../../../studio/server/debug/admin-logs#admin-logs-view)  
-  * [Logs on this view](../../../studio/server/debug/admin-logs#logs-on-this-view)  
-  * [Logs on disk](../../../studio/server/debug/admin-logs#logs-on-disk)  
-  * [Log stream](../../../studio/server/debug/admin-logs#log-stream)  
-  * [Syntax for filter conditions](../../../studio/server/debug/admin-logs#syntax-for-filter-conditions)  
+  * [Admin Logs view](../../../studio/server/debug/admin-logs.mdx#admin-logs-view)  
+  * [Logs on this view](../../../studio/server/debug/admin-logs.mdx#logs-on-this-view)  
+  * [Logs on disk](../../../studio/server/debug/admin-logs.mdx#logs-on-disk)  
+  * [Log stream](../../../studio/server/debug/admin-logs.mdx#log-stream)  
+  * [Syntax for filter conditions](../../../studio/server/debug/admin-logs.mdx#syntax-for-filter-conditions)  
 
 </Admonition>
 ## Admin Logs view
@@ -43,13 +43,13 @@ From the debug menu, click **Admin Logs**.
 ![Click to open the Admin Logs view](./assets/admin-logs_admin-logs-menu.png)
 ![Admin Logs view](./assets/admin-logs_admin-logs-view.png)
 
-1. [Logs on this view](../../../studio/server/debug/admin-logs#logs-on-this-view)  
+1. [Logs on this view](../../../studio/server/debug/admin-logs.mdx#logs-on-this-view)  
    Use this section to adjust how the live log stream is displayed.  
    You can filter the streamed data and export it in JSON format.  
-2. [Logs on disk](../../../studio/server/debug/admin-logs#logs-on-disk)  
+2. [Logs on disk](../../../studio/server/debug/admin-logs.mdx#logs-on-disk)  
    Use this section to customize RavenDB's logging to your local storage.  
    Filters can be applied here too, and you can download selected portions of your logs.  
-3. [Log stream](../../../studio/server/debug/admin-logs#log-stream)  
+3. [Log stream](../../../studio/server/debug/admin-logs.mdx#log-stream)  
    This section shows the live stream of RavenDB's logs as they are generated.  
    You can search within the stream and expand individual log entries for more detail.
 
@@ -59,12 +59,12 @@ From the debug menu, click **Admin Logs**.
 
 **Use these controls to**:  
 
-* Adjust [monitor controls](../../../studio/server/debug/admin-logs#monitor-controls).  
-* Set the [minimum logging level](../../../studio/server/debug/admin-logs#set-displayed-logs-minimum-level) 
+* Adjust [monitor controls](../../../studio/server/debug/admin-logs.mdx#monitor-controls).  
+* Set the [minimum logging level](../../../studio/server/debug/admin-logs.mdx#set-displayed-logs-minimum-level) 
   from which log entries are displayed.  
-* Create [additional filters](../../../studio/server/debug/admin-logs#set-displayed-logs-filters) 
+* Create [additional filters](../../../studio/server/debug/admin-logs.mdx#set-displayed-logs-filters) 
   to select the precise data that you want to view.  
-* [Export the displayed log data](../../../studio/server/debug/admin-logs#export-displayed-logs-data) 
+* [Export the displayed log data](../../../studio/server/debug/admin-logs.mdx#export-displayed-logs-data) 
   to files.  
 
 ![Logs on this view](./assets/admin-logs_logs-on-this-view.png)
@@ -73,7 +73,7 @@ From the debug menu, click **Admin Logs**.
    A lit funnel symbol indicates that filters were created and are now active.  
    See **Settings** below to learn what filters do and how to create and remove them.  
 2. <a id="set-displayed-logs-minimum-level"/>**Min level**  
-   The minimum [logging level](../../../server/troubleshooting/logging#logging-levels) from which log entries are displayed on this view.  
+   The minimum [logging level](../../../server/troubleshooting/logging.mdx#logging-levels) from which log entries are displayed on this view.  
    For example, selecting `Warn` (warning) will display log entries from this level and up,  
    including `Warn`, `Error`, and `Fatal`.  
 3. <a id="monitor-controls"/>**Monitor controls**  
@@ -130,11 +130,11 @@ From the debug menu, click **Admin Logs**.
 
 **Use these controls to**:  
 
-* Set the [minimum logging level](../../../studio/server/debug/admin-logs#define-logs-on-disk-minimum-level) 
+* Set the [minimum logging level](../../../studio/server/debug/admin-logs.mdx#define-logs-on-disk-minimum-level) 
   from which log entries are stored in log files on the server disk.  
-* Create [additional filters](../../../studio/server/debug/admin-logs#define-logs-on-disk-filters) 
+* Create [additional filters](../../../studio/server/debug/admin-logs.mdx#define-logs-on-disk-filters) 
   to select the precise data that you want to log.  
-* [Download existing log files](../../../studio/server/debug/admin-logs#download-log-files) 
+* [Download existing log files](../../../studio/server/debug/admin-logs.mdx#download-log-files) 
   from the server disk by a date range of your choice.  
 
 ![Logs on disk](./assets/admin-logs_logs-on-disk.png)
@@ -173,7 +173,7 @@ From the debug menu, click **Admin Logs**.
       ![Logs on disk - Settings](./assets/admin-logs_logs-on-disk_settings.png)
       
       * <a id="define-logs-on-disk-minimum-level"/>**Current Minimum Level**  
-        The minimum [logging level](../../../server/troubleshooting/logging#logging-levels) from which log entries will be stored in log files.  
+        The minimum [logging level](../../../server/troubleshooting/logging.mdx#logging-levels) from which log entries will be stored in log files.  
         For example, selecting `Warn` (warning) will store log entries from this level and up, including `Warn`, `Error`, and `Fatal`.  
          * **Save the minimum level in `settings.json`**  
            Check this box to save the minimum log level in the `settings.json` file.  
@@ -215,7 +215,7 @@ From the debug menu, click **Admin Logs**.
 
 ## Log stream
 
-* This area displays live log entries as they are generated by the server, filtered by the [Logs on this view](../../../studio/server/debug/admin-logs#logs-on-this-view) settings.
+* This area displays live log entries as they are generated by the server, filtered by the [Logs on this view](../../../studio/server/debug/admin-logs.mdx#logs-on-this-view) settings.
   You can search and expand individual entries for more details.
 
      ![Log stream](./assets/admin-logs_log-stream.png)
@@ -233,11 +233,11 @@ From the debug menu, click **Admin Logs**.
           `<Timestamp>|<Level>|<ThreadId>|<Resource>|<Component>|<Logger>|<Message>|<Data>`  
           All fields are always present (empty if not applicable).   
             * **Timestamp** - UTC timestamp of the event.
-            * **Level** - The entry's [logging level](../../../server/troubleshooting/logging#logging-levels).
+            * **Level** - The entry's [logging level](../../../server/troubleshooting/logging.mdx#logging-levels).
             * **ThreadId** - ID of the thread that generated the log entry.
             * **Resource** - Affected resource, e.g., the server or the database name.
             * **Component** - The subsystem where the entry was generated, e.g., an index name.
-            * **Logger** - The full class name of the originating [logger](../../../server/troubleshooting/logging#your-own-loggers).
+            * **Logger** - The full class name of the originating [logger](../../../server/troubleshooting/logging.mdx#your-own-loggers).
             * **Message** - Event description + exception details (if any).
             * **Data** - Additional JSON context.
         * Click a log entry to expand or collapse its details:     

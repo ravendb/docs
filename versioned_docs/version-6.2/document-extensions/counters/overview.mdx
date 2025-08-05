@@ -30,16 +30,16 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
    * Any event related to the document  
    
 * Counters interact with and can trigger other RavenDB features.  
- To find out how to use counters with other features, read [Counters and Other Features](../../document-extensions/counters/counters-and-other-features).  
+ To find out how to use counters with other features, read [Counters and Other Features](../../document-extensions/counters/counters-and-other-features.mdx).  
 
-* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters.mdx).  
 
 * In this page:  
-  * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
-  * [Overview](../../document-extensions/counters/overview#overview)  
-  * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `CountersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
-      * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
+  * [Why use Counters?](../../document-extensions/counters/overview.mdx#why-use-counters?)  
+  * [Overview](../../document-extensions/counters/overview.mdx#overview)  
+  * [Managing Counters](../../document-extensions/counters/overview.mdx#managing-counters)  
+      * [Counter Methods and the `CountersFor` object](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object)  
+      * [Managing Counters using `Operations`](../../document-extensions/counters/overview.mdx#managing-counters-using-)
 </Admonition>
 ## Why use Counters?
 
@@ -56,7 +56,7 @@ E.g. Use counters when you want to -
 - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 #### Distributed Values
 
-A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
+A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters.mdx).  
 Among the advantages of this:  
 
 * The cluster **remains available** even when nodes crash.  
@@ -93,11 +93,11 @@ while simply modifying the Counter Value does not.
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
 
 * When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
-  [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
+  [special attention](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment).  
 #### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -121,7 +121,7 @@ for example.
 </Admonition>
 #### Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters#section)  
+* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters.mdx#section)  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 #### Counter Values
@@ -133,7 +133,7 @@ for example.
 RavenDB doesn't limit the number of Counters you can create.  
 
 <Admonition type="note" title="Note">
-Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview#counters-cost).  
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
 
@@ -162,10 +162,10 @@ Managing Counters is performed using the `CountersFor` Session object.
   * Open a session.  
   * Create an instance of `CountersFor`.  
       * Either pass `CountersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-        e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query) or from [session.Load](../../client-api/session/loading-entities#load).  
+      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+        e.g. a document object returned from [session.Query](../../client-api/session/querying/how-to-query.mdx) or from [session.Load](../../client-api/session/loading-entities.mdx#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
+  * If you execute [Increment](../../document-extensions/counters/create-or-modify.mdx) or [Delete](../../document-extensions/counters/delete.mdx), call `session.SaveChanges` for the action to take effect on the server.  
 
 * **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
@@ -226,9 +226,9 @@ using (var session = docStore.OpenSession())
   </Tabs>
 #### Managing Counters using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations.mdx).  
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) 
 can operate on a set of Counters of different documents in a single request.
 
 
@@ -247,16 +247,16 @@ can operate on a set of Counters of different documents in a single request.
    * Any event related to the document  
 
 * Counters interact with and can trigger other RavenDB features.  
- To find out how to use counters with other features, read [Counters and Other Features](../../../java/document-extensions/counters/counters-and-other-features).  
+ To find out how to use counters with other features, read [Counters and Other Features](../../../java/document-extensions/counters/counters-and-other-features.mdx).  
 
-* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters.mdx).  
 
 * In this page:  
-  * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
-  * [Overview](../../document-extensions/counters/overview#overview)  
-  * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `CountersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
-      * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
+  * [Why use Counters?](../../document-extensions/counters/overview.mdx#why-use-counters?)  
+  * [Overview](../../document-extensions/counters/overview.mdx#overview)  
+  * [Managing Counters](../../document-extensions/counters/overview.mdx#managing-counters)  
+      * [Counter Methods and the `CountersFor` object](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object)  
+      * [Managing Counters using `Operations`](../../document-extensions/counters/overview.mdx#managing-counters-using-)
 </Admonition>
 ## Why use Counters?
 
@@ -273,7 +273,7 @@ E.g. Use counters when you want to -
 - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 #### Distributed Values
 
-A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
+A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters.mdx).  
 Among the advantages of this:  
 
 * The cluster **remains available** even when nodes crash.  
@@ -310,11 +310,11 @@ while simply modifying the Counter Value does not.
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.
 
 - When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
-  [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
+  [special attention](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment).  
 #### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `Delete` and `Increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -350,7 +350,7 @@ for example.
 RavenDB doesn't limit the number of Counters you can create.  
 
 <Admonition type="note" title="Note">
-Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview#counters-cost).  
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
 
@@ -380,7 +380,7 @@ Managing Counters is performed using the `CountersFor` Session object.
       * Pass it an entity tracked by the session, e.g. a document object 
         returned from `session.query` or from `session.load`.  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [Increment](../../document-extensions/counters/create-or-modify) or [Delete](../../document-extensions/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
+  * If you execute [Increment](../../document-extensions/counters/create-or-modify.mdx) or [Delete](../../document-extensions/counters/delete.mdx), call `session.SaveChanges` for the action to take effect on the server.  
 
 *  **Success and failure**:
 
@@ -441,9 +441,9 @@ try (IDocumentSession session = docStore.openSession()) {
   </Tabs>
 #### Managing Counters using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations.mdx).  
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) 
 can operate on a set of Counters of different documents in a single request.
 
 
@@ -462,16 +462,16 @@ can operate on a set of Counters of different documents in a single request.
    * Any event related to the document  
    
 * Counters interact with and can trigger other RavenDB features.  
- To find out how to use counters with other features, read [Counters and Other Features](../../../csharp/document-extensions/counters/counters-and-other-features).  
+ To find out how to use counters with other features, read [Counters and Other Features](../../../csharp/document-extensions/counters/counters-and-other-features.mdx).  
 
-* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters.mdx).  
 
 * In this page:  
-  * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
-  * [Overview](../../document-extensions/counters/overview#overview)  
-  * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `counters_for` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
-      * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
+  * [Why use Counters?](../../document-extensions/counters/overview.mdx#why-use-counters?)  
+  * [Overview](../../document-extensions/counters/overview.mdx#overview)  
+  * [Managing Counters](../../document-extensions/counters/overview.mdx#managing-counters)  
+      * [Counter Methods and the `counters_for` object](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object)  
+      * [Managing Counters using `Operations`](../../document-extensions/counters/overview.mdx#managing-counters-using-)
 </Admonition>
 ## Why use Counters?
 
@@ -488,7 +488,7 @@ E.g. Use counters when you want to -
 - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 #### Distributed Values
 
-A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
+A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters.mdx).  
 Among the advantages of this:  
 
 * The cluster **remains available** even when nodes crash.  
@@ -525,11 +525,11 @@ while simply modifying the Counter Value does not.
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
 
 * When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
-  [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
+  [special attention](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment).  
 #### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -553,7 +553,7 @@ for example.
 </Admonition>
 #### Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters#section)  
+* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters.mdx#section)  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 #### Counter Values
@@ -565,7 +565,7 @@ for example.
 RavenDB doesn't limit the number of Counters you can create.  
 
 <Admonition type="note" title="Note">
-Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview#counters-cost).  
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
 
@@ -594,10 +594,10 @@ Managing Counters is performed using the `counters_for` session object.
   * Open a session.  
   * Create an instance of `counters_for`.  
       * Either pass `counters_for` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.save_changes` for the action to take effect on the server.  
+  * If you execute [increment](../../document-extensions/counters/create-or-modify.mdx) or [delete](../../document-extensions/counters/delete.mdx), call `session.save_changes` for the action to take effect on the server.  
 
 * **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
@@ -654,9 +654,9 @@ with store.open_session() as session:
   </Tabs>
 #### Managing Counters using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations.mdx).  
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) 
 can operate on a set of Counters of different documents in a single request.
 
 
@@ -675,16 +675,16 @@ can operate on a set of Counters of different documents in a single request.
    * Any event related to the document  
    
 * Counters interact with and can trigger other RavenDB features.  
- To find out how to use counters with other features, read [Counters and Other Features](../../document-extensions/counters/counters-and-other-features).  
+ To find out how to use counters with other features, read [Counters and Other Features](../../document-extensions/counters/counters-and-other-features.mdx).  
 
-* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters.mdx).  
 
 * In this page:  
-  * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
-  * [Overview](../../document-extensions/counters/overview#overview)  
-  * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
-      * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
+  * [Why use Counters?](../../document-extensions/counters/overview.mdx#why-use-counters?)  
+  * [Overview](../../document-extensions/counters/overview.mdx#overview)  
+  * [Managing Counters](../../document-extensions/counters/overview.mdx#managing-counters)  
+      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object)  
+      * [Managing Counters using `Operations`](../../document-extensions/counters/overview.mdx#managing-counters-using-)
 </Admonition>
 ## Why use Counters?
 
@@ -701,7 +701,7 @@ E.g. Use counters when you want to -
 - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 #### Distributed Values
 
-A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
+A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters.mdx).  
 Among the advantages of this:  
 
 * The cluster **remains available** even when nodes crash.  
@@ -738,11 +738,11 @@ while simply modifying the Counter Value does not.
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
 
 * When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
-  [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
+  [special attention](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment).  
 #### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -766,7 +766,7 @@ for example.
 </Admonition>
 #### Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters#section)  
+* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters.mdx#section)  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 #### Counter Values
@@ -778,7 +778,7 @@ for example.
 RavenDB doesn't limit the number of Counters you can create.  
 
 <Admonition type="note" title="Note">
-Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview#counters-cost).  
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
 
@@ -807,10 +807,10 @@ Managing Counters is performed using the `countersFor` session object.
   * Open a session.  
   * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.saveChanges` for the action to take effect on the server.  
+  * If you execute [increment](../../document-extensions/counters/create-or-modify.mdx) or [delete](../../document-extensions/counters/delete.mdx), call `session.saveChanges` for the action to take effect on the server.  
 
 * **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
@@ -875,9 +875,9 @@ try {
   </Tabs>
 #### Managing Counters using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations.mdx).  
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) 
 can operate on a set of Counters of different documents in a single request.
 
 
@@ -896,16 +896,16 @@ can operate on a set of Counters of different documents in a single request.
    * Any event related to the document  
    
 * Counters interact with and can trigger other RavenDB features.  
- To find out how to use counters with other features, read [Counters and Other Features](../../../csharp/document-extensions/counters/counters-and-other-features).  
+ To find out how to use counters with other features, read [Counters and Other Features](../../../csharp/document-extensions/counters/counters-and-other-features.mdx).  
 
-* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters).  
+* Create and manage Counters using API methods, or through the [Studio](../../studio/database/document-extensions/counters.mdx).  
 
 * In this page:  
-  * [Why use Counters?](../../document-extensions/counters/overview#why-use-counters?)  
-  * [Overview](../../document-extensions/counters/overview#overview)  
-  * [Managing Counters](../../document-extensions/counters/overview#managing-counters)  
-      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview#counter-methods-and-the--object)  
-      * [Managing Counters using `Operations`](../../document-extensions/counters/overview#managing-counters-using-)
+  * [Why use Counters?](../../document-extensions/counters/overview.mdx#why-use-counters?)  
+  * [Overview](../../document-extensions/counters/overview.mdx#overview)  
+  * [Managing Counters](../../document-extensions/counters/overview.mdx#managing-counters)  
+      * [Counter Methods and the `countersFor` object](../../document-extensions/counters/overview.mdx#counter-methods-and-the--object)  
+      * [Managing Counters using `Operations`](../../document-extensions/counters/overview.mdx#managing-counters-using-)
 </Admonition>
 ## Why use Counters?
 
@@ -922,7 +922,7 @@ E.g. Use counters when you want to -
 - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 #### Distributed Values
 
-A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters).  
+A Counter's value is [distributed between cluster nodes](../../document-extensions/counters/counters-in-clusters.mdx).  
 Among the advantages of this:  
 
 * The cluster **remains available** even when nodes crash.  
@@ -959,11 +959,11 @@ while simply modifying the Counter Value does not.
   E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
 
 * When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require 
-  [special attention](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment).  
+  [special attention](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment).  
 #### Counters and Conflicts
 
 Counter actions (for either name or value) almost never cause conflicts.  
-The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters#concurrent-delete-and-increment) 
+The only exception to this is [concurrent `delete` and `increment`](../../document-extensions/counters/counters-in-clusters.mdx#concurrent-delete-and-increment) 
 actions by multiple cluster nodes.  
 
 - Counter actions can be executed concurrently or in any order, without causing a conflict.  
@@ -987,7 +987,7 @@ for example.
 </Admonition>
 #### Counters Naming Convention
 
-* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters#section)  
+* Valid characters: All visible characters, [including Unicode symbols](../../studio/database/document-extensions/counters.mdx#section)  
 * Length: Up to 512 bytes  
 * Encoding: UTF-8  
 #### Counter Values
@@ -999,7 +999,7 @@ for example.
 RavenDB doesn't limit the number of Counters you can create.  
 
 <Admonition type="note" title="Note">
-Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview#counters-cost).  
+Note that the Counter names are stored in the document metadata and [do impact the size of the document](../../document-extensions/counters/overview.mdx#counters-cost).  
 </Admonition>
 #### The `HasCounters` Flag
 
@@ -1028,10 +1028,10 @@ Managing Counters is performed using the `countersFor` Session object.
   * Open a session.  
   * Create an instance of `countersFor`.  
       * Either pass `countersFor` an explicit document ID, -or-  
-      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities), 
-        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query) or from [session.load](../../client-api/session/loading-entities#load).  
+      * Pass it an [entity tracked by the session](../../client-api/session/loading-entities.mdx), 
+        e.g. a document object returned from [session.query](../../client-api/session/querying/how-to-query.mdx) or from [session.load](../../client-api/session/loading-entities.mdx#load).  
   * Use Counter methods to manage the document's Counters.  
-  * If you execute [increment](../../document-extensions/counters/create-or-modify) or [delete](../../document-extensions/counters/delete), call `session.saveChanges` for the action to take effect on the server.  
+  * If you execute [increment](../../document-extensions/counters/create-or-modify.mdx) or [delete](../../document-extensions/counters/delete.mdx), call `session.saveChanges` for the action to take effect on the server.  
 
 * **Success and failure**:  
   * As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
@@ -1044,7 +1044,7 @@ Managing Counters is performed using the `countersFor` Session object.
   
 <Tabs groupId='languageSyntax'>
 <TabItem value="Pass-CountersFor-Document-ID" label="Pass-CountersFor-Document-ID">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Use countersFor without loading a document:
 // ===========================================
 
@@ -1065,7 +1065,7 @@ await session.saveChanges();
 </CodeBlock>
 </TabItem>
 <TabItem value="Pass-CountersFor-Document-Object" label="Pass-CountersFor-Document-Object">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Use countersFor by passing it a document entity:
 // ================================================
 
@@ -1091,9 +1091,9 @@ await session.saveChanges();
   </Tabs>
 #### Managing Counters using `Operations`
 
-* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations).  
+* In addition to working with the high-level Session, you can manage Counters using the low-level [Operations](../../client-api/operations/what-are-operations.mdx).  
 
-* [CounterBatchOperation](../../client-api/operations/counters/counter-batch) 
+* [CounterBatchOperation](../../client-api/operations/counters/counter-batch.mdx) 
 can operate on a set of Counters of different documents in a single request.
 
 

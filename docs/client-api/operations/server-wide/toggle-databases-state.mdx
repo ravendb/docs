@@ -23,15 +23,15 @@ export const supportedLanguages = ["csharp", "python", "php", "nodejs"];
 
 * Use `ToggleDatabasesStateOperation` to enable/disable a single database or multiple databases.
 
-* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group).
+* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group.mdx).
 
 * In this page:
 
-  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)  
-      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)     
-  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
+  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable/disable-database-from-the-client-api)  
+      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable-database)
+      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database)
+      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state.mdx#syntax)     
+  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database-via-the-file-system)
 
 </Admonition>
 ## Enable/Disable database from the Client API
@@ -98,7 +98,7 @@ var toggleResult = await documentStore.Maintenance.Server.SendAsync(disableDatab
 </Tabs>
 #### Syntax: 
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Available overloads:
 public ToggleDatabasesStateOperation(string databaseName, bool disable)
@@ -113,7 +113,7 @@ public ToggleDatabasesStateOperation(string[] databaseNames, bool disable)
 | **databaseNames** | `string[]` | List of database names for which to toggle state                                          |
 | **disable**       | `bool`     | `true` - request to disable the database(s)<br/>`false`- request to enable the database(s) |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`// Executing the operation returns the following object:
 public class DisableDatabaseToggleResult
@@ -135,7 +135,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * To **manually disable** a database:  
  
-  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure.mdx).  
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
   
@@ -148,7 +148,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 * To **enable** a manually disabled database:
   
   * First, remove the `disable.marker` file from the database directory. 
-  * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
+  * Then, [reload the database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
 
 
 
@@ -160,22 +160,22 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * Use `ToggleDatabasesStateOperation` to enable/disable a single database or multiple databases.
 
-* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group).
+* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group.mdx).
 
 * In this page:
 
-  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)  
-      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)     
-  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
+  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable/disable-database-from-the-client-api)  
+      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable-database)
+      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database)
+      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state.mdx#syntax)     
+  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database-via-the-file-system)
 
 </Admonition>
 ## Enable/Disable database from the Client API
 
 #### Enable database:  
 
-<TabItem value="something-something" label="enable">
+<TabItem value="enable" label="enable">
 <CodeBlock language="python">
 {`# Define the toggle state operation
 # specify the database name & pass 'False' to enable
@@ -191,7 +191,7 @@ toggle_result = store.maintenance.server.send(enable_database_op)
 </TabItem>
 #### Disable database: 
 
-<TabItem value="something-something" label="disable">
+<TabItem value="disable" label="disable">
 <CodeBlock language="python">
 {`# Define the toggle state operation
 # specify the database name(s) & pass 'True' to disable
@@ -207,7 +207,7 @@ toggle_result = store.maintenance.server.send(disable_database_op)
 </TabItem>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class ToggleDatabasesStateOperation(ServerOperation[DisableDatabaseToggleResult]):
     def __init__(self, database_name: str, disable: bool): ...
@@ -223,7 +223,7 @@ toggle_result = store.maintenance.server.send(disable_database_op)
 | **database_names** | `str[]` | List of database names for which to toggle state                                          |
 | **disable**        | `bool`  | `True` - request to disable the database(s)<br/>`False`- request to enable the database(s) |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class DisableDatabaseToggleResult:
     def __init__(
@@ -245,7 +245,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * To **manually disable** a database:  
  
-  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure.mdx).  
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
   
@@ -258,7 +258,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 * To **enable** a manually disabled database:
   
   * First, remove the `disable.marker` file from the database directory. 
-  * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
+  * Then, [reload the database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
 
 
 
@@ -270,22 +270,22 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * Use `ToggleDatabasesStateOperation` to enable/disable a single database or multiple databases.
 
-* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group).
+* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group.mdx).
 
 * In this page:
 
-  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)  
-      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)     
-  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
+  * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable/disable-database-from-the-client-api)  
+      * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable-database)
+      * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database)
+      * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state.mdx#syntax)     
+  * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database-via-the-file-system)
 
 </Admonition>
 ## Enable/Disable database from the Client API
 
 #### Enable database:  
 
-<TabItem value="something-something" label="enable">
+<TabItem value="enable" label="enable">
 <CodeBlock language="php">
 {`// Define the toggle state operation
 // specify the database name & pass 'false' to enable
@@ -302,7 +302,7 @@ $toggleResult = $documentStore->maintenance()->server()->send($enableDatabaseOp)
 </TabItem>
 #### Disable database: 
 
-<TabItem value="something-something" label="disable">
+<TabItem value="disable" label="disable">
 <CodeBlock language="php">
 {`// Define the toggle state operation
 // specify the database name(s) & pass 'true' to disable
@@ -319,7 +319,7 @@ $toggleResult = $documentStore->maintenance()->server()->send($disableDatabaseOp
 </TabItem>
 #### Syntax: 
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class ToggleDatabasesStateOperation(ServerOperation[DisableDatabaseToggleResult]):
     def __init__(self, database_name: str, disable: bool): ...
@@ -334,7 +334,7 @@ $toggleResult = $documentStore->maintenance()->server()->send($disableDatabaseOp
 | **$databaseName**  | `string` / `StringArray` / `array`  | Name or list of names of database/s whose state to toggle |
 | **$disable**       | `bool`  | `true` - request to disable the database(s)<br/>`talse`- request to enable the database(s) |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class DisableDatabaseToggleResult:
     def __init__(
@@ -356,7 +356,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * To **manually disable** a database:  
  
-  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).  
+  * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure.mdx).  
   * The `disable.marker` file can be empty,  
     and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
   
@@ -369,7 +369,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 * To **enable** a manually disabled database:
   
   * First, remove the `disable.marker` file from the database directory. 
-  * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
+  * Then, [reload the database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
 
 
 
@@ -381,15 +381,15 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * Use `ToggleDatabasesStateOperation` to enable/disable a single database or multiple databases.
 
-* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group).
+* The database will be enabled/disabled on all nodes in the [database-group](../../../studio/database/settings/manage-database-group.mdx).
 
 * In this page:
 
-    * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state#enable/disable-database-from-the-client-api)
-        * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state#enable-database)
-        * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state#disable-database)
-        * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state#syntax)
-    * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state#disable-database-via-the-file-system)
+    * [Enable/Disable database from the Client API](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable/disable-database-from-the-client-api)
+        * [Enable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#enable-database)
+        * [Disable database](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database)
+        * [Syntax](../../../client-api/operations/server-wide/toggle-databases-state.mdx#syntax)
+    * [Disable database via the file system](../../../client-api/operations/server-wide/toggle-databases-state.mdx#disable-database-via-the-file-system)
 
 </Admonition>
 ## Enable/Disable database from the Client API
@@ -398,8 +398,8 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 <a id="enable-database"/> **Enable database**:  
 
-<TabItem value="something-something" label="enable">
-<CodeBlock language="nodejs">
+<TabItem value="enable" label="enable">
+<CodeBlock language="js">
 {`// Define the toggle state operation
 // specify the database name & pass 'false' to enable
 const enableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", false);
@@ -419,8 +419,8 @@ const toggleResult = await documentStore.maintenance.server.send(enableDatabaseO
 
 <a id="disable-database"/> **Disable database**: 
 
-<TabItem value="something-something" label="disable">
-<CodeBlock language="nodejs">
+<TabItem value="disable" label="disable">
+<CodeBlock language="js">
 {`// Define the toggle state operation
 // specify the database name(s) & pass 'true' to disable
 const disableDatabaseOp = new ToggleDatabasesStateOperation("Northwind", true);
@@ -440,8 +440,8 @@ const toggleResult = await documentStore.maintenance.server.send(disableDatabase
 
 <a id="syntax"/> **Syntax**: 
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Available overloads:
 const enableDatabaseOp = new ToggleDatabasesStateOperation(databaseName, disable);
 const enableDatabaseOp = new ToggleDatabasesStateOperation(databaseNames, disable);
@@ -455,8 +455,8 @@ const enableDatabaseOp = new ToggleDatabasesStateOperation(databaseNames, disabl
 | **databaseNames** | `string[]` | List of database names for which to toggle state                                          |
 | **disable**       | `boolean`  | `true` - request to disable the database(s)<br/>`false`- request to enable the database(s) |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Executing the operation returns an object with the following properties:
 \{
     disabled, // Is database disabled
@@ -477,7 +477,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 
 * To **manually disable** a database:
 
-    * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure).
+    * Place a file named `disable.marker` in the [database directory](../../../server/storage/directory-structure.mdx).
     * The `disable.marker` file can be empty,  
       and can be created by any available method, e.g. using the File Explorer, a terminal, or code.
 
@@ -490,7 +490,7 @@ It may sometimes be useful to disable a database manually, through the file syst
 * To **enable** a manually disabled database:
 
     * First, remove the `disable.marker` file from the database directory.
-    * Then, [reload the database](../../../studio/database/settings/database-settings#how-to-reload-the-database).
+    * Then, [reload the database](../../../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
 
 
 

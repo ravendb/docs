@@ -24,14 +24,14 @@ This operation is used to get an attachment from a document.
 
 ## Syntax
 
-<TabItem value="something-something" label="get_attachment_syntax">
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
 <CodeBlock language="csharp">
 {`public GetAttachmentOperation(string documentId, string name, AttachmentType type, string changeVector)
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="get_attachment_return_value">
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
 <CodeBlock language="csharp">
 {`public class AttachmentResult
 \{
@@ -75,7 +75,7 @@ public class AttachmentName
 
 ## Example
 
-<TabItem value="something" label="get_1">
+<TabItem value="get_1" label="get_1">
 <CodeBlock language="csharp">
 {`store.Operations.Send(new GetAttachmentOperation("orders/1-A",
     "invoice.pdf",
@@ -94,14 +94,14 @@ This operation is used to get an attachment from a document.
 
 ## Syntax
 
-<TabItem value="something-something" label="get_attachment_syntax">
+<TabItem value="get_attachment_syntax" label="get_attachment_syntax">
 <CodeBlock language="java">
 {`GetAttachmentOperation(String documentId, String name, AttachmentType type, String changeVector)
 `}
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="get_attachment_return_value">
+<TabItem value="get_attachment_return_value" label="get_attachment_return_value">
 <CodeBlock language="java">
 {`public class CloseableAttachmentResult implements AutoCloseable \{
     private AttachmentDetails details;
@@ -198,7 +198,7 @@ public class AttachmentName \{
 
 ## Example
 
-<TabItem value="something-something" label="get_1">
+<TabItem value="get_1" label="get_1">
 <CodeBlock language="java">
 {`store.operations().send(
     new GetAttachmentOperation("orders/1-A", "invoice.pdf", AttachmentType.DOCUMENT, null));
@@ -216,14 +216,14 @@ public class AttachmentName \{
 
 * In this page:  
 
-  * [Get attachment example](../../../client-api/operations/attachments/get-attachment#get-attachment-example)  
-  * [Syntax](../../../client-api/operations/attachments/get-attachment#syntax)
+  * [Get attachment example](../../../client-api/operations/attachments/get-attachment.mdx#get-attachment-example)  
+  * [Syntax](../../../client-api/operations/attachments/get-attachment.mdx#syntax)
    
 </Admonition>
 ## Get attachment example
 
-<TabItem value="something-something" label="get_attachment">
-<CodeBlock language="nodejs">
+<TabItem value="get_attachment" label="get_attachment">
+<CodeBlock language="js">
 {`// Define the get attachment operation
 const getAttachmentOp = new GetAttachmentOperation("employees/1-A", "attachmentName.txt", "Document", null);
 
@@ -251,8 +251,8 @@ attachmentResult.data
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const getAttachmentOp = new GetAttachmentOperation(documentId, name, type, changeVector);
 `}
 </CodeBlock>
@@ -269,8 +269,8 @@ attachmentResult.data
 |-----------------------------------------------------------|-----------------------------------------|
 | `AttachmentResult`                                        | An instance of class `AttachmentResult` |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`class AttachmentResult \{
     data;    // Stream containing the attachment content
     details; // The AttachmentDetails object

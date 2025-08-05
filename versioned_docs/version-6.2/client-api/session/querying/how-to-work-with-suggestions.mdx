@@ -24,7 +24,7 @@ The `suggestion` feature is available through query extension methods. It gives 
 
 ## Syntax
 
-<TabItem value="something-something" label="suggest_1">
+<TabItem value="suggest_1" label="suggest_1">
 <CodeBlock language="java">
 {`ISuggestionDocumentQuery<T> suggestUsing(SuggestionBase suggestion);
 
@@ -40,7 +40,7 @@ ISuggestionDocumentQuery<T> suggestUsing(Consumer<ISuggestionBuilder<T>> builder
 
 ### Builder
 
-<TabItem value="something-something" label="suggest_2">
+<TabItem value="suggest_2" label="suggest_2">
 <CodeBlock language="java">
 {`ISuggestionOperations<T> byField(String fieldName, String term);
 
@@ -60,7 +60,7 @@ ISuggestionOperations<T> withOptions(SuggestionOptions options);
 
 ### Options
 
-<TabItem value="something-something" label="suggest_7">
+<TabItem value="suggest_7" label="suggest_7">
 <CodeBlock language="java">
 {`private int pageSize = 15;
 
@@ -146,31 +146,31 @@ select suggest('FullName', 'johne')
 * Word similarities are found using string distance algorithms.
 
 * Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
-  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions).
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
 * In this page:
 
     * Overview:
-        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)
-        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
       
     * Examples:
-        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-single-term)
-        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
-        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
-        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-fields)
+        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---customize-options-and-display-name)
       
-    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
-    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
 
 </Admonition>
 ## What are terms
 
-* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
   the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
-  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers).
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
 
 * The terms can then be queried to retrieve matching documents that contain them.
 
@@ -208,7 +208,7 @@ Consider this example:
 Based on the Northwind sample data, the following query has no resulting documents,  
 as no document in the Products collection contains the term `chaig` in its `Name` field.
 
-<TabItem value="something" label="suggest_1">
+<TabItem value="suggest_1" label="suggest_1">
 <CodeBlock language="csharp">
 {`// This dynamic query on the 'Products' collection has NO resulting documents
 List<Product> products = session
@@ -221,7 +221,7 @@ List<Product> products = session
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
   This auto-index will contain a list of all available terms from the document field `Name`.  
-  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
@@ -303,7 +303,7 @@ select suggest(Name, "chaig")
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="suggest_6">
+<TabItem value="suggest_6" label="suggest_6">
 <CodeBlock language="csharp">
 {`// The resulting suggested terms:
 // ==============================
@@ -402,7 +402,7 @@ from "Products" select suggest(Name, $p0)
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="suggest_11">
+<TabItem value="suggest_11" label="suggest_11">
 <CodeBlock language="csharp">
 {`// The resulting suggested terms:
 // ==============================
@@ -516,7 +516,7 @@ select suggest(Name, "chop-soy china"), suggest(Contact.Name, "maria larson")
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="suggest_16">
+<TabItem value="suggest_16" label="suggest_16">
 <CodeBlock language="csharp">
 {`// The resulting suggested terms:
 // ==============================
@@ -656,7 +656,7 @@ select suggest(
 </TabItem>
 </Tabs>
 
-<TabItem value="something" label="suggest_21">
+<TabItem value="suggest_21" label="suggest_21">
 <CodeBlock language="csharp">
 {`// The resulting suggested terms:
 // ==============================
@@ -695,7 +695,7 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 **Suggest using**:
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`// Overloads for requesting suggestions for term(s) in a field: 
 ISuggestionQuery<T> SuggestUsing<T>(SuggestionBase suggestion);
@@ -715,7 +715,7 @@ ISuggestionQuery<T> AndSuggestUsing(Action<ISuggestionBuilder<T>> builder);
 
 **Builder operations**:
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`ISuggestionOperations<T> ByField(string fieldName, string term);
 ISuggestionOperations<T> ByField(string fieldName, string[] terms);
@@ -739,7 +739,7 @@ ISuggestionOperations<T> WithOptions(SuggestionOptions options);
 
 **Suggestions options**:
 
-<TabItem value="something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="csharp">
 {`public int PageSize \{ get; set; \}
 public StringDistanceTypes? Distance \{ get; set; \}
@@ -769,31 +769,31 @@ public SuggestionSortMode SortMode \{ get; set; \}
 * Word similarities are found using string distance algorithms.
 
 * Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
-  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions).
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
 * In this page:
 
     * Overview:
-        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)
-        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
       
     * Examples:
-        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-single-term)
-        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
-        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
-        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-fields)
+        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---customize-options-and-display-name)
       
-    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
-    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
 
 </Admonition>
 ## What are terms
 
-* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
   the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
-  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers).
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
 
 * The terms can then be queried to retrieve matching documents that contain them.
 
@@ -831,7 +831,7 @@ Consider this example:
 Based on the Northwind sample data, the following query has no resulting documents,  
 as no document in the Products collection contains the term `chaig` in its `Name` field.
 
-<TabItem value="something-something" label="suggest_1">
+<TabItem value="suggest_1" label="suggest_1">
 <CodeBlock language="python">
 {`# This dynamic query on the 'Products' collection has NO documents
 products = list(session.query(object_type=Product).where_equals("name", "chaig"))
@@ -841,7 +841,7 @@ products = list(session.query(object_type=Product).where_equals("name", "chaig")
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
   This auto-index will contain a list of all available terms from the document field `Name`.  
-  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
@@ -884,7 +884,7 @@ select suggest(Name, "chaig")
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_6">
+<TabItem value="suggest_6" label="suggest_6">
 <CodeBlock language="python">
 {`# The resulting suggested terms:
 # ==============================
@@ -950,7 +950,7 @@ from "Products" select suggest(Name, $p0)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_11">
+<TabItem value="suggest_11" label="suggest_11">
 <CodeBlock language="python">
 {`# The resulting suggested terms:
 #  ==============================
@@ -1019,7 +1019,7 @@ select suggest(Name, "chop-soy china"), suggest(Contact.Name, "maria larson")
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_16">
+<TabItem value="suggest_16" label="suggest_16">
 <CodeBlock language="python">
 {`# The resulting suggested terms:
 # ==============================
@@ -1108,7 +1108,7 @@ select suggest(
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_21">
+<TabItem value="suggest_21" label="suggest_21">
 <CodeBlock language="python">
 {`# The resulting suggested terms:
 # ==============================
@@ -1145,7 +1145,7 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 **Suggest using**:
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`# Method for requesting suggestions for term(s) in a field:
 def suggest_using(
@@ -1172,7 +1172,7 @@ def and_suggest_using(
 
 **Builder operations**:
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`def by_field(self, field_name: str, term_or_terms: Union[str, List[str]]) -> SuggestionOperations[_T]: ...
 
@@ -1191,7 +1191,7 @@ def with_options(self, options: SuggestionOptions) -> SuggestionOperations[_T]: 
 
 **Suggestion options**:
 
-<TabItem value="something-something" label="syntax_3">
+<TabItem value="syntax_3" label="syntax_3">
 <CodeBlock language="python">
 {`DEFAULT_ACCURACY = 0.5
 DEFAULT_PAGE_SIZE = 15
@@ -1232,29 +1232,29 @@ def __init__(
 * Word similarities are found using string distance algorithms.
 
 * Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
-  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions).
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
 * In this page:
 
     * Overview:
-        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)
-        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
       
     * Examples:
-        * [Suggest terms - for a single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-a-single-term)
-        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for a single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-a-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
       
-    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
-    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
 
 </Admonition>
 ## What are terms
 
-* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
   the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
-  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers).
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
 
 * The terms can then be queried to retrieve matching documents that contain them.
 
@@ -1292,7 +1292,7 @@ Consider this example:
 Based on the Northwind sample data, the following query has no resulting documents,  
 as no document in the Products collection contains the term `chaig` in its `Name` field.
 
-<TabItem value="something-something" label="suggest_1">
+<TabItem value="suggest_1" label="suggest_1">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -1309,7 +1309,7 @@ public function suggestUsing(null|SuggestionBase|Closure $suggestionOrBuilder): 
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
   This auto-index will contain a list of all available terms from the document field `Name`.  
-  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
@@ -1422,7 +1422,7 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 **Suggest using**:
 
-<TabItem value="something-something" label="suggest_1">
+<TabItem value="suggest_1" label="suggest_1">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -1444,7 +1444,7 @@ public function suggestUsing(null|SuggestionBase|Closure $suggestionOrBuilder): 
 
 **Builder operations**:
 
-<TabItem value="something-something" label="suggest_2">
+<TabItem value="suggest_2" label="suggest_2">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -1466,7 +1466,7 @@ function withOptions(?SuggestionOptions $options): SuggestionOperationsInterface
 
 **Suggestions options**:
 
-<TabItem value="something-something" label="suggest_2">
+<TabItem value="suggest_2" label="suggest_2">
 <CodeBlock language="php">
 {`/**
  * Usage:
@@ -1500,31 +1500,31 @@ function withOptions(?SuggestionOptions $options): SuggestionOperationsInterface
 * Word similarities are found using string distance algorithms.
 
 * Examples in this article demonstrate getting suggestions with a **dynamic-query**.  
-  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions).
+  For getting suggestions with an **index-query** see [query for suggestions with index](../../../indexes/querying/suggestions.mdx).
 * In this page:
 
     * Overview:
-        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions#what-are-terms)
-        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions#when-to-use-suggestions)
+        * [What are terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#what-are-terms)
+        * [When to use suggestions](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#when-to-use-suggestions)
       
     * Examples:
-        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-single-term)
-        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-terms)
-        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---for-multiple-fields)
-        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions#suggest-terms---customize-options-and-display-name)
+        * [Suggest terms - for single term](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-single-term)
+        * [Suggest terms - for multiple terms](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-terms)
+        * [Suggest terms - for multiple fields](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---for-multiple-fields)
+        * [Suggest terms - customize options and display name](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#suggest-terms---customize-options-and-display-name)
       
-    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio)
-    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions#syntax)
+    * [The auto-index terms in Studio](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio)
+    * [Syntax](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#syntax)
 
 </Admonition>
 ## What are terms
 
-* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query#queries-always-provide-results-using-an-index).  
+* All queries in RavenDB use an index - learn more about that [here](../../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index).  
   Whether making a dynamic query which generates an auto-index or using a static index,  
   the data from your documents is 'broken' into **terms** that are kept in the index.  
 
 * This tokenization process (what terms will be generated) depends on the analyzer used,    
-  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers).
+  various analyzers differ in the way they split the text stream. Learn more in [Analyzers](../../../indexes/using-analyzers.mdx).
 
 * The terms can then be queried to retrieve matching documents that contain them.
 
@@ -1562,8 +1562,8 @@ Consider this example:
 Based on the **Northwind sample data**, the following query has no resulting documents,  
 as no document in the Products collection contains the term `chaig` in its `Name` field.
 
-<TabItem value="something-something" label="suggest_1">
-<CodeBlock language="nodejs">
+<TabItem value="suggest_1" label="suggest_1">
+<CodeBlock language="js">
 {`// This dynamic query on the 'Products' collection has NO resulting documents
 const products = await session
     .query(\{ collection: "Products" \})
@@ -1575,14 +1575,14 @@ const products = await session
 
 * Executing the above query will generate the auto-index `Auto/Products/ByName`.  
   This auto-index will contain a list of all available terms from the document field `Name`.  
-  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions#the-auto-index-terms-in-studio).
+  The generated terms are visible in the Studio - see image [below](../../../client-api/session/querying/how-to-work-with-suggestions.mdx#the-auto-index-terms-in-studio).
 
 * If you suspect that the term `chaig` in the query criteria is written incorrectly,   
   you can ask RavenDB to suggest **existing terms** that are similar to `chaig`, as follows:.  
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for suggested terms for single term:
 // ==========================================
 
@@ -1607,8 +1607,8 @@ select suggest(Name, "chaig")
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_3">
-<CodeBlock language="nodejs">
+<TabItem value="suggest_3" label="suggest_3">
+<CodeBlock language="js">
 {`// The resulting suggested terms:
 // ==============================
 
@@ -1630,7 +1630,7 @@ suggestions["Name"].suggestions.forEach(suggestedTerm => \{
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for suggested terms for multiple terms:
 // =============================================
 
@@ -1655,8 +1655,8 @@ from "Products" select suggest(Name, $p0)
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_5">
-<CodeBlock language="nodejs">
+<TabItem value="suggest_5" label="suggest_5">
+<CodeBlock language="js">
 {`// The resulting suggested terms:
 // ==============================
 
@@ -1674,7 +1674,7 @@ from "Products" select suggest(Name, $p0)
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for suggested terms in multiple fields:
 // =============================================
 
@@ -1703,8 +1703,8 @@ select suggest(Name, "chop-soy china"), suggest(Contact.Name, "maria larson")
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_7">
-<CodeBlock language="nodejs">
+<TabItem value="suggest_7" label="suggest_7">
+<CodeBlock language="js">
 {`// The resulting suggested terms:
 // ==============================
 
@@ -1727,7 +1727,7 @@ select suggest(Name, "chop-soy china"), suggest(Contact.Name, "maria larson")
 
 <Tabs groupId='languageSyntax'>
 <TabItem value="Query" label="Query">
-<CodeBlock language="nodejs">
+<CodeBlock language="js">
 {`// Query for suggested terms - customize options and display name:
 // ===============================================================
 
@@ -1764,8 +1764,8 @@ select suggest(
 </TabItem>
 </Tabs>
 
-<TabItem value="something-something" label="suggest_9">
-<CodeBlock language="nodejs">
+<TabItem value="suggest_9" label="suggest_9">
+<CodeBlock language="js">
 {`// The resulting suggested terms:
 // ==============================
 
@@ -1802,8 +1802,8 @@ Based on the Northwind sample data, these are the terms generated for index `Aut
 
 **Suggest using**:
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`// Requesting suggestions for term(s) in a field: 
 suggestUsing(action);
 
@@ -1819,8 +1819,8 @@ andSuggestUsing(action);
 
 **Builder operations**:
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`byField(fieldName, term);
 byField(fieldName, terms);
 

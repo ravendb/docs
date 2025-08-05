@@ -25,16 +25,16 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 * The _Key_ and its _Value_ are deleted only if the _index_ in the request matches the current index stored in the server for the specified key.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
-  * [Example](../../../client-api/operations/compare-exchange/delete-compare-exchange-value#example)  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)  
+  * [Example](../../../client-api/operations/compare-exchange/delete-compare-exchange-value.mdx#example)  
 </Admonition>
 ## Syntax
 
 **Method**:
-<TabItem value="something" label="delete_0">
+<TabItem value="delete_0" label="delete_0">
 <CodeBlock language="csharp">
 {`public DeleteCompareExchangeValueOperation(string key, long index)
 `}
@@ -47,7 +47,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 | **index** | long |  The version number of the value to be deleted |
 
 **Returned object**:
-<TabItem value="something" label="compare_exchange_result">
+<TabItem value="compare_exchange_result" label="compare_exchange_result">
 <CodeBlock language="csharp">
 {`public class CompareExchangeResult<T>
 \{
@@ -74,7 +74,7 @@ export const supportedLanguages = ["csharp", "java", "nodejs"];
 
 ## Example
 
-<TabItem value="something" label="delete_1">
+<TabItem value="delete_1" label="delete_1">
 <CodeBlock language="csharp">
 {`// First, get existing value
 CompareExchangeValue<User> readResult =
@@ -103,16 +103,16 @@ bool deleteResultSuccessful = deleteResult.Successful;
 
 * The _Key_ and its _Value_ are deleted only if the _index_ in the request matches the current index stored in the server for the specified key.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview.mdx)
 
 * In this page:  
-  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
-  * [Example](../../../client-api/operations/compare-exchange/delete-compare-exchange-value#example)  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values.mdx#syntax)  
+  * [Example](../../../client-api/operations/compare-exchange/delete-compare-exchange-value.mdx#example)  
 </Admonition>
 ## Syntax
 
 **Method**:
-<TabItem value="something-something" label="delete_0">
+<TabItem value="delete_0" label="delete_0">
 <CodeBlock language="java">
 {`public DeleteCompareExchangeValueOperation(Class<T> clazz, String key, long index)
 `}
@@ -125,7 +125,7 @@ bool deleteResultSuccessful = deleteResult.Successful;
 | **index** | long |  The version number of the value to be deleted |
 
 **Returned object**:
-<TabItem value="something-something" label="compare_exchange_result">
+<TabItem value="compare_exchange_result" label="compare_exchange_result">
 <CodeBlock language="java">
 {`public class CompareExchangeResult<T> \{
     private T value;
@@ -175,7 +175,7 @@ bool deleteResultSuccessful = deleteResult.Successful;
 
 ## Example
 
-<TabItem value="something-something" label="delete_1">
+<TabItem value="delete_1" label="delete_1">
 <CodeBlock language="java">
 {`// First, get existing value
 CompareExchangeValue<User> readResult
@@ -205,18 +205,18 @@ boolean deleteResultSuccessful = deleteResult.isSuccessful();
 * The compare-exchange item is only deleted if the _index_ in the request is __equal__ to the current _index_  
   stored on the server for the specified _key_.  
 
-* Compare-exchange items can also be deleted via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange), 
-  or from the [Studio](../../../studio/database/documents/compare-exchange-view).
+* Compare-exchange items can also be deleted via [advanced session methods](../../../client-api/session/cluster-transaction/compare-exchange.mdx), 
+  or from the [Studio](../../../studio/database/documents/compare-exchange-view.mdx).
 
 * In this page:  
-  * [Delete compare exchange item](../../../client-api/operations/compare-exchange/delete-compare-exchange-value#delete-compare-exchange-item)
-  * [Syntax](../../../client-api/operations/compare-exchange/delete-compare-exchange-value#syntax)  
+  * [Delete compare exchange item](../../../client-api/operations/compare-exchange/delete-compare-exchange-value.mdx#delete-compare-exchange-item)
+  * [Syntax](../../../client-api/operations/compare-exchange/delete-compare-exchange-value.mdx#syntax)  
 
 </Admonition>
 ## Delete compare exchange item
 
-<TabItem value="something-something" label="delete_1">
-<CodeBlock language="nodejs">
+<TabItem value="delete_1" label="delete_1">
+<CodeBlock language="js">
 {`// Get an existing compare-exchange item
 const getCmpXchgOp = new GetCompareExchangeValueOperation("johnDoe@gmail.com");
 const itemResult = await documentStore.operations.send(getCmpXchgOp);
@@ -247,8 +247,8 @@ assert.ok(deleteResult.successful);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const deleteCmpXchgOp = new DeleteCompareExchangeValueOperation(key, index, clazz?);
 `}
 </CodeBlock>
@@ -260,8 +260,8 @@ assert.ok(deleteResult.successful);
 | __index__   | number | The version number of the item to be deleted                                 |
 | __clazz__   | object | When the item's value is a class, you can specify its type in this parameter |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// Return value of store.operations.send(deleteCmpXchgOp)
 // ======================================================
 class CompareExchangeResult \{

@@ -30,20 +30,20 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
   The client will be updated with the modified configuration the next time it sends a request to the database.  
 * In this page:
   
-  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration#client-configuration-overview-and-modification)
-  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured)
-  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-(for-database))
-  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration#syntax)
+  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#client-configuration-overview-and-modification)
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Client configuration overview and modification
 
 * **What is the client configuration**:  
   The client configuration is a set of configuration options that apply to the client when communicating with the database.
-  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured) below.  
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
 
 * **Initializing the client configuration** (on the client):  
-  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions).
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
   
 * **Overriding the initial client configuration for the database** (on the server):  
 
@@ -52,11 +52,11 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
       See the example below.
     
     * From the Studio:  
-      Set the client configuration from the [Client Configuration view](../../../../studio/database/settings/client-configuration-per-database).
+      Set the client configuration from the [Client Configuration view](../../../../studio/database/settings/client-configuration-per-database.mdx).
 
 * **Updating the running client**:  
 
-  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview#keeping-the-client-topology-up-to-date)
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
     the next time it makes a request to the database.  
 
   * Setting the client configuration on the server enables administrators to dynamically control 
@@ -64,7 +64,7 @@ export const supportedLanguages = ["csharp", "java", "python", "php", "nodejs"];
     e.g. manage load balancing of client requests on the fly in response to changing system demands.
 
 * The client configuration set for the database level **overrides** the 
-  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration).
+  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
 
 
 
@@ -74,24 +74,24 @@ The following client configuration options are available:
 
 * **Identity parts separator**:  
   Set the separator used with automatically generated document identity IDs (default separator is `/`).  
-  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#strategy--3).
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
 
 * **Maximum number of requests per session**:  
   Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
 
 * **Read balance behavior**:  
   Set the Read balance method the client will use when accessing a node with Read requests.  
-  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior).
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
   
 * **Load balance behavior**:  
   Set the Load balance method for Read & Write requests.  
-  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior).
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
 
 
 
 ## Put client configuration (for database)
 
-<TabItem value="something" label="put_config_1">
+<TabItem value="put_config_1" label="put_config_1">
 <CodeBlock language="csharp">
 {`// You can customize the client-configuration options in the client
 // when creating the Document Store (this is optional):
@@ -113,7 +113,7 @@ var documentStore = new DocumentStore
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="put_config_2">
+<TabItem value="put_config_2" label="put_config_2">
 <CodeBlock language="csharp">
 {`// Override the initial client-configuration in the server using the put operation:
 // ================================================================================
@@ -142,7 +142,7 @@ using (documentStore)
 
 ## Syntax
 
-<TabItem value="something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="csharp">
 {`public PutClientConfigurationOperation(ClientConfiguration configuration)
 `}
@@ -153,7 +153,7 @@ using (documentStore)
 |-------------------|-----------------------|------------------------------------------------------------------------|
 | **configuration** | `ClientConfiguration` | Client configuration that will be set on the server (for the database) |
 
-<TabItem value="something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="csharp">
 {`public class ClientConfiguration
 \{
@@ -180,7 +180,7 @@ using (documentStore)
 
 ## Syntax
 
-<TabItem value="something-something" label="config_2_0">
+<TabItem value="config_2_0" label="config_2_0">
 <CodeBlock language="java">
 {`PutClientConfigurationCommand(ClientConfiguration configuration)
 `}
@@ -193,7 +193,7 @@ using (documentStore)
 
 ## Example
 
-<TabItem value="something-something" label="config_2_2">
+<TabItem value="config_2_2" label="config_2_2">
 <CodeBlock language="java">
 {`ClientConfiguration clientConfiguration = new ClientConfiguration();
 clientConfiguration.setMaxNumberOfRequestsPerSession(100);
@@ -220,20 +220,20 @@ store.maintenance().send(
   The client will be updated with the modified configuration the next time it sends a request to the database.  
 * In this page:
   
-  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration#client-configuration-overview-and-modification)
-  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured)
-  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-(for-database))
-  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration#syntax)
+  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#client-configuration-overview-and-modification)
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Client configuration overview and modification
 
 * **What is the client configuration**:  
   The client configuration is a set of configuration options that apply to the client when communicating with the database.
-  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured) below.  
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
 
 * **Initializing the client configuration** (on the client):  
-  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions).
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
   
 * **Overriding the initial client configuration for the database** (on the server):  
 
@@ -242,11 +242,11 @@ store.maintenance().send(
       See the example below.
     
     * From the Studio:  
-      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database) view.
+      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database.mdx) view.
 
 * **Updating the running client**:  
 
-  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview#keeping-the-client-topology-up-to-date)
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
     the next time it makes a request to the database.  
 
   * Setting the client configuration on the server enables administrators to dynamically control 
@@ -254,7 +254,7 @@ store.maintenance().send(
     e.g. manage load balancing of client requests on the fly in response to changing system demands.
 
 * The client configuration set for the database level **overrides** the 
-  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration).
+  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
 
 
 
@@ -264,24 +264,24 @@ The following client configuration options are available:
 
 * **Identity parts separator**:  
   Set the separator used with automatically generated document identity IDs (default separator is `/`).  
-  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#strategy--3).
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
 
 * **Maximum number of requests per session**:  
   Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
 
 * **Read balance behavior**:  
   Set the Read balance method the client will use when accessing a node with Read requests.  
-  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior).
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
   
 * **Load balance behavior**:  
   Set the Load balance method for Read & Write requests.  
-  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior).
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
 
 
 
 ## Put client configuration (for database)
 
-<TabItem value="something-something" label="put_config_1">
+<TabItem value="put_config_1" label="put_config_1">
 <CodeBlock language="python">
 {`# You can customize the client-configuration options in the client
 # when creating the Document Store (this is optional):
@@ -299,7 +299,7 @@ document_store.initialize()
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="put_config_2">
+<TabItem value="put_config_2" label="put_config_2">
 <CodeBlock language="python">
 {`# Override the initial client-configuration in the server using the put operation:
 # ================================================================================
@@ -323,7 +323,7 @@ document_store.maintenance.send(put_client_config_op)
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="python">
 {`class PutClientConfigurationOperation(VoidMaintenanceOperation):
     def __init__(self, config: ClientConfiguration): ...
@@ -335,7 +335,7 @@ document_store.maintenance.send(put_client_config_op)
 |-------------------|-----------------------|------------------------------------------------------------------------|
 | **config** | `ClientConfiguration` | Client configuration that will be set on the server (for the database) |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="python">
 {`class ClientConfiguration:
     def __init__(self):
@@ -367,20 +367,20 @@ document_store.maintenance.send(put_client_config_op)
   The client will be updated with the modified configuration the next time it sends a request to the database.  
 * In this page:
   
-  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration#client-configuration-overview-and-modification)
-  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured)
-  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-(for-database))
-  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration#syntax)
+  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#client-configuration-overview-and-modification)
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Client configuration overview and modification
 
 * **What is the client configuration**:  
   The client configuration is a set of configuration options that apply to the client when communicating with the database.
-  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured) below.  
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
 
 * **Initializing the client configuration** (on the client):  
-  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions).
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
   
 * **Overriding the initial client configuration for the database** (on the server):  
 
@@ -389,11 +389,11 @@ document_store.maintenance.send(put_client_config_op)
       See the example below.
     
     * From Studio:  
-      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database) view.
+      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database.mdx) view.
 
 * **Updating the running client**:  
 
-  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview#keeping-the-client-topology-up-to-date)
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
     the next time it makes a request to the database.  
 
   * Setting the client configuration on the server enables administrators to dynamically control 
@@ -401,7 +401,7 @@ document_store.maintenance.send(put_client_config_op)
     e.g. manage load balancing of client requests on the fly in response to changing system demands.
 
 * The client configuration set for the database level **overrides** the 
-  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration).
+  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
 
 
 
@@ -411,24 +411,24 @@ The following client configuration options are available:
 
 * **Identity parts separator**:  
   Set the separator used with automatically generated document identity IDs (default separator is `/`).  
-  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#strategy--3).
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
 
 * **Maximum number of requests per session**:  
   Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
 
 * **Read balance behavior**:  
   Set the Read balance method the client will use when accessing a node with Read requests.  
-  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior).
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
   
 * **Load balance behavior**:  
   Set the Load balance method for Read & Write requests.  
-  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior).
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
 
 
 
 ## Put client configuration (for database)
 
-<TabItem value="something-something" label="put_config_1">
+<TabItem value="put_config_1" label="put_config_1">
 <CodeBlock language="php">
 {`// You can customize the client-configuration options in the client
 // when creating the Document Store (this is optional):
@@ -451,7 +451,7 @@ $documentStore->initialize();
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="put_config_2">
+<TabItem value="put_config_2" label="put_config_2">
 <CodeBlock language="php">
 {`// Override the initial client-configuration in the server using the put operation:
 // ================================================================================
@@ -478,7 +478,7 @@ try \{
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
+<TabItem value="syntax_1" label="syntax_1">
 <CodeBlock language="php">
 {`PutClientConfigurationOperation(?ClientConfiguration $configuration)
 `}
@@ -489,7 +489,7 @@ try \{
 |-------------------|-----------------------|------------------------------------------------------------------------|
 | **$configuration** | `?ClientConfiguration` | Client configuration that will be set on the server (for the database) |
 
-<TabItem value="something-something" label="syntax_2">
+<TabItem value="syntax_2" label="syntax_2">
 <CodeBlock language="php">
 {`class ClientConfiguration
 \{
@@ -524,20 +524,20 @@ try \{
   The client will be updated with the modified configuration the next time it sends a request to the database.  
 * In this page:
   
-  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration#client-configuration-overview-and-modification)
-  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured)
-  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration#put-client-configuration-(for-database))
-  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration#syntax)
+  * [Client configuration overview and modification](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#client-configuration-overview-and-modification)
+  * [What can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured)
+  * [Put client configuration (for database)](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#put-client-configuration-(for-database))
+  * [Syntax](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#syntax)
 
 </Admonition>
 ## Client configuration overview and modification
 
 * **What is the client configuration**:  
   The client configuration is a set of configuration options that apply to the client when communicating with the database.
-  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration#what-can-be-configured) below.  
+  See [what can be configured](../../../../client-api/operations/maintenance/configuration/put-client-configuration.mdx#what-can-be-configured) below.  
 
 * **Initializing the client configuration** (on the client):  
-  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions).
+  This configuration can be initially customized from the client code when creating the Document Store via the [Conventions](../../../../client-api/configuration/conventions.mdx).
   
 * **Overriding the initial client configuration for the database** (on the server):  
 
@@ -546,11 +546,11 @@ try \{
       See the example below.
     
     * From the Studio:  
-      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database) view.
+      Set the client configuration from the [Client Configuration](../../../../studio/database/settings/client-configuration-per-database.mdx) view.
 
 * **Updating the running client**:  
 
-  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview#keeping-the-client-topology-up-to-date)
+  * Once the client configuration is modified on the server, the running client will [receive the updated settings](../../../../client-api/configuration/load-balance/overview.mdx#keeping-the-client-topology-up-to-date)
     the next time it makes a request to the database.  
 
   * Setting the client configuration on the server enables administrators to dynamically control 
@@ -558,7 +558,7 @@ try \{
     e.g. manage load balancing of client requests on the fly in response to changing system demands.
 
 * The client configuration set for the database level **overrides** the 
-  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration).
+  [server-wide client configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration.mdx).
 
 
 
@@ -568,25 +568,25 @@ The following client configuration options are available:
 
 * **Identity parts separator**:  
   Set the separator used with automatically generated document identity IDs (default separator is `/`).  
-  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation#strategy--3).
+  Learn more about identity IDs creation [here](../../../../server/kb/document-identifier-generation.mdx#strategy--3).
 
 * **Maximum number of requests per session**:  
   Set this number to restrict the number of requests (Reads & Writes) per session in the client API.
 
 * **Read balance behavior**:  
   Set the Read balance method the client will use when accessing a node with Read requests.  
-  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior).
+  Learn more in [Balancing client requests - overview](../../../../client-api/configuration/load-balance/overview.mdx) and [Read balance behavior](../../../../client-api/configuration/load-balance/read-balance-behavior.mdx).
   
 * **Load balance behavior**:  
   Set the Load balance method for Read & Write requests.  
-  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior).
+  Learn more in [Load balance behavior](../../../../client-api/configuration/load-balance/load-balance-behavior.mdx).
 
 
 
 ## Put client-configuration (for-database)
 
-<TabItem value="something-something" label="put_config_1">
-<CodeBlock language="nodejs">
+<TabItem value="put_config_1" label="put_config_1">
+<CodeBlock language="js">
 {`// You can customize the client-configuration options in the client
 // when creating the Document Store (this is optional):
 // =================================================================
@@ -602,8 +602,8 @@ documentStore.initialize();
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something-something" label="put_config_2">
-<CodeBlock language="nodejs">
+<TabItem value="put_config_2" label="put_config_2">
+<CodeBlock language="js">
 {`// Override the initial client-configuration in the server using the put operation:
 // ================================================================================
 
@@ -627,8 +627,8 @@ await documentStore.maintenance.send(putClientConfigOp);
 
 ## Syntax
 
-<TabItem value="something-something" label="syntax_1">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_1" label="syntax_1">
+<CodeBlock language="js">
 {`const putClientConfigOp = new PutClientConfigurationOperation(configuration);
 `}
 </CodeBlock>
@@ -638,8 +638,8 @@ await documentStore.maintenance.send(putClientConfigOp);
 |-------------------|----------|------------------------------------------------------------------------|
 | **configuration** | `object` | Client configuration that will be set on the server (for the database) |
 
-<TabItem value="something-something" label="syntax_2">
-<CodeBlock language="nodejs">
+<TabItem value="syntax_2" label="syntax_2">
+<CodeBlock language="js">
 {`// The client-configuration object
 \{
     identityPartsSeparator,

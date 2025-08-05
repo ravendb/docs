@@ -17,18 +17,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The cluster topology is defined by the type and state of each node in the cluster and the relation between them.  
 
-* Clusters are typically composed of any odd number of nodes equal or greater than 3, see [Clusters Best Practice](../../../server/clustering/cluster-best-practice-and-configuration).  
+* Clusters are typically composed of any odd number of nodes equal or greater than 3, see [Clusters Best Practice](../../../server/clustering/cluster-best-practice-and-configuration.mdx).  
 
 * In this page:
-    * [Fetching the topology](../../../server/clustering/rachis/cluster-topology#fetching-the-topology)
-    * [Modifying the topology](../../../server/clustering/rachis/cluster-topology#modifying-the-topology)
-    * [Nodes states and types](../../../server/clustering/rachis/cluster-topology#nodes-states-and-types)
-    * [Changing node type](../../../server/clustering/rachis/cluster-topology#changing-node-type)  
+    * [Fetching the topology](../../../server/clustering/rachis/cluster-topology.mdx#fetching-the-topology)
+    * [Modifying the topology](../../../server/clustering/rachis/cluster-topology.mdx#modifying-the-topology)
+    * [Nodes states and types](../../../server/clustering/rachis/cluster-topology.mdx#nodes-states-and-types)
+    * [Changing node type](../../../server/clustering/rachis/cluster-topology.mdx#changing-node-type)  
 
 </Admonition>
 ## Fetching the topology
 
-Any client with [Valid User](../../security/authorization/security-clearance-and-permissions#user) privileges can fetch the topology from the server
+Any client with [Valid User](../../security/authorization/security-clearance-and-permissions.mdx#user) privileges can fetch the topology from the server
 by sending the following REST API call:
 
 | Action         | Method   | URL               |
@@ -39,8 +39,8 @@ by sending the following REST API call:
 
 ## Modifying the topology
 
-With [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions#cluster-admin) privileges, 
-the client can modify the cluster through the [Studio](../../../studio/cluster/cluster-view#cluster-view-operations),  
+With [Cluster Admin](../../../server/security/authorization/security-clearance-and-permissions.mdx#cluster-admin) privileges, 
+the client can modify the cluster through the [Studio](../../../studio/cluster/cluster-view.mdx#cluster-view-operations),  
 or by using the following REST API calls:  
 
 | Action      | Method   | URL                                      |
@@ -53,16 +53,16 @@ Optional parameters (for the Add Node endpoint):
 | Name             | Value type   | Description                                                                                                  |
 |------------------|--------------|--------------------------------------------------------------------------------------------------------------|
 | tag              | `string`     | The node tag. 1-4 uppercase unicode letters.<br/>Default: 'A' - 'Z' assigned by order of addition.            |
-| watcher          | `bool`       | Add the node as a [Watcher](../../../server/clustering/rachis/cluster-topology#watcher).<br/>Default: `false` |
+| watcher          | `bool`       | Add the node as a [Watcher](../../../server/clustering/rachis/cluster-topology.mdx#watcher).<br/>Default: `false` |
 | maxUtilizedCores | `uint`       | Maximum number of cores that can be assigned to this node.<br/>Default: number of processors.                 |
 
-See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
+See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
 
 
 
 ## Nodes states and types
 
-In Rachis every cluster node has a [state](../../../server/clustering/rachis/cluster-topology#state) and a [type](../../../server/clustering/rachis/cluster-topology#type).  
+In Rachis every cluster node has a [state](../../../server/clustering/rachis/cluster-topology.mdx#state) and a [type](../../../server/clustering/rachis/cluster-topology.mdx#type).  
 
 <Admonition type="note" title="Note">
 
@@ -76,7 +76,7 @@ and **elect** a new leader when needed.
 | **Promotable** | A non-voting node. 
 This is an intermediate stage until node is promoted by the Leader to a Member.                                                                                    |
 | **Watcher**    | A non-voting node that is still fully managed by the cluster. 
-Can be assigned with databases and tasks. See more [below](../../../server/clustering/rachis/cluster-topology#watcher). |
+Can be assigned with databases and tasks. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#watcher). |
 
 </Admonition>
 
@@ -97,7 +97,7 @@ A node that is removed from the topology moves back to the **Passive** state. |
 | **Candidate**    | Has no Leader and tries to get elected for leadership.                                                                                                                                                                                                                                                                           |
 | **Follower**     | Has a Leader and operates normally.                                                                                                                                                                                                                                                                                              |
 | **Leader-Elect** | Just elected for leadership, but will take office and become the leader only after the dummy `noop` raft command was successfully applied in the cluster.                                                                                                                                                                        |
-| **Leader**       | Leader of the cluster. See more [below](../../../server/clustering/rachis/cluster-topology#leader).                                                                                                                                                                                                                              |
+| **Leader**       | Leader of the cluster. See more [below](../../../server/clustering/rachis/cluster-topology.mdx#leader).                                                                                                                                                                                                                              |
 
 </Admonition>
 
@@ -124,7 +124,7 @@ A node that is removed from the topology moves back to the **Passive** state. |
 
 * For example, the decision to add a database to a node will be either accepted by the entire cluster (eventually) or fail to register altogether.  
 
-* [Raft Commands](../../../server/clustering/rachis/consensus-operations#raft-commands-implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
+* [Raft Commands](../../../server/clustering/rachis/consensus-operations.mdx#raft-commands-implementation-details) can't be accepted while there is no Leader or if the Leader is down.  
 
 </Admonition>
 
@@ -153,6 +153,6 @@ Node types can be altered on the fly by using the following REST API calls:
 | Demote Member to be a Watcher  | `POST`  | /admin/cluster/demote  | ClusterAdmin |
 | Force Elections                | `POST`  | /admin/cluster/reelect | Operator     |
 
-See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
+See the [Cluster API page](../../../server/clustering/cluster-api.mdx) for usage examples.
 
 

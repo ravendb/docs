@@ -15,19 +15,19 @@ import LanguageContent from "@site/src/components/LanguageContent";
 # Customizing Data Files Locations
 <Admonition type="note" title="Note">
 
-* The structure of [RavenDB directories](../../server/storage/directory-structure) **cannot** be changed. However:  
+* The structure of [RavenDB directories](../../server/storage/directory-structure.mdx) **cannot** be changed. However:  
     * Path for temporary files can be customized.
     * Data files can be stored in different locations,  
       by defining junction points (Windows) or mount points (Linux).  
     * A script can be used to automate the different location definitions.  
 
 * In this page:
-    * [Why store data on different devices](../../server/storage/customizing-raven-data-files-locations#why-store-data-on-different-devices)
-    * [Configuring temp files location](../../server/storage/customizing-raven-data-files-locations#configuring-temp-files-location)
-    * [Configuring data files location](../../server/storage/customizing-raven-data-files-locations#configuring-data-files-location)
-    * [Automate storage definitions](../../server/storage/customizing-raven-data-files-locations#automate-storage-definitions)
-        * [Script example - Basic usage](../../server/storage/customizing-raven-data-files-locations#script-example---basic-usage)
-        * [Script example - Point Indexes to different location](../../server/storage/customizing-raven-data-files-locations#script-example---point-indexes-to-different-location)
+    * [Why store data on different devices](../../server/storage/customizing-raven-data-files-locations.mdx#why-store-data-on-different-devices)
+    * [Configuring temp files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-temp-files-location)
+    * [Configuring data files location](../../server/storage/customizing-raven-data-files-locations.mdx#configuring-data-files-location)
+    * [Automate storage definitions](../../server/storage/customizing-raven-data-files-locations.mdx#automate-storage-definitions)
+        * [Script example - Basic usage](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---basic-usage)
+        * [Script example - Point Indexes to different location](../../server/storage/customizing-raven-data-files-locations.mdx#script-example---point-indexes-to-different-location)
 
 </Admonition>
 ## Why store data on different devices
@@ -37,7 +37,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * This allows organizing the files based on their usage pattern and the performance of the different devices you own.  
   i.e. slow devices may cause a slow down when reading from _Raven.voron_.  
 
-* [Voron components](../../server/storage/directory-structure#voron-storage-environment) operate concurrently.  
+* [Voron components](../../server/storage/directory-structure.mdx#voron-storage-environment) operate concurrently.  
   Storing them to different locations can help avoid traffic jams and achieve better concurrency.  
 
 
@@ -46,30 +46,30 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * __System temporary files__  
   By default, temporary files containing cluster data and server-wide data are written to the `Temp` folder under the System directory. 
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storage.temppath) configuration option.  
   The temporary files will be written to the combined path `"<Storage.TempPath>/System"`.
 
 * __Databases temporary files__  
   By default, all databases' temporary files are written to the `Temp` folder under each Database directory.  
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storage.temppath) configuration option.  
   The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}"`.
 
 * __Configuration temporary files__  
   By default, the configuration temporary files are written to the `Temp` folder under the Configuration directory per database. 
-  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration#storage.temppath) configuration option.  
+  Customize the path for these files by setting the [Storage.TempPath](../../server/configuration/storage-configuration.mdx#storage.temppath) configuration option.  
   The temporary files will be written to `"<Storage.TempPath>/Databases/{database-name}/Configuration"`.
 
 * __Indexes temporary files__  
   By default, all indexes' temporary files are written to the `Temp` folder under each Index directory.  
-  Customize the path for these files by setting the [Indexing.TempPath](../../server/configuration/indexing-configuration#indexing.temppath) configuration option.  
+  Customize the path for these files by setting the [Indexing.TempPath](../../server/configuration/indexing-configuration.mdx#indexing.temppath) configuration option.  
 
 * __Backup temporary files__  
   By default, backup temporary files are written under the `Database` directory or under `Storage.TempPath` if defined.  
-  Customize the path for these files by setting the [Backup.TempPath](../../server/configuration/backup-configuration#backup.temppath) configuration option.  
+  Customize the path for these files by setting the [Backup.TempPath](../../server/configuration/backup-configuration.mdx#backup.temppath) configuration option.  
 
 <Admonition type="note" title="Note">
 
-Refer to article [Configuration overview](../../server/configuration/configuration-options) to learn how to set the configuration keys.
+Refer to article [Configuration overview](../../server/configuration/configuration-options.mdx) to learn how to set the configuration keys.
 
 </Admonition>
 
@@ -92,7 +92,7 @@ __Example - Moving Journals__
 A common practice is to store the journals on a very fast drive to achieve better write performance.
 The following command will point the `Journals` directory of the _Northwind_ database to a path on a different drive.
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`# Windows:
 C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Journals E:\\Journals\\Northwind
@@ -100,7 +100,7 @@ C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Journals E:\\Jour
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`# Linux:
 ln -s /mnt/FastDrive/Databases/Northwind/Journals ~/RavenDB/Server/RavenData/Databases/Northwind/Journals
@@ -116,7 +116,7 @@ __Example - Moving Indexes__
 To store the data of all indexes of the _Northwind_ database in the custom location,
 you can use the following command to to point the `Indexes` directory to a new location:
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`# Windows:
 C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Indexes D:\\Indexes\\Northwind
@@ -124,7 +124,7 @@ C:\\RavenDB\\Server\\RavenData\\Databases\\Northwind>mklink /J Indexes D:\\Index
 </CodeBlock>
 </TabItem>
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`# Linux:
 ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes 
@@ -137,7 +137,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 
 ## Automate storage definitions
 
-* To help automate the process, we have added the [on directory initialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option.  
+* To help automate the process, we have added the [on directory initialize](../../server/configuration/storage-configuration.mdx#storage.ondirectoryinitialize.exec) configuration option.  
   Whenever RavenDB __creates a directory__, it will invoke the process that is defined within that configuration.
 
 * The process is called just before the directory is created.  
@@ -145,7 +145,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 * RavenDB will invoke the process with the following params:
 
     * Params passed by the user: 
-        * User arguments - optional params, set in the [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) configuration option
+        * User arguments - optional params, set in the [optional user arguments](../../server/configuration/storage-configuration.mdx#storage.ondirectoryinitialize.exec.arguments) configuration option
   
     * Params passed by RavenDB:
         * The environment type (System, Database, Index, Configuration, Compaction)
@@ -159,7 +159,7 @@ ln -s /mnt/FastDrive/Databases/Northwind/Indexes ~/RavenDB/Server/RavenData/Data
 The following is a very simple PowerShell script example, here only to show basic usage.  
 The script is Not modifying any file location, it will only print out the value of the script params into a text file.  
 
-<TabItem value="something" label="powershell">
+<TabItem value="powershell" label="powershell">
 <CodeBlock language="powershell">
 {`# script.ps1
 
@@ -174,7 +174,7 @@ exit 0
 The output file _outFile.txt_ is supplied as a user argument.  
 Add the script path and its user arguments to the _settings.json_ file as follows:
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
     "Setup.Mode": "None",
@@ -190,7 +190,7 @@ Add the script path and its user arguments to the _settings.json_ file as follow
 When launching the server and creating the Northwind database with the Northwind sample data, the script is invoked every time a directory is created.  
 Each line in _outFile.txt_ shows the values passed to the script when it was called.
 
-<TabItem value="something" label="plain">
+<TabItem value="plain" label="plain">
 <CodeBlock language="plain">
 {`\{
 System System C:\\RavenDB\\Server\\System C:\\RavenDB\\Server\\System\\Temp C:\\RavenDB\\Server\\System\\Journals
@@ -219,10 +219,10 @@ The following bash script example will point the Indexes data to a new location.
 If the environment type is other than 'Database' the script will exit.  
 Else, the script will create a soft link for the `Indexes` directory.  
 
-After the script is run, the Indexes link will reside under the Database directory (See [Directory Structure](../../server/storage/directory-structure)).  
+After the script is run, the Indexes link will reside under the Database directory (See [Directory Structure](../../server/storage/directory-structure.mdx)).  
 The link will point to the new location set by variable $INDEXES_TARGET_DIR_NAME where all indexes' data will be written.  
 
-<TabItem value="something" label="bash">
+<TabItem value="bash" label="bash">
 <CodeBlock language="bash">
 {`#!/bin/bash
 # bash ./your-script USER_ARGS Database DB_NAME BASE_PATH TEMP_PATH JOURNALS_PATH
@@ -261,7 +261,7 @@ ln -s "$INDEXES_TARGET_DIR_NAME" "$INDEXES_SOURCE_DIR_NAME"
 
 Add the script to the _settings.json_ file as follows:  
 
-<TabItem value="something" label="json">
+<TabItem value="json" label="json">
 <CodeBlock language="json">
 {`\{
 "Setup.Mode": "None",

@@ -24,15 +24,15 @@ export const supportedLanguages = ["csharp"];
 * Use `RemoveConnectionStringOperation` to remove a connection string definition from the database.
 
 * In this page:
-  * [Remove connection string](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string#remove-connecion-string)
-  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string#syntax)
+  * [Remove connection string](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx#remove-connecion-string)
+  * [Syntax](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string.mdx#syntax)
 
 </Admonition>
 ## Remove connection string
 
 The following example removes a RavenDB Connection String.
 
-<TabItem value="something" label="remove_raven_connection_string">
+<TabItem value="remove_raven_connection_string" label="remove_raven_connection_string">
 <CodeBlock language="csharp">
 {`var ravenConnectionString = new RavenConnectionString()
 \{
@@ -57,7 +57,7 @@ store.Maintenance.Send(removeConStrOp);
 
 ## Syntax
 
-<TabItem value="something" label="remove_connection_string">
+<TabItem value="remove_connection_string" label="remove_connection_string">
 <CodeBlock language="csharp">
 {`public RemoveConnectionStringOperation(T connectionString)
 `}
