@@ -8,6 +8,7 @@
 .docusaurus
 .cache-loader
 .idea
+src/typescript/iconName.ts
 
 # Misc
 .DS_Store

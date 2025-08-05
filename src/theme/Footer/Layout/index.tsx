@@ -2,12 +2,14 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import type { Props } from "@theme/Footer/Layout";
+import { Icon } from "@site/src/components/Common/Icon";
+import { IconName } from "@site/src/typescript/iconName";
 
 interface CustomFooterLinkItem {
   label: string;
   href: string;
   context?: string;
-  icon?: string;
+  icon?: IconName;
 }
 
 interface CustomFooterSection {
@@ -18,7 +20,10 @@ function TopLinks({ items }: { items: CustomFooterLinkItem[] }) {
   return (
     <div className="space-y-1">
       {items.map((item, index) => (
-        <span key={index} className="text-sm flex flex-wrap items-start gap-1">
+        <span key={index} className="text-sm flex flex-wrap gap-1">
+          {item.icon && (
+            <Icon icon={item.icon} size="xs" className="me-2" />
+          )}
           {item.context && <span>{item.context}</span>}
           <Link to={item.href}>{item.label}</Link>
         </span>
@@ -34,12 +39,10 @@ function SocialIcons({ items }: { items: CustomFooterLinkItem[] }) {
         <Link
           key={index}
           href={item.href}
-          className="w-8 h-8 flex items-center justify-center card !rounded-lg border border-black/10 dark:border-white/10 bg-muted/40 p-4 hover:border-black/20 dark:hover:border-white/20 transition-colors hover:!no-underline"
+          className="w-8 h-8 flex items-center justify-center card !rounded-lg !text-ifm-menu border border-black/10 dark:border-white/10 bg-muted/40 p-4 hover:border-black/20 dark:hover:border-white/20 transition-colors hover:!no-underline"
           aria-label={item.label}
         >
-          {item.icon === "github" && <span>🐱</span>}
-          {item.icon === "youtube" && <span>▶️</span>}
-          {item.icon === "discord" && <span>💬</span>}
+          <Icon icon={item.icon} size="xs" />
         </Link>
       ))}
     </div>

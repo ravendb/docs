@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Heading from "@theme/Heading";
 import UseCaseItem from "@site/src/components/Homepage/UseCases/UseCaseItem";
 import Link from "@docusaurus/Link";
+import { Icon } from "../../Common/Icon";
 
 const UseCasesList = [
   {
@@ -33,9 +34,14 @@ const UseCasesList = [
 export default function UseCases(): ReactNode {
   return (
     <section className="mb-8">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-baseline">
         <Heading as="h3">Use cases</Heading>
-        <Link to="https://ravendb.net/articles">See all</Link>
+        <Link
+          to="https://ravendb.net/articles"
+          className="inline-flex text-base/4 gap-2"
+        >
+          See all <Icon icon="newtab" size="xs" />
+        </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {UseCasesList.map((props, idx) => (

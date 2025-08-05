@@ -1,26 +1,30 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
+import { Feature } from "@site/src/typescript/feature";
 
 export default function BackgroundTasksFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const BackgroundTasksFeaturesList = [
+  const BackgroundTasksFeatures: Feature[] = [
     {
       title: "Expiration",
+      icon: "document-expiration",
       url: `/${activeVersion.label}/server/extensions/expiration`,
-      description: "Short description",
+      description: "Automatically scheduled documents cleanup",
     },
     {
       title: "Refresh",
+      icon: "document-refresh",
       url: `/${activeVersion.label}/server/extensions/refresh`,
-      description: "Short description",
+      description: "Automatically re-trigger your documents ",
     },
     {
       title: "Archival",
+      icon: "data-archival",
       url: `/${activeVersion.label}/server/extensions/archival`,
-      description: "Short description",
+      description: "Retain old documents access while boosting performance",
     },
   ];
 
@@ -30,7 +34,7 @@ export default function BackgroundTasksFeaturesGrid() {
         Background tasks
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {BackgroundTasksFeaturesList.map((props, idx) => (
+        {BackgroundTasksFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

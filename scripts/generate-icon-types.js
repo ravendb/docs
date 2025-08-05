@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ICONS_DIR = path.join(__dirname, "../static/icons");
-const TYPES_FILE = path.join(__dirname, "../src/generatedTypes/iconName.ts");
+const TYPES_FILE = path.join(__dirname, "../src/typescript/iconName.ts");
 
 function generateIconTypes() {
   try {

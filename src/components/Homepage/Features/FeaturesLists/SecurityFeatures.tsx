@@ -1,23 +1,29 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
+import { IconName } from "@site/src/typescript/iconName";
+import { Feature } from "@site/src/typescript/feature";
 
 export default function SecurityFeaturesGrid() {
-    const pluginId = "default";
-    const { activeVersion } = useActiveDocContext(pluginId);
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
 
-    const SecurityFeaturesList = [
-        {
-            title: "Certificates",
-            url: `/${activeVersion.label}/server/security/overview`,
-            description: "Short description",
-        },
-        {
-            title: "Encryption",
-            url: `/${activeVersion.label}/server/security/encryption/encryption-at-rest`,
-            description: "Short description",
-        },
-    ];
+  const SecurityFeatures: Feature[] = [
+    {
+      title: "Certificates",
+      icon: "certificate",
+      url: `/${activeVersion.label}/server/security/overview`,
+      description:
+        "Secure your server with X.509 certificates and fine-grained access control",
+    },
+    {
+      title: "Encryption",
+      icon: "encryption",
+      url: `/${activeVersion.label}/server/security/encryption/encryption-at-rest`,
+      description:
+        "Transparent at-rest & in-transit, data security without code changes",
+    },
+  ];
 
   return (
     <>
@@ -25,7 +31,7 @@ export default function SecurityFeaturesGrid() {
         Security
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {SecurityFeaturesList.map((props, idx) => (
+        {SecurityFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

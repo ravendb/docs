@@ -14,6 +14,7 @@ import {
   useActiveDocContext,
   useLatestVersion,
 } from "@docusaurus/plugin-content-docs/client";
+import { Icon } from "@site/src/components/Common/Icon";
 
 function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
   const {
@@ -45,21 +46,34 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
             to={isCloudPath ? "/cloud" : `/${versionLabel}`}
             className="menu__link"
           >
-            Start
+            <Icon icon="home" size="xs" className="me-2" /> Start
           </Link>
         </div>
         <Link
           to={isCloudPath ? `/${versionLabel}` : "/cloud"}
-          className="menu__link"
+          className="menu__link group"
         >
+          <Icon
+            icon={isCloudPath ? "database" : "cloud"}
+            size="xs"
+            className="me-2"
+          />{" "}
           RavenDB {!isCloudPath && "Cloud"} Docs
+          <small className="flex items-center ms-auto gap-1 text-[0.675rem] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            Switch <Icon icon="arrow-thin-right" size="xs" />
+          </small>
         </Link>
-        <Link to="https://ravendb.net/community" className="menu__link">
-          Community
+        <Link to="https://ravendb.net/community" className="menu__link group">
+          <Icon icon="community" size="xs" className="me-2" /> Community
+          <Icon
+            icon="newtab"
+            size="xs"
+            className="ms-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
         </Link>
         {!isCloudPath && (
           <Link to={`/${versionLabel}/whats-new`} className="menu__link">
-            What's new
+            <Icon icon="star-filled" size="xs" className="me-2" /> What's new
           </Link>
         )}
       </div>

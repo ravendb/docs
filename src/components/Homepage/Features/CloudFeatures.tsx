@@ -1,15 +1,4 @@
 import Heading from "@theme/Heading";
-import AiFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/AiFeatures";
-import IndexesFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/IndexesFeatures";
-import QueryingFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/QueryingFeatures";
-import DocumentExtensionsFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/DocumentExtensionsFeatures";
-import BackgroundTasksFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/BackgroundTasksFeatures";
-import ClustersFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/ClustersFeatures";
-import OngoingTasksFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/OngoingTasksFeatures";
-import SecurityFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/SecurityFeatures";
-import MonitoringFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/MonitoringFeatures";
-import AdministrationFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/AdministrationFeatures";
-import IntegrationFeaturesGrid from "@site/src/components/Homepage/Features/FeaturesLists/IntegrationFeatures";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 
 export default function CloudFeatures() {
@@ -18,69 +7,82 @@ export default function CloudFeatures() {
       <Heading as="h3">Browse by features</Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <FeatureItem
-          title="Tiers and instances"
-          description="Short description"
+          title="Tiers and Instances"
+          icon="dbgroup"
           url="/cloud/cloud-instances"
+          description="Pick Free, Development, or Production-graded products, with premium or standard storage options"
         />
         <FeatureItem
-          title="Pricing, payment and billing"
-          description="Short description"
+          title="Pricing, Payment and Billing"
+          icon="price-tag"
           url="/cloud/cloud-pricing-payment-billing"
+          description="Learn more about on-demand & yearly pricing, billing, and payment configuration"
         />
         <FeatureItem
-          title="Backup and restore"
-          description="Short description"
+          title="Backup And Restore"
+          icon="backup-history"
           url="/cloud/cloud-backup-and-restore"
+          description="Keep your data safe, configure one-click restores"
         />
         <FeatureItem
           title="Migration"
-          description="Short description"
+          icon="import"
           url="/cloud/cloud-migration"
+          description="Import live servers or export files into Cloud with a certificate swap. "
         />
         <FeatureItem
           title="Scaling"
-          description="Short description"
+          icon="autoscaling"
           url="/cloud/cloud-scaling"
+          description="Auto or manual scale-up/down without service interruption - add nodes, swap disks & more"
         />
         <FeatureItem
           title="Security"
-          description="Short description"
+          icon="lock"
           url="/cloud/cloud-security"
+          description="TLS 1.2+, X.509 mutual auth, full at-rest encryption."
         />
         <FeatureItem
           title="API"
-          description="Short description"
+          icon="api-keys"
           url="/cloud/cloud-api"
+          description="OpenAPI/Swagger endpoints plus SDKs for complete automation."
         />
         <FeatureItem
-          title="Product features"
-          description="Short description"
+          title="Product Features"
+          icon="features"
           url="/cloud/cloud-features"
+          description="Enable RavenDB capabilities on demand"
         />
         <FeatureItem
           title="Settings"
-          description="Short description"
+          icon="settings"
           url="/cloud/cloud-settings"
+          description="Fine-tune your Cloud instance"
         />
         <FeatureItem
           title="Support"
-          description="Short description"
+          icon="support"
           url="/cloud/cloud-support"
+          description="Pick your plan & learn about support form"
         />
         <FeatureItem
-          title="Maintenance & troubleshooting"
-          description="Short description"
+          title="Maintenance & Troubleshooting"
+          icon="studio-config"
           url="/cloud/cloud-maintenance-troubleshooting"
+          description="Advanced monitoring system tracking critical performance metrics"
         />
         <FeatureItem
           title="Microsoft Azure Marketplace"
-          description="Short description"
+          icon="azure"
           url="/cloud/cloud-microsoft-azure-marketplace"
+          description="Subscribe via Azure billing"
         />
         <FeatureItem
           title="AWS Marketplace"
-          description="Short description"
+          icon="aws"
           url="/cloud/cloud-aws-marketplace"
+          description="Subscribe via AWS billing"
         />
       </div>
     </section>
