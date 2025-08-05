@@ -26,13 +26,13 @@ import LanguageContent from "@site/src/components/LanguageContent";
   are resolved according to the defined [conflict resolution](../../../server/clustering/replication/replication-conflicts.mdx) policy on the receiving end.
 
 * In this page:  
-    * [Replication types](../../../server/clustering/replication/replication.mdx#replication-types)  
-      * [Internal replication](../../../server/clustering/replication/replication.mdx#internal-replication)
-      * [External replication](../../../server/clustering/replication/replication.mdx#external-replication)
-      * [Hub/Sink replication](../../../server/clustering/replication/replication.mdx#hubsink-replication)
-    * [What is replicated](../../../server/clustering/replication/replication.mdx#what-is-replicated)  
-    * [How replication works](../../../server/clustering/replication/replication.mdx#how-replication-works)  
-    * [Replication & transaction boundary](../../../server/clustering/replication/replication.mdx#replication-&-transaction-boundary)  
+    * [Replication types](../../../server/clustering/replication/replication-overview.mdx#replication-types)  
+      * [Internal replication](../../../server/clustering/replication/replication-overview.mdx#internal-replication)
+      * [External replication](../../../server/clustering/replication/replication-overview.mdx#external-replication)
+      * [Hub/Sink replication](../../../server/clustering/replication/replication-overview.mdx#hubsink-replication)
+    * [What is replicated](../../../server/clustering/replication/replication-overview.mdx#what-is-replicated)  
+    * [How replication works](../../../server/clustering/replication/replication-overview.mdx#how-replication-works)  
+    * [Replication & transaction boundary](../../../server/clustering/replication/replication-overview.mdx#replication-&-transaction-boundary)  
 
 </Admonition>
 ## Replication types
@@ -163,7 +163,7 @@ __Replication & cluster-wide transactions__
   is either persisted on all database group nodes or rolled back on all upon failure.  
 
 * After a cluster consensus is reached, the Raft command to be executed is propagated to all nodes.  
-  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication.mdx#what-is-replicated), 
+  When the command is executed locally on a node, if the items that are persisted are of the [type that replicates](../../../server/clustering/replication/replication-overview.mdx#what-is-replicated), 
   then the node will __replicate__ them to the other nodes via the replication process.  
 
 * A node that receives such replication will accept this write,  

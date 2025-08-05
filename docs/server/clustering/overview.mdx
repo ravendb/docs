@@ -39,7 +39,7 @@ across a fault-tolerant, [High-Availability](https://en.wikipedia.org/wiki/High-
 * In RavenDB, the database is replicated to multiple nodes - see [Database Distribution](../../server/clustering/distribution/distributed-database.mdx).  
 * A group of nodes in the cluster that contains the same database is called a [Database Group](../../studio/database/settings/manage-database-group.mdx).  
   (The number of nodes in the database group is set by the replication factor supplied when creating the database).  
-* Documents are kept in sync across the _Database Group_ nodes with a [master to master replication](../../server/clustering/replication/replication.mdx).  
+* Documents are kept in sync across the _Database Group_ nodes with a [master to master replication](../../server/clustering/replication/replication-overview.mdx).  
 * Any document related change such as a CRUD operation doesn't go through Raft, 
   instead, it is automatically **replicated** to the other database instances to in order to keep the data up-to-date.  
 </Admonition>

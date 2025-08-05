@@ -26,10 +26,10 @@ _-or-_
   The prefix '**Server Wide Backup**' is added to the name of the created ongoing backup tasks.  
 
 * Server-Wide backups are similar to their per-database equivalents.  
-  You can create [Full](../../client-api/operations/maintenance/backup/backup.mdx#full-backup) 
-  and [Incremental](../../client-api/operations/maintenance/backup/backup.mdx#incremental-backup) backup tasks 
-  in [Logical Backup ](../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) or 
-  [Snapshot](../../client-api/operations/maintenance/backup/backup.mdx#snapshot) format, and store your 
+  You can create [Full](../../client-api/operations/maintenance/backup/backup-overview.mdx#full-backup) 
+  and [Incremental](../../client-api/operations/maintenance/backup/backup-overview.mdx#incremental-backup) backup tasks 
+  in [Logical Backup ](../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) or 
+  [Snapshot](../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) format, and store your 
   files locally or in a variety of remote locations.  
 
 * In this page:  
@@ -60,8 +60,8 @@ The settings are similar to those of a [regular backup task](../../studio/databa
    Enter the Server-Wide Backup Task name.  
   
 2. **Backup type**  
-   Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) 
-   or 'Snapshot' for a [snapshot image](../../client-api/operations/maintenance/backup/backup.mdx#snapshot).  
+   Select 'Backup' for a [logical backup](../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) 
+   or 'Snapshot' for a [snapshot image](../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot).  
   
 3. **Exclude databases**  
    Toggle whether to exclude some of the databases from the server-wide backup.  
@@ -91,8 +91,8 @@ The settings are similar to those of a [regular backup task](../../studio/databa
 
    ![Figure 4. Backup Encryption](./assets/server-wide-backup_04-encryption.png)
 
-   * Backup files (both [logical backups](../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) 
-     and [snapshot images](../../client-api/operations/maintenance/backup/backup.mdx#snapshot)) 
+   * Backup files (both [logical backups](../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) 
+     and [snapshot images](../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot)) 
      of **encrypted** databases will always be **encrypted**,  
      regardless of the settings here, using the database encryption key.  
    * Logical backups of **unencrypted** databases, will be **encrypted** using the key provided here.  
@@ -141,7 +141,7 @@ In both cases, you can restore the database by
 The Server-Wide Backup Tasks can also be viewed in both the database's [Ongoing-Tasks view](../../studio/database/tasks/ongoing-tasks/general-info.mdx) 
 & [Backups view.](../../studio/database/tasks/backup-task.mdx)  
 Use either one of these views to see a task's details, or trigger an immediate backup for the selected database.  
-To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](../../client-api/operations/maintenance/backup/backup.mdx#scheduling-a-server-wide-backup-task).  
+To edit or modify a Server-Wide task, navigate back to the [Server-Wide Backup view](../../client-api/operations/maintenance/backup/backup-overview.mdx#scheduling-a-server-wide-backup-task).  
 
 * Choose the database you're interested in.  
 

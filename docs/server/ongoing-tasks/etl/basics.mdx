@@ -215,7 +215,7 @@ The number of documents processed depends on the following configuration limits:
 
 * Loading the results to the target destination is the last stage.
 
-* In contrast to [Replication](../../../server/clustering/replication/replication.mdx), 
+* In contrast to [Replication](../../../server/clustering/replication/replication-overview.mdx), 
   ETL is a push-only process that _writes_ data to the destination whenever documents from the relevant collections are changed. **Existing entries on the target will always be overwritten**.
 
 * Updates are implemented by executing consecutive DELETEs and INSERTs.  

@@ -47,7 +47,7 @@ See [Implementation Details](../../../server/clustering/rachis/consensus-operati
   Any **document CRUD operation** or performing a **query on an _existing_ index** is executed against a _specific node_,  
   even in the case of a cluster partition.  
 
-* Since RavenDB keeps documents synchronized by [Replication](../../../server/clustering/replication/replication.mdx), 
+* Since RavenDB keeps documents synchronized by [Replication](../../../server/clustering/replication/replication-overview.mdx), 
   any such operation is automatically replicated to all other nodes in the Database Group, 
   so documents are always available for _Read_, _Write_ and _Query_ even if there is no majority of nodes in the cluster.  
 

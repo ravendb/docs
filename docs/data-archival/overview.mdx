@@ -49,7 +49,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * The server scans the database periodically (at an interval specified when the task is enabled),  
     identifies documents scheduled for archiving, and archives them at the scheduled time.
   * In a cluster, the archiving task runs on the [preferred node](../client-api/configuration/load-balance/overview.mdx#the-preferred-node) (the first node in the cluster topology).  
-    Archived documents are then propagated to the other nodes through [internal replication](../server/clustering/replication/replication.mdx#internal-replication).  
+    Archived documents are then propagated to the other nodes through [internal replication](../server/clustering/replication/replication-overview.mdx#internal-replication).  
 
 * **What is archived**  
   * The JSON document itself is archived.  

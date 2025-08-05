@@ -203,13 +203,13 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
       to break up processes into smaller batches. 
   * **Cloud server**  
     Your indexing process will continue until it is finished, but will be broken up into smaller batches and continue when enough CPU credits accumulate.  
-    This can happen on [basic](../../../cloud/cloud-instances.mdx#basic-grade-production-cluster)-level cloud instances.  
-     * Unless you're running a [production cloud tier](../../../cloud/cloud-instances.mdx#a-production-cloud-cluster) with CPU priority of [standard](../../../cloud/cloud-instances.mdx#standard-grade-production-cluster) 
-    or [Performance](../../../cloud/cloud-instances.mdx#performance-grade-production-cluster), your cluster is [burstable and subject to throttling](../../../cloud/cloud-overview.mdx#budget-credits-and-throttling).  
+    This can happen on [basic](/cloud/cloud-instances#basic-grade-production-cluster)-level cloud instances.  
+     * Unless you're running a [production cloud tier](/cloud/cloud-instances#a-production-cloud-cluster) with CPU priority of [standard](/cloud/cloud-instances#standard-grade-production-cluster) 
+    or [Performance](/cloud/cloud-instances#performance-grade-production-cluster), your cluster is [burstable and subject to throttling](/cloud/cloud-overview#budget-credits-and-throttling).  
     This means that you have CPU credits with limits.  If you have reached your credit limit, RavenDB will wait until you've 
     accumulated enough credits to run another batch process.  
     This causes indexing to seem slow.  
-     * On a cloud instance, you can [upgrade](../../../cloud/portal/cloud-portal-products-tab.mdx) your instance, [scale](../../../cloud/cloud-scaling.mdx), 
+     * On a cloud instance, you can [upgrade](/cloud/portal/cloud-portal-products-tab) your instance, [scale](/cloud/cloud-scaling), 
       [externally replicate](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) to new instances, and/or optimize your indexes.  
 #### Concurrent Processing of Too Many Indexes
 
