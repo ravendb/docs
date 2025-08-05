@@ -68,7 +68,7 @@
 
 {PANEL: Storing data in index - from the Client API}
 
-To store an index-field in a static index, pass `FieldStorage.Yes` to the `Stores` method in the index definition.
+To store an index-field in a static index, add it to the `Stores` dictionary with `FieldStorage.Yes` in the index definition (this syntax applies to LINQ indexes).
 The default is `FieldStorage.No`.
 
 ---
@@ -151,8 +151,7 @@ Scroll down to configure each index-field:
 2. Enter the name of the index-field. Here we configure index-field `TotalItemsOrdered`.
 3. Select _Yes_ from the dropdown to store the field in the index.
 4. Here we configure index-field `CompanyName`.
-5. This index-field is configured to be stored in the index,
-   and is also configured for full-text search.
+5. This index-field is stored in the index and also configured for full-text search.
 
 ---
 
