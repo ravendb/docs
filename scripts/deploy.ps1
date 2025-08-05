@@ -113,7 +113,7 @@ Write-Host "Running 'npx docusaurus build'..." -ForegroundColor Gray
 npx docusaurus build
 if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 
-$BuildDir = Join-Path $PSScriptRoot 'build'
+$BuildDir = [IO.Path]::Combine($PSScriptRoot, '..', 'build')
 if (-not (Test-Path $BuildDir)) { throw "Build folder not produced ($BuildDir)" }
 
 if ($DryRun) {
