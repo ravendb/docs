@@ -28,7 +28,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
      that runs in the background.  
      It is configured once and then executed periodically according to the defined schedule.  
 
-* You can create and configure backup tasks using the [Client API](../../client-api/operations/maintenance/backup/backup.mdx) or 
+* You can create and configure backup tasks using the [Client API](../../client-api/operations/maintenance/backup/backup-overview.mdx) or 
   in [Studio](../../studio/database/tasks/backup-task.mdx) navigate from **Tasks** -&gt; **Backups** -&gt; **Create a Periodic Backup**.
 
 * On a [sharded](../../sharding/overview.mdx) database, a single backup task 
@@ -48,7 +48,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 </Admonition>
 ## Backup Type
 
-There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup.mdx#snapshot).  
+There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot).  
 
 #### Logical Backup  
   A logical backup is a compressed JSON dump of database contents, including documents, index definitions, and [additional data](../../server/ongoing-tasks/backup-overview.mdx#backup-contents)
@@ -174,7 +174,7 @@ By default, backups are not deleted. The backup retention policy sets a retentio
 at the end of which backups are deleted. Deletion occurs during the next scheduled backup task 
 after the end of the retention period.
 
-* Set retention policy [via API](../../client-api/operations/maintenance/backup/backup.mdx#backup-retention-policy).
+* Set retention policy [via API](../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-retention-policy).
 * Set retention policy [via Studio](../../studio/database/tasks/backup-task.mdx#retention-policy).
 
 

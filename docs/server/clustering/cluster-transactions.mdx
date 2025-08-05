@@ -136,7 +136,7 @@ made in a single node transaction. It is common to use cluster-wide transactions
 the creation of a new user, sale of a product with a limited inventory, etc., and use single-node transactions for the common case.
 
 A single node transaction that operates on data that has been modified by a cluster-wide transaction will operate as usual, as the cluster-wide
-transaction has already been applied (either directly on the node or via [replication](../../server/clustering/replication/replication.mdx)) 
+transaction has already been applied (either directly on the node or via [replication](../../server/clustering/replication/replication-overview.mdx)) 
 the cluster-wide transaction will not be executed again.
 
 [Replication](../../server/clustering/replication/replication-conflicts.mdx) will try to synchronize the data, so in order to avoid conflicts 

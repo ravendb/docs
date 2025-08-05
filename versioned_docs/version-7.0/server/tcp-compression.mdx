@@ -17,7 +17,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * With **TCP Compression** enabled, internal cluster data transfers 
   are compressed, including nodes' 
-  [database replication](../server/clustering/replication/replication.mdx)
+  [database replication](../server/clustering/replication/replication-overview.mdx)
   and the data submitted by 
   [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions.mdx) 
   to their workers.  
@@ -41,7 +41,7 @@ of [stored documents](../server/storage/documents-compression.mdx) and
 
 With the **TCP compression** feature enabled, data **in transit** is compressed as well.  
 
-* RavenDB will compress data before [replicating](../server/clustering/replication/replication.mdx) 
+* RavenDB will compress data before [replicating](../server/clustering/replication/replication-overview.mdx) 
   it from one cluster node to another.  
   Replication makes a large portion of a cluster's traffic, and compressing 
   replicated data will minimize the traffic volume and expedite data delivery.  

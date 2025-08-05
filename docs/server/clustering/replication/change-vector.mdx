@@ -181,8 +181,8 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 ## After Restoring a Database from Backup
 
-* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup.mdx#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
-* [Logical backups](../../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) do not save change vector data.  
+* [Snapshot backups](../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) save [change vector data](../../../server/ongoing-tasks/backup-overview.mdx#backup-contents).
+* [Logical backups](../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) do not save change vector data.  
   Restoring a database from a logical backup will renew the document change vector's frequently [incrementing ETag](../../../server/clustering/replication/change-vector.mdx#what-are-change-vectors-constructed-from)
   to its original value.
 

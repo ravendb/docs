@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * RavenDB's Backup task is an [Ongoing-Task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx) 
   designed to run periodically on a pre-defined schedule.  
   You can run it as a one-time operation as well, by using [Export](../../../../client-api/smuggler/what-is-smuggler.mdx#export) 
-  or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup.mdx#initiate-immediate-backup-execution).  
+  or executing a backup task [immediately](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#initiate-immediate-backup-execution).  
 
 * On a [sharded](../../../../sharding/overview.mdx) database, a single backup task 
   is defined by the user for all shards, and RavenDB automatically defines 
@@ -28,18 +28,18 @@ import LanguageContent from "@site/src/components/LanguageContent";
   Read about backups on a sharded database [in the section dedicated to it](../../../../sharding/backup-and-restore/backup.mdx).  
 
 * In this page:  
-  * [Backup Types](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-types)  
-      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup.mdx#logical-backup)  
-      * [Snapshot](../../../../client-api/operations/maintenance/backup/backup.mdx#snapshot)  
-  * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-scope)  
-      * [Full Backup](../../../../client-api/operations/maintenance/backup/backup.mdx#full-backup)  
-      * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup.mdx#incremental-backup)  
-  * [Backup to Local and Remote Destinations](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-to-local-and-remote-destinations)  
-  * [Backup Retention Policy](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-retention-policy)  
-  * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup.mdx#server-wide-backup)  
-  * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup.mdx#initiate-immediate-backup-execution)  
-  * [Delay Backup Execution](../../../../client-api/operations/maintenance/backup/backup.mdx#delay-backup-execution)  
-  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup.mdx#recommended-precautions)  
+  * [Backup Types](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-types)  
+      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup)  
+      * [Snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot)  
+  * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-scope)  
+      * [Full Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#full-backup)  
+      * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#incremental-backup)  
+  * [Backup to Local and Remote Destinations](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations)  
+  * [Backup Retention Policy](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-retention-policy)  
+  * [Server-Wide Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#server-wide-backup)  
+  * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#initiate-immediate-backup-execution)  
+  * [Delay Backup Execution](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#delay-backup-execution)  
+  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#recommended-precautions)  
 
 </Admonition>
 ## Backup Types
@@ -111,7 +111,7 @@ var result = await docStore.Maintenance.SendAsync(operation);
 * If Incremental backups are created for a Snapshot-type backup: 
    * The first backup will be a full Snapshot.
    * The following backups will be Incremental. 
-   * [Incremental backups](../../../../client-api/operations/maintenance/backup/backup.mdx#incremental-backup) 
+   * [Incremental backups](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#incremental-backup) 
      have different storage contents than Snapshots. 
 
 * Code Sample:  
@@ -361,7 +361,7 @@ The retention policy is a property of `PeriodicBackupConfiguration`:
 You can create a Server-Wide Backup task to back-up **all the databases in your cluster** at a scheduled time.  
 Individual databases can be excluded from the backup. Learn more in [Studio: Server-Wide Backup](../../../../studio/server/server-wide-backup.mdx).  
 
-Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-to-local-and-remote-destinations).  
+Backups can be made locally, as well as to a [set of remote locations](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations).  
 
 #### Examples  
 
@@ -585,7 +585,7 @@ await docStore.Maintenance.SendAsync(
    * An ACIDity of backed-up data, to keep its independence during restoration.  
      
 * **Remove old backup files regularly**.  
-  Set the [backup retention policy](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-retention-policy)
+  Set the [backup retention policy](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-retention-policy)
   to remove unneeded backup files so that they don't build up.  
   While setting how many days to keep your backups, consider how much of a recent database history you would like to have access to.  
 

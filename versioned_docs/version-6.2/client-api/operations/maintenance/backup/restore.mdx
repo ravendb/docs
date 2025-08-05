@@ -183,11 +183,11 @@ You can create the cluster in advance, and restore the database to multiple node
 
 <Admonition type="note" title="This procedure is advisable only when restoring a Snapshot." id="this-procedure-is-advisable-only-when-restoring-a-snapshot" href="#this-procedure-is-advisable-only-when-restoring-a-snapshot">
 
-* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup.mdx#logical-backup) 
+* When a [logical-backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#logical-backup) 
   is restored, each document receives a new change-vector according to the node it resides on.  
   When the database instances synchronize, this change-vector will be updated and be composed of all database nodes tags.  
 
-* When a [snapshot](../../../../client-api/operations/maintenance/backup/backup.mdx#snapshot) is restored, 
+* When a [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is restored, 
   documents are **not** assigned a new change-vector because the databases kept by all nodes are considered identical.  
   Each document retains the original change-vector it had during backup.  
   When the database instances synchronize, documents' change-vectors do **not** change.  

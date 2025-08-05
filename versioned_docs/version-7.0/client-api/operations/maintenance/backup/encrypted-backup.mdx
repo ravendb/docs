@@ -104,17 +104,17 @@ Secure the data stored on the server by
   can be different than the original database encryption key.
 
 * **Snapshot**  
-  A [snapshot](../../../../client-api/operations/maintenance/backup/backup.mdx#snapshot) is an exact image of your database.  
+  A [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is an exact image of your database.  
   If the database is **not encrypted**, its snapshot wouldn't be either.  
   If the database is **encrypted**, its snapshot would also be encrypted using the database encryption key.  
   If you want your snapshot to be encrypted, simply take the snapshot of an 
   [encrypted database](../../../../server/security/encryption/database-encryption.mdx#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
 #### Choosing Encryption Mode & Key
 
-Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup.mdx#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
+Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore.mdx) methods that are used to create and restore **un**-encrypted backups.  
 Specify whether encryption is used, and with which encryption key, 
 in the **BackupEncryptionSettings** structure defined within the 
-[PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup.mdx#backup-to-local-and-remote-destinations) object.  
+[PeriodicBackupConfiguration](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-to-local-and-remote-destinations) object.  
 
 * `BackupEncryptionSettings` definition:  
 <TabItem value="BackupEncryptionSettings_definition" label="BackupEncryptionSettings_definition">
