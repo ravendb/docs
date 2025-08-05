@@ -51,10 +51,10 @@ import requests
 # Configuration & paths
 # ============================================================================
 
-API_BASE_URL: str | None = os.environ.get("API_WEB_RAVENDB_NET_HOST") + "/api/v1/documentation/whats-new"
+API_BASE_URL: str | None = os.environ.get("WHATS_NEW_URL")
 
 if not API_BASE_URL:
-    raise EnvironmentError("Environment variable 'API_WEB_RAVENDB_NET_HOST' is not set.")
+    raise EnvironmentError("Environment variable 'WHATS_NEW_URL' is not set.")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent  # «../» relative to /scripts
@@ -69,9 +69,6 @@ FRONT_MATTER = (
     "hide_table_of_contents: true\n"
     "---\n\n"
 )
-
-# Regex that replaces markdownify's three‑dash <hr> (---) with MDX‑safe <hr/>
-HR_MARKDOWN = re.compile(r"^-{3,}$", re.MULTILINE)
 
 # Date format used by the API – helper for ``datetime.strptime``
 API_DATE_FMT = "%m/%d/%Y"

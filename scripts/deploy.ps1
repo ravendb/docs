@@ -12,20 +12,20 @@ Prerequisites
 * **Python ≥ 3** (`python` in PATH) – runs the changelog generator
 * **AWS CLI v2** – credentials via `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`,
   `AWS_DEFAULT_REGION` (and optional `AWS_SESSION_TOKEN`)
-* Environment variable **`API_WEB_RAVENDB_NET_HOST`** set (only required when regenerating
+* Environment variable **`WHATS_NEW_URL`** set (only required when regenerating
   *What's New* for specific versions)
 * Project `package.json` includes `@docusaurus/core` and `@docusaurus/cli`
 
 Example
 -------
 ```powershell
-# API_WEB_RAVENDB_NET_HOST must be set if you request specific versions
-$env:API_WEB_RAVENDB_NET_HOST = 'YOUR-API-KEY'
+# WHATS_NEW_URL must be set if you request specific versions
+$env:WHATS_NEW_URL = 'https://whats.new.api/v1/docs'
 
 pwsh deploy.ps1 \
      -S3BucketName my-docs-bucket \
      -CloudFrontDistributionId ABCD1234 \
-     -Versions 6.0 6.2 7.0 7.1 8.0
+     -Versions "6.0,6.2,7.0,7.1,8.0"
 ```
 ------------------------------------------------------------------------------!#>
 
@@ -37,17 +37,14 @@ param(
     [Parameter(HelpMessage = 'CloudFront distribution ID to invalidate (optional)')]
     [string]$CloudFrontDistributionId,
 
-    [Parameter(ValueFromRemainingArguments = $false, HelpMessage = "Versions to regenerate Whats New for e.g. 6.0 7.0 8.0")]
-    [string[]]$Versions = @(),
+    [Parameter(HelpMessage = "Comma-separated versions to regenerate Whats New for e.g. '6.0,6.2,7.0'")]
+    [string]$Versions = "",
 
     [Parameter(HelpMessage = 'Dry run mode. If enabled, no sync to S3 or CloudFront invalidation will occur.')]
     [switch]$DryRun
 )
 
-# ---------------------------------------------------------------------------
-# Constants & helpers
-# ---------------------------------------------------------------------------
-$PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py'  # script lives alongside this file
+$PythonWhatsNewPath = Join-Path $PSScriptRoot 'build_whats_new.py' 
 
 function ThrowIfEmpty {
     param (
@@ -58,7 +55,7 @@ function ThrowIfEmpty {
 }
 
 function Ensure-Dependencies {
-    Write-Host 'Verifying runtime dependencies…' -ForegroundColor Cyan
+    Write-Host 'Verifying runtime dependencies...' -ForegroundColor Cyan
 
     foreach ($cmd in 'node','npm','python','aws') {
         if (-not (Get-Command $cmd -ErrorAction SilentlyContinue)) {
@@ -76,50 +73,35 @@ function Ensure-Dependencies {
 
 function Process-Changelogs {
     param (
-        [string[]]$VersionsToBuild
+        [string[]]$WhatsNewVersions
     )
 
-    if (-not $VersionsToBuild) { return }
+    if (-not $WhatsNewVersions) { return }
 
-    # Ensure API key exists before invoking Python helper
-    ThrowIfEmpty $Env:API_WEB_RAVENDB_NET_HOST 'API_WEB_RAVENDB_NET_HOST env var must be set when specifying versions'
+    ThrowIfEmpty $Env:WHATS_NEW_URL 'WHATS_NEW_URL env var must be set when specifying versions'
 
-    Write-Host "Generating *What's New* pages for versions: $($VersionsToBuild -join ', ')" -ForegroundColor Cyan
+    $VersionsArray = $WhatsNewVersions.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+    Write-Host "Generating *What's New* pages for versions: $WhatsNewVersions" -ForegroundColor Cyan
 
-    & python $PythonWhatsNewPath @VersionsToBuild
+    & python $PythonWhatsNewPath @VersionsArray
     if ($LASTEXITCODE) { throw 'build_whats_new.py failed' }
 }
 
-# ---------------------------------------------------------------------------
-# 0. Verify runtime dependencies
-# ---------------------------------------------------------------------------
 Ensure-Dependencies
 
-# ---------------------------------------------------------------------------
-# 1. Validate AWS environment
-# ---------------------------------------------------------------------------
 ThrowIfEmpty $Env:AWS_ACCESS_KEY_ID      'AWS_ACCESS_KEY_ID not set'
 ThrowIfEmpty $Env:AWS_SECRET_ACCESS_KEY 'AWS_SECRET_ACCESS_KEY not set'
 ThrowIfEmpty $Env:AWS_DEFAULT_REGION    'AWS_DEFAULT_REGION not set'
 
 Write-Host "Region: '$Env:AWS_DEFAULT_REGION' | Bucket: '$S3BucketName'" -ForegroundColor Cyan
 
-# ---------------------------------------------------------------------------
-# 2. Validate API_WEB_RAVENDB_NET_HOST when versions are provided
-# ---------------------------------------------------------------------------
-if ($Versions.Count -gt 0) {
-    ThrowIfEmpty $Env:API_WEB_RAVENDB_NET_HOST 'API_WEB_RAVENDB_NET_HOST env var must be set when specifying versions'
+if ($Versions) {
+    ThrowIfEmpty $Env:WHATS_NEW_URL 'WHATS_NEW_URL env var must be set when specifying versions'
 }
 
-# ---------------------------------------------------------------------------
-# 3. Regenerate What's New (if requested)
-# ---------------------------------------------------------------------------
 Process-Changelogs -VersionsToBuild $Versions
 
-# ---------------------------------------------------------------------------
-# 4. Install JS dependencies & build site
-# ---------------------------------------------------------------------------
-Write-Host 'Installing JS dependencies (npm ci)…' -ForegroundColor Cyan
+Write-Host 'Installing JS dependencies (npm ci)...' -ForegroundColor Cyan
 $env:NODE_OPTIONS = '--max-old-space-size=8192'
 
 if (-not (Test-Path package.json)) { throw 'package.json not found' }
@@ -127,8 +109,8 @@ if (-not (Test-Path package.json)) { throw 'package.json not found' }
 npm ci --no-audit --fund false
 if ($LASTEXITCODE) { throw 'npm ci failed' }
 
-Write-Host "Running 'npx docusaurus build --dev'…" -ForegroundColor Gray
-npx docusaurus build --dev
+Write-Host "Running 'npx docusaurus build'..." -ForegroundColor Gray
+npx docusaurus build
 if ($LASTEXITCODE) { throw 'Docusaurus build failed' }
 
 $BuildDir = Join-Path $PSScriptRoot 'build'
@@ -138,16 +120,10 @@ if ($DryRun) {
     Write-Host "Dry run mode enabled. Skipping sync to s3://$S3BucketName/ and CloudFront invalidation." -ForegroundColor Yellow
 } else {
 
-    # ---------------------------------------------------------------------------
-    # 5. Sync build output to S3
-    # ---------------------------------------------------------------------------
-    Write-Host "Syncing to s3://$S3BucketName/ …" -ForegroundColor Cyan
+    Write-Host "Syncing to s3://$S3BucketName/ ..." -ForegroundColor Cyan
     aws s3 sync $BuildDir "s3://$S3BucketName/" --delete
     if ($LASTEXITCODE) { throw 'aws s3 sync failed' }
 
-    # ---------------------------------------------------------------------------
-    # 6. Invalidate CloudFront (optional)
-    # ---------------------------------------------------------------------------
     if ($CloudFrontDistributionId) {
         Write-Host "Invalidating CloudFront distribution $CloudFrontDistributionId" -ForegroundColor Cyan
         aws cloudfront create-invalidation --distribution-id $CloudFrontDistributionId --paths '/*' | Out-Null
