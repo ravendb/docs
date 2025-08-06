@@ -4,7 +4,7 @@ import UseCaseItem from "@site/src/components/Homepage/UseCases/UseCaseItem";
 import Link from "@docusaurus/Link";
 import { Icon } from "../../Common/Icon";
 
-const UseCasesList = [
+const cloudUseCases = [
   {
     title: "Connecting C# application to Cloud",
     imgSrc:
@@ -44,7 +44,7 @@ export default function CloudUseCases(): ReactNode {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {UseCasesList.map((props, idx) => (
+        {cloudUseCases.map((props, idx) => (
           <UseCaseItem key={idx} {...props} />
         ))}
       </div>

@@ -1,14 +1,13 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
-import { IconName } from "@site/src/typescript/iconName";
 import { Feature } from "@site/src/typescript/feature";
 
 export default function QueryingFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const QueryingFeatures: Feature[] = [
+  const queryingFeatures: Feature[] = [
     {
       title: "Raven Query Language",
       icon: "rql",
@@ -53,7 +52,7 @@ export default function QueryingFeaturesGrid() {
         Querying
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {QueryingFeatures.map((props, idx) => (
+        {queryingFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

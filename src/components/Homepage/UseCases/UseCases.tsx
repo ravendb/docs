@@ -4,7 +4,7 @@ import UseCaseItem from "@site/src/components/Homepage/UseCases/UseCaseItem";
 import Link from "@docusaurus/Link";
 import { Icon } from "../../Common/Icon";
 
-const UseCasesList = [
+const useCases = [
   {
     title: "Short introduction to data modeling in non-relational database",
     imgSrc:
@@ -44,7 +44,7 @@ export default function UseCases(): ReactNode {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {UseCasesList.map((props, idx) => (
+        {useCases.map((props, idx) => (
           <UseCaseItem key={idx} {...props} />
         ))}
       </div>

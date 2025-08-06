@@ -7,7 +7,7 @@ export default function MonitoringFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const MonitoringFeatures: Feature[] = [
+  const monitoringFeatures: Feature[] = [
     {
       title: "Cluster dashboard",
       icon: "cluster-dashboard",
@@ -36,7 +36,7 @@ export default function MonitoringFeaturesGrid() {
         Monitoring
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {MonitoringFeatures.map((props, idx) => (
+        {monitoringFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

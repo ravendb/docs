@@ -7,7 +7,7 @@ export default function IntegrationFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const IntegrationFeatures: Feature[] = [
+  const integrationFeatures: Feature[] = [
     {
       title: "RavenDB ETL",
       icon: "ravendb-etl",
@@ -106,7 +106,7 @@ export default function IntegrationFeaturesGrid() {
         Integration
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {IntegrationFeatures.map((props, idx) => (
+        {integrationFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

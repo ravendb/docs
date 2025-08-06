@@ -7,7 +7,7 @@ export default function OngoingTasksFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const OngoingTasksFeatures: Feature[] = [
+  const ongoingTasksFeatures: Feature[] = [
     {
       title: "Replication",
       icon: "external-replication",
@@ -35,7 +35,7 @@ export default function OngoingTasksFeaturesGrid() {
         Ongoing tasks
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {OngoingTasksFeatures.map((props, idx) => (
+        {ongoingTasksFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

@@ -1,14 +1,13 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
-import { IconName } from "@site/src/typescript/iconName";
 import { Feature } from "@site/src/typescript/feature";
 
 export default function DocumentExtensionsFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const DocumentExtensionsFeatures: Feature[] = [
+  const documentExtensionsFeatures: Feature[] = [
     {
       title: "Revisions",
       icon: "revisions",
@@ -49,7 +48,7 @@ export default function DocumentExtensionsFeaturesGrid() {
         Document extensions
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {DocumentExtensionsFeatures.map((props, idx) => (
+        {documentExtensionsFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

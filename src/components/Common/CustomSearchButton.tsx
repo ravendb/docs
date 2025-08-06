@@ -15,7 +15,7 @@ interface CustomSearchButtonProps {
 }
 
 function getShortcutKey(): string {
-  if (typeof navigator === "undefined") return "Ctrl+K";
+  if (typeof navigator === "undefined") {return "Ctrl+K";}
   const isMac = /Mac|iPhone|iPod|iPad/.test(navigator.platform);
   return isMac ? "⌘K" : "Ctrl+K";
 }

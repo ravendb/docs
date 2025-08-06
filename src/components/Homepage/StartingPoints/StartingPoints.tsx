@@ -1,15 +1,14 @@
 import type { ReactNode } from "react";
 import StartingPoint from "@site/src/components/Homepage/StartingPoints/StartingPointItem";
 import Heading from "@theme/Heading";
-import { IconName } from "@site/src/typescript/iconName";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
-import {Feature} from "@site/src/typescript/feature";
+import { Feature } from "@site/src/typescript/feature";
 
 export default function StartingPoints(): ReactNode {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const StartingPoints: Feature[] = [
+  const startingPoints: Feature[] = [
     {
       title: "Developer",
       icon: "settings",
@@ -38,7 +37,7 @@ export default function StartingPoints(): ReactNode {
     <section className="mb-8">
       <Heading as="h3">Starting points</Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {StartingPoints.map((props, idx) => (
+        {startingPoints.map((props, idx) => (
           <StartingPoint key={idx} {...props} />
         ))}
       </div>

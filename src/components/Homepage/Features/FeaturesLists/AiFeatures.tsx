@@ -7,7 +7,7 @@ export default function AiFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const AiFeatures: Feature[] = [
+  const aiFeatures: Feature[] = [
     {
       title: "Vector search",
       icon: "vector-search",
@@ -34,7 +34,7 @@ export default function AiFeaturesGrid() {
         AI
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {AiFeatures.map((props, idx) => (
+        {aiFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

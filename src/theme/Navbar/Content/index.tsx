@@ -38,7 +38,7 @@ export function NavbarItems({
               `A theme navbar item failed to render.
 Please double-check the following navbar item (themeConfig.navbar.items) of your Docusaurus config:
 ${JSON.stringify(item, null, 2)}`,
-              { cause: error },
+              { cause: error }
             )
           }
         >
@@ -61,7 +61,7 @@ function NavbarContentLayout({
       <div
         className={clsx(
           ThemeClassNames.layout.navbar.containerLeft,
-          "navbar__items",
+          "navbar__items"
         )}
       >
         {left}
@@ -69,7 +69,7 @@ function NavbarContentLayout({
       <div
         className={clsx(
           ThemeClassNames.layout.navbar.containerRight,
-          "navbar__items navbar__items--right",
+          "navbar__items navbar__items--right"
         )}
       >
         {right}

@@ -1,14 +1,13 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
-import { IconName } from "@site/src/typescript/iconName";
 import { Feature } from "@site/src/typescript/feature";
 
 export default function IndexesFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const IndexesFeatures: Feature[] = [
+  const indexesFeatures: Feature[] = [
     {
       title: "Static indexes",
       icon: "index",
@@ -29,7 +28,7 @@ export default function IndexesFeaturesGrid() {
         Indexes
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {IndexesFeatures.map((props, idx) => (
+        {indexesFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

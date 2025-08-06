@@ -6,4 +6,4 @@ export interface Feature {
   description?: ReactNode;
   icon: IconName;
   url: string;
-} 
+}

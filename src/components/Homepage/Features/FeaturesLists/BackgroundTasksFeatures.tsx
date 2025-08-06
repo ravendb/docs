@@ -7,7 +7,7 @@ export default function BackgroundTasksFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const BackgroundTasksFeatures: Feature[] = [
+  const backgroundTasksFeatures: Feature[] = [
     {
       title: "Expiration",
       icon: "document-expiration",
@@ -34,7 +34,7 @@ export default function BackgroundTasksFeaturesGrid() {
         Background tasks
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {BackgroundTasksFeatures.map((props, idx) => (
+        {backgroundTasksFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

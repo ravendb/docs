@@ -1,14 +1,13 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
-import { IconName } from "@site/src/typescript/iconName";
 import { Feature } from "@site/src/typescript/feature";
 
 export default function SecurityFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const SecurityFeatures: Feature[] = [
+  const securityFeatures: Feature[] = [
     {
       title: "Certificates",
       icon: "certificate",
@@ -31,7 +30,7 @@ export default function SecurityFeaturesGrid() {
         Security
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {SecurityFeatures.map((props, idx) => (
+        {securityFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

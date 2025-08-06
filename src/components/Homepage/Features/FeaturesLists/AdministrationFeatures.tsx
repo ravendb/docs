@@ -7,7 +7,7 @@ export default function AdministrationFeaturesGrid() {
   const pluginId = "default";
   const { activeVersion } = useActiveDocContext(pluginId);
 
-  const AdministrationFeatures: Feature[] = [
+  const administrationFeatures: Feature[] = [
     {
       title: "Studio",
       icon: "studio",
@@ -35,7 +35,7 @@ export default function AdministrationFeaturesGrid() {
         Administration
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {AdministrationFeatures.map((props, idx) => (
+        {administrationFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

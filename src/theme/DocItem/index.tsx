@@ -3,8 +3,6 @@ import DocItem from "@theme-original/DocItem";
 import type DocItemType from "@theme/DocItem";
 import type { WrapperProps } from "@docusaurus/types";
 import { LanguageProvider } from "../../components/LanguageContext";
-import tocStyles from "../../components/EmptyToc.module.css";
-import clsx from "clsx";
 
 type Props = WrapperProps<typeof DocItemType>;
 
@@ -22,7 +20,7 @@ export default function DocItemWrapper(props: Props): ReactNode {
         </div>
       </LanguageProvider>
       {!isHomePage && (
-        <div className={clsx(tocStyles.emptyToc, "col col--3 lg:block")}></div>
+        <div className="col col--3 lg:block"></div>
       )}
     </div>
   );
