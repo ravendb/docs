@@ -45,7 +45,7 @@ request, and when the transaction is finished, modified pages are encrypted and 
 <Admonition type="danger" title="Indexing transaction size" id="indexing-transaction-size" href="#indexing-transaction-size">
 Indexing is most efficient when it is performed in the largest transactions possible. However, using encryption can be very memory intensive, and if memory 
 runs out before the transaction completes, the entire transaction will fail. To avoid this, you can limit the size of indexing batches in encrypted 
-databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexing.encrypted.transactionsizelimitinmb). 
+databases using [Indexing.Encrypted.TransactionSizeLimitInMb](../../../server/configuration/indexing-configuration.mdx#indexingencryptedtransactionsizelimitinmb). 
 The default limit is 64 MB.  
 </Admonition>
 
@@ -64,7 +64,7 @@ However, the memory-mapped files used for **special temporary buffers** (compres
 We lock the memory regions used by these buffers in order to avoid leaking secrets to disk. This means that if we run out of memory, the OS is not allowed to page these buffers to disk. 
 
 The downside to this approach is that if we run out of physical RAM RavenDB won't be able to lock memory and will abort the current operation.
-You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../../server/configuration/security-configuration.mdx#security.donotconsidermemorylockfailureascatastrophicerror).
+You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../../server/configuration/security-configuration.mdx#securitydonotconsidermemorylockfailureascatastrophicerror).
 
 If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying 
 the operation. RavenDB's ability to do this may be limited by the ['increase a process working set' policy setting](https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/increase-a-process-working-set), 

@@ -146,7 +146,7 @@ appearing:
 </Admonition>
 ### Configuration
 
-The RavenDB server uses a [settings.json](../server/configuration/configuration-options.mdx#settings.json) file in each node `Server` folder to store the server-wide configuration options.  
+The RavenDB server uses a [settings.json](../server/configuration/configuration-options.mdx#settingsjson) file in each node `Server` folder to store the server-wide configuration options.  
 When starting a server, RavenDB will look for the `settings.json` file in the node `Server` folder, so it must be located there.  
 The [Setup Wizard](../start/installation/setup-wizard.mdx) places it correctly automatically.  
 
@@ -190,9 +190,9 @@ For a list of IPs and ports already in use, run `netstat -a` in the command line
 
 RavenDB requires write permissions to the following locations:
 
-- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settings.json) by the [Setup Wizard](../start/installation/setup-wizard.mdx))
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settingsjson) by the [Setup Wizard](../start/installation/setup-wizard.mdx))
 - The data folder ([`DataDir`](../server/configuration/core-configuration.mdx#datadir) setting)
-- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration.mdx#logs.path) setting)
+- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration.mdx#logspath) setting)
 
 If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
 

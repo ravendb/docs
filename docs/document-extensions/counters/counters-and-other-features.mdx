@@ -58,7 +58,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 * Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
+* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#sessionquery) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
 <TabItem value="counters_region_query" label="counters_region_query">
@@ -83,7 +83,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -750,7 +750,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 * Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [session.query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
+* Use [session.query](../../client-api/session/querying/how-to-query.mdx#sessionquery) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
 <TabItem value="counters_region_query" label="counters_region_query">
@@ -762,7 +762,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -1051,7 +1051,7 @@ Send the server **raw queries** for execution.
 * Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get counter values from a query without downloading whole documents.  
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
@@ -1283,7 +1283,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 * Counter values **can** be [projected](../../indexes/querying/projections.mdx) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
-* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#session.query) to code queries yourself.  
+* Use [Session.Query](../../client-api/session/querying/how-to-query.mdx#sessionquery) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
      A Counter's value is returned as a single sum, with no specification of the Counter's value on each node.
 <TabItem value="counters_region_query" label="counters_region_query">
@@ -1300,7 +1300,7 @@ for (let counterValue in queryResults) \{
 </CodeBlock>
 </TabItem>
 
-* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
+* Use [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) to send the server raw RQL expressions for execution.  
    * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 

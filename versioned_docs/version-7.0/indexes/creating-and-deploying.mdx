@@ -487,12 +487,12 @@ where FirstName = "Robert" and LastName = "King"
 * This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
   as well as for databases that were just restored from a snapshot or a backup.
 * To set the time before marking an index as idle, use the
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
   Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
 * An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
   or when resetting the index.
 * If not resumed, the idle auto-index will be deleted by the server after the time period defined in the 
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
   (72 hours by default).
 
 </Admonition>
@@ -507,7 +507,7 @@ where FirstName = "Robert" and LastName = "King"
 
 **How to disable**:
 
-* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration.mdx#indexing.disablequeryoptimizergeneratedindexes) configuration key.
+* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes) configuration key.
   This will affect all queries made both from the **Client API** and the **Studio**.
 
 * Alternatively, you can disable auto-indexes from the Studio.  
@@ -1187,12 +1187,12 @@ where FirstName = "Robert" and LastName = "King"
 * This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time,
   as well as for databases that were just restored from a snapshot or a backup.
 * To set the time before marking an index as idle, use the
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key.  
   Setting this value too high is not recommended, as it may lead to performance degradation by causing unnecessary and redundant work for the indexes.
 * An `idle` auto-index will resume its work and return to `normal` state upon its next query,  
   or when resetting the index.
 * If not resumed, the idle auto-index will be deleted by the server after the time period defined in the
-  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
+  [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key  
   (72 hours by default).
 
 </Admonition>
@@ -1207,7 +1207,7 @@ where FirstName = "Robert" and LastName = "King"
 
 **How to disable**:
 
-* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration.mdx#indexing.disablequeryoptimizergeneratedindexes) configuration key.
+* You can disable auto-indexes by setting the [Indexing.DisableQueryOptimizerGeneratedIndexes](../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes) configuration key.
   This will affect all queries made both from the **Client API** and the **Studio**.
 
 * Alternatively, you can disable auto-indexes from the Studio.  

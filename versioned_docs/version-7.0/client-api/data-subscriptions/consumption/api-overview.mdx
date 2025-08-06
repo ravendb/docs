@@ -26,7 +26,7 @@ export const supportedLanguages = ["csharp", "java", "python", "nodejs"];
    * [SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworkeroptions)  
    * [Run the subscription worker](../../../client-api/data-subscriptions/consumption/api-overview.mdx#run-the-subscription-worker)  
    * [SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;)  
-   * [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;.item)  
+   * [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;item)  
    * [SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionworker&lt;t&gt;)  
 
 </Admonition>
@@ -160,7 +160,7 @@ Task Run(Func<SubscriptionBatch<T>, Task> processDocuments,
 
 | Member                   | Type                              | Description                                                                                                                                                            |
 |--------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;.item) below. |
+| **Items**                | `List<SubscriptionBatch<T>.Item>` | List of items in the batch.<br/>See [SubscriptionBatch&lt;T&gt;.Item](../../../client-api/data-subscriptions/consumption/api-overview.mdx#subscriptionbatch&lt;t&gt;item) below. |
 | **NumberOfItemsInBatch** | `int`                             | Number of items in the batch.                                                                                                                                          |
 
 | Method Signature       | Return value            | Description                                                                                                       |

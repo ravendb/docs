@@ -58,7 +58,7 @@ export const supportedLanguages = ["csharp"];
 * **Configuring indexing behavior - Static indexes**:
     * **At the database level or server-wide**:  
       To control whether static indexes process archived documents from the source collection,  
-      set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior)
+      set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)
       configuration key at either the database level or server-wide (default: `ExcludeArchived`).
     * Note that this setting applies only to static-indexes that are using _Documents_ as their data source.
       This global configuration does Not apply to static-indexes based on _Time Series_ or _Counters_, which default to `IncludeArchived`.
@@ -69,7 +69,7 @@ export const supportedLanguages = ["csharp"];
 * **Configuring indexing behavior - Auto indexes:**
     * **At the database level or server-wide**:  
       To control whether auto-indexes process archived documents at the database level or server-wide,  
-      set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.auto.archiveddataprocessingbehavior) configuration key (default `ExcludeArchived`).
+      set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key (default `ExcludeArchived`).
     * **Per index**:  
       Unlike static indexes, you cannot configure this behavior per auto-index,  
       because dynamic queries (which trigger auto-index creation) do not provide a way to control this setting.
@@ -80,7 +80,7 @@ export const supportedLanguages = ["csharp"];
 ##### Configuring archived document processing for a static index - from the Client API
 
 You can configure how a static index handles archived documents when creating the index using the Client API.
-This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
 <Admonition type="note" title="Note">
 
@@ -280,7 +280,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
 ##### Configuring archived document processing for a static index - from the Studio
 
 You can configure how a static index handles archived documents directly from the Studio.  
-This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key.
 
 ![Configure index](./assets/configure-static-index.png)
 
@@ -306,7 +306,7 @@ This setting will **override** the global configuration defined by the [Indexing
 
 * **Dynamic queries (auto-indexes)**:
   * When making a dynamic query, RavenDB creates an auto-index to serve it.
-    Whether that index processes archived documents depends on the value of the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.auto.archiveddataprocessingbehavior) configuration key at the time the query is made.
+    Whether that index processes archived documents depends on the value of the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key at the time the query is made.
   * Once created, the auto-index retains that behavior.
     Query results will continue to reflect the configuration that was in effect when the index was first built - even if the setting is changed later.
   * Learn more about dynamic queries in [Query a collection - with filtering](../client-api/session/querying/how-to-query.mdx#dynamicQuery).
@@ -314,7 +314,7 @@ This setting will **override** the global configuration defined by the [Indexing
 * **Querying static-indexes**:  
   * When querying a static-index, the results will include, exclude, or consist solely of archived documents depending on how the static-index was configured.
     The index behavior is determined by:  
-      * the value of the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior)  configuration key at the time the static-index was created, or -
+      * the value of the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior)  configuration key at the time the static-index was created, or -
       * the explicit setting in the index definition, which overrides the global configuration key.
   * The index's archived data processing behavior can be modified after its creation using the Studio or the Client API.
 
@@ -340,7 +340,7 @@ This setting will **override** the global configuration defined by the [Indexing
 ##### Configuring archived document processing for a data subscription task - from the Client API
 
 You can configure how a subscription task handles archived documents when creating the subscription using the Client API.  
-This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptions.archiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
 
 <Admonition type="note" title="Note">
 
@@ -384,7 +384,7 @@ Example:
 ##### Configuring archived document processing for a data subscription task - from the Studio
 
 You can configure how a subscription task handles archived documents directly from the Studio.  
-This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptions.archiveddataprocessingbehavior) configuration key.
+This setting will **override** the global configuration defined by the [Subscriptions.ArchivedDataProcessingBehavior](../server/configuration/subscription-configuration.mdx#subscriptionsarchiveddataprocessingbehavior) configuration key.
 
 ![Configure subscription](./assets/configure-subscription.png)
 

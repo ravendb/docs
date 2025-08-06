@@ -18,9 +18,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * The Studio Configuration view enables configuration of studio-related operations and interfaces.  
 
 * Settings changed in this view do not change configurations in other scopes such as Client or Server API.
-  * To disable the creation of Auto-Indexes in other scopes, set [Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration.mdx#indexing.disablequeryoptimizergeneratedindexes) 
+  * To disable the creation of Auto-Indexes in other scopes, set [Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes) 
     to `true`:
-     * Server-wide - set it in the server's [settings.json](../../../server/configuration/configuration-options.mdx#settings.json) file.
+     * Server-wide - set it in the server's [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson) file.
      * Per database - set it in the database's [Document Store](../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx).
 
 In this page:
@@ -88,9 +88,9 @@ In this page:
 * Note: dynamic queries can be issued either when [querying](../../../studio/database/queries/query-view.mdx#query-view) or when [patching](../../../studio/database/documents/patch-view.mdx#patch-configuration).
 
 * Auto-indexes are dynamically maintained to change automatically in response to changing query demands.  
-  After a certain amount of time that an auto-index is not used [(30 minutes by default)](../../../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforemarkingautoindexasidleinmin),  
+  After a certain amount of time that an auto-index is not used [(30 minutes by default)](../../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforemarkingautoindexasidleinmin),  
   the index goes into an [idle state](../../../studio/database/indexes/indexes-list-view.mdx#index-state)
-  and deleted after a set time-period [(72 hours by default)](../../../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs).
+  and deleted after a set time-period [(72 hours by default)](../../../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs).
 
 * To provide for fast queries, indexes process information in the background.  
   If they are processing large datasets, each index can be demanding on I/O resources.
@@ -114,7 +114,7 @@ temporarily allow Auto-Index in the Query or Patch settings interface.
 
 Note: These settings only affect Auto-Indexing as a result of Queries or Patches done in the Studio.  
 They do not affect API-based Queries or Patches.  
-To configure API-based Auto-Indexing, see [Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration.mdx#indexing.disablequeryoptimizergeneratedindexes)
+To configure API-based Auto-Indexing, see [Indexing.DisableQueryOptimizerGeneratedIndexes](../../../server/configuration/indexing-configuration.mdx#indexingdisablequeryoptimizergeneratedindexes)
 
 
 
@@ -132,7 +132,7 @@ To configure API-based Auto-Indexing, see [Indexing.DisableQueryOptimizerGenerat
    Choose work environment.  This does not affect settings or features.  It makes it clear if, for example, you are in a production 
    server and should be much more careful than in a development environment.
 4. **Default replication factor**  
-   Change the default [replication factor](../../../studio/database/create-new-database/general-flow.mdx#3.-configure-replication) from 
+   Change the default [replication factor](../../../studio/database/create-new-database/general-flow.mdx#3-configure-replication) from 
    automatically replicating data to every node in the cluster.  
 5. **Help us improve the Studio**  
    Allow the Studio to send usage statistics to inform our developers.  

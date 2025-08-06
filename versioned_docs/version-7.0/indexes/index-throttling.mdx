@@ -57,7 +57,7 @@ They are therefore expected to remain stale longer than indexes that are process
 
 ## Throttling and Batches
 
-The delay in index procession increases the size of Item [batches](../server/configuration/indexing-configuration.mdx#indexing.mapbatchsize) 
+The delay in index procession increases the size of Item [batches](../server/configuration/indexing-configuration.mdx#indexingmapbatchsize) 
 that are processed during indexing intervals.  
 
 In special cases, throttled indexes' batches are processed without delay.  
@@ -72,7 +72,7 @@ In special cases, throttled indexes' batches are processed without delay.
 ## Setting Index Throttling
 ### Server-Wide Index Throttling
 
- Index Throttling can be set server-wide using a designated [configuration option](../server/configuration/configuration-options.mdx#settings.json).  
+ Index Throttling can be set server-wide using a designated [configuration option](../server/configuration/configuration-options.mdx#settingsjson).  
  Setting the server-wide configuration option will apply to all databases on a given node.  
 
 * Set the index throttling time interval in Milliseconds using the `Indexing.Throttling.TimeIntervalInMs` configuration option, e.g.:  
@@ -129,7 +129,7 @@ and [database](../indexes/index-throttling.mdx#index-throttling-per-database) se
 </TabItem>
 
     The batch size can be left for RavenDB to decide, or you can set it yourself using 
-    the [Indexing.MapBatchSize](../server/configuration/indexing-configuration.mdx#indexing.mapbatchsize) property.  
+    the [Indexing.MapBatchSize](../server/configuration/indexing-configuration.mdx#indexingmapbatchsize) property.  
 <TabItem value="batchSize" label="batchSize">
 <CodeBlock language="csharp">
 {`Configuration = new IndexConfiguration

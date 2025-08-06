@@ -94,7 +94,7 @@ They help keep memory usage and indexing time under control, but may also limit 
   * With **static-indexes** -  
     This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
-    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofedges) configuration key.  
+    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges) configuration key.  
 
 * **Number of candidates at indexing time**:
    
@@ -109,7 +109,7 @@ They help keep memory usage and indexing time under control, but may also limit 
   * With **static-indexes** -  
     This param can be set directly in the index definition. For example, see this [index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#indexing-raw-text).  
     If not explicitly set, or when using **dynamic queries** -  
-    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing) configuration key.
+    the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing) configuration key.
 For all parameters that can be defined at indexing time (including the ones above),  
 see [Parameters defined at index definition](../../ai-integration/vector-search/vector-search-using-static-index.mdx#parameters-defined-at-index-definition).
 
@@ -129,7 +129,7 @@ These parameters directly affect how many results are found, how similar they ar
     and typically improving accuracy and the chances of retrieving all relevant results - but this comes at the cost of slower query performance.  
     A **smaller** value speeds up queries and reduces resource usage, but increases the chance of missing relevant results due to the more limited exploration.
   * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-raw-text).  
-    If not explicitly set, the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying) configuration key.  
+    If not explicitly set, the value is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying) configuration key.  
 
 * **Minimum Similarity**:  
   
@@ -138,7 +138,7 @@ These parameters directly affect how many results are found, how similar they ar
     even if they would otherwise be among the top candidates.  
     Use this to filter out marginal matches, especially when minimum semantic relevance is important.
   * This param can be set directly in the query. For example, see this [Query example](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#querying-raw-text).
-    If not explicitly set in the query, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity) configuration key.  
+    If not explicitly set in the query, the value is taken from the [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity) configuration key.  
     The default value of this configuration key is `0.0`, which means no similarity filtering is applied - all candidates found during the search are eligible to be returned,
     regardless of how dissimilar they are from the query vector.
 

@@ -63,17 +63,17 @@ import LanguageContent from "@site/src/components/LanguageContent";
      </Admonition>
 
 * These configuration options are available:  
-   * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.auto.searchenginetype)  
+   * [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)  
      Use this option to select the search engine (either `Lucene` or `Corax`) for **auto** indexes.  
      The search engine can be selected **server-wide** or **per database**.  
-   * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.static.searchenginetype)  
+   * [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
      Use this option to select the search engine (either `Lucene` or `Corax`) for **static** indexes.  
      The search engine can be selected **server-wide**, **per database**, or **per index**.  
    * Read about additional Corax configuration options [here](../../indexes/search-engine/corax.mdx#configuration-options).  
 ### Select search engine: Server wide
 
 Select the search engine for all the databases hosted by a server 
-by modifying the server's [settings.json](../../server/configuration/configuration-options.mdx#settings.json) file.  
+by modifying the server's [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) file.  
 E.g. -  
 <TabItem value="csharp" label="csharp">
 <CodeBlock language="csharp">
@@ -397,7 +397,7 @@ a static index.
 
 * **New static index** (created or reset on RavenDB `6.2.x` and on)  
   The index will behave as determined by the 
-  [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.corax.static.complexfieldindexingbehavior) 
+  [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior) 
   configuration option.  
    * If `ComplexFieldIndexingBehavior` is set to **`Throw`** -  
      Corax will throw a `NotSupportedInCoraxException` exception with this message:  
@@ -519,39 +519,39 @@ order by Location
 
 Corax configuration options include:  
 
-* [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.auto.searchenginetype)  
+* [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)  
   [Select](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) the search engine for **Auto** indexes.  
 
-* [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.static.searchenginetype)  
+* [Indexing.Static.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingstaticsearchenginetype)  
   [Select](../../indexes/search-engine/corax.mdx#selecting-the-search-engine) the search engine for **Static** indexes.  
 
-* [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration.mdx#indexing.corax.includedocumentscore)  
+* [Indexing.Corax.IncludeDocumentScore](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludedocumentscore)  
   Choose whether to include the score value in document metadata when sorting by score.  
   <Admonition type="note" title="Note">
   Disabling this option can improve query performance.  
   </Admonition>
 
-* [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration.mdx#indexing.corax.includespatialdistance)  
+* [Indexing.Corax.IncludeSpatialDistance](../../server/configuration/indexing-configuration.mdx#indexingcoraxincludespatialdistance)  
   Choose whether to include spatial information in document metadata when sorting by distance.  
   <Admonition type="note" title="Note">
   Disabling this option can improve query performance.  
   </Admonition>
 
-* [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexing.corax.maxmemoizationsizeinmb)  
+* [Indexing.Corax.MaxMemoizationSizeInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxmemoizationsizeinmb)  
   The maximum amount of memory that Corax can use for a memoization clause during query processing.  
   <Admonition type="warning" title="Expert Level Configuration" id="expert-level-configuration" href="#expert-level-configuration">
   Please configure this option only if you are an expert.
   </Admonition>
 
-* [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration.mdx#indexing.corax.documentslimitforcompressiondictionarycreation)  
+* [Indexing.Corax.DocumentsLimitForCompressionDictionaryCreation](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation)  
   Set the maximum number of documents that will be used for the training of a Corax index during dictionary creation.  
   Training will stop when it reaches this limit.  
 
-* [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration.mdx#indexing.corax.maxallocationsatdictionarytraininginmb)  
+* [Indexing.Corax.MaxAllocationsAtDictionaryTrainingInMb](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxallocationsatdictionarytraininginmb)  
   Set the maximum amount of memory (in MB) that will be allocated for the training of a Corax index during dictionary creation.  
   Training will stop when it reaches this limit.  
 
-* [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexing.corax.static.complexfieldindexingbehavior)  
+* [Indexing.Corax.Static.ComplexFieldIndexingBehavior](../../server/configuration/indexing-configuration.mdx#indexingcoraxstaticcomplexfieldindexingbehavior)  
   Choose [how to react](../../indexes/search-engine/corax.mdx#if-corax-encounters-a-complex-property-while-indexing) 
   when a static Corax index is requested to index a complex JSON object.  
   
@@ -578,14 +578,14 @@ Here are some additional things to keep in mind about Corax indexes compression 
 * The benefits of compression dictionaries are most pronounced for large collections.  
   <Admonition type="note" title="Note">
   Training stops when it reaches either the 
-  [number of documents](../../server/configuration/indexing-configuration.mdx#indexing.corax.documentslimitforcompressiondictionarycreation)
+  [number of documents](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation)
   threshold (100,000 docs by default) or the 
-  [amount of memory](../../server/configuration/indexing-configuration.mdx#indexing.corax.maxallocationsatdictionarytraininginmb) 
+  [amount of memory](../../server/configuration/indexing-configuration.mdx#indexingcoraxmaxallocationsatdictionarytraininginmb) 
   threshold (up to 2GB). Both thresholds are configurable.  
   </Admonition>
 * If upon creation there are less than 10,000 documents in the involved collections, 
   it may make sense to manually force an index reset after reaching 
-  [100,000](../../server/configuration/indexing-configuration.mdx#indexing.corax.documentslimitforcompressiondictionarycreation) 
+  [100,000](../../server/configuration/indexing-configuration.mdx#indexingcoraxdocumentslimitforcompressiondictionarycreation) 
   documents to force retraining.  
   <Admonition type="note" title="Note">
   Indexes are replaced in a [side-by-side](../../studio/database/indexes/indexes-list-view.mdx#indexes-list-view---side-by-side-indexing) 

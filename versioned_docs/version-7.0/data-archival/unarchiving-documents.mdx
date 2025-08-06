@@ -180,7 +180,7 @@ It will unarchive all archived documents in the _Orders_ collection.
   As a result, no documents will be unarchived by the patch operation.
 
 * For example, the following patch query uses a dynamic query that creates an auto-index.  
-  If the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.auto.archiveddataprocessingbehavior) configuration key is set to its default `ExcludeArchived` value,
+  If the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key is set to its default `ExcludeArchived` value,
   then even if archived documents exist in the _Orders_ collection with `ShipTo.Country == 'USA'`, they will not be matched -  because the auto-index does not include them -  
   and the patch operation will not unarchive any documents.
 
@@ -208,9 +208,9 @@ Two possible workarounds are:
    Use this option only if including archived documents in the index aligns with your indexing strategy.
    
       **For auto-indexes**:  
-      Set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.auto.archiveddataprocessingbehavior) configuration key to `IncludeArchived`.  
+      Set the [Indexing.Auto.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingautoarchiveddataprocessingbehavior) configuration key to `IncludeArchived`.  
       **For static-indexes**:  
-      Set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexing.static.archiveddataprocessingbehavior) configuration key to `IncludeArchived`,  
+      Set the [Indexing.Static.ArchivedDataProcessingBehavior](../server/configuration/indexing-configuration.mdx#indexingstaticarchiveddataprocessingbehavior) configuration key to `IncludeArchived`,  
       or - configure the definition of the specific static-index to include archived documents.  
       See [Archived documents and indexing](../data-archival/archived-documents-and-other-features.mdx#archived-documents-and-indexing).
 

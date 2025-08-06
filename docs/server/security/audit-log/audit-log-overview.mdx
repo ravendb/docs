@@ -32,15 +32,15 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Enabling the audit log
 
 * **To enable writing to the audit log**, set the following configuration key: 
-  * [Security.AuditLog.FolderPath](../../../server/configuration/security-configuration.mdx#security.auditlog.folderpath) - set the path to a folder where RavenDB will store the audit logs.
+  * [Security.AuditLog.FolderPath](../../../server/configuration/security-configuration.mdx#securityauditlogfolderpath) - set the path to a folder where RavenDB will store the audit logs.
 
 * In addition, the following configurations are available:
-  * [Security.AuditLog.ArchiveAboveSizeInMb](../../../server/configuration/security-configuration.mdx#security.auditlog.archiveabovesizeinmb)  
+  * [Security.AuditLog.ArchiveAboveSizeInMb](../../../server/configuration/security-configuration.mdx#securityauditlogarchiveabovesizeinmb)  
     The maximum size an audit log file may reach before it is archived and logging is directed to a new file.
-  * [Security.AuditLog.EnableArchiveFileCompression](../../../server/configuration/security-configuration.mdx#security.auditlog.enablearchivefilecompression) - determine whether to compress the audit log files.
-  * [Security.AuditLog.MaxArchiveDays](../../../server/configuration/security-configuration.mdx#security.auditlog.maxarchivedays) - the maximum number of days that an archived audit log file is kept.
-  * [Security.AuditLog.MaxArchiveFiles](../../../server/configuration/security-configuration.mdx#security.auditlog.maxarchivefiles) - the maximum number of archived audit log files to keep.
-  * [Logs.ArchiveAboveSizeInMb](../../../server/configuration/logs-configuration.mdx#logs.archiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
+  * [Security.AuditLog.EnableArchiveFileCompression](../../../server/configuration/security-configuration.mdx#securityauditlogenablearchivefilecompression) - determine whether to compress the audit log files.
+  * [Security.AuditLog.MaxArchiveDays](../../../server/configuration/security-configuration.mdx#securityauditlogmaxarchivedays) - the maximum number of days that an archived audit log file is kept.
+  * [Security.AuditLog.MaxArchiveFiles](../../../server/configuration/security-configuration.mdx#securityauditlogmaxarchivefiles) - the maximum number of archived audit log files to keep.
+  * [Logs.ArchiveAboveSizeInMb](../../../server/configuration/logs-configuration.mdx#logsarchiveabovesizeinmb) - a new log file is created when this limit is reached (or daily). 
 
 * Learn how to set configuration keys in this [configuration overview](../../../server/configuration/configuration-options.mdx).
 

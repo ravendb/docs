@@ -40,11 +40,11 @@ After getting your cert, start tuning the server to leverage it for security.
 RavenDB needs to get its server certificate. You can configure its retrieval from one of these origins:
 
 - Path - A .pfx certificate stored under a path reachable for a container.
-  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.Certificate.Path](../../../server/configuration/security-configuration.mdx#security.certificate.path)
+  **Security.Certificate.Path** configuration option value defines the path. [Security Configuration - Security.Certificate.Path](../../../server/configuration/security-configuration.mdx#securitycertificatepath)
 
 - Script - A script that returns your certificate by any means.
   You can obtain it from container environmental variables, secured vault, secret, etc.
-  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration.mdx#security.certificate.load.exec)
+  **Security.Certificate.Load.Exec** configuration option value defines the script path. [Security Configuration - Security.Certificate.Load.Exec](../../../server/configuration/security-configuration.mdx#securitycertificateloadexec)
 
 These configuration options can be passed to RavenDB by settings.json, environmental variables, or command line arguments.
 See more here: [Configuration Options](../../../server/configuration/configuration-options.mdx)
@@ -60,14 +60,14 @@ To enable it, set `Setup.Mode` configuration option to `LetsEncrypt`.
 Be aware that this automation will work **only when using Setup Wizard to obtain the LetsEncrypt certificate**, as RavenDB doesn't control your domain nor can access your backend used in the certificate load script.
 To learn more about this, visit this site: [RavenDB Lets Encrypt Certificates Docs](../../../server/security/authentication/lets-encrypt-certificates.mdx)
 
-You can learn about different `Raven.SetupMode` values here: [Core Configuration - Setup.Mode](../../../server/configuration/core-configuration.mdx#setup.mode)
+You can learn about different `Raven.SetupMode` values here: [Core Configuration - Setup.Mode](../../../server/configuration/core-configuration.mdx#setupmode)
 Also, you need to provide us with an email that you will use for the Let's Encrypt matter. Use `Security.Certificate.LetsEncrypt.Email`.
 
 #### Manual
 To configure manual certificate replacement and updates, write scripts to supply RavenDB configuration:
 
-- [Security.Certificate.Renew.Exec](../../../server/configuration/security-configuration.mdx#security.certificate.renew.exec) 
-- [Security.Certificate.Change.Exec](../../../server/configuration/security-configuration.mdx#security.certificate.change.exec) 
+- [Security.Certificate.Renew.Exec](../../../server/configuration/security-configuration.mdx#securitycertificaterenewexec) 
+- [Security.Certificate.Change.Exec](../../../server/configuration/security-configuration.mdx#securitycertificatechangeexec) 
 
 It will allow RavenDB to execute your routines, which should:
 

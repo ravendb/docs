@@ -129,7 +129,7 @@ The failover of a task to another responsible node can be prevented by **pinning
 * If the node the task is pinned to fails, the task will **not** be executed until the node is back online.  
   When the node awakes, the task will be resumed from the failure point on.  
 * If a node remains offline for the period set by 
-  [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration.mdx#cluster.timebeforeaddingreplicainsec), 
+  [cluster.timebeforeaddingreplicainsec](../../../server/configuration/cluster-configuration.mdx#clustertimebeforeaddingreplicainsec), 
   the cluster observer will attempt to select an available node to replace it in the database group 
   and redistribute the fallen node's tasks, including pinned ones, among database group members.  
 A task can be pinned to a selected node via Studio or using code.  

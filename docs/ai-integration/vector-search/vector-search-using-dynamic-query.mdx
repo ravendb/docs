@@ -123,7 +123,7 @@ export const supportedLanguages = ["csharp"];
 
 * **Search results**:  
   By default, the resulting documents will be ordered by their score.
-  You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.orderbyscoreautomatically) configuration key.  
+  You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
   In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results.mdx).
 
 </Admonition>
@@ -147,7 +147,7 @@ export const supportedLanguages = ["csharp"];
       it is recommended to explicitly specify the minimum similarity level at query time.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity).
+    [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
 * **Number of candidates**  
   You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -156,7 +156,7 @@ export const supportedLanguages = ["csharp"];
     * higher than the number of candidates - when the same vector is shared between multiple documents.
 
     If not specified, the default value is taken from the following configuration key:
-    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+    [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
 * **Search method**
     * _Approximate Nearest-Neighbor search_ (Default):   
@@ -172,7 +172,7 @@ export const supportedLanguages = ["csharp"];
 #### Corax auto-indexes
 * Only [Corax indexes](../../indexes/search-engine/corax.mdx) support vector search.
 
-* Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexing.auto.searchenginetype)),  
+* Even if your **default auto-index engine** is set to Lucene (via [Indexing.Auto.SearchEngineType](../../server/configuration/indexing-configuration.mdx#indexingautosearchenginetype)),  
   performing a vector search using a dynamic query will create a new auto-index based on Corax.
 
 * Normally, new dynamic queries extend existing [auto-indexes](../../client-api/session/querying/how-to-query.mdx#queries-always-provide-results-using-an-index) if they require additional fields.  
@@ -1501,8 +1501,8 @@ and (vector.search(embedding.text(Name), $searchTerm, 0.75, 25))
 * You can combine multiple vector search statements in the same query using logical operators.  
   This is useful when you want to retrieve documents that match more than one vector-based criterion.
  
-* This can be done using [DocumentQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.documentquery),
-  [RawQuery](../../client-api/session/querying/how-to-query.mdx#session.advanced.rawquery) or raw [RQL](../../client-api/session/querying/what-is-rql.mdx).
+* This can be done using [DocumentQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvanceddocumentquery),
+  [RawQuery](../../client-api/session/querying/how-to-query.mdx#sessionadvancedrawquery) or raw [RQL](../../client-api/session/querying/what-is-rql.mdx).
 
 * In the example below, the results will include companies that match one of two vector search conditions:  
   * Companies from European countries with a _Name_ similar to "snack"
@@ -1653,7 +1653,7 @@ or
 
 * Each clause retrieves a limited number of candidates, determined by the _NumberOfCandidates_ parameter.
   * You can explicitly set this value in the query clause, see [query parameters](../../ai-integration/vector-search/vector-search-using-dynamic-query.mdx#the-dynamic-query-parameters).  
-  * If not specified, it is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying) configuration key (default is 16).
+  * If not specified, it is taken from the [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying) configuration key (default is 16).
  
 * **The final result set** is computed by applying the logical operators (and, or) between these independently retrieved sets.
 
@@ -1707,10 +1707,10 @@ public IRavenQueryable<T> VectorSearch<T>(
 
 
 The default value for `minimumSimilarity` is defined by this configuration key:  
-[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+[Indexing.Corax.VectorSearch.DefaultMinimumSimilarity ](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
 The default value for `numberOfCandidates` is defined by this configuration key:  
-[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity).
+[Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 `IVectorFieldFactory`:
 
 <TabItem value="syntax_2" label="syntax_2">

@@ -30,8 +30,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * To maintain the Replication Factor, every newly elected [Leader](../../../server/clustering/rachis/cluster-topology.mdx#leader) starts measuring the health of each node 
   by creating dedicated maintenance TCP connections to all other nodes in the cluster.  
 
-* Each node reports the current status of _all_  its databases at intervals of [500 milliseconds](../../../server/configuration/cluster-configuration.mdx#cluster.workersampleperiodinms) (by default).  
-  The `Cluster Observer` consumes those reports every [1000 milliseconds](../../../server/configuration/cluster-configuration.mdx#cluster.supervisorsampleperiodinms) (by default).  
+* Each node reports the current status of _all_  its databases at intervals of [500 milliseconds](../../../server/configuration/cluster-configuration.mdx#clusterworkersampleperiodinms) (by default).  
+  The `Cluster Observer` consumes those reports every [1000 milliseconds](../../../server/configuration/cluster-configuration.mdx#clustersupervisorsampleperiodinms) (by default).  
 
 * Upon a **node failure**, the [Dynamic Database Distribution](../../../server/clustering/distribution/distributed-database.mdx#dynamic-database-distribution) sequence
   will take place in order to ensure that the `Replication Factor` does not change.  
@@ -49,11 +49,11 @@ import LanguageContent from "@site/src/components/LanguageContent";
  
     * If node C goes offline or becomes unreachable, the Cluster Observer detects the issue.
       Initially:
-      * After the duration specified in the [Cluster.TimeBeforeMovingToRehabInSec](../../../server/configuration/cluster-configuration.mdx#cluster.timebeforemovingtorehabinsec) configuration,  
+      * After the duration specified in the [Cluster.TimeBeforeMovingToRehabInSec](../../../server/configuration/cluster-configuration.mdx#clustertimebeforemovingtorehabinsec) configuration,  
         the observer moves node C to rehab mode, allowing time for recovery.
       * The ETL task fails over to another available node in the Database Group.
    
-    * If node C remains offline beyond the period specified in the [Cluster.TimeBeforeAddingReplicaInSec](../../../server/configuration/cluster-configuration.mdx#cluster.timebeforeaddingreplicainsec) configuration,
+    * If node C remains offline beyond the period specified in the [Cluster.TimeBeforeAddingReplicaInSec](../../../server/configuration/cluster-configuration.mdx#clustertimebeforeaddingreplicainsec) configuration,
       the observer begins replicating the database to another node in the Database Group as a last resort.
     
     </Admonition>

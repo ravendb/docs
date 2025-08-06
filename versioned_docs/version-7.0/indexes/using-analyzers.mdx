@@ -281,7 +281,7 @@ There are two exceptions to this rule:
 
        Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
        so to address this issue, you have two options:  
-       * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).  
+       * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammaxgram) value to generate larger tokens during indexing (when using Lucene).  
        * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.  
 
   2. Behavior is also different when making a full-text search with wildcards in the search terms.  
@@ -459,8 +459,8 @@ All examples below use the following text:
 * **Overriding default token length**: (only when using Lucene as the search engine)  
     
     You can override the default token lengths of the NGram analyzer by setting the following configuration keys:  
-    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.mingram)
-    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram).  
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammingram)
+    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammaxgram).  
     
     For example, setting them to 3 and 4, respectively, will generate the following tokens:  
 
@@ -577,7 +577,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   By default, this analyzer is the `RavenStandardAnalyzer` (inherits from Lucene's _StandardAnalyzer_).
 
 * To customize a different analyzer that will serve as your Default Search Analyzer,  
-  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.search.default) configuration key.
+  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault) configuration key.
 
 * Using a search analyzer enables full-text search queries against the field.  
   Given the same sample text from above, _RavenStandardAnalyzer_ will produce the following tokens:  
@@ -623,7 +623,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   The field's value is indexed exactly as provided, enabling precise, case-sensitive matching at query time.  
 
 * To customize a different analyzer that will serve as your Default Exact Analyzer,  
-  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexing.analyzers.exact.default) configuration key.
+  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexinganalyzersexactdefault) configuration key.
 
 * Given the same sample text from above, _KeywordAnalyzer_ will produce a single token:            
   `[The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.]`
@@ -666,7 +666,7 @@ store.Maintenance.Send(new PutIndexesOperation(indexDefinition));
   The entire content of the field is processed into a single, lowercased token.
 
 * To customize a different analyzer that will serve as your Default Analyzer,  
-  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.default) configuration key.
+  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexinganalyzersdefault) configuration key.
 
 * Given the same sample text from above, _LowerCaseKeywordAnalyzer_ will produce a single token:            
   `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
@@ -970,7 +970,7 @@ There are two exceptions to this rule:
 
    Currently, for query time, you cannot specify a different analyzer than the one defined in the index definition,  
    so to address this issue, you have two options:
-    * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram) value to generate larger tokens during indexing (when using Lucene).
+    * Increase the [MaxGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammaxgram) value to generate larger tokens during indexing (when using Lucene).
     * Use a different analyzer other than _NGramAnalyzer_ that better matches your requirements.
 
 2. Behavior is also different when making a full-text search with wildcards in the search terms.  
@@ -1148,8 +1148,8 @@ All examples below use the following text:
 * **Overriding default token length**: (only when using Lucene as the search engine)
 
     You can override the default token lengths of the NGram analyzer by setting the following configuration keys:  
-    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.mingram)
-    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexing.lucene.analyzers.ngram.maxgram).
+    [Indexing.Lucene.Analyzers.NGram.MinGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammingram)
+    and [Indexing.Lucene.Analyzers.NGram.MaxGram](../server/configuration/indexing-configuration.mdx#indexingluceneanalyzersngrammaxgram).
 
     For example, setting them to 3 and 4, respectively, will generate the following tokens:
 
@@ -1250,7 +1250,7 @@ await store.maintenance
   By default, this analyzer is the `RavenStandardAnalyzer` (inherits from Lucene's _StandardAnalyzer_).
 
 * To customize a different analyzer that will serve as your Default Search Analyzer,  
-  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.search.default) configuration key.
+  set the [Indexing.Analyzers.Search.Default](../server/configuration/indexing-configuration.mdx#indexinganalyzerssearchdefault) configuration key.
 
 * Using a search analyzer enables full-text search queries against the field.  
   Given the same sample text from above, _RavenStandardAnalyzer_ will produce the following tokens:  
@@ -1293,7 +1293,7 @@ await store.maintenance
   The field's value is indexed exactly as provided, enabling precise, case-sensitive matching at query time.
 
 * To customize a different analyzer that will serve as your Default Exact Analyzer,  
-  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexing.analyzers.exact.default) configuration key.
+  set the [Indexing.Analyzers.Exact.Default ](../server/configuration/indexing-configuration.mdx#indexinganalyzersexactdefault) configuration key.
 
 * Given the same sample text from above, _KeywordAnalyzer_ will produce a single token:            
   `[The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.]`
@@ -1334,7 +1334,7 @@ await store.maintenance
   The entire content of the field is processed into a single, lowercased token.
 
 * To customize a different analyzer that will serve as your Default Analyzer,  
-  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexing.analyzers.default) configuration key.
+  set the [Indexing.Analyzers.Default](../server/configuration/indexing-configuration.mdx#indexinganalyzersdefault) configuration key.
 
 * Given the same sample text from above, _LowerCaseKeywordAnalyzer_ will produce a single token:            
   `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`

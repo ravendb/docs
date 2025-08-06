@@ -233,7 +233,7 @@ Learn how to handle this issue [here](../../server/security/authentication/solve
 * [Not using TLS](../../server/security/common-errors-and-faq.mdx#not-using-tls)  
 * [How to regain access to a server when you have physical access but no client certificate](../../server/security/common-errors-and-faq.mdx#how-to-regain-access-to-a-server-when-you-have-physical-access-but-no-client-certificate)  
 * [Certificate is not recognized when setting up on Azure App Services](../../server/security/common-errors-and-faq.mdx#certificate-is-not-recognized-when-setting-up-on-azure-app-services)  
-* [Automatic cluster certificate renewal following migration to 4.2](../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-4.2)  
+* [Automatic cluster certificate renewal following migration to 4.2](../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-42)  
 ### Authentication Error Occurred using Edge
 
 You cannot access Studio using Edge, though during 
@@ -453,7 +453,7 @@ In PowerShell it can be solved like this:
 An admin client certificate can be generated through the [RavenDB CLI](../../server/administration/cli#generateclientcert If RavenDB runs as a console application, the CLI is just there. When running as a service, please use the `rvn admin-channel`.  
 Use either the [generateClientCert](../../server/administration/cli.mdx#generateclientcert) command, or (if you already have a certificate) the [trustClientCert](../../server/administration/cli.mdx#trustclientcert) command.
 
-Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration.mdx#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
+Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration.mdx#securitywellknowncertificatesadmin) configuration to `settings.json` with your existing certificate's thumbprint.
 In this case, a server restart is required.
 ### Certificate is not recognized when setting up on Azure App Services
 
@@ -502,7 +502,7 @@ Treating this as a catastrophic error and aborting the current operation.
 When encryption is turned on, RavenDB locks memory in order to avoid leaking secrets to disk. Read more [here](../../server/security/encryption/encryption-at-rest.mdx#locking-memory).
 
 By default, RavenDB treats this error as catastrophic and will not continue the operation.
-You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../server/configuration/security-configuration.mdx#security.donotconsidermemorylockfailureascatastrophicerror).
+You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../server/configuration/security-configuration.mdx#securitydonotconsidermemorylockfailureascatastrophicerror).
 
 If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
 In **Linux**, it is the admin's responsibility to configure higher limits manually using:
