@@ -196,16 +196,16 @@ For each ETL type, the target must be:
 Documents are extracted and transformed by the ETL process in a batch manner.  
 The number of documents processed depends on the following configuration limits:
 
-* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration.mdx#etl.extractandtransformtimeoutinsec) (default: 30 sec)  
+* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration.mdx#etlextractandtransformtimeoutinsec) (default: 30 sec)  
   Time-frame for the extraction and transformation stages (in seconds), after which the loading stage will start.
 
-* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration.mdx#etl.maxnumberofextracteddocuments) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteddocuments) (default: 8192)  
   Maximum number of extracted documents in an ETL batch.
 
-* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration.mdx#etl.maxnumberofextracteditems) (default: 8192)  
+* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration.mdx#etlmaxnumberofextracteditems) (default: 8192)  
   Maximum number of extracted items (documents, counters) in an ETL batch.
 
-* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration.mdx#etl.maxbatchsizeinmb) (default: 64 MB)  
+* [`ETL.MaxBatchSizeInMb`](../../../server/configuration/etl-configuration.mdx#etlmaxbatchsizeinmb) (default: 64 MB)  
   Maximum size of an ETL batch in MB.
 
 </Admonition>
@@ -257,7 +257,7 @@ You will be notified if any of the following events happen:
 If the ETL cannot proceed the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.  
 The fallback mode means suspending the process and retrying it periodically.  
 The fallback time starts from 5 seconds and it's doubled on every consecutive error according to the time passed since the last error,
-but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration.mdx#etl.maxfallbacktimeinsec) configuration (default: 900 sec).  
+but it never crosses [`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration.mdx#etlmaxfallbacktimeinsec) configuration (default: 900 sec).  
 
 Once the process is in the fallback mode, then the _Reconnect_ state is shown in the Studio.
 

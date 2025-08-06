@@ -63,7 +63,7 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 
 ## Enabling SNMP in RavenDB
 
-* To monitor RavenDB using SNMP you __must__ first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.enabled) configuration key to _true_.
+* To monitor RavenDB using SNMP you __must__ first set the [Monitoring.Snmp.Enabled](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpenabled) configuration key to _true_.
 
 * To learn how to modify a configuration key, refer to the [Configuration Overview](../../../server/configuration/configuration-options.mdx) article,  
   which outlines all available options.
@@ -88,36 +88,36 @@ SNMP support is available for [Enterprise](../../../start/licensing/licensing-ov
 There are several configurable SNMP properties in RavenDB:
 ##### For SNMPv1:
 
-* [Monitoring.Snmp.Port](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.port)  
+* [Monitoring.Snmp.Port](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpport)  
   The SNMP port.  
   Default: `161`  
-* [Monitoring.Snmp.SupportedVersions](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.supportedversions)  
+* [Monitoring.Snmp.SupportedVersions](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpsupportedversions)  
   List of supported SNMP versions.  
   Default: `"V2C;V3"`
 
 ##### For SNMPv2c:
 
-* [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.community)   
+* [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpcommunity)   
   The community string is used as a password.  
   It is sent with each SNMP `GET` request and allows or denies access to the monitored device.  
   Default: `"ravendb"`
 
 ##### For SNMPv3:
 
-* [Monitoring.Snmp.AuthenticationProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationprotocol)  
+* [Monitoring.Snmp.AuthenticationProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationprotocol)  
   Authentication protocol.  
   Default: `"SHA1"`  
-* [Monitoring.Snmp.AuthenticationUser](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationuser)  
+* [Monitoring.Snmp.AuthenticationUser](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationuser)  
   The user for authentication.  
   Default: `"ravendb"`  
-* [Monitoring.Snmp.AuthenticationPassword](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.authenticationpassword)  
+* [Monitoring.Snmp.AuthenticationPassword](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpauthenticationpassword)  
   The authentication password.
   When set to `null` the community string is used instead.  
   Default: `null` 
-* [Monitoring.Snmp.PrivacyProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.privacyprotocol)  
+* [Monitoring.Snmp.PrivacyProtocol](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacyprotocol)  
   Privacy protocol.  
   Default: `None`   
-* [Monitoring.Snmp.PrivacyPassword](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.privacypassword)  
+* [Monitoring.Snmp.PrivacyPassword](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpprivacypassword)  
   Privacy password.  
   Default: `"ravendb"`
 <Admonition type="info" title="Info">
@@ -151,7 +151,7 @@ There are several configurable SNMP properties in RavenDB:
   Each metric has a unique object identifier (OID) and can be accessed individually.  
 
 * The most basic SNMP commands are `snmpget`, `snmpset` and `snmpwalk`.  
-  For example, you can execute the following _snmpget_ commands to retrieve the server's [up-time metric](../../../server/administration/snmp/snmp-overview.mdx#1.3).
+  For example, you can execute the following _snmpget_ commands to retrieve the server's [up-time metric](../../../server/administration/snmp/snmp-overview.mdx#13).
 
     ##### For SNMPv2c:
 
@@ -166,7 +166,7 @@ iso.3.6.1.4.1.45751.1.1.1.3 = Timeticks: (29543973) 3 days, 10:03:59.73
 </CodeBlock>
 </TabItem>
 
-    * `ravendb` is the community string (set via the [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoring.snmp.community) configuration key).   
+    * `ravendb` is the community string (set via the [Monitoring.Snmp.Community](../../../server/configuration/monitoring-configuration.mdx#monitoringsnmpcommunity) configuration key).   
     * `"live-test.ravendb.net"` is the host.  
 
     ##### For SNMPv3:
@@ -195,7 +195,7 @@ __Access single OID value__:
 * An individual OID value can be retrieved via HTTP `GET` endpoint:  
   `<serverUrl>/monitoring/snmp?oid=<oid>`  
 
-* For example, a cURL request for the server [up-time metric](../../../server/administration/snmp/snmp-overview.mdx#1.3):
+* For example, a cURL request for the server [up-time metric](../../../server/administration/snmp/snmp-overview.mdx#13):
 
 <TabItem value="bash" label="bash">
 <CodeBlock language="bash">
@@ -212,7 +212,7 @@ __Access multiple OID values__:
 * Multiple OID values can be retrieved by making either a `GET` or a `POST` request to the following HTTP endpoint:
   `<serverUrl>/monitoring/snmp/bulk`
 
-* For example, cURL requests for the server [managed memory](../../../server/administration/snmp/snmp-overview.mdx#1.6.7) and [unmanaged memory](../../../server/administration/snmp/snmp-overview.mdx#1.6.8) metrics:
+* For example, cURL requests for the server [managed memory](../../../server/administration/snmp/snmp-overview.mdx#167) and [unmanaged memory](../../../server/administration/snmp/snmp-overview.mdx#168) metrics:
 
 <TabItem value="bash" label="bash">
 <CodeBlock language="bash">

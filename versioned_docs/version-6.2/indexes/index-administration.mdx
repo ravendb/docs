@@ -150,7 +150,7 @@ An index can be in one of the following states:
 
     * Specifically, an **auto-index** is marked as _'Idle'_ when the time difference between its last-query-time
       and the most recent time the database was queried (using any other index) exceeds a configurable threshold. This threshold is set by the
-      [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforemarkingautoindexasidleinmin) configuration key (30 minutes by default).
+      [Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforemarkingautoindexasidleinmin) configuration key (30 minutes by default).
 
     * This mechanism is designed to prevent auto-indexes from being marked as idle in databases that were offline for a long period,
       had no new data to index, were not queried, or were recently restored from a snapshot or backup.
@@ -164,11 +164,11 @@ An index can be in one of the following states:
         * When [the database is reloaded](../studio/database/settings/database-settings.mdx#how-to-reload-the-database).
 
     * If the idle auto-index is Not returned to the _'Normal'_ state, the server will **delete** it after a configurable time period,  
-      set by the [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexing.timetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key (72 hours by default).
+      set by the [Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs](../server/configuration/indexing-configuration.mdx#indexingtimetowaitbeforedeletingautoindexmarkedasidleinhrs) configuration key (72 hours by default).
 
     * Note:  
       The server evaluates whether an auto-index should be marked as idle, or whether an idle auto-index should be deleted,  
-      at intervals defined by the [Indexing.CleanupIntervalInMin](../server/configuration/indexing-configuration.mdx#indexing.cleanupintervalinmin) configuration key (10 minutes by default).  
+      at intervals defined by the [Indexing.CleanupIntervalInMin](../server/configuration/indexing-configuration.mdx#indexingcleanupintervalinmin) configuration key (10 minutes by default).  
       If _TimeToWaitBeforeMarkingAutoIndexAsIdleInMin_ or _TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs_  
       are set to values smaller than the cleanup interval, the index will be marked as idle or deleted only after the cleanup interval elapses.
 
@@ -201,8 +201,8 @@ An index can be in one of the following states:
 
 **Expert configuration options**:
 
-* [Server.IndexingAffinityMask](../server/configuration/server-configuration.mdx#server.indexingaffinitymask) - Control the affinity mask of indexing threads
-* [Server.NumberOfUnusedCoresByIndexes](../server/configuration/server-configuration.mdx#server.numberofunusedcoresbyindexes) - Set the number of cores that _won't_ be used by indexes
+* [Server.IndexingAffinityMask](../server/configuration/server-configuration.mdx#serverindexingaffinitymask) - Control the affinity mask of indexing threads
+* [Server.NumberOfUnusedCoresByIndexes](../server/configuration/server-configuration.mdx#servernumberofunusedcoresbyindexes) - Set the number of cores that _won't_ be used by indexes
 
 
 

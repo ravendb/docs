@@ -38,7 +38,7 @@ authentication in a much easier and faster way with automatic certificate renewa
 ## Prerequisites
 
 To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Load.Exec` must be set in [settings.json](../../configuration/configuration-options.mdx#json). 
- Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-4.2).  
+ Please note that `Security.Certificate.Load.Exec` has replaced the old `Security.Certificate.Exec` as of 4.2 - [see FAQ](../../../server/security/common-errors-and-faq.mdx#automatic-cluster-certificate-renewal-following-migration-to-42).  
 #### Setting up Client Certificates
 When the server is manually set up with a server certificate for the first time, there are no client certificates registered in the server yet. 
 The first action an administrator will do is to [generate/register a new client certificate](../../../server/security/authentication/client-certificate-usage.mdx).  
@@ -81,7 +81,7 @@ and include a basic (`Key Usage`) field and an enhanced (`Enhanced Key Usage`) f
 </Admonition>
 #### Certificate Location
 
-A [settings.json](../../configuration/configuration-options.mdx#settings.json) file must reside in each node's `Server` folder 
+A [settings.json](../../configuration/configuration-options.mdx#settingsjson) file must reside in each node's `Server` folder 
 and define the server and certificate settings. The server will retrieve this file and use its settings on startup.  
 Read more about RavenDB configuration options [here](../../configuration/configuration-options.mdx).  
 

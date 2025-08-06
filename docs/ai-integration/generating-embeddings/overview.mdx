@@ -71,9 +71,9 @@ import LanguageContent from "@site/src/components/LanguageContent";
   * Embeddings generation tasks are [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info.mdx) that process documents as they change.  
     Before contacting the provider after a document change, the task first checks the cache to see if a matching embedding already exists, avoiding unnecessary requests.
   * The requests to generate embeddings from the source text are sent to the provider in batches.  
-    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxbatchsize) configuration key.  
+    The batch size is configurable, see the [Ai.Embeddings.MaxBatchSize](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxbatchsize) configuration key.  
   * A failed embeddings generation task will retry after the duration set in the  
-    [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration.mdx#ai.embeddings.maxfallbacktimeinsec) configuration key.
+    [Ai.Embeddings.MaxFallbackTimeInSec](../../server/configuration/ai-integration-configuration.mdx#aiembeddingsmaxfallbacktimeinsec) configuration key.
 
 </Admonition>
 <Admonition type="note" title="Note">
@@ -126,8 +126,8 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * The number of embeddings generation tasks across all databases can also be monitored using [SNMP](../../server/administration/snmp/snmp-overview.mdx).  
   The following SNMP OIDs provide relevant metrics:
-  * [5.1.11.25](../../server/administration/snmp/snmp-overview.mdx#5.1.11.25) – Total number of enabled embeddings generation tasks.
-  * [5.1.11.26](../../server/administration/snmp/snmp-overview.mdx#5.1.11.26) – Total number of active embeddings generation tasks.
+  * [5.1.11.25](../../server/administration/snmp/snmp-overview.mdx#511125) – Total number of enabled embeddings generation tasks.
+  * [5.1.11.26](../../server/administration/snmp/snmp-overview.mdx#511126) – Total number of active embeddings generation tasks.
 
 
 

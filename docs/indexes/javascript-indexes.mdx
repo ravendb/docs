@@ -73,7 +73,7 @@ export const supportedLanguages = ["csharp", "java"];
   while **C# static indexes** require a [User/Admin](../server/security/authorization/security-clearance-and-permissions.mdx#section) certificate or higher.
 
 * To restrict the creation of JavaScript indexes to database admins (and above),  
-  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration.mdx#indexing.static.requireadmintodeployjavascriptindexes) configuration to `true`.
+  set the [Indexing.Static.RequireAdminToDeployJavaScriptIndexes](../server/configuration/indexing-configuration.mdx#indexingstaticrequireadmintodeployjavascriptindexes) configuration to `true`.
 
 * All other capabilities and features of JavaScript indexes are identical to those of [C# indexes](../indexes/indexing-basics.mdx).
 
@@ -231,7 +231,7 @@ public class BlogPostComment
 
 #### Example III - Map index - with inline string compilation
 * To define a JavaScript index using inline string compilation,  
-  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration.mdx#indexing.allowstringcompilation) configuration key to _true_.
+  you must set the [Indexing.AllowStringCompilation](../server/configuration/indexing-configuration.mdx#indexingallowstringcompilation) configuration key to _true_.
   
 * The following indexes use inline string compilation to evaluate whether each product’s `UnitsInStock` is low.
 

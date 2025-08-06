@@ -21,7 +21,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
   [Javascript Support](../../../../document-extensions/timeseries/client-api/javascript-support.mdx) 
   has been extended to support incremental time series.  
 
-* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseries.increment) 
+* You can use the Javascript [timeseries.increment](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseriesincrement) 
   method to create and modify incremental time series and their entries.  
   The method behaves the same way it does when it is called [using C#](../../../../document-extensions/timeseries/incremental-time-series/client-api/session/increment.mdx).  
 
@@ -34,7 +34,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * In this page:  
   * [The `timeseries` Interface](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#the-timeseries-interface)  
-  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseries.increment)  
+  * [`timeseries.increment`](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#timeseriesincrement)  
   * [Usage Sample](../../../../document-extensions/timeseries/incremental-time-series/client-api/javascript-support.mdx#usage-sample)  
 
 </Admonition>
@@ -112,7 +112,7 @@ void Increment(double value);
 ## Usage Sample
 
 In this sample we use 
-[session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-using-session.advanced.defer) 
+[session.Advanced.Defer](../../../../document-extensions/timeseries/client-api/session/patch.mdx#patching-using-sessionadvanceddefer) 
 to patch an incremental time series.  
 We go through a series of collected stock prices, and add a **2** factor to each collected stock price, 
 that has been originally miscalculated.  

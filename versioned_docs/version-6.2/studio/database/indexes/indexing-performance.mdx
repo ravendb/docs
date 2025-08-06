@@ -171,7 +171,7 @@ Indexing can be a taxing operation on CPU resources.
 There are a number of [configurations](../../../server/configuration/indexing-configuration.mdx) that efficiently use 
 batch stops to break up huge batch processes into smaller batches to prevent exhausting resources.  
 If a configuration is specific to an index, it can be [set in the Studio](../../../studio/database/indexes/create-map-index.mdx#configuration).  
-If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options.mdx#settings.json).  
+If it is a server-wide only configuration, it must be set in the server's [settings.json](../../../server/configuration/configuration-options.mdx#settingsjson).  
 
 While they prevent system exhaustion, batch stops also point to potential **opportunities to optimize** your indexes.  
  
@@ -188,18 +188,18 @@ Some indexes are responsible for a huge dataset and/or have very complex, demand
 To prevent resource exhaustion, RavenDB can break up large batches into smaller ones.  
 You can configure [batch stops](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues) with the following methods:
 
-- [Indexing.MapTimeoutInSec](../../../server/configuration/indexing-configuration.mdx#indexing.maptimeoutinsec)  
+- [Indexing.MapTimeoutInSec](../../../server/configuration/indexing-configuration.mdx#indexingmaptimeoutinsec)  
     Number of seconds after which mapping will end even if there is more to map.  
-- [Indexing.MapTimeoutAfterEtagReachedInMin](../../../server/configuration/indexing-configuration.mdx#indexing.maptimeoutafteretagreachedinmin)  
+- [Indexing.MapTimeoutAfterEtagReachedInMin](../../../server/configuration/indexing-configuration.mdx#indexingmaptimeoutafteretagreachedinmin)  
     This will only be applied if we pass the last [etag](../../../glossary/etag.mdx) in collection that we saw when batch was started.  
-- [Indexing.MapBatchSize](../../../server/configuration/indexing-configuration.mdx#indexing.mapbatchsize)  
+- [Indexing.MapBatchSize](../../../server/configuration/indexing-configuration.mdx#indexingmapbatchsize)  
     Maximum number of documents to be processed by the index per indexing batch.  
 #### Low Memory 
 
-* [Low Memory](../../../server/configuration/memory-configuration.mdx#memory.lowmemorylimitinmb) resources can slow down your system and result in [batch stops](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues). 
+* [Low Memory](../../../server/configuration/memory-configuration.mdx#memorylowmemorylimitinmb) resources can slow down your system and result in [batch stops](../../../studio/database/indexes/indexing-performance.mdx#common-indexing-issues). 
    * **On a local machine**  
      * You can upgrade your hardware, divide the work onto more machines in a cluster, and/or optimize your indexes.  
-     * Until then, there are a number of [indexing configurations](../../../server/configuration/indexing-configuration.mdx#indexing.mapbatchsize) that you can configure
+     * Until then, there are a number of [indexing configurations](../../../server/configuration/indexing-configuration.mdx#indexingmapbatchsize) that you can configure
       to break up processes into smaller batches. 
   * **Cloud server**  
     Your indexing process will continue until it is finished, but will be broken up into smaller batches and continue when enough CPU credits accumulate.  
@@ -213,7 +213,7 @@ You can configure [batch stops](../../../studio/database/indexes/indexing-perfor
       [externally replicate](../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) to new instances, and/or optimize your indexes.  
 #### Concurrent Processing of Too Many Indexes
 
-- [Limit concurrent index processes](../../../server/configuration/indexing-configuration.mdx#indexing.maxnumberofconcurrentlyrunningindexes) - 
+- [Limit concurrent index processes](../../../server/configuration/indexing-configuration.mdx#indexingmaxnumberofconcurrentlyrunningindexes) - 
   RavenDB can handle multiple index processes at the same time, but if there are too many, it will exhaust the system resources and cause a 
   noticeable slow-down.  The `Indexing.MaxNumberOfConcurrentlyRunningIndexes` method enables you to have many indexes without exhausting resources by allowing you to set
   the number of concurrent index processes.  

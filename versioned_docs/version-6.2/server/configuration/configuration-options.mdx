@@ -20,7 +20,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 
 * Any **configuration key** can be modified by either of the following options:
     * [Environment variables](../../server/configuration/configuration-options.mdx#environment-variables)
-    * [settings.json](../../server/configuration/configuration-options.mdx#settings.json)
+    * [settings.json](../../server/configuration/configuration-options.mdx#settingsjson)
     * [Command line arguments](../../server/configuration/configuration-options.mdx#command-line-arguments)
     * [Database settings view](../../server/configuration/configuration-options.mdx#database-settings-view) (database scope only)
 
@@ -36,7 +36,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * The server will retrieve these environment variables and apply their values.
 
 <Admonition type="note" title="Example" id="example" href="#example">
-To set the [Security.Certificate.Path](../../server/configuration/security-configuration.mdx#security.certificate.path) 
+To set the [Security.Certificate.Path](../../server/configuration/security-configuration.mdx#securitycertificatepath) 
 configuration key using an environment variable, add the environment variable `RAVEN_Security_Certificate_Path`.
 <TabItem value="plain" label="plain">
 <CodeBlock language="plain">
@@ -84,7 +84,7 @@ _settings.json_ configuration values **override** their matching
 <Admonition type="note" title="JSON arrays" id="json-arrays" href="#json-arrays">
 Configuration options that include multiple values (like strings separated by `;`) 
 can be configured using regular JSON arrays.  
-To set [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration.mdx#security.wellknowncertificates.admin), 
+To set [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration.mdx#securitywellknowncertificatesadmin), 
 for example, use:  
 <TabItem value="json" label="json">
 <CodeBlock language="json">
@@ -104,7 +104,7 @@ for example, use:
 <Admonition type="info" title="Info">
 Command line arguments configuration values **override** their matching 
 [environment variables](../../server/configuration/configuration-options.mdx#environment-variables) 
-and [settings.json](../../server/configuration/configuration-options.mdx#settings.json) values.  
+and [settings.json](../../server/configuration/configuration-options.mdx#settingsjson) values.  
 </Admonition>
 
 * The server can be configured using command line arguments that are passed to the console application 

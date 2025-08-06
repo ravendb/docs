@@ -20,28 +20,28 @@ import LanguageContent from "@site/src/components/LanguageContent";
 * You can set Kestrel's properties via the following RavenDB configuration keys.
 
 * In this page:
-  * [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#http.mindataratebytespersec)
-  * [Http.MinDataRateGracePeriodInSec](../../server/configuration/http-configuration.mdx#http.mindatarategraceperiodinsec)
-  * [Http.MaxRequestBufferSizeInKb](../../server/configuration/http-configuration.mdx#http.maxrequestbuffersizeinkb)
-  * [Http.MaxRequestLineSizeInKb](../../server/configuration/http-configuration.mdx#http.maxrequestlinesizeinkb)
-  * [Http.Http2.KeepAlivePingTimeoutInSec](../../server/configuration/http-configuration.mdx#http.http2.keepalivepingtimeoutinsec)
-  * [Http.Http2.KeepAlivePingDelayInSec](../../server/configuration/http-configuration.mdx#http.http2.keepalivepingdelayinsec)
-  * [Http.Http2.MaxStreamsPerConnection](../../server/configuration/http-configuration.mdx#http.http2.maxstreamsperconnection)
-  * [Http.UseResponseCompression](../../server/configuration/http-configuration.mdx#http.useresponsecompression)
-  * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration.mdx#http.allowresponsecompressionoverhttps)
-  * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration.mdx#http.gzipresponsecompressionlevel)
-  * [Http.DeflateResponseCompressionLevel](../../server/configuration/http-configuration.mdx#http.deflateresponsecompressionlevel)
-  * [Http.ZstdResponseCompressionLevel](../../server/configuration/http-configuration.mdx#http.zstdresponsecompressionlevel)
-  * [Http.StaticFilesResponseCompressionLevel](../../server/configuration/http-configuration.mdx#http.staticfilesresponsecompressionlevel)
-  * [Http.Protocols](../../server/configuration/http-configuration.mdx#http.protocols)
-  * [Http.AllowSynchronousIO](../../server/configuration/http-configuration.mdx#http.allowsynchronousio)
+  * [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#httpmindataratebytespersec)
+  * [Http.MinDataRateGracePeriodInSec](../../server/configuration/http-configuration.mdx#httpmindatarategraceperiodinsec)
+  * [Http.MaxRequestBufferSizeInKb](../../server/configuration/http-configuration.mdx#httpmaxrequestbuffersizeinkb)
+  * [Http.MaxRequestLineSizeInKb](../../server/configuration/http-configuration.mdx#httpmaxrequestlinesizeinkb)
+  * [Http.Http2.KeepAlivePingTimeoutInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingtimeoutinsec)
+  * [Http.Http2.KeepAlivePingDelayInSec](../../server/configuration/http-configuration.mdx#httphttp2keepalivepingdelayinsec)
+  * [Http.Http2.MaxStreamsPerConnection](../../server/configuration/http-configuration.mdx#httphttp2maxstreamsperconnection)
+  * [Http.UseResponseCompression](../../server/configuration/http-configuration.mdx#httpuseresponsecompression)
+  * [Http.AllowResponseCompressionOverHttps](../../server/configuration/http-configuration.mdx#httpallowresponsecompressionoverhttps)
+  * [Http.GzipResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpgzipresponsecompressionlevel)
+  * [Http.DeflateResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpdeflateresponsecompressionlevel)
+  * [Http.ZstdResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpzstdresponsecompressionlevel)
+  * [Http.StaticFilesResponseCompressionLevel](../../server/configuration/http-configuration.mdx#httpstaticfilesresponsecompressionlevel)
+  * [Http.Protocols](../../server/configuration/http-configuration.mdx#httpprotocols)
+  * [Http.AllowSynchronousIO](../../server/configuration/http-configuration.mdx#httpallowsynchronousio)
 
 </Admonition>
 ## Http.MinDataRateBytesPerSec
 
 * Set Kestrel's minimum required data rate in bytes per second.  
 
-* This option must be configured together with [Http.MinDataRateGracePeriod](../../server/configuration/http-configuration.mdx#http.mindatarategraceperiodinsec).  
+* This option must be configured together with [Http.MinDataRateGracePeriod](../../server/configuration/http-configuration.mdx#httpmindatarategraceperiodinsec).  
 - **Type**: `int`
 - **Default**: `null`
 - **Scope**: Server-wide only
@@ -54,7 +54,7 @@ import LanguageContent from "@site/src/components/LanguageContent";
 ## Http.MinDataRateGracePeriodInSec
 
 * Set Kestrel's allowed request and response grace period in seconds.  
-  This option must be configured together with [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#http.mindataratebytespersec)
+  This option must be configured together with [Http.MinDataRateBytesPerSec](../../server/configuration/http-configuration.mdx#httpmindataratebytespersec)
 
 * Kestrel checks every second if data is coming in at the specified rate in bytes/second.  
   If the rate drops below the minimum set by _MinResponseDataRate_, the connection is timed out.

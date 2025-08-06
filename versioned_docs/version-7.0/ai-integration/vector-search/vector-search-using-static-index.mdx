@@ -92,11 +92,11 @@ For numerical input only - define the size of the array from your source documen
 
 **Number of edges** -  
 Specify the number of edges that will be created for a vector during indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofedges).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfEdges](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofedges).
 
 **Number of candidates for indexing time** -   
 The  number of candidates (potential neighboring vectors) that RavenDB evaluates during vector indexing.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforindexing).   
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForIndexing](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforindexing).   
 (Note, this param differs from the number of candidates for query time).
 
 </Admonition>
@@ -127,7 +127,7 @@ enabling efficient retrieval of Approximate Nearest Neighbors (ANN) during queri
 **Minimum similarity** -  
 You can specify the minimum similarity to use when searching for related vectors. Can be a value between `0.0f` and `1.0f`.  
 A value closer to `1.0f` requires higher similarity between vectors, while a value closer to `0.0f` allows for less similarity.  
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultminimumsimilarity).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultMinimumSimilarity](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultminimumsimilarity).
 
 **Number of candidates at query time** -  
 You can specify the maximum number of vectors that RavenDB will return from a graph search.  
@@ -137,7 +137,7 @@ The number of the resulting documents that correspond to these vectors may be:
    
   * higher than the number of candidates - when the same vector is shared between multiple documents.
 
-If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.defaultnumberofcandidatesforquerying).
+If not specified, the default value is taken from the following configuration key: [Indexing.Corax.VectorSearch.DefaultNumberOfCandidatesForQuerying](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchdefaultnumberofcandidatesforquerying).
 
 **Search method** -  
 You can specify the search method at query time:  
@@ -156,7 +156,7 @@ The server will search for the most similar vectors in the indexed vector space,
 The documents that correspond to the resulting vectors are then returned to the client.
 
 By default, the resulting documents will be ordered by their score.
-You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexing.corax.vectorsearch.orderbyscoreautomatically) configuration key.  
+You can modify this behavior using the [Indexing.Corax.VectorSearch.OrderByScoreAutomatically](../../server/configuration/indexing-configuration.mdx#indexingcoraxvectorsearchorderbyscoreautomatically) configuration key.  
 In addition, you can apply any of the 'order by' methods to your query, as explained in [sort query results](../../client-api/session/querying/sort-query-results.mdx).
 
 </Admonition>
