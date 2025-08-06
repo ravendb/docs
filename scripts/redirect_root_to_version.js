@@ -8,7 +8,7 @@ function handler(event) {
 
     var defaultVersion = "7.1";
 
-    var staticAssetRegex = /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt)$/i;
+    var staticAssetRegex = /\.(html|css|js|jpg|jpeg|png|gif|webp|svg|ico|ttf|otf|woff|woff2|eot|mp4|mp3|webm|avi|mov|pdf|txt|xml)$/i;
 
     if (staticAssetRegex.test(uri)) {
         return request;
