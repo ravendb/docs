@@ -48,7 +48,7 @@ export default function CustomVersionDropdown() {
         onClick={() => setOpen((o) => !o)}
         className="w-full flex justify-between items-center rounded-md border border-black/10 dark:border-white/10 px-3 text-sm py-2 bg-transparent text-ifm-menu hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors transition-duration-300"
       >
-        <span>{currentLabel}</span>
+        <span>{currentLabel}.x</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -80,7 +80,7 @@ export default function CustomVersionDropdown() {
                 className="menu__link"
                 onClick={() => setOpen(false)}
               >
-                {version.label}
+                {version.label}.x
               </Link>
             </li>
           ))}

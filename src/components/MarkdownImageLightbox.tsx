@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import Counter from "yet-another-react-lightbox/plugins/counter";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import { useLocation } from "@docusaurus/router";
 import { Share } from "yet-another-react-lightbox/plugins";
@@ -27,14 +26,14 @@ export default function MarkdownImageLightbox() {
 
     images.forEach((img, index) => {
       const src = img.getAttribute("src");
-      if (!src) return;
+      if (!src) {return;}
 
       const altRaw = img.getAttribute("alt") || "";
       const alt = decodeHTML(altRaw);
 
       imageList.push({ src, description: alt });
 
-      if (img.classList.contains("lightbox-bound")) return;
+      if (img.classList.contains("lightbox-bound")) {return;}
 
       img.style.cursor = "zoom-in";
       img.classList.add("lightbox-bound");

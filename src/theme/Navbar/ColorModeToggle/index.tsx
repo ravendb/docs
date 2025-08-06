@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useColorMode } from "@docusaurus/theme-common";
+import { Icon } from "@site/src/components/Common/Icon";
 
 export default function NavbarColorModeToggle({
   className,
@@ -31,41 +32,15 @@ export default function NavbarColorModeToggle({
       aria-label="Toggle mode"
     >
       <div
-        className="absolute top-0 left-0 lg:left-[0.5px] w-full h-[200%] flex flex-col items-center justify-center transition-transform duration-300"
+        className="absolute top-0 left-0 w-full h-[200%] flex flex-col items-center justify-center transition-transform duration-300"
         style={{ transform: `translateY(${isDark ? "-50%" : "0%"})` }}
       >
         <div className="flex items-center justify-center h-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-ifm-menu"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 3v1m0 16v1m8.66-8.66h-1M4.34 12H3m15.07-5.07l-.71.71M6.34 17.66l-.71.71m12.02 0l-.71-.71M6.34 6.34l-.71-.71M12 8a4 4 0 100 8 4 4 0 000-8z"
-            />
-          </svg>
+          <Icon icon="moon" size="xs" color="ifm-menu" />
         </div>
 
         <div className="flex items-center justify-center h-8">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-ifm-menu"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"
-            />
-          </svg>
+          <Icon icon="sun" size="xs" color="ifm-menu" />
         </div>
       </div>
     </button>

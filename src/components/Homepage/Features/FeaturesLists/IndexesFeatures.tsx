@@ -1,23 +1,26 @@
 import Heading from "@theme/Heading";
 import FeatureItem from "@site/src/components/Homepage/Features/FeatureItem";
 import { useActiveDocContext } from "@docusaurus/plugin-content-docs/client";
+import { Feature } from "@site/src/typescript/feature";
 
 export default function IndexesFeaturesGrid() {
-    const pluginId = "default";
-    const { activeVersion } = useActiveDocContext(pluginId);
+  const pluginId = "default";
+  const { activeVersion } = useActiveDocContext(pluginId);
 
-    const IndexesFeaturesList = [
-        {
-            title: "Static indexes",
-            url: `/${activeVersion.label}/indexes/creating-and-deploying`,
-            description: "Short description",
-        },
-        {
-            title: "Auto indexes",
-            url: `/${activeVersion.label}/indexes/creating-and-deploying#auto-indexes`,
-            description: "Short description",
-        },
-    ];
+  const indexesFeatures: Feature[] = [
+    {
+      title: "Static indexes",
+      icon: "index",
+      url: `/${activeVersion.label}/indexes/creating-and-deploying`,
+      description: "Complete control over precomputing & performance",
+    },
+    {
+      title: "Auto indexes",
+      icon: "auto-indexes",
+      url: `/${activeVersion.label}/indexes/creating-and-deploying#auto-indexes`,
+      description: "Self‑optimizing database with zero manual effort",
+    },
+  ];
 
   return (
     <>
@@ -25,7 +28,7 @@ export default function IndexesFeaturesGrid() {
         Indexes
       </Heading>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {IndexesFeaturesList.map((props, idx) => (
+        {indexesFeatures.map((props, idx) => (
           <FeatureItem key={idx} {...props} />
         ))}
       </div>

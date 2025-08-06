@@ -16,7 +16,7 @@ export default function NavbarLogo(): ReactNode {
   const versionLabel = activeVersion?.label ?? latestVersion.label;
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex flex-wrap md:flex-nowrap gap-2 items-center">
       {isCloudPath ? (
         <>
           <Link

@@ -6,7 +6,6 @@ import React, {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import { useHistory } from "@docusaurus/router";
@@ -21,13 +20,14 @@ import {
 import Translate from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import translations from "@theme/SearchTranslations";
-import type {
+import {
   InternalDocSearchHit,
   DocSearchModal as DocSearchModalType,
   DocSearchModalProps,
   StoredDocSearchHit,
   DocSearchTransformClient,
   DocSearchHit,
+  useDocSearchKeyboardEvents,
 } from "@docsearch/react";
 
 import type { AutocompleteState } from "@algolia/autocomplete-core";
@@ -89,7 +89,7 @@ function useTransformSearchClient(): DocSearchModalProps["transformSearchClient"
       searchClient.addAlgoliaAgent("docusaurus", docusaurusVersion);
       return searchClient;
     },
-    [docusaurusVersion],
+    [docusaurusVersion]
   );
 }
 
@@ -106,7 +106,7 @@ function useTransformItems(props: Pick<DocSearchProps, "transformItems">) {
               ...item,
               url: processSearchResultUrl(item.url),
             }));
-    },
+    }
   );
   return transformItems;
 }
@@ -119,7 +119,7 @@ function useResultsFooterComponent({
   return useMemo(
     () =>
       ({ state }) => <ResultsFooter state={state} onClose={closeModal} />,
-    [closeModal],
+    [closeModal]
   );
 }
 
@@ -193,7 +193,7 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
   const searchButtonRef = useRef<HTMLButtonElement>(null as any);
   const [isOpen, setIsOpen] = useState(false);
   const [initialQuery, setInitialQuery] = useState<string | undefined>(
-    undefined,
+    undefined
   );
 
   const prepareSearchContainer = useCallback(() => {
@@ -226,7 +226,7 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
       setInitialQuery(event.key);
       openModal();
     },
-    [openModal],
+    [openModal]
   );
 
   const resultsFooterComponent = useResultsFooterComponent({ closeModal });
@@ -262,8 +262,6 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
 
       {isOpen &&
         DocSearchModal &&
-        // TODO need to fix this React Compiler lint error
-        // eslint-disable-next-line react-compiler/react-compiler
         searchContainer.current &&
         createPortal(
           <DocSearchModal
@@ -282,9 +280,7 @@ function DocSearch({ externalUrlRegex, ...props }: DocSearchProps) {
             translations={props.translations?.modal ?? translations.modal}
             searchParameters={searchParameters}
           />,
-          // TODO need to fix this React Compiler lint error
-          // eslint-disable-next-line react-compiler/react-compiler
-          searchContainer.current,
+          searchContainer.current
         )}
     </>
   );
