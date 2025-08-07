@@ -360,7 +360,7 @@ no special configuration is required.
   See the dedicated article [Unarchiving documents](../data-archival/unarchiving-documents).   
 
 * When **cloning** an archived document using the `put` method within a patching script  
-  (see method details in this [Document operations](../server/kb/javascript-engine#document-operations) section) the cloned document will Not be archived,  
+  (see this [clone document example](../client-api/operations/patching/single-document#clone-document)) the cloned document will Not be archived,  
   and the `@archived: true` property will be removed from the cloned document.
 
 {PANEL/}
