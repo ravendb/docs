@@ -18,7 +18,8 @@ export default function IntegrationFeaturesGrid() {
       title: "OLAP ETL",
       icon: "olap-etl",
       url: `/${activeVersion.label}/server/ongoing-tasks/etl/olap`,
-      description: "Short description",
+      description:
+        "Export data as ApacheParquet to your data lake for analytics",
     },
     {
       title: "Elasticsearch ETL",
@@ -90,13 +91,7 @@ export default function IntegrationFeaturesGrid() {
       title: "Akka.NET",
       icon: "akka-net",
       url: `/${activeVersion.label}/integrations/akka.net-persistence/integrating-with-akka-persistence`,
-      description: "Use RavenDB as Akka.Persistence storage.",
-    },
-    {
-      title: "Grafana",
-      icon: "grafana",
-      url: `/${activeVersion.label}/server/troubleshooting/logging`,
-      description: "Visualize RavenDB metrics in real-time Grafana dashboards",
+      description: "Use RavenDB as Akka.Persistence storage",
     },
   ];
 
