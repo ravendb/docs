@@ -18,7 +18,7 @@ export default function BackgroundTasksFeaturesGrid() {
       title: "Refresh",
       icon: "document-refresh",
       url: `/${activeVersion.label}/server/extensions/refresh`,
-      description: "Automatically re-trigger your documents ",
+      description: "Automatically re-trigger your documents",
     },
     {
       title: "Archival",

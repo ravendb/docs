@@ -83,11 +83,13 @@ export default function NotFoundContent({ className }: Props): ReactNode {
               title="Homepage"
               description="Feeling lost? Start at the very beginning"
               url={isCloudPath ? "/cloud" : `/${versionLabel}`}
+              icon="home"
             />
             <CardWithIcon
               title="Search the docs"
               description="There's probably an article for your issue already"
               url="/search"
+              icon="search"
             />
           </div>
         </div>
