@@ -228,7 +228,7 @@ notify the LLM when it's done.
    E.g.,  
    `apply this action tool when you need to create a new summary document`  
 
-4. **Sample parameters object**
+4. **Sample parameters object**  
    Define the layout of a JSON object that the LLM will send to the agent when it 
    requests to run this action tool.  
    The LLM may populate the properties that you define for this object according 
