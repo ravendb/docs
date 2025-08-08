@@ -27,9 +27,9 @@ public class GenAI
                 
                 // Ollama connection settings
                 OllamaSettings = new OllamaSettings(
-                    // LLM Ollama model for text generation
+                    // LLM model for text generation
                     model: "llama3.2",
-                    // local Ollama mode URL
+                    // local URL
                     uri: "http://localhost:11434/")
             };
             
@@ -42,17 +42,17 @@ public class GenAI
         #region gen-ai_create-connection-string-open-ai
         using (var store = new DocumentStore())
         {
-            // Define the connection string to Ollama
+            // Define the connection string to OpenAI
             var connectionString = new AiConnectionString
             {
                 // Connection string name & identifier
                 Name = "open-ai-cs",
 
-                // Ollama connection settings
+                // OpenAI connection settings
                 OpenAiSettings = new OpenAiSettings(
                     apiKey: "your-api-key",
                     endpoint: "https://api.openai.com/v1",
-                    // LLM Ollama model for text generation
+                    // text generation model
                     model: "gpt-4o-mini")
             };
 
@@ -209,6 +209,7 @@ public class AiConnectionString
     public string Name { get; set; }
     public string Identifier { get; set; }
     public OllamaSettings OllamaSettings { get; set; }
+    ...
 }
 
 public class OllamaSettings : AbstractAiSettings
@@ -224,6 +225,7 @@ public class AiConnectionString
     public string Name { get; set; }
     public string Identifier { get; set; }
     public OpenAiSettings OpenAiSettings { get; set; }
+    ...
 }
 
 public class OpenAiSettings : AbstractAiSettings
@@ -234,11 +236,6 @@ public class OpenAiSettings : AbstractAiSettings
     public int? Dimensions { get; set; }
     public string OrganizationId { get; set; }
     public string ProjectId { get; set; }
-}
-
-public class AbstractAiSettings
-{
-    public int? EmbeddingsMaxConcurrentBatches { get; set; }
 }
 #endregion
 

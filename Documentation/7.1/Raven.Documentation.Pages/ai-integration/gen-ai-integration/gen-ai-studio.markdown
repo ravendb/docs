@@ -100,8 +100,8 @@ To add a new GenAI task, open: **AI Hub** > **AI Tasks** > **Add AI Task** > **G
    Give your task a meaningful name.  
 
 2. <a id="unique-identifier" />**Identifier**  
-   Give your task a unique identifier that will be used by the GenAI task.  
-    * You can name the identifier yourself, or click **Regenerate** to name it automatically.  
+   Give your task a unique identifier.  
+    * You can provide the identifier yourself, or click **Regenerate** to create it automatically.  
     * When you complete creating the task and run it, the task will add a metadata property 
       to documents it processes, named after the identifier you define here. The task will 
       use this property to keep track of document parts it had already processed.  
@@ -369,7 +369,7 @@ If your task is enabled, it will start running when you save it.
 
 - [GenAI Overview](../../ai-integration/gen-ai-integration/gen-ai-overview)
 - [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
-- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/security-concerns)
+- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/gen-ai-security-concerns)
 
 ### Vector Search
 
