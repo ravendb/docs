@@ -23,7 +23,7 @@ export default function BackgroundTasksFeaturesGrid() {
     {
       title: "Archival",
       icon: "data-archival",
-      url: `/${activeVersion.label}/server/extensions/archival`,
+      url: `/${activeVersion.label}/data-archival/overview`,
       description: "Retain old documents access while boosting performance",
     },
   ];

@@ -6,7 +6,7 @@ import { Icon } from "../../Common/Icon";
 
 const useCases = [
   {
-    title: "Short introduction to data modeling in non-relational database",
+    title: "Survive the AI tidal wave with RavenDB & GenAI",
     imgSrc:
       "https://ravendb.net/wp-content/uploads/2025/06/article-cover-genai.png",
     description: (
