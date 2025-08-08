@@ -151,7 +151,6 @@ public class AiAgents
         #endregion
 
         #region ai-agents_agent_action-tool-sample
-        
         agent.Actions =
         [   // set action tool
             new AiAgentToolAction
@@ -161,6 +160,30 @@ public class AiAgents
                 ParametersSampleObject = "{ \"DocumentID\": \"The ID of the selected document\" }"
             }
         ];
+        #endregion
+
+        #region ai-agents_trimming-configuration_example
+        // Set chat trimming configuration
+        AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
+        {
+            SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
+            SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
+            ResultPrefix = "Summary: ",
+            MaxTokensBeforeSummarization = 1000,
+            MaxTokensAfterSummarization = 200
+        };
+
+        AiAgentHistoryConfiguration history = new AiAgentHistoryConfiguration()
+        {
+            HistoryExpirationInSec = 60 * 60 * 24 // 1 day
+        };
+
+        agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization, history);
+        #endregion
+
+        #region ai-agents_MaxModelIterationsPerCall_function
+        // Limit the number of times the LLM can request for tools in response to a single user prompt
+        agent.MaxModelIterationsPerCall = 3;
         #endregion
 
         #region ai-agents_CreateAgentAsync_example
@@ -253,6 +276,20 @@ public class AiAgents
             }
         ];
 
+        // Set chat trimming configuration
+        AiAgentSummarizationByTokens summarization = new AiAgentSummarizationByTokens()
+        {
+            SummarizationTaskBeginningPrompt = "Summarize the conversation so far.",
+            SummarizationTaskEndPrompt = "Generate a summary of the conversation.",
+            ResultPrefix = "Summary: ",
+            MaxTokensBeforeSummarization = 1000,
+            MaxTokensAfterSummarization = 200
+        };
+        agent.ChatTrimming = new AiAgentChatTrimmingConfiguration(summarization);
+
+        // Limit the number of times the LLM can request for tools in response to a single user prompt
+        agent.MaxModelIterationsPerCall = 3;
+
         var createResult = await store.AI.CreateAgentAsync(agent);
         // Set chat
         var chat = store.AI.Conversation(
@@ -286,6 +323,7 @@ public class AiAgents
         #endregion
         */
 
+        /*
         #region ai-agents_AiAgentConfiguration-class_definition
         public class AiAgentConfiguration
         {
@@ -302,6 +340,7 @@ public class AiAgents
             public int? MaxModelIterationsPerCall { get; set; }
         }
         #endregion
+        */
 
         /*
         #region ai-agents_connection-string_syntax_open-ai
@@ -391,5 +430,62 @@ public class AiAgents
         #region ai-agents_SetUserPrompt_definition
         void SetUserPrompt(string userPrompt);
         #endregion
+
+        /*
+        #region ai-agents_MaxModelIterationsPerCall_definition
+        public int? MaxModelIterationsPerCall
+        #endregion
+        */
+
+        /*
+        #region ai-agents_trimming-configuration_syntax
+        public class AiAgentSummarizationByTokens
+        {
+            // Sent with the system prompt and appears before any summary content.
+            // Customize it to influence the structure, tone, or depth of the generated summary.
+            public string SummarizationTaskBeginningPrompt { get; set; }
+
+            // A concise request to generate the summary according to the guidelines set by 
+            // SummarizationTaskBeginningPrompt. Sent after the system prompt.
+            // Adjust its phrasing to change how explicitly the model understands the summarization task.
+            public string SummarizationTaskEndPrompt { get; set; }
+
+            // An introductory prefix that appears before the generated summary of the previous conversation.
+            // Customize this prefix to change how the summary is introduced when producing conversation summaries.
+            public string ResultPrefix { get; set; }
+
+            // The maximum number of tokens allowed before summarization is triggered.
+            public long? MaxTokensBeforeSummarization { get; set; }
+
+            // The maximum number of tokens allowed in the generated summary.
+            public long? MaxTokensAfterSummarization { get; set; }
+        }
+
+        public class AiAgentTruncateChat
+        {
+            // The maximum number of messages allowed before deleting old messages
+            public int MessagesLengthBeforeTruncate { get; set; }
+
+            // The number of messages after deleting old messages
+            public int MessagesLengthAfterTruncate { get; set; } = DefaultMessagesLengthBeforeTruncate / 2;
+        }
+        */
+
+        /*
+        public class AiAgentHistoryConfiguration
+        {
+            // Enables history for the AI agents conversations.
+            public AiAgentHistoryConfiguration()
+
+            // Enables history for the AI agents conversations.
+            // <param name="expiration">The timespan after which history documents expire.</param>
+            public AiAgentHistoryConfiguration(TimeSpan expiration)
+
+            // The timespan after which history documents expire.
+            public int? HistoryExpirationInSec { get; set; }
+        }
+        #endregion
+        */
+
     }
 }

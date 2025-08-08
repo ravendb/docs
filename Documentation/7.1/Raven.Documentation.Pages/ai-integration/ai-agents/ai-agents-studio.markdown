@@ -489,14 +489,6 @@ Summary of previous conversation: **Context & Identifiers:**
 
 ## Related Articles
 
-### GenAI Integration
+### AI Agents
 
-- [GenAI Overview](../../ai-integration/gen-ai-integration/gen-ai-overview)
-- [GenAI API](../../ai-integration/gen-ai-integration/gen-ai-api)  
-- [GenAI Security Concerns](../../ai-integration/gen-ai-integration/security-concerns)
-
-### Vector Search
-
-- [Vector search using a dynamic query](../../ai-integration/vector-search/vector-search-using-dynamic-query.markdown)
-- [Vector search using a static index](../../ai-integration/vector-search/vector-search-using-static-index.markdown)
-- [Data types for vector search](../../ai-integration/vector-search/data-types-for-vector-search)
+- [AI Agents API](../../ai-integration/ai-agents/ai-agents-api)

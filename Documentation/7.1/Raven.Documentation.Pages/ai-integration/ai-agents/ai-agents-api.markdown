@@ -3,31 +3,39 @@
 
 {NOTE: }
 
+* A RavenDB **AI Agent** can be used by a RavenDB client to invoke a chat or 
+  a continuous interaction between the client, and AI model, and a RavenDB database.  
+
+* The AI agent can provide the AI model with a set of query and action tools that 
+  the LLM can use freely to access the database or trigger the user to action.  
+
 * In this article:
-   * [AI Agents: overview](../../ai-integration/ai-agents/ai-agents-api#create-ai-agent)  
-   * [Creating a connection string](../../ai-integration/ai-agents/ai-agents-api#create-ai-agent)  
-   * [Defining and running an AI agent](../../ai-integration/ai-agents/ai-agents-api#configure-basic-settings)
-      * [Define agent configuration](../../ai-integration/ai-agents/ai-agents-api#configure-basic-settings)
-      * [Create the agent](../../ai-integration/ai-agents/ai-agents-api#configure-basic-settings)
-   * [Conversations](../../ai-integration/ai-agents/ai-agents-api#set-agent-parameters)
-   * [Defining agent tools](../../ai-integration/ai-agents/ai-agents-api#define-agent-tools)
-      * [Query tools](../../ai-integration/ai-agents/ai-agents-api#add-new-query-tool)
-      * [Action tools](../../ai-integration/ai-agents/ai-agents-api#add-new-action-tool)
-   * [Get an agent](../../ai-integration/ai-agents/ai-agents-api#set-chat-persistence)
+   * [Creating a connection string](../../ai-integration/ai-agents/ai-agents-api#creating-a-connection-string)  
+   * [Defining and running an AI agent](../..ai-integration/ai-agents/ai-agents-api#defining-and-running-an-ai-agent)
+      * [Define agent configuration](../../ai-integration/ai-agents/ai-agents-api#define-agent-configuration)
+      * [Set Agent ID](../../ai-integration/ai-agents/ai-agents-api#set-agent-id)
+      * [Add agent parameters](../../ai-integration/ai-agents/ai-agents-api#add-agent-parameters)
+      * [Set maximum number of iterations](../../ai-integration/ai-agents/ai-agents-api#set-maximum-number-of-iterations)
+      * [Set chat trimming configuration](../../ai-integration/ai-agents/ai-agents-api#set-chat-trimming-configuration)
+      * [Add Sample object or Schema](../../ai-integration/ai-agents/ai-agents-api#add-sample-object-or-schema)
+      * [Add agent tools](../../ai-integration/ai-agents/ai-agents-api#add-sample-object-or-schema)
+         * [Query tools](../../ai-integration/ai-agents/ai-agents-api#query-tools)
+         * [Action tools](../../ai-integration/ai-agents/ai-agents-api#query-tools)
+      * [Create the agent](../../ai-integration/ai-agents/ai-agents-api#query-tools)
+   * [Conversations](../../ai-integration/ai-agents/ai-agents-api#conversations)
+      * [Chats](../../ai-integration/ai-agents/ai-agents-api#chats)
+      * [Continuous conversations](../../ai-integration/ai-agents/ai-agents-api#chats)
+      * [Stored conversations' Prefix and IDs](../../ai-integration/ai-agents/ai-agents-api#stored-conversations-prefix-and-ids)
+      * [Set chat and run it](../../ai-integration/ai-agents/ai-agents-api#set-a-chat-session-and-run-it)
+   * [Full Example](../../ai-integration/ai-agents/ai-agents-api#full-example)
 {NOTE/}
 
 ---
 
-{PANEL: AI Agents: overview}
-
-an overall look at the process of the creation of an AI agent
-
-{PANEL/}
-
 {PANEL: Creating a connection string}
 
-to create a connection string that your agent will use to connect the LLM, Create an 
-`AiConnectionString` connection string using the `PutConnectionStringOperation` operation.  
+Your agent will need a connection string to connect the LLM. Create an `AiConnectionString` 
+connection string using the `PutConnectionStringOperation` operation.  
 
 You can connect a local `Ollama` application if your considerations are mainly speed, cost, 
 open-source, or security, or a remote `OpenAI` service for its additional resources and capabilities.  
@@ -56,8 +64,10 @@ open-source, or security, or a remote `OpenAI` service for its additional resour
 
 ## Define agent configuration
 
-To define an AI agent create a new `AiAgentConfiguration` class.  
-While creating the class, pass its constructor the agent's Name, a reference to the 
+To create an AI agent you need to prepare an agent configuration and populate it with 
+your settings and tools.  
+Start by creating a new `AiAgentConfiguration` instance.  
+While creating the instance, pass its constructor the agent's Name, a reference to the 
 [connection string]() you created, and a System prompt.  
 The agent will send the system prompt you define here to the LLM, to define the LLM's role 
 and explain it how this role should be fulfilled.  
@@ -71,14 +81,14 @@ a single document in a requested subject.
 * Method definition:  
   {CODE ai-agents_AiAgentConfiguration_definition@AiIntegration\AiAgents\AiAgents.cs /}
 
-* `AiAgentConfiguration` class definition:
+* `AiAgentConfiguration` definition:
   {CODE ai-agents_AiAgentConfiguration-class_definition@AiIntegration\AiAgents\AiAgents.cs /}
 
 ---
 
 Once the agent configuration is created, we need to add it a few additional elements.  
 
-## Agent ID
+## Set agent ID
 
 Use the `Identifier` property to provide the agent with a unique ID that the 
 system will recognize it by.  
@@ -100,6 +110,44 @@ written in natural language.
 
 * `AiAgentParameter` Definition:
   {CODE ai-agents_AiAgentParameter_definition@AiIntegration\AiAgents\AiAgents.cs /}
+
+## Set maximum number of iterations
+
+You can limit the number of times that the LLM is allowed to request to use a tool 
+in response to a user prompt.  
+To change this limit use `MaxModelIterationsPerCall`.  
+
+* Example:
+  {CODE ai-agents_MaxModelIterationsPerCall_function@AiIntegration\AiAgents\AiAgents.cs /}
+
+* `AiAgentParameter` Definition:
+  {CODE ai-agents_MaxModelIterationsPerCall_definition@AiIntegration\AiAgents\AiAgents.cs /}
+
+## Set chat trimming configuration
+
+You can reduce the size of the prompt that is sent to the LLM by summarizing or truncating older messages.  
+This can be helpful when transmission costs are a concern or the context may become too large to handle efficiently.  
+
+To summarize or truncate old messages, set the agent `ChatTrimming` property with 
+an `AiAgentChatTrimmingConfiguration` instance and use it to select your trimming strategy.  
+When creating the instance, pass its constructor either a `Truncate` or a `Summarize` strategy.
+
+Summarization strategy is set using a `AiAgentSummarizationByTokens` class.  
+Truncation strategy is set using a `AiAgentTruncateChat` class.  
+Note that you need to select a single strategy, you cannot use both strategies at the same time.  
+
+A history of the original messages, before summarizing or truncating them, can optionally 
+be kept in the `@conversations-history` collection.  
+To determine whether to keep the original messages and for how long, also pass the 
+`AiAgentChatTrimmingConfiguration` constructor an `AiAgentHistoryConfiguration` instance 
+with your history settings.  
+
+* Example:
+  {CODE ai-agents_trimming-configuration_example@AiIntegration\AiAgents\AiAgents.cs /}
+
+* Syntax:
+  {CODE ai-agents_trimming-configuration_syntax@AiIntegration\AiAgents\AiAgents.cs /}
+
 
 ## Add Sample object or Schema
 
@@ -247,7 +295,7 @@ Conversations are kept in the `@conversations` collection with a prefix (such as
 that can be set when the conversation is initiated. The conversation ID after the set prefix 
 is given to the conversation automatically, similarly to the automatic IDs given to documents.  
 
-## Set a chat session and run it
+## Set chat and run it
 
 - Set a chat session using the `Conversation` method.  
   Pass it the **agent ID**, the **ID of the conversation** you want to continue - 
@@ -270,11 +318,22 @@ without an ID and a new conversation will be stored in `@conversations`.
 * `SetUserPrompt` Definition:  
   {CODE ai-agents_SetUserPrompt_definition@AiIntegration\AiAgents\AiAgents.cs /}
   
-{PANEL: Get an agent}
 {PANEL/}
 
-{PANEL: Full Example}
+{PANEL: Example}
+
+The agent in this example is a library assistant with access to a documentation database.  
+Its users pass it a subject, and the agent searches the database for documents in this 
+subject by their title. When it finds a document that suits the user it gives the user 
+asummary of the document. It uses a query tool to search the documents, and an action 
+tool to trigger the user to retrieve for it the text from the document.  
 
 {CODE ai-agents_full-example@AiIntegration\AiAgents\AiAgents.cs /}
 
 {PANEL/}
+
+## Related Articles
+
+### AI Agents
+
+- [AI Agents Studio](../../ai-integration/ai-agents/ai-agents-studio)
