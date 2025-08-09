@@ -1,0 +1,30 @@
+---
+title: "Metadata only"
+hide_table_of_contents: true
+sidebar_label: Metadata only
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Metadata only
+
+Every RavenDB's response that includes documents together with metadata can be cut off to metadata only. If this is your intention add *?metadata-only=true* parameter to the query string.
+In result only document metadata will be contained in the HTTP response to a request. Below there are a few simple use cases:
+
+```json 
+curl -X GET http://localhost:8080/docs/?metadata-only=true
+```
+
+```json 
+curl -X GET "http://localhost:8080/queries?id=albums/661&id=albums/629&metadata-only=true"
+```
+
+```json 
+curl -X GET "http://localhost:8080/indexes/AlbumsByGenre?query=Genre:genres/1&metadata-only=true"
+```

@@ -1,0 +1,339 @@
+---
+title: "Session: Querying: How to Perform Queries Lazily"
+hide_table_of_contents: true
+sidebar_label: Perform a Lazy Query
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to Perform Queries Lazily
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+In some situations, query execution must be delayed. To cover such a scenario, `Lazily` and many other query extensions have been introduced.
+
+## Lazily and LazilyAsync
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="csharp">
+{`// Define a lazy query
+Lazy<IEnumerable<Employee>> lazyEmployees = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+     // Add a call to 'Lazily'
+    .Lazily();
+
+IEnumerable<Employee> employees = lazyEmployees.Value; // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **onEval** | Action&lt;IEnumerable&lt;TResult&gt;&gt; | An action that will be performed on the query results. |
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;IEnumerable&lt;TResult&gt;&gt; | Lazy query initializer returning query results. |
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`Lazy<IEnumerable<Employee>> employeesLazy = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+    .Lazily();
+
+IEnumerable<Employee> employees = employeesLazy.Value; // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`Lazy<Task<IEnumerable<Employee>>> employeesLazy = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+    .LazilyAsync();
+
+IEnumerable<Employee> employees = await employeesLazy.Value; // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Counts
+
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="csharp">
+{`// Define a lazy count query
+Lazy<int> lazyCount = session
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+     // Add a call to 'CountLazily'
+    .CountLazily();
+
+int count = lazyCount.Value; // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;int&gt; | Lazy query initializer returning a count of matched documents. |
+
+### Example
+
+<TabItem value="lazy_5" label="lazy_5">
+<CodeBlock language="csharp">
+{`// Define a lazy count query
+Lazy<Task<int>> lazyCount = asyncSession
+    .Query<Employee>()
+    .Where(x => x.FirstName == "Robert")
+     // Add a call to 'CountLazilyAsync'
+    .CountLazilyAsync();
+
+int count = await lazyCount.Value; // Query is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggestions
+
+<TabItem value="lazy_6" label="lazy_6">
+<CodeBlock language="csharp">
+{`// Define a lazy DocumentQuery
+Lazy<int> lazyCount = session.Advanced
+    .DocumentQuery<Employee>()
+    .WhereEquals(x => x.FirstName, "Robert")
+     // Add a call to 'CountLazily'
+    .CountLazily();
+
+int count = lazyCount.Value; // DocumentQuery is executed here
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Dictionary&lt;string, SuggestionResult&gt;&gt; | Lazy query initializer containing a dictionary with suggestions for matching executed query |
+
+### Example
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="csharp">
+{`// Define a lazy suggestion query
+Lazy<Dictionary<string, SuggestionResult>> lazySuggestions = session
+    .Query<Product>()
+    .SuggestUsing(builder => builder.ByField(x => x.Name, "chaig"))
+     // Add a call to 'ExecuteLazy'
+    .ExecuteLazy();
+
+Dictionary<string, SuggestionResult> suggest = lazySuggestions.Value; // Query is executed here
+List<string> suggestions = suggest["Name"].Suggestions;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Facets
+
+<TabItem value="lazy_8" label="lazy_8">
+<CodeBlock language="csharp">
+{`// Define a lazy suggestion query
+Lazy<Task<Dictionary<string, SuggestionResult>>> lazySuggestions = asyncSession
+    .Query<Employee>()
+    .SuggestUsing(builder => builder.ByField("Name", "chaig"))
+     // Add a call to 'ExecuteLazyAsync'
+    .ExecuteLazyAsync();
+
+Dictionary<string, SuggestionResult> suggest = await lazySuggestions.Value; // Query is executed here
+List<string> suggestions = suggest["Name"].Suggestions;
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Dictionary&lt;string, FacetResult&gt;&gt; | Lazy query initializer containing a dictionary with facet results matching executed query |
+
+### Example
+
+<TabItem value="lazy_9" label="lazy_9">
+<CodeBlock language="csharp">
+{`// Define a lazy DocumentQuery
+Lazy<Dictionary<string, SuggestionResult>> lazySuggestions = session.Advanced
+    .DocumentQuery<Employee>()
+    .SuggestUsing(builder => builder.ByField("Name", "chaig"))
+     // Add a call to 'ExecuteLazy'
+    .ExecuteLazy();
+
+Dictionary<string, SuggestionResult> suggest = lazySuggestions.Value; // DocumentQuery is executed here
+List<string> suggestions = suggest["FullName"].Suggestions;
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
+
+## Lazily
+
+<TabItem value="lazy_1" label="lazy_1">
+<CodeBlock language="java">
+{`Lazy<List<T>> lazily();
+
+Lazy<List<T>> lazily(Consumer<List<T>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **onEval** | Consumer&lt;List&lt;TResult&gt;&gt; | An action that will be performed on the query results. |
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;List&lt;TResult&gt;&gt; | Lazy query initializer returning query results. |
+
+### Example
+
+<TabItem value="lazy_2" label="lazy_2">
+<CodeBlock language="java">
+{`Lazy<List<Employee>> employeesLazy = session
+    .query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .lazily();
+
+List<Employee> employees = employeesLazy.getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Counts
+
+<TabItem value="lazy_4" label="lazy_4">
+<CodeBlock language="java">
+{`Lazy<Integer> countLazily();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Integer&gt; | Lazy query initializer returning a count of matched documents. |
+
+### Example
+
+<TabItem value="lazy_5" label="lazy_5">
+<CodeBlock language="java">
+{`Lazy<Integer> countLazy = session
+    .query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .countLazily();
+
+Integer count = countLazy.getValue(); // query will be executed here
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Suggestions
+
+<TabItem value="lazy_6" label="lazy_6">
+<CodeBlock language="java">
+{`Lazy<Map<String, SuggestionResult>> executeLazy();
+
+Lazy<Map<String, SuggestionResult>> executeLazy(Consumer<Map<String, SuggestionResult>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Map&lt;String, SuggestionResult&gt;&gt; | Lazy query initializer containing a map with suggestions for matching executed query |
+
+### Example
+
+<TabItem value="lazy_7" label="lazy_7">
+<CodeBlock language="java">
+{`Lazy<Map<String, SuggestionResult>> suggestLazy = session
+    .query(Employee.class, Query.index("Employees_ByFullName"))
+    .suggestUsing(builder -> builder.byField("FullName", "johne"))
+    .executeLazy();
+
+Map<String, SuggestionResult> suggest = suggestLazy.getValue(); // query will be executed here
+List<String> suggestions = suggest.get("FullName").getSuggestions();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Facets
+
+<TabItem value="lazy_8" label="lazy_8">
+<CodeBlock language="java">
+{`Lazy<Map<String, FacetResult>> executeLazy();
+
+Lazy<Map<String, FacetResult>> executeLazy(Consumer<Map<String, FacetResult>> onEval);
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ----- |
+| Lazy&lt;Map&lt;String, FacetResult&gt;&gt; | Lazy query initializer containing a map with facet results matching executed query |
+
+### Example
+
+<TabItem value="lazy_9" label="lazy_9">
+<CodeBlock language="java">
+{`Lazy<Map<String, FacetResult>> facetsLazy = session
+    .query(Camera.class, Query.index("Camera/Costs"))
+    .aggregateUsing("facets/CameraFacets")
+    .executeLazy();
+
+Map<String, FacetResult> facets = facetsLazy.getValue(); // query will be executed here
+FacetResult results = facets.get("manufacturer");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Perform Operations Lazily](../../../client-api/session/how-to/perform-operations-lazily)
+
+
+-->

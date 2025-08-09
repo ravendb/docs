@@ -1,0 +1,25 @@
+---
+title: "Storing dates in RavenDB"
+hide_table_of_contents: true
+sidebar_label: Storing dates in RavenDB
+sidebar_position: 12
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Storing dates in RavenDB
+
+## How should I store dates in RavenDB? Using UTC? Using Local Time?
+When you store a date to RavenDB, it will save whether it's UTC or not.  When it's not UTC, a local date is treated as "Unspecified".
+  
+However if you have people from around the world using the same database, and you use unspecified local times, the offset is not stored. If you want to deal with this scenario you need to store the date using a `DateTimeOffset` that will store the date and time, and its time zone offset.
+
+The decision of whether to use UTC, or Local Time, or `DateTimeOffset` is an application decision, not an infrastructure decision.  There are valid reasons for using any one of these.
+
+## More Information
+For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](https://codeofmatt.com/date-and-time-in-ravendb/) article written by Matt Johnson.

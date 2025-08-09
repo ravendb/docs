@@ -1,0 +1,101 @@
+---
+title: "Operations: How to Stop an Index"
+hide_table_of_contents: true
+sidebar_label: Pause Index
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Stop an Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+The **StopIndexOperation** is used to stop indexing for an index. 
+
+<Admonition type="note" title="Note">
+Indexing will be resumed automatically after server restart.
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="csharp">
+{`public StopIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to stop indexing |
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new StopIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The **StopIndexOperation** is used to stop indexing for an index. 
+
+<Admonition type="note" title="Note">
+Indexing will be resumed automatically after server restart.
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="java">
+{`public StopIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to stop indexing |
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexOperation("Orders/Totals"));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Resume Index](../../../../client-api/operations/maintenance/indexes/start-index)
+
+
+-->

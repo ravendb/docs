@@ -1,0 +1,116 @@
+---
+title: "Operations: Server: How to Generate a Client Certificate"
+hide_table_of_contents: true
+sidebar_label: Create Client Certificate
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: Server: How to Generate a Client Certificate
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+You can generate a client certificate using **CreateClientCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="cert_1_1" label="cert_1_1">
+<CodeBlock language="csharp">
+{`public CreateClientCertificateOperation(string name, 
+    Dictionary<string, DatabaseAccess> permissions, 
+    SecurityClearance clearance, 
+    string password = null)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_2" label="cert_1_2">
+<CodeBlock language="csharp">
+{`// The role assigned to the certificate:
+public enum SecurityClearance
+\{
+    ClusterAdmin,
+    ClusterNode,
+    Operator,
+    ValidUser
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_3" label="cert_1_3">
+<CodeBlock language="csharp">
+{`// The access level for a 'ValidUser' security clearance:
+public enum DatabaseAccess
+\{
+    Read,
+    ReadWrite,
+    Admin
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+| **password** | string | Optional certificate password, default: no password |
+
+| Return Value | |
+| ------------- | ----- |
+| **RawData** | client certificate raw data |
+
+## Example I
+
+<TabItem value="cert_1_4" label="cert_1_4">
+<CodeBlock language="csharp">
+{`// With the security clearance set to Cluster Administrator or Operator,
+// the user of this certificate will have access to all databases
+CreateClientCertificateOperation operation = 
+    new CreateClientCertificateOperation(
+        "admin", null, SecurityClearance.Operator);
+CertificateRawData certificateRawData = 
+    store.Maintenance.Server.Send(operation);
+byte[] cert = certificateRawData.RawData;
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="cert_1_5" label="cert_1_5">
+<CodeBlock language="csharp">
+{`// When the security clearance is ValidUser, you must specify an access level for each database
+CreateClientCertificateOperation operation = 
+    new CreateClientCertificateOperation(
+        "user1", new Dictionary<string, DatabaseAccess>
+\{
+    \{ "Northwind", DatabaseAccess.Admin \}
+\}, SecurityClearance.ValidUser, "myPassword");
+CertificateRawData certificateRawData = 
+    store.Maintenance.Server.Send(operation);
+byte[] cert = certificateRawData.RawData;
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to delete certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [How to put client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate)
+
+-->

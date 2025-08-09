@@ -1,0 +1,31 @@
+---
+title: "Conflicts view"
+hide_table_of_contents: true
+sidebar_label: Conflicts view
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Conflicts view
+
+If two file system are configured to synchronize files to each other (*master/master*) then [conflicts](../../synchronization/conflicts.mdx) may occur.
+The conflicts view presents the list of conflicted files and allows to resolve them.
+
+![Figure 1. Studio. Conflicts view](./assets/conflicts-view.png)  
+
+If there is a conflict you need to choose which version of a file you want to take and resolve the conflict by using one of the 
+two possible strategies:
+
+* `Resolve with Local` if you want to resolve the conflict in favor of local version,
+* `Resolve with Remote` to allow the synchronization source file system to synchronize its version.
+
+<Admonition type="info" title="Remote strategy" id="remote-strategy" href="#remote-strategy">
+Don't be surprised if resolving the conflict by using the remove version strategy will not cause the conflict to disappear. The conflict
+will exist until the source server retries the synchronization of the conflicted file and notices that the applied strategy lets him to push its version.
+</Admonition>

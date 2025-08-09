@@ -1,0 +1,67 @@
+---
+title: "Configuration: Monitoring Options"
+hide_table_of_contents: true
+sidebar_label: Monitoring Configuration
+sidebar_position: 14
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Monitoring Options
+
+## Monitoring.Snmp.Enabled
+
+Indicates if SNMP endpoint is enabled or not.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+
+
+## Monitoring.Snmp.Port
+
+Port at which SNMP listener will be active.
+
+- **Type**: `int`
+- **Default**: `161`
+- **Scope**: Server-wide only
+
+
+
+## Monitoring.Snmp.Community
+
+Community string used for authentication.
+
+- **Type**: `string`
+- **Default**: `ravendb`
+- **Scope**: Server-wide only
+
+
+
+
+## Monitoring.Cpu.Exec
+
+A command or executable to run which will provide machine CPU usage and process CPU to standard output. If specified, RavenDB will use this information for monitoring CPU usage.  
+Note: the write to standard output should be unbuffered to work properly.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+
+
+## Monitoring.Cpu.Exec.Arguments
+
+The command line arguments for the 'Monitoring.Cpu.Exec' command or executable. The arguments must be escaped for the command line.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+

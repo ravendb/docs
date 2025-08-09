@@ -1,0 +1,45 @@
+---
+title: "Configuration: Patching Options"
+hide_table_of_contents: true
+sidebar_label: Patching Configuration
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Configuration: Patching Options
+
+## Patching.MaxStepsForScript
+
+The maximum number of statements a script can execute before throwing a `Jint.Runtime.StatementsCountOverflowException`.
+
+- **Type**: `int`
+- **Default**: `10000`
+- **Scope**: Server-wide or per database
+
+
+
+## Patching.MaxNumberOfCachedScripts
+
+The maximum number of JavaScript scripts to be cached.
+
+- **Type**: `int`
+- **Default**: `2048`
+- **Scope**: Server-wide or per database
+
+
+
+## Patching.StrictMode
+
+Enables strict mode in the JavaScript engine.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide or per database
+
+

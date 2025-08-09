@@ -1,0 +1,47 @@
+---
+title: "Multi-Database Support"
+hide_table_of_contents: true
+sidebar_label: Multi-databse Support
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Multi-Database Support
+
+RavenDB supports multi-tenancy, and the Management Studio provides an easy way to manage multiple tenants from the same UI, and to create new tenants.
+
+<Admonition type="note" title="Note">
+You cannot delete a database using the Management Studio.
+</Admonition>
+
+At the top right corner of each screen, by the RavenDB logo, the name of the current tenant you are working against is shown. Clicking on it will open a list of other available tenants, and selecting another one from that list will shift the Studio to working against that tenant.
+
+![Select Tenant](./assets/studio_base_2.PNG)
+
+## Creating a new tenant
+
+When pressing on the link named "Databases" on the to right of each page a new page will load:
+
+![Databases Fig 1](./assets/studio_databases_1.PNG)
+
+On the top right you can create a new database:
+
+![Databases Fig 2](./assets/studio_databases_2.PNG)
+
+After selecting this option a window will pop up and you need to enter a name for the new database.
+
+Each database must have a unique name.
+
+![Databases Fig 3](./assets/studio_databases_3.PNG)
+
+Once you have selected the name a new empty database will be created. The name of the selected database will appear on the top right next the databases link:
+
+![Databases Fig 4](./assets/studio_databases_4.PNG)
+
+Once you have more the one database you can switch between them from any page by clicking on the name of the active database and a list of possible databases will open, click on the database you want to view next.

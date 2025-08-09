@@ -1,0 +1,108 @@
+---
+title: "Session: Querying: How to perform a multifaceted search?"
+hide_table_of_contents: true
+sidebar_label: How to perform a multifaceted search?
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to perform a multifaceted search?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx) can be executed at once using `MultiFacetedSearch` method from `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="multi_facet_1" label="multi_facet_1">
+<CodeBlock language="csharp">
+{`FacetResults[] MultiFacetedSearch(params FacetQuery[] queries);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **queries** | params [FacetQuery](../../../glossary/facet-query.mdx) | Array of FacetQueries that will be executed on server. |
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResult](../../../glossary/facet-results.mdx#facetresult)[] | Array of FacetResults. Each matching its FacetQuery position from `queries` parameter. |
+
+## Example
+
+<TabItem value="multi_facet_2" label="multi_facet_2">
+<CodeBlock language="csharp">
+{`FacetQuery facetQuery1 = session.Query<Camera>()
+	.ToFacetQuery("facets/CameraFacets1");
+
+FacetQuery facetQuery2 = session.Query<Camera>()
+	.ToFacetQuery("facets/CameraFacets2");
+
+FacetResults[] results = session
+	.Advanced
+	.MultiFacetedSearch(facetQuery1, facetQuery2);
+
+FacetResults facetResults1 = results[0];
+FacetResults facetResults2 = results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-faceted-search.mdx) can be executed at once using `multiFacetedSearch` method from `advanced` session operations.
+
+## Syntax
+
+<TabItem value="multi_facet_1" label="multi_facet_1">
+<CodeBlock language="java">
+{`public FacetResults[] multiFacetedSearch(FacetQuery... queries);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **queries** | params [FacetQuery](../../../glossary/facet-query.mdx) | Array of FacetQueries that will be executed on server. |
+
+| Return Value | |
+| ------------- | ----- |
+| [FacetResult](../../../glossary/facet-results.mdx#facetresult)[] | Array of FacetResults. Each matching its FacetQuery position from `queries` parameter. |
+
+## Example
+
+<TabItem value="multi_facet_2" label="multi_facet_2">
+<CodeBlock language="java">
+{`FacetQuery facetQuery1 = session.query(Camera.class)
+  .toFacetQuery("facets/CameraFacets1");
+FacetQuery facetQuery2 = session.query(Camera.class)
+  .toFacetQuery("facets/CameraFacets2");
+
+FacetResults[] results = session.advanced().multiFacetedSearch(facetQuery1, facetQuery2);
+FacetResults facetResults1 = results[0];
+FacetResults facetResults2 = results[1];
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)
+
+-->

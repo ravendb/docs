@@ -1,0 +1,27 @@
+---
+title: "Glossary: ConfigurationSearchResults"
+hide_table_of_contents: true
+sidebar_label: ConfigurationSearchResults
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: ConfigurationSearchResults
+
+RavenFS client API class representing configuration search results.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **ConfigNames** | IList&lt;string&gt; | The list of configuration names that match search criteria |
+| **TotalCount** | int | The total number of matching configurations |
+| **Start** | int | The `start` parameter passed to a search method |
+| **PageSize** | int | The `pageSize` parameter passed to a search method |
+

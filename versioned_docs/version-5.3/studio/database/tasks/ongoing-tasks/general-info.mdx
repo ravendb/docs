@@ -1,0 +1,105 @@
+---
+title: "Ongoing Tasks - General Info"
+hide_table_of_contents: true
+sidebar_label: Overview
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Ongoing Tasks - General Info
+<Admonition type="note" title="Note">
+
+* Ongoing tasks are **work tasks** defined for the database.  
+* Once enabled, an **ongoing task** will keep on running in the background, 
+  and perform its defined work whenever a data change relevant to it occurs.  
+* Each task has a responsible node from the Database Group nodes, this node will actually perform the defined task work.  
+* The available ongoing tasks are:  
+  * [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx)  
+      * Create a live copy of one database in another RavenDB database
+      * This replication is initiated by a node in the *source* database group
+  * [Hub/Sink Replication Tasks](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/overview.mdx)  
+      * Create a live copy of a database or a part of it in another RavenDB database  
+      * The replication is initiated by the *sink* task  
+      * The replication can be *bidirectional* or limited to a *single direction*  
+      * The replication can be *filtered* to allow the delivery of selected documents  
+  * [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx)  
+      * Write all or chosen database documents to another RavenDB database  
+      * Data can be filtered and modified with transformation scripts  
+  * [SQL ETL](../../../../server/ongoing-tasks/etl/sql.mdx)  
+      * Write the database data to a relational database  
+      * Data can be filtered and modified with transformation scripts  
+  * [OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx)  
+      * Convert database data to the _Parquet_ file format for the purpose of OLAP  
+      * Data can be filtered and modified with transformation scripts  
+  * [Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx)  
+      * Write all or chosen database documents to an Elasticsearch destination  
+      * Data can be filtered and modified with transformation scripts  
+  * [Backup](../../../../studio/database/tasks/backup-task.mdx)  
+      * Schedule a backup or a snapshot of the database at a specified point in time  
+  * [Subscription](../../../../client-api/data-subscriptions/what-are-data-subscriptions.mdx)  
+      * Sending batches of documents that match a pre-defined query for processing on a client  
+      * Data can be filtered and modified with transformation scripts  
+
+* In this page:  
+  * [Ongoing Tasks - View](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#ongoing-tasks---view)  
+  * [Ongoing Tasks - Actions](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#ongoing-tasks---actions)  
+  * [Ongoing Tasks - Add New Task](../../../../studio/database/tasks/ongoing-tasks/general-info.mdx#ongoing-tasks---add-new-task)  
+</Admonition>
+## Ongoing Tasks - View
+
+![Figure 1. Ongoing Tasks View](./assets/general-info-001.png)
+
+1. The list of the current tasks on the database  
+
+2. Task name & state:  
+   * _Active_ - Task is active and will do its job when there is a change to the database  
+   * _Not-Active_ - Task is defined but has been disabled  
+   * _Not on Node_ - The node in the currently viewed tab is not responsible for performing the task  
+   * _Reconnect_ - Destination is unavailable, the task is active and trying to reconnect  
+
+3. The node that is currently responsible for doing the task  
+  * If not specified by the user, the cluster decides which node will actually be responsible for the task
+  * If a node is down, the cluster will reassign the work to another node for the duration  
+
+4. Tasks graph view  
+
+
+
+## Ongoing Tasks - Actions
+
+![Figure 2. Ongoing Tasks Actions](./assets/general-info-002.png)
+
+1. **Add Task** - Create a new task for the database - see below  
+2. **Details** - Click for a short task details summary in this view  
+3. **Enable / Disable** the task  
+4. **Edit** - Click to edit the task  
+5. **Delete** the task  
+6. **Full screen** - Click to see the graph in a full-screen mode  
+
+
+
+## Ongoing Tasks - Add New Task
+
+![Figure 3. Ongoing Tasks New Task](./assets/general-info-003.png)
+
+* Select the preferred task to add  
+  1. adding an [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task.mdx) task  
+  2. adding a [Replication Hub](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-hub-task.mdx) task
+  3. adding a [Replication Sink](../../../../studio/database/tasks/ongoing-tasks/hub-sink-replication/replication-sink-task.mdx) task
+  4. adding a [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task.mdx) task  
+  5. adding an [Elasticsearch ETL](../../../../studio/database/tasks/ongoing-tasks/elasticsearch-etl-task.mdx) task  
+  6. adding an SQL ETL task  
+  7. adding an [OLAP ETL](../../../../studio/database/tasks/ongoing-tasks/olap-etl-task.mdx) task  
+  8. adding a [Backup](../../../../studio/database/tasks/backup-task.mdx) task  
+  9. adding a [Subscription](../../../../studio/database/tasks/ongoing-tasks/subscription-task.mdx) task  
+
+* Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record.mdx)  
+
+* The cluster will decide which node will actually be responsible for doing the task - see [Members Duties](../../../../studio/database/settings/manage-database-group.mdx#database-group-topology---members-duties)  
+

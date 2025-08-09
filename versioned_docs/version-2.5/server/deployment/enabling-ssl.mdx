@@ -1,0 +1,37 @@
+---
+title: "Enabling SSL"
+hide_table_of_contents: true
+sidebar_label: Enabling SSL
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Enabling SSL
+
++SSL can only be enabled when RavenDB is running as a Windows Service.
++The certificate has to be installed in the local certificate repository [Certificates - Local Computer\Personal\Certificates] and include the private key (.pfx file), otherwise the following will not work. /}
+
+By default, secure connectivity is disabled. 
+
+To enable the SSL in RavenDB, you need to do the following:
+
+1. change `Raven/UseSsl` configuration to `true`.  
+2. tell RavenDB to use the specified X509 certificate. 
+
+To tell RavenDB to use the specified X509 certificate execute the following command on the command line:   
+&lt;code&gt;Raven.Server.exe /installSSL=PathToCertificate==CertificatePassword&lt;/code&gt;    
+E.g.   
+&lt;code&gt;Raven.Server.exe /installSSL=C:\Temp\MyCertificate.pfx==MyPassword&lt;/code&gt;  
+
+To uninstall the certificate execute:    
+&lt;code&gt;Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword&lt;/code&gt;   
+
+<Admonition type="note" title="Note">
+The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for.
+</Admonition>   

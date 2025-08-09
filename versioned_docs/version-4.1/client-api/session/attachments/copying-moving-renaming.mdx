@@ -1,0 +1,283 @@
+---
+title: "Attachments: Copying, Moving & Renaming"
+hide_table_of_contents: true
+sidebar_label: Copying, Moving & Renaming
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Attachments: Copying, Moving & Renaming
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Attachments can be copied, moved or renamed using appropriate built-in session methods. All of those actions are executed when `SaveChanges` is called and are taking place on the server-side, removing the need to transfer whole attachment binary data over the network in order to perform the action.
+
+## Copying
+
+Attachment can be copied using one of the `session.Advanced.Attachments.Copy` methods:
+
+### Syntax
+
+<TabItem value="copy_0" label="copy_0">
+<CodeBlock language="csharp">
+{`void Copy(
+    object sourceEntity,
+    string sourceName,
+    object destinationEntity,
+    string destinationName);
+
+void Copy(
+    string sourceDocumentId,
+    string sourceName,
+    string destinationDocumentId,
+    string destinationName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var employee1 = session.Load<Employee>("employees/1-A");
+var employee2 = session.Load<Employee>("employees/2-A");
+
+session.Advanced.Attachments.Copy(employee1, "photo.jpg", employee2, "photo-copy.jpg");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var employee1 = await asyncSession.LoadAsync<Employee>("employees/1-A");
+var employee2 = await asyncSession.LoadAsync<Employee>("employees/2-A");
+
+asyncSession.Advanced.Attachments.Copy(employee1, "photo.jpg", employee2, "photo-copy.jpg");
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Moving
+
+Attachment can be moved using one of the `session.Advanced.Attachments.Move` methods:
+
+### Syntax
+
+<TabItem value="move_0" label="move_0">
+<CodeBlock language="csharp">
+{`void Move(object sourceEntity, string sourceName, object destinationEntity, string destinationName);
+
+void Move(string sourceDocumentId, string sourceName, string destinationDocumentId, string destinationName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var employee1 = session.Load<Employee>("employees/1-A");
+var employee2 = session.Load<Employee>("employees/2-A");
+
+session.Advanced.Attachments.Move(employee1, "photo.jpg", employee2, "photo.jpg");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var employee1 = await asyncSession.LoadAsync<Employee>("employees/1-A");
+var employee2 = await asyncSession.LoadAsync<Employee>("employees/2-A");
+
+asyncSession.Advanced.Attachments.Move(employee1, "photo.jpg", employee2, "photo.jpg");
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Renaming
+
+Attachment can be renamed using one of the `session.Advanced.Attachments.Rename` methods:
+
+### Syntax
+
+<TabItem value="rename_0" label="rename_0">
+<CodeBlock language="csharp">
+{`void Rename(object entity, string name, string newName);
+
+void Rename(string documentId, string name, string newName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var employee = session.Load<Employee>("employees/1-A");
+
+session.Advanced.Attachments.Rename(employee, "photo.jpg", "photo-new.jpg");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var employee = await asyncSession.LoadAsync<Employee>("employees/1-A");
+
+asyncSession.Advanced.Attachments.Rename(employee, "photo.jpg", "photo-new.jpg");
+
+await asyncSession.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Attachments can be copied, moved or renamed using appropriate built-in session methods. All of those actions are executed when `saveChanges` is called and are taking place on the server-side, removing the need to transfer whole attachment binary data over the network in order to perform the action.
+
+## Copying
+
+Attachment can be copied using one of the `session.advanced().attachments().copy` methods:
+
+### Syntax
+
+<TabItem value="copy_0" label="copy_0">
+<CodeBlock language="java">
+{`void copy(Object sourceEntity, String sourceName,
+          Object destinationEntity, String destinationName);
+
+void copy(String sourceDocumentId, String sourceName,
+          String destinationDocumentId, String destinationName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="copy_1" label="copy_1">
+<CodeBlock language="java">
+{`Employee employee1 = session.load(Employee.class, "employees/1-A");
+Employee employee2 = session.load(Employee.class, "employees/2-A");
+
+session.advanced()
+    .attachments()
+    .copy(employee1, "photo.jpg", employee2, "photo-copy.jpg");
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Moving
+
+Attachment can be moved using one of the `session.advanced().attachments().move` methods:
+
+### Syntax
+
+<TabItem value="move_0" label="move_0">
+<CodeBlock language="java">
+{`void move(Object sourceEntity, String sourceName,
+          Object destinationEntity, String destinationName);
+
+void move(String sourceDocumentId, String sourceName,
+          String destinationDocumentId, String destinationName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="move_1" label="move_1">
+<CodeBlock language="java">
+{`Employee employee1 = session.load(Employee.class, "employees/1-A");
+Employee employee2 = session.load(Employee.class, "employees/2-A");
+
+session.advanced()
+    .attachments()
+    .copy(employee1, "photo.jpg", employee2, "photo.jpg");
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Renaming
+
+Attachment can be renamed using one of the `session.advanced().attachments().rename` methods:
+
+### Syntax
+
+<TabItem value="rename_0" label="rename_0">
+<CodeBlock language="java">
+{`void rename(Object entity, String name, String newName);
+
+void rename(String documentId, String name, String newName);
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="rename_1" label="rename_1">
+<CodeBlock language="java">
+{`Employee employee1 = session.load(Employee.class, "employees/1-A");
+
+session.advanced()
+    .attachments()
+    .rename(employee1, "photo.jpg", "photo-new.jpg");
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Attachments
+- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
+- [Storing](../../../client-api/session/attachments/storing)
+- [Loading](../../../client-api/session/attachments/loading)
+- [Deleting](../../../client-api/session/attachments/deleting)
+
+
+-->

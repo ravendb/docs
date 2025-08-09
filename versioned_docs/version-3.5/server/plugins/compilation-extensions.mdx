@@ -1,0 +1,107 @@
+---
+title: "Plugins: Compilation Extensions"
+hide_table_of_contents: true
+sidebar_label: Compilation Extensions
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Plugins: Compilation Extensions
+
+In certain situations users may want to use more complex logic to calculate a value of an index entry field. To do this we have introduced an `AbstractDynamicCompilationExtension`to RavenDB.
+
+<TabItem value="plugins_6_0" label="plugins_6_0">
+<CodeBlock language="csharp">
+{`public abstract class AbstractDynamicCompilationExtension
+\{
+	public abstract string[] GetNamespacesToImport();
+
+	public abstract string[] GetAssembliesToReference();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **GetNamespacesToImport** returns a list of namespaces that RavenDB will have to import   
+* **GetAssembliesToReference** returns a list of full paths to assemblies    
+
+## Example - Check if a given word is a [palindrome](https://en.wikipedia.org/wiki/Palindrome)
+
+<TabItem value="plugins_6_1" label="plugins_6_1">
+<CodeBlock language="csharp">
+{`public static class Palindrome
+\{
+	public static bool IsPalindrome(string word)
+	\{
+		if (string.IsNullOrEmpty(word))
+			return true;
+
+		int min = 0;
+		int max = word.Length - 1;
+		while (true)
+		\{
+			if (min > max)
+				return true;
+
+			char a = word[min];
+			char b = word[max];
+			if (char.ToLower(a) != char.ToLower(b))
+				return false;
+
+			min++;
+			max--;
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_6_2" label="plugins_6_2">
+<CodeBlock language="csharp">
+{`public class PalindromeDynamicCompilationExtension : AbstractDynamicCompilationExtension
+\{
+	public override string[] GetNamespacesToImport()
+	\{
+		return new[]
+			\{
+				typeof (Palindrome).Namespace
+			\};
+	\}
+
+	public override string[] GetAssembliesToReference()
+	\{
+		return new[]
+			\{
+				typeof (Palindrome).Assembly.Location
+			\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now we can use our `Palindrome` in our index definition.
+
+<TabItem value="plugins_6_3" label="plugins_6_3">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.PutIndex("Dictionary/Palindromes", new IndexDefinition
+\{
+	Map = @"from word in docs.Words 
+				select new 
+				\{ 
+							Word = word.Value, 
+							IsPalindrome = Palindrome.IsPalindrome(word.Value) 
+				\}"
+\});
+`}
+</CodeBlock>
+</TabItem>
+

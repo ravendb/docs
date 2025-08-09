@@ -1,0 +1,30 @@
+---
+title: "Glossary: IndexMergeResults"
+hide_table_of_contents: true
+sidebar_label: IndexMergeResults
+sidebar_position: 33
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: IndexMergeResults
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Unmergables** | Dictionary&lt;string, string&gt; | Map of index name and reason |
+| **Suggestions** | List&lt;[MergeSuggestions](../glossary/index-merge-results.mdx#mergesuggestions)&gt; | List of merge suggestions |
+
+# MergeSuggestions
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **CanMerge** | List&lt;string&gt; | list of index names which can be merged |
+| **Collection** | string | the collection that is being merged |
+| **MergedIndex** | [IndexDefinition](../glossary/index-definition.mdx) | Proposition for new index with all it's properties |

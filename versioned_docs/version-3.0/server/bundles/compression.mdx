@@ -1,0 +1,49 @@
+---
+title: "Bundle: Compression"
+hide_table_of_contents: true
+sidebar_label: Compression
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Compression
+
+To reduce the cost of I/O operations and reduce the size of the database on a disk, we have introduced the `Compression` bundle. Compression is only applied to documents, indexes are not compressed. This is because RavenDB is performing a lot of random reads from indexes, whereas with documents we almost always read/write the full content. Note that the compression process is fully transparent for the end-user.
+
+## How to enable compression
+
+To activate compression server-wide, just add the `Compression` to the `Raven/ActiveBundles` configuration in the global configuration file or set up a new database with compression bundle turned on, using API or the Studio.
+
+More on how to create a database with compression enabled using the Studio [here](../../studio/walkthroughs/how-to-setup-compression.mdx).
+
+<TabItem value="compression_1" label="compression_1">
+<CodeBlock language="csharp">
+{`store
+	.DatabaseCommands
+	.GlobalAdmin
+	.CreateDatabase(
+		new DatabaseDocument
+			\{
+				Id = "CompressedDB",
+				// Other configuration options omitted for simplicity
+				Settings =
+					\{
+						// ...
+						\{ "Raven/ActiveBundles", "Compression" \}
+					\}
+			\});
+`}
+</CodeBlock>
+</TabItem>
+
+The above example demonstrates how to create a new database called `CompressedDB` with  the `Compression` bundle enabled.
+
+<Admonition type="warning" title="Warning">
+Activating the **compression** bundle is only supported for **new databases**. Activating or disabling compression on an already existing database will cause DB malfunction.
+</Admonition>

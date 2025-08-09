@@ -1,0 +1,97 @@
+---
+title: "Dynamic fields"
+hide_table_of_contents: true
+sidebar_label: Dynamic Fields
+sidebar_position: 28
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Dynamic fields
+
+While strongly typed entities are well processed by LINQ expressions, some scenarios demand the use of dynamic properties. To support searching in object graphs they cannot have their entire structure declared upfront. RavenDB exposes low-level API for creating fields from within index definitions.
+
+With this feature, you can search for documents even with properties which were created on the fly. For example, consider a `Product` object that is declared as follows:
+
+<TabItem value="dynamic_fields_1" label="dynamic_fields_1">
+<CodeBlock language="csharp">
+{`public class Product
+\{
+    public string Id \{ get; set; \}
+    
+    // The KEYS under the Attributes object will be dynamically indexed 
+    // Fields added to this object after index creation time will also get indexed
+    public Dictionary<string, object> Attributes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+This way, properties such as color, size, weight, and the like are added only to those products of which they are indeed valid properties. However, while they are easily stored, they cannot be easily searched on.
+
+This is where dynamic fields come in. With the following index definition, RavenDB will index the attribute value under the attribute name in its own field:
+
+<TabItem value="dynamic_fields_2" label="dynamic_fields_2">
+<CodeBlock language="csharp">
+{`public class Products_ByAttributeKey : AbstractIndexCreationTask<Product>
+\{
+    public Products_ByAttributeKey()
+    \{
+        Map = products => from p in products
+            select new
+            \{
+                // Call 'CreateField' to generate dynamic-index-fields from the Attributes object keys
+                // Using '_' is just a convention. Any other string can be used instead of '_'
+                
+                // The actual field name will be item.Key
+                // The actual field terms will be derived from item.Value
+                _ = p.Attributes.Select(item => CreateField(item.Key, item.Value))
+            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The underscore used for defining the field name in the Map object is just a convention, you can use any field name instead, but since we just want to call the `CreateField` method and we are not interested in the field value, we are using `_` as a convention to reflect that.
+
+The call to `CreateField(...)` will generate index fields based on the properties in the provided collection, without creating any field with the name specified there, hence the underscore.
+
+Obviously, this index can have more attributes defined in it for indexing, just like any other ordinary index.
+
+<Admonition type="info" title="Info">
+Field options like `FieldStorage.No` and `FieldIndexing.Analyzed` are configurable with dynamic fields as well.
+</Admonition>
+
+When the index is created, we can easily look for documents using the attribute name as a field to look on, as if it was a real object property.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Products_ByAttribute.Result, Products_ByAttribute>()
+	.Where(x => x.Color == "Red")
+	.OfType<Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Advanced
+	.DocumentQuery<Product, Products_ByAttribute>()
+	.WhereEquals("Color", "Red")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+This will also work for numeric values, so range queries or searches with numeric operators like `WhereGreaterThan()` for `DocumentQuery` will work as well.
+

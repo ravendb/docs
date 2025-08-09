@@ -1,0 +1,60 @@
+---
+title: "Basic query support in RavenDB"
+hide_table_of_contents: true
+sidebar_label: Basic query support
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Basic query support in RavenDB
+
+Once data has been stored in RavenDB, we have seen how it can be retrieved by id, updated and deleted. The next useful operation is the ability to query based on some aspect of the documents that have been stored. 
+
+For example, we might wish to ask for all the blog entries that belong to a certain category like so:
+
+<TabItem value="basic_querying_1" label="basic_querying_1">
+<CodeBlock language="csharp">
+{`var results = from blog in session.Query<BlogPost>()
+              where blog.Category == "RavenDB"
+              select blog;
+`}
+</CodeBlock>
+</TabItem>
+
+Or, using a different syntax, to find all blog posts that have at least 10 comments:
+
+<TabItem value="basic_querying_2" label="basic_querying_2">
+<CodeBlock language="csharp">
+{`var results = session.Query<BlogPost>()
+	.Where(x => x.Comments.Length >= 10)
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+That Just Works(tm) and gives us all the blog posts matching the criteria we have specified.
+
+As usual, let's have a look at the HTTP communication for the first operation:
+
+	GET /indexes/dynamic/BlogPosts?query=Category:RavenDB&start=0&pageSize=128 HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+
+<Admonition type="note" title="Note">
+Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in
+</Admonition>
+
+The important part to notice in this query is that we are querying the "BlogPosts" collection, for the property "Category" with the value of "RavenDB".
+
+When we query RavenDB we first need to specify which collection we are interested on querying. Once we did that (in the first code snippet above - by specifying `session.Query<`**BlogPost**`>`), we can use the various available modifiers and clauses to filter the results as much as we'd like.
+
+RavenDB supports many querying types, ranging from simple value comparisons to geo-spatial queries and even full blown full-text search queries.
+
+In the next chapters we will be discussing querying in more depth - from syntax, through all available querying options, to how RavenDB actually allows efficient data querying, and how you take all that to your advantage when designing your own complex data structure.

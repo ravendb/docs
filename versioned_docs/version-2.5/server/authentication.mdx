@@ -1,0 +1,172 @@
+---
+title: "Authentication & Authorization"
+hide_table_of_contents: true
+sidebar_label: Authentication & Authorization
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Authentication & Authorization
+
+RavenDB comes with a built-in authentication functionality and it supports two types of authentication:    
+* [Windows Authentication](../server/authentication.mdx#windows-authentication)   
+* [OAuth Authentication](../server/authentication.mdx#oauth-authentication)   
+
+Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](administration/configuration#authorization--authentication) configuration setting.
+
+## Security system - OSS vs commercial use
+
+The authentication feature is available only in commercial use of RavenDB. You will be able to enable it if you provide a valid commercial license to your database instance. For an open-source software the only available setting is `Raven/AnonymousAccess = Admin` which means that no authentication is required. Then any user will have all administrative permissions.
+An attempt to setup authentication for a database working under AGPL license will result in an exception thrown by a server.
+
+In order to prevent security issues in commercial systems related to a temporary lack of a valid license (e.g. if it just expired) RavenDB stores info about a last seen valid license. This way despite the fact that the license is temporary invalid, the authentication will be still working.
+
+## Windows Authentication
+
+When action (request) needs to be authenticated and no other authentication method is detected, then the Windows Authentication is chosen. Worth noting is that all `/admin` endpoint requests are processed using this method.
+
+By default all windows users and groups have access to all the databases, but this can be easily changed by editing `Raven/Authorization/WindowsSettings` document in `system` database. The document consists of list of users and groups that contain the list of accessible databases. For example this document could look like this:
+
+```json 
+{
+	"RequiredGroups": [],
+	"RequiredUsers": [
+	{
+		"Name": "IIS AppPool\\DefaultAppPool",
+		"Enabled": true,
+		"Databases": [
+			{
+				"Admin": false,
+				"TenantId": "ExampleDB",
+				"ReadOnly": true
+			}
+		]
+	}
+	]
+}
+```
+
+Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
+
+![Figure 1: `Windows Authentication` settings](./assets/authentication_1.PNG)
+
+### Allow to login by using an account with a blank password
+
+By default Windows Authentication does not allow to use an account that have a blank password. However if you really need this you can disable this Windows security policy by using:
+
+```json 
+Raven.Server.exe /allow-blank-password-use
+```
+
+It will disable the following policy _Limit local account use of blank passwords to console logon only_ on your Windows machine. In order to revert your changes you can use:
+
+```json 
+Raven.Server.exe /deny-blank-password-use
+```
+
+to get back into the default setting.
+
+## OAuth Authentication
+
+Second supported authentication type is an [OAuth](https://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
+
+### Example - API keys
+
+To authenticate the user by using API keys we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on `system` database.
+
+<TabItem value="authentication_3" label="authentication_3">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.Put("Raven/ApiKeys/sample",
+						   null,
+						   RavenJObject.FromObject(new ApiKeyDefinition
+							   \{
+								   Name = "sample",
+								   Secret = "ThisIsMySecret",
+								   Enabled = true,
+								   Databases = new List<DatabaseAccess>
+			                           \{
+				                           new DatabaseAccess \{TenantId = "*"\},
+				                           new DatabaseAccess \{TenantId = Constants.SystemDatabase\},
+			                           \}
+							   \}), new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+Now to perform any actions against specified database (`system` database must be declared explicitly), we need to provide the API key.
+
+<TabItem value="authentication_4" label="authentication_4">
+<CodeBlock language="csharp">
+{`var documentStore = new DocumentStore
+	\{
+		ApiKey = "sample/ThisIsMySecret",
+		Url = "http://localhost:8080/"
+	\};
+`}
+</CodeBlock>
+</TabItem>
+
+## Debugging authentication issues
+
+<Admonition type="note" title="Note">
+This feature is available in RavenDB 2.0 build 2237 or higher.
+</Admonition>
+
+To grant the ability to resolve authentication issues, we have introduced `/debug/user-info` endpoint that will return information about current authenticated user and it can be accessed by executing the following code:
+
+<TabItem value="authentication_5" label="authentication_5">
+<CodeBlock language="csharp">
+{`var json = ((ServerClient) store.DatabaseCommands).CreateRequest("GET", "/debug/user-info").ReadResponseJson();
+`}
+</CodeBlock>
+</TabItem>
+
+The returned results vary on the current authentication type:  
+ 
+* **Anonymous**      
+
+```json 
+{
+    "Remark": "Using anonymous user"
+}
+```
+
+* **Windows Authentication** with full access to all databases:    
+
+```json 
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "True"
+}
+```
+
+* **Windows Authentication** with restricted access:   
+
+```json 
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"AdminDatabases": [],
+    "ReadOnlyDatabases": [ "ExampleReadOnlyDB" ],
+    "ReadWriteDatabases": [ "ExampleReadWriteDB" ]
+}
+```
+
+* **OAuth Authentication**:    
+
+```json 
+{
+    "Remark": "Using OAuth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"TokenBody": "<token_here>"
+}
+```

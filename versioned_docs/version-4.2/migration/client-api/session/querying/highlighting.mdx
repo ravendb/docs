@@ -1,0 +1,148 @@
+---
+title: "Migration: How to Migrate Highlighting from 3.x"
+hide_table_of_contents: true
+sidebar_label: Highlighting
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate Highlighting from 3.x
+
+Highlighting functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql.mdx). Following minor and cosmetic changes have been introduced.
+
+## Namespaces
+
+| 3.x |
+|:---:|
+|
+<TabItem value="highlighting_1" label="highlighting_1">
+<CodeBlock language="csharp">
+{`using Raven.Client;
+using Raven.Client.Document;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="highlighting_2" label="highlighting_2">
+<CodeBlock language="csharp">
+{`using Raven.Client.Documents;
+using Raven.Client.Documents.Queries.Highlighting;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example I
+
+| 3.x |
+|:---:|
+|
+<TabItem value="highlighting_3" label="highlighting_3">
+<CodeBlock language="csharp">
+{`SearchItem[] results = session
+    .Query<SearchItem>("ContentSearchIndex")
+    .Customize(x => x.Highlight("Text", 128, 1, out FieldHighlightings highlightings))
+    .Search(x => x.Text, "raven")
+    .ToArray();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<SearchItem> results = session
+    .Query<SearchItem, ContentSearchIndex>()
+    .Highlight(x => x.Text, 128, 1, out Highlightings highlightings)
+    .Search(x => x.Text, "raven")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem> 
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<SearchItem> results = session
+    .Advanced
+    .DocumentQuery<SearchItem, ContentSearchIndex>()
+    .Highlight(x => x.Text, 128, 1, out Highlightings highlightings)
+    .Search(x => x.Text, "raven")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+|
+
+## Example II
+
+| 3.x |
+|:---:|
+|
+<TabItem value="highlighting_6" label="highlighting_6">
+<CodeBlock language="csharp">
+{`SearchItem[] results = session
+    .Query<SearchItem>("ContentSearchIndex")
+    .Customize(x => x.Highlight("Text", 128, 1, out FieldHighlightings highlightings))
+    .SetHighlighterTags("**", "**")
+    .Search(x => x.Text, "raven")
+    .ToArray();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`List<SearchItem> results = session
+    .Query<SearchItem, ContentSearchIndex>()
+    .Highlight(x => x.Text, 128, 1, new HighlightingOptions
+    {
+        PreTags = new[] { "**" },
+        PostTags = new[] { "**" }
+    }, out Highlightings highlightings)
+    .Search(x => x.Text, "raven")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem> 
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`List<SearchItem> results = session
+    .Advanced
+    .DocumentQuery<SearchItem, ContentSearchIndex>()
+    .Highlight(x => x.Text, 128, 1, new HighlightingOptions
+    {
+        PreTags = new[] { "**" },
+        PostTags = new[] { "**" }
+    }, out Highlightings highlightings)
+    .Search(x => x.Text, "raven")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+|
+
+## Remarks
+
+<Admonition type="info" title="Info">
+You can read more about Highlighting in our dedicated [Client API article](../../../../client-api/session/querying/how-to-use-highlighting.mdx) or our [Querying article](../../../../indexes/querying/highlighting.mdx).
+</Admonition>

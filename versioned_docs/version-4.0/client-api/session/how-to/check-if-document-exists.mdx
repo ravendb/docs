@@ -1,0 +1,141 @@
+---
+title: "Session: How to Check if a Document Exists"
+hide_table_of_contents: true
+sidebar_label: ...check if document exists
+sidebar_position: 15
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: How to Check if a Document Exists
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+In order to check if a document with specific ID exists in the database, use the `Exists` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="csharp">
+{`bool Exists(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ---------- | ---------- | ----- |
+| **id** | string | ID of the document to check the existence of. |
+
+| Return Value | |
+| ------------- | ----- |
+| bool | Indicates if a document with the given ID exists. |
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="csharp">
+{`bool exists = session.Advanced.Exists("employees/1-A");
+
+if (exists)
+\{
+    //do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+In order to check if a document with specific ID exists in the database, use the `exists` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="java">
+{`boolean exists(String id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ---------- | ---------- | ----- |
+| **id** | String | ID of the document to check the existence of. |
+
+| Return Value | |
+| ------------- | ----- |
+| boolean | Indicates if a document with the given ID exists. |
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="java">
+{`boolean exists = session.advanced().exists("employees/1-A");
+
+if (exists) \{
+    // do something
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+In order to check if a document with specific ID exists in the database, use the `exists()` method from the `advanced` session operations.
+
+## Syntax
+
+<TabItem value="exists_1" label="exists_1">
+<CodeBlock language="js">
+{`session.advanced.exists(id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ---------- | ---------- | ----- |
+| **id** | string | ID of the document to check the existence of. |
+
+| Return Value | |
+| ------------- | ----- |
+| `Promise<boolean>` | Indicates if a document with the given ID exists. |
+
+## Example
+
+<TabItem value="exists_2" label="exists_2">
+<CodeBlock language="js">
+{`const exists = await session.advanced.exists("employees/1-A");
+if (exists) \{
+    // do something ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)
+
+
+-->

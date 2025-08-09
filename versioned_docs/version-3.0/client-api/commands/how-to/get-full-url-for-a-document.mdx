@@ -1,0 +1,109 @@
+---
+title: "Commands: How to get full url for a document?"
+hide_table_of_contents: true
+sidebar_label: ...get full url for a document
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Commands: How to get full url for a document?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+`UrlFor` is a helper method that returns full url for a given document key.
+
+## Syntax
+
+<TabItem value="full_url_1" label="full_url_1">
+<CodeBlock language="csharp">
+{`string UrlFor(string documentKey);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentKey** | string | Key of a document for which full url will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| string | Full url for a given document key |
+
+## Example I
+
+<TabItem value="full_url_2" label="full_url_2">
+<CodeBlock language="csharp">
+{`// http://localhost:8080/databases/Northwind/docs/employees/1
+string url = store.DatabaseCommands.UrlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="full_url_3" label="full_url_3">
+<CodeBlock language="csharp">
+{`// http://localhost:8080/docs/employees/1
+string url = store.DatabaseCommands.ForSystemDatabase().UrlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+`urlFor` is a helper method that returns full url for a given document key.
+
+## Syntax
+
+<TabItem value="full_url_1" label="full_url_1">
+<CodeBlock language="java">
+{`public String urlFor(String documentKey);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentKey** | String | Key of a document for which full url will be returned |
+
+| Return Value | |
+| ------------- | ----- |
+| String | Full url for a given document key |
+
+## Example I
+
+<TabItem value="full_url_2" label="full_url_2">
+<CodeBlock language="java">
+{`// http://localhost:8080/databases/Northwind/docs/employees/1
+String url = store.getDatabaseCommands().urlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+## Example II
+
+<TabItem value="full_url_3" label="full_url_3">
+<CodeBlock language="java">
+{`//  // http://localhost:8080/docs/employees/1
+String url = store.getDatabaseCommands().forSystemDatabase().urlFor("employees/1");
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

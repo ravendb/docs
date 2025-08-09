@@ -1,0 +1,221 @@
+---
+title: "Migration: How to Migrate Spatial from 3.x"
+hide_table_of_contents: true
+sidebar_label: Spatial
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: How to Migrate Spatial from 3.x
+
+Spatial functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql.mdx). To reflect that change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
+
+## Namespaces
+
+| 3.x |
+|:---:|
+|
+<TabItem value="spatial_1" label="spatial_1">
+<CodeBlock language="csharp">
+{`using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="spatial_2" label="spatial_2">
+<CodeBlock language="csharp">
+{`using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes.Spatial;
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example I - Index
+
+The following changes have been applied:
+
+1. All spatial fields must be created using the `CreateSpatialField` method
+2. No support for GeoJSON and other non-standard formats
+3. No support for spatial clustering
+
+| 3.x |
+|:---:|
+|
+<TabItem value="spatial_index_1" label="spatial_index_1">
+<CodeBlock language="csharp">
+{`private class SpatialDoc_ByShapeAndPoint : AbstractIndexCreationTask<SpatialDoc>
+\{
+    public SpatialDoc_ByShapeAndPoint()
+    \{
+        Map = docs => from spatial in docs
+            select new
+            \{
+                Shape = spatial.Shape,
+                Point = spatial.Point,
+                _ = SpatialGenerate("Coordinates", spatial.Point.Latitude, spatial.Point.Longitude),
+                _ = SpatialClustering("Clustering", spatial.Point.Latitude, spatial.Point.Longitude)
+            \};
+
+        Spatial(x => x.Shape, options => options.Geography.Default());
+        Spatial(x => x.Point, options => options.Cartesian.BoundingBoxIndex());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="spatial_index_2" label="spatial_index_2">
+<CodeBlock language="csharp">
+{`private class SpatialDoc_ByShapeAndPoint : AbstractIndexCreationTask<SpatialDoc>
+\{
+    public SpatialDoc_ByShapeAndPoint()
+    \{
+        Map = docs => from spatial in docs
+                      select new
+                      \{
+                          Shape = CreateSpatialField(spatial.Shape.Wkt),
+                          Point = CreateSpatialField(spatial.Point.Latitude, spatial.Point.Longitude),
+                          Coordinates = CreateSpatialField(spatial.Point.Latitude, spatial.Point.Longitude)
+                      \};
+
+        Spatial(x => x.Shape, options => options.Geography.Default());
+        Spatial(x => x.Point, options => options.Cartesian.BoundingBoxIndex());
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example II - RelatesToShape
+
+| 3.x |
+|:---:|
+|
+<TabItem value="spatial_3" label="spatial_3">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Customize(x => x
+        .RelatesToShape(
+            "Shape", 
+            "Circle(32.1234 23.4321 d=10.0000)", 
+            SpatialRelation.Within))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="spatial_4" label="spatial_4">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Spatial(
+        x => x.Shape,
+        criteria => criteria
+            .RelatesToShape(
+                "Circle(32.1234 23.4321 d=10.0000)",
+                SpatialRelation.Within))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example III - WithinRadiusOf
+
+| 3.x |
+|:---:|
+|
+<TabItem value="spatial_5" label="spatial_5">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Customize(x => x
+        .WithinRadiusOf("Shape", 10, 32.1234, 23.4321))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="spatial_6" label="spatial_6">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Spatial(
+        x => x.Shape,
+        criteria => criteria
+            .WithinRadius(10, 32.1234, 23.4321))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Example IV - SortByDistance
+
+| 3.x |
+|:---:|
+|
+<TabItem value="spatial_7" label="spatial_7">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Customize(x => x.SortByDistance())
+    .Spatial(
+        x => x.Shape, 
+        criteria => criteria
+            .WithinRadiusOf(10, 32.1234, 23.4321))
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+| 4.0 |
+|:---:|
+|
+<TabItem value="spatial_8" label="spatial_8">
+<CodeBlock language="csharp">
+{`List<SpatialDoc> results = session
+    .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+    .Spatial(
+        x => x.Shape,
+        criteria => criteria
+            .WithinRadius(10, 32.1234, 23.4321))
+    .OrderByDistance(x => x.Shape, 32.1234, 23.4321)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+|
+
+## Remarks
+
+<Admonition type="info" title="Info">
+You can read more about Spatial in our dedicated [Client API article](../../../../client-api/session/querying/how-to-query-a-spatial-index.mdx) or our [Indexing article](../../../../indexes/indexing-spatial-data.mdx).
+</Admonition>

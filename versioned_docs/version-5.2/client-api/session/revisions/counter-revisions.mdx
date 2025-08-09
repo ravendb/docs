@@ -1,0 +1,101 @@
+---
+title: "Counter Revisions"
+hide_table_of_contents: true
+sidebar_label: Counter Revisions
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Counter Revisions
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When the revisions feature is enabled, a snapshot of a document that holds *Counters* will include in its metadata a `@counters-snapshot` property, 
+that holds all the document's counter names **and values** (at the time of the revision creation).  
+This can be useful when historic records of the documents and their counter values are needed.
+
+<Admonition type="info" title="How do counter operations affect revision creation " id="how-do-counter-operations-affect-revision-creation" href="#how-do-counter-operations-affect-revision-creation">
+Creation of a new counter and deletion of a counter modify the parent document (documents hold
+their counter names in the metadata) and will trigger a revision creation.  
+Incrementing an existing counter does not modify the parent document and will not trigger a revision creation.
+</Admonition>
+
+### Example
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`List<MetadataAsDictionary> orderRevisionsMetadata =
+    session
+        .Advanced
+        .Revisions
+        .GetMetadataFor(
+            id: "orders/1-A",
+            start: 0,
+            pageSize: 10);
+
+List<MetadataAsDictionary> orderCountersSnapshots = 
+    orderRevisionsMetadata
+        .Where(metadata => 
+            metadata.ContainsKey("@counters-snapshot"))
+        .Select(metadata => 
+            (MetadataAsDictionary)metadata["@counters-snapshot"])
+        .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+When the revisions feature is enabled, a snapshot of a document that holds *Counters* will include in its metadata a `@counters-snapshot` property, 
+that holds all the document's counter names **and values** (at the time of the revision creation).  
+This can be useful when historic records of the documents and their counter values are needed.
+
+<Admonition type="info" title="How do counter operations affect revision creation " id="how-do-counter-operations-affect-revision-creation" href="#how-do-counter-operations-affect-revision-creation">
+Creation of a new counter and deletion of a counter modify the parent document (documents hold
+their counter names in the metadata) and will trigger a revision creation.  
+Incrementing an existing counter does not modify the parent document and will not trigger a revision creation.
+</Admonition>
+
+### Example
+
+<TabItem value="example" label="example">
+<CodeBlock language="java">
+{`List<MetadataAsDictionary> orderRevisionsMetadata = session.advanced()
+    .revisions()
+    .getMetadataFor("orders/1-A", 0, 10);
+
+List<MetadataAsDictionary> orderCountersSnapshots = orderRevisionsMetadata
+    .stream()
+    .filter(x -> x.containsKey("@counters-snapshot"))
+    .map(x -> (MetadataAsDictionary) x.get("@counters-snapshot"))
+    .collect(Collectors.toList());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Revisions
+- [What are Revisions](../../../client-api/session/revisions/loading)
+
+### Counters
+- [Counter Batch Operation](../../../client-api/operations/counters/counter-batch)
+- [Get Counters Operation](../../../client-api/operations/counters/get-counters)
+
+
+-->

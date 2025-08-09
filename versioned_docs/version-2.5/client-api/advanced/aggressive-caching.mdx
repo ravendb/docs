@@ -1,0 +1,113 @@
+---
+title: "Aggressive Caching"
+hide_table_of_contents: true
+sidebar_label: Aggressive Caching
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Aggressive Caching
+
+## Cache options
+The RavenDB client provides a caching feature out of the box. You can determine whether Raven should cache a request or not for a particular URL. By default all requests are cached:
+
+<TabItem value="should_cache_delegate" label="should_cache_delegate">
+<CodeBlock language="csharp">
+{`documentStore.Conventions.ShouldCacheRequest = url => true;
+`}
+</CodeBlock>
+</TabItem>
+
+The second cache option is the number of cached requests. The default value is 2048:
+
+<TabItem value="max_number_of_requests" label="max_number_of_requests">
+<CodeBlock language="csharp">
+{`documentStore.MaxNumberOfCachedRequests = 2048;
+`}
+</CodeBlock>
+</TabItem>
+
+The client utilizes the notion of the `304 Not Modified` RavenDB server's response and will serve the data from the cache if available. 
+
+## Aggressive mode
+
+The aggressive caching feature goes even further. If you enable it RavenDB can do not even ask the server and simply return the reply directly from a local cache if it is there,
+when means that you will get it very fast. By default the client subscribes to [server notifications](../changes-api.mdx) and by taking advantage of them it is able to invalidate documents in the cache 
+when they have been changed. It makes that the client knows when it needs to ask the server and when can serve the response from the cache. However you need to be aware that it is still possible to get 
+stale data because of the time needed to receive the notification from the server.
+
+You can also disable the mechanism of changes tracking by using the following convention:
+
+<TabItem value="disable_changes_tracking" label="disable_changes_tracking">
+<CodeBlock language="csharp">
+{`documentStore.Conventions.ShouldAggressiveCacheTrackChanges = false;
+`}
+</CodeBlock>
+</TabItem>
+
+Note that it makes that it becomes more likely that you might get stale results.
+
+To activate the aggressive caching mode use the code:
+
+<TabItem value="aggressive_cache_load" label="aggressive_cache_load">
+<CodeBlock language="csharp">
+{`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+\{
+	var user = session.Load<User>("users/1");
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now, if there is a value in the cache for `users/1` that is at most 5 minutes old and we haven't get any change notification about it, we can directly use that. The same mechanism works on queries as well:
+
+<TabItem value="aggressive_cache_query" label="aggressive_cache_query">
+<CodeBlock language="csharp">
+{`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
+\{
+	var users = session.Query<User>().ToList();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The usage of the notification system means that you can set an aggressive cache duration to longer period. The document store exposes the method:
+
+<TabItem value="aggressive_cache_for_one_day_1" label="aggressive_cache_for_one_day_1">
+<CodeBlock language="csharp">
+{`using  (session.Advanced.DocumentStore.AggressivelyCache()) \{ \}
+`}
+</CodeBlock>
+</TabItem>
+
+which is equivalent to:
+
+<TabItem value="aggressive_cache_for_one_day_2" label="aggressive_cache_for_one_day_2">
+<CodeBlock language="csharp">
+{`using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromDays(1))) \{ \}
+`}
+</CodeBlock>
+</TabItem>
+
+## Saving changes
+
+An another aggressive cache specific convention is:
+
+<TabItem value="should_save_changes_force_aggressive_cache_check_convention" label="should_save_changes_force_aggressive_cache_check_convention">
+<CodeBlock language="csharp">
+{`documentStore.Conventions.ShouldSaveChangesForceAggressiveCacheCheck = true;
+`}
+</CodeBlock>
+</TabItem>
+
+This option set to `true` (default) forces the client to check the cache with the server after calling `SaveChanges()` (when you know that things have been changed  - by you).
+
+<Admonition type="note" title="Note">
+The Silverlight version of the RavenDB client doesn't have own implementation of the aggressive caching because Silverlight already has the built-in and actively working cache.
+</Admonition>

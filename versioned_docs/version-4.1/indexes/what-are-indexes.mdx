@@ -1,0 +1,276 @@
+---
+title: "What Indexes Are"
+hide_table_of_contents: true
+sidebar_label: What are Indexes
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# What Indexes Are
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoid costly table scan operations. You can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes.mdx) page.
+
+The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
+
+## Basic Example
+
+In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx) and enable querying by `FirstName`, `LastName`, or both.
+
+- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying.mdx)).
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`// Define the index:
+// =================
+
+public class Employees_ByNameAndCountry : AbstractIndexCreationTask<Employee>
+\{
+    public class IndexEntry
+    \{
+        // The index-fields
+        public string LastName \{ get; set; \}
+        public string FullName \{ get; set; \}
+        public string Country \{ get; set; \}
+    \}
+    
+    public Employees_ByNameAndCountry()
+    \{
+        Map = employees => from employee in employees
+                           select new IndexEntry()
+                           \{
+                               // Define the content for each index-field
+                               LastName = employee.LastName,
+                               FullName = employee.FirstName + " " + employee.LastName,
+                               Country = employee.Address.Country
+                           \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying.mdx)) so the indexing process can start indexing documents.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="csharp">
+{`// Deploy the index to the server:
+// ===============================
+
+new Employees_ByNameAndCountry().Execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+- Now our index can be queried and indexed results can be returned.
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="csharp">
+{`// Query the database using the index: 
+// ===================================
+
+IList<Employee> employeesFromUK = session
+    .Query<Employees_ByNameAndCountry.IndexEntry, Employees_ByNameAndCountry>()
+     // Here we query for all Employee documents that are from the UK
+     // and have 'King' in their LastName field:
+    .Where(x => x.LastName == "King" && x.Country == "UK")
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+More examples with detailed descriptions can be found [here](../indexes/indexing-basics.mdx).
+
+## Remarks
+
+<Admonition type="warning" title="Remember" id="remember" href="#remember">
+A frequent mistake is to treat indexes as SQL Views, but they are not analogous. The **result of a query for the given index is a full document**, not only the fields that were indexed. 
+
+This behavior can be altered by [storing](../indexes/storing-data-in-index.mdx) fields and doing [projections](../indexes/querying/projections.mdx).
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoid costly table scan operations. You can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes.mdx) page.
+
+The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
+
+## Basic Example
+
+In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx) and enable querying by `FirstName`, `LastName`, or both.
+
+- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying.mdx)).
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="java">
+{`// Define the index:
+// =================
+
+public static class Employees_ByNameAndCountry extends AbstractIndexCreationTask \{
+    public Employees_ByNameAndCountry() \{
+        map =  "docs.Employees.Select(employee => new \{ " +
+            "    LastName = employee.LastName, " +
+            "    FullName = (employee.FirstName + \\" \\") + employee.LastName, " +
+            "    Country = employee.Address.Country " +
+            "\})";
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying.mdx)) so the indexing process can start indexing documents.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="java">
+{`// Deploy the index to the server:
+// ===============================
+
+new Employees_ByNameAndCountry().execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+- Now our index can be queried and indexed results can be returned.
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="java">
+{`// Query the database using the index: 
+// ===================================
+
+List<Employee> employeesFromUK = session
+    .query(Employee.class, Employees_ByNameAndCountry.class)
+     // Here we query for all Employee documents that are from the UK
+     // and have 'King' in their LastName field:                     
+    .whereEquals("LastName", "King")
+    .whereEquals("Country", "UK")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+
+More examples with detailed descriptions can be found [here](../indexes/indexing-basics.mdx).
+
+## Remarks
+
+<Admonition type="warning" title="Remember" id="remember" href="#remember">
+A frequent mistake is to treat indexes as SQL Views, but they are not analogous. The **result of a query for the given index is a full document**, not only the fields that were indexed. 
+
+This behavior can be altered by [storing](../indexes/storing-data-in-index.mdx) fields and doing [projections](../indexes/querying/projections.mdx).
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. You can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes.mdx) page.
+
+The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
+
+## Basic Example
+
+In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection.mdx) and enable querying by `FirstName`, `LastName`, or both.
+
+- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying.mdx)).
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="js">
+{`// Define the index:
+// =================
+
+class Employees_ByNameAndCountry extends AbstractJavaScriptIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map("Employees", employee => \{
+            return \{
+                // Define the content for each index-field:
+                // ========================================
+                LastName: employee.LastName,
+                FullName: employee.FirstName + " " + employee.LastName,
+                Country: employee.Address.Country
+            \};
+        \});
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying.mdx)) so the indexing process can start indexing documents.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="js">
+{`// Deploy the index to the server:
+// ===============================
+
+const employeesIndex = new Employees_ByNameAndCountry();
+await employeesIndex.execute(store);
+`}
+</CodeBlock>
+</TabItem>
+
+- Now our index can be queried and indexed results can be returned.
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="js">
+{`// Query the database using the index: 
+// ===================================
+
+const employeesFromUK = await session
+    .query(\{ indexName: employeesIndex.getIndexName()  \})
+    // Here we query for all Employee documents that are from the UK
+    // and have 'King' in their LastName field:
+    .whereEquals("LastName", "King")
+    .whereEquals("Country", "UK")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+
+More examples with detailed descriptions can be found [here](../indexes/indexing-basics.mdx).
+
+## Remarks
+
+<Admonition type="warning" title="Remember" id="remember" href="#remember">
+A frequent mistake is to treat indexes as SQL Views, but they are not analogous. The **result of a query for the given index is a full document**, not only the fields that were indexed. 
+
+This behavior can be altered by [storing](../indexes/storing-data-in-index.mdx) fields and doing [projections](../indexes/querying/projections.mdx).
+</Admonition>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Querying
+- [Basics](../indexes/querying/basics)
+
+### Client API
+- [How to Query](../client-api/session/querying/how-to-query)
+
+### Studio
+- [Indexes: Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Index List View](../studio/database/indexes/indexes-list-view)
+
+
+-->

@@ -1,0 +1,93 @@
+---
+title: "Converting to JSON and accessing metadata"
+hide_table_of_contents: true
+sidebar_label: Converting to JSON and Accessing Metadata
+sidebar_position: 21
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Converting to JSON and accessing metadata
+
+Entities passed to index can be converted to JSON using `AsDocument` method, there is also a possibility to access metadata for a specified object using `MetadataFor` method.
+
+## AsDocument - converting to JSON
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="csharp">
+{`public class Products_AllProperties : AbstractIndexCreationTask<Product, Products_AllProperties.Result>
+\{
+    public class Result
+    \{
+        public string Query \{ get; set; \}
+    \}
+
+    public Products_AllProperties()
+    \{
+        Map = products => from product in products
+            select new
+            \{
+                // convert product to JSON and select all properties from it
+                Query = AsJson(product).Select(x => x.Value)
+            \};
+
+        // mark 'Query' field as analyzed which enables full text search operations
+        Index(x => x.Query, FieldIndexing.Search);
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Products_AllProperties.Result, Products_AllProperties>()
+	.Where(x => x.Query == "Chocolade")
+	.OfType<Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## MetadataFor - accessing metadata
+
+<TabItem value="indexes_3" label="indexes_3">
+<CodeBlock language="csharp">
+{`public class Products_WithMetadata : AbstractIndexCreationTask<Product>
+\{
+	public class Result
+	\{
+		public DateTime LastModified \{ get; set; \}
+	\}
+
+	public Products_WithMetadata()
+	\{
+		Map = products => from product in products
+					let metadata = MetadataFor(product)
+					select new
+					\{
+						LastModified = metadata.Value<DateTime>("@last-modified")
+					\};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexes_4" label="indexes_4">
+<CodeBlock language="csharp">
+{`IList<Product> results = session
+	.Query<Products_WithMetadata.Result, Products_WithMetadata>()
+	.OrderByDescending(x => x.LastModified)
+	.OfType<Product>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

@@ -1,0 +1,51 @@
+---
+title: "Status: Running Tasks"
+hide_table_of_contents: true
+sidebar_label: Running Tasks
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Status: Running Tasks
+
+Here you can view the details of currently running tasks and filter them according to their types.
+Types of the task available are as follows: 
+
+-  `SuggestionQuery`,
+-  `BulkInsert`,
+-  `IndexBulkOperation`,
+-  `IndexDeleteOperation`,
+-  `BackupDatabase`,
+-  `BackupFilesystem`,
+-  `ImportDatabase`,
+-  `RestoreDatabase`,
+-  `RestoreFilesystem`,
+-  `CompactDatabase`,
+-  `CompactFilesystem`,
+-  `IoTest`,
+-  `NewIndexPrecomputedBatch`,
+-  `PurgeTombstones`,
+-  `ServerSmuggling`,
+-  `CounterBatchOperation`,
+-  `TimeSeriesBatchOperation`,
+-  `RecoverCorruptedIndexOperation`,
+-  `ResolveConflicts`
+
+ Each filter will appear if at least one type of this task is currently running. You can refresh the list of running tasks by clicking on the `Refresh` button and search for the specific tasks using `Search` option.
+
+## Killing tasks
+
+If a task of a certain type (namely `BulkInsert`, `IndexBulkOperation`, `ImportDatabase`, or `IoTest`) is currently running, you can `Kill` it using the appropriate button.
+
+![Figure 1. Studio. Status. Killing Tasks.](./assets/status_running_tasks-1.png) 
+
+
+<Admonition type="info" title="Info">
+Remember that server has an automatic purging mechanism for completed tasks, because of that completed tasks might not show up on this list.
+</Admonition>

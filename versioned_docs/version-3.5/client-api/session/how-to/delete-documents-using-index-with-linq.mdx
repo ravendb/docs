@@ -1,0 +1,59 @@
+---
+title: "Session: How to Delete Documents Using Index with LINQ Statment"
+hide_table_of_contents: true
+sidebar_label: ...delete-documents-using-index-with-linq
+sidebar_position: 13
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Session: How to Delete Documents Using Index with LINQ Statment
+
+To delete a large amount of documents answering certain criteria, we can use the `DeleteByIndex` method from `session.Advanced`
+
+### Syntax
+
+<TabItem value="delete_by_index_LINQ1" label="delete_by_index_LINQ1">
+<CodeBlock language="csharp">
+{`Operation DeleteByIndex<T, TIndexCreator>(Expression<Func<T, bool>> expression)
+    where TIndexCreator : AbstractIndexCreationTask, new();
+
+Operation DeleteByIndex<T>(string indexName, Expression<Func<T, bool>> expression);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to perform a query on |
+| **expression** | Expression&lt;Func&lt;T, bool&gt;&gt; | The LINQ expression (the query that will be performed) |
+
+| Return Value | |
+| ------------- | ----- |
+| [Operation](../../../glossary/operation.mdx) | Object that allows waiting for an operation to complete. |
+
+### Remarks
+<Admonition type="note" title="Note" id="note" href="#note"> 
+`DeleteByIndex` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
+The document will be removed from the server after the method is called and not after `SaveChanges`.
+</Admonition>
+
+### Example
+<TabItem value="delete_by_index_LINQ2" label="delete_by_index_LINQ2">
+<CodeBlock language="csharp">
+{`// remove all documents from the server where Name == Bob using Person/ByName index
+var operation1 = session.Advanced.DeleteByIndex<Person>("Person/ByName", x => x.Name == "Bob");
+operation1.WaitForCompletion();
+
+//remove all documents from the server where Age > 35 using Person/ByAge index
+var operation2 = session.Advanced.DeleteByIndex<Person, Person_ByAge>(x => x.Age < 35);
+operation2.WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+

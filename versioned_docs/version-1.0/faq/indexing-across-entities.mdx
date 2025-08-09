@@ -1,0 +1,31 @@
+---
+title: "How to index across entities?"
+hide_table_of_contents: true
+sidebar_label: How to index across entities?
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#How to index across entities?
+
+RavenDB allows you to easily index a single entity by specifying:
+```
+
+    from user in docs.Users
+    select new { user.Name}
+```
+But what happen if you want to index Users or Employees? You can do that easily enough using:
+```
+
+    from doc in docs
+    let entityName = doc["@metadata"]["Raven-Entity-Name"]
+    where entityName == "Users" || entityName == "Employees"
+    select new { doc.Name }
+```
+This method allow you to index all users and all employees in the same index, and queries on this index will be able to find either type of documents.

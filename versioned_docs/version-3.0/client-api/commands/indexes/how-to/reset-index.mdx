@@ -1,0 +1,129 @@
+---
+title: "Commands: Indexes: How to reset index?"
+hide_table_of_contents: true
+sidebar_label: ...reset index
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Indexes: How to reset index?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**ResetIndex** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+## Syntax
+
+<TabItem value="reset_index_1" label="reset_index_1">
+<CodeBlock language="csharp">
+{`void ResetIndex(string name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to reset |
+
+## Example
+
+<TabItem value="reset_index_2" label="reset_index_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.ResetIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**ResetIndex** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+## Syntax
+
+<TabItem value="reset_index_1" label="reset_index_1">
+<CodeBlock language="java">
+{`public void resetIndex(String name);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to reset |
+
+## Example
+
+<TabItem value="reset_index_2" label="reset_index_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().resetIndex("Orders/Totals");
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**ResetIndex** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes/\{indexName\} \\
+	-X RESET 
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Query parameter | Required |  Description |
+| ------------- | -- | ---- |
+| **indexName** | Yes | name of an index to reset |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+---
+
+### Example I
+
+Reset index `Orders/Totals`.
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X RESET "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals" 
+< HTTP/1.1 200 OK
+\{"Reset":"Orders/Totals"\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [GetIndex](../../../../client-api/commands/indexes/get)
+- [PutIndex](../../../../client-api/commands/indexes/put)
+- [DeleteIndex](../../../../client-api/commands/indexes/delete)
+
+-->

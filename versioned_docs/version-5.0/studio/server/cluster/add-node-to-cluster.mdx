@@ -1,0 +1,79 @@
+---
+title: "Adding a Node to a Cluster"
+hide_table_of_contents: true
+sidebar_label: Add Node to Cluster
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Adding a Node to a Cluster
+<Admonition type="note" title="Note">
+
+* A server will be in a `Passive` state in either one of the following:  
+  * When the server is started for the very first time  
+  * When the server is removed from an existing cluster  
+
+* To make a server become part of a cluster you can do _either_ of the following:  
+
+  1. **Bootstrap Cluster**  
+  2. **Adding another node** to this server cluster (will cause both to be part of the same cluster)  
+  3. **Performing any RAFT command** on the `Passive` server will make the server become part of a cluster, e.g.:  
+     * Adding a license  
+     * Creating a database on this server  
+
+* In this page:  
+  * [Bootstrap Cluster](../../../studio/server/cluster/add-node-to-cluster.mdx#bootstrap-cluster)  
+  * [Add Another Node to the Cluster](../../../studio/server/cluster/add-node-to-cluster.mdx#add-another-node-to-the-cluster)  
+  * [A Cluster with 2 nodes](../../../studio/server/cluster/add-node-to-cluster.mdx#a-cluster-with-2-nodes)  
+
+</Admonition>
+## Bootstrap Cluster
+
+Click _'Bootstrap Cluster'_ to make the current passive server a part of a cluster.  
+Note: This option is only available when the server is in the `Passive` state.  
+
+![Figure 0. Click to add a new node](./assets/cluster-add-node-0.png)
+
+
+## Add Another Node to the Cluster
+
+![Figure 1. Click to add a new node](./assets/cluster-add-node-1.png)
+
+
+
+![Figure 2. Adding a new node](./assets/cluster-add-node-2.png)
+
+1. Enter the server URL of the new node  
+2. Manually select a **Node Tag** for the new node. 
+   The node tage is a unique identifier made up of 1-4 uppercase letters. By default, the tag of the 
+   first node in a cluster is `A`, the second `B`, and so on. After `Z`, the next node will get the 
+   tag `AA`, the next `AB`, and so on.  
+3. Decide whether to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
+4. Toggle whether to use all available cores on the machine for this node  
+5. Set a maximum number of cores that can be used by this node  
+6. Click _Test connection_ to verify that your cluster can communicate with the server at the specified URL  
+
+When done, click *Save* to add this server as a node to the cluster  
+
+This operation can also be done programatically. Read more [here](../../../server/clustering/cluster-api.mdx).
+
+
+## A Cluster with 2 nodes
+
+![Figure 3. Cluster with 2 nodes](./assets/cluster-add-node-3.png)
+
+**Now your cluster contains 2 nodes**:  
+
+* The server running on _localhost:8081_ shows as Node A and is the `Leader` of the cluster.  
+* The server running on _localhost:8082_ shows as Node B and is a `Member` of the cluster.  
+
+<Admonition type="note" title="Note">
+ More nodes can be added as needed.  
+</Admonition>
+

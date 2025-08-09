@@ -1,0 +1,61 @@
+---
+title: "Glossary: SynchronizationUpdateNotification"
+hide_table_of_contents: true
+sidebar_label: SynchronizationUpdateNotification
+sidebar_position: 59
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: SynchronizationUpdateNotification
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **File** | string | The file name |
+| **DestinationFileSystemUrl** | string | URL of a destination file system |
+| **SourceFileSystemUrl** | string | URL of a source file system |
+| **SourceServerId** | Guid | The identifier of a source file system |
+| **Type** | [SynchronizationType](../glossary/synchronization-update-notification.mdx#synchronizationtype-enum) | The synchronization type enum |
+| **Action** | [SynchronizationAction](../glossary/synchronization-update-notification.mdx#synchronizationaction-enum) | The synchronization action type enum |
+| **Direction** | [SynchronizationDirection](../glossary/synchronization-update-notification.mdx#synchronizationdirection-enum) | The synchronization direction type enum |
+
+
+---
+
+# SynchronizationType (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **ContentUpdate** | `1` |
+| **MetadataUpdate** | `2` |
+| **Rename** | `3` |
+| **Renamed** | `4` |
+
+# SynchronizationAction (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **Enqueue** | `0` |
+| **Start** | `1` |
+| **Finish** | `2` |
+
+# SynchronizationDirection (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **Outgoing** | `0` |
+| **Incoming** | `1` |
+

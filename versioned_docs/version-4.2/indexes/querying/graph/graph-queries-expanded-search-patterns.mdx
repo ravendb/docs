@@ -1,0 +1,176 @@
+---
+title: "Graph Queries Expanded Search Patterns"
+hide_table_of_contents: true
+sidebar_label: Expanded Search Patterns
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Graph Queries Expanded Search Patterns  
+<Admonition type="note" title="Note">
+
+Graph queries are modular structures that can be easily expanded from data-node to 
+edge and from edge to node in order to reveal potential layers of meaningful data.  
+This article focuses on simple patterns, including **directional** and **bi-directional** queries.  
+Other types of patterns include 
+[multi-section](../../../indexes/querying/graph/graph-queries-multi-section.mdx) 
+and [recursive](../../../indexes/querying/graph/graph-queries-recursive.mdx) 
+queries.  
+
+* In this page:  
+   * [Expanding the Search Pattern](../../../indexes/querying/graph/graph-queries-expanded-search-patterns.mdx#expanding-the-search-pattern)  
+   * [Bi-Directional Queries](../../../indexes/querying/graph/graph-queries-expanded-search-patterns.mdx#bi-directional-queries)  
+   
+</Admonition>
+## Expanding The Search Pattern
+
+You can expand an existing graph query simply by adding it an edge-and-node pair, as follows.  
+
+* **Initial query**:  
+  Here we find all the orders made by a company we want to investigate, and all the products that each order includes.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`match
+    (Orders as orders 
+       where Company = "companies/34-A")-
+    [Lines[].Product as product]->
+    (Products as products)
+`}
+</CodeBlock>
+</TabItem>
+
+    ![Initial Query Results](./assets/Overview_ExpandingTheQuery_1.png)
+
+* **Expanded query**:  
+  And here we expand the query to also find each product's supplier.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`match
+    (Orders as orders 
+       where Company = "companies/34-A")-
+    [Lines[].Product as product]->
+    (Products as products)-
+    [Supplier as supplier]->
+    (Suppliers as suppliers)
+`}
+</CodeBlock>
+</TabItem>
+
+    ![Expanded Query Results](./assets/Overview_ExpandingTheQuery_2.png)
+
+    The expanded search pattern locates a new layer of relations and data nodes, by querying retrieved **products** 
+    and finding which **suppliers** they lead to.  
+
+
+
+## Bi-Directional Queries
+You can direct a graph query to the left and/or to the right.  
+
+* **Directional Queries**  
+  In each section of the query, an origin data-node clause is directed to a destination 
+  data-node clause to its right **or** to its left.  
+  The following two queries for example, searching for orders to France, are equivalent.  
+
+    | To The Right | To The Left |
+    | --- | --- |
+    |
+```
+match
+     (Orders as orders 
+        where ShipTo.Country = "France")-
+     [Company as company]->
+     (Companies as companies)
+ ```
+|
+```
+match 
+     (Companies as companies)
+     <-[Company as company]
+     -(Orders as orders 
+         where ShipTo.Country = "France") 
+```
+|
+
+* **Bi-Directional Queries**  
+  A query may be combined of sections that point to the right **and** to the left.  
+  Here is one:
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`match 
+     (Employees as employees)
+     <-[Employee as handledBy]
+     -(Orders as orders)-
+     [Company as orderedBy]->
+     (Companies as companies)
+`}
+</CodeBlock>
+</TabItem>  
+
+   * The first part **heads left**, finding **orders and the employees that handle them**.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`(Employees as employees)
+<-[Employee as handledBy]
+-(Orders as orders)
+`}
+</CodeBlock>
+</TabItem>  
+   * The second part **heads right**, finding **orders and the companies that make these orders**.  
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`(Orders as orders)-
+[Company as orderedBy]->
+(Companies as companies)
+`}
+</CodeBlock>
+</TabItem>  
+   * **Orders**, common to both parts, appears only once.  
+     It is origin for both sections.  
+
+    The query produces these results:  
+
+    ![Bi-Directional Query Results](./assets/Overview_BiDirectionalQuery.png)
+
+* It is equivalent to the following less concise multi-segment query.  
+  
+    | Multi-Segment (Intersection) | Bi-Directional |
+    | --- | --- |
+    |
+```
+match 
+     //First Segment
+     (Orders as orders)- 
+       [Employee as employee]-> 
+         (Employees as employees)
+    and
+     //Second Segment
+     (orders)- 
+       [Company as company]-> 
+         (Companies as companies)
+```
+|
+```
+match 
+     (Employees as employees)
+     <-[Employee as handledBy]
+     -(Orders as orders)-
+     [Company as orderedBy]->
+     (Companies as companies)
+```
+|
+
+   <Admonition type="info" title="Info">
+   Formatting a query as a bi-directional or a multi-segment structure 
+   is a **readability preference**.  
+   Operation-wise the two formats are equivalent, since **bi-directional** queries 
+   are interpreted to **single-direction multi-segment queries** before execution.  
+   </Admonition>
+
+
+

@@ -1,0 +1,558 @@
+---
+title: "Getting Started"
+hide_table_of_contents: true
+sidebar_label: Getting Started
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Getting Started
+
+Welcome to RavenDB! 
+
+This article will get you started and guide you through all the parts of RavenDB needed for basic understanding and simple setup. It consists of two parts:
+
+- The [Server](../start/getting-started.mdx#server) part will focus on installation, setup & configuration of the RavenDB server
+- The [Client](../start/getting-started.mdx#client) part will describe the general principles behind our client libraries 
+
+## Server
+
+Let's start by installing and configuring the server. In order to do that first we need to download the server package from the [downloads](https://ravendb.net/downloads) page.
+
+RavenDB is cross-platform with support for the following operating systems:
+
+- Windows x64 / x86
+- Linux x64
+- Docker 
+- MacOS
+- Raspberry Pi
+### Prerequisites
+
+RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
+
+<Admonition type="note" title="Windows" id="windows" href="#windows">
+
+Please install [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer) before launching the RavenDB server. This package should be the sole requirement for 'Windows' platforms. If you're experiencing difficulties, please check the [Prerequisites for .NET Core on Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites) article written by Microsoft.
+
+</Admonition>
+
+<Admonition type="note" title="Linux" id="linux" href="#linux">
+
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+
+</Admonition>
+
+<Admonition type="note" title="MacOS" id="macos" href="#macos">
+
+We highly recommend **updating** your **MacOS** and checking the [Prerequisites for .NET Core on macOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites) article written by Microsoft before launching the RavenDB Server.
+
+</Admonition>
+### Installation & Setup
+
+After extraction of the server package, you can start the [Setup Wizard](../start/installation/setup-wizard.mdx) by running the `run.ps1` (or `run.sh`) script or by [disabling the 'Setup Wizard' and configuring the server manually](../start/installation/manual.mdx).
+
+<Admonition type="note" title="Running in a Docker container" id="running-in-a-docker-container" href="#running-in-a-docker-container">
+
+If you are interested in hosting the server in a Docker container, please read our [dedicated article](../start/installation/running-in-docker-container.mdx).
+
+</Admonition>
+### Configuration
+
+The RavenDB server is using a [settings.json](../server/configuration/configuration-options.mdx#settingsjson) file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file, a server restart is required in order for them to be applied.
+
+You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options.mdx).
+
+<Admonition type="info" title="Default configuration" id="default-configuration" href="#default-configuration">
+
+The configuration file included in each RavenDB server distribution package is as follows:
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`\{
+    "ServerUrl": "http://127.0.0.1:0",
+    "Setup.Mode": "Initial",
+    "DataDir": "RavenData"
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Which means that the server will run:
+
+- On `localhost` with a `random port`
+- In `Setup Wizard` mode
+- Store the data in the `RavenData` directory.
+
+</Admonition>
+
+<Admonition type="warning" title="Port in Use" id="port-in-use" href="#port-in-use">
+
+In some cases the port might be in use. This will prevent the Server from starting with an "address in use" error (`EADDRINUSE`).
+
+The port can be changed by editing the `ServerUrl` value.
+
+</Admonition>
+
+<Admonition type="note" title="Write Permissions" id="write-permissions" href="#write-permissions">
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options.mdx#settingsjson) by the [Setup Wizard](../start/installation/setup-wizard.mdx))
+- The data folder ([`DataDir`](../server/configuration/core-configuration.mdx#datadir) setting)
+- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration.mdx#logspath) setting)
+
+If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
+
+</Admonition>
+### Studio
+
+<Admonition type="note" title="Free" id="free" href="#free">
+
+Our GUI, the RavenDB Management Studio, comes **free** with **every license type**:
+
+- Community
+- Professional
+- Enterprise
+
+</Admonition>
+
+After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.
+### Security Concerns
+
+To let a developer start coding an application quickly, RavenDB will run with the following default security mode:
+
+<Admonition type="warning" title="Default Security Mode" id="default-security-mode" href="#default-security-mode">
+
+As long as the database is used inside the local machine and no outside connections are allowed, you can ignore security concerns 
+and you require no authentication. Once you set RavenDB to listen to connections outside your local machine, 
+your database will immediately block this now vulnerable configuration and require the administrator to properly setup the security and 
+access control to prevent unauthorized access to your data or to explicitly allow the unsecured configuration.
+
+</Admonition>
+
+**We recommend using the 'Setup Wizard' to easily install RavenDB securely from the very start.**  
+
+Read more about security and how to enable authentication [here](../server/security/overview.mdx).
+
+
+
+## Client
+
+After your server is up and running, to write an application you need to acquire one of the `Client` access libraries:
+
+- .NET from [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
+- Java from [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
+- Node.js from [NPM](https://www.npmjs.com/package/ravendb)
+- Python from [PyPi](https://pypi.org/project/pyravendb/)
+- [Ruby](https://github.com/ravendb/ravendb-ruby-client)
+- [Go](https://github.com/ravendb/ravendb-go-client)
+
+---
+
+### DocumentStore
+
+In order to start, you need to create an instance of the `DocumentStore` - the main entry point for your application which is responsible for establishing and managing connections between a RavenDB server (or cluster) and your application.
+
+<Admonition type="info" title="Examples" id="examples" href="#examples">
+
+Before proceeding to the examples, we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data.mdx).
+
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="C#" label="C#">
+<CodeBlock language="csharp">
+{`using (IDocumentStore store = new DocumentStore
+{
+    Urls = new[]                        // URL to the Server,
+    {                                   // or list of URLs 
+        "http://live-test.ravendb.net"  // to all Cluster Servers (Nodes)
+    },
+    Database = "Northwind",             // Default database that DocumentStore will interact with
+    Conventions = { }                   // DocumentStore customizations
+})
+{
+    store.Initialize();                 // Each DocumentStore needs to be initialized before use.
+                                        // This process establishes the connection with the Server
+                                        // and downloads various configurations
+                                        // e.g. cluster topology or client configuration
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`try (IDocumentStore store = new DocumentStore(
+    new String[]{ "http://live-test.ravendb.net" },        // URL to the Server,
+    // or list of URLs
+    // to all Cluster Servers (Nodes)
+    "Northwind")                                           // Default database that DocumentStore will interact with
+) {
+
+    DocumentConventions conventions = store.getConventions();  // DocumentStore customizations
+
+    store.initialize();                                        // Each DocumentStore needs to be initialized before use.
+    // This process establishes the connection with the Server
+    // and downloads various configurations
+    // e.g. cluster topology or client configuration
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`import { DocumentStore } from "ravendb";
+
+const store = new DocumentStore(
+    ["http://live-test.ravendb.net"],   // URL to the Server
+                                        // or list of URLs
+                                        // to all Cluster Servers (Nodes)
+
+    "Northwind");                       // Default database that DocumentStore will interact with
+
+const conventions = store.conventions;  // DocumentStore customizations
+
+store.initialize();                     // Each DocumentStore needs to be initialized before use.
+                                        // This process establishes the connection with the Server
+                                        // and downloads various configurations
+                                        // e.g. cluster topology or client configuration
+
+store.dispose();                  // Dispose the resources claimed by the DocumentStore
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`from pyravendb.store import document_store
+
+with document_store.DocumentStore(
+    urls=["http://live-test.ravendb.net"],  # URL to the Server
+                                            # or list of URLs
+                                            # to all Cluster Servers (Nodes)
+
+    database="Northwind") as store:         # Default database that DocumentStore will interact with
+    
+    conventions = store.conventions         # DocumentStore customizations
+    
+    store.initialize()                      # Each DocumentStore needs to be initialized before use.
+                                            # This process establishes the connection with the Server
+                                            # and downloads various configurations
+                                            # e.g. cluster topology or client configuration
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Singleton" id="singleton" href="#singleton">
+
+The `DocumentStore` is capable of working with multiple databases and for proper operation we **recommend** having only one instance of it per application.
+
+</Admonition>
+
+The following articles can extend your knowledge about the `DocumentStore` and its configuration:
+
+- [What is a Document Store?](../client-api/what-is-a-document-store.mdx)
+- [How to Create a Document Store?](../client-api/creating-document-store.mdx)
+- [How to Setup a Default Database?](../client-api/setting-up-default-database.mdx)
+- [How to configure the Document Store using Conventions?](../client-api/configuration/conventions.mdx)
+
+---
+
+### Session
+
+The `Session` is used to manipulate the data. It implements the `Unit of Work` pattern and is capable of batching the requests to save expensive remote calls. In contrast to a `DocumentStore` it is a lightweight object and can be created more frequently. For example, in web applications, a common (and recommended) pattern is to create a session per request.
+
+### Example I - Storing
+
+RavenDB is a Document Database. All stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection.mdx) (`@collection` property) assignment.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="C#" label="C#">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
+{
+    Category category = new Category
+    {
+        Name = "Database Category"
+    };
+
+    session.Store(category);                            // Assign an 'Id' and collection (Categories)
+                                                        // and start tracking an entity
+
+    Product product = new Product
+    {
+        Name = "RavenDB Database",
+        Category = category.Id,
+        UnitsInStock = 10
+    };
+
+    session.Store(product);                             // Assign an 'Id' and collection (Products)
+                                                        // and start tracking an entity
+
+    session.SaveChanges();                              // Send to the Server
+                                                        // one request processed in one transaction
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) {      // Open a session for a default 'Database'
+    Category category = new Category();
+    category.setName("Database Category");
+
+    session.store(category);                            // Assign an 'Id' and collection (Categories)
+    // and start tracking an entity
+
+    Product product = new Product();
+    product.setName("RavenDB Database");
+    product.setCategory(category.getId());
+    product.setUnitsInStock(10);
+
+    session.store(product);                             // Assign an 'Id' and collection (Products)
+    // and start tracking an entity
+
+    session.saveChanges();                              // Send to the Server
+    // one request processed in one transaction
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const session = store.openSession();                // Open a session for a default 'Database'
+
+const category = new Category("Database Category");
+
+await session.store(category);                      // Assign an 'Id' and collection (Categories)
+                                                    // and start tracking an entity
+
+const product = new Product(
+    "RavenDB Database",
+    category.Id, 
+    10);
+
+await session.store(product);                       // Assign an 'Id' and collection (Products)
+                                                    // and start tracking an entity
+
+await session.saveChanges();                        // Send to the Server
+                                                    // one request processed in one transaction
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`with store.open_session() as session:           # Open a session for a default 'Database'
+    category = Category("Database Category")
+    
+    session.store(category)                     # Assign an 'Id' and collection (Categories)
+                                                # and start tracking an entity
+
+    product = Product(
+        "RavenDB Database", 
+        category.Id, 
+        10)
+
+    session.store(product)                      # Assign an 'Id' and collection (Products)
+                                                # and start tracking an entity
+
+    session.save_changes()                      # Send to the Server
+                                                # one request processed in one transaction
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II - Loading
+
+The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option to retrieve additional documents in the same request (using `.Include`), keeping the number of expensive calls to minimum.
+
+Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. **All of those changes are sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support.mdx)).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="C#" label="C#">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
+{
+    Product product = session
+        .Include<Product>(x => x.Category)              // Include Category
+        .Load(productId);                               // Load the Product and start tracking
+
+    Category category = session
+        .Load<Category>(product.Category);              // No remote calls,
+                                                        // Session contains this entity from .Include
+
+    product.Name = "RavenDB";                           // Apply changes
+    category.Name = "Database";
+
+    session.SaveChanges();                              // Synchronize with the Server
+                                                        // one request processed in one transaction
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) {     // Open a session for a default 'Database'
+    Product product = session
+        .include("Category")                        // Include Category
+        .load(Product.class, productId);            // Load the Product and start tracking
+
+    Category category = session
+        .load(Category.class,                       // No remote calls,
+            product.getCategory());             // Session contains this entity from .include
+
+    product.setName("RavenDB");                         // Apply changes
+    category.setName("Database");
+
+
+    session.saveChanges();                              // Synchronize with the Server
+    // one request processed in one transaction
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const session = store.openSession();                // Open a session for a default 'Database'
+
+const product = await session
+    .include("Category")                            // Include Category
+    .load(productId);                                // Load the Product and start tracking
+
+const category = await session
+    .load(product.Category);                        // No remote calls,
+                                                    // Session contains this entity from .include
+
+product.Name = "RavenDB";                           // Apply changes
+category.Name = "Database";
+
+await session.saveChanges();                        // Synchronize with the Server
+                                                    // one request processed in one transaction
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`with store.open_session() as session:           # Open a session for a default 'Database'
+
+    product = session
+        .include("Category")                    # Include Category
+        .load(product_id, object_type=Product)  # Load the Product and start tracking
+
+    category = session.load(                    # No remote calls,
+        product.Category,                       # Session contains this entity from .include
+        object_type=Category)
+
+    product.Name = "RavenDB"                    # Apply changes
+    category.Name = "Database"
+
+    session.save_changes()                      # Synchronize with the Server
+                                                # one request processed in one transaction
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - Querying
+
+To satisfy queries, indexes are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes.mdx).
+
+When no index is specified in the query (like in the query below), RavenDB will use its **intelligent auto-indexes** feature that will either use an already existing index or create a new one if no match is found. The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying.mdx#static-indexes).
+
+Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../indexes/querying/what-is-rql.mdx).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="C#" label="C#">
+<CodeBlock language="csharp">
+{`using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
+{
+    List<string> productNames = session
+        .Query<Product>()                               // Query for Products
+        .Where(x => x.UnitsInStock > 5)                 // Filter
+        .Skip(0).Take(10)                               // Page
+        .Select(x => x.Name)                            // Project
+        .ToList();                                      // Materialize query
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`try (IDocumentSession session = store.openSession()) {      // Open a session for a default 'Database'
+    List<String> productNames = session
+        .query(Product.class)                       // Query for Products
+        .whereGreaterThan("UnitsInStock", 5)        // Filter
+        .skip(0).take(10)                           // Page
+        .selectFields(String.class, "Name")         // Project
+        .toList();                                  // Materialize query
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Node.js" label="Node.js">
+<CodeBlock language="js">
+{`const session = store.openSession();                // Open a session for a default 'Database'
+
+const productNames = await session
+    .query({ collection: "Products" })              // Query for Products
+    .whereGreaterThan("UnitsInStock", 5)            // Filter
+    .skip(0).take(10)                               // Page
+    .selectFields("Name")                           // Project
+    .all();                                         // Materialize query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Python" label="Python">
+<CodeBlock language="python">
+{`with store.open_session() as session:               # Open a session for a default 'Database'
+
+    productNames = list(                            # Materialize query
+        session
+            .query(object_type=Product)             # Query for Products
+            .where_greater_than("UnitsInStock", 5)  # Filter
+            .skip(0).take(10)                       # Page
+            .select("Name")                         # Project
+    )
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Products
+where UnitsInStock > 5
+select Name
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The following articles can extend your knowledge about the `Session`:
+
+- [What is a Session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work.mdx)
+- [Opening a Session](../client-api/session/opening-a-session.mdx)
+- [Storing Entities](../client-api/session/storing-entities.mdx)
+- [Deleting Entities](../client-api/session/deleting-entities.mdx)
+- [Loading Entities](../client-api/session/loading-entities.mdx)
+- [Saving Changes](../client-api/session/saving-changes.mdx)
+
+The introductory articles describing `Querying` can be found here:
+
+- [Basics](../indexes/querying/basics.mdx)
+- [What is RQL?](../indexes/querying/what-is-rql.mdx)
+
+If you wish to understand `Indexes` better, we recommend reading the following articles:
+
+- [Indexes: What are indexes?](../indexes/what-are-indexes.mdx)
+- [Indexes: Creating and deploying indexes?](../indexes/creating-and-deploying.mdx)
+- [Indexes: Indexing basics](../indexes/indexing-basics.mdx)
+- [Indexes: Map indexes](../indexes/map-indexes.mdx)
+
+
+

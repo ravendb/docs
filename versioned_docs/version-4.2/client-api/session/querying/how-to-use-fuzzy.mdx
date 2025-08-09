@@ -1,0 +1,120 @@
+---
+title: "Session: Querying: How to Use Fuzzy"
+hide_table_of_contents: true
+sidebar_label: How to Use Fuzzy
+sidebar_position: 19
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Session: Querying: How to Use Fuzzy
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Fuzzy search is supported via `Fuzzy` method. This method is available only from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values. Because of that it can be used only right after `WhereEquals` method.
+
+## Syntax
+
+<TabItem value="fuzzy_1" label="fuzzy_1">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Fuzzy(decimal fuzzy);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `decimal` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .DocumentQuery<Company>()
+    .WhereEquals(x => x.Name, "Ernts Hnadel").Fuzzy(0.5m)
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`session
+    .Advanced
+    .AsyncDocumentQuery<Company>()
+    .WhereEquals(x => x.Name, "Ernts Hnadel").Fuzzy(0.5m)
+    .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Fuzzy search is supported via `fuzzy` method. This method is available only from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query.mdx) level and can only be performed on single term values. Because of that it can be used only right after `whereEquals` method.
+
+## Syntax
+
+<TabItem value="fuzzy_1" label="fuzzy_1">
+<CodeBlock language="java">
+{`IDocumentQuery<T> fuzzy(double var1);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fuzzy** | `double` | Value between 0.0 and 1.0 where 1.0 means closer match. |
+
+## Example
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`session.advanced().documentQuery(Company.class)
+    .whereEquals("Name", "Ernts Hnadel")
+    .fuzzy(0.5)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Companies
+where fuzzy(Name = 'Ernts Hnadel', 0.5)
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Use Search](../../../client-api/session/querying/how-to-use-search)
+
+
+-->

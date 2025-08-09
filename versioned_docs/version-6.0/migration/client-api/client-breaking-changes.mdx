@@ -1,0 +1,160 @@
+---
+title: "Migration: Client Breaking Changes"
+hide_table_of_contents: true
+sidebar_label: Client Breaking Changes
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Client Breaking Changes
+<Admonition type="note" title="Note">
+The features listed on this page were available in former RavenDB versions and are unavailable in RavenDB `6.x`,  
+or their behavior is inconsistent with their behavior in previous versions.  
+
+* In this article:
+   * [Breaking changes](../../migration/client-api/client-breaking-changes.mdx#breaking-changes)  
+   * [Breaking changes in a sharded database](../../migration/client-api/client-breaking-changes.mdx#breaking-changes-in-a-sharded-database)  
+   * [Additional breaking changes](../../migration/client-api/client-breaking-changes.mdx#additional-breaking-changes)  
+
+</Admonition>
+
+## Breaking changes
+
+* **Include from a non-tracking session**  
+  * A non-tracking session will now throw an exception if an `Include` operation is used in it.
+  * Like other entities in a `NoTracking` session,
+    included items are not tracked and will not prevent additional server requests during subsequent _Load_ operations for the same data.
+    To avoid confusion, _Include_ operations are disallowed during non-tracking session actions such as _Load_ or _Query_.
+  * Learn more in [Using 'Include' in a NoTracking session will throw](../../client-api/session/configuration/how-to-disable-tracking.mdx#using-).
+  
+* **Type changes**  
+  Many methods related to paging information (Skip, Take, PageSize, TotalResults, etc.) that used the `int` type in former RavenDB versions now use `long`, 
+  e.g. [QueryStatistics.TotalResults](../../client-api/session/querying/how-to-get-query-statistics.mdx#syntax).
+
+* **Indexing**  
+  The default value of the
+  [Indexing.OrderByTicksAutomaticallyWhenDatesAreInvolved](../../server/configuration/indexing-configuration.mdx#indexingorderbyticksautomaticallywhendatesareinvolved)
+  configuration option is now `true`.  
+
+* **Facets**  
+ `FacetOptions` were removed from [RangeFacet](../../indexes/querying/faceted-search.mdx#syntax).  
+
+* **Obsolete entities removed**  
+  Many obsolete attributes, properties, and methods were removed from the public API. 
+
+* **Certificate disposal**  
+  The [DisposeCertificate](../../client-api/configuration/conventions.mdx#disposecertificate) convention has been introduced
+  to prevent or allow the disposal of `DocumentStore.Certificate` when the store is disposed,
+  helping users mitigate the [X509Certificate2 leak](https://snede.net/the-most-dangerous-constructor-in-net/).
+
+* **Serialization**  
+  Only _Public_ fields are serialized/deserialized when projecting query results.  
+  _Private_ fields are **not** serialized/deserialized.  
+
+* **HiLo ID generator**  
+  `DefaultAsyncHiLoIdGenerator` is replaced with `AsyncHiLoIdGenerator`  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public AsyncHiLoIdGenerator(string tag, DocumentStore store, string dbName, char identityPartsSeparator)
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Breaking changes in a sharded database
+
+#### Unsupported features:  
+
+RavenDB 6.0 introduces [sharding](../../sharding/overview.mdx).  
+Features that are currently unavailable under a sharded database (but remain available in regular databases)
+are listed in the sharding [unsupported features](../../sharding/unsupported.mdx) page.  
+Attempting to use these features when the database is sharded will normally throw a `NotSupportedInShardingException` exception.  
+#### Casting smuggler results:  
+
+The result sets returned by Smuggler and features that use it (import, export, Backup 
+and Restore) are sharding-specific and should not be cast to a non-sharded type.  
+
+For example, the following code **will fail** when the database is sharded.  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var operation = await store.Maintenance.SendAsync(new BackupOperation(config));
+var result = await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(60));
+
+// This will fail with a sharded database
+var backupResult = (BackupResult)result;
+`}
+</CodeBlock>
+</TabItem>
+
+For the code to succeed, replace the last line with:  
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`var backupResult = (ShardedBackupResult)result;
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="Sharding-specific types" id="sharding-specific-types" href="#sharding-specific-types">
+
+* For Backup: `ShardedBackupResult`  
+* For Restore: `ShardedRestoreResult`  
+* For Smuggler, Import, and Export: `ShardedSmugglerResult`  
+
+</Admonition>
+#### Endpoints:
+
+* `GET /databases/*/revisions/bin`  
+  Pass `start` instead of `etag`.  
+  We now fetch from the last entry backward rather than from a specific etag.  
+  <Admonition type="info" title="Info">
+  `GetRevisionsBinEntryCommand`  
+  Previous definition: `GetRevisionsBinEntryCommand(long etag, int? pageSize)`  
+  Current definition: `GetRevisionsBinEntryCommand(int start, int? pageSize)`  
+  </Admonition>
+
+* `GET /databases/*/indexes/terms`  
+  The `Terms` field of the returned results is now `List<String>` instead of `HashSet<String>`.
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class TermsQueryResult
+\{
+   public List<string> Terms \{ get; set; \}
+   public long ResultEtag \{ get; set; \}
+   public string IndexName \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+* `GET database/*/debug/documents/get-revisions`  
+  Operation parameter changed from `etag` to `start`.  
+
+
+
+## Additional breaking changes
+
+* [Failed to project when having a backing private field](https://issues.hibernatingrhinos.com/issue/RavenDB-18657)  
+* [Unexpected results on projection query on a static index with a dictionary](https://issues.hibernatingrhinos.com/issue/RavenDB-19560)  
+* [Check that query relays on PropertyNameConverter to get property name](https://issues.hibernatingrhinos.com/issue/RavenDB-19209)  
+* [Overflow of ReduceAttempts](https://issues.hibernatingrhinos.com/issue/RavenDB-19729)  
+* [Review all Obsolete() attributes in 6.0](https://issues.hibernatingrhinos.com/issue/RavenDB-19989)  
+* [Inconsistency in `BlittableJsonTraverserHelper.TryRead` when trying to filter docs with nested non-existing field](https://issues.hibernatingrhinos.com/issue/RavenDB-19856)  
+* [Removed non-typed inheritance from typed incremental time series client API](https://issues.hibernatingrhinos.com/issue/RavenDB-19511)  
+* [`CollectionStatistics` properties are now `long`](https://issues.hibernatingrhinos.com/issue/RavenDB-19602)  
+* [Removed private fields from the projection](https://issues.hibernatingrhinos.com/issue/RavenDB-18865)  
+* [DocumentConventions.UseCompression is not respected by BlittableJsonContent](https://issues.hibernatingrhinos.com/issue/RavenDB-20057)  
+* [LINQ projection convention is not applied inside javascript projection when querying static index](https://issues.hibernatingrhinos.com/issue/RavenDB-17708)  
+* [RavenBooleanQuery - merging two RavenBooleanQuery requires an additional boosting check](https://issues.hibernatingrhinos.com/issue/RavenDB-20449)  
+* [Index deletion is prevented when index lock mode is locked](https://issues.hibernatingrhinos.com/issue/RavenDB-19239)  
+* [Wrong query result with CamelCasePropertyNamesContractResolver](https://issues.hibernatingrhinos.com/issue/RavenDB-20634)  
+* [Compare Exchange includes do not override compare exchange values that are already tracked in the session](https://issues.hibernatingrhinos.com/issue/RavenDB-21069)  
+
+
+

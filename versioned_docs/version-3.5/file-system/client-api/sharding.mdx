@@ -1,0 +1,193 @@
+---
+title: "Sharding"
+hide_table_of_contents: true
+sidebar_label: Sharding
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Sharding
+
+The file system client offers the sharding support. The basic principles remain the same like for sharding documents. If you aren't familiar with
+the sharding concept, please read [this](../../server/scaling-out/sharding/how-to-setup-sharding.mdx) article first.
+
+## Sharded client creation
+
+Three steps are necessary in order to create the RavenFS client with the sharding support:
+
+1. First you need to specify URLs of servers and the names of file systems that you want to shard on.
+2. Next you have to create `ShardStrategy` (you can use its default behavior or overwrite such options as: `ShardAccessStrategy`, `ShardResolutionStrategy` and `ModifyFileName`).
+3. Create the instance of `AsyncShardedFilesServerClient` object and pass the configured sharding strategy.
+
+<TabItem value="sharding_1" label="sharding_1">
+<CodeBlock language="csharp">
+{`var shards = new Dictionary<string, IAsyncFilesCommands>
+\{
+	\{"europe", new AsyncFilesServerClient("http://localhost:8080", "NorthwindFS")\},
+	\{"asia", new AsyncFilesServerClient("http://localhost:8081", "NorthwindFS")\},
+\};
+
+var shardStrategy = new ShardStrategy(shards)
+\{
+	/*
+	ShardAccessStrategy = ...
+	ShardResolutionStrategy = ...
+	ModifyFileName = ...
+	*/
+\};
+
+var shardedCommands = new AsyncShardedFilesServerClient(shardStrategy);
+`}
+</CodeBlock>
+</TabItem>
+
+## Usage
+
+The `AsyncShardedFilesServerClient` is the sharding equivalent of [IAsyncFilesCommands](./commands/what-are-commands) for file management and searching functionalities. 
+
+<Admonition type="note" title="File names in the sharded environment" id="file-names-in-the-sharded-environment" href="#file-names-in-the-sharded-environment">
+The sharding strategy relays on the names of shards specified during the setup. In order to properly work with files you need to take into account
+that the upload operation returns the new name of a file, created according to the mentioned `ModifyFileName` function. Its default formula is:
+`(convention, shardId, fileName) => convention.IdentityPartsSeparator + shardId + convention.IdentityPartsSeparator + fileName`. It
+means that the file `doc.txt` stored on the shard named `europe` will obtain the following name: `/europe/doc.txt`.
+</Admonition>
+
+## File operations
+
+The below examples present the basic usage of CURD methods.
+
+<TabItem value="file_operations" label="file_operations">
+<CodeBlock language="csharp">
+{`string fileName = await shardedCommands.UploadAsync("test.bin", new RavenJObject()
+\{
+	\{
+		"Owner", "Admin"
+	\}
+\}, new MemoryStream()); // will return either /europe/test.bin or /asia/test.bin name
+
+// you need to pass the returned file name here to let the client know on which shard the file exists
+using (var content = await shardedCommands.DownloadAsync(fileName)) 
+\{
+	
+\}
+
+string renamed = await shardedCommands.RenameAsync(fileName, "new.bin");
+
+await shardedCommands.DeleteAsync(renamed);
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Browsing / searching files
+
+The file browsing and searching looks exactly the same like for non-sharded environment. The results from the sharded file systems are merged according to the 
+`ApplyAsync` method of `IShardAccessStrategy`. The default implementation is `SequentialShardAccessStrategy` that combines results in the sequential order
+according to the list of shards passes to the `ShardStrategy` object.
+
+<TabItem value="search_browse_operations" label="search_browse_operations">
+<CodeBlock language="csharp">
+{`FileHeader[] fileHeaders = await shardedCommands.BrowseAsync();
+
+SearchResults searchResults = await shardedCommands.SearchAsync("__fileName:test*");
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## Custom IShardResolutionStrategy
+
+The default implementation of the `IShardResolutionStrategy` alternately uploads files to shards. However you can overwrite that and
+for instance use metadata to select the appropriate shard server.
+
+### RegionMetadataBasedResolutionStrategy
+
+The actual decision is made in `GenerateShardIdFor` method.
+
+<TabItem value="custom_shard_res_strategy_1" label="custom_shard_res_strategy_1">
+<CodeBlock language="csharp">
+{`public class RegionMetadataBasedResolutionStrategy : IShardResolutionStrategy
+\{
+	private int counter;
+	private readonly IList<string> shardIds;
+	private readonly ShardStrategy.ModifyFileNameFunc modifyFileName;
+	private readonly FilesConvention conventions;
+
+	public RegionMetadataBasedResolutionStrategy(IList<string> shardIds, ShardStrategy.ModifyFileNameFunc modifyFileName, FilesConvention conventions)
+	\{
+		this.shardIds = shardIds;
+		this.modifyFileName = modifyFileName;
+		this.conventions = conventions;
+	\}
+
+	public ShardResolutionResult GetShardIdForUpload(string filename, RavenJObject metadata)
+	\{
+		var shardId = GenerateShardIdFor(filename, metadata);
+
+		return new ShardResolutionResult
+		\{
+			ShardId = shardId,
+			NewFileName = modifyFileName(conventions, shardId, filename)
+		\};
+	\}
+
+	public string GetShardIdFromFileName(string filename)
+	\{
+		if (filename.StartsWith("/"))
+			filename = filename.TrimStart(new[] \{ '/' \});
+		var start = filename.IndexOf(conventions.IdentityPartsSeparator, StringComparison.OrdinalIgnoreCase);
+		if (start == -1)
+			throw new InvalidDataException("file name does not have the required file name");
+
+		var maybeShardId = filename.Substring(0, start);
+
+		if (shardIds.Any(x => string.Equals(maybeShardId, x, StringComparison.OrdinalIgnoreCase)))
+			return maybeShardId;
+
+		throw new InvalidDataException("could not find a shard with the id: " + maybeShardId);
+	\}
+
+	public string GenerateShardIdFor(string filename, RavenJObject metadata)
+	\{
+		// choose shard based on the region
+		var region = metadata.Value<string>("Region");
+
+		string shardId = null;
+
+		if (string.IsNullOrEmpty(region) == false)
+			shardId = shardIds.FirstOrDefault(x => x.Equals(region, StringComparison.OrdinalIgnoreCase));
+
+		return shardId ?? shardIds[Interlocked.Increment(ref counter) % shardIds.Count];
+	\}
+
+	public IList<string> PotentialShardsFor(ShardRequestData requestData)
+	\{
+		// for future use
+		throw new NotImplementedException();
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Use the following code for initialization with this strategy:
+
+<TabItem value="custom_shard_res_strategy_2" label="custom_shard_res_strategy_2">
+<CodeBlock language="csharp">
+{`var strategy = new ShardStrategy(shards);
+
+strategy.ShardResolutionStrategy = new RegionMetadataBasedResolutionStrategy(shards.Keys.ToList(), strategy.ModifyFileName, strategy.Conventions);
+
+var client = new AsyncShardedFilesServerClient(strategy);
+`}
+</CodeBlock>
+</TabItem>

@@ -1,0 +1,177 @@
+---
+title: "Troubleshooting: Sending support ticket"
+hide_table_of_contents: true
+sidebar_label: Sending Support Ticket
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Troubleshooting: Sending support ticket
+
+When sending a support ticket, it is good to include as much information about the issue as you can. The following article describes what can be send along with the issue description to let us better understand your problem.
+
+1. Server and client version
+2. Web Traffic logs. We recommend using a [FiddlerCap](https://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
+    - [Download](https://www.telerik.com/fiddler/fiddlercap) FiddlerCap
+    - Close all instances of Internet Explorer (or other browsers).
+    - Run the FiddlerCapSetup.exe file.
+    - FiddlerCap will start automatically when the installer completes.
+    - Inside FiddlerCap press Clear Cookies button and then the Clear Cache button.
+    - Inside FiddlerCap, click the **1. Start Capture** button.
+    - Record web traffic using your application.
+    - To add a screenshot to your capture, press the +Screenshot button inside FiddlerCap.
+    - Inside FiddlerCap, click the **2. Stop Capture** button.
+    - Click the **3. Save Capture** button. Save the .SAZ file to your desktop.
+3. Debug Info Package. RavenDB supports creating a info package (statistics, queries, requests, hardware information, etc.) that can be database scoped or server scoped. [Database scoped package](../../studio/overview/status/gather-debug-info.mdx) can be created in: `Studio -> Status -> Gather Debug Info`, for [server scoped package](../../studio/management/gather-debug-info.mdx) go to `Studio -> Manage Your Server -> Gather Debug Info`.
+4. [Server logs](../../server/troubleshooting/enabling-logging.mdx)
+5. [Statistics](../../server/administration/statistics.mdx)
+6. Unit test
+
+<Admonition type="info" title="Monitoring local traffic " id="monitoring-local-traffic" href="#monitoring-local-traffic">
+The easiest way to monitor traffic sent to `http://localhost` or `http://127.0.0.1` is to provide a machine name instead of **localhost** or **127.0.0.1**.
+For example if your RavenDB server address is `http://localhost:8080` then in an application config file change it to  `http://[machine-name]:8080`. You can also use one of these two aliases instead:  `http://ipv4.fiddler`, `http://localhost.fiddler`.
+
+For an ASP.NET application you can also configure proxy server as follow:
+
+```xml 
+<system.net>
+  <defaultProxy>
+    <proxy bypassonlocal="False" usesystemdefault="True" proxyaddress="http://127.0.0.1:[port number]" />
+  </defaultProxy>
+</system.net>
+```
+
+By default Fiddler listens on port `8888` and FiddlerCap on `8889`.
+</Admonition>
+
+## Using Fiddler with Java API
+
+Copy following code to your application:
+
+<TabItem value="fiddler_setup" label="fiddler_setup">
+<CodeBlock language="java">
+{`public static void useFiddler(IDocumentStore store) \{
+  store.getJsonRequestFactory().addConfigureRequestEventHandler(new FiddlerConfigureRequestHandler());
+\}
+
+public static class FiddlerConfigureRequestHandler implements EventHandler<WebRequestEventArgs> \{
+  @Override
+  public void handle(Object sender, WebRequestEventArgs event) \{
+    HttpRequestBase requestBase = (HttpRequestBase) event.getRequest();
+    HttpHost proxy = new HttpHost("127.0.0.1", 8888, "http");
+    RequestConfig requestConfig = requestBase.getConfig();
+    if (requestConfig == null) \{
+      requestConfig = RequestConfig.DEFAULT;
+    \}
+    requestConfig = RequestConfig.copy(requestConfig).setProxy(proxy).build();
+    requestBase.setConfig(requestConfig);
+
+  \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+And configure fiddler with given DocumentStore:
+
+<TabItem value="fiddler_usage" label="fiddler_usage">
+<CodeBlock language="java">
+{`try (IDocumentStore store = new DocumentStore("http://localhost:8080").initialize()) \{
+  useFiddler(store);
+  // your code
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+## Writing unit tests
+
+The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](https://www.nuget.org/packages/RavenDB.Tests.Helpers/).
+
+The package contains base class (`RavenTestBase`) with various methods useful for test creation:
+
+- `NewDocumentStore` - method that creates a new EmbeddableDocumentStore.
+- `NewRemoteDocumentStore` - method that creates a new DocumentStore and starts the Server.
+- `WaitForIndexing` - waits for the indexing to complete for all indexes.
+- ...and many more
+
+<TabItem value="support_1" label="support_1">
+<CodeBlock language="csharp">
+{`public class RavenServerInDebugDllLocator : RavenServerLocator
+\{
+    public override string ServerPath
+    \{
+        get
+        \{
+            var serverDllPath = @"src\\Raven.Server\\bin\\x64\\Debug\\netcoreapp2.0\\Raven.Server.dll";
+            if (File.Exists(serverDllPath) == false) // this can happen when running directly from CLI e.g. dotnet xunit
+                serverDllPath = @"src\\Raven.Server\\bin\\Debug\\netcoreapp2.0\\Raven.Server.dll";
+
+            return serverDllPath;
+        \}
+    \}
+
+    public override string Command => "dotnet";
+
+    public override string CommandArguments => ServerPath;
+\}
+
+
+public class SampleTestClass : RavenTestDriver<RavenServerInDebugDllLocator>
+\{
+    public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
+    \{
+        public Employees_ByFirstName()
+        \{
+            Map = employees => from employee in employees
+                               select new
+                               \{
+                                   employee.FirstName
+                               \};
+        \}
+    \}
+
+    [Fact]
+    public void SampleTestMethod()
+    \{
+        using (IDocumentStore store = GetDocumentStore())
+        \{
+            new Employees_ByFirstName().Execute(store);
+
+            using (IDocumentSession session = store.OpenSession())
+            \{
+                session.Store(new Employee
+                \{
+                    FirstName = "John",
+                    LastName = "Doe"
+                \});
+
+                session.SaveChanges();
+            \}
+
+            WaitForIndexing(store);
+
+            using (IDocumentSession session = store.OpenSession())
+            \{
+                var employees = session
+                                .Query<Employee, Employees_ByFirstName>()
+                                .Where(x => x.FirstName == "John")
+                                .ToList();
+
+                Assert.Equal(1, employees.Count);
+                Assert.Equal("John", employees[0].FirstName);
+                Assert.Equal("Doe", employees[0].LastName);
+            \}
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>

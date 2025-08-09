@@ -1,0 +1,614 @@
+---
+title: "Create Database Operation"
+hide_table_of_contents: true
+sidebar_label: Create Database
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Create Database Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Use `CreateDatabaseOperation` to create a new database from the **Client API**, as described below.  
+  To create a new database from the **Studio**, see [Create database](../../../studio/database/create-new-database/general-flow.mdx).
+
+* This operation requires a client certificate with a security clearance of _Operator_ or _ClusterAdmin_.  
+  To learn which operations are allowed at each level, see [Security clearance and permissions](../../../server/security/authorization/security-clearance-and-permissions.mdx).
+
+* In this article:
+   * [Create new database](../../../client-api/operations/server-wide/create-database.mdx#create-new-database)
+     * [Example I - Create non-sharded database](../../../client-api/operations/server-wide/create-database.mdx#example-i---create-non-sharded-database)
+     * [Example II - Create sharded database](../../../client-api/operations/server-wide/create-database.mdx#example-ii---create-sharded-database)
+     * [Example III - Ensure database does not exist before creating](../../../client-api/operations/server-wide/create-database.mdx#example-iii---ensure-database-does-not-exist-before-creating)
+   * [Syntax](../../../client-api/operations/server-wide/create-database.mdx#syntax)
+
+</Admonition>
+## Create new database
+
+<Admonition type="note" title="Note">
+
+##### Example I - Create non-sharded database
+* The following simple example creates a non-sharded database with the default replication factor of 1.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Create_db_sync" label="Create_db_sync">
+<CodeBlock language="csharp">
+{`// Define the create database operation, pass an instance of DatabaseRecord
+var createDatabaseOp = new CreateDatabaseOperation(new DatabaseRecord("DatabaseName"));
+
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_db_async" label="Create_db_async">
+<CodeBlock language="csharp">
+{`// Define the create database operation, pass an instance of DatabaseRecord
+var createDatabaseOp = new CreateDatabaseOperation(new DatabaseRecord("DatabaseName"));
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+await store.Maintenance.Server.SendAsync(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_using_builder_sync" label="Create_using_builder_sync">
+<CodeBlock language="csharp">
+{`// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(builder => builder
+     // Call 'Regular' to create a non-sharded database
+    .Regular("DatabaseName"));
+
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_using_builder_async" label="Create_using_builder_async">
+<CodeBlock language="csharp">
+{`// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(builder => builder
+     // Call 'Regular' to create a non-sharded database
+    .Regular("DatabaseName"));
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+await store.Maintenance.Server.SendAsync(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Example II - Create sharded database
+* The following example creates a sharded database with 3 shards, each with a replication factor of 2.
+* In addition, it enables: 
+   * revisions
+   * document expiration
+   * and applies some settings to the database.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Create_db_sync" label="Create_db_sync">
+<CodeBlock language="csharp">
+{`// Define the database record:
+var databaseRecord = new DatabaseRecord("ShardedDatabaseName") {
+    
+    // Configure sharding:
+    Sharding = new ShardingConfiguration()
+    {
+        // Ensure nodes "A", "B", and "C" are available in the cluster
+        // before executing the database creation.
+        Shards = new Dictionary<int, DatabaseTopology>()
+        {
+            {0, new DatabaseTopology { Members = new List<string> { "A", "B" }}},
+            {1, new DatabaseTopology { Members = new List<string> { "A", "C" }}},
+            {2, new DatabaseTopology { Members = new List<string> { "B", "C" }}}
+        }
+    },
+    
+    // Enable revisions on all collections:
+    Revisions = new RevisionsConfiguration()
+    {
+        Default = new RevisionsCollectionConfiguration()
+        {
+            Disabled = false, MinimumRevisionsToKeep = 5
+        }
+    },
+    
+    // Enable the document expiration feature:
+    Expiration = new ExpirationConfiguration()
+    {
+        Disabled = false
+    },
+    
+    // Apply some database configuration setting:
+    Settings = new Dictionary<string, string>()
+    {
+        {"Databases.QueryTimeoutInSec", "500"}
+    }
+};
+
+// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(databaseRecord);
+
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_db_async" label="Create_db_async">
+<CodeBlock language="csharp">
+{`// Define the database record:
+var databaseRecord = new DatabaseRecord("ShardedDatabaseName") {
+    
+    // Configure sharding:
+    Sharding = new ShardingConfiguration()
+    {
+        // Ensure nodes "A", "B", and "C" are available in the cluster
+        // before executing the database creation.
+        Shards = new Dictionary<int, DatabaseTopology>()
+        {
+            {0, new DatabaseTopology { Members = new List<string> { "A", "B" }}},
+            {1, new DatabaseTopology { Members = new List<string> { "A", "C" }}},
+            {2, new DatabaseTopology { Members = new List<string> { "B", "C" }}}
+        }
+    },
+    
+    // Enable revisions on all collections:
+    Revisions = new RevisionsConfiguration()
+    {
+        Default = new RevisionsCollectionConfiguration()
+        {
+            Disabled = false, MinimumRevisionsToKeep = 5
+        }
+    },
+    
+    // Enable the document expiration feature:
+    Expiration = new ExpirationConfiguration()
+    {
+        Disabled = false
+    },
+    
+    // Apply some database configuration setting:
+    Settings = new Dictionary<string, string>()
+    {
+        {"Databases.QueryTimeoutInSec", "500"}
+    }
+};
+
+// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(databaseRecord);
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+await store.Maintenance.Server.SendAsync(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_using_builder_sync" label="Create_using_builder_sync">
+<CodeBlock language="csharp">
+{`// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(builder => builder
+        
+    // Call 'Sharded' to create a sharded database
+    .Sharded("ShardedDatabaseName", topology => topology
+        // Ensure nodes "A", "B", and "C" are available in the cluster
+        // before executing the database creation.
+        .AddShard(0, new DatabaseTopology {Members = new List<string> {"A", "B"}})
+        .AddShard(1, new DatabaseTopology {Members = new List<string> {"A", "C"}})
+        .AddShard(2, new DatabaseTopology {Members = new List<string> {"B", "C"}}))
+    // Enable revisions on all collections:
+    .ConfigureRevisions(new RevisionsConfiguration()
+    {
+        Default = new RevisionsCollectionConfiguration()
+        {
+            Disabled = false, MinimumRevisionsToKeep = 5
+        }
+    })
+    // Enable the document expiration feature:
+    .ConfigureExpiration(new ExpirationConfiguration()
+    {
+        Disabled = false
+    })
+    // Apply some database configuration setting:
+    .WithSettings(new Dictionary<string, string>()
+    {
+        { "Databases.QueryTimeoutInSec", "500" }
+    })
+);
+
+// Execute the operation by passing it to Maintenance.Server.Send
+store.Maintenance.Server.Send(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Create_using_builder_async" label="Create_using_builder_async">
+<CodeBlock language="csharp">
+{`// Define the create database operation
+var createDatabaseOp = new CreateDatabaseOperation(builder => builder
+        
+    // Call 'Sharded' to create a sharded database
+    .Sharded("ShardedDatabaseName", topology => topology
+        // Ensure nodes "A", "B", and "C" are available in the cluster
+        // before executing the database creation.
+        .AddShard(0, new DatabaseTopology {Members = new List<string> {"A", "B"}})
+        .AddShard(1, new DatabaseTopology {Members = new List<string> {"A", "C"}})
+        .AddShard(2, new DatabaseTopology {Members = new List<string> {"B", "C"}}))
+    // Enable revisions on all collections:
+    .ConfigureRevisions(new RevisionsConfiguration()
+    {
+        Default = new RevisionsCollectionConfiguration()
+        {
+            Disabled = false, MinimumRevisionsToKeep = 5
+        }
+    })
+    // Enable the document expiration feature:
+    .ConfigureExpiration(new ExpirationConfiguration()
+    {
+        Disabled = false
+    })
+    // Apply some database configuration setting:
+    .WithSettings(new Dictionary<string, string>()
+    {
+        { "Databases.QueryTimeoutInSec", "500" }
+    })
+);
+
+// Execute the operation by passing it to Maintenance.Server.SendAsync
+await store.Maintenance.Server.SendAsync(createDatabaseOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Example III - Ensure database does not exist before creating
+* To ensure the database does not already exist before creating it, follow this example:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var databaseName = "MyDatabaseName";
+
+try
+{
+    // Try to fetch database statistics to check if the database exists
+    store.Maintenance.ForDatabase(databaseName)
+        .Send(new GetStatisticsOperation());
+}
+catch (DatabaseDoesNotExistException)
+{
+    try
+    {
+        // The database does not exist, try to create:
+        var createDatabaseOp = new CreateDatabaseOperation(
+            new DatabaseRecord(databaseName));
+        
+        store.Maintenance.Server.Send(createDatabaseOp);
+    }
+    catch (ConcurrencyException)
+    {
+        // The database was created by another client before this call completed
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var databaseName = "MyDatabaseName";
+
+try
+{
+    // Try to fetch database statistics to check if the database exists:
+    await store.Maintenance.ForDatabase(databaseName)
+        .SendAsync(new GetStatisticsOperation());
+}
+catch (DatabaseDoesNotExistException)
+{
+    try
+    {
+        // The database does not exist, try to create:
+        var createDatabaseOp = new CreateDatabaseOperation(
+            new DatabaseRecord(databaseName));
+        
+        await store.Maintenance.Server.SendAsync(createDatabaseOp);
+    }
+    catch (ConcurrencyException)
+    {
+        // The database was created by another client before this call completed
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="create_database_operation_syntax" label="create_database_operation_syntax">
+<CodeBlock language="csharp">
+{`// CreateDatabaseOperation overloads:
+// ==================================
+public CreateDatabaseOperation(DatabaseRecord databaseRecord) \{\}
+public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFactor) \{\}
+public CreateDatabaseOperation(Action<IDatabaseRecordBuilderInitializer> builder) \{\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Description                                                                                                                                                                                                                                                                                                              |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **databaseRecord**    | Instance of `DatabaseRecord` containing database configuration.<br/>See [The Database Record](../../../client-api/operations/server-wide/create-database.mdx#the-database-record) below.                                                                                                                                      |
+| **replicationFactor** | Number of nodes the database should be replicated to.<br/><br/>If not specified, the value is taken from `databaseRecord.Topology.ReplicationFactor`,<br/>or defaults to **`1`** if that is not set.<br/><br/>If `Topology` is provided, the `replicationFactor` is ignored.                                                  |
+| **builder**           | Callback used to initialize and fluently configure a new DatabaseRecord.<br/>Receives an `IDatabaseRecordBuilderInitializer` on which you invoke builder methods to construct the record. See [The Database Record Builder](../../../client-api/operations/server-wide/create-database.mdx#the-database-record-builder) below. |
+### The Database Record:
+
+The `DatabaseRecord` is a collection of database configurations:  
+
+| DatabaseRecord constructors           | Description                                                        |
+|---------------------------------------|--------------------------------------------------------------------|
+| DatabaseRecord()                      | Initialize a new database record.                                  |
+| DatabaseRecord(`string` databaseName) | Initialize a new database record with the specified database name. |
+
+<Admonition type="info" title="Info">
+
+**Note:**  
+
+* Only the properties listed in the table below can be configured in the `DatabaseRecord` object passed to `CreateDatabaseOperation`.
+* For example, although ongoing task definitions are public on the _DatabaseRecord_ class, setting them during database creation will result in an exception.
+  To define ongoing tasks (e.g., backups, ETL, replication), use the appropriate dedicated operation after the database has been created.
+
+</Admonition>
+
+| DatabaseRecord properties          | Type                                                | Description                                                                                                                                                                                                                                                                 |
+|------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Analyzers**                      | `Dictionary<string, AnalyzerDefinition>`            | A dictionary defining the [Custom Analyzers](../../../indexes/using-analyzers.mdx#creating-custom-analyzers) available to the database.                                                                                                                                         |
+| **AutoIndexes**                    | `Dictionary<string, AutoIndexDefinition>`           | Auto-index definitions for the database.                                                                                                                                                                                                                                    |
+| **Client**                         | `ClientConfiguration`                               | [Client behavior](../../../studio/server/client-configuration.mdx) configuration.                                                                                                                                                                                               |
+| **ConflictSolverConfig**           | `ConflictSolver`                                    | Define the strategy used to resolve [Replication conflicts](../../../server/clustering/replication/replication-conflicts.mdx).                                                                                                                                                  |
+| **DataArchival**                   | `DataArchivalConfiguration`                         | [Data Archival](../../../server/extensions/archival.mdx) configuration for the database.                                                                                                                                                                                        |
+| **DatabaseName**                   | `string`                                            | The database name.                                                                                                                                                                                                                                                          |
+| **Disabled**                       | `bool`                                              | Set the database initial state.<br/> `true` - disable the database.<br/> `false` - (default) the database will be enabled.<br/><br/>This can be modified later via [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state.mdx).          |
+| **DocumentsCompression**           | `DocumentsCompressionConfiguration`                 | Configuration settings for [Compressing documents](../../../server/storage/documents-compression.mdx).                                                                                                                                                                          |
+| **ElasticSearchConnectionStrings** | `Dictionary<string, ElasticSearchConnectionString>` | Define [ElasticSearch Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-elasticsearch-connection-string), keyed by name.                                                                                       |
+| **Encrypted**                      | `bool`                                              | `true` - create an [Encrypted database](../../../server/security/encryption/database-encryption.mdx).<br/><br/>Note: Use `PutSecretKeyCommand` to send your secret key to the server BEFORE creating the database.<br/><br/>`false` - (default) the database will not be encrypted. |
+| **Expiration**                     | `ExpirationConfiguration`                           | [Expiration](../../../server/extensions/expiration.mdx) configuration for the database.                                                                                                                                                                                         |
+| **Indexes**                        | `Dictionary<string, IndexDefinition>`               | Define [Indexes](../../../client-api/operations/maintenance/indexes/put-indexes.mdx) that will be created with the database - no separate deployment needed.                                                                                                                    |
+| **Integrations**                   | `IntegrationConfigurations`                         | Configuration for [Integrations](../../../integrations/postgresql-protocol/overview.mdx),<br/>e.g. `PostgreSqlConfiguration`.                                                                                                                                                    |
+| **LockMode**                       | `DatabaseLockMode`                                  | Set the database lock mode.<br/>(default: `Unlock`)<br/><br/>This can be modified later via `SetDatabasesLockOperation`.                                                                                                                                                       |
+| **OlapConnectionStrings**          | `Dictionary<string, OlapConnectionString>`          | Define [OLAP Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string), keyed by name.                                                                                                         |
+| **QueueConnectionStrings**         | `Dictionary<string, QueueConnectionString>`         | Define [Queue Connection Strings](../../../server/ongoing-tasks/etl/queue-etl/overview.mdx), keyed by name.                                                                                                                                                                     |
+| **RavenConnectionStrings**         | `Dictionary<string, RavenConnectionString>`         | Define [Raven Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-ravendb-connection-string), keyed by name.                                                                                                      |
+| **Refresh**                        | `RefreshConfiguration`                              | [Refresh](../../../server/extensions/refresh.mdx) configuration for the database.                                                                                                                                                                                               |
+| **Revisions**                      | `RevisionsConfiguration`                            | [Revisions](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) configuration for the database.                                                                                                                                               |
+| **RevisionsForConflicts**          | `RevisionsCollectionConfiguration`                  | Set the revisions configuration for conflicting documents.                                                                                                                                                                                                                  |
+| **RollingIndexes**                 | `Dictionary<string, RollingIndex>`                  | Dictionary mapping index names to their deployment configurations.                                                                                                                                                                                                          |
+| **Settings**                       | `Dictionary<string, string>`                        | [Configuration](../../../server/configuration/configuration-options.mdx) settings for the database.                                                                                                                                                                             |
+| **Sharding**                       | `ShardingConfiguration`                             | The sharding configuration.                                                                                                                                                                                                                                                 |
+| **Sorters**                        | `Dictionary<string, SorterDefinition>`              | A dictionary defining the [Custom Sorters](../../../studio/database/settings/custom-sorters.mdx) available to the database.                                                                                                                                                     |
+| **SqlConnectionStrings**           | `Dictionary<string, SqlConnectionString>`           | Define [SQL Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string), keyed by name.                                                                                                           |
+| **Studio**                         | `StudioConfiguration`                               | [Studio Configuration](../../../studio/database/settings/studio-configuration.mdx).                                                                                                                                                                                             |
+| **TimeSeries**                     | `TimeSeriesConfiguration`                           | [Time series](../../../studio/database/settings/time-series-settings.mdx) configuration for the database.                                                                                                                                                                       |
+| **Topology**                       | `DatabaseTopology`                                  | Optional topology configuration.<br/><br/>Defaults to `null`, in which case the server will determine which nodes to place the database on, based on the specified `ReplicationFactor`.                                                                                       |
+| **UnusedDatabaseIds**              | `HashSet<string>`                                   | Set database IDs that will be excluded when creating new change vectors.                                                                                                                                                                                                    |
+### The Database Record Builder:
+
+<TabItem value="builder_syntax" label="builder_syntax">
+<CodeBlock language="csharp">
+{`public interface IDatabaseRecordBuilderInitializer
+\{
+    public IDatabaseRecordBuilder Regular(string databaseName);
+    public IShardedDatabaseRecordBuilder Sharded(string databaseName, Action<IShardedTopologyConfigurationBuilder> builder);
+    public DatabaseRecord ToDatabaseRecord();
+\}
+
+public interface IShardedDatabaseRecordBuilder : IDatabaseRecordBuilderBase
+\{
+\}
+
+// Available configurations:
+// =========================
+
+public interface IDatabaseRecordBuilder : IDatabaseRecordBuilderBase
+\{
+    public IDatabaseRecordBuilderBase WithTopology(DatabaseTopology topology);
+    public IDatabaseRecordBuilderBase WithTopology(Action<ITopologyConfigurationBuilder> builder);
+    public IDatabaseRecordBuilderBase WithReplicationFactor(int replicationFactor);
+\}
+
+public interface IDatabaseRecordBuilderBase
+\{
+    DatabaseRecord ToDatabaseRecord();
+
+    IDatabaseRecordBuilderBase ConfigureClient(ClientConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureDocumentsCompression(DocumentsCompressionConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureExpiration(ExpirationConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureRefresh(RefreshConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureRevisions(RevisionsConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureStudio(StudioConfiguration configuration);
+    IDatabaseRecordBuilderBase ConfigureTimeSeries(TimeSeriesConfiguration configuration);
+
+    IDatabaseRecordBuilderBase Disabled();
+    IDatabaseRecordBuilderBase Encrypted();
+
+    IDatabaseRecordBuilderBase WithAnalyzers(params AnalyzerDefinition[] analyzerDefinitions);
+    IDatabaseRecordBuilderBase WithConnectionStrings(Action<IConnectionStringConfigurationBuilder> builder);
+    IDatabaseRecordBuilderBase WithIndexes(params IndexDefinition[] indexDefinitions);
+    IDatabaseRecordBuilderBase WithIntegrations(Action<IIntegrationConfigurationBuilder> builder);
+    IDatabaseRecordBuilderBase WithLockMode(DatabaseLockMode lockMode);
+    IDatabaseRecordBuilderBase WithSettings(Dictionary<string, string> settings);
+    IDatabaseRecordBuilderBase WithSettings(Action<Dictionary<string, string>> builder);
+    IDatabaseRecordBuilderBase WithSorters(params SorterDefinition[] sorterDefinitions);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+<Admonition type="note" title="Note">
+
+* Use `CreateDatabaseOperation` to create a new database from the **Client API**, as described below.  
+  To create a new database from the **Studio**, see [Create database](../../../studio/database/create-new-database/general-flow.mdx).
+
+* This operation requires a client certificate with a security clearance of _Operator_ or _ClusterAdmin_.  
+  To learn which operations are allowed at each level, see [Security clearance and permissions](../../../server/security/authorization/security-clearance-and-permissions.mdx).
+
+* In this article:
+    * [Create new database](../../../client-api/operations/server-wide/create-database.mdx#create-new-database)
+        * [Example I - Create database](../../../client-api/operations/server-wide/create-database.mdx#example-i---create-non-sharded-database)
+        * [Example II - Ensure database does not exist before creating](../../../client-api/operations/server-wide/create-database.mdx#example-ii---ensure-database-does-not-exist-before-creating)
+    * [Syntax](../../../client-api/operations/server-wide/create-database.mdx#syntax)
+
+</Admonition>
+## Create new database
+
+<Admonition type="note" title="Note">
+
+##### Example I - Create database
+* The following simple example creates a non-sharded database with the default replication factor of 1.
+
+<TabItem value="CreateDatabase" label="CreateDatabase">
+<CodeBlock language="java">
+{`DatabaseRecord databaseRecord = new DatabaseRecord();
+databaseRecord.setDatabaseName("MyNewDatabase");
+store.maintenance().server().send(new CreateDatabaseOperation(databaseRecord));
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+##### Example II - Ensure database does not exist before creating
+* To ensure the database does not already exist before creating it, follow this example:
+
+<TabItem value="EnsureDatabaseExists" label="EnsureDatabaseExists">
+<CodeBlock language="java">
+{`public void ensureDatabaseExists(IDocumentStore store, String database, boolean createDatabaseIfNotExists) \{
+    database = ObjectUtils.firstNonNull(database, store.getDatabase());
+
+    if (StringUtils.isBlank(database)) \{
+        throw new IllegalArgumentException("Value cannot be null or whitespace");
+    \}
+
+    try \{
+        store.maintenance().forDatabase(database).send(new GetStatisticsOperation());
+    \} catch (DatabaseDoesNotExistException e) \{
+        if (!createDatabaseIfNotExists) \{
+            throw e;
+        \}
+
+        try \{
+            DatabaseRecord databaseRecord = new DatabaseRecord();
+            databaseRecord.setDatabaseName(database);
+            store.maintenance().server().send(new CreateDatabaseOperation(databaseRecord));
+        \} catch (ConcurrencyException ce) \{
+            // The database was already created before calling CreateDatabaseOperation
+        \}
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="create_database_syntax" label="create_database_syntax">
+<CodeBlock language="java">
+{`public CreateDatabaseOperation(DatabaseRecord databaseRecord)
+
+public CreateDatabaseOperation(DatabaseRecord databaseRecord, int replicationFactor)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter             | Type           | Description                                                                                                                                                                                                                                              |
+|-----------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **databaseRecord**    | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration.                                                                                                                                                                                          |
+| **replicationFactor** | int            | Number of nodes the database should be replicated to.<br/><br/>If not specified, the value is taken from `topology.replicationFactor`,<br/>or defaults to **`1`** if that is not set.<br/><br/>If `topology` is provided, the `replicationFactor` is ignored. |
+
+## DatabaseRecord
+
+`DatabaseRecord` is a collection of database configurations.  
+
+| constructor                           | Description                      |
+|---------------------------------------|----------------------------------|
+| DatabaseRecord(`string` databaseName) | Initialize a new database record |
+
+<Admonition type="info" title="Info">
+
+**Note:**
+
+* Only the properties listed in the table below can be configured in the `DatabaseRecord` object passed to `CreateDatabaseOperation`.
+* For example, although ongoing task definitions are public on the _DatabaseRecord_ class, setting them during database creation will result in an exception.
+  To define ongoing tasks (e.g., backups, ETL, replication), use the appropriate dedicated operation after the database has been created.
+
+</Admonition>
+
+| Property                           | Type                                         | Description                                                                                                                                                                                                                                                                 |
+|------------------------------------|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **analyzers**                      | `Map<String, AnalyzerDefinition>`            | A dictionary defining the [Custom Analyzers](../../../indexes/using-analyzers.mdx#creating-custom-analyzers) available to the database.                                                                                                                                         |
+| **autoIndexes**                    | `Map<String, AutoIndexDefinition>`           | Auto-index definitions for the database.                                                                                                                                                                                                                                    |
+| **client**                         | `ClientConfiguration`                        | [Client behavior](../../../studio/server/client-configuration.mdx) configuration.                                                                                                                                                                                               |
+| **conflictSolverConfig**           | `ConflictSolver`                             | Define the strategy used to resolve [Replication conflicts](../../../server/clustering/replication/replication-conflicts.mdx).                                                                                                                                                  |
+| **dataArchival**                   | `DataArchivalConfiguration`                  | [Data Archival](../../../server/extensions/archival.mdx) configuration for the database.                                                                                                                                                                                        |
+| **databaseName**                   | `String`                                     | The database name.                                                                                                                                                                                                                                                          |
+| **disabled**                       | `boolean` (default: false)                   | Set the database initial state.<br/> `true` - disable the database.<br/> `false` - (default) the database will be enabled.<br/><br/>This can be modified later via [ToggleDatabasesStateOperation](../../../client-api/operations/server-wide/toggle-databases-state.mdx).          |
+| **documentsCompression**           | `DocumentsCompressionConfiguration`          | Configuration settings for [Compressing documents](../../../server/storage/documents-compression.mdx).                                                                                                                                                                          |
+| **elasticSearchConnectionStrings** | `Map<String, ElasticSearchConnectionString>` | Define [ElasticSearch Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-elasticsearch-connection-string), keyed by name.                                                                                       |
+| **encrypted**                      | `boolean` (default: false)                   | `true` - create an [Encrypted database](../../../server/security/encryption/database-encryption.mdx).<br/><br/>Note: Use `PutSecretKeyCommand` to send your secret key to the server BEFORE creating the database.<br/><br/>`false` - (default) the database will not be encrypted. |
+| **expiration**                     | `ExpirationConfiguration`                    | [Expiration](../../../server/extensions/expiration.mdx) configuration for the database.                                                                                                                                                                                         |
+| **indexes**                        | `Map<String, IndexDefinition>`               | Define [Indexes](../../../client-api/operations/maintenance/indexes/put-indexes.mdx) that will be created with the database - <br/>no separate deployment needed.                                                                                                                |
+| **integrations**                   | `IntegrationConfigurations`                  | Configuration for [Integrations](../../../integrations/postgresql-protocol/overview.mdx),<br/>e.g. `PostgreSqlConfiguration`.                                                                                                                                                    |
+| **lockMode**                       | `DatabaseLockMode`                           | Set the database lock mode.<br/>(default: `Unlock`)<br/><br/>This can be modified later via `SetDatabasesLockOperation`.                                                                                                                                                       |
+| **olapConnectionStrings**          | `Map<String, OlapConnectionString>`          | Define [OLAP Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-olap-connection-string), keyed by name.                                                                                                         |
+| **queueConnectionStrings**         | `Map<String, QueueConnectionString>`         | Define [Queue Connection Strings](../../../server/ongoing-tasks/etl/queue-etl/overview.mdx), keyed by name.                                                                                                                                                                     |
+| **ravenConnectionStrings**         | `Map<String, RavenConnectionString>`         | Define [Raven Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-a-ravendb-connection-string), keyed by name.                                                                                                      |
+| **refresh**                        | `RefreshConfiguration`                       | [Refresh](../../../server/extensions/refresh.mdx) configuration for the database.                                                                                                                                                                                               |
+| **revisions**                      | `RevisionsConfiguration`                     | [Revisions](../../../document-extensions/revisions/client-api/operations/configure-revisions.mdx) configuration for the database.                                                                                                                                               |
+| **revisionsForConflicts**          | `RevisionsCollectionConfiguration`           | Set the revisions configuration for conflicting documents.                                                                                                                                                                                                                  |
+| **rollingIndexes**                 | `Map<String, RollingIndex>`                  | Dictionary mapping index names to their deployment configurations.                                                                                                                                                                                                          |
+| **settings**                       | `Map<String, String>`                        | [Configuration](../../../server/configuration/configuration-options.mdx) settings for the database.                                                                                                                                                                             |
+| **sharding**                       | `ShardingConfiguration`                      | The sharding configuration.                                                                                                                                                                                                                                                 |
+| **sorters**                        | `Map<String, SorterDefinition>`              | A dictionary defining the [Custom Sorters](../../../studio/database/settings/custom-sorters.mdx) available to the database.                                                                                                                                                     |
+| **sqlConnectionStrings**           | `Map<String, SqlConnectionString>`           | Define [SQL Connection Strings](../../../client-api/operations/maintenance/connection-strings/add-connection-string.mdx#add-an-sql-connection-string), keyed by name.                                                                                                           |
+| **studio**                         | `StudioConfiguration`                        | [Studio Configuration](../../../studio/database/settings/studio-configuration.mdx).                                                                                                                                                                                             |
+| **timeSeries**                     | `TimeSeriesConfiguration`                    | [Time series](../../../studio/database/settings/time-series-settings.mdx) configuration for the database.                                                                                                                                                                       |
+| **topology**                       | `DatabaseTopology`                           | Optional topology configuration.<br/><br/>Defaults to `null`, in which case the server will determine which nodes to place the database on, based on the specified `ReplicationFactor`.                                                                                       |
+| **unusedDatabaseIds**              | `Set<String>`                                | Set database IDs that will be excluded when creating new change vectors.                                                                                                                                                                                                    |
+
+
+
+
+</LanguageContent>
+
+<!---
+- [Distributed Database](../../../server/clustering/distribution/distributed-database)
+- [Create Database via Studio](../../../studio/database/create-new-database/general-flow)
+
+-->

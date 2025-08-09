@@ -1,0 +1,377 @@
+---
+title: "Searching"
+hide_table_of_contents: true
+sidebar_label: Searching
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Searching
+
+One of the most common functionality that many real world applications provide is a search feature. Many times it will be enough to apply `Where` closure to create a simple condition,
+for example to get all users whose age is greater that 20 use the code:
+
+<TabItem value="linq_extensions_search_where_age" label="linq_extensions_search_where_age">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByAge").Where(x => x.Age > 20).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+where `User` class and `UsersByName` index are defined as follow:
+<TabItem value="linq_extensions_search_user_class" label="linq_extensions_search_user_class">
+<CodeBlock language="csharp">
+{`public class User
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public byte Age \{ get; set; \}
+
+	public ICollection<string> Hobbies \{ get; set; \} 
+\}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="linq_extensions_search_index_users_by_name" label="linq_extensions_search_index_users_by_name">
+<CodeBlock language="csharp">
+{`documentStore.DatabaseCommands.PutIndex("UsersByName", new IndexDefinition
+\{
+	Map = "from user in docs.Users select new \{ user.Name \}",
+	Indexes = \{ \{ "Name", FieldIndexing.Analyzed \} \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+The `Where` statement also is good if you want to perform a really simple text field search, for example let's create a query to retrieve users whose name starts with *Jo*:
+
+<TabItem value="linq_extensions_search_where_name" label="linq_extensions_search_where_name">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName").Where(x => x.Name.StartsWith("Jo")).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Eventually all queries are always transformed into a Lucene query. The query like above will be translated into &lt;em&gt;Name:Jo*&lt;/em&gt;.
+
+<Admonition type="warning" title="Warning">
+An attempt to use `string.Contains()` method as condition of `Where` closure, will throw `NotSupportedException`. That is because the search term like \*&lt;em&gt;term&lt;/em&gt;* (note wildcards at the beginning and at the end) can cause performance issues. Due to Raven's *safe-by-default* paradigm such operation is forbidden. If you really want to achieve this case, you will find more details in one of the next section below.
+</Admonition>
+
+<Admonition type="info" title="Info">
+Note that that results of a query might be different depending on [an analyzer](../static-indexes/configuring-index-options.mdx) that was applied.
+</Admonition>
+
+## Multiple terms
+
+When you need to do a more complex text searching use `Search` extension method (in `Raven.Client` namespace). This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
+that uses `Search` extension to get users with name *John* or *Adam*:
+<TabItem value="linq_extensions_search_name" label="linq_extensions_search_name">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName").Search(x => x.Name, "John Adam").ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+Each of search terms (separated by space character) will be checked independently. The result documents must match exact one of the passed terms.
+
+The same way you are also able to look for users that have some hobby. Create the index:
+
+<TabItem value="linq_extensions_search_index_users_by_hobbies" label="linq_extensions_search_index_users_by_hobbies">
+<CodeBlock language="csharp">
+{`documentStore.DatabaseCommands.PutIndex("UsersByHobbies", new IndexDefinition
+\{
+	Map = "from user in docs.Users select new \{ user.Hobbies \}",
+	Indexes = \{ \{ "Hobbies", FieldIndexing.Analyzed \} \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Now you are able to execute the following search:
+
+<TabItem value="linq_extensions_search_hobbies" label="linq_extensions_search_hobbies">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByHobbies")
+	.Search(x => x.Hobbies, "looking for someone who likes sport books computers").ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+In result you will get users that are interested in *sport*, *books* or *computers*.
+
+## Multiple fields
+
+By using `Search` extension you are also able to look for by multiple indexed fields. First let's introduce the index:
+ 
+<TabItem value="linq_extensions_search_index_users_by_name_and_hobbies" label="linq_extensions_search_index_users_by_name_and_hobbies">
+<CodeBlock language="csharp">
+{`documentStore.DatabaseCommands.PutIndex("UsersByNameAndHobbies", new IndexDefinition
+\{
+	Map = "from user in docs.Users select new \{ user.Name, user.Hobbies \}",
+	Indexes = \{ \{ "Name", FieldIndexing.Analyzed \}, \{ "Hobbies", FieldIndexing.Analyzed \} \}
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+Now we are able to search by using `Name` and `Hobbies` properties:
+
+<TabItem value="linq_extensions_search_users_by_name_and_hobbies" label="linq_extensions_search_users_by_name_and_hobbies">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByNameAndHobbies")
+               .Search(x => x.Name, "Adam")
+               .Search(x => x.Hobbies, "sport").ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Boosting
+
+Indexing in RavenDB is built upon Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+RavenDB also supports that, in order to improve your searching mechanism and provide the users with much more accurate results you can specify the boost argument. Let's see the example:
+
+<TabItem value="linq_extensions_search_users_by_hobbies_boost" label="linq_extensions_search_users_by_hobbies_boost">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByHobbies")
+			   .Search(x => x.Hobbies, "I love sport", boost:10)
+			   .Search(x => x.Hobbies, "but also like reading books", boost:5).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+The search above will promote users who do sports before book readers and they will be placed at the top of the result list.
+
+## Search options
+
+In order to specify the logic of search expression specify the options argument of the `Search` method. It is `SearchOptions` enum with the following values:
+
+* Or,
+* And,
+* Not,
+* Guess (default).
+
+By default RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise AND semantic will be used by default.
+
+The following query:
+<TabItem value="linq_extensions_search_users_by_hobbies_guess" label="linq_extensions_search_users_by_hobbies_guess">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByNameAndHobbiesAndAge")
+			   .Search(x => x.Hobbies, "computers")
+			   .Search(x => x.Name, "James")
+			   .Where(x => x.Age == 20).ToList();
+`}
+</CodeBlock>
+</TabItem>
+will be translated into &lt;em&gt;( Hobbies:(computers) Name:(James)) AND (Age:20)&lt;/em&gt; (if there is no boolean operator then OR is used).
+
+You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follow:
+
+<TabItem value="linq_extensions_search_users_by_name_and_hobbies_search_and" label="linq_extensions_search_users_by_name_and_hobbies_search_and">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByNameAndHobbies")
+			   .Search(x => x.Name, "Adam")
+			   .Search(x => x.Hobbies, "sport", options: SearchOptions.And).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+will result in the following Lucene query: &lt;em&gt;Name:(Adam) AND Hobbies:(sport)&lt;/em&gt;
+
+If you want to negate the term use `SearchOptions.Not`:
+
+<TabItem value="linq_extensions_search_users_by_name_not" label="linq_extensions_search_users_by_name_not">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName")
+		.Search(x => x.Name, "James", options: SearchOptions.Not).ToList();
+`}
+</CodeBlock>
+</TabItem>
+According to Lucene syntax it will be transformed to the query: &lt;em&gt;-Name:(James)&lt;/em&gt;.
+
+You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values, e.g:
+
+<TabItem value="linq_extensions_search_users_by_name_and_hobbies_and_not" label="linq_extensions_search_users_by_name_and_hobbies_and_not">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByNameAndHobbies")
+		.Search(x => x.Name, "Adam")
+		.Search(x => x.Hobbies, "sport", options: SearchOptions.Not | SearchOptions.And)
+		.ToList();
+`}
+</CodeBlock>
+</TabItem>
+It will produce the following Lucene query: &lt;em&gt;Name:(Adam) AND -Hobbies:(sport)&lt;/em&gt;.
+
+## Query escaping
+
+The code examples presented in this section have hard coded searching terms. However in a real use case the user will specify the term. You are able to control the escaping strategy of the provided query by specifying 
+the `EscapeQueryOptions` parameter. It's the enum that can have one of the following values:
+
+* EscapeAll (default),
+* AllowPostfixWildcard,
+* AllowAllWildcards,
+* RawQuery.
+
+By default all special characters contained in the query will be escaped (`EscapeAll`). However you can add a bit more of flexibility to your searching mechanism.
+`EscapeQueryOptions.AllowPostfixWildcard` enables searching against a field by using search term that ends with wildcard character:
+
+<TabItem value="linq_extensions_search_where_name_post_wildcard" label="linq_extensions_search_where_name_post_wildcard">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName")
+	.Search(x => x.Name, "Jo* Ad*", 
+			escapeQueryOptions:EscapeQueryOptions.AllowPostfixWildcard).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+The next option `EscapeQueryOptions.AllowAllWildcards` extends the previous one by allowing the wildcard character to be present at the beginning as well as at the end of the search term.
+
+<TabItem value="linq_extensions_search_where_name_all_wildcard" label="linq_extensions_search_where_name_all_wildcard">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName")
+	.Search(x => x.Name, "*oh* *da*", 
+			escapeQueryOptions: EscapeQueryOptions.AllowAllWildcards).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="warning" title="Warning">
+RavenDB allows to search by using such queries but you have to be aware that leading wildcards drastically slow down searches. Consider if you really need to find substrings, most cases looking for words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+</Admonition>
+
+The last option makes that the query will not be escaped and the raw term will be relayed to Lucene:
+
+<TabItem value="linq_extensions_search_where_name_raw" label="linq_extensions_search_where_name_raw">
+<CodeBlock language="csharp">
+{`users = session.Query<User>("UsersByName")
+	.Search(x => x.Name, "*J?n*",
+			escapeQueryOptions: EscapeQueryOptions.RawQuery).ToList();
+`}
+</CodeBlock>
+</TabItem>
+
+## Highlights
+
+Another feature called `Highlights` has been added to RavenDB to enhance the search UX.
+
+### Usage
+
+Lets consider a class and index as follows:   
+
+<TabItem value="highlights_1" label="highlights_1">
+<CodeBlock language="csharp">
+{`public class SearchItem
+\{
+	public string Id \{ get; set; \}
+
+	public string Text \{ get; set; \}
+\}
+
+public class ContentSearchIndex : AbstractIndexCreationTask<SearchItem>
+\{
+	public ContentSearchIndex()
+	\{
+		Map = (docs => from doc in docs
+					   select new \{ doc.Text \});
+
+		Index(x => x.Text, FieldIndexing.Analyzed);
+		Store(x => x.Text, FieldStorage.Yes);
+		TermVector(x => x.Text, FieldTermVector.WithPositionsAndOffsets);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now to use Highlights we just need to use one of the `Highlight` query extension methods. The basic usage can be as simple as:   
+
+<TabItem value="highlights_2" label="highlights_2">
+<CodeBlock language="csharp">
+{`FieldHighlightings highlightings;
+
+var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
+				 .Highlight("Text", 128, 1, out highlightings)
+				 .Search("Text", "raven")
+				 .ToArray();
+
+var builder = new StringBuilder()
+	.AppendLine("<ul>");
+
+foreach (var result in results)
+\{
+	var fragments = highlightings.GetFragments(result.Id);
+	builder.AppendLine(string.Format("<li>\{0\}</li>", fragments.First()));
+\}
+
+var ul = builder
+	.AppendLine("</ul>")
+	.ToString();
+`}
+</CodeBlock>
+</TabItem>
+
+This will return the list of results and for each result we will be displaying first found fragment with the length up to 128 characters.
+
+### Customization
+
+<TabItem value="highlights_3" label="highlights_3">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> Highlight(
+	string fieldName,
+	int fragmentLength,
+	int fragmentCount,
+	out FieldHighlightings highlightings);
+
+IDocumentQuery<T> Highlight<TValue>(
+	Expression<Func<T, TValue>> propertySelector,
+	int fragmentLength,
+	int fragmentCount,
+	out FieldHighlightings highlightings);
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **fieldName** or **propertySelector** is used to mark a field/property for highlight.   
+* **fragmentLength** this is the maximum length of text fragments that will be returned.   
+* **fragmentCount** this is the maximum number of fragments that will be returned.   
+* **highlightings** this will return an instance of a `FieldHighlightings` that contains the highlight fragments for each returned result.       
+
+By default, the highlighted text is wrapped with `<b></b>` tags, to change this behavior the `SetHighlighterTags` method was introduced.
+
+<TabItem value="highlights_4" label="highlights_4">
+<CodeBlock language="csharp">
+{`IDocumentQuery<T> SetHighlighterTags(string preTag, string postTag);
+
+IDocumentQuery<T> SetHighlighterTags(string[] preTags, string[] postTags);
+`}
+</CodeBlock>
+</TabItem>
+
+Example. To wrap highlighted text with `**` we just need to execute following query:   
+
+<TabItem value="highlights_5" label="highlights_5">
+<CodeBlock language="csharp">
+{`FieldHighlightings highlightings;
+
+var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
+				 .Highlight("Text", 128, 1, out highlightings)
+				 .SetHighlighterTags("**", "**")
+				 .Search("Text", "raven")
+				 .ToArray();
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+Default `<b></b>` tags are coloured and colours are returned in following order: `yellow`, `lawngreen`, `aquamarine`, `magenta`, `palegreen`, `coral`, `wheat`, `khaki`, `lime`, `deepskyblue`, `deeppink`, `salmon`, `peachpuff`, `violet`, `mediumpurple`, `palegoldenrod`, `darkkhaki`, `springgreen`, `turquoise` and `powderblue`
+</Admonition>

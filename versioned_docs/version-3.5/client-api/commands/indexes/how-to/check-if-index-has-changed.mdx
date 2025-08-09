@@ -1,0 +1,148 @@
+---
+title: "Commands: Indexes: How to check if an index has changed?"
+hide_table_of_contents: true
+sidebar_label: ...check if index has changed
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "http"];
+
+
+# Commands: Indexes: How to check if an index has changed?
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**IndexHasChanged** will let you check if the given index definition differs from the one on a server. This might be useful when you want to check the prior index deployment, if index will be overwritten, and if indexing data will be lost.
+
+## Syntax
+
+<TabItem value="index_has_changed_1" label="index_has_changed_1">
+<CodeBlock language="csharp">
+{`bool IndexHasChanged(string name, IndexDefinition indexDef);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to check |
+| **indexDef** | [IndexDefinition](../../../../glossary/index-definition.mdx) | index definition |
+
+| Return Value | |
+| ------------- | ----- |
+| true | if an index **does not exist** on a server |
+| true | if an index definition **does not match** the one from the **indexDef** parameter |
+| false | if there are no differences between an index definition on server and the one from the **indexDef** parameter |
+
+## Example
+
+<TabItem value="index_has_changed_2" label="index_has_changed_2">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.IndexHasChanged("Orders/Totals", indexDefinition);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**IndexHasChanged** will let you check if the given index definition differs from the one on a server. This might be useful when you want to check the prior index deployment, if index will be overwritten, and if indexing data will be lost.
+
+## Syntax
+
+<TabItem value="index_has_changed_1" label="index_has_changed_1">
+<CodeBlock language="java">
+{`public boolean indexHasChanged(String name, IndexDefinition indexDef);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | name of an index to check |
+| **indexDef** | [IndexDefinition](../../../../glossary/index-definition.mdx) | index definition |
+
+| Return Value | |
+| ------------- | ----- |
+| true | if an index **does not exist** on a server |
+| true | if an index definition **does not match** the one from the **indexDef** parameter |
+| false | if there are no differences between an index definition on a server and the one from  the **indexDef** parameter |
+
+## Example
+
+<TabItem value="index_has_changed_2" label="index_has_changed_2">
+<CodeBlock language="java">
+{`store.getDatabaseCommands().indexHasChanged("Orders/Totals", indexDef);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="http">
+
+
+**IndexHasChanged** will let you check if the given index definition differs from the one on a server. This might be useful when you want to check the prior index deployment, if index will be overwritten, and if indexing data will be lost.
+
+### Syntax
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl \\
+	http://\{serverName\}/databases/\{databaseName\}/indexes/\{indexName\}?op=hasChanged \\
+	-X POST
+	-d @indexDefinition.txt
+`}
+</CodeBlock>
+</TabItem>
+
+### Request
+
+| Payload |
+| ------- |
+| [IndexDefinition](../../../../glossary/index-definition.mdx) |
+
+### Response
+
+| Status code | Description |
+| ----------- | - |
+| `200` | OK |
+
+| Return Value | Description |
+| ------------- | ------------- |
+| **Name** | index name |
+| **Changed** | true/false |
+
+---
+
+### Example I
+
+<TabItem value="json" label="json">
+<CodeBlock language="json">
+{`curl -X POST "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?op=hasChanged" 
+	-d @indexDefinition.txt
+< HTTP/1.1 200 OK
+\{"Name":"Orders/Totals","Changed":false\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [GetIndex](../../../../client-api/commands/indexes/get)
+- [PutIndex](../../../../client-api/commands/indexes/put)
+- [DeleteIndex](../../../../client-api/commands/indexes/delete)
+
+-->

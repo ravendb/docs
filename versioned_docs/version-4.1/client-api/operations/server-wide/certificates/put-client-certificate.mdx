@@ -1,0 +1,159 @@
+---
+title: "Operations: Server: How to Put a Client Certificate"
+hide_table_of_contents: true
+sidebar_label: Put Client Certificate
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: Server: How to Put a Client Certificate
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+You can register an existing client certificate using **PutClientCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="cert_put_1" label="cert_put_1">
+<CodeBlock language="csharp">
+{`public PutClientCertificateOperation(
+    string name, 
+    X509Certificate2 certificate, 
+    Dictionary<string, DatabaseAccess> permissions, 
+    SecurityClearance clearance)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_2" label="cert_1_2">
+<CodeBlock language="csharp">
+{`// The role assigned to the certificate:
+public enum SecurityClearance
+\{
+    ClusterAdmin,
+    ClusterNode,
+    Operator,
+    ValidUser
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_3" label="cert_1_3">
+<CodeBlock language="csharp">
+{`// The access level for a 'ValidUser' security clearance:
+public enum DatabaseAccess
+\{
+    Read,
+    ReadWrite,
+    Admin
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a certificate |
+| **certificate** | X509Certificate2 | Certificate to register |
+| **permissions** | Dictionary&lt;string, DatabaseAccess&gt; | Dictionary with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+
+## Example
+
+<TabItem value="cert_put_2" label="cert_put_2">
+<CodeBlock language="csharp">
+{`X509Certificate2 certificate = new X509Certificate2("c:\\\\path_to_pfx_file");
+store.Maintenance.Server.Send(
+    new PutClientCertificateOperation(
+        "cert1", certificate, null, SecurityClearance.ClusterAdmin));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+You can register an existing client certificate using **PutClientCertificateOperation**. 
+
+## Syntax
+
+<TabItem value="cert_put_1" label="cert_put_1">
+<CodeBlock language="java">
+{`public PutClientCertificateOperation(String name,
+                                     String certificate,
+                                     Map<String, DatabaseAccess> permissions,
+                                     SecurityClearance clearance)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_2" label="cert_1_2">
+<CodeBlock language="java">
+{`public enum SecurityClearance \{
+    CLUSTER_ADMIN,
+    CLUSTER_NODE,
+    OPERATOR,
+    VALID_USER
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="cert_1_3" label="cert_1_3">
+<CodeBlock language="java">
+{`public enum DatabaseAccess \{
+    READ,
+    READ_WRITE,
+    ADMIN
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | String | Name of a certificate |
+| **certificate** | string | Certificate to register |
+| **permissions** | Map&lt;String, DatabaseAccess&gt; | Map with database to access level mapping |
+| **clearance** | SecurityClearance | Access level |
+
+## Example
+
+<TabItem value="cert_put_2" label="cert_put_2">
+<CodeBlock language="java">
+{`byte[] rawCert = Files.readAllBytes(Paths.get("<path-to-certificate.crt>"));
+String certificateAsBase64 = Base64.getEncoder().encodeToString(rawCert);                
+
+store.maintenance().server().send(
+    new PutClientCertificateOperation(
+        "certificateName",
+        certificateAsBase64,
+        new HashMap<>(),
+        SecurityClearance.CLUSTER_ADMIN));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+- [How to delete client certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate)
+- [How to generate client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate)
+
+-->

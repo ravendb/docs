@@ -1,0 +1,178 @@
+---
+title: "Plugins: Tasks"
+hide_table_of_contents: true
+sidebar_label: Tasks
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Plugins: Tasks
+
+Another type of plugins gives us the ability to perform various actions during server/database startup process or enables us to perform actions periodically. For these instances we have introduced two interfaces and one abstract class.
+
+<TabItem value="plugins_4_0" label="plugins_4_0">
+<CodeBlock language="csharp">
+{`public interface IStartupTask
+\{
+	void Execute(DocumentDatabase database);
+\}
+
+public interface IServerStartupTask
+\{
+	void Execute(RavenDbServer server);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="plugins_4_1" label="plugins_4_1">
+<CodeBlock language="csharp">
+{`public abstract class AbstractBackgroundTask : IStartupTask
+\{
+	private static readonly ILog log = LogManager.GetCurrentClassLogger();
+
+	public DocumentDatabase Database \{ get; set; \}
+
+	public void Execute(DocumentDatabase database)
+	\{
+		Database = database;
+		Initialize();
+		Task.Factory.StartNew(BackgroundTask, TaskCreationOptions.LongRunning);
+	\}
+
+	protected virtual void Initialize()
+	\{
+	\}
+
+	int workCounter;
+	public void BackgroundTask()
+	\{
+		string name = GetType().Name;
+		WorkContext context = Database.WorkContext;
+		while (context.DoWork)
+		\{
+			bool foundWork = false;
+			try
+			\{
+				foundWork = HandleWork();
+			\}
+			catch (Exception e)
+			\{
+				log.ErrorException("Failed to execute background task", e);
+			\}
+			if (foundWork == false)
+			\{
+				context.WaitForWork(TimeoutForNextWork(), ref workCounter, name);
+			\}
+			else
+			\{
+				context.UpdateFoundWork();
+			\}
+		\}
+	\}
+
+	protected virtual TimeSpan TimeoutForNextWork()
+	\{
+		return TimeSpan.FromHours(1);
+	\}
+
+	protected abstract bool HandleWork();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* `IStartupTask` can be used to implement a task which will be started during database initialization.   
+* `IServerStartupTask` can be used to implement a task which will be started during server initialization.    
+* `AbstractBackgroundTask ` is a base for all periodic tasks.    
+
+## Example - Send email when server is starting
+
+<TabItem value="plugins_4_2" label="plugins_4_2">
+<CodeBlock language="csharp">
+{`public class SendEmailWhenServerIsStartingTask : IServerStartupTask
+\{
+	public void Execute(RavenDbServer server)
+	\{
+		MailMessage message = new MailMessage("ravendb@myhost.com", "admin@myhost.com")
+		\{
+			Subject = "RavenDB server started.",
+			Body = "Start at: " + DateTime.Now.ToShortDateString()
+		\};
+
+		using (SmtpClient smtpClient = new SmtpClient("mail.myhost.com"))
+		\{
+			smtpClient.Send(message);
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Perform a cleanup task during database initialization
+
+<TabItem value="plugins_4_3" label="plugins_4_3">
+<CodeBlock language="csharp">
+{`public class CleanupWhenDatabaseIsStarting : IStartupTask
+\{
+	private const string SpecificDatabaseName = "Northwind";
+
+	public void Execute(DocumentDatabase database)
+	\{
+		if (database.Name != SpecificDatabaseName)
+			return;
+
+		using (CancellationTokenSource cts = new CancellationTokenSource())
+		\{
+			bool stale;
+			IEnumerable<string> queryResults = database.Queries.QueryDocumentIds(
+				"Notifications/Temp",
+				new IndexQuery(),
+				CancellationTokenSource.CreateLinkedTokenSource(database.WorkContext.CancellationToken, cts.Token),
+				out stale);
+
+			foreach (string documentId in queryResults)
+			\{
+				database.Documents.Delete(documentId, null, null);
+			\}
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example - Perform a cleanup task every six hours
+
+<TabItem value="plugins_4_4" label="plugins_4_4">
+<CodeBlock language="csharp">
+{`public class RemoveAllTemporaryNotificationsTask : AbstractBackgroundTask
+\{
+	protected override bool HandleWork()
+	\{
+		QueryResultWithIncludes queryResults = Database.Queries.Query("Notifications/Temp", new IndexQuery(), Database.WorkContext.CancellationToken);
+		foreach (RavenJObject document in queryResults.Results)
+		\{
+			string id = ((RavenJObject)document["@metadata"]).Value<string>("@id");
+			Database.Documents.Delete(id, null, null);
+		\}
+
+		return true;
+	\}
+
+	protected override TimeSpan TimeoutForNextWork()
+	\{
+		return TimeSpan.FromHours(6);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>

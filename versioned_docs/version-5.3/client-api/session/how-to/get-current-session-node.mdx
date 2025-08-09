@@ -1,0 +1,194 @@
+---
+title: "Session: How to Get the Current Session Node"
+hide_table_of_contents: true
+sidebar_label: ...get current session node
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Session: How to Get the Current Session Node
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When working in a RavenDB cluster, a database can reside on multiple nodes.  
+When the client needs to send a request to the server, it can have several nodes to choose from.
+
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
+
+Use the `GetCurrentSessionNode` method  from the `Advanced` session operations   
+to find out what is the current node that the session sends its requests to.
+
+## Syntax
+
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="csharp">
+{`Task<ServerNode> GetCurrentSessionNode();
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The return value of `GetCurrentSessionNode` is a **ServerNode** object
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="csharp">
+{`public class ServerNode
+\{
+    public string Url;
+    public string Database;
+    public string ClusterTag;
+    public Role ServerRole;
+
+    [Flags]
+    public enum Role
+    \{
+        None = 0,
+        Promotable = 1,
+        Member = 2,
+        Rehab = 4
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="csharp">
+{`ServerNode serverNode = await session.Advanced.GetCurrentSessionNode();
+Console.WriteLine(serverNode.Url);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+When working in a RavenDB cluster, a database can reside on multiple nodes.  
+When the client needs to send a request to the server, it can have several nodes to choose from.
+
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
+
+Use the `GetCurrentSessionNode` method  from the `Advanced` session operations   
+to find out what is the current node that the session sends its requests to.
+
+## Syntax
+
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="java">
+{`ServerNode getCurrentSessionNode();
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The return value of `getCurrentSessionNode` is a **ServerNode** object
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="java">
+{`public class ServerNode \{
+    private String url;
+    private String database;
+    private String clusterTag;
+    private Role serverRole;
+
+    // getters and setters
+\}
+
+public enum Role \{
+    NONE,
+    PROMOTABLE,
+    MEMBER,
+    REHAB
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="java">
+{`ServerNode serverNode = session.advanced().getCurrentSessionNode();
+System.out.println(serverNode.getUrl());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+When working in a RavenDB cluster, a database can reside on multiple nodes.  
+When the client needs to send a request to the server, it can have several nodes to choose from.
+
+The client uses [this logic](../../../client-api/configuration/load-balance/overview.mdx#client-logic-for-choosing-a-node) to determine which node to send the request to.  
+Learn more about load balancing the client requests in this [overview](../../../client-api/configuration/load-balance/overview.mdx).
+
+Use the `GetCurrentSessionNode` method  from the `advanced` session operations   
+to find out what is the current node that the session sends its requests to.
+
+## Syntax
+
+<TabItem value="current_session_node_1" label="current_session_node_1">
+<CodeBlock language="js">
+{`session.advanced.getCurrentSessionNode();
+`}
+</CodeBlock>
+</TabItem>
+
+### Return Value
+
+The return value of `getCurrentSessionNode()` is a **ServerNode** object
+
+<TabItem value="current_session_node_2" label="current_session_node_2">
+<CodeBlock language="js">
+{`ServerNode \{
+    url: "https://localhost:8080",
+    database: "Database",
+    clusterTag: "A",
+    serverRole: "Member" // Role can be one of: "None", "Promotable", "Member", "Rehab" 
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+## Example
+
+<TabItem value="current_session_node_3" label="current_session_node_3">
+<CodeBlock language="js">
+{`const serverNode = session.advanced.getCurrentSessionNode();
+console.log(serverNode.url);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Client API
+- [How a Client Integrates with Replication and the Cluster](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster)
+- [Cluster Node Health Check](../../../client-api/cluster/health-check)
+
+### Clustering
+- [Overview](../../../server/clustering/overview)
+
+
+-->

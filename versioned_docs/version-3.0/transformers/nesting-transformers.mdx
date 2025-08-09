@@ -1,0 +1,53 @@
+---
+title: "Nesting transformers"
+hide_table_of_contents: true
+sidebar_label: Nesting transformers
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Nesting transformers
+
+When you have more complex transformations and you do not want to repeat the code in each transformer to do the exact same transformation, you can use transformer nesting feature by invoking the `TransfromWith` in your projection function.
+
+<TabItem value="transformers_1" label="transformers_1">
+<CodeBlock language="csharp">
+{`public class Orders_Employees_FirstAndLastName : AbstractTransformerCreationTask<Order>
+\{
+	public class Result
+	\{
+		public string FirstName \{ get; set; \}
+
+		public string LastName \{ get; set; \}
+	\}
+
+	public Orders_Employees_FirstAndLastName()
+	\{
+		TransformResults =
+			orders =>
+			from order in orders
+			let employee = LoadDocument<Employee>(order.Employee)
+			select TransformWith("Employees/FirstAndLastName", employee);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="transformers_2" label="transformers_2">
+<CodeBlock language="csharp">
+{`IList<Orders_Employees_FirstAndLastName.Result> results = session
+	.Query<Product>()
+	.Where(x => x.Name == "Chocolade")
+	.TransformWith<Orders_Employees_FirstAndLastName, Orders_Employees_FirstAndLastName.Result>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+

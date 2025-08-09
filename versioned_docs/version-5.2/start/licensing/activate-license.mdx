@@ -1,0 +1,55 @@
+---
+title: "Activate License"
+hide_table_of_contents: true
+sidebar_label: Activate License
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Activate License 
+<Admonition type="note" title="Note">
+
+* Each RavenDB cluster must be registered with its own license.  
+
+* The license key is sent to the email that was provided when obtaining the license.  
+  There are a few ways to **activate your license**, see below.  
+
+* In this page:
+
+  * [Activate license with configuration keys](../../start/licensing/activate-license.mdx#activate-license-with-configuration-keys)
+  * [Activate license from Studio](../../start/licensing/activate-license.mdx#activate-license-from-studio)
+
+</Admonition>
+## Activate license with configuration keys
+
+* You can activate the license using either one of the following configuration keys:  
+  * [License](../../server/configuration/license-configuration.mdx#license)  
+  * [License.Path](../../server/configuration/license-configuration.mdx#licensepath)  
+
+* These configuration keys can be set in _setting.json_ or as environment variables.  
+  Learn more in [configuration overview](../../server/configuration/configuration-options.mdx).
+
+
+
+## Activate license from Studio
+
+You can activate the license from Studio:  
+
+![Register License](./assets/register-1.png)
+
+1. **About**  
+   Navigate to the _About_ page in Studio
+   
+2. **Activate**  
+   Click the _REGISTER LICENSE_ button
+
+![Register License](./assets/register-2.png)
+
+
+

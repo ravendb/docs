@@ -1,0 +1,1153 @@
+---
+title: "Querying an Index"
+hide_table_of_contents: true
+sidebar_label: Querying an Index
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Querying an Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* Prior to this article, it is recommended that you first read the [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
+  For a basic indexes overview see [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* This article is a basic overview of how to __query a static index__.  
+  Indexing the content of your documents allows for __fast document retrieval__ when querying the index.
+
+* Examples in this article show querying an index.  
+  For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+
+* You can query an index with either of the following:
+      * [Session.Query](../../indexes/querying/query-index.mdx#sessionquery) (using LINQ)
+      * [Session.Advanced.DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) (low-level API)
+      * [Session.Advanced.RawQuery](../../indexes/querying/query-index.mdx#sessionadvancedrawquery) (using RQL)
+      * [Query from Studio](../../studio/database/queries/query-view.mdx) (using [RQL](../../client-api/session/querying/what-is-rql.mdx))
+
+</Admonition>
+## Session.Query
+
+* The following examples __query an index__ using the session's `Query` method which supports LINQ.  
+
+* Querying can be enhanced using these [extension methods](../../client-api/session/querying/how-to-query.mdx#custom-methods-and-extensions-for-linq).
+
+<Admonition type="note" title="Note">
+
+__Query index - no filtering__
+
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - without filtering
+// (Open the 'Index' tab to view the index class definition)
+
+List<Employee> employees = session
+     // Pass the queried collection as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .Query<Employee, Employees_ByName>()
+     // Execute the query
+    .ToList();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - without filtering
+
+List<Employee> employees = await asyncSession
+     // Pass the queried collection as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .Query<Employee, Employees_ByName>()
+     // Execute the query
+    .ToListAsync();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - without filtering
+
+List<Employee> employees = session
+     // Pass the index name as a parameter
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .Query<Employee>("Employees/ByName")
+     // Execute the query
+    .ToList();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// The index definition:
+
+public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Employees_ByName()
+    {
+        // The 'Map' function defines the content of the INDEX-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                // * The content of INDEX-fields 'FirstName' & 'LastName'
+                //   is composed of the relevant DOCUMENT-fields.
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+                
+                // * The index-fields can be queried on to fetch matching documents. 
+                //   You can query and filter Employee documents based on their first or last names.
+                
+                // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                //   will Not be indexed.
+                
+                // * Note: the INDEX-field name does Not have to be exactly the same
+                //   as the DOCUMENT-field name. 
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Query index - with filtering__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = session
+     // Pass the IndexEntry class as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .Where(x => x.LastName == "King")
+     // Specify the type of the returned document entities
+    .OfType<Employee>()
+     // Execute the query
+    .ToList();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = await asyncSession
+     // Pass the IndexEntry class as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .Where(x => x.LastName == "King")
+     // Specify the type of the returned document entities
+    .OfType<Employee>()
+     // Execute the query
+    .ToListAsync();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// The index definition:
+
+public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Employees_ByName()
+    {
+        // The 'Map' function defines the content of the INDEX-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                // * The content of INDEX-fields 'FirstName' & 'LastName'
+                //   is composed of the relevant DOCUMENT-fields.
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+                
+                // * The index-fields can be queried on to fetch matching documents. 
+                //   You can query and filter Employee documents based on their first or last names.
+                
+                // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                //   will Not be indexed.
+                
+                // * Note: the INDEX-field name does Not have to be exactly the same
+                //   as the DOCUMENT-field name. 
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* `OfType` is used to convert the type being used in the where clause (`IndexEntry`)   
+  to the collection type (`Employee`).  
+  The reason for this is that while the `IndexEntry` type allows for a strongly typed query,  
+  the server returns the actual documents entities objects.
+
+* An exception will be thrown when filtering by fields that are Not defined in the index.
+
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Query index - with paging__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+List<Employee> employees = session
+    .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+    .Where(x => x.LastName == "King")
+    .Skip(5)  // Skip first 5 results
+    .Take(10) // Retrieve up to 10 documents
+    .OfType<Employee>()
+    .ToList();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_async" label="Query_async">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+List<Employee> employees = await asyncSession
+    .Query<Employees_ByName.IndexEntry, Employees_ByName>()
+    .Where(x => x.LastName == "King")
+    .Skip(5)  // Skip first 5 results
+    .Take(10) // Retrieve up to 10 documents
+    .OfType<Employee>()
+    .ToListAsync();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// The index definition:
+
+public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Employees_ByName()
+    {
+        // The 'Map' function defines the content of the INDEX-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                // * The content of INDEX-fields 'FirstName' & 'LastName'
+                //   is composed of the relevant DOCUMENT-fields.
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+                
+                // * The index-fields can be queried on to fetch matching documents. 
+                //   You can query and filter Employee documents based on their first or last names.
+                
+                // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                //   will Not be indexed.
+                
+                // * Note: the INDEX-field name does Not have to be exactly the same
+                //   as the DOCUMENT-field name. 
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+limit 5, 10 // skip 5, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Read more about paging [here](../../indexes/querying/paging.mdx).
+
+</Admonition>
+
+
+
+## Session.Advanced.DocumentQuery
+
+* `DocumentQuery` provides low-level access to RavenDB's querying mechanism,  
+  giving you more flexibility and control when making complex queries.
+
+* For more information about _DocumentQuery_ see:
+    * [What is a document query](../../client-api/session/querying/document-query/what-is-document-query.mdx)
+    * [Query -vs- DocumentQuery](../../client-api/session/querying/document-query/query-vs-document-query.mdx)
+
+__Example__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = session.Advanced
+     // Pass the IndexEntry class as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .DocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .WhereEquals(x => x.LastName, "King")
+     // Specify the type of the returned document entities
+    .OfType<Employee>()
+     // Execute the query
+    .ToList();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery_async" label="DocumentQuery_async">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = await asyncSession.Advanced
+     // Pass the IndexEntry class as the first generic parameter
+     // Pass the index class as the second generic parameter
+    .AsyncDocumentQuery<Employees_ByName.IndexEntry, Employees_ByName>()
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .WhereEquals(x => x.LastName, "King")
+     // Specify the type of the returned document entities
+    .OfType<Employee>()
+     // Execute the query
+    .ToListAsync();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Overload" label="Overload">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = session.Advanced
+     // Pass the IndexEntry class as the generic param
+     // Pass the index name as the param
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .DocumentQuery<Employees_ByName.IndexEntry>("Employees/ByName")
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .WhereEquals(x => x.LastName, "King")
+     // Specify the type of the returned document entities
+    .OfType<Employee>()
+     // Execute the query
+    .ToList();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Overload_async" label="Overload_async">
+<CodeBlock language="csharp">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+List<Employee> employees = await asyncSession.Advanced
+    // Pass the IndexEntry class as the generic parameter
+    // Pass the index name as the parameter
+    // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .AsyncDocumentQuery<Employees_ByName.IndexEntry>("Employees/ByName")
+    // Filter the retrieved documents by some predicate on an INDEX-field
+    .WhereEquals(x => x.LastName, "King")
+    // Specify the type of the returned document entities
+    .OfType<Employee>()
+    // Execute the query
+    .ToListAsync();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// The index definition:
+
+public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Employees_ByName()
+    {
+        // The 'Map' function defines the content of the INDEX-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                // * The content of INDEX-fields 'FirstName' & 'LastName'
+                //   is composed of the relevant DOCUMENT-fields.
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+                
+                // * The index-fields can be queried on to fetch matching documents. 
+                //   You can query and filter Employee documents based on their first or last names.
+                
+                // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                //   will Not be indexed.
+                
+                // * Note: the INDEX-field name does Not have to be exactly the same
+                //   as the DOCUMENT-field name. 
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Session.Advanced.RawQuery
+
+* Queries defined with [Query](../../indexes/querying/query-index.mdx#sessionquery) or [DocumentQuery](../../indexes/querying/query-index.mdx#sessionadvanceddocumentquery) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx)  
+  when sent to the server.
+
+* The session also gives you a way to express the query directly in RQL using the `RawQuery` method.
+
+__Example__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="csharp">
+{`// Query with RawQuery - filter by INDEX-field
+
+List<Employee> employees = session.Advanced
+     // Provide RQL to RawQuery
+    .RawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
+     // Execute the query
+    .ToList();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RawQuery_async" label="RawQuery_async">
+<CodeBlock language="csharp">
+{`// Query with RawQuery - filter by INDEX-field
+
+List<Employee> employees = await asyncSession.Advanced
+     // Provide RQL to RawQuery
+    .AsyncRawQuery<Employee>("from index 'Employees/ByName' where LastName == 'King'")
+     // Execute the query
+    .ToListAsync();
+
+// Results will include all documents from 'Employees' collection whose 'LastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="csharp">
+{`// The index definition:
+
+public class Employees_ByName : AbstractIndexCreationTask<Employee, Employees_ByName.IndexEntry>
+{
+    // The IndexEntry class defines the index-fields
+    public class IndexEntry
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+        
+    public Employees_ByName()
+    {
+        // The 'Map' function defines the content of the INDEX-fields
+        Map = employees => from employee in employees
+            select new IndexEntry
+            {
+                // * The content of INDEX-fields 'FirstName' & 'LastName'
+                //   is composed of the relevant DOCUMENT-fields.
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+                
+                // * The index-fields can be queried on to fetch matching documents. 
+                //   You can query and filter Employee documents based on their first or last names.
+                
+                // * Employee documents that do Not contain both 'FirstName' and 'LastName' fields
+                //   will Not be indexed.
+                
+                // * Note: the INDEX-field name does Not have to be exactly the same
+                //   as the DOCUMENT-field name. 
+            };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+Indexes are used by RavenDB to satisfy queries.
+
+## Query-Flow
+
+Each query in RavenDB must be expressed by [RQL](../../client-api/session/querying/what-is-rql.mdx), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+
+1. `from index | collection` 
+  - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
+
+2. `where` 
+  - When we have our index, we scan it for records that match the query predicate.
+
+3. `load`
+  - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+
+3. `select`
+  - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index.mdx) by default).   
+
+  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+
+  - If a query indicates that [projection](../../indexes/querying/projections.mdx) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+
+4. `include` 
+  - If any [includes](../../client-api/how-to/handle-document-relationships.mdx#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+
+5. Return results.
+
+## Querying
+
+RavenDB Client supports querying for data. This functionality can be accessed using the session `query` method, and is the most common and basic method for querying the database.
+
+### Example I
+
+Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store.mdx) and [opened session](../../client-api/session/opening-a-session.mdx) and specify a [collection](../../client-api/faq/what-is-a-collection.mdx) type that we want to query (in our case `Employees`) by passing `Employee` as a first parameter to the `query` method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+List<Employee> results = session
+    .query(Employee.class)
+    .toList(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+By specifying `Employee` class as a parameter, we are also defining a result type.
+
+### Example II - Filtering
+
+To filter the results, use the suitable method, like `whereEquals`:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where 'firstName' is 'Robert'
+List<Employee> results = session
+    .query(Employee.class)
+    .whereEquals("FirstName", "Robert")
+    .toList(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load up entity from 'Employees' collection
+// with ID matching 'employees/1-A'
+Employee result = session
+    .query(Employee.class)
+    .whereEquals("Id", "employees/1-A")
+    .firstOrDefault();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from Employees
+where id() = 'employees/1-A'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+You can read more about filtering [here](../../indexes/querying/filtering.mdx).
+
+### Example III - Paging
+
+Paging is very simple. The methods `take` and `skip` can be used:
+
+<TabItem value="basics_0_2" label="basics_0_2">
+<CodeBlock language="java">
+{`// load up to 10 entities from 'Products' collection
+// where there are more than 10 units in stock
+// skip first 5 results
+List<Product> results = session
+    .query(Product.class)
+    .whereGreaterThan("UnitsInStock", 10)
+    .skip(5)
+    .take(10)
+    .toList();//send query
+`}
+</CodeBlock>
+</TabItem>
+
+You can read more about paging [here](../../indexes/querying/paging.mdx).
+
+### Example IV - Querying a Specified Index
+
+In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying.mdx).
+
+In order to specify an index, we need to pass it as a second parameter to the `query` method or pass the index name as a parameter.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where 'firstName' is 'Robert'
+// using 'Employees/ByFirstName' index
+session
+    .query(Employee.class, Employees_ByFirstName.class)
+    .whereEquals("FirstName", "Robert")
+    .toList(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstName' 
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Java" label="Java">
+<CodeBlock language="java">
+{`// load all entities from 'Employees' collection
+// where 'firstName' is 'Robert'
+// using 'Employees/ByFirstName' index
+session
+    .query(Employee.class, Query.index("Employees/ByFirstName"))
+    .whereEquals("FirstName", "Robert")
+    .toList(); // send query
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstName' 
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Remember" id="remember" href="#remember">
+If you are filtering by fields that are not present in an index, an exception will be thrown.
+</Admonition>
+
+### Remarks
+
+<Admonition type="info" title="Info">
+You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query.mdx).
+</Admonition>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* Prior to this article, it is recommended that you first read the [Query Overview](../../client-api/session/querying/how-to-query.mdx).  
+  For a basic indexes overview see [Indexes Overview](../../studio/database/indexes/indexes-overview.mdx).
+* This article is a basic overview of how to __query a static index__.  
+  Indexing the content of your documents allows for __fast document retrieval__ when querying the index.
+
+* Examples in this article show querying an index.  
+  For dynamic query examples see [Query Overview](../../client-api/session/querying/how-to-query.mdx).
+
+* You can query an index with either of the following:
+  * [session.query](../../indexes/querying/query-index.mdx#sessionquery) (using API)
+  * [session.advanced.rawQuery](../../indexes/querying/query-index.mdx#sessionadvancedrawquery) (using RQL)
+  * [Query from Studio](../../studio/database/queries/query-view.mdx) (using [RQL](../../client-api/session/querying/what-is-rql.mdx))
+
+</Admonition>
+## session.query
+
+* The following examples __query an index__ using the session's `query` method.  
+
+* Customize your query with these [API methods](../../client-api/session/querying/how-to-query.mdx#query-api).
+
+<Admonition type="note" title="Note">
+
+__Query index - no filtering__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - without filtering
+// (Open the 'Index' tab to view the index class definition)
+
+const employees = await session
+     // Pass the index name as a parameter
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .query({ indexName: "Employees/ByName" })
+     // Execute the query
+    .all();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'firstName' and\\or 'lastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - without filtering
+
+const employees = await session
+     // Pass the queried collection as the first param
+     // Pass the index class as the second param
+    .query(Employee, Employees_ByName)
+     // Execute the query
+    .all();
+
+// All 'Employee' documents that contain DOCUMENT-fields 'firstName' and\\or 'lastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+
+// All 'Employee' documents that contain DOCUMENT-fields 'FirstName' and\\or 'LastName' will be returned
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Query index - with filtering__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+const employees = await session
+     // Pass the index name as a parameter
+     // Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+    .query({ indexName: "Employees/ByName" })
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .whereEquals("lastName", "King")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - filter by INDEX-field
+
+const employees = await session
+     // Pass the queried collection as the first param
+     // Pass the index class as the second param
+    .query(Employee, Employees_ByName)
+     // Filter the retrieved documents by some predicate on an INDEX-field
+    .whereEquals("lastName", "King")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* An exception will be thrown when filtering by fields that are Not defined in the index.
+
+* Read more about filtering [here](../../indexes/querying/filtering.mdx).
+
+</Admonition>
+
+<Admonition type="note" title="Note">
+
+__Query index - with paging__
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+const employees = await session
+    .query({ indexName: "Employees/ByName" })
+    .whereEquals("lastName", "King")
+    .skip(5)  // Skip first 5 results
+    .take(10) // Retrieve up to 10 documents
+    .all();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Query_overload" label="Query_overload">
+<CodeBlock language="js">
+{`// Query the 'Employees' collection using the index - page results
+
+// This example is based on the previous filtering example
+const employees = await session
+    .query(Employee, Employees_ByName)
+    .whereEquals("lastName", "King")
+    .skip(5)  // Skip first 5 results
+    .take(10) // Retrieve up to 10 documents
+    .all();
+
+// Results will include up to 10 matching documents
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where lastName == "King"
+limit 5, 10 // skip 5, take 10
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+* Read more about paging [here](../../indexes/querying/paging.mdx).
+
+</Admonition>
+
+
+
+## session.advanced.rawQuery
+
+* Queries defined with [query](../../indexes/querying/query-index.mdx#sessionquery) are translated by the RavenDB client to [RQL](../../client-api/session/querying/what-is-rql.mdx) when sent to the server.
+
+* The session also gives you a way to express the query directly in RQL using the `rawQuery` method.
+
+__Example__:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="RawQuery" label="RawQuery">
+<CodeBlock language="js">
+{`// Query with RawQuery - filter by INDEX-field
+
+const results = await session
+     // Provide RQL to rawQuery
+    .advanced.rawQuery("from index 'Employees/ByName' where lastName == 'King'")
+     // Execute the query
+    .all();
+
+// Results will include all documents from 'Employees' collection whose 'lastName' equals to 'King'.
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Index" label="Index">
+<CodeBlock language="js">
+{`// The index definition:
+
+class Employees_ByName extends AbstractJavaScriptIndexCreationTask {
+
+    constructor() {
+        super();
+
+        // Define the INDEX-fields 
+        this.map("Employees", e => ({
+            
+            // Content of INDEX-fields 'firstName' & 'lastName' 
+            // is composed of the relevant DOCUMENT-fields
+            firstName: e.firstName,
+            lastName: e.lastName
+        }));
+
+        // * The index-fields can be queried on to fetch matching documents. 
+        //   You can query and filter Employee documents based on their first or last names.
+
+        // * Employee documents that do Not contain both 'firstName' and 'lastName' fields
+        //   will Not be indexed.
+
+        // * Note: the INDEX-field name does Not have to be exactly the same
+        //   as the DOCUMENT-field name. 
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`// Note:
+// Use slash \`/\` in the index name, replacing the underscore \`_\` from the index class definition
+
+from index "Employees/ByName"
+where LastName == "King"
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Creating and Deploying Indexes](../../indexes/creating-and-deploying)
+
+### Querying
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+- [Projections](../../indexes/querying/projections)
+- [Sorting](../../indexes/querying/sorting)
+
+### Client API
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)
+
+### Studio
+- [Query View](../../studio/database/queries/query-view)
+
+### Code Walkthrough
+- [Scroll for Queries Section](https://demo.ravendb.net/)
+
+
+-->

@@ -1,0 +1,41 @@
+---
+title: "Commands: RetryCopyingAsync"
+hide_table_of_contents: true
+sidebar_label: RetryCopying
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+#Commands: RetryCopyingAsync
+
+**RetryCopyingAsync** runs a background task that will resume unaccomplished file copies. Read [Background tasks](../../../server/background-tasks.mdx) article for details.
+
+## Syntax
+
+<TabItem value="retry_copying_1" label="retry_copying_1">
+<CodeBlock language="csharp">
+{`Task RetryCopyingAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** |  A task that represents the asynchronous operation |
+
+## Example
+
+<TabItem value="retry_copying_2" label="retry_copying_2">
+<CodeBlock language="csharp">
+{`await store.AsyncFilesCommands.Storage
+        .RetryCopyingAsync();
+`}
+</CodeBlock>
+</TabItem>

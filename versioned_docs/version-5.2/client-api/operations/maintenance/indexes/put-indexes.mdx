@@ -1,0 +1,616 @@
+---
+title: "Put Indexes Operation"
+hide_table_of_contents: true
+sidebar_label: Put Indexes
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Put Indexes Operation
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+* There are a few ways to create and deploy indexes in a database.  
+
+* This page describes deploying a __static-index__ using the `PutIndexesOperation` Operation.  
+  For a general description of Operations see [what are operations](../../../../client-api/operations/what-are-operations.mdx).  
+
+* In this page:
+    * [Ways to deploy indexes - short summary](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#ways-to-deploy-indexes---short-summary)
+    * [Put indexes operation with IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition)
+    * [Put indexes operation with IndexDefinitionBuilder](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinitionbuilder)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#syntax)
+
+</Admonition>
+## Ways to deploy indexes - short summary 
+<Admonition type="note" title="Note">
+
+__Static index__:
+
+There are a few ways to deploy a static-index from the Client API:  
+
+  * Call `Execute()` on a specific index instance
+  * Call `IndexCreation.CreateIndexes()` to deploy multiple indexes
+  * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
+  * Learn more in [static indexes](../../../../indexes/creating-and-deploying.mdx#static-indexes)
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+__Auto index__:  
+
+  * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
+  * Learn more in [auto indexes](../../../../indexes/creating-and-deploying.mdx#auto-indexes)
+
+</Admonition>  
+
+
+## Put indexes operation with IndexDefinition 
+<Admonition type="note" title="Note">
+
+Using `PutIndexesOperation` with __IndexDefinition__ allows the following:  
+
+  * Choosing any name for the index.
+  * Setting low-level properties available in _IndexDefinition_.
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-index-Sync" label="LINQ-index-Sync">
+<CodeBlock language="csharp">
+{`// Create an index definition
+var indexDefinition = new IndexDefinition 
+{
+    // Name is mandatory, can use any string
+    Name = "OrdersByTotal",
+
+    // Define the index Map functions, string format
+    // A single string for a map-index, multiple strings for a multi-map-index
+    Maps = new HashSet<string>
+    {
+        @"
+          // Define the collection that will be indexed:
+          from order in docs.Orders
+
+            // Define the index-entry:
+            select new 
+            {
+                // Define the index-fields within each index-entry:
+                Employee = order.Employee,
+                Company = order.Company,
+                Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+            }"
+    },
+    
+    // Reduce = ...,
+    
+    // Can provide other index definitions available on the IndexDefinition class
+    // Override the default values, e.g.:
+    DeploymentMode = IndexDeploymentMode.Rolling,
+    Priority = IndexPriority.High,
+    Configuration = new IndexConfiguration
+    {
+        { "Indexing.IndexMissingFieldsAsNull", "true" }
+    }
+    // See all available properties in syntax below
+};
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+IMaintenanceOperation<PutIndexResult[]> putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="LINQ-index-Async" label="LINQ-index-Async">
+<CodeBlock language="csharp">
+{`// Create an index definition
+var indexDefinition = new IndexDefinition
+{
+    // Name is mandatory, can use any string
+    Name = "OrdersByTotal",
+    
+    // Define the index Map functions, string format
+    // A single string for a map-index, multiple strings for a multi-map-index
+    Maps = new HashSet<string>
+    {
+        @"
+          // Define the collection that will be indexed:
+          from order in docs.Orders
+
+            // Define the index-entry:
+            select new 
+            {
+                // Define the index-fields within each index-entry:
+                Employee = order.Employee,
+                Company = order.Company,
+                Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+            }"
+    },
+
+    // Reduce = ...,
+   
+    // Can provide other index definitions available on the IndexDefinition class
+    // Override the default values, e.g.:
+    DeploymentMode = IndexDeploymentMode.Rolling,
+    Priority = IndexPriority.High,
+    Configuration = new IndexConfiguration
+    {
+        { "Indexing.IndexMissingFieldsAsNull", "true" }
+    }
+    // See all available properties in syntax below
+};
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+IMaintenanceOperation<PutIndexResult[]> putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="csharp">
+{`// Create an index definition
+var indexDefinition = new IndexDefinition
+{
+    // Name is mandatory, can use any string
+    Name = "OrdersByTotal",
+    
+    // Define the index Map functions, string format
+    // A single string for a map-index, multiple strings for a multi-map-index
+    Maps = new HashSet<string>
+    {
+        @"map('Orders', function(order) {
+              return {
+                  Employee: order.Employee,
+                  Company: order.Company,
+                  Total: order.Lines.reduce(function(sum, l) {
+                      return sum + (l.Quantity * l.PricePerUnit) * (1 - l.Discount);
+                  }, 0)
+              };
+        });"
+    },
+    
+    // Reduce = ...,
+   
+    // Can provide other index definitions available on the IndexDefinition class
+    // Override the default values, e.g.:
+    DeploymentMode = IndexDeploymentMode.Rolling,
+    Priority = IndexPriority.High,
+    Configuration = new IndexConfiguration
+    {
+        { "Indexing.IndexMissingFieldsAsNull", "true" }
+    }
+    // See all available properties in syntax below
+};
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+IMaintenanceOperation<PutIndexResult[]> putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Put indexes operation with IndexDefinitionBuilder 
+<Admonition type="note" title="Note">
+
+Using `PutIndexesOperation` with an IndexDefinition created from an __IndexDefinitionBuilder__ allows:  
+
+  * Creating an index definition using a strongly typed LINQ syntax.  
+  * Setting low-level properties available in _IndexDefinitionBuilder_.
+  * Note:  
+    Only map or map-reduce indexes can be generated by the _IndexDefinitionBuilder_.  
+    To generate multi-map indexes use the above _IndexDefinition_ option. 
+
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`// Create an index definition builder
+var builder = new IndexDefinitionBuilder<Order>
+{
+    // Define the map function, strongly typed LINQ format
+    Map =
+        // Define the collection that will be indexed:
+        orders => from order in orders
+            // Define the index-entry:
+            select new
+            {
+                // Define the index-fields within each index-entry:
+                Employee = order.Employee,
+                Company = order.Company,
+                Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+            },
+    
+    // Can provide other properties available on the IndexDefinitionBuilder class, e.g.:
+    DeploymentMode = IndexDeploymentMode.Rolling,
+    Priority = IndexPriority.High,
+    // Reduce = ..., etc.
+};
+
+// Generate index definition from builder
+// Pass the conventions, needed for building the Maps property
+var indexDefinition = builder.ToIndexDefinition(store.Conventions);
+
+// Optionally, set the index name, can use any string
+// If not provided then default name from builder is used, e.g.: "IndexDefinitionBuildersOfOrders"
+indexDefinition.Name = "OrdersByTotal";
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+IMaintenanceOperation<PutIndexResult[]> putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.Send
+store.Maintenance.Send(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`// Create an index definition builder
+var builder = new IndexDefinitionBuilder<Order>
+{
+    // Define the map function, strongly typed LINQ format
+    Map = 
+        // Define the collection that will be indexed:
+        orders => from order in orders
+            // Define the index-entry:
+            select new
+            {
+                // Define the index-fields within each index-entry:
+                Employee = order.Employee,
+                Company = order.Company,
+                Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+            },
+    
+    // Can provide other properties available on the IndexDefinitionBuilder class, e.g.:
+    DeploymentMode = IndexDeploymentMode.Rolling,
+    Priority = IndexPriority.High,
+    // Reduce = ..., etc.
+};
+
+// Generate index definition from builder
+// Pass the conventions, needed for building the Maps property
+var indexDefinition = builder.ToIndexDefinition(store.Conventions);
+
+// Optionally, set the index name, can use any string
+// If not provided then default name from builder is used, e.g.: "IndexDefinitionBuildersOfOrders"
+indexDefinition.Name = "OrdersByTotal";
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+IMaintenanceOperation<PutIndexResult[]> putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to Maintenance.SendAsync
+await store.Maintenance.SendAsync(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`public PutIndexesOperation(params IndexDefinition[] indexesToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |- | - |
+| **indexesToAdd** | `params IndexDefinition[]` | Definitions of indexes to deploy |
+
+<a id="indexDefinition"/>
+
+| `IndexDefinition` | | |
+| - | - | - |
+| Name | string | Name of the index, a unique identifier |
+| Maps | HashSet&lt;string&gt; | All the map functions for the index |
+| Reduce | string | The index reduce function |
+| DeploymentMode | `IndexDeploymentMode`? | Deployment mode<br/>(Parallel, Rolling) |
+| State | `IndexState`? | State of index<br/>(Normal, Disabled, Idle, Error) |
+| Priority | `IndexPriority`? | Priority of index<br/>(Low, Normal, High) |
+| LockMode | `IndexLockMode`? | Lock mode of index<br/>(Unlock, LockedIgnore, LockedError) |
+| Fields | Dictionary&lt;string, `IndexFieldOptions`&gt; | _IndexFieldOptions_ per index field |
+| AdditionalSources | Dictionary&lt;string, string&gt; | Additional code files to be compiled with this index |
+| AdditionalAssemblies | HashSet&lt;`AdditionalAssembly`&gt; | Additional assemblies that are referenced |
+| Configuration | `IndexConfiguration` | Can override [indexing configuration](../../../../server/configuration/indexing-configuration.mdx) by setting this dictionary |
+| OutputReduceToCollection | string | A collection name for saving the reduce results as documents |
+| ReduceOutputIndex | long? | This number will be part of the reduce results documents IDs |
+| PatternForOutputReduceToCollectionReferences | string | Pattern for documents IDs which reference IDs of reduce results documents |
+| PatternReferencesCollectionName | string | A collection name for the reference documents created based on provided pattern |
+
+| Return value of `store.Maintenance.Send(putIndexesOp)` | |
+| - | - |
+| `PutIndexResult[]` | List of _PutIndexResult_ per index |
+
+| `PutIndexResult` | | |
+| - | - | - |
+| Index | string | Name of the index that was added |
+| RaftCommandIndex | long | Index of raft command that was executed |
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**PutIndexesOperation** is used to insert indexes into a database.
+
+### Syntax
+
+<TabItem value="put_1_0" label="put_1_0">
+<CodeBlock language="java">
+{`PutIndexesOperation(IndexDefinition... indexToAdd)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexToAdd** | `IndexDefinition...` | Definitions of indexes |
+
+| Return Value | |
+| ------------- | ----- |
+| PutIndexResult[] | List of created indexes |
+
+### Example I
+
+<TabItem value="put_1_1" label="put_1_1">
+<CodeBlock language="java">
+{`IndexDefinition indexDefinition = new IndexDefinition();
+indexDefinition.setMaps(Collections.singleton("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}"));
+
+store.maintenance().send(new PutIndexesOperation(indexDefinition));
+`}
+</CodeBlock>
+</TabItem>
+
+### Example II
+
+<TabItem value="put_1_2" label="put_1_2">
+<CodeBlock language="java">
+{`IndexDefinitionBuilder builder = new IndexDefinitionBuilder();
+builder.setMap("from order in docs.Orders select new \{ " +
+    "   order.Employee," +
+    "   order.Company," +
+    "   Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))" +
+    "\}");
+
+IndexDefinition definition = builder.toIndexDefinition(store.getConventions());
+store.maintenance()
+    .send(new PutIndexesOperation(definition));
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+<Admonition type="note" title="Note">
+
+* There are a few ways to create and deploy indexes in a database.  
+
+* This page describes deploying a __static-index__ using the `PutIndexesOperation` Operation.  
+  For a general description of Operations see [what are operations](../../../../client-api/operations/what-are-operations.mdx).  
+
+* In this page:
+    * [Ways to deploy indexes - short summary](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#ways-to-deploy-indexes---short-summary)
+    * [Put indexes operation with IndexDefinition](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#put-indexes-operation-with-indexdefinition)
+    * [Syntax](../../../../client-api/operations/maintenance/indexes/put-indexes.mdx#syntax)
+
+</Admonition>
+## Ways to deploy indexes - short summary 
+<Admonition type="note" title="Note">
+
+__Static index__:
+
+There are a few ways to deploy a static-index from the Client API:  
+
+  * Call `execute()` on a specific index instance
+  * Call `IndexCreation.createIndexes()` to deploy multiple indexes
+  * Execute `PutIndexesOperation` maintenance operation on the Document Store - see below
+  * Learn more in [static indexes](../../../../indexes/creating-and-deploying.mdx#static-indexes)
+
+</Admonition>
+<Admonition type="note" title="Note">
+
+__Auto index__:  
+
+  * An auto-index is created by the server when making a filtering query that doesn't specify which index to use
+  * Learn more in [auto indexes](../../../../indexes/creating-and-deploying.mdx#auto-indexes)
+
+</Admonition>  
+
+
+## Put indexes operation with IndexDefinition 
+<Admonition type="note" title="Note">
+
+Using `PutIndexesOperation` with __IndexDefinition__ allows the following:  
+
+  * Choosing any name for the index
+  * Setting low-level properties available in _IndexDefinition_
+</Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-index" label="LINQ-index">
+<CodeBlock language="js">
+{`// Create an index definition
+const indexDefinition = new IndexDefinition();
+
+// Name is mandatory, can use any string
+indexDefinition.name = "OrdersByTotal";
+
+// Define the index map functions, string format
+// A single string for a map-index, multiple strings for a multi-map-index
+indexDefinition.maps = new Set([\`
+    // Define the collection that will be indexed:
+    from order in docs.Orders
+
+        // Define the index-entry:
+        select new 
+        {
+            // Define the index-fields within each index-entry:
+            Employee = order.Employee,
+            Company = order.Company,
+            Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+        }\`
+]);
+
+ // indexDefinition.reduce = ...
+
+// Can provide other index definitions available on the IndexDefinition class
+// Override the default values, e.g.:
+indexDefinition.deploymentMode = "Rolling";
+indexDefinition.priority = "High";
+indexDefinition.configuration = {
+    "Indexing.IndexMissingFieldsAsNull": "true"
+};
+// See all available properties in syntax below
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+const putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-index" label="JavaScript-index">
+<CodeBlock language="js">
+{`// Create an index definition
+const indexDefinition = new IndexDefinition();
+
+// Name is mandatory, can use any string
+indexDefinition.name = "OrdersByTotal";
+
+// Define the index map functions, string format
+// A single string for a map-index, multiple strings for a multi-map-index
+indexDefinition.maps = new Set([\`
+    map('Orders', function(order) {
+        return {
+            Employee: order.Employee,
+            Company: order.Company,
+            Total: order.Lines.reduce(function(sum, l) {
+                return sum + (l.Quantity * l.PricePerUnit) * (1 - l.Discount);
+            }, 0)
+        };
+    });\`
+]);
+
+// indexDefinition.reduce = ...
+
+// Can provide other index definitions available on the IndexDefinition class
+// Override the default values, e.g.:
+indexDefinition.deploymentMode = "Rolling";
+indexDefinition.priority = "High";
+indexDefinition.configuration = {
+    "Indexing.IndexMissingFieldsAsNull": "true"
+};
+// See all available properties in syntax below
+
+// Define the put indexes operation, pass the index definition
+// Note: multiple index definitions can be passed, see syntax below
+const putIndexesOp = new PutIndexesOperation(indexDefinition);
+
+// Execute the operation by passing it to maintenance.send
+await documentStore.maintenance.send(putIndexesOp);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Syntax 
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="js">
+{`const putIndexesOperation = new PutIndexesOperation(indexesToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| - |- | - |
+| **indexesToAdd** | `...IndexDefinition[]` | Definitions of indexes to deploy |
+
+<a id="indexDefinition"/>
+
+| `IndexDefinition` | | |
+| - | - | - |
+| name | string | Name of the index, a unique identifier |
+| maps | Set&lt;string&gt; | All the map functions for the index |
+| reduce | string | The index reduce function |
+| deploymentMode | object | Deployment mode<br/>(Parallel, Rolling) |
+| state | object | State of index<br/>(Normal, Disabled, Idle, Error) |
+| priority | object | Priority of index<br/>(Low, Normal, High) |
+| lockMode | object | Lock mode of index<br/>(Unlock, LockedIgnore, LockedError) |
+| fields | Record&lt;string, object&gt; | _IndexFieldOptions_ per index field |
+| additionalSources | Record&lt;string, string&gt; | Additional code files to be compiled with this index |
+| additionalAssemblies | object[] | Additional assemblies that are referenced |
+| configuration | object | Can override [indexing configuration](../../../../server/configuration/indexing-configuration.mdx) by setting this Record&lt;string, string&gt; |
+| outputReduceToCollection | string | A collection name for saving the reduce results as documents |
+| reduceOutputIndex | number | This number will be part of the reduce results documents IDs |
+| patternForOutputReduceToCollectionReferences | string | Pattern for documents IDs which reference IDs of reduce results documents |
+| patternReferencesCollectionName | string | A collection name for the reference documents created based on provided pattern |
+
+| Return value of `store.maintenance.send(putIndexesOp)` | |
+| - | - |
+| `object[]` | operation result per index |
+
+| Operation result per index | | |
+| - | - | - |
+| index | string | Name of the index that was added |
+| raftCommandIndex | long | Index of raft command that was executed |
+
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Index Administration](../../../../indexes/index-administration)
+
+### Operations
+- [What are operations](../../../../client-api/operations/what-are-operations)
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)
+
+
+-->

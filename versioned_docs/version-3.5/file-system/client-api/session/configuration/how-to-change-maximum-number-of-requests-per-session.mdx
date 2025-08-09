@@ -1,0 +1,53 @@
+---
+title: "How to change maximum number of requests per session?"
+hide_table_of_contents: true
+sidebar_label: How to change maximum number of requests per session?
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+## Single session
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#How to change maximum number of requests per session?
+
+By default, the maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as small as possible. If the limit is reached, make sure that you don't misuse the session object.
+
+Nevertheless, if needed, this number can be changed for a single session or for all the sessions.
+
+
+
+To change the maximum number of requests in a single session just manipulate `MaxNumberOfRequestsPerSession` property value from the `Advanced` session operations.
+
+<TabItem value="max_requests_1" label="max_requests_1">
+<CodeBlock language="csharp">
+{`session.Advanced.MaxNumberOfRequestsPerSession = 50;
+`}
+</CodeBlock>
+</TabItem>
+
+## All sessions
+
+To change the maximum number of requests for all the sessions (on the particular store), change the `MaxNumberOfRequestsPerSession` property from the `FilesStore.Conventions`.
+
+<TabItem value="max_requests_2" label="max_requests_2">
+<CodeBlock language="csharp">
+{`store.Conventions.MaxNumberOfRequestsPerSession = 100;
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

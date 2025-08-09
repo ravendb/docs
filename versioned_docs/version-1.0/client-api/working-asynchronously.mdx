@@ -1,0 +1,37 @@
+---
+title: "Working Asynchronously"
+hide_table_of_contents: true
+sidebar_label: Working Asynchronously
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Working Asynchronously
+
+The RavenDB client API supports executing the common operations asynchronously, so lengthy operations don't have to be blocking. This is also how the RavenDB Silverlight client is working.
+
+The TPL support is using `System.Threading.Tasks`, a good intro to which can be found [here](https://www.simplethread.com/net-40-and-systemthreadingtasks/).
+
+<TabItem value="async1" label="async1">
+<CodeBlock language="csharp">
+{`var entity = new Company \{ Name = "Async Company #2", Id = "companies/2" \};
+using (var session = documentStore.OpenAsyncSession())
+\{
+	var company = session.LoadAsync<Company>(1); // loading an entity asynchronously
+
+	session.Store(entity); // in-memory operations are committed asynchronously when calling SaveChangesAsync
+	session.SaveChangesAsync(); // returns a task that completes asynchronously
+
+	var query = session.Query<Company>()
+		.Where(x => x.Name == "Async Company #1")
+		.ToListAsync(); // returns a task that will execute the query
+\}
+`}
+</CodeBlock>
+</TabItem>

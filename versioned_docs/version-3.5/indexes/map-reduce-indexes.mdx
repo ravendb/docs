@@ -1,0 +1,231 @@
+---
+title: "Map-Reduce indexes"
+hide_table_of_contents: true
+sidebar_label: Map-Reduce Indexes
+sidebar_position: 7
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Map-Reduce indexes
+
+This section of the documentation focuses on map reduce indexes. Map reduce indexes allow for complex aggregation of data by first selecting records (map), and then applying the specified reduce function to these records, in order to produce a smaller set of results.
+
+For a more in-depth look at how map reduce works, read this post: [Map-Reduce a Visual Explanation](https://ayende.com/blog/4435/map-reduce-a-visual-explanation).
+
+## Creating
+
+When it comes to index creation, the only difference between simple indexes and the map-reduce ones is an additional reduce function defined in index definition. To deploy an index we need to create a definition and deploy it using one of the ways described in the [creating and deploying](../indexes/creating-and-deploying.mdx) article. Please go over the examples below for a sample map-reduce index.
+
+## Applications
+
+There are many applications of such indexes, but most common is the aggregation of data from multiple documents.
+
+### Example I - counting
+
+Let's assume that we want to count the number of products for each category. To do it, we need to specify the following index:
+
+<TabItem value="map_reduce_0_0" label="map_reduce_0_0">
+<CodeBlock language="csharp">
+{`public class Products_ByCategory : AbstractIndexCreationTask<Product, Products_ByCategory.Result>
+\{
+    public class Result
+    \{
+        public string Category \{ get; set; \}
+
+        public int Count \{ get; set; \}
+    \}
+
+    public Products_ByCategory()
+    \{
+        Map = products => from product in products
+                          let categoryName = LoadDocument<Category>(product.Category).Name
+                          select new
+                          \{
+                              Category = categoryName,
+                              Count = 1
+                          \};
+
+        Reduce = results => from result in results
+                            group result by result.Category into g
+                            select new
+                            \{
+                                Category = g.Key,
+                                Count = g.Sum(x => x.Count)
+                            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and issue a query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Products_ByCategory.Result> results = session
+	.Query<Products_ByCategory.Result, Products_ByCategory>()
+	.Where(x => x.Category == "Seafood")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Products_ByCategory.Result> results = session
+	.Advanced
+	.DocumentQuery<Products_ByCategory.Result, Products_ByCategory>()
+	.WhereEquals(x => x.Category, "Seafood")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+The above query will return one result for _Seafood_, with the appropriate number of products from that category.
+
+### Example II - average
+
+In this example we will count average product price for each category. First we need to create an index:
+
+<TabItem value="map_reduce_1_0" label="map_reduce_1_0">
+<CodeBlock language="csharp">
+{`public class Products_Average_ByCategory :
+    AbstractIndexCreationTask<Product, Products_Average_ByCategory.Result>
+\{
+    public class Result
+    \{
+        public string Category \{ get; set; \}
+
+        public decimal PriceSum \{ get; set; \}
+
+        public double PriceAverage \{ get; set; \}
+
+        public int ProductCount \{ get; set; \}
+    \}
+
+    public Products_Average_ByCategory()
+    \{
+        Map = products => from product in products
+                          let categoryName = LoadDocument<Category>(product.Category).Name
+                          select new
+                          \{
+                              Category = categoryName,
+                              PriceSum = product.PricePerUnit,
+                              PriceAverage = 0,
+                              ProductCount = 1
+                          \};
+
+        Reduce = results => from result in results
+                            group result by result.Category into g
+                            let productCount = g.Sum(x => x.ProductCount)
+                            let priceSum = g.Sum(x => x.PriceSum)
+                            select new
+                            \{
+                                Category = g.Key,
+                                PriceSum = priceSum,
+                                PriceAverage = priceSum / productCount,
+                                ProductCount = productCount
+                            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and issue a query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Products_Average_ByCategory.Result> results = session
+	.Query<Products_Average_ByCategory.Result, Products_Average_ByCategory>()
+	.Where(x => x.Category == "Seafood")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Products_Average_ByCategory.Result> results = session
+	.Advanced
+	.DocumentQuery<Products_Average_ByCategory.Result, Products_Average_ByCategory>()
+	.WhereEquals(x => x.Category, "Seafood")
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example III - complex calculations
+
+This example illustrates how we can put some calculations inside an index and is based on one of the indexes available in sample database (`Product/Sales`).
+
+Let's assume that we want to know how many times the product was ordered and how much we earned for it. In order to extract that information, we need to define the following index:
+
+<TabItem value="map_reduce_2_0" label="map_reduce_2_0">
+<CodeBlock language="csharp">
+{`public class Product_Sales : AbstractIndexCreationTask<Order, Product_Sales.Result>
+\{
+    public class Result
+    \{
+        public string Product \{ get; set; \}
+
+        public int Count \{ get; set; \}
+
+        public decimal Total \{ get; set; \}
+    \}
+
+    public Product_Sales()
+    \{
+        Map = orders => from order in orders
+                        from line in order.Lines
+                        select new
+                        \{
+                            Product = line.Product,
+                            Count = 1,
+                            Total = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount))
+                        \};
+
+        Reduce = results => from result in results
+                            group result by result.Product into g
+                            select new
+                            \{
+                                Product = g.Key,
+                                Count = g.Sum(x => x.Count),
+                                Total = g.Sum(x => x.Total)
+                            \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+and issue a query:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Product_Sales.Result> results = session
+	.Query<Product_Sales.Result, Product_Sales>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Product_Sales.Result> results = session
+	.Advanced
+	.DocumentQuery<Product_Sales.Result, Product_Sales>()
+	.ToList();
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+

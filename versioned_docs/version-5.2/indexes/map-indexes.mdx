@@ -1,0 +1,1776 @@
+---
+title: "Indexes: Map Indexes"
+hide_table_of_contents: true
+sidebar_label: Map Indexes
+sidebar_position: 5
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java", "nodejs"];
+
+
+# Indexes: Map Indexes
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+<Admonition type="note" title="Note">
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
+
+These **mapping functions** are **LINQ-based functions** or  **JavaScript functions** (when using JavaScript indexes)  and can be considered the **core** of indexes.
+
+### What Can be Indexed
+
+You can:
+
+- [Index single fields](../indexes/map-indexes.mdx#index-single-fields)
+- [Combine multiple fields](../indexes/map-indexes.mdx#combine-multiple-fields)
+- [Index partial field data](../indexes/map-indexes.mdx#index-partial-field-data)
+- [Filter data within fields](../indexes/map-indexes.mdx#filter-data-within-fields)
+- [Index nested data](../indexes/map-indexes.mdx#index-nested-data)
+- [Index fields from related documents](../indexes/indexing-related-documents.mdx)
+- [Index multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [Aggregate data with Map-Reduce](../indexes/map-reduce-indexes.mdx)
+- [Run calculations and store the results in the index to reduce query time](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+- [Configure whether to index a document if the specified fields are `null`](../indexes/map-indexes.mdx#configure-whether-to-index-a-document-if-the-specified-fields-are-null)
+
+</Admonition>
+## Index single fields
+
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+
+* First, let's create an index called `Employees/ByFirstAndLastName`  
+   <Admonition type="note" title="Note">
+   Note: The naming separator character "`_`" in your code will become "/" in the index name.  
+   In the following sample, "`Employees_ByFirstAndLastName`" will become "Employees/ByFirstAndLastName" in your indexes list.
+   </Admonition>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractJavaScriptIndexCreationTask
+{
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying.mdx) article before proceeding.
+
+- The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-Query-syntax" label="LINQ-Query-syntax">
+<CodeBlock language="csharp">
+{`public Employees_ByFirstAndLastName()
+{
+    Map = employees => from employee in employees
+                       select new
+                       {
+                           FirstName = employee.FirstName,
+                           LastName = employee.LastName
+                       };
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="LINQ-Method-syntax" label="LINQ-Method-syntax">
+<CodeBlock language="csharp">
+{`public Employees_ByFirstAndLastName()
+{
+    Map = employees => employees
+        .Select(employee => new
+        {
+            FirstName = employee.FirstName,
+            LastName = employee.LastName
+        });
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public Employees_ByFirstAndLastName()
+{
+    Maps = new HashSet<string>
+    {
+        @"map('Employees', function (employee){ 
+                return { 
+                    FirstName : employee.FirstName, 
+                    LastName : employee.LastName
+                };
+            })",
+    };
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server 
+  and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method.  
+  To query an index, the name of the index must be called by the query.  
+  If the index isn't called, RavenDB will either use or create an [auto index](../indexes/creating-and-deploying.mdx#auto-indexes).
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> employees1 = session
+    .Query<Employee, Employees_ByFirstAndLastName>()
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+
+IList<Employee> employees2 = session
+    .Query<Employee>("Employees/ByFirstAndLastName")
+    .Where(x => x.FirstName == "Robert")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Our final index looks like:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Map = employees => from employee in employees
+                           select new
+                           {
+                               FirstName = employee.FirstName,
+                               LastName = employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFirstAndLastName : AbstractJavaScriptIndexCreationTask
+{
+    public Employees_ByFirstAndLastName()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee){ 
+                    return { 
+                        FirstName : employee.FirstName, 
+                        LastName : employee.LastName
+                    };
+                })",
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Field Types" id="field-types" href="#field-types">
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+...grants us the capability to issue numeric queries (**return all the Employees whose Age is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age.ToString()
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age.toString()
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="warning" title="Convention" id="convention" href="#convention">
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+\{
+	FirstName = employee.FirstName,
+	LastName = employee.LastName
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+</Admonition>
+
+
+
+## Combine multiple fields
+
+Since each index contains a LINQ function, you can combine multiple fields into one.
+
+### Example I
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFullName : AbstractIndexCreationTask<Employee>
+{
+    public class Result
+    {
+        public string FullName { get; set; }
+    }
+
+    public Employees_ByFullName()
+    {
+        Map = employees => from employee in employees
+                           select new Result
+                           {
+                               FullName = employee.FirstName + " " + employee.LastName
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByFullName : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string FullName { get; set; }
+    }
+
+    public Employees_ByFullName()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee){ 
+                    return { 
+                        FullName  : employee.FirstName + ' ' + employee.LastName
+                    };
+                })",
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+  
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`// notice that we're 'cheating' here
+// by marking result type in 'Query' as 'Employees_ByFullName.Result' to get strongly-typed syntax
+// and changing type using 'OfType' before sending query to server
+IList<Employee> employees = session
+    .Query<Employees_ByFullName.Result, Employees_ByFullName>()
+    .Where(x => x.FullName == "Robert King")
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employee, Employees_ByFullName>()
+    .WhereEquals("FullName", "Robert King")
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName'
+where FullName = 'Robert King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+In this example, the index field `Query` combines all values from various Employee fields into one. 
+The default Analyzer on fields is changed to enable `Full-Text Search` operations. The matches no longer need to be exact.
+
+You can read more about analyzers and `Full-Text Search` [here](../indexes/using-analyzers.mdx).
+
+</Admonition>
+
+Index definition: 
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Companies_ByAddress_Country : AbstractIndexCreationTask<Company>
+{
+    public class Result
+    {
+        public string City { get; set; }
+        public string Company { get; set; }
+        public string Phone { get; set; }
+    }
+
+    public Companies_ByAddress_Country()
+    {
+        Map = companies => from company in companies
+                           where company.Address.Country == "USA"
+                           select new Result
+                           {
+                               Company = company.Name,
+                               City = company.Address.City,
+                               Phone = company.Phone
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_Query : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string[] Query { get; set; }
+    }
+
+    public Employees_Query()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee) { 
+                    return { 
+                        Query : [employee.FirstName, 
+                                 employee.LastName,
+                                 employee.Title,
+                                 employee.Address.City] 
+                            } 
+                    })"
+        };
+        Fields = new Dictionary<string, IndexFieldOptions>()
+        {
+            {"Query", new IndexFieldOptions(){ Indexing = FieldIndexing.Search} }
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`public class Companies_ByAddress_Latitude : AbstractIndexCreationTask<Company>
+{
+    public class Result
+    {
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public string companyName { get; set; }
+        public string companyAddress { get; set; }
+        public string companyPhone { get; set; }
+    }
+
+    public Companies_ByAddress_Latitude()
+    {
+        Map = companies => from company in companies
+                           where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)
+                           select new
+                           {
+                               latitude = company.Address.Location.Latitude,
+                               longitude = company.Address.Location.Latitude,
+                               companyName = company.Name,
+                               companyAddress = company.Address,
+                               companyPhone = company.Phone
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employees_Query.Result, Employees_Query>()
+    .Search(x => x.Query, "John Doe")
+    .SelectFields<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/Query'
+where search(Query, 'John Doe')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Index partial field data
+
+Imagine that you would like to return all employees that were born in a specific year. 
+You can do it by indexing `Birthday` from `Employee`, then specify the year in `Birthday` as you query the index:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByBirthday : AbstractIndexCreationTask<Employee>
+{
+    public class Result
+    {
+        public DateTime Birthday { get; set; }
+    }
+
+    public Employees_ByBirthday()
+    {
+        Map = employees => from employee in employees
+                           select new Result
+                           {
+                               Birthday = employee.Birthday
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByBirthday : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public DateTime Birthday { get; set; }
+    }
+
+    public Employees_ByBirthday()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee){ 
+                        return {
+                            Birthday : employee.Birthday 
+                        } 
+                   })"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+  
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`DateTime startDate = new DateTime(1963, 1, 1);
+DateTime endDate = startDate.AddYears(1).AddMilliseconds(-1);
+IList<Employee> employees = session
+    .Query<Employees_ByBirthday.Result, Employees_ByBirthday>()
+    .Where(x => x.Birthday >= startDate && x.Birthday <= endDate)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`DateTime startDate = new DateTime(1963, 1, 1);
+DateTime endDate = startDate.AddYears(1).AddMilliseconds(-1);
+IList<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employees_ByBirthday.Result, Employees_ByBirthday>()
+    .WhereBetween(x => x.Birthday, startDate, endDate)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByBirthday '
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByYearOfBirth : AbstractIndexCreationTask<Employee>
+{
+    public class Result
+    {
+        public int YearOfBirth { get; set; }
+    }
+
+    public Employees_ByYearOfBirth()
+    {
+        Map = employees => from employee in employees
+                           select new Result
+                           {
+                               YearOfBirth = employee.Birthday.Year
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByYearOfBirth : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public int YearOfBirth { get; set; }
+    }
+
+    public Employees_ByYearOfBirth()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee){ 
+                        return {
+                            Birthday : employee.Birthday.Year 
+                        } 
+                   })"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Query<Employees_ByYearOfBirth.Result, Employees_ByYearOfBirth>()
+    .Where(x => x.YearOfBirth == 1963)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employees_ByYearOfBirth.Result, Employees_ByYearOfBirth>()
+    .WhereEquals(x => x.YearOfBirth, 1963)
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByYearOfBirth'
+where YearOfBirth = 1963
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+
+## Filter data within fields
+
+In the examples above, `where` is used in the query to filter the results.  
+If you consistently want to filter with the same filtering conditions, 
+you can use `where` in the index definition to narrow the index terms that the query must scan.  
+
+This can save query-time but narrows the terms available to query.
+
+### Example I
+
+For logic that has to do with special import rules that only apply to the USA  
+`where` can be used to filter the Companies collection `Address.Country` field.  
+Thus, we only index documents `where company.Address.Country == "USA"` . 
+
+Index definition (LINQ Syntax):
+<TabItem value="indexes_1_6" label="indexes_1_6">
+<CodeBlock language="csharp">
+{`public class Companies_ByAddress_Country : AbstractIndexCreationTask<Company>
+\{
+    public class Result
+    \{
+        public string City \{ get; set; \}
+        public string Company \{ get; set; \}
+        public string Phone \{ get; set; \}
+    \}
+
+    public Companies_ByAddress_Country()
+    \{
+        Map = companies => from company in companies
+                           where company.Address.Country == "USA"
+                           select new Result
+                           \{
+                               Company = company.Name,
+                               City = company.Address.City,
+                               Phone = company.Phone
+                           \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Query the index:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Company> orders = session
+    .Query<Companies_ByAddress_Country.Result, Companies_ByAddress_Country>()
+    .OfType<Company>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies_ByAddress_Country'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+Imagine a seed company that needs to categorize its customers by latitude-based growing zones.  
+
+They can create a different index for each zone and filter their customers in the index with  
+`where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)` .
+
+Index definition (LINQ Syntax):
+<TabItem value="indexes_1_7" label="indexes_1_7">
+<CodeBlock language="csharp">
+{`public class Companies_ByAddress_Latitude : AbstractIndexCreationTask<Company>
+\{
+    public class Result
+    \{
+        public double latitude \{ get; set; \}
+        public double longitude \{ get; set; \}
+        public string companyName \{ get; set; \}
+        public string companyAddress \{ get; set; \}
+        public string companyPhone \{ get; set; \}
+    \}
+
+    public Companies_ByAddress_Latitude()
+    \{
+        Map = companies => from company in companies
+                           where (company.Address.Location.Latitude > 20 && company.Address.Location.Latitude < 50)
+                           select new
+                           \{
+                               latitude = company.Address.Location.Latitude,
+                               longitude = company.Address.Location.Latitude,
+                               companyName = company.Name,
+                               companyAddress = company.Address,
+                               companyPhone = company.Phone
+                           \};
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Query the index:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Company> orders = session
+    .Query<Companies_ByAddress_Latitude.Result, Companies_ByAddress_Latitude>()
+    .OfType<Company>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Companies_ByAddress_Latitude'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+  
+
+
+## Index nested data
+
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByCountry : AbstractIndexCreationTask<Employee>
+{
+    public class Result
+    {
+        public string Country { get; set; }
+    }
+
+    public Employees_ByCountry()
+    {
+        Map = employees => from employee in employees
+                           select new Result
+                           {
+                               Country = employee.Address.Country
+                           };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`public class Employees_ByCountry : AbstractJavaScriptIndexCreationTask
+{
+    public class Result
+    {
+        public string Country { get; set; }
+    }
+
+    public Employees_ByCountry()
+    {
+        Maps = new HashSet<string>
+        {
+            @"map('Employees', function (employee){ 
+                        return {
+                            Country : employee.Address.Country 
+                         } 
+                   })"
+        };
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Query<Employees_ByCountry.Result, Employees_ByCountry>()
+    .Where(x => x.Country == "USA")
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="DocumentQuery" label="DocumentQuery">
+<CodeBlock language="csharp">
+{`IList<Employee> employees = session
+    .Advanced
+    .DocumentQuery<Employees_ByCountry.Result, Employees_ByCountry>()
+    .WhereEquals(x => x.Country, "USA")
+    .OfType<Employee>()
+    .ToList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByCountry'
+where Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+
+
+
+## Index fields from related documents
+
+Read the article dedicated to [indexing related documents](../indexes/indexing-related-documents.mdx).
+
+
+
+## Aggregate data with Map-Reduce
+
+Read the article dedicated to [Map-Reduce indexes](../indexes/map-reduce-indexes.mdx).
+
+
+
+## Index multiple collections
+
+Read the article dedicated to [Multi-Map indexes](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+
+
+
+## Configure whether to index a document if the specified fields are `null`
+
+By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
+using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+configuration option.  
+
+The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
+
+These **mapping functions** are **LINQ-based functions** or  **JavaScript function** (when using JavaScript indexes) and can be considered the **core** of indexes.
+
+## What Can be Indexed
+
+You can:
+
+- [index single fields](../indexes/map-indexes.mdx#indexing-single-fields)
+- [combine multiple fields together](../indexes/map-indexes.mdx#combining-multiple-fields-together) 
+- [index partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
+- [index nested data](../indexes/map-indexes.mdx#indexing-nested-data)
+- [index fields from related documents](../indexes/indexing-related-documents.mdx)
+- [index fields from multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- ...and more. 
+
+## Indexing Single Fields
+
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+
+- First, let's create an index called `Employees/ByFirstAndLastName`
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScipt-syntax" label="JavaScipt-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByFirstAndLastName extends AbstractJavaScriptIndexCreationTask {
+    // ...
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+- The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public Employees_ByFirstAndLastName() {
+    map = "docs.Employees.Select(employee => new { " +
+        "    FirstName = employee.FirstName, " +
+        "    LastName = employee.LastName " +
+        "})";
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public Employees_ByFirstAndLastName() {
+    setMaps(Sets.newHashSet("map('Employees', function (employee){\\n" +
+        "                        return {\\n" +
+        "                            FirstName : employee.FirstName,\\n" +
+        "                            LastName : employee.LastName\\n" +
+        "                        };\\n" +
+        "                    })"));
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../indexes/querying/query-index.mdx) method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees1 = session.query(Employee.class, Employees_ByFirstAndLastName.class)
+    .whereEquals("FirstName", "Robert")
+    .toList();
+
+List<Employee> employees2 = session.query(Employee.class, Query.index("Employees/ByFirstAndLastName"))
+    .whereEquals("FirstName", "Robert")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Field Types" id="field-types" href="#field-types">
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+{
+	Age = employee.Age.ToString()
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="csharp">
+{`map('Employees', function(employee)
+{
+    return {
+        Age : employee.Age.toString()
+    };
+})
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+</Admonition>
+
+<Admonition type="warning" title="Convention" id="convention" href="#convention">
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`from employee in docs.Employees
+select new
+\{
+	FirstName = employee.FirstName,
+	LastName = employee.LastName
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+</Admonition>
+
+## Combining Multiple Fields Together
+
+Since each index contains a LINQ function, you can combine multiple fields into one.
+
+### Example I
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByFullName extends AbstractIndexCreationTask {
+    public Employees_ByFullName() {
+        map = "docs.Employees.Select(employee => new { " +
+            "    FullName = (employee.FirstName + \\" \\") + employee.LastName " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByFullName extends AbstractJavaScriptIndexCreationTask {
+    public Employees_ByFullName() {
+        setMaps(Sets.newHashSet("map('Employees', function (employee){\\n" +
+            "            return {\\n" +
+            "                FullName  : employee.FirstName + ' ' + employee.LastName\\n" +
+            "            };\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`// notice that we're 'cheating' here
+// by marking result type in 'query' as 'Employees_ByFullName.Result'
+// and changing type using 'ofType' before sending query to server
+List<Employee> employees = session
+    .query(Employee.class, Employees_ByFullName.class)
+    .whereEquals("FullName", "Robert King")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName'
+where FullName = 'Robert King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+
+You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+
+</Admonition>
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_Query extends AbstractIndexCreationTask {
+    public Employees_Query() {
+        map = "docs.Employees.Select(employee => new { " +
+            "    Query = new [] { employee.FirstName, employee.LastName, employee.Title, employee.Address.City } " +
+            "})";
+        index("query", FieldIndexing.SEARCH);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public static class Employees_Query extends AbstractJavaScriptIndexCreationTask {
+    public Employees_Query() {
+        setMaps(Sets.newHashSet("map('Employees', function (employee) {\\n" +
+            "            return {\\n" +
+            "                Query : [employee.FirstName,\\n" +
+            "                employee.LastName,\\n" +
+            "                employee.Title,\\n" +
+            "                employee.Address.City]\\n" +
+            "            }\\n" +
+            "        })"));
+
+        IndexFieldOptions fieldOptions = new IndexFieldOptions();
+        fieldOptions.setIndexing(FieldIndexing.SEARCH);
+        getFields().put("Query", fieldOptions);
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class, Employees_Query.class)
+    .search("Query", "John Doe")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/Query'
+where search(Query, 'John Doe')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Partial Field Data
+
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `birthday` from `Employee` in the following way:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByBirthday extends AbstractIndexCreationTask {
+    public Employees_ByBirthday() {
+        map = "docs.Employees.Select(employee => new { " +
+            "    Birthday = employee.Birthday " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByBirthday extends AbstractJavaScriptIndexCreationTask {
+    public Employees_ByBirthday() {
+        setMaps(Sets.newHashSet("map('Employees', function (employee){\\n" +
+            "            return {\\n" +
+            "                Birthday : employee.Birthday\\n" +
+            "                                }\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`LocalDate startDate = LocalDate.of(1963, 1, 1);
+LocalDate endDate = startDate.plusYears(1).minus(1, ChronoUnit.MILLIS);
+List<Employee> employees = session
+    .query(Employee.class, Employees_ByBirthday.class)
+    .whereBetween("Birthday", startDate, endDate)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByBirthday '
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB gives you the ability **to extract field data and to index by it**. A different way to achieve our goal will look as follows:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByYearOfBirth extends AbstractIndexCreationTask {
+    public Employees_ByYearOfBirth() {
+        map = "docs.Employees.Select(employee => new { " +
+            "    YearOfBirth = employee.Birthday.Year " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByYearOfBirth extends AbstractJavaScriptIndexCreationTask {
+    public Employees_ByYearOfBirth() {
+        setMaps(Sets.newHashSet("map('Employees', function (employee){\\n" +
+            "            return {\\n" +
+            "                Birthday : employee.Birthday.Year\\n" +
+            "            }\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class, Employees_ByYearOfBirth.class)
+    .whereEquals("YearOfBirth", 1963)
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByYearOfBirth'
+where YearOfBirth = 1963
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Nested Data
+
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:  
+
+Index definition:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="LINQ-syntax" label="LINQ-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByCountry extends AbstractIndexCreationTask {
+    public Employees_ByCountry() {
+        map = "docs.Employees.Select(employee => new { " +
+            "    Country = employee.Address.Country " +
+            "})";
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="JavaScript-syntax" label="JavaScript-syntax">
+<CodeBlock language="java">
+{`public static class Employees_ByCountry extends AbstractJavaScriptIndexCreationTask {
+    public Employees_ByCountry() {
+        setMaps(Sets.newHashSet("map('Employees', function (employee){\\n" +
+            "            return {\\n" +
+            "                Country : employee.Address.Country\\n" +
+            "            }\\n" +
+            "        })"));
+    }
+}
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+Query the index:  
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="java">
+{`List<Employee> employees = session
+    .query(Employee.class, Employees_ByCountry.class)
+    .whereEquals("Country", "USA")
+    .toList();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByCountry'
+where Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+
+## Indexing Multiple Collections
+
+Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+
+
+</LanguageContent>
+<LanguageContent language="nodejs">
+
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
+
+These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
+
+## What Can be Indexed
+
+You can:
+
+- [index single fields](../indexes/map-indexes.mdx#indexing-single-fields)
+- [combined multiple fields](../indexes/map-indexes.mdx#combining-multiple-fields-together) together
+- [index partial field data](../indexes/map-indexes.mdx#indexing-partial-field-data)
+- [index nested data](../indexes/map-indexes.mdx#indexing-nested-data)
+- [index fields from related documents](../indexes/indexing-related-documents.mdx)
+- [index fields from multiple collections](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes)
+- [configure whether to index a document if the specified fields are `null`](../indexes/map-indexes.mdx#indexing-missing-fields)
+- ...and more. 
+
+## Indexing Single Fields
+
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+
+- First, let's create an index called `Employees/ByFirstAndLastName`
+
+<TabItem value="indexes_1" label="indexes_1">
+<CodeBlock language="js">
+{`class Employees_ByFirstAndLastName extends AbstractCsharpIndexCreationTask \{
+    // ...
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in the **constructor**.
+
+<TabItem value="indexes_2" label="indexes_2">
+<CodeBlock language="js">
+{`constructor() \{
+    super();
+
+    this.map = \`from employee in docs.Employees
+        select new \{ 
+           FirstName = employee.FirstName,     
+           LastName = employee.LastName 
+        \}\`;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+- The final step is to [deploy it](../indexes/creating-and-deploying.mdx) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query.mdx) method:
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees1 = await session.query({ indexName: "Employees/ByFirstAndLastName" })
+    .whereEquals("FirstName", "Robert")
+    .all();
+
+const employees2 = await session.query({ indexName: "Employees/ByFirstAndLastName" })
+    .whereEquals("FirstName", "Robert")
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFirstAndLastName'
+where FirstName = 'Robert'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Field Types" id="field-types" href="#field-types">
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `Age` that is an `number` then the following indexing function...
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`\`from employee in docs.Employees
+select new
+\{
+	Age = employee.Age
+\}\`
+`}
+</CodeBlock>
+</TabItem>
+
+...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`\`from employee in docs.Employees
+select new
+\{
+	Age = employee.Age.ToString()
+\}\`
+`}
+</CodeBlock>
+</TabItem>
+
+</Admonition>
+
+<Admonition type="warning" title="Convention" id="convention" href="#convention">
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+<TabItem value="javascript" label="javascript">
+<CodeBlock language="javascript">
+{`\`from employee in docs.Employees
+select new
+\{
+    FirstName = employee.FirstName,
+    LastName = employee.LastName
+\}\`
+`}
+</CodeBlock>
+</TabItem>
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+</Admonition>
+
+## Combining Multiple Fields Together
+
+Since each index contains a LINQ function, you can combine multiple fields into one.
+
+### Example I
+
+<TabItem value="indexes_7" label="indexes_7">
+<CodeBlock language="js">
+{`class Employees_ByFullName extends AbstractCsharpIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{ 
+               Name = employee.FirstName + ' ' + employee.LastName
+            \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByFullName" })
+    .whereEquals("FullName", "Robert King")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByFullName'
+where FullName = 'Robert King'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Example II
+
+<Admonition type="info" title="Information" id="information" href="#information">
+
+In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+
+You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers.mdx).
+
+</Admonition>
+
+<TabItem value="indexes_1_6" label="indexes_1_6">
+<CodeBlock language="js">
+{`class Employees_Query extends AbstractCsharpIndexCreationTask \{
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{     
+            Query = new [] \{ 
+                employee.FirstName, 
+                employee.LastName, 
+                employee.Title, 
+                employee.Address.City 
+            \} 
+        \}\`;
+
+        this.index("Query", "Search");
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/Query" })
+    .search("Query", "John Doe")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/Query'
+where search(Query, 'John Doe')
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Partial Field Data
+
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:
+
+<TabItem value="indexes_1_2" label="indexes_1_2">
+<CodeBlock language="js">
+{`class Employees_ByBirthday extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{     
+                Birthday = employee.Birthday,
+            \}\`;
+    \}
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const startDate = new Date(1963, 1, 1);
+const endDate = new Date(1963, 12, 31, 23, 59, 59, 999);
+const employees = await session
+    .query({ indexName: "Employees/ByBirthday" })
+    .whereBetween("Birthday", startDate, endDate)
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByBirthday '
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
+
+<TabItem value="indexes_1_0" label="indexes_1_0">
+<CodeBlock language="js">
+{`class Employees_ByYearOfBirth extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{ 
+               YearOfBirth = employee.Birthday.Year,     
+            \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByYearOfBirth" })
+    .whereEquals("YearOfBirth", 1963)
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByYearOfBirth'
+where YearOfBirth = 1963
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+## Indexing Nested Data
+
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
+
+<TabItem value="indexes_1_4" label="indexes_1_4">
+<CodeBlock language="js">
+{`class Employees_ByCountry extends AbstractCsharpIndexCreationTask \{
+
+    constructor() \{
+        super();
+
+        this.map = \`from employee in docs.Employees
+            select new \{      
+            Country = employee.Address.Country 
+        \}\`;
+    \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Query" label="Query">
+<CodeBlock language="js">
+{`const employees = await session
+    .query({ indexName: "Employees/ByCountry" })
+    .whereEquals("Country", "USA")
+    .ofType(Employee)
+    .all();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="RQL" label="RQL">
+<CodeBlock language="sql">
+{`from index 'Employees/ByCountry'
+where Country = 'USA'
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents.mdx).
+
+## Indexing Multiple Collections
+
+Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data.mdx#multi-map-indexes).
+
+## Indexing Missing Fields
+
+By default, indexes will not index a document that contains none of the specified fields. This behavior can be changed 
+using the [Indexing.IndexEmptyEntries](../server/configuration/indexing-configuration.mdx#indexingindexemptyentries) 
+configuration option.  
+
+The option [Indexing.IndexMissingFieldsAsNull](../server/configuration/indexing-configuration.mdx#indexingindexmissingfieldsasnull) 
+determines whether missing fields in documents are indexed with the value `null`, or not indexed at all.  
+
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Query Overview](../client-api/session/querying/how-to-query)
+- [Querying an Index](../indexes/querying/query-index)
+
+### Studio
+- [Create Map Index](../studio/database/indexes/create-map-index)
+
+### Code Walkthrough
+- [Static Indexes Overview](https://demo.ravendb.net/demos/csharp/static-indexes/static-indexes-overview)
+- [Map Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-index)
+- [Map-Reduce Index](https://demo.ravendb.net/demos/csharp/static-indexes/map-reduce-index)
+- [Project Index Results](https://demo.ravendb.net/demos/csharp/static-indexes/project-index-results)
+- [Store Fields in Index](https://demo.ravendb.net/demos/csharp/static-indexes/store-fields-in-index)
+
+
+-->

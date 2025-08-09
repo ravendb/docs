@@ -1,0 +1,168 @@
+---
+title: "Bundle: Indexed Properties"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" Indexed Properties
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: Indexed Properties
+
+Another bundle available in RavenDB is `Indexed Properties` bundle. It enables auto-updating of document properties by Indexing process, but what does it mean? In real-life scenario it gives user the ability to utilize index calculated values.
+
+Lets consider a common case where we have a Customer and bunch of Orders and we want, without much of effort, to be able to get average order amount for that customer. We can do it in couple of ways, but one of them is particularly interesting.
+
+<TabItem value="indexed_properties_1" label="indexed_properties_1">
+<CodeBlock language="csharp">
+{`public class Customer
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public decimal AverageOrderAmount \{ get; set; \}
+\}
+
+public class Order
+\{
+	public string Id \{ get; set; \}
+
+	public string CustomerId \{ get; set; \}
+
+	public decimal TotalAmount \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+To use bundle, at the beginning we must activate it. It can be done server-wide or per database. To activate bundle during database creation process you need to add `IndexedProperies` to `Raven/ActiveBundles` setting.
+
+<TabItem value="indexed_properties_0" label="indexed_properties_0">
+<CodeBlock language="csharp">
+{`store.DatabaseCommands.CreateDatabase(new DatabaseDocument
+	\{
+		Id = "ExampleDB",
+		Settings =
+			\{
+				\{ "Raven/ActiveBundles", "IndexedProperties" \}
+			\}
+	\});
+`}
+</CodeBlock>
+</TabItem>
+
+Second step is to create an index that will calculate the average.
+
+<TabItem value="indexed_properties_2" label="indexed_properties_2">
+<CodeBlock language="csharp">
+{`public class OrderResults
+\{
+	public string CustomerId \{ get; set; \}
+
+	public decimal TotalOfOrderAmounts \{ get; set; \}
+
+	public int CountOfOrders \{ get; set; \}
+
+	public decimal AverageOrderAmount \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexed_properties_3" label="indexed_properties_3">
+<CodeBlock language="csharp">
+{`public class OrdersAverageAmount : AbstractIndexCreationTask<Order, OrderResults>
+\{
+	public OrdersAverageAmount()
+	\{
+		Map = orders => from order in orders
+		                select new
+			                \{
+				                CustomerId = order.CustomerId,
+				                TotalOfOrderAmounts = order.TotalAmount,
+				                CountOfOrders = 1,
+				                AverageOrderAmount = 0
+			                \};
+
+		Reduce = results => from result in results
+		                    group result by result.CustomerId
+		                    into g
+		                    let total = g.Sum(x => x.TotalOfOrderAmounts)
+		                    let count = g.Sum(x => x.CountOfOrders)
+		                    select new
+			                    \{
+				                    CustomerId = g.Key,
+				                    TotalOfOrderAmounts = total,
+				                    CountOfOrders = count,
+				                    AverageOrderAmount = total / count
+			                    \};
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Next, we will have to create a document `Raven/IndexedProperties/Index_Name` that consists of document key property name (in our case `CustomerId`) and a mapping between index field names and our document properties.
+
+<TabItem value="indexed_properties_4" label="indexed_properties_4">
+<CodeBlock language="csharp">
+{`var ordersAverageAmount = new OrdersAverageAmount();
+ordersAverageAmount.Execute(store);
+
+store.DatabaseCommands.Put("Raven/IndexedProperties/" + ordersAverageAmount.IndexName,
+                           null,
+                           RavenJObject.FromObject(new IndexedPropertiesSetupDoc
+	                           \{
+		                           DocumentKey = "CustomerId",
+		                           FieldNameMappings =
+			                           \{
+				                           \{ "AverageOrderAmount", "AverageOrderAmount" \}
+			                           \}
+	                           \}),
+                           new RavenJObject());
+`}
+</CodeBlock>
+</TabItem>
+
+After this, whenever we add new orders to our customers, the `AverageOrderAmount` property will be updated automatically.
+
+<TabItem value="indexed_properties_5" label="indexed_properties_5">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+	session.Store(new Customer \{ Id = "customers/1", Name = "Customer 1" \});
+	session.Store(new Customer \{ Id = "customers/2", Name = "Customer 2" \});
+
+	session.Store(new Order \{ Id = "orders/1", CustomerId = "customers/1", TotalAmount = 10 \});
+	session.Store(new Order \{ Id = "orders/2", CustomerId = "customers/1", TotalAmount = 5 \});
+	session.Store(new Order \{ Id = "orders/3", CustomerId = "customers/1", TotalAmount = 3 \});
+
+	session.Store(new Order \{ Id = "orders/4", CustomerId = "customers/2", TotalAmount = 1 \});
+	session.Store(new Order \{ Id = "orders/5", CustomerId = "customers/2", TotalAmount = 3 \});
+
+	session.SaveChanges();
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="indexed_properties_6" label="indexed_properties_6">
+<CodeBlock language="csharp">
+{`using (var session = store.OpenSession())
+\{
+	var customer1 = session.Load<Customer>("customers/1"); // AverageOrderAmount is 6
+	var customer2 = session.Load<Customer>("customers/2"); // AverageOrderAmount is 1.5
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="note" title="Note">
+It may take some time for RavenDB to updated indexes and our indexed properties.
+</Admonition>

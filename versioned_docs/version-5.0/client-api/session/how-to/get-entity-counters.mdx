@@ -1,0 +1,70 @@
+---
+title: "Session: How to Get Entity Counters"
+hide_table_of_contents: true
+sidebar_label: ...get entity counters
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Session: How to Get Entity Counters
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector.  
+  
+ If the document has *Counters*, all its counter names are also stored within the metadata in session.  
+ They are available for each entity using the `GetCountersFor` method from the `Advanced` session operations.
+
+## Syntax
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`List<string> GetCountersFor<T>(T instance);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which counter names will be returned. |
+
+| Return Value | |
+| ------------- | ----- |
+| List &lt; string &gt; | Returns the counter names for the specified entity, or `null` if the entity has no counters. Throws an exception if the `instance` is not tracked by the session. |
+
+### Example
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`// Load a document
+var employee = session.Load<Employee>("employees/1-A");
+
+// Get counter names from the loaded entity
+List<string> counterNames = session.Advanced.GetCountersFor(employee);
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Session
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+
+### Counters
+- [Counters Overview](../../../document-extensions/counters/overview)
+
+
+-->

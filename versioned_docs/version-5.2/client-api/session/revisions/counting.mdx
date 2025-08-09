@@ -1,0 +1,62 @@
+---
+title: "Revisions: Counting Revisions"
+hide_table_of_contents: true
+sidebar_label: Counting
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Revisions: Counting Revisions
+<Admonition type="note" title="Note">
+
+* A document's revisions can be counted using the `session.Advanced.Revisions.GetCountFor` method.  
+
+* In this page:  
+   * [`GetCountFor`](../../../client-api/session/revisions/counting.mdx#getcountfor)  
+   * [Usage Sample](../../../client-api/session/revisions/counting.mdx#usage-sample)  
+
+</Admonition>
+## `GetCountFor`
+
+<TabItem value="syntax" label="syntax">
+<CodeBlock language="csharp">
+{`long GetCountFor(string id);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| ------------- | ------------- | ------------- |
+| **id** | string | ID of the document whose revisions are counted |
+
+* **Return Value**: `long`  
+  The number of revisions for this document  
+
+
+
+## Usage Sample
+
+Get the number of revisions created for a document:
+<Tabs groupId='languageSyntax'>
+<TabItem value="Sync" label="Sync">
+<CodeBlock language="csharp">
+{`var revisionsCount = session.Advanced.Revisions.GetCountFor(CompanyProfile.Id);
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Async" label="Async">
+<CodeBlock language="csharp">
+{`var revisionsCount = await asyncSession.Advanced.Revisions.GetCountForAsync(CompanyProfile.Id);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+
+

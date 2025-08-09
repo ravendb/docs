@@ -1,0 +1,331 @@
+---
+title: "Create Map Index"
+hide_table_of_contents: true
+sidebar_label: Create Map Index
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create Map Index
+<Admonition type="note" title="Note">
+
+* A **Map index** consists of one or more LINQ-based or JavaScript mapping functions 
+  that indicate how to index selected document fields, counters, and time series data.  
+
+* In this page:  
+  * [Edit Index View](../../../studio/database/indexes/create-map-index.mdx#edit-index-view)  
+  * [Index Fields & Terms](../../../studio/database/indexes/create-map-index.mdx#index-fields-&-terms)  
+  * [Index Field Options](../../../studio/database/indexes/create-map-index.mdx#index-field-options)  
+  * [Configuration](../../../studio/database/indexes/create-map-index.mdx#configuration)  
+  * [Additional Assemblies](../../../studio/database/indexes/create-map-index.mdx#additional-assemblies)  
+  * [Additional Sources](../../../studio/database/indexes/create-map-index.mdx#additional-sources)  
+  * [Spatial Field Options](../../../studio/database/indexes/create-map-index.mdx#spatial-field-options)  
+</Admonition>
+## Edit Index View
+
+![Figure 1. Edit Index View](./assets/create-map-index-1.png)
+
+1. **Save** - Save index definition.  
+   **Cancel** - Return to Index List View without creating or changing the index definition.  
+   **Clone** - Clone this index (available for an already saved index).  
+   **Index History** - Open the [Index History Dialog](../../../studio/database/indexes/index-history.mdx#index-history-dialog).  
+
+2. Options available for an already saved index:  
+   **Copy C#** - Click to view and copy the C# class that defines the index as set in the Studio.  
+   **Query** - Click to go the the Query View and query this index.  
+   **Terms** - Click to see the index terms, see [below](../../../studio/database/indexes/create-map-index.mdx#index-fields-&-terms).  
+   **Delete** - Delete this index.  
+
+3. **Index Name** - An index name can be composed of letters, digits, `.`, `/`, `-`, and `_`. The name must be unique in the scope of the database.  
+    * Uniqueness is evaluated in a _case-insensitive_ way - you can't create indexes named both `usersbyname` and `UsersByName`.  
+    * The characters `_` and `/` are treated as equivalent - you can't create indexes named both `users/byname` and `users_byname`.  
+    * If the index name contains the character `.`, it must have some other character on _both sides_ to be valid. `/./` is a valid index name, but 
+    `./`, `/.`, and `/../` are all invalid.  
+
+4. **Deployment Mode** - Select the index deployment mode.  
+    * _Database default (parallel - all nodes concurrently)_  
+      With this option, the deployment mode will be the 
+      [Default Mode](../../../indexes/rolling-index-deployment.mdx#system-wide-deployment-mode) defined on the database.  
+    * _Rolling (one node at a time)_  
+      The index will be deployed on the cluster nodes in a linear order, one node at a time.  
+    * Parallel (all nodes concurrently)  
+      The index will be deployed on all cluster nodes in parallel.  
+    * Read more about deployment modes [here](../../../indexes/rolling-index-deployment.mdx).  
+
+5. **The Map Function** of the index.  
+
+  * In the above example, the index will go over documents from the `Products` collection and 
+    will only index documents whose `Discontinued` property is _'true'_.  
+
+  * Note: The range of documents from which the query on this index will supply results will be on only Products collection documents 
+    that have _'true'_ in the _'Discontinued'_ document field property. If the index was defined without the _'where'_ clause, but only using _'from p in docs.Products'_, 
+    then the documents range for the query result would have been the whole Products collection.  
+
+  * Each **Index Entry** that will be created for this index will be composed of the following 4 fields:  
+    `Name`, `Category`, `PricePerUnit` & `SupplierName`.  
+    The first 3 are taken directly from the document fields, while _SupplierName_ is a calculated index field.  
+    The supplier's name is derived from the _Name_ field that is taken from the _loaded_ supplier document.  
+
+  * At **query time**, when querying this index, the resulting documents can be searched on and further filtered  
+    by these **Index Fields** defined and by the created **Terms**. 
+    See the query results on this index in Query View.  
+
+  * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes.mdx)  
+
+
+## Index Fields & Terms
+
+![Figure 2. Index Fields & Terms](./assets/create-map-index-2.png)
+
+1. **Index Fields**  
+   The index-fields that are indexed per index-entry with the above index-definition are:  
+   `Name`, `Category`, `PricePerUnit` & `SupplierName`.  
+
+2. **Terms**  
+   The terms are listed under each field.  
+   The terms are created from the value of the field that was requested to be indexed 
+   according to the specified [Field Options](../../../studio/database/indexes/create-map-index.mdx#index-field-options).  
+
+
+## Index Field Options
+
+![Figure 3a. Index Field Options](./assets/create-map-index-3.png)
+
+1. **Add field**  
+   Create indexing options for one document field in the collection this index applies to.  
+
+2. **Add default field options**  
+   Set default index field options for all indexed fields. [See below](../../../studio/database/indexes/create-map-index.mdx#default-index-field-options).  
+
+3. **Select Field**  
+   Select a field from the drop-down. The options for this will override the default options.  
+
+4. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
+               At query time, if _'Store'_ is set, then the value is fetched directly from the index, instead of from the original document.  
+               If the field value is not stored in the index then it will be fetched from the document.  
+               Storing data in the index will increase the index size.  
+               Learn more in [Storing Data in Index](../../../indexes/storing-data-in-index.mdx).  
+
+  *  `Full-Text-Search` - Set this to _'Yes'_ to allow searching for strings inside the text values of this field.  
+                          The terms that are indexed are _tokens_ that are split from the original string according to the specified [Analyzer](../../../indexes/using-analyzers.mdx).  
+                          The Analyzer is set in the _'Indexing'_ dropdown. The default analyzer is a simple case-insensitive analyzer.  
+
+  * `Highlighting` - Set to _'Yes'_ to enable [Highlighting](../../../indexes/querying/highlighting.mdx). Requires 
+                     Storage to be set to 'Yes'. In the advanced options, Indexing needs to be set to 'Search' and 
+                     Term Vector set to 'WithPositionsAndOffsets'.  
+
+  * `Suggestions` -  Setting _'Suggestions'_ will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
+                      Learn more in this [Blog Post](https://ayende.com/blog/180899/queries-in-ravendb-i-suggest-you-can-do-better), 
+                      and in [Querying: Suggestions](../../../indexes/querying/suggestions.mdx).  
+
+  * `Spatial` -  See [below](../../../studio/database/indexes/create-map-index.mdx#spatial-field-options)
+
+5. **Advanced**  
+   Set advanced indexing options for the selected field.  
+
+#### Advanced Index Field Options:  
+
+![Figure 3b. Advanced Index Field Options](./assets/create-map-index-advanced.png)
+
+  *  `Term Vector` -  Term Vectors are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis.mdx), 
+                      which suggests documents that are similar to a selected document, based on shared indexed terms. i.e. suggest similar catalogs.  
+                      A _'Term Vector'_ for a text paragraph will contain a list of all unique words and how often they appeared.  
+                      Set _'full-text-search'_ on the field (index entry) and define it to have a _'Term Vector'_.  
+                      Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors.mdx), 
+                      and in this [Blog Post](https://ayende.com/blog/180900/queries-in-ravendb-gimme-more-like-this).  
+
+  * `Indexing` -  This setting determines which [***Analyzer***](../../../indexes/using-analyzers.mdx) can be used:  
+     * ***Exact*** - The _'Keyword Analyzer'_ is used. The text is not split into tokens, the entire value of the field is treated as one token.  
+     * ***Default*** - The _'LowerCase Keyword Analyzer'_ is used. The text is not split into tokens. The text is converted to lower-case, and 
+     matches are case insensitive.  
+     * ***Search*** - Select an analyzer to use from the dropdown menu. If you set Indexing to 'Search' and do not select an analyzer, the analyzer 
+     is _'StandardAnalyzer'_ by default. Whenever you create a [custom analyzer](../../../studio/database/settings/custom-analyzers.mdx), 
+     it is added to this dropdown menu.  
+
+#### Default Index Field Options:  
+
+![Figure 3c. Default Index Field Options](./assets/create-map-index-default.png "Figure-3c: Default Index Field Options")
+
+
+
+## Configuration
+
+!["Setting Configuration via Studio"](./assets/configuration-setting-new-config.png)
+
+1. **Indexes Tab**  
+   Click to see indexing options.
+2. **List of Indexes**  
+   Select to see the list of your current indexes.  
+   You can only configure static-indexes, not auto-indexes.  
+   Select the index for which you want to customize the default configuration.  
+3. **Configuration**  
+   Scroll down and select the Configuration tab.  
+4. **Add customized indexing configuration**  
+   Click to add a configuration key.  
+5. **Indexing Configuration Key**  
+   Paste or select the configuration key that you want to set.  
+   You can set any [indexing configuration](../../../server/configuration/indexing-configuration.mdx) that has a __"per-index"__ scope.
+6. **Value**  
+   Enter the new value for this configuration key.  
+   Click **Save** at the top of the interface when done.  
+
+
+
+## Additional Assemblies
+
+![Figure 5. Additional Assemblies](./assets/create-map-index-5.png)
+
+Use the [Additional Assemblies](../../../indexes/additional-assemblies.mdx) 
+feature to enhance Index capabilities with classes and methods taken from libraries.  
+In the above example, `Path.GetFileName` can be used by the index map method because the 
+runtime library `System.IO` is added as an additional assembly.  
+
+1. **Add Assembly**  
+   Click to add an assembly source for your index usage.  
+
+2. **Syntax**  
+   See syntax samples.  
+
+3. **Assembly Source**  
+   Select the assembly source type.  
+   Added assemblies can be -  
+    * _Server Runtime_ - a runtime library.  
+    * _Path_ - The path to a library file on your local disk.  
+    * _Nuget_ - a Nuget package.  
+
+4. **Remove Assembly**  
+   Click to remove the assembly.  
+**Server Runtime Library**  
+
+![Figure 6. Server Runtime Library](./assets/create-map-index-6.png)
+
+1. **Assembly Source**  
+   In this example, the assembly is a runtime library.  
+
+2. **Assembly Name**  
+   The name of the runtime library you want to use.  
+
+3. **Usings**  
+   Optionally, choose a namespace within the assembly.  
+   
+4. **Add Namespace**  
+   Click to add the namespace to the list of `Usings`.  
+
+5. **Namespaces list**  
+   The list of namespaces used.  
+
+6. **Remove Namespace**  
+   Click to remove this namespace from the list.  
+
+7. **Remove Assembly**  
+   Click to remove this assembly.  
+**Nuget Package**  
+
+![Figure 7. Nugat Package](./assets/create-map-index-7_1.png)
+
+1. **Assembly Source**  
+   In this case, _Nuget_ was chosen so the index can use classes and methods taken from a Nuget package.  
+
+2. **Package Name**  
+   Nuget package name.  
+
+3. **Package version**  
+   Nuget package version.  
+
+4. **Default Package Source URL**  
+    * Toggle ON to use the package default URL.  
+    * Toggle OFF to provide the URL yourself.  
+      ![Provide Nuget Package URL](./assets/create-map-index-7_2.png)
+
+5. **Usings**  
+   Optionally, choose a namespace within the Nuget package.  
+   
+6. **Add Namespace**  
+   Click to add the namespace to the list of `Usings`.  
+
+7. **Remove Assembly**  
+   Click to remove this assembly.  
+**Local Library Path**  
+
+![Figure 8. Local Library Path](./assets/create-map-index-8.png)
+
+1. **Assembly Source**  
+   In this case, _Path_ was chosen so the index can use classes and methods taken from a local library.  
+
+2. **Assembly Path**  
+   Provide a path to the local library file.  
+
+3. **Usings**  
+   Optionally, choose a namespace within the local library.  
+   
+4. **Add Namespace**  
+   Click to add the namespace to the list of `Usings`.  
+
+5. **Remove Assembly**  
+   Click to remove this assembly.  
+
+
+
+## Additional Sources
+
+![Figure 9. Additional Sources](./assets/create-map-index-9.png)
+
+You can extend the logic of the Map & Map-Reduce methods by referencing classes and methods 
+from additional source files. This enables advanced scenarios since complex logic can be performed 
+during the indexing process.  
+
+In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is 
+used to calculate the index entry _'SupplierEmail'_.  
+
+1. **Upload Source File**  
+   Click to upload a file from the file system that contains classes and methods you want to use.  
+2. **Uploaded File**  
+   The file that has been uploaded whose contents can be used within the index methods.  
+3. **Source Code**  
+   Read-only view of the uploaded file's source code.  
+   
+
+
+
+## Spatial Field Options
+
+![Figure 10. Spatial Field Options](./assets/create-map-index-10.png)
+
+* **Spatial Field**  
+  Spatial searches allow you to search using geographical data.  
+  In order to be able to do such searches, a _spatial index field_ has to be defined.  
+
+* **CreateSpatialField()**  
+  This method instructs RavenDB to use the provided longitude and latitude from the document field properties 
+  and create the spatial field named _'Coordinates'_. 
+  Spatial queries can then be made on the _'Coordinates'_ field.  
+
+* **Spatial Type**  
+  RavenDB supports both the _'Geography'_ and _'Cartesian'_ systems.  
+
+* **Spatial Indexing Strategy**  
+  _'Strategy'_ determines the format of the indexed term values.  
+  The following indexing strategies are supported:  
+  • Bounding box  
+  • Geohash prefix tree  
+  • Quad prefix tree  
+
+* **Radius Units**  
+  Set the units (miles, kilometers) to be used when querying with RQL _'spatial.circle'_.  
+  Learn more about querying spatial fields in: [Querying: Spatial](../../../indexes/querying/spatial.mdx).  
+
+* **Max Tree Level**  
+  Control how precise the spatial queries are going to be.  
+
+* **X & Y Min & Max Values**  
+  Setting the min & max values for X & Y is relevant only for the _'Cartesian'_ system type.  
+
+* Learn more about spatial indexes in: [Indexing: Spatial](../../../indexes/indexing-spatial-data.mdx).  
+
+

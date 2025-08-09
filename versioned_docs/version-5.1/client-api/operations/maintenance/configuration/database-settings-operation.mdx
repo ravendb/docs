@@ -1,0 +1,179 @@
+---
+title: "Apply Database Configuration Settings"
+hide_table_of_contents: true
+sidebar_label: Database Settings Operations
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Apply Database Configuration Settings
+<Admonition type="note" title="Note">
+
+Use the following methods to change, save, and apply database configuration settings. 
+
+* `PutDatabaseSettingsOperation` sets and saves new database configurations.
+* `ToggleDatabasesStateOperation` disables/enables database.  
+  This is used after `PutDatabaseSettingsOperation` to apply new settings because configurations are loaded on startup. See [code sample](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#toggledatabasesstateoperation) below. 
+* `GetDatabaseSettingsOperation` shows a dictionary of newly configured settings.
+
+<Admonition type="info" title="Info">
+
+* Database settings can also be [configured via the Studio](../../../../studio/database/settings/database-settings.mdx#database-settings)
+
+* After editing & saving a configuration, the change does not take effect 
+  until the database is [disabled and enabled again](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#toggledatabasesstateoperation).  
+
+</Admonition>
+
+<Admonition type="warning" title="Warning" id="warning" href="#warning">
+Do not modify the database settings unless you are an expert and know what you're doing.  
+</Admonition>
+
+In this page:
+
+  * [PutDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#putdatabasesettingsoperation)
+  * [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#toggledatabasesstateoperation)
+  * [GetDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#getdatabasesettingsoperation)
+
+</Admonition>
+
+## PutDatabaseSettingsOperation
+
+This method sets and saves new database configurations.  
+To apply the new settings, use [ToggleDatabasesStateOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#toggledatabasesstateoperation).  
+
+**Syntax:**
+
+<TabItem value="signature-PutDatabaseSettingsOperation" label="signature-PutDatabaseSettingsOperation">
+<CodeBlock language="csharp">
+{`PutDatabaseSettingsOperation(string databaseName, Dictionary<string, string> configurationSettings)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | Type | Description |
+| -------- | ---- | -------------------|
+| databaseName | `string` | Select database to change settings for. |
+| configurationSettings | Dictionary&lt;string, string&gt; | Pass configuration settings. |
+**Sample:** 
+
+The following sample shows how to use `PutDatabaseSettingsOperation` to set the database configuration. 
+<TabItem value="ApplyDatabaseSettings-PutDatabaseSettingsOperation" label="ApplyDatabaseSettings-PutDatabaseSettingsOperation">
+<CodeBlock language="csharp">
+{`// Configure database settings
+static void PutConfigurationSettings(DocumentStore store, Dictionary<string, string> settings)
+\{
+    // Save the new settings with PutDatabaseSettingsOperation
+    store.Maintenance.Send(new PutDatabaseSettingsOperation(store.Database, settings));
+    // Disable the database
+    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, true));
+    // Enable the database to apply new settings
+    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, false));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## ToggleDatabasesStateOperation
+
+Use `ToggleDatabasesStateOperation` to disable/enable the database, e.g. to apply new settings after [PutDatabaseSettingsOperation](../../../../client-api/operations/maintenance/configuration/database-settings-operation.mdx#putdatabasesettingsoperation) is called.
+
+**Syntax:**
+
+<TabItem value="signature-ToggleDatabasesStateOperation" label="signature-ToggleDatabasesStateOperation">
+<CodeBlock language="csharp">
+{`ToggleDatabasesStateOperation(string databaseName, bool disable)
+`}
+</CodeBlock>
+</TabItem>
+
+ | Parameters | Type | Description |
+| -------- | ---- | -------------------|
+| databaseName | `string` | Database name. |
+| disable | `bool` | `true` - disable the database <br/> `false`" - enable the database |
+**Sample:** 
+
+The following sample uses `ToggleDatabasesStateOperation` to disable and then enable the database, effectively reloading 
+the database to apply a new configuration.  
+
+<TabItem value="ApplyDatabaseSettings-PutDatabaseSettingsOperation" label="ApplyDatabaseSettings-PutDatabaseSettingsOperation">
+<CodeBlock language="csharp">
+{`// Configure database settings
+static void PutConfigurationSettings(DocumentStore store, Dictionary<string, string> settings)
+\{
+    // Save the new settings with PutDatabaseSettingsOperation
+    store.Maintenance.Send(new PutDatabaseSettingsOperation(store.Database, settings));
+    // Disable the database
+    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, true));
+    // Enable the database to apply new settings
+    store.Maintenance.Server.Send(new ToggleDatabasesStateOperation(store.Database, false));
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+## GetDatabaseSettingsOperation
+
+Use `GetDatabaseSettingsOperation` to retrieve a dictionary of the changes made in the database settings. Only settings that have changed will be retrieved.
+
+**Syntax:**
+
+<TabItem value="signature-GetDatabaseSettingsOperation" label="signature-GetDatabaseSettingsOperation">
+<CodeBlock language="csharp">
+{`GetDatabaseSettingsOperation(string databaseName)
+`}
+</CodeBlock>
+</TabItem>
+
+ | Parameter | Type | Description |
+| -------- | ---- | -------------------|
+| databaseName | `string` | Database name whose settings you want to retrieve. |
+
+  | Return Type | Description |
+ | ---- | -------------------|
+ | `DatabaseSettings` | A key/value dictionary of database settings. <br/> Only settings that have changed are retrieved. |
+
+`DatabaseSettings`:
+
+<TabItem value="DatabaseSettingsDefinition" label="DatabaseSettingsDefinition">
+<CodeBlock language="csharp">
+{`public class DatabaseSettings
+\{
+    public Dictionary<string, string> Settings \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+**Sample:** 
+
+Get a dictionary of newly configured settings with `GetDatabaseSettingsOperation`.
+
+<TabItem value="SeeNewDatabaseSettings-GetDatabaseSettingsOperation" label="SeeNewDatabaseSettings-GetDatabaseSettingsOperation">
+<CodeBlock language="csharp">
+{`static DatabaseSettings GetConfigurationSettings(DocumentStore store)
+\{
+    var settings = store.Maintenance.Send(new GetDatabaseSettingsOperation(store.Database));
+    Assert.NotNull(settings);
+    return settings;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+
+
+

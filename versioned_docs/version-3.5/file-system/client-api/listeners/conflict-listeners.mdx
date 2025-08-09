@@ -1,0 +1,83 @@
+---
+title: "Conflict listeners"
+hide_table_of_contents: true
+sidebar_label: Conflict listeners
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Conflict listeners
+
+To allow users to handle [file synchronization conflicts](../../synchronization/conflicts.mdx) automatically on the client side, we introduced `IFilesConflictListener`. 
+In order to create the listener that will be able to deal with conflicted files implement this interface.
+
+<TabItem value="interface" label="interface">
+<CodeBlock language="csharp">
+{`public interface IFilesConflictListener
+\{
+	/// <summary>
+	/// Invoked when a conflict has been detected over a file.
+	/// </summary>
+	/// <param name="local">The file in conflict in its local version</param>
+	/// <param name="remote">The file in conflict in its remote version</param>
+	/// <param name="sourceServerUri">The source file system URL that tried to synchronize a file to a destination where the conflict appeared</param>
+	/// <returns>A resolution strategy for this conflict</returns>
+	ConflictResolutionStrategy ConflictDetected(FileHeader local, FileHeader remote, string sourceServerUri);
+
+	/// <summary>
+	/// Invoked when a file conflict has been resolved.
+	/// </summary>
+	/// <param name="instance">The file with the resolved conflict</param>
+	void ConflictResolved(FileHeader instance);
+
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+The attempt to resolve the conflict is taken when [a conflict notification](../changes/how-to-subscribe-conflicts.mdx) arrives. It means that you need to subscribe to the conflict notifications first to take
+advantage of the registered conflict listeners.
+
+The conflict is resolved according to the first encountered strategy different than `ConflictResolutionStrategy.NoResolution` returned by the listener. The listeners are executed in 
+the order of addition. To get more details about resolution strategies read [Resolving conflicts](../../synchronization/conflicts.mdx#resolving-conflicts) section.
+
+
+
+The below listener resolves conflict in favor of the newer file:
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`public class TakeNewestConflictsListener : IFilesConflictListener
+\{
+	public ConflictResolutionStrategy ConflictDetected(FileHeader local, FileHeader remote, string sourceServerUri)
+	\{
+		if (local.LastModified.CompareTo(remote.LastModified) >= 0)
+			return ConflictResolutionStrategy.CurrentVersion;
+		else
+			return ConflictResolutionStrategy.RemoteVersion;
+	\}
+
+	public void ConflictResolved(FileHeader header)
+	\{
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

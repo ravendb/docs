@@ -1,0 +1,1489 @@
+---
+title: "Patching: How to Perform Single Document Patch Operations"
+hide_table_of_contents: true
+sidebar_label: Single Document
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Patching: How to Perform Single Document Patch Operations
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+<Admonition type="note" title="Note">
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
+
+This page deals with patch operations on single documents.
+
+Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document.mdx#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document.mdx#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+
+Patching can be done from the client as well as in the studio.  
+
+* In this page:  
+  * [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+</Admonition>
+
+## API overview
+
+## Typed Session API
+
+A type safe session interface that allows performing the most common patch operations.  
+The patch request will be sent to server only after the call to `SaveChanges`. This way it's possible to perform multiple operations in one request to the server.  
+
+### Increment Field Value
+`Session.Advanced.Increment`
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
+<CodeBlock language="csharp">
+{`void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
+
+void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to be added. |
+
+* Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb.mdx) in JavaScript
+
+### Set Field Value
+`Session.Advanced.Patch`
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
+<CodeBlock language="csharp">
+{`void Patch<T, U>(string id, Expression<Func<T, U>> fieldPath, U value);
+
+void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to set. |
+
+### Array Manipulation
+`Session.Advanced.Patch`
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
+<CodeBlock language="csharp">
+{`void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> fieldPath,
+    Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
+
+void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
+    Expression<Func<JavaScriptArray<U>, object>> arrayModificationLambda);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **arrayMofificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+
+<Admonition type="info" title="JavaScriptArray" id="javascriptarray" href="#javascriptarray">
+`JavaScriptArray` allows building lambdas representing array manipulations for patches.  
+
+| Method Signature| Return Type | Description |
+|--------|:-----|-------------| 
+| **Put(T item)** | `JavaScriptArray` | Allows adding `item` to an array. |
+| **Put(params T[] items)** | `JavaScriptArray` | Items to be added to the array. |
+| **RemoveAt(int index)** | `JavaScriptArray` | Removes item in position `index` in array. |
+
+</Admonition>
+
+
+
+## Non-Typed Session API
+
+The non-typed Session API for patches uses the `Session.Advanced.Defer` function which allows registering one or more commands.  
+One of the possible commands is the `PatchCommandData`, describing single document patch command.  
+The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+
+`Session.Advanced.Defer`
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
+<CodeBlock language="csharp">
+{`void Defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="PatchCommandData" id="patchcommanddata" href="#patchcommanddata">
+
+| Constructor|  | |
+|--------|:-----|-------------|
+| **id** | `string` | ID of the document to be patched. |
+| **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. |
+
+</Admonition>
+
+<Admonition type="info" title="PatchRequest" id="patchrequest" href="#patchrequest">
+
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the `args` object, and passed using PatchRequest's "Values" parameter.
+
+| Members | | |
+| ------------- | ------------- | ----- |
+| **Script** | `string` | JavaScript code to be run. |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatenation . |
+
+</Admonition>
+
+
+
+## Operations API
+
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
+
+`Raven.Client.Documents.Operations.Send`  
+`Raven.Client.Documents.Operations.SendAsync`  
+
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
+<CodeBlock language="csharp">
+{`PatchStatus Send(PatchOperation operation);
+
+Task<PatchStatus> SendAsync(PatchOperation operation, 
+                            SessionInfo sessionInfo = null, 
+                            CancellationToken token = default(CancellationToken));
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="PatchOperation" id="patchoperation" href="#patchoperation">
+
+| Constructor|  | |
+|--------|:-----|-------------|
+| **id** | `string` | ID of the document to be patched. |
+| **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |
+| **skipPatchIfChangeVectorMismatch** | `bool` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |
+
+</Admonition>
+
+
+
+## List of Script Methods
+
+This is a list of a few of the javascript methods that can be used in patch scripts. See the 
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+
+| Method | Arguments | Description |
+| - | - | - |
+| **load** | `string` or `string[]` | Loads one or more documents into the context of the script by their document IDs |
+| **loadPath** | A document and a path to an ID within that document | Loads a related document by the path to its ID |
+| **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
+| **put** | Document ID; document; change vector | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg** | Key | Load a compare exchange value into the context of the script using its key |
+| **getMetadata** | Document | Returns the document's metadata |
+| **id** | Document | Returns the document's ID |
+| **lastModified** | Document | Returns the `DateTime` of the most recent modification made to the given document |
+
+
+
+## Examples
+
+### Change Field's Value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-typed-syntax" label="Session-typed-syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+session.Advanced.Patch<Employee, string>(
+    "employees/1",
+    x => x.FirstName, "Robert");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert                
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.FirstName = args.FirstName;",
+        Values =
+        {
+            {"FirstName", "Robert"}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Change Values of Two Fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-typed-syntax" label="Session-typed-syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert and LastName to Carter in single request
+// note that in this case, we create single request, but two seperate batch operations
+// in order to achieve atomicity, please use the non generic APIs
+session.Advanced.Patch<Employee, string>("employees/1", x => x.FirstName, "Robert");
+session.Advanced.Patch<Employee, string>("employees/1", x => x.LastName, "Carter");
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert and LastName to Carter in single request
+// note that here we do maintain the atomicity of the operation
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"
+                this.FirstName = args.UserName.FirstName
+                this.LastName = args.UserName.LastName",
+        Values =
+        {
+            {
+                "UserName", new
+                {
+                    FirstName = "Robert",
+                    LastName = "Carter"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// change FirstName to Robert and LastName to Carter in single request
+// note that here we do maintain the atomicity of the operation
+store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"
+                this.FirstName = args.UserName.FirstName
+                this.LastName = args.UserName.LastName",
+        Values =
+        {
+            {
+                "UserName", new
+                {
+                    FirstName = "Robert",
+                    LastName = "Carter"
+                }
+            }
+        }
+    }, patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Increment Value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-typed-syntax" label="Session-typed-syntax">
+<CodeBlock language="csharp">
+{`// increment UnitsInStock property value by 10
+session.Advanced.Increment<Product, int>("products/1-A", x => x.UnitsInStock, 10);
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.UnitsInStock += args.UnitsToAdd",
+        Values =
+        {
+            {"UnitsToAdd", 10}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "products/1-A",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.UnitsInStock += args.UnitsToAdd",
+        Values =
+        {
+            {"UnitsToAdd", 10}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Add Item to Array
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-typed-syntax" label="Session-typed-syntax">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+session.Advanced.Patch<BlogPost, BlogComment>("blogposts/1",
+    x => x.Comments,
+    comments => comments.Add(new BlogComment
+    {
+        Content = "Lore ipsum",
+        Title = "Some title"
+    }));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// add a new comment to Comments
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.push(args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Insert Item into Specific Position in Array
+
+Inserting item into specific position is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// insert a new comment at position 1 to Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(1, 0, args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(1, 0, args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Modify Item in Specific Position in Array
+
+Inserting item into specific position is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// modify a comment at position 3 in Comments
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(3, 1, args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// modify a comment at position 3 in Comments
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = "this.Comments.splice(3, 1, args.Comment)",
+        Values =
+        {
+            {
+                "Comment", new BlogComment
+                {
+                    Content = "Lore ipsum",
+                    Title = "Some title"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Filter out Items from an Array
+
+Filtering items from an array supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents 
+session.Advanced.Defer(new PatchCommandData(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Comments = this.Comments.filter(comment=>
+                comment.Content.includes(args.TitleToRemove));",
+        Values =
+        {
+            {"TitleToRemove", "wrong"}
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Comments = this.Comments.filter(comment=>
+                comment.Content.includes(args.TitleToRemove));",
+        Values =
+        {
+            {"TitleToRemove", "wrong"}
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Loading Documents in a Script
+
+Loading documents supported only by non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// update product names in order, according to loaded product documents
+session.Advanced.Defer(new PatchCommandData(
+    id: "orders/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Lines.forEach(line=> { 
+                var productDoc = load(line.Product);
+                line.ProductName = productDoc.Name;
+                });"
+    }, patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`// update product names in order, according to loaded product documents
+store.Operations.Send(new PatchOperation(
+    id: "blogposts/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @"this.Lines.forEach(line=> { 
+                var productDoc = load(line.Product);
+                line.ProductName = productDoc.Name;
+                });"
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Remove Property
+
+Removing property supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// rename FirstName to First
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @" var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @" var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Rename Property
+
+Renaming property supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`// rename FirstName to First
+session.Advanced.Defer(new PatchCommandData(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @" var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation(
+    id: "employees/1",
+    changeVector: null,
+    patch: new PatchRequest
+    {
+        Script = @" var firstName = this[args.Rename.Old];
+                delete this[args.Rename.Old];
+                this[args.Rename.New] = firstName",
+        Values =
+        {
+            {
+                "Rename", new
+                {
+                    Old = "FirstName",
+                    New = "Name"
+                }
+            }
+        }
+    },
+    patchIfMissing: null));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Add Document
+
+Adding a new document is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+    new PatchRequest
+    {
+        Script = "put('orders/', { Employee: id(this) });",
+    }, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+{
+    Script = "put('orders/', { Employee: id(this) });",
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Clone Document
+
+In order to clone a document use put method as follows
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax-untyped" label="Session-syntax-untyped">
+<CodeBlock language="csharp">
+{`session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+    new PatchRequest
+    {
+        Script = "put('employees/', this);",
+    }, null));
+
+session.SaveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="csharp">
+{`store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+{
+    Script = "put('employees/', this);",
+}));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Cloning & Attachments" id="cloning-attachments" href="#cloning-attachments"> 
+The attachments from source document will not be copied to the new one automatically.
+</Admonition>
+
+
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+<Admonition type="note" title="Note">
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server side and is useful as a performance enhancement or for updating denormalized data in entities.
+
+This page deals with patch operations on single documents.
+
+Patching has three possible interfaces: [Session API](../../../client-api/operations/patching/single-document.mdx#session-api), [Session API using defer](../../../client-api/operations/patching/single-document.mdx#session-api-using-defer), and [Operations API](../../../client-api/operations/patching/single-document.mdx#operations-api).
+
+Patching can be done from the client as well as in the studio.  
+
+* In this page:  
+  * [API overview](../../../client-api/operations/patching/single-document.mdx#api-overview)  
+  * [Examples](../../../client-api/operations/patching/single-document.mdx#examples)  
+</Admonition>
+
+## API overview
+
+## Session API
+
+A session interface that allows performing the most common patch operations.  
+The patch request will be sent to server only after the call to `saveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+
+### Increment Field Value
+`session.advanced().increment`
+<TabItem value="patch_generic_interface_increment" label="patch_generic_interface_increment">
+<CodeBlock language="java">
+{`<T, U> void increment(String id, String path, U valueToAdd);
+
+<T, U> void increment(T entity, String path, U valueToAdd);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Class` | Entity class |
+| **U** | `Class` | Field class, must be of numeric type, or a `String` of `char` for string concatenation |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `String` | Entity ID on which the operation should be performed. |
+| **delta** | `U` | Value to be added. |
+
+* Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb.mdx) in JavaScript
+
+### Set Field Value
+`session.advanced().patch`
+<TabItem value="patch_generic_interface_set_value" label="patch_generic_interface_set_value">
+<CodeBlock language="java">
+{`<T, U> void patch(String id, String path, U value);
+
+<T, U> void patch(T entity, String path, U value);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Class` | Entity Class |
+| **U** | `Class` | Field class |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `String` | Entity ID on which the operation should be performed. |
+| **delta** | `U` | Value to set. |
+
+### Array Manipulation
+`session.advanced().patch`
+<TabItem value="patch_generic_interface_array_modification_lambda" label="patch_generic_interface_array_modification_lambda">
+<CodeBlock language="java">
+{`<T, U> void patch(T entity, String pathToArray, Consumer<JavaScriptArray<U>> arrayAdder);
+
+<T, U> void patch(String id, String pathToArray, Consumer<JavaScriptArray<U>> arrayAdder);
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Class` | Entity class |
+| **U** | `Class` | Field class |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `String` | Entity ID on which the operation should be performed. |
+| **arrayAdder** | `Consumer<JavaScriptArray<U>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+
+<Admonition type="info" title="JavaScriptArray" id="javascriptarray" href="#javascriptarray">
+`JavaScriptArray` allows building lambdas representing array manipulations for patches.  
+
+| Method Signature| Return Type | Description |
+|--------|:-----|-------------| 
+| **put(T item)** | `JavaScriptArray` | Allows adding `item` to an array. |
+| **put(T... items)** | `JavaScriptArray` | Items to be added to the array. |
+| **put(Collection&lt;T&gt; items)** | `JavaScriptArray` | Items to be added to the array. |
+| **removeAt(int index)** | `JavaScriptArray` | Removes item in position `index` in array. |
+
+</Admonition>
+
+
+
+## Session API using defer
+
+The low level session api for patches uses the `session.advanced().defer` function that allows registering one or more commands.  
+One of the possible commands is the `PatchCommandData`, describing single document patch command.  
+The patch request will be sent to server only after the call to `saveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+
+`session.advanced().defer`
+<TabItem value="patch_non_generic_interface_in_session" label="patch_non_generic_interface_in_session">
+<CodeBlock language="java">
+{`void defer(ICommandData[] commands);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="PatchCommandData" id="patchcommanddata" href="#patchcommanddata">
+
+| Constructor|  | |
+|--------|:-----|-------------|
+| **id** | `String` | ID of the document to be patched. |
+| **changeVector** | `String` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. |
+
+</Admonition>
+
+<Admonition type="info" title="PatchRequest" id="patchrequest" href="#patchrequest">
+
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the "args" object, and passed using PatchRequest's "Values" parameter.
+
+| Members | | |
+| ------------- | ------------- | ----- |
+| **Script** | `String` | JavaScript code to be run. |
+| **Values** | `Map<String, Object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatenation . |
+
+</Admonition>
+
+
+
+
+## Operations API
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
+
+<TabItem value="patch_non_generic_interface_in_store" label="patch_non_generic_interface_in_store">
+<CodeBlock language="java">
+{`PatchStatus send(PatchOperation operation);
+
+PatchStatus send(PatchOperation operation, SessionInfo sessionInfo);
+
+<TEntity> PatchOperation.Result<TEntity> send(Class<TEntity> entityClass, PatchOperation operation);
+
+<TEntity> PatchOperation.Result<TEntity> send(Class<TEntity> entityClass, PatchOperation operation, SessionInfo sessionInfo);
+`}
+</CodeBlock>
+</TabItem>
+
+<Admonition type="info" title="PatchOperation" id="patchoperation" href="#patchoperation">
+
+| Constructor|  | |
+|--------|:-----|-------------|
+| **id** | `String` | ID of the document to be patched. |
+| **changeVector** | `String` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |
+| **skipPatchIfChangeVectorMismatch** | `boolean` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |
+
+</Admonition>
+
+
+
+## List of Script Methods
+
+This is a list of a few of the javascript methods that can be used in patch scripts. See the 
+more comprehensive list at [Knowledge Base: JavaScript Engine](../../../server/kb/javascript-engine.mdx#predefined-javascript-functions).  
+
+| Method | Arguments | Description |
+| - | - | - |
+| **load** | `string` or `string[]` | Loads one or more documents into the context of the script by their document IDs |
+| **loadPath** | A document and a path to an ID within that document | Loads a related document by the path to its ID |
+| **del** | Document ID; change vector | Delete the given document by its ID. If you add the expected change vector and the document's current change vector does not match, the document will _not_ be deleted. |
+| **put** | Document ID; document; change vector | Create or overwrite a document with a specified ID and entity. If you try to overwrite an existing document and pass the expected change vector, the put will fail if the specified change vector does not match the document's current change vector. |
+| **cmpxchg** | Key | Load a compare exchange value into the context of the script using its key |
+| **getMetadata** | Document | Returns the document's metadata |
+| **id** | Document | Returns the document's ID |
+| **lastModified** | Document | Returns the `DateTime` of the most recent modification made to the given document |
+
+
+
+## Examples
+
+### Change Field's Value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax" label="Session-syntax">
+<CodeBlock language="java">
+{`// change firstName to Robert
+session
+    .advanced()
+    .patch("employees/1", "FirstName", "Robert");
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// change firstName to Robert
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.FirstName = args.firstName");
+patchRequest.setValues(Collections.singletonMap("firstName", "Robert"));
+PatchCommandData patchCommandData = new PatchCommandData("employees/1", null, patchRequest, null);
+session.advanced().defer(patchCommandData);
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// change firstName to Robert
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.FirstName = args.firstName;");
+patchRequest.setValues(Collections.singletonMap("firstName", "Robert"));
+PatchOperation patchOperation = new PatchOperation("employees/1", null, patchRequest);
+store.operations().send(patchOperation);
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Change Values of Two Fields
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax" label="Session-syntax">
+<CodeBlock language="java">
+{`// change firstName to Robert and lastName to Carter in single request
+// note that in this case, we create single request, but two separate batch operations
+// in order to achieve atomicity, please use the non generic APIs
+session.advanced().patch("employees/1", "FirstName", "Robert");
+session.advanced().patch("employees/1", "LastName", "Carter");
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// change firstName to Robert and lastName to Carter in single request
+// note that here we do maintain the atomicity of the operation
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.FirstName = args.firstName;" +
+    "this.LastName = args.lastName");
+
+Map<String, Object> values = new HashMap<>();
+values.put("FirstName", "Robert");
+values.put("LastName", "Carter");
+patchRequest.setValues(values);
+
+session.advanced().defer(new PatchCommandData("employees/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// change FirstName to Robert and LastName to Carter in single request
+// note that here we do maintain the atomicity of the operation
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.FirstName = args.firstName; " +
+    "this.LastName = args.lastName");
+
+Map<String, Object> values = new HashMap<>();
+values.put("FirstName", "Robert");
+values.put("LastName", "Carter");
+patchRequest.setValues(values);
+
+store.operations().send(new PatchOperation("employees/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Increment Value
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax" label="Session-syntax">
+<CodeBlock language="java">
+{`// increment UnitsInStock property value by 10
+session.advanced().increment("products/1-A", "UnitsInStock", 10);
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`PatchRequest request = new PatchRequest();
+request.setScript("this.UnitsInStock += args.UnitsToAdd");
+request.setValues(Collections.singletonMap("UnitsToAdd", 10));
+
+session.advanced().defer(
+    new PatchCommandData("products/1-A", null, request, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`PatchRequest request = new PatchRequest();
+request.setScript("this.UnitsInStock += args.unitsToAdd");
+request.setValues(Collections.singletonMap("unitsToAdd", 10));
+store.operations().send(new PatchOperation("products/1-A", null, request));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Add Item to Array
+
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-syntax" label="Session-syntax">
+<CodeBlock language="java">
+{`BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+session.advanced()
+    .patch("blgoposts/1", "comments", comments -> comments.add(comment));
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// add a new comment to comments
+BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.push(args.comment");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+session.advanced().defer(new PatchCommandData("blogposts/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// add a new comment to comments
+BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.push(args.comment");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Insert Item into Specific Position in Array
+
+Inserting item into specific position is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.splice(1, 0, args.comment)");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+session.advanced().defer(new PatchCommandData("blogposts/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.splice(1, 0, args.comment)");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Modify Item in Specific Position in Array
+
+Inserting item into specific position is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// modify a comment at position 3 in Comments
+BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.splice(3, 1, args.comment)");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+session.advanced().defer(new PatchCommandData("blogposts/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// modify a comment at position 3 in Comments
+BlogComment comment = new BlogComment();
+comment.setContent("Lore ipsum");
+comment.setTitle("Some title");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments.splice(3, 1, args.comment)");
+patchRequest.setValues(Collections.singletonMap("comment", comment));
+
+store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Filter out Items from an Array
+
+Filtering items from an array supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`//filter out all comments of a blogpost which contains the word "wrong" in their contents
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments = this.comments.filter(comment " +
+    "=> comment.content.includes(args.titleToRemove));");
+patchRequest.setValues(Collections.singletonMap("titleToRemove", "wrong"));
+
+session.advanced().defer(
+    new PatchCommandData("blogposts/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// filter out all comments of a blogpost which contains the word "wrong" in their contents
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.comments = this.comments.filter(comment " +
+    "=> comment.content.includes(args.titleToRemove));");
+patchRequest.setValues(Collections.singletonMap("titleToRemove", "wrong"));
+
+store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Loading Documents in a Script
+
+Loading documents supported only by non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// update product names in order, according to loaded product documents
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.Lines.forEach(line => {" +
+    " var productDoc = load(line.Product);" +
+    " line.ProductName = productDoc.Name;" +
+    "});");
+
+session.advanced().defer(
+    new PatchCommandData("orders/1", null, patchRequest, null));
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`// update product names in order, according to loaded product documents
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("this.Lines.forEach(line => {" +
+    " var productDoc = load(line.Product);" +
+    " line.ProductName = productDoc.Name;" +
+    "});");
+
+store.operations().send(new PatchOperation("orders/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Remove Property
+
+Removing property supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// rename firstName to First
+
+Map<String, Object> value = new HashMap<>();
+value.put("old", "FirstName");
+value.put("new", "Name");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("var firstName = this[args.rename.old];" +
+    "delete this[args.rename.old];" +
+    "this[args.rename.new] = firstName;");
+patchRequest.setValues(Collections.singletonMap("rename", value));
+
+session.advanced().defer(new PatchCommandData("employees/1", null, patchRequest, null));
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`Map<String, Object> value = new HashMap<>();
+value.put("old", "FirstName");
+value.put("new", "Name");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("var firstName = this[args.rename.old];" +
+    "delete this[args.rename.old];" +
+    "this[args.rename.new] = firstName;");
+patchRequest.setValues(Collections.singletonMap("rename", value));
+
+store.operations().send(new PatchOperation("employees/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Rename Property
+
+Renaming property supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`// rename firstName to First
+
+Map<String, Object> value = new HashMap<>();
+value.put("old", "FirstName");
+value.put("new", "Name");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("var firstName = this[args.rename.old];" +
+    "delete this[args.rename.old];" +
+    "this[args.rename.new] = firstName;");
+patchRequest.setValues(Collections.singletonMap("rename", value));
+
+session.advanced().defer(new PatchCommandData("employees/1", null, patchRequest, null));
+
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`Map<String, Object> value = new HashMap<>();
+value.put("old", "FirstName");
+value.put("new", "Name");
+
+PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("var firstName = this[args.rename.old];" +
+    "delete this[args.rename.old];" +
+    "this[args.rename.new] = firstName;");
+patchRequest.setValues(Collections.singletonMap("rename", value));
+
+store.operations().send(new PatchOperation("employees/1", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Add Document
+
+Adding a new document is supported only by the non-typed APIs
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("put('orders/', { Employee: id(this) });");
+PatchCommandData commandData =
+    new PatchCommandData("employees/1-A", null, patchRequest, null);
+session.advanced().defer(commandData);
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("put('orders/', { Employee: id(this) });");
+
+store.operations().send(new PatchOperation("employees/1-A", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+### Clone Document
+
+In order to clone a document use put method as follows
+<Tabs groupId='languageSyntax'>
+<TabItem value="Session-defer-syntax" label="Session-defer-syntax">
+<CodeBlock language="java">
+{`PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("put('employees/', this);");
+PatchCommandData commandData =
+    new PatchCommandData("employees/1-A", null, patchRequest, null);
+session.advanced().defer(commandData);
+session.saveChanges();
+`}
+</CodeBlock>
+</TabItem>
+<TabItem value="Operations-syntax" label="Operations-syntax">
+<CodeBlock language="java">
+{`PatchRequest patchRequest = new PatchRequest();
+patchRequest.setScript("put('employees/', this);");
+
+store.operations().send(new PatchOperation("employees/1-A", null, patchRequest));
+`}
+</CodeBlock>
+</TabItem>
+</Tabs>
+
+<Admonition type="info" title="Cloning & Attachments" id="cloning-attachments" href="#cloning-attachments"> 
+The attachments from source document will not be copied to the new one automatically.
+</Admonition>
+
+
+
+
+</LanguageContent>
+
+<!---
+### Patching
+- [Set Based Patch Operation](../../../client-api/operations/patching/set-based)
+
+### Knowledge Base
+- [JavaScript Engine](../../../server/kb/javascript-engine)
+- [Numbers in JavaScript Engine](../../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)
+
+
+-->

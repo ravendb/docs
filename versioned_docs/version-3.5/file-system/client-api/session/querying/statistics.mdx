@@ -1,0 +1,43 @@
+---
+title: "Getting Query statistics"
+hide_table_of_contents: true
+sidebar_label: Statistics
+sidebar_position: 4
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Getting Query statistics
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+Provide statistics about the query, such as total count of matching records:
+
+<TabItem value="statistics_1" label="statistics_1">
+<CodeBlock language="csharp">
+{`FilesQueryStatistics stats;
+
+List<FileHeader> results = await session.Query()
+                            .OrderBy(x => x.Name).Statistics(out stats)
+                            .ToListAsync();
+`}
+</CodeBlock>
+</TabItem>   
+
+| Out parameters| |
+| ------------- | ------------- |
+| stats | [FilesQueryStatistics](../../../../glossary/files-query-statistics.mdx) | Statistics about the files query |
+</LanguageContent>
+
+<!---
+
+-->

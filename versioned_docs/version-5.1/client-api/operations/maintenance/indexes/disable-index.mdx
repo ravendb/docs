@@ -1,0 +1,106 @@
+---
+title: "Operations: How to Disable an Index"
+hide_table_of_contents: true
+sidebar_label: Disable Index
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Disable an Index
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
+
+<Admonition type="note" title="Note">
+Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx) disable index is a persistent operation, so the index remains disabled even after a server restart.
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="disable_1" label="disable_1">
+<CodeBlock language="csharp">
+{`public DisableIndexOperation(string indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to disable indexing |
+
+## Example
+
+<TabItem value="disable_2" label="disable_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new DisableIndexOperation("Orders/Totals"));
+// index is disabled at this point, new data won't be indexed
+// but you can still query on this index
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
+
+<Admonition type="note" title="Note">
+Unlike [StopIndex](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) or [StopIndexing](../../../../client-api/operations/maintenance/indexes/stop-indexing.mdx) disable index is a persistent operation, so the index remains disabled even after a server restart.
+</Admonition>
+
+
+## Syntax
+
+<TabItem value="disable_1" label="disable_1">
+<CodeBlock language="java">
+{`public DisableIndexOperation(String indexName)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | String | name of an index to disable indexing |
+
+## Example
+
+<TabItem value="disable_2" label="disable_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new DisableIndexOperation("Orders/Totals"));
+// index is disabled at this point, new data won't be indexed
+// but you can still query on this index
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+
+
+-->

@@ -1,0 +1,61 @@
+---
+title: "Creating Sample Data"
+hide_table_of_contents: true
+sidebar_label: Create Sample Data
+sidebar_position: 3
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Creating Sample Data
+<Admonition type="note" title="Note">
+
+* Sample data can be created in playground databases to enable developers to experiment with features before making changes to their actual database.  
+  It is populated with various collections, .json documents, indexes, and document extensions.  
+
+* Many of the examples in the RavenDB documentation are based on this sample data.  
+  Creating it will enable you to play with the data as you use the documentation to familiarize yourself with RavenDB features.  
+
+* In this page:  
+  * [Create Sample Data](../../../studio/database/tasks/create-sample-data.mdx#create-sample-data)  
+  * [The Data Generated](../../../studio/database/tasks/create-sample-data.mdx#the-data-generated)  
+  * [The C# Entities](../../../studio/database/tasks/create-sample-data.mdx#the-c#-entities)  
+</Admonition>
+## Create Sample Data
+
+* Sample data can be added only on an empty database.  To create sample data, you can either empty your playground database or [create a new database](../../../studio/database/create-new-database/general-flow.mdx).  
+    * If you plan to use [multiple nodes](../../../studio/server/databases/create-new-database/general-flow.mdx#3-configure-replication) 
+      and/or [encryption](../../../studio/server/databases/create-new-database/encrypted.mdx) in production, 
+      we recommend installing your playground database in a similar environment.  
+
+* Navigate to `Tasks` options in `Settings`, then click the **'Create'** button to generate the Northwind data.  
+![Figure 1. Create Sample Data](./assets/create-sample-data-1.png)
+
+
+
+## The Data Generated 
+
+
+![Figure 2. The generated sample documents](./assets/create-sample-data-2.png)
+
+
+
+
+![Figure 3. The generated sample indexes](./assets/create-sample-data-3.png)
+
+
+
+## The C# Entities
+
+* The **C# classes** used for appropriate documents entities can also be viewed  
+
+
+
+![Figure 4. The C# classes used for the entities](./assets/create-sample-data-4.png)
+
+

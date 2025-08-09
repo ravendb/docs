@@ -1,0 +1,57 @@
+---
+title: "Updating denormalized data"
+hide_table_of_contents: true
+sidebar_label: Updating denormalized data
+sidebar_position: 10
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Updating denormalized data
+
+## See: [Set-based operations](../client-api/set-based-operations.mdx)
+
+Like most NoSQL solutions, RavenDB best practices favor denormalization over composition / joins for complex documents. A typical example would be storing the Artist name and id along with the Track document:
+
+```json 
+    {
+          "Name" : "Fame",
+          "Artist": { "Id": "artists/294", "Name": "Irene Cara" }
+    }
+```
+    
+That decision make reading the data very fast and easy, but it present a challenge when we need to update the Artist name. In general, it isn't recommended to denormalize data that frequently changes, but even rarely changing properties will change occasionally.
+
+In order to solve this exact problem RavenDB offers Set Based Operations. Here is how we can use them from the client API:
+
+```csharp 
+    documentStore.DatabaseCommands.UpdateByIndex("Tracks/ByArtistId",
+                                         new IndexQuery
+                                         {
+                                             Query = "Artist:artists/294"
+                                         }, new[]
+                                         {
+                                             new PatchRequest
+                                             {
+                                                 Type = "Modify",
+                                                 Name = "Artist",
+                                                 Nested = new[]
+                                                 {
+                                                     new PatchRequest
+                                                     {
+                                                         Type = "Set",
+                                                         Name = "Name",
+                                                         Value = JValue.CreateString("Fame Soundtrack")
+                                                     },
+                                                 }
+                                             }
+                                         },
+                                         allowStale: false);
+```
+    
+This will update the Artist.Name property on all the documents where the Tracks/ByArtistId index matched to the id artists/294.

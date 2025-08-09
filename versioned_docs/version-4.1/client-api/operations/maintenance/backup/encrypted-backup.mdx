@@ -1,0 +1,121 @@
+---
+title: "Backup Encryption"
+hide_table_of_contents: true
+sidebar_label: Encryption
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Backup Encryption  
+<Admonition type="note" title="Note">
+
+* The snapshot of an encrypted database is encrypted as well.  
+  The snapshot of an unencrypted database is not uncrypted.  
+* Logical-backup encryption is **not** supported by RavenDB 4.0 and 4.1.  
+
+* In this page:  
+  * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#introduction)  
+     * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#ravendbs-security-approach)  
+     * [Enable Secure Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#enable-secure-communication)  
+  * [Logical-Backup Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#logical-backup-encryption)  
+  * [Snapshot Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#snapshot-encryption)  
+     * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#creating-an-encrypted-snapshot)  
+     * [Restoring an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#restoring-an-encrypted-snapshot)  
+</Admonition>
+## Introduction
+
+#### RavenDB's Security Approach
+
+Encrypting backup files is just **one respect** of RavenDB's comprehensive security approach.  
+Other respects are implemented in -
+
+* [Database encryption](../../../../server/security/encryption/database-encryption.mdx)  
+* Securing server-client communication using [Authentication and certification](../../../../server/security/authentication/certificate-configuration.mdx).  
+#### Enable Secure Communication
+
+RavenDB emphasizes the importance of overall security, by allowing encryption of the database only when 
+server-client communication is [authenticated and certified](../../../../server/security/overview.mdx).  
+
+* **Enabling authentication and certification**  
+  Enable secure client-server communication during the server setup, either [manually](../../../../server/security/authentication/certificate-configuration.mdx) or [using the setup-wizard](../../../../start/installation/setup-wizard.mdx).  
+
+* **Client authentication procedure**  
+  When authentication is enabled, clients are required to certify themselves in order to connect the server.  
+  Here's a code sample for this procedure:  
+<TabItem value="encrypted_database" label="encrypted_database">
+<CodeBlock language="csharp">
+{`// path to the certificate you received during the server setup
+var cert = new X509Certificate2(@"C:\\Users\\RavenDB\\authentication_key\\admin.client.certificate.RavenDBdom.pfx");
+using (var docStore = new DocumentStore
+\{
+    Urls = new[] \{ "https://a.RavenDBdom.development.run" \},
+    Database = "encryptedDatabase",
+    Certificate = cert
+\}.Initialize())
+\{
+    // Backup & Restore here
+\}
+`}
+</CodeBlock>
+</TabItem>  
+
+
+
+## Logical-Backup Encryption
+
+<Admonition type="note" title="Logical-backup encryption is not supported by RavenDB 4.0 and 4.1.  " id="logical-backup-encryption-is-not-supported-by-ravendb-4-0-and-4-1" href="#logical-backup-encryption-is-not-supported-by-ravendb-4-0-and-4-1">
+</Admonition>
+
+
+
+## Snapshot Encryption
+
+#### Creating an Encrypted Snapshot
+
+A [snapshot](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#snapshot) is an exact copy of the database files. 
+If the database is encrypted, so would be its snapshot. If the database is **not** encrypted, the snapshot wouldn't be either.  
+
+* If you want your snapshot to be encrypted, take the snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption.mdx#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
+* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#enable-secure-communication) in your code.  
+* Create a snapshot [as you normally would](../../../../client-api/operations/maintenance/backup/backup-overview.mdx#backup-types).  
+
+<Admonition type="note" title="The incremental backups of an encrypted snapshot are **not** encrypted." id="the-incremental-backups-of-an-encrypted-snapshot-are-not-encrypted" href="#the-incremental-backups-of-an-encrypted-snapshot-are-not-encrypted">
+</Admonition>
+#### Restoring an Encrypted Snapshot
+
+Restoring an encrypted snapshot is almost identical to restoring an unencrypted one.  
+
+* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup.mdx#enable-secure-communication) in your code.  
+* Pass RestoreBackupOperation an encryption key, using `restoreConfiguration.EncryptionKey`.  
+   Use **the same secret key used to encrypt the database**.
+* Code sample:
+<TabItem value="restore_encrypted_database" label="restore_encrypted_database">
+<CodeBlock language="csharp">
+{`// Restore an encrypted database from an encrypted snapshot
+
+var restoreConfiguration = new RestoreBackupConfiguration();
+
+// New database name
+restoreConfiguration.DatabaseName = "newEncryptedDatabase";
+
+// Backup-file location
+var backupPath = @"C:\\Users\\RavenDB\\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+restoreConfiguration.BackupLocation = backupPath;
+
+// Specify the key that was used to encrypt the backup file
+restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+
+var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+docStore.Maintenance.Server.Send(restoreBackupTask);
+`}
+</CodeBlock>
+</TabItem>  
+
+
+

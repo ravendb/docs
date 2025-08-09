@@ -1,0 +1,85 @@
+---
+title: "Migration: Changes in Conventions"
+hide_table_of_contents: true
+sidebar_label: Conventions
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Migration: Changes in Conventions
+
+In 5.0 we have introduced an abstract layer over the whole JSON serialization process. This will allow us in the future to introduce more JSON serialization options than currently supported Json.NET one it also allowed us to review the serialization process and allowed us to boost the serialization of non-dynamic entities using default Json.NET serializer by 50%.
+
+## Raven.Client.Json.Serialization namespace
+
+New namespace was introduced, the `Raven.Client.Json.Serialization` containing following classes and interfaces needed for the serialization process:
+
+- `ISerializationConventions` - entry point for the JSON serialization process. Set by default to `NewtonsoftJsonSerializationConventions`.
+- `IJsonSerializer`, `IJsonWriter`, `IJsonReader` - control the in and out JSON serialization
+- `IBlittableJsonConverter` - allows to convert from entity to blittable and the other way around
+
+
+
+
+## Raven.Client.Json.Serialization.NewtonsoftJson namespace
+
+This new namespace is the core for the Json.NET serialization. We haven't introduced any changes in how the serialization works. All of the conventions that were directly related to the Json.NET serializer were moved here. Most interesting types in this namespace are:
+
+- `NewtonsoftJsonSerializationConventions` - contains all of the conventions related to Json.NET that were previously available directly in `DocumentConventions` class
+- `DefaultRavenContractResolver` - our default contract resolver, moved from `Raven.Client.Documents.Conventions` namespace
+
+
+
+## DocumentConventions.Serialization
+
+This property was introduced in order to be able to abstract the JSON serialization and is the sole point where you should configure your serialization-related conventions. By default it is set to `NewtonsoftJsonSerializationConventions` in the Client API.
+
+
+
+## How to Migrate
+
+If you have previously set-up one of the following conventions:
+
+- `CustomizeJsonSerializer`
+- `CustomizeJsonDeserializer`
+- `JsonContractResolver`
+- `DeserializeEntityFromBlittable`
+
+Then in order to migrate, you need to wrap them in `NewtonsoftJsonSerializationConventions` and assign that instance to your `DocumentStore.Conventions.Serialization` property.
+
+For example. Let's assume that `JsonContractResolver` was configured by you in following way:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`DocumentStore.Conventions = new DocumentConventions
+\{
+    JsonContractResolver = new CustomJsonContractResolver()
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+Starting from 5.0 this code will not compile, but fixing is as simple as wrapping that in the `NewtonsoftJsonSerializationConventions` like follows:
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`DocumentStore.Conventions = new DocumentConventions
+\{
+    Serialization = new NewtonsoftJsonSerializationConventions
+    \{
+        JsonContractResolver = new CustomJsonContractResolver()
+    \}
+\};
+`}
+</CodeBlock>
+</TabItem>
+
+That is all. Noting else is required.
+
+

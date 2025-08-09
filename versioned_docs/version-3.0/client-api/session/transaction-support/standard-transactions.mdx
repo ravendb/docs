@@ -1,0 +1,19 @@
+---
+title: "Standard transactions support"
+hide_table_of_contents: true
+sidebar_label: Standard transactions
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Standard transactions support
+
+Everything you do by using a session results in sending a batch request when `SaveChanges` is called. All operations made within a session are executed in a single transactional batch on the server side.
+
+RavenDB supports ACID transaction model for document operations and BASE model for indexes. More details about ACID and BASE models you will find [here](../../faq/transaction-support.mdx).

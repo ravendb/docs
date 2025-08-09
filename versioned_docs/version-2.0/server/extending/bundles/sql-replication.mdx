@@ -1,0 +1,175 @@
+---
+title: "Bundle: SQL Replication"
+hide_table_of_contents: true
+sidebar_label: Bundle"":"" SQL Replication
+sidebar_position: 11
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Bundle: SQL Replication
+
+To provide an easy and flexible way to setup a replication to SQL servers, we have replaced the Index Replication bundle with new mechanism that is a part of a SQL Replication bundle.   
+
+Supported SQL providers:   
+* System.Data.SqlClient   
+* System.Data.SqlServerCe.4.0   
+* System.Data.SqlServerCe.3.5   
+* System.Data.OleDb   
+* System.Data.OracleClient   
+* MySql.Data.MySqlClient   
+* Npgsql   
+
+## Setup
+
+To configure SQL Replication, we need to enable the `SQL Replication Bundle` and insert a `SQL Replication Configuration` document into our database. This can be done by using the Studio or manually by inserting proper document `(Raven.Database.Bundles.SqlReplication.SqlReplicationConfig`) under `Raven/SqlReplication/Configuration/name_here` key.
+
+The document format is as follows:   
+
+<TabItem value="sql_replication_1" label="sql_replication_1">
+<CodeBlock language="csharp">
+{`public class SqlReplicationConfig
+\{
+	public string Id \{ get; set; \}
+
+	public string Name \{ get; set; \}
+
+	public bool Disabled \{ get; set; \}
+
+	public string RavenEntityName \{ get; set; \}
+	public string Script \{ get; set; \}
+
+	public string FactoryName \{ get; set; \}
+	public string ConnectionString \{ get; set; \}
+	public string ConnectionStringName \{ get; set; \}
+	public string ConnectionStringSettingName \{ get; set; \}
+
+	public List<SqlReplicationTable> SqlReplicationTables \{ get; set; \}
+\}
+
+public class SqlReplicationTable
+\{
+	public string TableName \{ get; set; \}
+	public string DocumentKeyColumn \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+where:   
+* **Id** is a document identifier   
+* **Name** is a configuration name   
+* **Disabled** marks replication as enabled/disabled   
+* **RavenEntityName** contains a name of entities that will be replicated   
+* **Script** contains a replication script   
+* **FactoryName**, **ConnectionString**, **ConnectionStringName** and **ConnectionStringSettingName** are used to provide connection strings to destination DB in various ways   
+* **SqlReplicationTables** is a list of tables to which the documents will be replicated   
+
+## Example
+
+Let us consider a simple scenario, where we have an `Order` with `OrderLines` and we want to setup a replication to MSSQL.
+
+<TabItem value="sql_replication_2" label="sql_replication_2">
+<CodeBlock language="csharp">
+{`public class Order
+\{
+	public string Id \{ get; set; \}
+	public List<OrderLine> OrderLines \{ get; set; \}
+\}
+
+public class OrderLine
+\{
+	public string Product \{ get; set; \}
+	public int Quantity \{ get; set; \}
+	public int Cost \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+First we need to setup our MSSQL by creating a database with two tables. In our case the database will be called `ExampleDB` and the tables will be called `Orders` and `OrderLines`.      
+
+```json 
+CREATE TABLE [dbo].[OrderLines]
+(
+	[Id] int identity primary key,
+	[OrderId] [nvarchar](50) NOT NULL,
+	[Qty] [int] NOT NULL,
+	[Product] [nvarchar](255) NOT NULL,
+	[Cost] [int] NOT NULL
+)
+ 
+CREATE TABLE [dbo].[Orders]
+(
+	[Id] [nvarchar](50) NOT NULL,
+	[OrderLinesCount] [int] NOT NULL,
+	[TotalCost] [int] NOT NULL
+)
+```
+
+Last step is to insert a document with our configuration. This can be done using `Studio` or manually.
+
+### Manual
+
+<TabItem value="sql_replication_3" label="sql_replication_3">
+<CodeBlock language="csharp">
+{`session.Store(new SqlReplicationConfig
+\{
+	Id = "Raven/SqlReplication/Configuration/OrdersAndLines",
+	Name = "OrdersAndLines",
+	ConnectionString = @"
+		Data Source=.\\SQLEXPRESS;
+		Initial Catalog=ExampleDB;
+		Integrated Security=SSPI;",
+	FactoryName = @"System.Data.SqlClient",
+	RavenEntityName = "Orders",
+	SqlReplicationTables =
+		\{
+			new SqlReplicationTable
+			\{
+				TableName = "Orders", DocumentKeyColumn = "Id"
+			\},
+			new SqlReplicationTable
+			\{
+				TableName = "OrderLines", DocumentKeyColumn = "OrderId"
+			\},
+		\},
+	Script = @"
+		var orderData = \{
+			Id: documentId,
+			OrderLinesCount: this.OrderLines.length,
+			TotalCost: 0
+		\};
+
+		replicateToOrders(orderData);
+
+		for (var i = 0; i < this.OrderLines.length; i++) \{
+			var line = this.OrderLines[i];
+			orderData.TotalCost += line.Cost;
+
+			replicateToOrderLines(\{
+				OrderId: documentId,
+				Qty: line.Quantity,
+				Product: line.Product,
+				Cost: line.Cost
+			\});
+		\}"
+\});
+`}
+</CodeBlock>
+</TabItem>
+
+### Using the Studio
+
+In Studio the configuration page is found under `Settings -> SQL Replication`.
+
+![Figure 1: SQL Replication in the Studio](./assets/sql_replication_studio.png)
+
+<Admonition type="note" title="Note">
+The script will be called once for each document in the source document collection, with `this` representing the document, and the document id available as `documentId`. Call `replicateTo<TableName>()` (e.g. `replicateToOrders`) for each row you want to write to the database.
+</Admonition>

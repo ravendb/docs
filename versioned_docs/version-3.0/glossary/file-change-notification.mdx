@@ -1,0 +1,42 @@
+---
+title: "Glossary: FileChangeNotification"
+hide_table_of_contents: true
+sidebar_label: FileChangeNotification
+sidebar_position: 25
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Glossary: FileChangeNotification
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **File** | string | File name |
+| **Action** | [FileChangeAction](../glossary/file-change-notification.mdx#filechangeaction-enum) | Document change type enum |
+
+---
+
+# FileChangeAction (enum)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **Add** | `0` |
+| **Delete** | `1` |
+| **Update** | `2` |
+| **Renaming** | `3` |
+| **Renamed** | `4` |
+
+<Admonition type="info" title="Renaming and Renamed" id="renaming-and-renamed" href="#renaming-and-renamed">
+Renaming - this action is raised for the original file name before a rename operation. &lt;br /&gt;
+Renamed - this action is raised for the final file name after a rename operation.
+</Admonition>
+

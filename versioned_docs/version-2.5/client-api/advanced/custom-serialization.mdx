@@ -1,0 +1,125 @@
+---
+title: "Custom Serialization / Deserialization"
+hide_table_of_contents: true
+sidebar_label: Custom serialization / deserialization
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Custom Serialization / Deserialization
+
+When RavenDB is given a POCO to save, all properties (public, private and protected), and all public fields are serialized to JSON. This default behavior covers most of the common use-cases, but sometimes you need to tweak the way your document gets serialized by providing your own mapping.
+
+## Through decoration with attributes 
+
+The easy way to customize serialization is by decorating classes, properties and fields with attributes. RavenDB is using [JSON.NET](https://www.newtonsoft.com/json) for JSON serialization, and all attributes that are made available by the original project are supported by the RavenDB Client API as well. These attributes are in the `Newtonsoft.Json` namespace.
+
+Following are some examples for usage in common scenarios.
+
+### Ignoring a property
+
+Ignoring properties which don't contain data, but maybe just provide some data manipulation in their getter or setter, is done by adding a `JsonIgnore` attribute:
+
+<TabItem value="custom_serialization1" label="custom_serialization1">
+<CodeBlock language="csharp">
+{`public class Carrot
+\{
+	public string Id \{ get; set; \}
+
+	public decimal Length \{ get; set; \}
+
+	[JsonIgnore]
+	public decimal LengthInInch
+	\{
+		get
+		\{
+			/* some calculations */
+			return this.Length;
+		\}
+
+		set
+		\{
+			//...
+		\}
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now only Length, but not LengthInInch will be serialized.
+
+### Serializing under a different name
+
+The JsonProperty attribute allows you to specify a custom converter class for a specific property. For example, changing the name of the serialized property is done like this:
+
+<TabItem value="custom_serialization2" label="custom_serialization2">
+<CodeBlock language="csharp">
+{`public class Recipe
+\{
+	public string Id \{ get; set; \}
+
+	[JsonProperty(PropertyName = "dishes")]
+	public IList<IVegetable> SideDishes \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+### Allowing self references
+
+For reasons concerning scaling and sharding, by default RavenDB does not try to resolve associations between documents. For self references within a document those reasons do not apply. It doesn't work out of the box, but once again, JSON.NET provides a handy attribute for this:
+
+<TabItem value="custom_serialization3" label="custom_serialization3">
+<CodeBlock language="csharp">
+{`[JsonObject(IsReference = true)]
+public class Category
+\{
+	public string Id \{ get; set; \}
+	public string Name \{ get; set; \}
+	public Category Parent \{ get; set; \}
+	public List<Category> Children \{ get; set; \}
+
+	public Category()
+	\{
+		this.Children = new List<Category>();
+	\}
+
+	public void Add(Category category)
+	\{
+		category.Parent = this;
+		this.Children.Add(category);
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Now the children's `Parent` property will be a reference instead of a full copy of Category (which would result in an endless recursion, if JSON.NET wouldn't detect it and throw an exception).
+
+## JsonContractResolver
+
+You can also provide a custom `IContractResolver` implementation to either provide your hand made serialization contract, or to make a change that is global to the document store. Every Raven DocumentStore object exposes a `JsonContractResolver` property through its Conventions, with which you can set your own.
+
+For example, following is an example for specifying that only public fields and properties will be serialized, ignoring everything non-public:
+
+<TabItem value="custom_serialization4" label="custom_serialization4">
+<CodeBlock language="csharp">
+{`store.Conventions.JsonContractResolver = new DefaultContractResolver(shareCache: true)
+											 \{
+												 DefaultMembersSearchFlags =
+													 BindingFlags.Public | BindingFlags.Instance
+											 \};
+`}
+</CodeBlock>
+</TabItem>
+
+## Identity field
+
+While serializing, RavenDB makes some assumptions about your ID entity (if exists). The complete discussion can be found [here](https://ravendb.net/docs/theory/document-key-generation).

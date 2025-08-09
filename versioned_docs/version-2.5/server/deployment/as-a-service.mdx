@@ -1,0 +1,37 @@
+---
+title: "Running as a service"
+hide_table_of_contents: true
+sidebar_label: Running as a service
+sidebar_position: 0
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Running as a service
+
+RavenDB supports running as a system service, creating its own HTTP server and processing all requests internally.
+
+## Installing the RavenDB service
+
+1. Extract the zip with the build files
+2. Go to the Server directory
+3. Execute the following command on the command line: &lt;code&gt;Raven.Server.exe /install&lt;/code&gt;  
+    _Note:_ Raven may ask you for administrator privileges while installing the service.
+
+RavenDB is now installed and running as a service.
+
+## Uninstalling the RavenDB service
+
+1. Go to the Server directory
+2. Execute the following command on the command line: &lt;code&gt;Raven.Server.exe /uninstall&lt;/code&gt;
+
+The server storage and indexes will not be deleted when the server is uninstalled.
+
+## Server Configuration
+
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration) page for complete info.

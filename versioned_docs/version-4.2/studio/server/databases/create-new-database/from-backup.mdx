@@ -1,0 +1,51 @@
+---
+title: "Create a Database: From Backup"
+hide_table_of_contents: true
+sidebar_label: From Backup
+sidebar_position: 2
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Create a Database: From Backup
+<Admonition type="note" title="Note">
+
+* In this page:  
+  * [1. New Database From Backup](../../../../studio/server/databases/create-new-database/from-backup.mdx#1-new-database)  
+  * [2. Backup Source Configuration](../../../../studio/server/databases/create-new-database/from-backup.mdx#2-database-name)  
+
+</Admonition>
+## 1. Creating New Database From Backup
+
+![Figure 1. Create New Database From Backup](./assets/new-database-from-backup-1.png)
+
+<Admonition type="note" title="Note">
+Open the down arrow and click `New database from backup`.
+</Admonition>
+
+
+## 2. Backup Source Configuration
+
+![Figure 2. Backup Source Configuration](./assets/new-database-from-backup-2.png)
+
+1. [Database Name](../../../../studio/server/databases/create-new-database/general-flow.mdx#2-database-name)
+
+2. **Backup directory**
+
+3. **Disable ongoing tasks after restore**
+    * Disable all ongoing tasks. Learn more about **Ongoing tasks** in [Ongoing tasks](../../../database/tasks/ongoing-tasks/general-info.mdx)
+
+4. **Restore point**
+    * You can choose restore point from the one available
+   
+<Admonition type="note" title="Note">
+ Note: The backup will be restored only to the current node after restore, this database can be added to other nodes using the 'Manage group' button.
+ Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group.mdx)  
+</Admonition>
+
+

@@ -1,0 +1,57 @@
+---
+title: "Saving changes"
+hide_table_of_contents: true
+sidebar_label: Saving changes
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Saving changes
+
+Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFileDeletion` or metadata changes) will not be send to the server until  the `SaveChangesAsync` is called.
+
+
+
+<TabItem value="save_changes_1" label="save_changes_1">
+<CodeBlock language="csharp">
+{`Task SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+
+| Return Value | |
+| ------------- | ------------- |
+| **Task** | A task that represents the asynchronous save operation |
+
+
+## Applying changes
+
+The RavenFS session, in contrast to the [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work.mdx), does not send changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
+
+If the exception occurs when the file change is applied, the exception will be thrown by the `SaveChangesAsync` and any pending modifications will be canceled.
+
+## Example
+
+<TabItem value="save_changes_2" label="save_changes_2">
+<CodeBlock language="csharp">
+{`await session.SaveChangesAsync();
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

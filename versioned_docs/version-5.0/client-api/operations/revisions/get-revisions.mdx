@@ -1,0 +1,137 @@
+---
+title: "Operations: Get and Count Revisions"
+hide_table_of_contents: true
+sidebar_label: Get Revisions
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Operations: Get and Count Revisions
+<Admonition type="note" title="Note">
+
+* **Get** and **Count** a document's revisions using the `GetRevisionsOperation` store operation.  
+
+* In this page:  
+  * [`GetRevisionsOperation`](../../../client-api/operations/revisions/get-revisions.mdx#getrevisionsoperation)  
+  * [Usage Samples](../../../client-api/operations/revisions/get-revisions.mdx#usage-samples)  
+
+</Admonition>
+## `GetRevisionsOperation`
+
+
+#### Overloads
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`// Get all the revisions of the document whose ID is provided
+public GetRevisionsOperation(string id);
+
+// Start from a specified revision and Get a specified number of revisions
+public GetRevisionsOperation(string id, int start, int pageSize);
+
+// Start from a specified revision and Get a specified number of revisions
+public GetRevisionsOperation(Parameters parameters)
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameter | Type | Description |
+| - | - | - |
+| **id** | `string` | ID of the document whose revisions you want to get |
+| **start** | `int` | Revision number to start from |
+| **pageSize** | `int` | Number of revisions to get |
+| **parameters** | `Parameters` | an object that wraps `Id`, `Start`, and `PageSize` (see below) |
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class Parameters
+\{
+    // ID of the document whose revisions you want to get
+    public string Id \{ get; set; \}
+    // Revision number to start from
+    public int? Start \{ get; set; \}
+    // Number of revisions to get
+    public int? PageSize \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+#### Return Value: `RevisionsResult<T>`
+
+<TabItem value="csharp" label="csharp">
+<CodeBlock language="csharp">
+{`public class RevisionsResult<T>
+\{
+  // The retrieved revisions
+  public List<T> Results \{ get; set; \}
+
+  // Total number of revisions that exist for this document
+  public int TotalResults \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+
+
+## Usage Samples
+
+#### Get all the revisions created for a document  
+<TabItem value="getAllRevisions" label="getAllRevisions">
+<CodeBlock language="csharp">
+{`RevisionsResult<Company> revisions = await documentStore.Operations.SendAsync(
+        // get all the revisions for this document
+        new GetRevisionsOperation<Company>(company.Id));
+
+List<Company> retrievedRevisions = revisions.Results;
+int revisionsCount = revisions.TotalResults;
+`}
+</CodeBlock>
+</TabItem>
+#### Get and process revisions, one page at a time
+<TabItem value="getRevisionsWithPaging" label="getRevisionsWithPaging">
+<CodeBlock language="csharp">
+{`var start = 0;
+var pageSize = 100;
+while (true)
+\{
+    RevisionsResult<Company> revisions = await documentStore.Operations.SendAsync(
+        new GetRevisionsOperation<Company>(company.Id, start, pageSize));
+    \{
+        // process the retrieved revisions here
+    \}
+    if (revisions.Results.Count < pageSize)
+        break; // no more revisions to retrieve
+
+    // increment 'start' by page-size, to get the "next page" in next iteration
+    start += pageSize;
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+You can also pass the method the `ID`, `Start`, and `PageSize` arguments 
+wrapped in a `Parameters` object:  
+<TabItem value="getRevisionsWithPaging_wrappedObject" label="getRevisionsWithPaging_wrappedObject">
+<CodeBlock language="csharp">
+{`var parameters = new GetRevisionsOperation<Company>.Parameters
+\{
+    Id = company.Id,
+    Start = 0,
+    PageSize = 100
+\};
+
+RevisionsResult<Company> revisions = await documentStore.Operations.SendAsync(
+    new GetRevisionsOperation<Company>(parameters));
+`}
+</CodeBlock>
+</TabItem>
+
+
+

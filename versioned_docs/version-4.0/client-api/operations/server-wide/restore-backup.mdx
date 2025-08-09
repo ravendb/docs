@@ -1,0 +1,84 @@
+---
+title: "Operations: Server: How to Restore a Database from the Backup"
+hide_table_of_contents: true
+sidebar_label: Restore Backup
+sidebar_position: 8
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+# Operations: Server: How to Restore a Database from the Backup
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+To restore a database from its backup, use **RestoreBackupOperation**. 
+
+<Admonition type="note" title="Note">
+This article describes restoring a database using a C# client. You can also restore a database using [RavenDB Studio](../../../studio/server/databases/create-new-database/from-backup.mdx).
+</Admonition>
+
+## Syntax
+
+<TabItem value="restore_1" label="restore_1">
+<CodeBlock language="csharp">
+{`public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+`}
+</CodeBlock>
+</TabItem>
+
+<TabItem value="restore_2" label="restore_2">
+<CodeBlock language="csharp">
+{`public class RestoreBackupConfiguration
+\{
+    public string DatabaseName \{ get; set; \}
+
+    public string BackupLocation \{ get; set; \}
+
+    public string LastFileNameToRestore \{ get; set; \}
+
+    public string DataDirectory \{ get; set; \}
+
+    public string EncryptionKey \{ get; set; \}
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **DatabaseName** | string | Database name to create during the restore operation |
+| **BackupLocation** | string | Directory containing backup files |
+| **LastFileNameToRestore** | string | Used for partial restore |
+| **DataDirectory** | string | Optional: Database data directory |
+| **EncryptionKey** | string | Encryption key used for restore |
+
+## Example
+
+<TabItem value="restore_3" label="restore_3">
+<CodeBlock language="csharp">
+{`RestoreBackupConfiguration config = new RestoreBackupConfiguration()
+\{
+    BackupLocation = @"C:\\backups\\Northwind",
+    DatabaseName = "Northwind"
+\};
+RestoreBackupOperation restoreOperation = new RestoreBackupOperation(config);
+store.Maintenance.Server.Send(restoreOperation)
+    .WaitForCompletion();
+`}
+</CodeBlock>
+</TabItem>
+
+</LanguageContent>
+
+<!---
+
+-->

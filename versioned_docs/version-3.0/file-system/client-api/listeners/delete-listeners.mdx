@@ -1,0 +1,74 @@
+---
+title: "Delete listeners"
+hide_table_of_contents: true
+sidebar_label: Delete listeners
+sidebar_position: 1
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp"];
+
+
+
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+#Delete listeners
+
+`IFilesDeleteListener` interface which needs to be implemented if a user wants to introduce a custom action when a delete operation is executed. 
+The interface exposes two methods. The first one is invoked before the delete request is sent to the server, the second one is called
+after the request was successfully executed.
+
+<TabItem value="delete_interface" label="delete_interface">
+<CodeBlock language="csharp">
+{`public interface IFilesDeleteListener
+\{
+	/// <summary>
+	/// Invoked before the delete request is sent to the server.
+	/// </summary>
+	/// <param name="file">The file to delete</param>
+	bool BeforeDelete(FileHeader file);
+
+	/// <summary>
+	/// Invoked after the delete operation was effective on the server.
+	/// </summary>
+	/// <param name="filename">The filename of the deleted file</param>
+	void AfterDelete(string filename);
+\}
+`}
+</CodeBlock>
+</TabItem>
+
+Note that `BeforeDelete` method returns a boolean result that is used to determine whether a file should be really deleted. If any of the registered
+listeners returns `false` then the delete request won't be sent to a server and no `AfterDelete` method will be called.
+
+
+
+To prevent anyone from deleting files that have `Read-Only : true` metadata you can create the following listener:
+
+<TabItem value="example" label="example">
+<CodeBlock language="csharp">
+{`public class PreventDeletingReadOnlyFilesListener : IFilesDeleteListener
+\{
+	public bool BeforeDelete(FileHeader file)
+	\{
+		return file.Metadata.Value<bool>("Read-Only") == false;
+	\}
+
+	public void AfterDelete(string filename)
+	\{
+	\}
+\}
+`}
+</CodeBlock>
+</TabItem>
+</LanguageContent>
+
+<!---
+
+-->

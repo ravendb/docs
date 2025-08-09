@@ -1,0 +1,31 @@
+---
+title: "Index administration"
+hide_table_of_contents: true
+sidebar_label: Index Administration
+sidebar_position: 6
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+# Index administration
+
+RavenDB indexes can be administrated easily from the consumer end using either code or the embedded user interface.
+
+## Resetting an index
+
+An index usually need to be reset because it has reached its error quota and been disabled. Resetting an index means forcing RavenDB to re-index all documents matched by the index definition, which can be a very lengthy process.
+
+You can reset an index in one of the following ways:
+
+* Using the embedded API, by calling: `DocumentDatabase.ResetIndex(indexName)`
+* Using the HTTP API, by issuing a HTTP call to the index with RESET as the method name: 
+RESET /indexes/indexName
+
+## Deleting an index
+
+You can delete an index by calling `DocumentDatabase.DeleteIndex(indexName)` from the Client API.

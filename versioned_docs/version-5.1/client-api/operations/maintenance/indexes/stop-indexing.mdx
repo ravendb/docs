@@ -1,0 +1,97 @@
+---
+title: "Operations: How to Stop Indexing"
+hide_table_of_contents: true
+sidebar_label: Pause Indexing
+sidebar_position: 9
+---
+
+import Admonition from '@theme/Admonition';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import LanguageSwitcher from "@site/src/components/LanguageSwitcher";
+import LanguageContent from "@site/src/components/LanguageContent";
+
+export const supportedLanguages = ["csharp", "java"];
+
+
+# Operations: How to Stop Indexing
+<LanguageSwitcher supportedLanguages={supportedLanguages} />
+<LanguageContent language="csharp">
+
+
+**StopIndexingOperation** is used to stop indexing for the entire database.
+
+Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) to stop single index.
+
+<Admonition type="note" title="Note">
+Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="csharp">
+{`public StopIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="csharp">
+{`store.Maintenance.Send(new StopIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+<LanguageContent language="java">
+
+
+**StopIndexingOperation** is used to stop indexing for the entire database.
+
+Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index.mdx) to stop single index.
+
+<Admonition type="note" title="Note">
+Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../../client-api/operations/maintenance/indexes/start-indexing.mdx).
+</Admonition>
+
+### Syntax
+
+<TabItem value="stop_1" label="stop_1">
+<CodeBlock language="java">
+{`public StopIndexingOperation()
+`}
+</CodeBlock>
+</TabItem>
+
+### Example
+
+<TabItem value="stop_2" label="stop_2">
+<CodeBlock language="java">
+{`store.maintenance().send(new StopIndexingOperation());
+`}
+</CodeBlock>
+</TabItem>
+
+
+</LanguageContent>
+
+<!---
+### Indexes
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+- [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Resume Indexing](../../../../client-api/operations/maintenance/indexes/start-indexing)
+
+
+-->
